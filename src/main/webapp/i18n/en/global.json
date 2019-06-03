@@ -132,5 +132,5 @@
     "idexists": "A new {{ entityName }} cannot already have an ID",
     "idnull": "Invalid ID"
   },
-  "footer": "This is your footer"
+  "footer": "© 2019 FaRue Familienwohnheim Rütscher Straße. All rights reserved."
 }
