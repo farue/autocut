@@ -19,6 +19,7 @@ import { AutocutAccountModule } from './account/account.module';
 import { AutocutEntityModule } from './entities/entity.module';
 import * as moment from 'moment';
 import { AutocutAppSelfAdministrationModule } from './self-administration/self-administration.module';
+import { AutocutAppTeamsModule } from './teams/teams.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
 
@@ -38,6 +39,7 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
     AutocutHomeModule,
     AutocutAccountModule,
     AutocutAppSelfAdministrationModule,
+    AutocutAppTeamsModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     AutocutEntityModule,
     AutocutAppRoutingModule

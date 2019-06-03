@@ -8,6 +8,10 @@
       "spokesman": "Spokesperson",
       "assignment-committee": "Assignment Committee",
       "janitor": "Janitor",
+      "teams": "Teams",
+      "network-team": "Network Team",
+      "wash-team": "Wash Team",
+      "tools-team": "Tools Team",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entities",
