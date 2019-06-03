@@ -4,6 +4,10 @@
     "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
     "menu": {
       "home": "Home",
+      "self-administration": "Self Administration",
+      "spokesman": "Spokesperson",
+      "assignment-committee": "Assignment Committee",
+      "janitor": "Janitor",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entities",
