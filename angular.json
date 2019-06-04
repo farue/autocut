@@ -7,16 +7,7 @@
       "root": "",
       "sourceRoot": "src/main/webapp",
       "projectType": "application",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:browser",
-          "options": {
-            "styles": [
-              "./node_modules/ngx-lightbox/lightbox.css"
-            ]
-          }
-        }
-      }
+      "architect": {}
     }
   },
   "defaultProject": "autocut",
