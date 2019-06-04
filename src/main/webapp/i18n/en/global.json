@@ -1,6 +1,6 @@
 {
   "global": {
-    "title": "FaRue",
+    "title": "Familienwohnheim Rütscher Straße",
     "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
     "menu": {
       "home": "Home",
@@ -140,5 +140,5 @@
     "idexists": "A new {{ entityName }} cannot already have an ID",
     "idnull": "Invalid ID"
   },
-  "footer": "© 2019 FaRue Familienwohnheim Rütscher Straße. All rights reserved."
+  "footer": "© 2019 FaRü Familienwohnheim Rütscher Straße. All rights reserved."
 }
