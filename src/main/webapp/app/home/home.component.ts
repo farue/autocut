@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {JhiEventManager} from 'ng-jhipster';
+import {Lightbox} from 'ngx-lightbox';
 
 import {Account, AccountService, LoginModalService} from 'app/core';
 
@@ -18,7 +19,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private accountService: AccountService,
     private loginModalService: LoginModalService,
-    private eventManager: JhiEventManager
+    private eventManager: JhiEventManager,
+    private _lightbox: Lightbox
   ) {}
 
   ngOnInit() {
@@ -26,20 +28,19 @@ export class HomeComponent implements OnInit {
       this.account = account;
     });
     this.registerAuthenticationSuccess();
-
     this.images = [];
-    this.images.push({source: '/content/images/farue0.jpg'});
-    this.images.push({source: '/content/images/farue1.jpg'});
-    this.images.push({source: '/content/images/farue2.jpg'});
-    this.images.push({source: '/content/images/farue3.jpg'});
-    this.images.push({source: '/content/images/farue4.jpg'});
-    this.images.push({source: '/content/images/farue5.jpg'});
-    this.images.push({source: '/content/images/farue6.jpg'});
-    this.images.push({source: '/content/images/farue7.jpg'});
-    this.images.push({source: '/content/images/farue8.jpg'});
-    this.images.push({source: '/content/images/farueeingang1.jpg'});
-    this.images.push({source: '/content/images/farueeingang2.jpg'});
-    this.images.push({source: '/content/images/farueeingang3.jpg'});
+    this.images.push({source: '/content/images/farue0.jpg', src: '/content/images/farue0.jpg'});
+    this.images.push({source: '/content/images/farue1.jpg', src: '/content/images/farue1.jpg'});
+    this.images.push({source: '/content/images/farue2.jpg', src: '/content/images/farue2.jpg'});
+    this.images.push({source: '/content/images/farue3.jpg', src: '/content/images/farue3.jpg'});
+    this.images.push({source: '/content/images/farue4.jpg', src: '/content/images/farue4.jpg'});
+    this.images.push({source: '/content/images/farue5.jpg', src: '/content/images/farue5.jpg'});
+    this.images.push({source: '/content/images/farue6.jpg', src: '/content/images/farue6.jpg'});
+    this.images.push({source: '/content/images/farue7.jpg', src: '/content/images/farue7.jpg'});
+    this.images.push({source: '/content/images/farue8.jpg', src: '/content/images/farue8.jpg'});
+    this.images.push({source: '/content/images/farueeingang1.jpg', src: '/content/images/farueeingang1.jpg'});
+    this.images.push({source: '/content/images/farueeingang2.jpg', src: '/content/images/farueeingang2.jpg'});
+    this.images.push({source: '/content/images/farueeingang3.jpg', src: '/content/images/farueeingang3.jpg'});
   }
 
   registerAuthenticationSuccess() {
@@ -59,6 +60,6 @@ export class HomeComponent implements OnInit {
   }
 
   onImageClicked($event: any) {
-    window.open($event.image.source, '_blank');
+    this._lightbox.open(this.images, $event.index);
   }
 }

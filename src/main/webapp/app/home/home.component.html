@@ -1,6 +1,7 @@
 <div class="row">
     <div class="col-md-3">
-        <p-galleria [images]="images" panelWidth="400" panelHeight="220" [showCaption]="false">
+        <p-galleria (click)="onImageClicked($event)" [images]="images" [showCaption]="false" panelHeight="220"
+                    panelWidth="400">
         </p-galleria>
     </div>
     <div class="col-md-9">
