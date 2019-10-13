@@ -80,15 +80,6 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
     },
     optimization: {
         runtimeChunk: false,
-        splitChunks: {
-            cacheGroups: {
-                commons: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name: 'vendors',
-                    chunks: 'all'
-                }
-            }
-        },
         minimizer: [
             new TerserPlugin({
                 parallel: true,
@@ -113,8 +104,7 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
                         inline: true,
                         join_vars: true,
                         ecma: 6,
-                        module: true,
-                        toplevel: true
+                        module: true
                     },
                     output: {
                         comments: false,

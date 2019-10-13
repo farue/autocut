@@ -15,14 +15,7 @@ h4 {
   font-weight: 300;
 }
 
-a {
-  color: #533f03;
-  font-weight: bold;
-}
-
 a:hover {
-  color: #533f03;
-  font-weight: bold;
   /* make sure browsers use the pointer cursor for anchors, even with no href */
   cursor: pointer;
 }
@@ -107,7 +100,7 @@ Custom alerts for notification
       font-size: 10px;
     }
   }
-  .toast {
+  .jhi-toast {
     position: fixed;
     width: 100%;
     &.left {
@@ -126,7 +119,7 @@ Custom alerts for notification
 }
 
 @media screen and (min-width: 480px) {
-  .alerts .toast {
+  .alerts .jhi-toast {
     width: 50%;
   }
 }
