@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { JhiConfigurationService } from './configuration.service';
+import {JhiConfigurationService} from './configuration.service';
 
 @Component({
   selector: 'jhi-configuration',
@@ -21,7 +21,7 @@ export class JhiConfigurationComponent implements OnInit {
     this.reverse = false;
   }
 
-  keys(dict): Array<string> {
+  keys(dict): string[] {
     return dict === undefined ? [] : Object.keys(dict);
   }
 

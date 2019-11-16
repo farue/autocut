@@ -1,14 +1,13 @@
 package de.farue.autocut.service.dto;
 
 import de.farue.autocut.config.Constants;
-
 import de.farue.autocut.domain.Authority;
 import de.farue.autocut.domain.User;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-
-import javax.validation.constraints.*;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -40,7 +39,7 @@ public class UserDTO {
 
     private boolean activated = false;
 
-    @Size(min = 2, max = 6)
+    @Size(min = 2, max = 10)
     private String langKey;
 
     private String createdBy;

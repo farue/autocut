@@ -1,11 +1,11 @@
-import { Component, OnInit, AfterViewInit, Renderer, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import {AfterViewInit, Component, ElementRef, OnInit, Renderer} from '@angular/core';
+import {FormBuilder, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
 
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 
-import { LoginModalService } from 'app/core';
-import { PasswordResetFinishService } from './password-reset-finish.service';
+import {LoginModalService} from 'app/core/login/login-modal.service';
+import {PasswordResetFinishService} from './password-reset-finish.service';
 
 @Component({
   selector: 'jhi-password-reset-finish',

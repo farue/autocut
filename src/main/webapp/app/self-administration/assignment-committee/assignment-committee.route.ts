@@ -1,7 +1,7 @@
-import { Route } from '@angular/router';
+import {Route} from '@angular/router';
 
-import { UserRouteAccessService } from 'app/core';
-import { AssignmentCommitteeComponent } from './assignment-committee.component';
+import {UserRouteAccessService} from 'app/core/auth/user-route-access-service';
+import {AssignmentCommitteeComponent} from './assignment-committee.component';
 
 export const ASSIGNMENT_COMMITTEE_ROUTE: Route = {
   path: 'assignment-committee',

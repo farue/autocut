@@ -1,7 +1,6 @@
 package de.farue.autocut.web.rest.errors;
 
 import io.github.jhipster.web.util.HeaderUtil;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +14,7 @@ import org.zalando.problem.Problem;
 import org.zalando.problem.ProblemBuilder;
 import org.zalando.problem.Status;
 import org.zalando.problem.spring.web.advice.ProblemHandling;
+import org.zalando.problem.spring.web.advice.security.SecurityAdviceTrait;
 import org.zalando.problem.violations.ConstraintViolationProblem;
 
 import javax.annotation.Nonnull;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * The error response follows RFC7807 - Problem Details for HTTP APIs (https://tools.ietf.org/html/rfc7807).
  */
 @ControllerAdvice
-public class ExceptionTranslator implements ProblemHandling {
+public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait {
 
     private static final String FIELD_ERRORS_KEY = "fieldErrors";
     private static final String MESSAGE_KEY = "message";
@@ -78,7 +78,7 @@ public class ExceptionTranslator implements ProblemHandling {
     public ResponseEntity<Problem> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, @Nonnull NativeWebRequest request) {
         BindingResult result = ex.getBindingResult();
         List<FieldErrorVM> fieldErrors = result.getFieldErrors().stream()
-            .map(f -> new FieldErrorVM(f.getObjectName(), f.getField(), f.getCode()))
+            .map(f -> new FieldErrorVM(f.getObjectName().replaceFirst("DTO$", ""), f.getField(), f.getCode()))
             .collect(Collectors.toList());
 
         Problem problem = Problem.builder()
@@ -100,6 +100,22 @@ public class ExceptionTranslator implements ProblemHandling {
         return create(ex, problem, request);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleEmailAreadyUsedException(de.farue.autocut.service.EmailAlreadyUsedException ex, NativeWebRequest request) {
+        EmailAlreadyUsedException problem = new EmailAlreadyUsedException();
+        return create(problem, request, HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage()));
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleUsernameAreadyUsedException(de.farue.autocut.service.UsernameAlreadyUsedException ex, NativeWebRequest request) {
+        LoginAlreadyUsedException problem = new LoginAlreadyUsedException();
+        return create(problem, request, HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage()));
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleInvalidPasswordException(de.farue.autocut.service.InvalidPasswordException ex, NativeWebRequest request) {
+        return create(new InvalidPasswordException(), request);
+    }
     @ExceptionHandler
     public ResponseEntity<Problem> handleBadRequestAlertException(BadRequestAlertException ex, NativeWebRequest request) {
         return create(ex, request, HeaderUtil.createFailureAlert(applicationName, true, ex.getEntityName(), ex.getErrorKey(), ex.getMessage()));

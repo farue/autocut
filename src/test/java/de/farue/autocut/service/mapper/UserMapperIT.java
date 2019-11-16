@@ -1,6 +1,5 @@
 package de.farue.autocut.service.mapper;
 
-
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.User;
 import de.farue.autocut.service.dto.UserDTO;

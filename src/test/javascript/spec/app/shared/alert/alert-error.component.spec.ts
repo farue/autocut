@@ -1,11 +1,11 @@
-import { ComponentFixture, TestBed, async, inject, fakeAsync, tick } from '@angular/core/testing';
-import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
-import { TranslateModule } from '@ngx-translate/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
+import {TranslateModule} from '@ngx-translate/core';
 
-import { AutocutTestModule } from '../../../test.module';
-import { JhiAlertErrorComponent } from 'app/shared/alert/alert-error.component';
-import { MockAlertService } from '../../../helpers/mock-alert.service';
+import {AutocutTestModule} from '../../../test.module';
+import {JhiAlertErrorComponent} from 'app/shared/alert/alert-error.component';
+import {MockAlertService} from '../../../helpers/mock-alert.service';
 
 describe('Component Tests', () => {
   describe('Alert Error Component', () => {

@@ -1,10 +1,10 @@
-import { Route } from '@angular/router';
+import {Route} from '@angular/router';
 
-import { UserRouteAccessService } from 'app/core';
-import { TeamsComponent } from './teams.component';
-import { NETWORK_TEAM_ROUTE } from './network-team/network-team.route';
-import { WASH_TEAM_ROUTE } from './wash-team/wash-team.route';
-import { TOOLS_TEAM_ROUTE } from './tools-team/tools-team.route';
+import {UserRouteAccessService} from 'app/core/auth/user-route-access-service';
+import {TeamsComponent} from './teams.component';
+import {NETWORK_TEAM_ROUTE} from './network-team/network-team.route';
+import {WASH_TEAM_ROUTE} from './wash-team/wash-team.route';
+import {TOOLS_TEAM_ROUTE} from './tools-team/tools-team.route';
 
 export const TEAMS_ROUTE: Route = {
   path: 'teams',

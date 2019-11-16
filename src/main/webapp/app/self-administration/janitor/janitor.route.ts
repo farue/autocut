@@ -1,7 +1,7 @@
-import { Route } from '@angular/router';
+import {Route} from '@angular/router';
 
-import { UserRouteAccessService } from 'app/core';
-import { JanitorComponent } from './janitor.component';
+import {UserRouteAccessService} from 'app/core/auth/user-route-access-service';
+import {JanitorComponent} from './janitor.component';
 
 export const JANITOR_ROUTE: Route = {
   path: 'janitor',

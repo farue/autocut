@@ -1,7 +1,7 @@
-import { Route } from '@angular/router';
+import {Route} from '@angular/router';
 
-import { UserRouteAccessService } from 'app/core';
-import { NetworkTeamComponent } from './network-team.component';
+import {UserRouteAccessService} from 'app/core/auth/user-route-access-service';
+import {NetworkTeamComponent} from './network-team.component';
 
 export const NETWORK_TEAM_ROUTE: Route = {
   path: 'network-team',

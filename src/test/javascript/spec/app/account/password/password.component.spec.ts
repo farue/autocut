@@ -1,11 +1,11 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
-import { FormBuilder } from '@angular/forms';
-import { Observable, of, throwError } from 'rxjs';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {HttpResponse} from '@angular/common/http';
+import {FormBuilder} from '@angular/forms';
+import {of, throwError} from 'rxjs';
 
-import { AutocutTestModule } from '../../../test.module';
-import { PasswordComponent } from 'app/account/password/password.component';
-import { PasswordService } from 'app/account/password/password.service';
+import {AutocutTestModule} from '../../../test.module';
+import {PasswordComponent} from 'app/account/password/password.component';
+import {PasswordService} from 'app/account/password/password.service';
 
 describe('Component Tests', () => {
   describe('PasswordComponent', () => {

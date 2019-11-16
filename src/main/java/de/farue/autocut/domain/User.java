@@ -1,8 +1,7 @@
 package de.farue.autocut.domain;
 
-import de.farue.autocut.config.Constants;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.farue.autocut.config.Constants;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
@@ -62,8 +61,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(nullable = false)
     private boolean activated = false;
 
-    @Size(min = 2, max = 6)
-    @Column(name = "lang_key", length = 6)
+    @Size(min = 2, max = 10)
+    @Column(name = "lang_key", length = 10)
     private String langKey;
 
     @Size(max = 256)

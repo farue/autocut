@@ -4,8 +4,8 @@ import de.farue.autocut.AutocutApp;
 import de.farue.autocut.config.audit.AuditEventConverter;
 import de.farue.autocut.domain.PersistentAuditEvent;
 import de.farue.autocut.repository.PersistenceAuditEventRepository;
-
 import de.farue.autocut.service.AuditEventService;
+import io.github.jhipster.config.JHipsterProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -46,6 +46,9 @@ public class AuditResourceIT {
     private AuditEventConverter auditEventConverter;
 
     @Autowired
+    private JHipsterProperties jhipsterProperties;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -63,7 +66,7 @@ public class AuditResourceIT {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         AuditEventService auditEventService =
-            new AuditEventService(auditEventRepository, auditEventConverter);
+            new AuditEventService(auditEventRepository, auditEventConverter, jhipsterProperties);
         AuditResource auditResource = new AuditResource(auditEventService);
         this.restAuditMockMvc = MockMvcBuilders.standaloneSetup(auditResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)

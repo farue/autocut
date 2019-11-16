@@ -1,13 +1,13 @@
-import { ComponentFixture, TestBed, inject, tick, fakeAsync } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
-import { Observable, of, throwError } from 'rxjs';
-import { Renderer, ElementRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {ComponentFixture, fakeAsync, inject, TestBed, tick} from '@angular/core/testing';
+import {FormBuilder} from '@angular/forms';
+import {of, throwError} from 'rxjs';
+import {ElementRef, Renderer} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
-import { AutocutTestModule } from '../../../../test.module';
-import { PasswordResetFinishComponent } from 'app/account/password-reset/finish/password-reset-finish.component';
-import { PasswordResetFinishService } from 'app/account/password-reset/finish/password-reset-finish.service';
-import { MockActivatedRoute } from '../../../../helpers/mock-route.service';
+import {AutocutTestModule} from '../../../../test.module';
+import {PasswordResetFinishComponent} from 'app/account/password-reset/finish/password-reset-finish.component';
+import {PasswordResetFinishService} from 'app/account/password-reset/finish/password-reset-finish.service';
+import {MockActivatedRoute} from '../../../../helpers/mock-route.service';
 
 describe('Component Tests', () => {
   describe('PasswordResetFinishComponent', () => {

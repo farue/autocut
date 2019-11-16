@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, Renderer } from '@angular/core';
+import {Component, ElementRef, Input, Renderer} from '@angular/core';
 
 @Component({
   selector: 'jhi-password-strength-bar',
@@ -23,7 +23,7 @@ export class PasswordStrengthBarComponent {
 
   measureStrength(p: string): number {
     let force = 0;
-    const regex = /[$-/:-?{-~!"^_`\[\]]/g; // "
+    const regex = /[$-/:-?{-~!"^_`[\]]/g; // "
     const lowerLetters = /[a-z]+/.test(p);
     const upperLetters = /[A-Z]+/.test(p);
     const numbers = /[0-9]+/.test(p);

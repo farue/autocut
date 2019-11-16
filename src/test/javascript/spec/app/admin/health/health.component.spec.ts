@@ -1,10 +1,10 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { of, throwError } from 'rxjs';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {of, throwError} from 'rxjs';
 
-import { AutocutTestModule } from '../../../test.module';
-import { JhiHealthCheckComponent } from 'app/admin/health/health.component';
-import { JhiHealthService } from 'app/admin/health/health.service';
+import {AutocutTestModule} from '../../../test.module';
+import {JhiHealthCheckComponent} from 'app/admin/health/health.component';
+import {JhiHealthService} from 'app/admin/health/health.service';
 
 describe('Component Tests', () => {
   describe('JhiHealthCheckComponent', () => {
@@ -293,7 +293,7 @@ describe('Component Tests', () => {
       it('should call refresh on init', () => {
         // GIVEN
         spyOn(service, 'checkHealth').and.returnValue(of(new HttpResponse()));
-        spyOn(service, 'transformHealthData').and.returnValue(of({ data: 'test' }));
+        spyOn(service, 'transformHealthData').and.returnValue({data: 'test'});
 
         // WHEN
         comp.ngOnInit();
@@ -301,12 +301,12 @@ describe('Component Tests', () => {
         // THEN
         expect(service.checkHealth).toHaveBeenCalled();
         expect(service.transformHealthData).toHaveBeenCalled();
-        expect(comp.healthData.value).toEqual({ data: 'test' });
+        expect(comp.healthData).toEqual({data: 'test'});
       });
       it('should handle a 503 on refreshing health data', () => {
         // GIVEN
         spyOn(service, 'checkHealth').and.returnValue(throwError(new HttpErrorResponse({ status: 503, error: 'Mail down' })));
-        spyOn(service, 'transformHealthData').and.returnValue(of({ health: 'down' }));
+        spyOn(service, 'transformHealthData').and.returnValue({health: 'down'});
 
         // WHEN
         comp.refresh();
@@ -314,7 +314,7 @@ describe('Component Tests', () => {
         // THEN
         expect(service.checkHealth).toHaveBeenCalled();
         expect(service.transformHealthData).toHaveBeenCalled();
-        expect(comp.healthData.value).toEqual({ health: 'down' });
+        expect(comp.healthData).toEqual({health: 'down'});
       });
     });
   });

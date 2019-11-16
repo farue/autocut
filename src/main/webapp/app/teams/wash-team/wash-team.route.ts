@@ -1,7 +1,7 @@
-import { Route } from '@angular/router';
+import {Route} from '@angular/router';
 
-import { UserRouteAccessService } from 'app/core';
-import { WashTeamComponent } from './wash-team.component';
+import {UserRouteAccessService} from 'app/core/auth/user-route-access-service';
+import {WashTeamComponent} from './wash-team.component';
 
 export const WASH_TEAM_ROUTE: Route = {
   path: 'wash-team',

@@ -1,7 +1,7 @@
-import { of } from 'rxjs';
+import {of} from 'rxjs';
 
-import { SpyObject } from './spyobject';
-import { AccountService } from 'app/core/auth/account.service';
+import {SpyObject} from './spyobject';
+import {AccountService} from 'app/core/auth/account.service';
 import Spy = jasmine.Spy;
 
 export class MockAccountService extends SpyObject {
@@ -29,7 +29,7 @@ export class MockAccountService extends SpyObject {
   }
 
   setIdentitySpy(json: any): any {
-    this.identitySpy = this.spy('identity').andReturn(Promise.resolve(json));
+    this.identitySpy = this.spy('identity').andReturn(of(json));
   }
 
   setIdentityResponse(json: any): void {

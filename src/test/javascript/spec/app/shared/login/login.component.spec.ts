@@ -1,15 +1,15 @@
-import { ComponentFixture, TestBed, async, inject, fakeAsync, tick } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import {async, ComponentFixture, fakeAsync, inject, TestBed, tick} from '@angular/core/testing';
+import {FormBuilder} from '@angular/forms';
+import {Router} from '@angular/router';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager} from 'ng-jhipster';
 
-import { LoginService } from 'app/core/login/login.service';
-import { JhiLoginModalComponent } from 'app/shared/login/login.component';
-import { StateStorageService } from 'app/core/auth/state-storage.service';
-import { AutocutTestModule } from '../../../test.module';
-import { MockLoginService } from '../../../helpers/mock-login.service';
-import { MockStateStorageService } from '../../../helpers/mock-state-storage.service';
+import {LoginService} from 'app/core/login/login.service';
+import {JhiLoginModalComponent} from 'app/shared/login/login.component';
+import {StateStorageService} from 'app/core/auth/state-storage.service';
+import {AutocutTestModule} from '../../../test.module';
+import {MockLoginService} from '../../../helpers/mock-login.service';
+import {MockStateStorageService} from '../../../helpers/mock-state-storage.service';
 
 describe('Component Tests', () => {
   describe('LoginComponent', () => {
@@ -68,6 +68,7 @@ describe('Component Tests', () => {
         });
         mockLoginService.setResponse({});
         mockStateStorageService.setResponse('admin/users?page=0');
+        mockRouter.url = '/admin/metrics';
 
         // WHEN/
         comp.login();
@@ -100,6 +101,7 @@ describe('Component Tests', () => {
         });
         mockLoginService.setResponse({});
         mockStateStorageService.setResponse(null);
+        mockRouter.url = '/admin/metrics';
 
         // WHEN
         comp.login();
@@ -127,7 +129,7 @@ describe('Component Tests', () => {
       const expected = {
         username: '',
         password: '',
-        rememberMe: true
+        rememberMe: false
       };
 
       // WHEN
@@ -147,7 +149,7 @@ describe('Component Tests', () => {
 
       // THEN
       expect(mockActiveModal.dismissSpy).toHaveBeenCalledWith('to state register');
-      expect(mockRouter.navigateSpy).toHaveBeenCalledWith(['/register']);
+      expect(mockRouter.navigateSpy).toHaveBeenCalledWith(['/account/register']);
     });
 
     it('should redirect user when request password', () => {
@@ -156,7 +158,7 @@ describe('Component Tests', () => {
 
       // THEN
       expect(mockActiveModal.dismissSpy).toHaveBeenCalledWith('to state requestReset');
-      expect(mockRouter.navigateSpy).toHaveBeenCalledWith(['/reset', 'request']);
+      expect(mockRouter.navigateSpy).toHaveBeenCalledWith(['/account/reset', 'request']);
     });
   });
 });

@@ -1,7 +1,7 @@
-import { Component, OnDestroy } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { JhiEventManager, JhiAlert, JhiAlertService } from 'ng-jhipster';
-import { Subscription } from 'rxjs';
+import {Component, OnDestroy} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
+import {JhiAlert, JhiAlertService, JhiEventManager} from 'ng-jhipster';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'jhi-alert-error',
@@ -18,9 +18,8 @@ import { Subscription } from 'rxjs';
 export class JhiAlertErrorComponent implements OnDestroy {
   alerts: any[];
   cleanHttpErrorListener: Subscription;
-  /* tslint:disable */
-  constructor(private alertService: JhiAlertService, private eventManager: JhiEventManager, private translateService: TranslateService) {
-    /* tslint:enable */
+
+  constructor(private alertService: JhiAlertService, private eventManager: JhiEventManager, translateService: TranslateService) {
     this.alerts = [];
 
     this.cleanHttpErrorListener = eventManager.subscribe('autocutApp.httpError', response => {
@@ -32,7 +31,7 @@ export class JhiAlertErrorComponent implements OnDestroy {
           this.addErrorAlert('Server not reachable', 'error.server.not.reachable');
           break;
 
-        case 400:
+        case 400: {
           const arr = httpErrorResponse.headers.keys();
           let errorHeader = null;
           let entityKey = null;
@@ -64,7 +63,7 @@ export class JhiAlertErrorComponent implements OnDestroy {
             this.addErrorAlert(httpErrorResponse.error);
           }
           break;
-
+        }
         case 404:
           this.addErrorAlert('Not found', 'error.url.not.found');
           break;
@@ -81,7 +80,7 @@ export class JhiAlertErrorComponent implements OnDestroy {
 
   setClasses(alert) {
     return {
-      toast: !!alert.toast,
+      'jhi-toast': alert.toast,
       [alert.position]: true
     };
   }
