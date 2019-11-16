@@ -12,15 +12,10 @@ stages:
   - release
   - deploy
 
-before_script:
-  - export MAVEN_USER_HOME=`pwd`/.maven
-  - ./mvnw com.github.eirslett:frontend-maven-plugin:install-node-and-npm -DnodeVersion=v10.15.3 -DnpmVersion=6.9.0 -Dmaven.repo.local=$MAVEN_USER_HOME
-  - ./mvnw com.github.eirslett:frontend-maven-plugin:npm -Dmaven.repo.local=$MAVEN_USER_HOME
-
 maven-compile:
   stage: build
   script:
-    - ./mvnw compile -Dmaven.repo.local=$MAVEN_USER_HOME
+    - ./mvnw compile -Dmaven.repo.local=$MAVEN_USER_HOME -B
   artifacts:
     paths:
       - target/classes/
@@ -30,7 +25,7 @@ maven-compile:
 maven-test:
   stage: test
   script:
-    - ./mvnw verify -Dmaven.repo.local=$MAVEN_USER_HOME
+    - ./mvnw verify -Dmaven.repo.local=$MAVEN_USER_HOME -B
   artifacts:
     reports:
       junit: target/test-results/**/TEST-*.xml
@@ -42,7 +37,7 @@ maven-test:
 frontend-test:
   stage: test
   script:
-    - ./mvnw com.github.eirslett:frontend-maven-plugin:npm -Dfrontend.npm.arguments='test' -Dmaven.repo.local=$MAVEN_USER_HOME
+    - ./mvnw com.github.eirslett:frontend-maven-plugin:npm -Dfrontend.npm.arguments='test' -Dmaven.repo.local=$MAVEN_USER_HOME -B
   artifacts:
     reports:
       junit: target/test-results/TESTS-results-jest.xml
@@ -56,14 +51,14 @@ sonar-analyze:
     - maven-test
     - frontend-test
   script:
-    - ./mvnw compile -Dmaven.repo.local=$MAVEN_USER_HOME
-    - ./mvnw org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar -Dsonar.organization="Farue RWTH" -Dsonar.host.url=http://localhost:9001 -Dsonar.login=$SONAR_TOKEN -Dmaven.repo.local=$MAVEN_USER_HOME
+    - ./mvnw compile -Dmaven.repo.local=$MAVEN_USER_HOME -B
+    - ./mvnw org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar -Dsonar.organization="Farue RWTH" -Dsonar.host.url=http://localhost:9001 -Dsonar.login=$SONAR_TOKEN -Dmaven.repo.local=$MAVEN_USER_HOME -B
   allow_failure: true
 
 maven-package:
   stage: package
   script:
-    - ./mvnw verify -Pprod -DskipTests -Dmaven.repo.local=$MAVEN_USER_HOME
+    - ./mvnw verify -Pprod -DskipTests -Dmaven.repo.local=$MAVEN_USER_HOME -B
   artifacts:
     paths:
       - target/*.jar
