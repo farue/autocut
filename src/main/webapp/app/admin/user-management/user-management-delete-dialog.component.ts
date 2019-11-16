@@ -1,9 +1,9 @@
-import {Component} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {JhiEventManager} from 'ng-jhipster';
+import { Component } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { JhiEventManager } from 'ng-jhipster';
 
-import {User} from 'app/core/user/user.model';
-import {UserService} from 'app/core/user/user.service';
+import { User } from 'app/core/user/user.model';
+import { UserService } from 'app/core/user/user.service';
 
 @Component({
   selector: 'jhi-user-mgmt-delete-dialog',
@@ -19,7 +19,7 @@ export class UserManagementDeleteDialogComponent {
   }
 
   confirmDelete(login) {
-    this.userService.delete(login).subscribe(response => {
+    this.userService.delete(login).subscribe(() => {
       this.eventManager.broadcast({ name: 'userListModification', content: 'Deleted a user' });
       this.activeModal.close(true);
     });

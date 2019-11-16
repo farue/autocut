@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
-import {JhiLanguageHelper} from 'app/core/language/language.helper';
-import {User} from 'app/core/user/user.model';
-import {UserService} from 'app/core/user/user.service';
+import { JhiLanguageHelper } from 'app/core/language/language.helper';
+import { User } from 'app/core/user/user.model';
+import { UserService } from 'app/core/user/user.service';
 
 @Component({
   selector: 'jhi-user-mgmt-update',
@@ -68,9 +68,9 @@ export class UserManagementUpdateComponent implements OnInit {
     this.isSaving = true;
     this.updateUser(this.user);
     if (this.user.id !== null) {
-      this.userService.update(this.user).subscribe(response => this.onSaveSuccess(response), () => this.onSaveError());
+      this.userService.update(this.user).subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
     } else {
-      this.userService.create(this.user).subscribe(response => this.onSaveSuccess(response), () => this.onSaveError());
+      this.userService.create(this.user).subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
     }
   }
 
@@ -84,7 +84,7 @@ export class UserManagementUpdateComponent implements OnInit {
     user.authorities = this.editForm.get(['authorities']).value;
   }
 
-  private onSaveSuccess(result) {
+  private onSaveSuccess() {
     this.isSaving = false;
     this.previousState();
   }

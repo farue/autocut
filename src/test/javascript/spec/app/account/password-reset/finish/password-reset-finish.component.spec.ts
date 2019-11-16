@@ -1,13 +1,12 @@
-import {ComponentFixture, fakeAsync, inject, TestBed, tick} from '@angular/core/testing';
-import {FormBuilder} from '@angular/forms';
-import {of, throwError} from 'rxjs';
-import {ElementRef, Renderer} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+import { of, throwError } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
-import {AutocutTestModule} from '../../../../test.module';
-import {PasswordResetFinishComponent} from 'app/account/password-reset/finish/password-reset-finish.component';
-import {PasswordResetFinishService} from 'app/account/password-reset/finish/password-reset-finish.service';
-import {MockActivatedRoute} from '../../../../helpers/mock-route.service';
+import { AutocutTestModule } from '../../../../test.module';
+import { PasswordResetFinishComponent } from 'app/account/password-reset/finish/password-reset-finish.component';
+import { PasswordResetFinishService } from 'app/account/password-reset/finish/password-reset-finish.service';
+import { MockActivatedRoute } from '../../../../helpers/mock-route.service';
 
 describe('Component Tests', () => {
   describe('PasswordResetFinishComponent', () => {
@@ -23,16 +22,6 @@ describe('Component Tests', () => {
           {
             provide: ActivatedRoute,
             useValue: new MockActivatedRoute({ key: 'XYZPDQ' })
-          },
-          {
-            provide: Renderer,
-            useValue: {
-              invokeElementMethod(renderElement: any, methodName: string, args?: any[]) {}
-            }
-          },
-          {
-            provide: ElementRef,
-            useValue: new ElementRef(null)
           }
         ]
       })
@@ -53,13 +42,12 @@ describe('Component Tests', () => {
       expect(comp.key).toEqual('XYZPDQ');
     });
 
-    it('sets focus after the view has been initialized', inject([ElementRef], (elementRef: ElementRef) => {
+    it('sets focus after the view has been initialized', () => {
       const element = fixture.nativeElement;
       const node = {
         focus() {}
       };
 
-      elementRef.nativeElement = element;
       spyOn(element, 'querySelector').and.returnValue(node);
       spyOn(node, 'focus');
 
@@ -67,7 +55,7 @@ describe('Component Tests', () => {
 
       expect(element.querySelector).toHaveBeenCalledWith('#password');
       expect(node.focus).toHaveBeenCalled();
-    }));
+    });
 
     it('should ensure the two passwords entered match', () => {
       comp.passwordForm.patchValue({

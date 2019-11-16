@@ -1,16 +1,16 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
-import {Subscription} from 'rxjs';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {ActivatedRoute, Router} from '@angular/router';
-import {JhiAlertService, JhiEventManager, JhiParseLinks} from 'ng-jhipster';
+import { ActivatedRoute, Router } from '@angular/router';
+import { JhiAlertService, JhiEventManager, JhiParseLinks } from 'ng-jhipster';
 
-import {ITEMS_PER_PAGE} from 'app/shared/constants/pagination.constants';
-import {AccountService} from 'app/core/auth/account.service';
-import {UserService} from 'app/core/user/user.service';
-import {User} from 'app/core/user/user.model';
-import {UserManagementDeleteDialogComponent} from './user-management-delete-dialog.component';
+import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
+import { AccountService } from 'app/core/auth/account.service';
+import { UserService } from 'app/core/user/user.service';
+import { User } from 'app/core/user/user.model';
+import { UserManagementDeleteDialogComponent } from './user-management-delete-dialog.component';
 
 @Component({
   selector: 'jhi-user-mgmt',
@@ -66,14 +66,14 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   }
 
   registerChangeInUsers() {
-    this.userListSubscription = this.eventManager.subscribe('userListModification', response => this.loadAll());
+    this.userListSubscription = this.eventManager.subscribe('userListModification', () => this.loadAll());
   }
 
   setActive(user, isActivated) {
     user.activated = isActivated;
 
     this.userService.update(user).subscribe(
-      response => {
+      () => {
         this.error = null;
         this.success = 'OK';
         this.loadAll();
