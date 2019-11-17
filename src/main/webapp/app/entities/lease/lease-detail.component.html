@@ -1,0 +1,43 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="lease">
+            <h2><span jhiTranslate="autocutApp.lease.detail.title">Lease</span> {{lease.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="autocutApp.lease.start">Start</span></dt>
+                <dd>
+                    <span>{{lease.start}}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.lease.end">End</span></dt>
+                <dd>
+                    <span>{{lease.end}}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.lease.account">Account</span></dt>
+                <dd>
+                    <div *ngIf="lease.account">
+                        <a [routerLink]="['/payment-account', lease.account?.id, 'view']">{{lease.account?.id}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.lease.apartment">Apartment</span></dt>
+                <dd>
+                    <div *ngIf="lease.apartment">
+                        <a [routerLink]="['/apartment', lease.apartment?.id, 'view']">{{lease.apartment?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/lease', lease.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

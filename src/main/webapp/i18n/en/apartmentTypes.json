@@ -1,0 +1,9 @@
+{
+  "autocutApp": {
+    "ApartmentTypes": {
+      "null": "",
+      "SHARED": "SHARED",
+      "SINGLE": "SINGLE"
+    }
+  }
+}

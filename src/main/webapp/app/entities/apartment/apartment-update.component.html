@@ -1,0 +1,68 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-apartment-heading" jhiTranslate="autocutApp.apartment.home.createOrEditLabel">Create or edit a Apartment</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!editForm.get('id').value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="autocutApp.apartment.apartmentNr" for="field_apartmentNr">Apartment Nr</label>
+                    <input type="text" class="form-control" name="apartmentNr" id="field_apartmentNr"
+                           formControlName="apartmentNr"/>
+                    <div *ngIf="editForm.get('apartmentNr').invalid && (editForm.get('apartmentNr').dirty || editForm.get('apartmentNr').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('apartmentNr').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="autocutApp.apartment.apartmentType" for="field_apartmentType">Apartment Type</label>
+                    <select class="form-control" name="apartmentType" formControlName="apartmentType" id="field_apartmentType">
+                        <option value="SHARED">{{'autocutApp.ApartmentTypes.SHARED' | translate}}</option>
+                        <option value="SINGLE">{{'autocutApp.ApartmentTypes.SINGLE' | translate}}</option>
+                    </select>
+                    <div *ngIf="editForm.get('apartmentType').invalid && (editForm.get('apartmentType').dirty || editForm.get('apartmentType').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('apartmentType').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="autocutApp.apartment.internetAccess" for="field_internetAccess">Internet Access</label>
+                    <select class="form-control" id="field_internetAccess" name="internetAccess" formControlName="internetAccess">
+                        <option *ngIf="!editForm.get('internetAccess').value" [ngValue]="null" selected></option>
+                        <option [ngValue]="internetAccessOption.id === editForm.get('internetAccess').value?.id ? editForm.get('internetAccess').value : internetAccessOption" *ngFor="let internetAccessOption of internetaccesses; trackBy: trackInternetAccessById">{{internetAccessOption.id}}</option>
+                    </select>
+                </div>
+                <div *ngIf="editForm.get('internetAccess').invalid && (editForm.get('internetAccess').dirty || editForm.get('internetAccess').touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('internetAccess').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="autocutApp.apartment.address" for="field_address">Address</label>
+                    <select class="form-control" id="field_address" name="address" formControlName="address">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="addressOption.id === editForm.get('address').value?.id ? editForm.get('address').value : addressOption" *ngFor="let addressOption of addresses; trackBy: trackAddressById">{{addressOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

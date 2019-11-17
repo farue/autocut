@@ -1,0 +1,54 @@
+{
+    "name": "Apartment",
+    "fields": [
+        {
+            "fieldName": "apartmentNr",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "apartmentType",
+            "fieldType": "ApartmentTypes",
+            "fieldValues": "SHARED,SINGLE",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "internetAccess",
+            "otherEntityRelationshipName": "apartment",
+            "relationshipValidateRules": "required",
+            "relationshipName": "internetAccess",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "lease",
+            "otherEntityRelationshipName": "apartment",
+            "relationshipName": "leases"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "address",
+            "otherEntityRelationshipName": "apartment",
+            "relationshipName": "address",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20191117011745",
+    "entityTableName": "apartment",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

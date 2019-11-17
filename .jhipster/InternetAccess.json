@@ -1,0 +1,55 @@
+{
+    "name": "InternetAccess",
+    "fields": [
+        {
+            "fieldName": "blocked",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "ip1",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "ip2",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "port",
+            "otherEntityRelationshipName": "internetAccess",
+            "relationshipValidateRules": "required",
+            "relationshipName": "port",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "apartment",
+            "otherEntityRelationshipName": "internetAccess",
+            "relationshipValidateRules": "required",
+            "relationshipName": "apartment",
+            "ownerSide": false
+        }
+    ],
+    "changelogDate": "20191117011748",
+    "entityTableName": "internet_access",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

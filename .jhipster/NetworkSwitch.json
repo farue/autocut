@@ -1,0 +1,31 @@
+{
+    "name": "NetworkSwitch",
+    "fields": [
+        {
+            "fieldName": "switchInterface",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "port",
+            "otherEntityRelationshipName": "networkSwitch",
+            "relationshipValidateRules": "required",
+            "relationshipName": "ports"
+        }
+    ],
+    "changelogDate": "20191117011750",
+    "entityTableName": "network_switch",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,24 @@
+{
+  "autocutApp": {
+    "tenantCommunication": {
+      "home": {
+        "title": "Tenant Communications",
+        "createLabel": "Create a new Tenant Communication",
+        "createOrEditLabel": "Create or edit a Tenant Communication",
+        "notFound": "No Tenant Communications found"
+      },
+      "created": "A new Tenant Communication is created with identifier {{ param }}",
+      "updated": "A Tenant Communication is updated with identifier {{ param }}",
+      "deleted": "A Tenant Communication is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Tenant Communication {{ id }}?"
+      },
+      "detail": {
+        "title": "Tenant Communication"
+      },
+      "text": "Text",
+      "date": "Date",
+      "tenant": "Tenant"
+    }
+  }
+}

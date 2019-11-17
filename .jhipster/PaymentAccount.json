@@ -1,0 +1,38 @@
+{
+    "name": "PaymentAccount",
+    "fields": [
+        {
+            "fieldName": "balance",
+            "fieldType": "BigDecimal",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "transaction",
+            "otherEntityRelationshipName": "paymentAccount",
+            "relationshipValidateRules": "required",
+            "relationshipName": "transactions"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "lease",
+            "otherEntityRelationshipName": "account",
+            "relationshipName": "lease",
+            "ownerSide": false
+        }
+    ],
+    "changelogDate": "20191117011751",
+    "entityTableName": "payment_account",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

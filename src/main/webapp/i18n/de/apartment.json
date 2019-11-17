@@ -1,0 +1,26 @@
+{
+  "autocutApp": {
+    "apartment": {
+      "home": {
+        "title": "Apartments",
+        "createLabel": "Apartment erstellen",
+        "createOrEditLabel": "Apartment erstellen oder bearbeiten",
+        "notFound": "No Apartments found"
+      },
+      "created": "Apartment erstellt mit ID {{ param }}",
+      "updated": "Apartment aktualisiert mit ID {{ param }}",
+      "deleted": "Apartment gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Apartment {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Apartment"
+      },
+      "apartmentNr": "Apartment Nr",
+      "apartmentType": "Apartment Type",
+      "internetAccess": "Internet Access",
+      "leases": "Leases",
+      "address": "Address"
+    }
+  }
+}

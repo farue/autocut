@@ -1,0 +1,11 @@
+id;text;date;tenant_id
+1;../fake-data/blob/hipster.txt;2019-11-16T21:20:21;1
+2;../fake-data/blob/hipster.txt;2019-11-17T00:39:44;2
+3;../fake-data/blob/hipster.txt;2019-11-16T15:25:30;3
+4;../fake-data/blob/hipster.txt;2019-11-16T16:15:36;4
+5;../fake-data/blob/hipster.txt;2019-11-16T06:37:58;5
+6;../fake-data/blob/hipster.txt;2019-11-16T05:50:31;6
+7;../fake-data/blob/hipster.txt;2019-11-16T13:45:59;7
+8;../fake-data/blob/hipster.txt;2019-11-16T01:36:02;8
+9;../fake-data/blob/hipster.txt;2019-11-16T01:38:54;9
+10;../fake-data/blob/hipster.txt;2019-11-16T21:41:06;10

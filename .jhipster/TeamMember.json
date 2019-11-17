@@ -1,0 +1,42 @@
+{
+    "name": "TeamMember",
+    "fields": [
+        {
+            "fieldName": "role",
+            "fieldType": "TeamRole",
+            "fieldValues": "SPOKESPERSON,DEPUTY,MEMBER"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "securityPolicy",
+            "otherEntityRelationshipName": "teamMember",
+            "relationshipName": "securityPolicies"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "team",
+            "otherEntityRelationshipName": "members",
+            "relationshipName": "team",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "tenant",
+            "otherEntityRelationshipName": "teamMemberships",
+            "relationshipName": "tenant",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20191117011743",
+    "entityTableName": "team_member",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

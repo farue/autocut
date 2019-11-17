@@ -1,0 +1,40 @@
+{
+    "name": "TenantCommunication",
+    "fields": [
+        {
+            "fieldName": "text",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "Instant",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "tenant",
+            "otherEntityRelationshipName": "messages",
+            "relationshipValidateRules": "required",
+            "relationshipName": "tenant",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20191117011753",
+    "entityTableName": "tenant_communication",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

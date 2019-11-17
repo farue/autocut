@@ -1,0 +1,61 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="transaction">
+            <h2><span jhiTranslate="autocutApp.transaction.detail.title">Transaction</span> {{transaction.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="autocutApp.transaction.kind">Kind</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'autocutApp.TransactionKind.' + transaction.kind}}">{{transaction.kind}}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.transaction.bookingDate">Booking Date</span></dt>
+                <dd>
+                    <span>{{transaction.bookingDate}}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.transaction.valueDate">Value Date</span></dt>
+                <dd>
+                    <span>{{transaction.valueDate}}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.transaction.details">Details</span></dt>
+                <dd>
+                    <span>{{transaction.details}}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.transaction.issuer">Issuer</span></dt>
+                <dd>
+                    <span>{{transaction.issuer}}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.transaction.recipient">Recipient</span></dt>
+                <dd>
+                    <span>{{transaction.recipient}}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.transaction.amount">Amount</span></dt>
+                <dd>
+                    <span>{{transaction.amount}}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.transaction.balance">Balance</span></dt>
+                <dd>
+                    <span>{{transaction.balance}}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.transaction.paymentAccount">Payment Account</span></dt>
+                <dd>
+                    <div *ngIf="transaction.paymentAccount">
+                        <a [routerLink]="['/payment-account', transaction.paymentAccount?.id, 'view']">{{transaction.paymentAccount?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/transaction', transaction.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

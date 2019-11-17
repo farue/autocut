@@ -1,0 +1,24 @@
+{
+  "autocutApp": {
+    "paymentAccount": {
+      "home": {
+        "title": "Payment Accounts",
+        "createLabel": "Payment Account erstellen",
+        "createOrEditLabel": "Payment Account erstellen oder bearbeiten",
+        "notFound": "No Payment Accounts found"
+      },
+      "created": "Payment Account erstellt mit ID {{ param }}",
+      "updated": "Payment Account aktualisiert mit ID {{ param }}",
+      "deleted": "Payment Account gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Payment Account {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Payment Account"
+      },
+      "balance": "Balance",
+      "transactions": "Transactions",
+      "lease": "Lease"
+    }
+  }
+}

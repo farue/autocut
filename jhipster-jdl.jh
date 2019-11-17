@@ -1,0 +1,155 @@
+@service(serviceClass)
+entity Tenant {
+	firstName String required
+    lastName String required
+    email String required
+}
+
+entity Team {
+	name String required
+}
+
+entity TeamMember {
+	role TeamRole
+}
+
+enum TeamRole {
+	SPOKESPERSON,
+    DEPUTY,
+    MEMBER
+}
+
+entity Lease {
+	start Instant required
+    end Instant
+}
+
+entity Apartment {
+	apartmentNr String required
+    apartmentType ApartmentTypes required
+}
+
+enum ApartmentTypes {
+    SHARED,
+    SINGLE
+}
+
+entity Address {
+	street String required
+	streetNumber String required
+    zip String required pattern(/^\d{5}$/)
+    city String required
+    country String required
+}
+
+entity SecurityPolicy {
+	protectionUnit ProtectionUnits required
+    access Access required
+}
+
+enum Access {
+	READ_ALLOW,
+    READ_WRITE_ALLOW,
+    WRITE_DENY,
+    READ_WRITE_DENY
+}
+
+enum ProtectionUnits {
+	BANK_TRANSACTIONS,
+    TENANT_MANAGEMENT,
+    INTERNET_ACCESS_MANAGEMENT,
+    TOOLS_MANAGEMENT,
+    WASHING_SYSTEM_MANAGEMENT
+}
+
+relationship OneToOne {
+	// Each tenant should have a user profile
+    // Not every user belongs to a tenant, e.g. admin user
+	Tenant{user} to User
+}
+
+relationship OneToMany {
+	Team{members} to TeamMember{team}
+    Tenant{teamMemberships} to TeamMember{tenant}
+    Lease{tenants} to Tenant{lease}
+    Apartment{leases} to Lease{apartment}
+}
+
+relationship ManyToOne {
+	Apartment{address} to Address
+}
+
+relationship OneToMany {
+	TeamMember{securityPolicies} to SecurityPolicy
+}
+
+// Internet Access
+
+@service(serviceClass)
+entity InternetAccess {
+	blocked Boolean required
+    ip1 String required
+    ip2 String required
+}
+
+entity Port {
+	number Integer required min(1)
+}
+
+entity NetworkSwitch {
+	switchInterface String required
+}
+
+relationship OneToOne {
+	Apartment{internetAccess required} to InternetAccess{apartment required}
+    InternetAccess{port required} to Port{internetAccess required}
+}
+
+relationship OneToMany {
+	NetworkSwitch{ports required} to Port{networkSwitch required}
+}
+
+// Transactions
+
+@service(serviceClass)
+entity PaymentAccount {
+	balance BigDecimal required
+}
+
+entity Transaction {
+	kind TransactionKind required
+	bookingDate Instant required
+    valueDate Instant required
+    details String
+    issuer String required
+    recipient String
+    amount BigDecimal required
+    balance BigDecimal required
+}
+
+enum TransactionKind {
+	FEE,
+    CREDIT,
+    DEBIT,
+    TRANSFER
+}
+
+relationship OneToOne {
+	Lease{account required} to PaymentAccount{lease}
+}
+
+relationship OneToMany {
+	PaymentAccount{transactions required} to Transaction
+}
+
+// Communication
+
+entity TenantCommunication {
+	text TextBlob required
+    date Instant required
+}
+
+relationship OneToMany {
+	Tenant{messages} to TenantCommunication{tenant required}
+}
+

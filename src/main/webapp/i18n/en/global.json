@@ -15,6 +15,19 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entities",
+        "tenant": "Tenant",
+        "team": "Team",
+        "teamMember": "Team Member",
+        "lease": "Lease",
+        "apartment": "Apartment",
+        "address": "Address",
+        "securityPolicy": "Security Policy",
+        "internetAccess": "Internet Access",
+        "port": "Port",
+        "networkSwitch": "Network Switch",
+        "paymentAccount": "Payment Account",
+        "transaction": "Transaction",
+        "tenantCommunication": "Tenant Communication",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

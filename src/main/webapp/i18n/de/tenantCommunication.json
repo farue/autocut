@@ -1,0 +1,24 @@
+{
+  "autocutApp": {
+    "tenantCommunication": {
+      "home": {
+        "title": "Tenant Communications",
+        "createLabel": "Tenant Communication erstellen",
+        "createOrEditLabel": "Tenant Communication erstellen oder bearbeiten",
+        "notFound": "No Tenant Communications found"
+      },
+      "created": "Tenant Communication erstellt mit ID {{ param }}",
+      "updated": "Tenant Communication aktualisiert mit ID {{ param }}",
+      "deleted": "Tenant Communication gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Tenant Communication {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Tenant Communication"
+      },
+      "text": "Text",
+      "date": "Date",
+      "tenant": "Tenant"
+    }
+  }
+}

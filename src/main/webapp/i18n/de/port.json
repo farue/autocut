@@ -1,0 +1,24 @@
+{
+  "autocutApp": {
+    "port": {
+      "home": {
+        "title": "Ports",
+        "createLabel": "Port erstellen",
+        "createOrEditLabel": "Port erstellen oder bearbeiten",
+        "notFound": "No Ports found"
+      },
+      "created": "Port erstellt mit ID {{ param }}",
+      "updated": "Port aktualisiert mit ID {{ param }}",
+      "deleted": "Port gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Port {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Port"
+      },
+      "number": "Number",
+      "internetAccess": "Internet Access",
+      "networkSwitch": "Network Switch"
+    }
+  }
+}
