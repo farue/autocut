@@ -2,22 +2,22 @@
   "autocutApp": {
     "team": {
       "home": {
-        "title": "Teams",
-        "createLabel": "Team erstellen",
-        "createOrEditLabel": "Team erstellen oder bearbeiten",
-        "notFound": "No Teams found"
+        "title": "AGs",
+        "createLabel": "AG erstellen",
+        "createOrEditLabel": "AG erstellen oder bearbeiten",
+        "notFound": "Keine AGs gefunden"
       },
-      "created": "Team erstellt mit ID {{ param }}",
-      "updated": "Team aktualisiert mit ID {{ param }}",
-      "deleted": "Team gelöscht mit ID {{ param }}",
+      "created": "AG erstellt mit ID {{ param }}",
+      "updated": "AG aktualisiert mit ID {{ param }}",
+      "deleted": "AG gelöscht mit ID {{ param }}",
       "delete": {
-        "question": "Soll Team {{ id }} wirklich dauerhaft gelöscht werden?"
+        "question": "Soll AG {{ id }} wirklich dauerhaft gelöscht werden?"
       },
       "detail": {
-        "title": "Team"
+        "title": "AG"
       },
       "name": "Name",
-      "members": "Members"
+      "members": "Mitglieder"
     }
   }
 }

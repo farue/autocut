@@ -5,7 +5,7 @@
         "title": "Ports",
         "createLabel": "Port erstellen",
         "createOrEditLabel": "Port erstellen oder bearbeiten",
-        "notFound": "No Ports found"
+        "notFound": "Keine Ports gefunden"
       },
       "created": "Port erstellt mit ID {{ param }}",
       "updated": "Port aktualisiert mit ID {{ param }}",
@@ -16,9 +16,9 @@
       "detail": {
         "title": "Port"
       },
-      "number": "Number",
-      "internetAccess": "Internet Access",
-      "networkSwitch": "Network Switch"
+      "number": "Nummer",
+      "internetAccess": "Internetzugang",
+      "networkSwitch": "Switch"
     }
   }
 }

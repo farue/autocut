@@ -2,10 +2,10 @@
   "autocutApp": {
     "TransactionKind": {
       "null": "",
-      "FEE": "FEE",
-      "CREDIT": "CREDIT",
-      "DEBIT": "DEBIT",
-      "TRANSFER": "TRANSFER"
+      "FEE": "Fee",
+      "CREDIT": "Credit",
+      "DEBIT": "Debit",
+      "TRANSFER": "Transfer"
     }
   }
 }

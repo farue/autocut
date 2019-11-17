@@ -2,11 +2,11 @@
   "autocutApp": {
     "ProtectionUnits": {
       "null": "",
-      "BANK_TRANSACTIONS": "BANK_TRANSACTIONS",
-      "TENANT_MANAGEMENT": "TENANT_MANAGEMENT",
-      "INTERNET_ACCESS_MANAGEMENT": "INTERNET_ACCESS_MANAGEMENT",
-      "TOOLS_MANAGEMENT": "TOOLS_MANAGEMENT",
-      "WASHING_SYSTEM_MANAGEMENT": "WASHING_SYSTEM_MANAGEMENT"
+      "BANK_TRANSACTIONS": "Bank Transactions",
+      "TENANT_MANAGEMENT": "Tenant Management",
+      "INTERNET_ACCESS_MANAGEMENT": "Internet Access Management",
+      "TOOLS_MANAGEMENT": "Tools Management",
+      "WASHING_SYSTEM_MANAGEMENT": "Washing System Management"
     }
   }
 }

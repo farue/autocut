@@ -2,21 +2,21 @@
   "autocutApp": {
     "networkSwitch": {
       "home": {
-        "title": "Network Switches",
-        "createLabel": "Network Switch erstellen",
-        "createOrEditLabel": "Network Switch erstellen oder bearbeiten",
-        "notFound": "No Network Switches found"
+        "title": "Switches",
+        "createLabel": "Switch erstellen",
+        "createOrEditLabel": "Switch erstellen oder bearbeiten",
+        "notFound": "Kein Switches gefunden"
       },
-      "created": "Network Switch erstellt mit ID {{ param }}",
-      "updated": "Network Switch aktualisiert mit ID {{ param }}",
-      "deleted": "Network Switch gelöscht mit ID {{ param }}",
+      "created": "Switch erstellt mit ID {{ param }}",
+      "updated": "Switch aktualisiert mit ID {{ param }}",
+      "deleted": "Switch gelöscht mit ID {{ param }}",
       "delete": {
-        "question": "Soll Network Switch {{ id }} wirklich dauerhaft gelöscht werden?"
+        "question": "Soll Switch {{ id }} wirklich dauerhaft gelöscht werden?"
       },
       "detail": {
-        "title": "Network Switch"
+        "title": "Switch"
       },
-      "switchInterface": "Switch Interface",
+      "switchInterface": "Interface",
       "ports": "Ports"
     }
   }

@@ -2,23 +2,23 @@
   "autocutApp": {
     "paymentAccount": {
       "home": {
-        "title": "Payment Accounts",
-        "createLabel": "Payment Account erstellen",
-        "createOrEditLabel": "Payment Account erstellen oder bearbeiten",
-        "notFound": "No Payment Accounts found"
+        "title": "Zahlungsaccounts",
+        "createLabel": "Zahlungsaccount erstellen",
+        "createOrEditLabel": "Zahlungsaccount erstellen oder bearbeiten",
+        "notFound": "Keine Zahlungsaccounts gefunden"
       },
-      "created": "Payment Account erstellt mit ID {{ param }}",
-      "updated": "Payment Account aktualisiert mit ID {{ param }}",
-      "deleted": "Payment Account gelöscht mit ID {{ param }}",
+      "created": "Zahlungsaccount erstellt mit ID {{ param }}",
+      "updated": "Zahlungsaccount aktualisiert mit ID {{ param }}",
+      "deleted": "Zahlungsaccount gelöscht mit ID {{ param }}",
       "delete": {
-        "question": "Soll Payment Account {{ id }} wirklich dauerhaft gelöscht werden?"
+        "question": "Soll Zahlungsaccount {{ id }} wirklich dauerhaft gelöscht werden?"
       },
       "detail": {
-        "title": "Payment Account"
+        "title": "Zahlungsaccount"
       },
-      "balance": "Balance",
-      "transactions": "Transactions",
-      "lease": "Lease"
+      "balance": "Saldo",
+      "transactions": "Überweisungen",
+      "lease": "Mietvertrag"
     }
   }
 }

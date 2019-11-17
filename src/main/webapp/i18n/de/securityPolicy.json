@@ -2,23 +2,23 @@
   "autocutApp": {
     "securityPolicy": {
       "home": {
-        "title": "Security Policies",
-        "createLabel": "Security Policy erstellen",
-        "createOrEditLabel": "Security Policy erstellen oder bearbeiten",
-        "notFound": "No Security Policies found"
+        "title": "Sicherheitsrichtlinien",
+        "createLabel": "Sicherheitsrichtlinie erstellen",
+        "createOrEditLabel": "Sicherheitsrichtlinie erstellen oder bearbeiten",
+        "notFound": "Keine Sicherheitsrichtlinien gefunden"
       },
-      "created": "Security Policy erstellt mit ID {{ param }}",
-      "updated": "Security Policy aktualisiert mit ID {{ param }}",
-      "deleted": "Security Policy gelöscht mit ID {{ param }}",
+      "created": "Sicherheitsrichtlinie erstellt mit ID {{ param }}",
+      "updated": "Sicherheitsrichtlinie aktualisiert mit ID {{ param }}",
+      "deleted": "Sicherheitsrichtlinie gelöscht mit ID {{ param }}",
       "delete": {
-        "question": "Soll Security Policy {{ id }} wirklich dauerhaft gelöscht werden?"
+        "question": "Soll Sicherheitsrichtlinie {{ id }} wirklich dauerhaft gelöscht werden?"
       },
       "detail": {
-        "title": "Security Policy"
+        "title": "Sicherheitsrichtlinie"
       },
-      "protectionUnit": "Protection Unit",
-      "access": "Access",
-      "teamMember": "Team Member"
+      "protectionUnit": "Geschützter Bereich",
+      "access": "Zugang",
+      "teamMember": "AG Mitglied"
     }
   }
 }

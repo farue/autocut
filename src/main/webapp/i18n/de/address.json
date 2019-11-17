@@ -2,25 +2,25 @@
   "autocutApp": {
     "address": {
       "home": {
-        "title": "Addresses",
-        "createLabel": "Address erstellen",
-        "createOrEditLabel": "Address erstellen oder bearbeiten",
-        "notFound": "No Addresses found"
+        "title": "Adressen",
+        "createLabel": "Adresse erstellen",
+        "createOrEditLabel": "Adresse erstellen oder bearbeiten",
+        "notFound": "Keine Adressen gefunden"
       },
-      "created": "Address erstellt mit ID {{ param }}",
-      "updated": "Address aktualisiert mit ID {{ param }}",
-      "deleted": "Address gelöscht mit ID {{ param }}",
+      "created": "Adresse erstellt mit ID {{ param }}",
+      "updated": "Adresse aktualisiert mit ID {{ param }}",
+      "deleted": "Adresse gelöscht mit ID {{ param }}",
       "delete": {
-        "question": "Soll Address {{ id }} wirklich dauerhaft gelöscht werden?"
+        "question": "Soll Adresse {{ id }} wirklich dauerhaft gelöscht werden?"
       },
       "detail": {
-        "title": "Address"
+        "title": "Adresse"
       },
-      "street": "Street",
-      "streetNumber": "Street Number",
-      "zip": "Zip",
-      "city": "City",
-      "country": "Country"
+      "street": "Straße",
+      "streetNumber": "Hausnummer",
+      "zip": "PLZ",
+      "city": "Stadt",
+      "country": "Land"
     }
   }
 }

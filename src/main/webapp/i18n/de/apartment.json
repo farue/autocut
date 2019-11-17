@@ -2,25 +2,25 @@
   "autocutApp": {
     "apartment": {
       "home": {
-        "title": "Apartments",
-        "createLabel": "Apartment erstellen",
-        "createOrEditLabel": "Apartment erstellen oder bearbeiten",
-        "notFound": "No Apartments found"
+        "title": "Wohnungen",
+        "createLabel": "Wohnung erstellen",
+        "createOrEditLabel": "Wohnung erstellen oder bearbeiten",
+        "notFound": "Keine Wohnungen gefunden"
       },
-      "created": "Apartment erstellt mit ID {{ param }}",
-      "updated": "Apartment aktualisiert mit ID {{ param }}",
-      "deleted": "Apartment gelöscht mit ID {{ param }}",
+      "created": "Wohnung erstellt mit ID {{ param }}",
+      "updated": "Wohnung aktualisiert mit ID {{ param }}",
+      "deleted": "Wohnung gelöscht mit ID {{ param }}",
       "delete": {
-        "question": "Soll Apartment {{ id }} wirklich dauerhaft gelöscht werden?"
+        "question": "Soll Wohnung {{ id }} wirklich dauerhaft gelöscht werden?"
       },
       "detail": {
-        "title": "Apartment"
+        "title": "Wohnung"
       },
-      "apartmentNr": "Apartment Nr",
-      "apartmentType": "Apartment Type",
-      "internetAccess": "Internet Access",
-      "leases": "Leases",
-      "address": "Address"
+      "apartmentNr": "Wohnung Nr",
+      "apartmentType": "Wohnung Typ",
+      "internetAccess": "Internetzugang",
+      "leases": "Mietverträge",
+      "address": "Adresse"
     }
   }
 }
