@@ -64,10 +64,16 @@ spring:
   liquibase:
     contexts: prod
   mail:
-    host: localhost
-    port: 25
-    username:
-    password:
+    host: mail.rwth-aachen.de
+    port: 587
+    username: fkt_net@farue.rwth-aachen.de
+    password: q4a9Nxsw
+    protocol: smtp
+    tls: true
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+      ssl.trust: mail.rwth-aachen.de
   thymeleaf:
     cache: true
 
