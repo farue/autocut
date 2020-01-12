@@ -36,8 +36,6 @@
     "enableTranslation": true,
     "nativeLanguage": "en",
     "languages": ["en", "de"],
-    "herokuAppName": "autocut",
-    "herokuDeployType": "git",
     "embeddableLaunchScript": false,
     "blueprints": [],
     "creationTimestamp": 1578829876752
