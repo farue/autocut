@@ -3,6 +3,10 @@ entity Tenant {
 	firstName String required
     lastName String required
     email String required
+    createdBy String required
+    createdDate Instant required
+    lastModifiedBy String
+    lastModifiedDate Instant
 }
 
 entity Team {
@@ -20,15 +24,23 @@ enum TeamRole {
 }
 
 entity Lease {
+	nr String required // number given by StW, e.g. 30-41
 	start Instant required
     end Instant
+    createdBy String required
+    createdDate Instant required
+    lastModifiedBy String
+    lastModifiedDate Instant
 }
 
 entity Apartment {
 	apartmentNr String required
     apartmentType ApartmentTypes required
+    maxNumberOfLeases Integer required min(0)
 }
 
+// We can get this from maxNumberOfLeases
+// -> does not need to be persisted
 enum ApartmentTypes {
     SHARED,
     SINGLE
@@ -69,7 +81,7 @@ relationship OneToOne {
 }
 
 relationship OneToMany {
-	Team{members} to TeamMember{team}
+	Team{members required} to TeamMember{team required}
     Tenant{teamMemberships} to TeamMember{tenant}
     Lease{tenants} to Tenant{lease}
     Apartment{leases} to Lease{apartment}
@@ -80,7 +92,8 @@ relationship ManyToOne {
 }
 
 relationship OneToMany {
-	TeamMember{securityPolicies} to SecurityPolicy
+	TeamMember{securityPolicies} to SecurityPolicy{teamMember}
+    Tenant{securityPolicies} to SecurityPolicy{tenant}
 }
 
 // Internet Access
@@ -116,6 +129,14 @@ entity PaymentAccount {
 	balance BigDecimal required
 }
 
+entity PaymentEntry {
+	balanceBefore BigDecimal required
+    balanceAfter BigDecimal required
+    payment BigDecimal required
+    date Instant required
+    description String
+}
+
 entity Transaction {
 	kind TransactionKind required
 	bookingDate Instant required
@@ -136,10 +157,27 @@ enum TransactionKind {
 
 relationship OneToOne {
 	Lease{account required} to PaymentAccount{lease}
+    PaymentEntry{transaction} to Transaction
 }
 
 relationship OneToMany {
-	PaymentAccount{transactions required} to Transaction
+	PaymentAccount{paymentEntries required} to PaymentEntry{account required}
+}
+
+// Activities
+
+entity Activity {
+	semester String required
+    date Instant
+    description String required
+    // whether or not the tenant should get a discount next semester
+    discount Boolean required
+    // whether or not this activity is sent to StW
+    stwActivity Boolean required
+}
+
+relationship OneToMany {
+	 Tenant{activties} to Activity{tenant}
 }
 
 // Communication
