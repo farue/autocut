@@ -1,11 +1,16 @@
+${AnsiColor.WHITE}█████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  ${AnsiColor.BLUE}██████ ██████╗   ${AnsiColor.BRIGHT_BLUE} ██████╗ ██╗   ██ ██████╗
-  ${AnsiColor.BLUE}██╔═══   ██╔═══██║   ${AnsiColor.BRIGHT_BLUE} ██╔══██║ ██║   ╚══ ╚════════╝
-  ${AnsiColor.BLUE}█████  ████████║ ${AnsiColor.BRIGHT_BLUE} █████╔╝  ██║   ██ ████╗
-  ${AnsiColor.BLUE}██╔═══   ██╔════██║  ${AnsiColor.BRIGHT_BLUE} ██╔══██║  ██║   ╚══ ╚═════╝
-  ${AnsiColor.BLUE}██║      ██║    ██║  ${AnsiColor.BRIGHT_BLUE} ██║    ██  ██████  ██████╗
-  ${AnsiColor.BLUE}╚══╝      ╚══╝    ╚══╝   ${AnsiColor.BRIGHT_BLUE} ╚══╝    ╚══╝ ╚════════╝ ╚════════╝
+${AnsiColor.BLUE}███████╗ █████╗ ${AnsiColor.BRIGHT_BLUE}██████╗ ██╗   ██╗███████╗
+${AnsiColor.BLUE}██╔════╝██╔══██╗${AnsiColor.BRIGHT_BLUE}██╔══██╗██║   ██║██╔════╝
+${AnsiColor.BLUE}█████╗  ███████║${AnsiColor.BRIGHT_BLUE}██████╔╝██║   ██║█████╗
+${AnsiColor.BLUE}██╔══╝  ██╔══██║${AnsiColor.BRIGHT_BLUE}██╔══██╗██║   ██║██╔══╝
+${AnsiColor.BLUE}██║     ██║  ██║${AnsiColor.BRIGHT_BLUE}██║  ██║╚██████╔╝███████╗
+${AnsiColor.BLUE}╚═╝     ╚═╝  ╚═╝${AnsiColor.BRIGHT_BLUE}╚═╝  ╚═╝ ╚═════╝ ╚══════╝
 
 ${AnsiColor.BRIGHT_BLUE}:: Familienwohnheim Ruetscher Strasse ::
 :: https://www.farue.rwth-aachen.de ::
-${AnsiColor.RED}:: Running Spring Boot ${spring-boot.version} ::${AnsiColor.DEFAULT}
+
+${AnsiColor.WHITE}Generated with ${AnsiColor.RED}♥${AnsiColor.WHITE} by ${AnsiColor.GREEN}J${AnsiColor.RED}Hipster
+
+${AnsiColor.WHITE}█████████████████████████████████████████████████████████████████████████████████████████████████████
+${AnsiColor.RED}:: JHipster 🤓  :: Running Spring Boot ${spring-boot.version} ::${AnsiColor.DEFAULT}
