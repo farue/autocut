@@ -50,7 +50,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  onImageClicked($event: any) {
+  onImageClicked($event: any): void {
     this._lightbox.open(this.images, $event.index);
   }
 }

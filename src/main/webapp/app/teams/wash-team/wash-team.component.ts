@@ -12,5 +12,5 @@ export class WashTeamComponent implements OnInit {
     this.message = 'WashTeamComponent message';
   }
 
-  ngOnInit() {}
+  ngOnInit(): void {}
 }

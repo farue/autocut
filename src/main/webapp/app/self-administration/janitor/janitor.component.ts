@@ -12,5 +12,5 @@ export class JanitorComponent implements OnInit {
     this.message = 'JanitorComponent message';
   }
 
-  ngOnInit() {}
+  ngOnInit(): void {}
 }

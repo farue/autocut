@@ -12,5 +12,5 @@ export class ToolsTeamComponent implements OnInit {
     this.message = 'ToolsTeamComponent message';
   }
 
-  ngOnInit() {}
+  ngOnInit(): void {}
 }

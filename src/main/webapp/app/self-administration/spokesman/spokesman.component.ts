@@ -12,5 +12,5 @@ export class SpokesmanComponent implements OnInit {
     this.message = 'SpokesmanComponent message';
   }
 
-  ngOnInit() {}
+  ngOnInit(): void {}
 }

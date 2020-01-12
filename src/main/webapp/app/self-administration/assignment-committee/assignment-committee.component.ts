@@ -12,5 +12,5 @@ export class AssignmentCommitteeComponent implements OnInit {
     this.message = 'AssignmentCommitteeComponent message';
   }
 
-  ngOnInit() {}
+  ngOnInit(): void {}
 }

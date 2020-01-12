@@ -12,5 +12,5 @@ export class TeamsComponent implements OnInit {
     this.message = 'TeamsComponent message';
   }
 
-  ngOnInit() {}
+  ngOnInit(): void {}
 }

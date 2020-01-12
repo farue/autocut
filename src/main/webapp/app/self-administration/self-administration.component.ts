@@ -12,5 +12,5 @@ export class SelfAdministrationComponent implements OnInit {
     this.message = 'SelfAdministrationComponent message';
   }
 
-  ngOnInit() {}
+  ngOnInit(): void {}
 }
