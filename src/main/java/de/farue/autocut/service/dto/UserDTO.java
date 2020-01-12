@@ -5,9 +5,6 @@ import de.farue.autocut.config.Constants;
 import de.farue.autocut.domain.Authority;
 import de.farue.autocut.domain.User;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-
 import javax.validation.constraints.*;
 import java.time.Instant;
 import java.util.Set;

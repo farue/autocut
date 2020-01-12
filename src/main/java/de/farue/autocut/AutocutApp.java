@@ -1,8 +1,8 @@
 package de.farue.autocut;
 
 import de.farue.autocut.config.ApplicationProperties;
-import de.farue.autocut.config.DefaultProfileUtil;
 
+import io.github.jhipster.config.DefaultProfileUtil;
 import io.github.jhipster.config.JHipsterConstants;
 
 import org.apache.commons.lang3.StringUtils;

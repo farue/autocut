@@ -5,7 +5,8 @@ import de.farue.autocut.config.Constants;
 import de.farue.autocut.domain.User;
 import de.farue.autocut.repository.UserRepository;
 import de.farue.autocut.service.dto.UserDTO;
-import de.farue.autocut.service.util.RandomUtil;
+
+import io.github.jhipster.security.RandomUtil;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
