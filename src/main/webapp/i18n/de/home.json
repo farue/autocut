@@ -13,6 +13,10 @@
       "follow": "kontaktieren Sie uns mit @jhipster auf Twitter"
     },
     "like": "Wenn Sie JHipster mögen, vergessen Sie nicht uns einen Stern zu geben auf",
-    "github": "GitHub"
+    "github": "GitHub",
+    "message": {
+      "development": "Die Website befindet sich im Aufbau.",
+      "oldwebsite": "Folge diesem Link zur alten Website:"
+    }
   }
 }

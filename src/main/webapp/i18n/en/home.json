@@ -13,6 +13,10 @@
       "follow": "follow @jhipster on Twitter"
     },
     "like": "If you like JHipster, don't forget to give us a star on",
-    "github": "GitHub"
+    "github": "GitHub",
+    "message": {
+      "development": "This website is under active development.",
+      "oldwebsite": "Follow this link to the old website:"
+    }
   }
 }
