@@ -16,6 +16,7 @@
       "detail": {
         "title": "Mietvertrag"
       },
+      "nr": "Nr",
       "start": "Einzug",
       "end": "Auszug",
       "account": "Zahlungsaccount",

@@ -16,8 +16,13 @@
       "detail": {
         "title": "Lease"
       },
+      "nr": "Nr",
       "start": "Start",
       "end": "End",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date",
       "account": "Account",
       "tenants": "Tenants",
       "apartment": "Apartment"

@@ -2,10 +2,10 @@ package de.farue.autocut.web.rest;
 
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.PaymentAccount;
-import de.farue.autocut.domain.Transaction;
 import de.farue.autocut.repository.PaymentAccountRepository;
 import de.farue.autocut.service.PaymentAccountService;
 import de.farue.autocut.web.rest.errors.ExceptionTranslator;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -84,16 +84,6 @@ public class PaymentAccountResourceIT {
     public static PaymentAccount createEntity(EntityManager em) {
         PaymentAccount paymentAccount = new PaymentAccount()
             .balance(DEFAULT_BALANCE);
-        // Add required entity
-        Transaction transaction;
-        if (TestUtil.findAll(em, Transaction.class).isEmpty()) {
-            transaction = TransactionResourceIT.createEntity(em);
-            em.persist(transaction);
-            em.flush();
-        } else {
-            transaction = TestUtil.findAll(em, Transaction.class).get(0);
-        }
-        paymentAccount.getTransactions().add(transaction);
         return paymentAccount;
     }
     /**
@@ -105,16 +95,6 @@ public class PaymentAccountResourceIT {
     public static PaymentAccount createUpdatedEntity(EntityManager em) {
         PaymentAccount paymentAccount = new PaymentAccount()
             .balance(UPDATED_BALANCE);
-        // Add required entity
-        Transaction transaction;
-        if (TestUtil.findAll(em, Transaction.class).isEmpty()) {
-            transaction = TransactionResourceIT.createUpdatedEntity(em);
-            em.persist(transaction);
-            em.flush();
-        } else {
-            transaction = TestUtil.findAll(em, Transaction.class).get(0);
-        }
-        paymentAccount.getTransactions().add(transaction);
         return paymentAccount;
     }
 
@@ -192,7 +172,7 @@ public class PaymentAccountResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(paymentAccount.getId().intValue())))
             .andExpect(jsonPath("$.[*].balance").value(hasItem(DEFAULT_BALANCE.intValue())));
     }
-
+    
     @Test
     @Transactional
     public void getPaymentAccount() throws Exception {

@@ -27,7 +27,6 @@
             <th scope="col" ><span jhiTranslate="autocutApp.transaction.recipient">Recipient</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.transaction.amount">Amount</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.transaction.balance">Balance</span></th>
-            <th scope="col" ><span jhiTranslate="autocutApp.transaction.paymentAccount">Payment Account</span></th>
             <th scope="col"></th>
             </tr>
             </thead>
@@ -42,11 +41,6 @@
                 <td>{{transaction.recipient}}</td>
                 <td>{{transaction.amount}}</td>
                 <td>{{transaction.balance}}</td>
-                <td>
-                    <div *ngIf="transaction.paymentAccount">
-                        <a [routerLink]="['/payment-account', transaction.paymentAccount?.id, 'view' ]" >{{transaction.paymentAccount?.id}}</a>
-                    </div>
-                </td>
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"
@@ -61,10 +55,7 @@
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
-                        <button type="submit"
-                                [routerLink]="['/transaction', { outlets: { popup: transaction.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
+                        <button type="submit" (click)="delete(transaction)"
                                 class="btn btn-danger btn-sm">
                             <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>

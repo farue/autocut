@@ -23,8 +23,7 @@
       "issuer": "Issuer",
       "recipient": "Recipient",
       "amount": "Amount",
-      "balance": "Balance",
-      "paymentAccount": "Payment Account"
+      "balance": "Balance"
     }
   }
 }

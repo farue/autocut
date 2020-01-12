@@ -18,6 +18,7 @@
       },
       "apartmentNr": "Apartment Nr",
       "apartmentType": "Apartment Type",
+      "maxNumberOfLeases": "Max. Number Of Leases",
       "internetAccess": "Internet Access",
       "leases": "Leases",
       "address": "Address"

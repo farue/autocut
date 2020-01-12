@@ -18,6 +18,7 @@
             "relationshipType": "many-to-one",
             "otherEntityName": "team",
             "otherEntityRelationshipName": "members",
+            "relationshipValidateRules": "required",
             "relationshipName": "team",
             "otherEntityField": "id"
         },

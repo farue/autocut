@@ -1,6 +1,6 @@
-import { getTestBed, TestBed } from '@angular/core/testing';
+import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { map, take } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
 import { TeamMemberService } from 'app/entities/team-member/team-member.service';
 import { ITeamMember, TeamMember } from 'app/shared/model/team-member.model';
 import { TeamRole } from 'app/shared/model/enumerations/team-role.model';
@@ -11,12 +11,12 @@ describe('Service Tests', () => {
     let service: TeamMemberService;
     let httpMock: HttpTestingController;
     let elemDefault: ITeamMember;
-    let expectedResult;
+    let expectedResult: ITeamMember | ITeamMember[] | boolean | null;
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule]
       });
-      expectedResult = {};
+      expectedResult = null;
       injector = getTestBed();
       service = injector.get(TeamMemberService);
       httpMock = injector.get(HttpTestingController);
@@ -30,11 +30,11 @@ describe('Service Tests', () => {
         service
           .find(123)
           .pipe(take(1))
-          .subscribe(resp => (expectedResult = resp));
+          .subscribe(resp => (expectedResult = resp.body));
 
         const req = httpMock.expectOne({ method: 'GET' });
         req.flush(returnedFromService);
-        expect(expectedResult).toMatchObject({ body: elemDefault });
+        expect(expectedResult).toMatchObject(elemDefault);
       });
 
       it('should create a TeamMember', () => {
@@ -46,12 +46,12 @@ describe('Service Tests', () => {
         );
         const expected = Object.assign({}, returnedFromService);
         service
-          .create(new TeamMember(null))
+          .create(new TeamMember())
           .pipe(take(1))
-          .subscribe(resp => (expectedResult = resp));
+          .subscribe(resp => (expectedResult = resp.body));
         const req = httpMock.expectOne({ method: 'POST' });
         req.flush(returnedFromService);
-        expect(expectedResult).toMatchObject({ body: expected });
+        expect(expectedResult).toMatchObject(expected);
       });
 
       it('should update a TeamMember', () => {
@@ -66,10 +66,10 @@ describe('Service Tests', () => {
         service
           .update(expected)
           .pipe(take(1))
-          .subscribe(resp => (expectedResult = resp));
+          .subscribe(resp => (expectedResult = resp.body));
         const req = httpMock.expectOne({ method: 'PUT' });
         req.flush(returnedFromService);
-        expect(expectedResult).toMatchObject({ body: expected });
+        expect(expectedResult).toMatchObject(expected);
       });
 
       it('should return a list of TeamMember', () => {
@@ -81,7 +81,7 @@ describe('Service Tests', () => {
         );
         const expected = Object.assign({}, returnedFromService);
         service
-          .query(expected)
+          .query()
           .pipe(
             take(1),
             map(resp => resp.body)

@@ -8,17 +8,17 @@ import { ITeamMember } from 'app/shared/model/team-member.model';
   templateUrl: './team-member-detail.component.html'
 })
 export class TeamMemberDetailComponent implements OnInit {
-  teamMember: ITeamMember;
+  teamMember: ITeamMember | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ teamMember }) => {
       this.teamMember = teamMember;
     });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 }

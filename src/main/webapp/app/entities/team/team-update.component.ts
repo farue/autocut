@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+
 import { ITeam, Team } from 'app/shared/model/team.model';
 import { TeamService } from './team.service';
 
@@ -13,7 +13,7 @@ import { TeamService } from './team.service';
   templateUrl: './team-update.component.html'
 })
 export class TeamUpdateComponent implements OnInit {
-  isSaving: boolean;
+  isSaving = false;
 
   editForm = this.fb.group({
     id: [],
@@ -22,25 +22,24 @@ export class TeamUpdateComponent implements OnInit {
 
   constructor(protected teamService: TeamService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
 
-  ngOnInit() {
-    this.isSaving = false;
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ team }) => {
       this.updateForm(team);
     });
   }
 
-  updateForm(team: ITeam) {
+  updateForm(team: ITeam): void {
     this.editForm.patchValue({
       id: team.id,
       name: team.name
     });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 
-  save() {
+  save(): void {
     this.isSaving = true;
     const team = this.createFromForm();
     if (team.id !== undefined) {
@@ -53,21 +52,24 @@ export class TeamUpdateComponent implements OnInit {
   private createFromForm(): ITeam {
     return {
       ...new Team(),
-      id: this.editForm.get(['id']).value,
-      name: this.editForm.get(['name']).value
+      id: this.editForm.get(['id'])!.value,
+      name: this.editForm.get(['name'])!.value
     };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<ITeam>>) {
-    result.subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<ITeam>>): void {
+    result.subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
   }
 
-  protected onSaveSuccess() {
+  protected onSaveSuccess(): void {
     this.isSaving = false;
     this.previousState();
   }
 
-  protected onSaveError() {
+  protected onSaveError(): void {
     this.isSaving = false;
   }
 }

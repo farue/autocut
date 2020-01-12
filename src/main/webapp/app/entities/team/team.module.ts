@@ -5,14 +5,12 @@ import { AutocutSharedModule } from 'app/shared/shared.module';
 import { TeamComponent } from './team.component';
 import { TeamDetailComponent } from './team-detail.component';
 import { TeamUpdateComponent } from './team-update.component';
-import { TeamDeleteDialogComponent, TeamDeletePopupComponent } from './team-delete-dialog.component';
-import { teamPopupRoute, teamRoute } from './team.route';
-
-const ENTITY_STATES = [...teamRoute, ...teamPopupRoute];
+import { TeamDeleteDialogComponent } from './team-delete-dialog.component';
+import { teamRoute } from './team.route';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(ENTITY_STATES)],
-  declarations: [TeamComponent, TeamDetailComponent, TeamUpdateComponent, TeamDeleteDialogComponent, TeamDeletePopupComponent],
+  imports: [AutocutSharedModule, RouterModule.forChild(teamRoute)],
+  declarations: [TeamComponent, TeamDetailComponent, TeamUpdateComponent, TeamDeleteDialogComponent],
   entryComponents: [TeamDeleteDialogComponent]
 })
 export class AutocutTeamModule {}

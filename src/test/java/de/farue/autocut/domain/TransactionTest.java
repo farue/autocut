@@ -1,9 +1,8 @@
 package de.farue.autocut.domain;
 
-import de.farue.autocut.web.rest.TestUtil;
 import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import de.farue.autocut.web.rest.TestUtil;
 
 public class TransactionTest {
 

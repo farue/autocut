@@ -1,14 +1,16 @@
 package de.farue.autocut.domain;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import de.farue.autocut.domain.enumeration.Access;
-import de.farue.autocut.domain.enumeration.ProtectionUnits;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
+
+import de.farue.autocut.domain.enumeration.ProtectionUnits;
+
+import de.farue.autocut.domain.enumeration.Access;
 
 /**
  * A SecurityPolicy.
@@ -34,9 +36,13 @@ public class SecurityPolicy implements Serializable {
     @Column(name = "access", nullable = false)
     private Access access;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JsonIgnoreProperties("securityPolicies")
     private TeamMember teamMember;
+
+    @ManyToOne
+    @JsonIgnoreProperties("securityPolicies")
+    private Tenant tenant;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -84,6 +90,19 @@ public class SecurityPolicy implements Serializable {
 
     public void setTeamMember(TeamMember teamMember) {
         this.teamMember = teamMember;
+    }
+
+    public Tenant getTenant() {
+        return tenant;
+    }
+
+    public SecurityPolicy tenant(Tenant tenant) {
+        this.tenant = tenant;
+        return this;
+    }
+
+    public void setTenant(Tenant tenant) {
+        this.tenant = tenant;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

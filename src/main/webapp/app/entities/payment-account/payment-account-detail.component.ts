@@ -8,17 +8,17 @@ import { IPaymentAccount } from 'app/shared/model/payment-account.model';
   templateUrl: './payment-account-detail.component.html'
 })
 export class PaymentAccountDetailComponent implements OnInit {
-  paymentAccount: IPaymentAccount;
+  paymentAccount: IPaymentAccount | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ paymentAccount }) => {
       this.paymentAccount = paymentAccount;
     });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 }

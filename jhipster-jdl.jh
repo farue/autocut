@@ -81,7 +81,7 @@ relationship OneToOne {
 }
 
 relationship OneToMany {
-	Team{members required} to TeamMember{team required}
+	Team{members} to TeamMember{team required}
     Tenant{teamMemberships} to TeamMember{tenant}
     Lease{tenants} to Tenant{lease}
     Apartment{leases} to Lease{apartment}
@@ -114,12 +114,12 @@ entity NetworkSwitch {
 }
 
 relationship OneToOne {
-	Apartment{internetAccess required} to InternetAccess{apartment required}
-    InternetAccess{port required} to Port{internetAccess required}
+	Apartment{internetAccess} to InternetAccess{apartment}
+    InternetAccess{port required} to Port{internetAccess}
 }
 
 relationship OneToMany {
-	NetworkSwitch{ports required} to Port{networkSwitch required}
+	NetworkSwitch{ports} to Port{networkSwitch required}
 }
 
 // Transactions
@@ -161,7 +161,7 @@ relationship OneToOne {
 }
 
 relationship OneToMany {
-	PaymentAccount{paymentEntries required} to PaymentEntry{account required}
+	PaymentAccount{paymentEntries} to PaymentEntry{account}
 }
 
 // Activities
@@ -183,11 +183,13 @@ relationship OneToMany {
 // Communication
 
 entity TenantCommunication {
+    subject String required maxlength(80)
 	text TextBlob required
+	note TextBlob
     date Instant required
 }
 
 relationship OneToMany {
-	Tenant{messages} to TenantCommunication{tenant required}
+	Tenant{messages} to TenantCommunication{tenant}
 }
 

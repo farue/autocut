@@ -8,17 +8,17 @@ import { ITenant } from 'app/shared/model/tenant.model';
   templateUrl: './tenant-detail.component.html'
 })
 export class TenantDetailComponent implements OnInit {
-  tenant: ITenant;
+  tenant: ITenant | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ tenant }) => {
       this.tenant = tenant;
     });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 }

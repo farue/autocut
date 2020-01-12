@@ -1,15 +1,16 @@
 package de.farue.autocut.domain;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import de.farue.autocut.domain.enumeration.ApartmentTypes;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
+import de.farue.autocut.domain.enumeration.ApartmentTypes;
 
 /**
  * A Apartment.
@@ -34,9 +35,12 @@ public class Apartment implements Serializable {
     @Column(name = "apartment_type", nullable = false)
     private ApartmentTypes apartmentType;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @NotNull
+    @Min(value = 0)
+    @Column(name = "max_number_of_leases", nullable = false)
+    private Integer maxNumberOfLeases;
 
+    @OneToOne
     @JoinColumn(unique = true)
     private InternetAccess internetAccess;
 
@@ -44,7 +48,7 @@ public class Apartment implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Lease> leases = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JsonIgnoreProperties("apartments")
     private Address address;
 
@@ -81,6 +85,19 @@ public class Apartment implements Serializable {
 
     public void setApartmentType(ApartmentTypes apartmentType) {
         this.apartmentType = apartmentType;
+    }
+
+    public Integer getMaxNumberOfLeases() {
+        return maxNumberOfLeases;
+    }
+
+    public Apartment maxNumberOfLeases(Integer maxNumberOfLeases) {
+        this.maxNumberOfLeases = maxNumberOfLeases;
+        return this;
+    }
+
+    public void setMaxNumberOfLeases(Integer maxNumberOfLeases) {
+        this.maxNumberOfLeases = maxNumberOfLeases;
     }
 
     public InternetAccess getInternetAccess() {
@@ -157,6 +174,7 @@ public class Apartment implements Serializable {
             "id=" + getId() +
             ", apartmentNr='" + getApartmentNr() + "'" +
             ", apartmentType='" + getApartmentType() + "'" +
+            ", maxNumberOfLeases=" + getMaxNumberOfLeases() +
             "}";
     }
 }

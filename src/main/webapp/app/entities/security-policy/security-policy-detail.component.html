@@ -19,6 +19,12 @@
                         <a [routerLink]="['/team-member', securityPolicy.teamMember?.id, 'view']">{{securityPolicy.teamMember?.id}}</a>
                     </div>
                 </dd>
+                <dt><span jhiTranslate="autocutApp.securityPolicy.tenant">Tenant</span></dt>
+                <dd>
+                    <div *ngIf="securityPolicy.tenant">
+                        <a [routerLink]="['/tenant', securityPolicy.tenant?.id, 'view']">{{securityPolicy.tenant?.id}}</a>
+                    </div>
+                </dd>
             </dl>
 
             <button type="submit"

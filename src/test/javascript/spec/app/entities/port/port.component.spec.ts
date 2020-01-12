@@ -44,7 +44,7 @@ describe('Component Tests', () => {
 
       // THEN
       expect(service.query).toHaveBeenCalled();
-      expect(comp.ports[0]).toEqual(jasmine.objectContaining({ id: 123 }));
+      expect(comp.ports && comp.ports[0]).toEqual(jasmine.objectContaining({ id: 123 }));
     });
   });
 });

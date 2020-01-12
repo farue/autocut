@@ -1,11 +1,11 @@
 package de.farue.autocut.domain;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -23,17 +23,25 @@ public class TenantCommunication implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    @Size(max = 80)
+    @Column(name = "subject", length = 80, nullable = false)
+    private String subject;
 
+    
     @Lob
     @Column(name = "text", nullable = false)
     private String text;
+
+    @Lob
+    @Column(name = "note")
+    private String note;
 
     @NotNull
     @Column(name = "date", nullable = false)
     private Instant date;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @NotNull
+    @ManyToOne
     @JsonIgnoreProperties("messages")
     private Tenant tenant;
 
@@ -44,6 +52,19 @@ public class TenantCommunication implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public TenantCommunication subject(String subject) {
+        this.subject = subject;
+        return this;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     public String getText() {
@@ -57,6 +78,19 @@ public class TenantCommunication implements Serializable {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public TenantCommunication note(String note) {
+        this.note = note;
+        return this;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public Instant getDate() {
@@ -106,7 +140,9 @@ public class TenantCommunication implements Serializable {
     public String toString() {
         return "TenantCommunication{" +
             "id=" + getId() +
+            ", subject='" + getSubject() + "'" +
             ", text='" + getText() + "'" +
+            ", note='" + getNote() + "'" +
             ", date='" + getDate() + "'" +
             "}";
     }

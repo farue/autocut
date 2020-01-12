@@ -25,6 +25,13 @@
             "otherEntityRelationshipName": "securityPolicies",
             "relationshipName": "teamMember",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "tenant",
+            "otherEntityRelationshipName": "securityPolicies",
+            "relationshipName": "tenant",
+            "otherEntityField": "id"
         }
     ],
     "changelogDate": "20191117011747",

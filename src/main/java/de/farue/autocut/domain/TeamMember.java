@@ -1,14 +1,16 @@
 package de.farue.autocut.domain;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import de.farue.autocut.domain.enumeration.TeamRole;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
+import de.farue.autocut.domain.enumeration.TeamRole;
 
 /**
  * A TeamMember.
@@ -32,11 +34,12 @@ public class TeamMember implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SecurityPolicy> securityPolicies = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties("members")
     private Team team;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JsonIgnoreProperties("teamMemberships")
     private Tenant tenant;
 

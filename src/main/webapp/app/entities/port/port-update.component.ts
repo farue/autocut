@@ -1,15 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { JhiAlertService } from 'ng-jhipster';
+import { map } from 'rxjs/operators';
+
 import { IPort, Port } from 'app/shared/model/port.model';
 import { PortService } from './port.service';
-import { IInternetAccess } from 'app/shared/model/internet-access.model';
-import { InternetAccessService } from 'app/entities/internet-access/internet-access.service';
 import { INetworkSwitch } from 'app/shared/model/network-switch.model';
 import { NetworkSwitchService } from 'app/entities/network-switch/network-switch.service';
 
@@ -18,11 +16,9 @@ import { NetworkSwitchService } from 'app/entities/network-switch/network-switch
   templateUrl: './port-update.component.html'
 })
 export class PortUpdateComponent implements OnInit {
-  isSaving: boolean;
+  isSaving = false;
 
-  internetaccesses: IInternetAccess[];
-
-  networkswitches: INetworkSwitch[];
+  networkswitches: INetworkSwitch[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -31,34 +27,28 @@ export class PortUpdateComponent implements OnInit {
   });
 
   constructor(
-    protected jhiAlertService: JhiAlertService,
     protected portService: PortService,
-    protected internetAccessService: InternetAccessService,
     protected networkSwitchService: NetworkSwitchService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
 
-  ngOnInit() {
-    this.isSaving = false;
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ port }) => {
       this.updateForm(port);
+
+      this.networkSwitchService
+        .query()
+        .pipe(
+          map((res: HttpResponse<INetworkSwitch[]>) => {
+            return res.body ? res.body : [];
+          })
+        )
+        .subscribe((resBody: INetworkSwitch[]) => (this.networkswitches = resBody));
     });
-    this.internetAccessService
-      .query()
-      .subscribe(
-        (res: HttpResponse<IInternetAccess[]>) => (this.internetaccesses = res.body),
-        (res: HttpErrorResponse) => this.onError(res.message)
-      );
-    this.networkSwitchService
-      .query()
-      .subscribe(
-        (res: HttpResponse<INetworkSwitch[]>) => (this.networkswitches = res.body),
-        (res: HttpErrorResponse) => this.onError(res.message)
-      );
   }
 
-  updateForm(port: IPort) {
+  updateForm(port: IPort): void {
     this.editForm.patchValue({
       id: port.id,
       number: port.number,
@@ -66,11 +56,11 @@ export class PortUpdateComponent implements OnInit {
     });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 
-  save() {
+  save(): void {
     this.isSaving = true;
     const port = this.createFromForm();
     if (port.id !== undefined) {
@@ -83,33 +73,29 @@ export class PortUpdateComponent implements OnInit {
   private createFromForm(): IPort {
     return {
       ...new Port(),
-      id: this.editForm.get(['id']).value,
-      number: this.editForm.get(['number']).value,
-      networkSwitch: this.editForm.get(['networkSwitch']).value
+      id: this.editForm.get(['id'])!.value,
+      number: this.editForm.get(['number'])!.value,
+      networkSwitch: this.editForm.get(['networkSwitch'])!.value
     };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IPort>>) {
-    result.subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IPort>>): void {
+    result.subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
   }
 
-  protected onSaveSuccess() {
+  protected onSaveSuccess(): void {
     this.isSaving = false;
     this.previousState();
   }
 
-  protected onSaveError() {
+  protected onSaveError(): void {
     this.isSaving = false;
   }
-  protected onError(errorMessage: string) {
-    this.jhiAlertService.error(errorMessage, null, null);
-  }
 
-  trackInternetAccessById(index: number, item: IInternetAccess) {
-    return item.id;
-  }
-
-  trackNetworkSwitchById(index: number, item: INetworkSwitch) {
+  trackById(index: number, item: INetworkSwitch): any {
     return item.id;
   }
 }

@@ -28,6 +28,8 @@
         "paymentAccount": "Payment Account",
         "transaction": "Transaction",
         "tenantCommunication": "Tenant Communication",
+        "paymentEntry": "Payment Entry",
+        "activity": "Activity",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

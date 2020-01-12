@@ -5,6 +5,7 @@ import de.farue.autocut.domain.Tenant;
 import de.farue.autocut.repository.TenantRepository;
 import de.farue.autocut.service.TenantService;
 import de.farue.autocut.web.rest.errors.ExceptionTranslator;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -19,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static de.farue.autocut.web.rest.TestUtil.createFormattingConversionService;
@@ -41,6 +44,18 @@ public class TenantResourceIT {
 
     private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
     private static final String UPDATED_EMAIL = "BBBBBBBBBB";
+
+    private static final String DEFAULT_CREATED_BY = "AAAAAAAAAA";
+    private static final String UPDATED_CREATED_BY = "BBBBBBBBBB";
+
+    private static final Instant DEFAULT_CREATED_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_CREATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final String DEFAULT_LAST_MODIFIED_BY = "AAAAAAAAAA";
+    private static final String UPDATED_LAST_MODIFIED_BY = "BBBBBBBBBB";
+
+    private static final Instant DEFAULT_LAST_MODIFIED_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_LAST_MODIFIED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     @Autowired
     private TenantRepository tenantRepository;
@@ -89,7 +104,11 @@ public class TenantResourceIT {
         Tenant tenant = new Tenant()
             .firstName(DEFAULT_FIRST_NAME)
             .lastName(DEFAULT_LAST_NAME)
-            .email(DEFAULT_EMAIL);
+            .email(DEFAULT_EMAIL)
+            .createdBy(DEFAULT_CREATED_BY)
+            .createdDate(DEFAULT_CREATED_DATE)
+            .lastModifiedBy(DEFAULT_LAST_MODIFIED_BY)
+            .lastModifiedDate(DEFAULT_LAST_MODIFIED_DATE);
         return tenant;
     }
     /**
@@ -102,7 +121,11 @@ public class TenantResourceIT {
         Tenant tenant = new Tenant()
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
-            .email(UPDATED_EMAIL);
+            .email(UPDATED_EMAIL)
+            .createdBy(UPDATED_CREATED_BY)
+            .createdDate(UPDATED_CREATED_DATE)
+            .lastModifiedBy(UPDATED_LAST_MODIFIED_BY)
+            .lastModifiedDate(UPDATED_LAST_MODIFIED_DATE);
         return tenant;
     }
 
@@ -129,6 +152,10 @@ public class TenantResourceIT {
         assertThat(testTenant.getFirstName()).isEqualTo(DEFAULT_FIRST_NAME);
         assertThat(testTenant.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
         assertThat(testTenant.getEmail()).isEqualTo(DEFAULT_EMAIL);
+        assertThat(testTenant.getCreatedBy()).isEqualTo(DEFAULT_CREATED_BY);
+        assertThat(testTenant.getCreatedDate()).isEqualTo(DEFAULT_CREATED_DATE);
+        assertThat(testTenant.getLastModifiedBy()).isEqualTo(DEFAULT_LAST_MODIFIED_BY);
+        assertThat(testTenant.getLastModifiedDate()).isEqualTo(DEFAULT_LAST_MODIFIED_DATE);
     }
 
     @Test
@@ -207,6 +234,42 @@ public class TenantResourceIT {
 
     @Test
     @Transactional
+    public void checkCreatedByIsRequired() throws Exception {
+        int databaseSizeBeforeTest = tenantRepository.findAll().size();
+        // set the field null
+        tenant.setCreatedBy(null);
+
+        // Create the Tenant, which fails.
+
+        restTenantMockMvc.perform(post("/api/tenants")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(tenant)))
+            .andExpect(status().isBadRequest());
+
+        List<Tenant> tenantList = tenantRepository.findAll();
+        assertThat(tenantList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkCreatedDateIsRequired() throws Exception {
+        int databaseSizeBeforeTest = tenantRepository.findAll().size();
+        // set the field null
+        tenant.setCreatedDate(null);
+
+        // Create the Tenant, which fails.
+
+        restTenantMockMvc.perform(post("/api/tenants")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(tenant)))
+            .andExpect(status().isBadRequest());
+
+        List<Tenant> tenantList = tenantRepository.findAll();
+        assertThat(tenantList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllTenants() throws Exception {
         // Initialize the database
         tenantRepository.saveAndFlush(tenant);
@@ -218,9 +281,13 @@ public class TenantResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(tenant.getId().intValue())))
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
             .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
-            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)));
+            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
+            .andExpect(jsonPath("$.[*].createdBy").value(hasItem(DEFAULT_CREATED_BY)))
+            .andExpect(jsonPath("$.[*].createdDate").value(hasItem(DEFAULT_CREATED_DATE.toString())))
+            .andExpect(jsonPath("$.[*].lastModifiedBy").value(hasItem(DEFAULT_LAST_MODIFIED_BY)))
+            .andExpect(jsonPath("$.[*].lastModifiedDate").value(hasItem(DEFAULT_LAST_MODIFIED_DATE.toString())));
     }
-
+    
     @Test
     @Transactional
     public void getTenant() throws Exception {
@@ -234,7 +301,11 @@ public class TenantResourceIT {
             .andExpect(jsonPath("$.id").value(tenant.getId().intValue()))
             .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRST_NAME))
             .andExpect(jsonPath("$.lastName").value(DEFAULT_LAST_NAME))
-            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL));
+            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
+            .andExpect(jsonPath("$.createdBy").value(DEFAULT_CREATED_BY))
+            .andExpect(jsonPath("$.createdDate").value(DEFAULT_CREATED_DATE.toString()))
+            .andExpect(jsonPath("$.lastModifiedBy").value(DEFAULT_LAST_MODIFIED_BY))
+            .andExpect(jsonPath("$.lastModifiedDate").value(DEFAULT_LAST_MODIFIED_DATE.toString()));
     }
 
     @Test
@@ -260,7 +331,11 @@ public class TenantResourceIT {
         updatedTenant
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
-            .email(UPDATED_EMAIL);
+            .email(UPDATED_EMAIL)
+            .createdBy(UPDATED_CREATED_BY)
+            .createdDate(UPDATED_CREATED_DATE)
+            .lastModifiedBy(UPDATED_LAST_MODIFIED_BY)
+            .lastModifiedDate(UPDATED_LAST_MODIFIED_DATE);
 
         restTenantMockMvc.perform(put("/api/tenants")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -274,6 +349,10 @@ public class TenantResourceIT {
         assertThat(testTenant.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
         assertThat(testTenant.getLastName()).isEqualTo(UPDATED_LAST_NAME);
         assertThat(testTenant.getEmail()).isEqualTo(UPDATED_EMAIL);
+        assertThat(testTenant.getCreatedBy()).isEqualTo(UPDATED_CREATED_BY);
+        assertThat(testTenant.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
+        assertThat(testTenant.getLastModifiedBy()).isEqualTo(UPDATED_LAST_MODIFIED_BY);
+        assertThat(testTenant.getLastModifiedDate()).isEqualTo(UPDATED_LAST_MODIFIED_DATE);
     }
 
     @Test

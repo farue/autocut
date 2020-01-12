@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
-import { JhiAlertService, JhiDataUtils } from 'ng-jhipster';
+import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
+
 import { ITenantCommunication, TenantCommunication } from 'app/shared/model/tenant-communication.model';
 import { TenantCommunicationService } from './tenant-communication.service';
+import { AlertError } from 'app/shared/alert/alert-error.model';
 import { ITenant } from 'app/shared/model/tenant.model';
 import { TenantService } from 'app/entities/tenant/tenant.service';
 
@@ -18,83 +20,75 @@ import { TenantService } from 'app/entities/tenant/tenant.service';
   templateUrl: './tenant-communication-update.component.html'
 })
 export class TenantCommunicationUpdateComponent implements OnInit {
-  isSaving: boolean;
+  isSaving = false;
 
-  tenants: ITenant[];
+  tenants: ITenant[] = [];
 
   editForm = this.fb.group({
     id: [],
+    subject: [null, [Validators.required, Validators.maxLength(80)]],
     text: [null, [Validators.required]],
+    note: [],
     date: [null, [Validators.required]],
-    tenant: [null, Validators.required]
+    tenant: []
   });
 
   constructor(
     protected dataUtils: JhiDataUtils,
-    protected jhiAlertService: JhiAlertService,
+    protected eventManager: JhiEventManager,
     protected tenantCommunicationService: TenantCommunicationService,
     protected tenantService: TenantService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
 
-  ngOnInit() {
-    this.isSaving = false;
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ tenantCommunication }) => {
       this.updateForm(tenantCommunication);
+
+      this.tenantService
+        .query()
+        .pipe(
+          map((res: HttpResponse<ITenant[]>) => {
+            return res.body ? res.body : [];
+          })
+        )
+        .subscribe((resBody: ITenant[]) => (this.tenants = resBody));
     });
-    this.tenantService
-      .query()
-      .subscribe((res: HttpResponse<ITenant[]>) => (this.tenants = res.body), (res: HttpErrorResponse) => this.onError(res.message));
   }
 
-  updateForm(tenantCommunication: ITenantCommunication) {
+  updateForm(tenantCommunication: ITenantCommunication): void {
     this.editForm.patchValue({
       id: tenantCommunication.id,
+      subject: tenantCommunication.subject,
       text: tenantCommunication.text,
+      note: tenantCommunication.note,
       date: tenantCommunication.date != null ? tenantCommunication.date.format(DATE_TIME_FORMAT) : null,
       tenant: tenantCommunication.tenant
     });
   }
 
-  byteSize(field) {
-    return this.dataUtils.byteSize(field);
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
   }
 
-  openFile(contentType, field) {
-    return this.dataUtils.openFile(contentType, field);
+  openFile(contentType: string, base64String: string): void {
+    this.dataUtils.openFile(contentType, base64String);
   }
 
-  setFileData(event, field: string, isImage) {
-    return new Promise((resolve, reject) => {
-      if (event && event.target && event.target.files && event.target.files[0]) {
-        const file: File = event.target.files[0];
-        if (isImage && !file.type.startsWith('image/')) {
-          reject(`File was expected to be an image but was found to be ${file.type}`);
-        } else {
-          const filedContentType: string = field + 'ContentType';
-          this.dataUtils.toBase64(file, base64Data => {
-            this.editForm.patchValue({
-              [field]: base64Data,
-              [filedContentType]: file.type
-            });
-          });
-        }
-      } else {
-        reject(`Base64 data was not set as file could not be extracted from passed parameter: ${event}`);
-      }
-    }).then(
-      // eslint-disable-next-line no-console
-      () => console.log('blob added'), // success
-      this.onError
-    );
+  setFileData(event: Event, field: string, isImage: boolean): void {
+    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
+      this.eventManager.broadcast(
+        new JhiEventWithContent<AlertError>('autocutApp.error', { ...err, key: 'error.file.' + err.key })
+      );
+    });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 
-  save() {
+  save(): void {
     this.isSaving = true;
     const tenantCommunication = this.createFromForm();
     if (tenantCommunication.id !== undefined) {
@@ -107,30 +101,32 @@ export class TenantCommunicationUpdateComponent implements OnInit {
   private createFromForm(): ITenantCommunication {
     return {
       ...new TenantCommunication(),
-      id: this.editForm.get(['id']).value,
-      text: this.editForm.get(['text']).value,
-      date: this.editForm.get(['date']).value != null ? moment(this.editForm.get(['date']).value, DATE_TIME_FORMAT) : undefined,
-      tenant: this.editForm.get(['tenant']).value
+      id: this.editForm.get(['id'])!.value,
+      subject: this.editForm.get(['subject'])!.value,
+      text: this.editForm.get(['text'])!.value,
+      note: this.editForm.get(['note'])!.value,
+      date: this.editForm.get(['date'])!.value != null ? moment(this.editForm.get(['date'])!.value, DATE_TIME_FORMAT) : undefined,
+      tenant: this.editForm.get(['tenant'])!.value
     };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<ITenantCommunication>>) {
-    result.subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<ITenantCommunication>>): void {
+    result.subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
   }
 
-  protected onSaveSuccess() {
+  protected onSaveSuccess(): void {
     this.isSaving = false;
     this.previousState();
   }
 
-  protected onSaveError() {
+  protected onSaveError(): void {
     this.isSaving = false;
   }
-  protected onError(errorMessage: string) {
-    this.jhiAlertService.error(errorMessage, null, null);
-  }
 
-  trackTenantById(index: number, item: ITenant) {
+  trackById(index: number, item: ITenant): any {
     return item.id;
   }
 }

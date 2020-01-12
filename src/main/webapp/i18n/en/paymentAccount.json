@@ -17,7 +17,7 @@
         "title": "Payment Account"
       },
       "balance": "Balance",
-      "transactions": "Transactions",
+      "paymentEntries": "Payment Entries",
       "lease": "Lease"
     }
   }

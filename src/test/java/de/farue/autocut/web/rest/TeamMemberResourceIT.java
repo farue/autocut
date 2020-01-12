@@ -2,9 +2,10 @@ package de.farue.autocut.web.rest;
 
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.TeamMember;
-import de.farue.autocut.domain.enumeration.TeamRole;
+import de.farue.autocut.domain.Team;
 import de.farue.autocut.repository.TeamMemberRepository;
 import de.farue.autocut.web.rest.errors.ExceptionTranslator;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -26,6 +27,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import de.farue.autocut.domain.enumeration.TeamRole;
 /**
  * Integration tests for the {@link TeamMemberResource} REST controller.
  */
@@ -78,6 +81,16 @@ public class TeamMemberResourceIT {
     public static TeamMember createEntity(EntityManager em) {
         TeamMember teamMember = new TeamMember()
             .role(DEFAULT_ROLE);
+        // Add required entity
+        Team team;
+        if (TestUtil.findAll(em, Team.class).isEmpty()) {
+            team = TeamResourceIT.createEntity(em);
+            em.persist(team);
+            em.flush();
+        } else {
+            team = TestUtil.findAll(em, Team.class).get(0);
+        }
+        teamMember.setTeam(team);
         return teamMember;
     }
     /**
@@ -89,6 +102,16 @@ public class TeamMemberResourceIT {
     public static TeamMember createUpdatedEntity(EntityManager em) {
         TeamMember teamMember = new TeamMember()
             .role(UPDATED_ROLE);
+        // Add required entity
+        Team team;
+        if (TestUtil.findAll(em, Team.class).isEmpty()) {
+            team = TeamResourceIT.createUpdatedEntity(em);
+            em.persist(team);
+            em.flush();
+        } else {
+            team = TestUtil.findAll(em, Team.class).get(0);
+        }
+        teamMember.setTeam(team);
         return teamMember;
     }
 
@@ -148,7 +171,7 @@ public class TeamMemberResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(teamMember.getId().intValue())))
             .andExpect(jsonPath("$.[*].role").value(hasItem(DEFAULT_ROLE.toString())));
     }
-
+    
     @Test
     @Transactional
     public void getTeamMember() throws Exception {

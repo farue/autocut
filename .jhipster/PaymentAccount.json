@@ -12,10 +12,9 @@
     "relationships": [
         {
             "relationshipType": "one-to-many",
-            "otherEntityName": "transaction",
-            "otherEntityRelationshipName": "paymentAccount",
-            "relationshipValidateRules": "required",
-            "relationshipName": "transactions"
+            "otherEntityName": "paymentEntry",
+            "otherEntityRelationshipName": "account",
+            "relationshipName": "paymentEntries"
         },
         {
             "relationshipType": "one-to-one",

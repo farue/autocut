@@ -17,7 +17,7 @@
         "title": "Zahlungsaccount"
       },
       "balance": "Saldo",
-      "transactions": "Überweisungen",
+      "paymentEntries": "Zahlungspositionen",
       "lease": "Mietvertrag"
     }
   }

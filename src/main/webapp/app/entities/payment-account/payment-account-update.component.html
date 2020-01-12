@@ -4,7 +4,7 @@
             <h2 id="jhi-payment-account-heading" jhiTranslate="autocutApp.paymentAccount.home.createOrEditLabel">Create or edit a Payment Account</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!editForm.get('id').value">
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
                     <input type="text" class="form-control" id="id" name="id" formControlName="id"
                         readonly />
@@ -13,9 +13,9 @@
                     <label class="form-control-label" jhiTranslate="autocutApp.paymentAccount.balance" for="field_balance">Balance</label>
                     <input type="number" class="form-control" name="balance" id="field_balance"
                            formControlName="balance"/>
-                    <div *ngIf="editForm.get('balance').invalid && (editForm.get('balance').dirty || editForm.get('balance').touched)">
+                    <div *ngIf="editForm.get('balance')!.invalid && (editForm.get('balance')!.dirty || editForm.get('balance')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('balance').errors.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.get('balance')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                         <small class="form-text text-danger"

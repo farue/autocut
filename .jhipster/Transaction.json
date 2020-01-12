@@ -53,15 +53,7 @@
             ]
         }
     ],
-    "relationships": [
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "paymentAccount",
-            "otherEntityRelationshipName": "transactions",
-            "relationshipName": "paymentAccount",
-            "otherEntityField": "id"
-        }
-    ],
+    "relationships": [],
     "changelogDate": "20191117011752",
     "entityTableName": "transaction",
     "dto": "no",

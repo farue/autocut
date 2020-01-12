@@ -1,24 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRouteSnapshot, Resolve, Routes } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
+import { Observable, of, EMPTY } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
+
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { IInternetAccess, InternetAccess } from 'app/shared/model/internet-access.model';
 import { InternetAccessService } from './internet-access.service';
 import { InternetAccessComponent } from './internet-access.component';
 import { InternetAccessDetailComponent } from './internet-access-detail.component';
 import { InternetAccessUpdateComponent } from './internet-access-update.component';
-import { InternetAccessDeletePopupComponent } from './internet-access-delete-dialog.component';
 
 @Injectable({ providedIn: 'root' })
 export class InternetAccessResolve implements Resolve<IInternetAccess> {
-  constructor(private service: InternetAccessService) {}
+  constructor(private service: InternetAccessService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<IInternetAccess> {
+  resolve(route: ActivatedRouteSnapshot): Observable<IInternetAccess> | Observable<never> {
     const id = route.params['id'];
     if (id) {
-      return this.service.find(id).pipe(map((internetAccess: HttpResponse<InternetAccess>) => internetAccess.body));
+      return this.service.find(id).pipe(
+        flatMap((internetAccess: HttpResponse<InternetAccess>) => {
+          if (internetAccess.body) {
+            return of(internetAccess.body);
+          } else {
+            this.router.navigate(['404']);
+            return EMPTY;
+          }
+        })
+      );
     }
     return of(new InternetAccess());
   }
@@ -69,21 +78,5 @@ export const internetAccessRoute: Routes = [
       pageTitle: 'autocutApp.internetAccess.home.title'
     },
     canActivate: [UserRouteAccessService]
-  }
-];
-
-export const internetAccessPopupRoute: Routes = [
-  {
-    path: ':id/delete',
-    component: InternetAccessDeletePopupComponent,
-    resolve: {
-      internetAccess: InternetAccessResolve
-    },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'autocutApp.internetAccess.home.title'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
   }
 ];

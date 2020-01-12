@@ -8,17 +8,17 @@ import { IAddress } from 'app/shared/model/address.model';
   templateUrl: './address-detail.component.html'
 })
 export class AddressDetailComponent implements OnInit {
-  address: IAddress;
+  address: IAddress | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ address }) => {
       this.address = address;
     });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 }

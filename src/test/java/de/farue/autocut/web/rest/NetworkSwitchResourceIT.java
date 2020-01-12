@@ -2,9 +2,9 @@ package de.farue.autocut.web.rest;
 
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.NetworkSwitch;
-import de.farue.autocut.domain.Port;
 import de.farue.autocut.repository.NetworkSwitchRepository;
 import de.farue.autocut.web.rest.errors.ExceptionTranslator;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -79,16 +79,6 @@ public class NetworkSwitchResourceIT {
     public static NetworkSwitch createEntity(EntityManager em) {
         NetworkSwitch networkSwitch = new NetworkSwitch()
             .switchInterface(DEFAULT_SWITCH_INTERFACE);
-        // Add required entity
-        Port port;
-        if (TestUtil.findAll(em, Port.class).isEmpty()) {
-            port = PortResourceIT.createEntity(em);
-            em.persist(port);
-            em.flush();
-        } else {
-            port = TestUtil.findAll(em, Port.class).get(0);
-        }
-        networkSwitch.getPorts().add(port);
         return networkSwitch;
     }
     /**
@@ -100,16 +90,6 @@ public class NetworkSwitchResourceIT {
     public static NetworkSwitch createUpdatedEntity(EntityManager em) {
         NetworkSwitch networkSwitch = new NetworkSwitch()
             .switchInterface(UPDATED_SWITCH_INTERFACE);
-        // Add required entity
-        Port port;
-        if (TestUtil.findAll(em, Port.class).isEmpty()) {
-            port = PortResourceIT.createUpdatedEntity(em);
-            em.persist(port);
-            em.flush();
-        } else {
-            port = TestUtil.findAll(em, Port.class).get(0);
-        }
-        networkSwitch.getPorts().add(port);
         return networkSwitch;
     }
 
@@ -187,7 +167,7 @@ public class NetworkSwitchResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(networkSwitch.getId().intValue())))
             .andExpect(jsonPath("$.[*].switchInterface").value(hasItem(DEFAULT_SWITCH_INTERFACE)));
     }
-
+    
     @Test
     @Transactional
     public void getNetworkSwitch() throws Exception {

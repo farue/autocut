@@ -8,17 +8,17 @@ import { ILease } from 'app/shared/model/lease.model';
   templateUrl: './lease-detail.component.html'
 })
 export class LeaseDetailComponent implements OnInit {
-  lease: ILease;
+  lease: ILease | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ lease }) => {
       this.lease = lease;
     });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 }

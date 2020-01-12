@@ -4,6 +4,7 @@ import de.farue.autocut.domain.PaymentAccount;
 import de.farue.autocut.repository.PaymentAccountRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,7 +56,7 @@ public class PaymentAccountService {
     *  Get all the paymentAccounts where Lease is {@code null}.
      *  @return the list of entities.
      */
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true) 
     public List<PaymentAccount> findAllWhereLeaseIsNull() {
         log.debug("Request to get all paymentAccounts where Lease is null");
         return StreamSupport

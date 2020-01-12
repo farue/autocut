@@ -1,0 +1,28 @@
+{
+  "autocutApp": {
+    "paymentEntry": {
+      "home": {
+        "title": "Zahlungspositionen",
+        "createLabel": "Zahlungsposition erstellen",
+        "createOrEditLabel": "Zahlungsposition erstellen oder bearbeiten",
+        "notFound": "Keine Zahlungspositionen gefunden"
+      },
+      "created": "Zahlungsposition erstellt mit ID {{ param }}",
+      "updated": "Zahlungsposition aktualisiert mit ID {{ param }}",
+      "deleted": "Zahlungsposition gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Zahlungsposition {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Zahlungsposition"
+      },
+      "balanceBefore": "Konostand vorher",
+      "balanceAfter": "Kontostand nachher",
+      "payment": "Betrag",
+      "date": "Datum",
+      "description": "Verwendungszweck",
+      "transaction": "Transaktion",
+      "account": "Zahlungsaccount"
+    }
+  }
+}

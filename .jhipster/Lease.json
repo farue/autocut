@@ -2,6 +2,13 @@
     "name": "Lease",
     "fields": [
         {
+            "fieldName": "nr",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
             "fieldName": "start",
             "fieldType": "Instant",
             "fieldValidateRules": [
@@ -10,6 +17,28 @@
         },
         {
             "fieldName": "end",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "createdBy",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "createdDate",
+            "fieldType": "Instant",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "lastModifiedBy",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "lastModifiedDate",
             "fieldType": "Instant"
         }
     ],

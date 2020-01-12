@@ -5,22 +5,16 @@ import { AutocutSharedModule } from 'app/shared/shared.module';
 import { TenantCommunicationComponent } from './tenant-communication.component';
 import { TenantCommunicationDetailComponent } from './tenant-communication-detail.component';
 import { TenantCommunicationUpdateComponent } from './tenant-communication-update.component';
-import {
-  TenantCommunicationDeleteDialogComponent,
-  TenantCommunicationDeletePopupComponent
-} from './tenant-communication-delete-dialog.component';
-import { tenantCommunicationPopupRoute, tenantCommunicationRoute } from './tenant-communication.route';
-
-const ENTITY_STATES = [...tenantCommunicationRoute, ...tenantCommunicationPopupRoute];
+import { TenantCommunicationDeleteDialogComponent } from './tenant-communication-delete-dialog.component';
+import { tenantCommunicationRoute } from './tenant-communication.route';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(ENTITY_STATES)],
+  imports: [AutocutSharedModule, RouterModule.forChild(tenantCommunicationRoute)],
   declarations: [
     TenantCommunicationComponent,
     TenantCommunicationDetailComponent,
     TenantCommunicationUpdateComponent,
-    TenantCommunicationDeleteDialogComponent,
-    TenantCommunicationDeletePopupComponent
+    TenantCommunicationDeleteDialogComponent
   ],
   entryComponents: [TenantCommunicationDeleteDialogComponent]
 })

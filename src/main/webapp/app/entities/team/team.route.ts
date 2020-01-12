@@ -1,24 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRouteSnapshot, Resolve, Routes } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
+import { Observable, of, EMPTY } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
+
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { ITeam, Team } from 'app/shared/model/team.model';
 import { TeamService } from './team.service';
 import { TeamComponent } from './team.component';
 import { TeamDetailComponent } from './team-detail.component';
 import { TeamUpdateComponent } from './team-update.component';
-import { TeamDeletePopupComponent } from './team-delete-dialog.component';
 
 @Injectable({ providedIn: 'root' })
 export class TeamResolve implements Resolve<ITeam> {
-  constructor(private service: TeamService) {}
+  constructor(private service: TeamService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<ITeam> {
+  resolve(route: ActivatedRouteSnapshot): Observable<ITeam> | Observable<never> {
     const id = route.params['id'];
     if (id) {
-      return this.service.find(id).pipe(map((team: HttpResponse<Team>) => team.body));
+      return this.service.find(id).pipe(
+        flatMap((team: HttpResponse<Team>) => {
+          if (team.body) {
+            return of(team.body);
+          } else {
+            this.router.navigate(['404']);
+            return EMPTY;
+          }
+        })
+      );
     }
     return of(new Team());
   }
@@ -69,21 +78,5 @@ export const teamRoute: Routes = [
       pageTitle: 'autocutApp.team.home.title'
     },
     canActivate: [UserRouteAccessService]
-  }
-];
-
-export const teamPopupRoute: Routes = [
-  {
-    path: ':id/delete',
-    component: TeamDeletePopupComponent,
-    resolve: {
-      team: TeamResolve
-    },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'autocutApp.team.home.title'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
   }
 ];

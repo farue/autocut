@@ -5,20 +5,12 @@ import { AutocutSharedModule } from 'app/shared/shared.module';
 import { TeamMemberComponent } from './team-member.component';
 import { TeamMemberDetailComponent } from './team-member-detail.component';
 import { TeamMemberUpdateComponent } from './team-member-update.component';
-import { TeamMemberDeleteDialogComponent, TeamMemberDeletePopupComponent } from './team-member-delete-dialog.component';
-import { teamMemberPopupRoute, teamMemberRoute } from './team-member.route';
-
-const ENTITY_STATES = [...teamMemberRoute, ...teamMemberPopupRoute];
+import { TeamMemberDeleteDialogComponent } from './team-member-delete-dialog.component';
+import { teamMemberRoute } from './team-member.route';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(ENTITY_STATES)],
-  declarations: [
-    TeamMemberComponent,
-    TeamMemberDetailComponent,
-    TeamMemberUpdateComponent,
-    TeamMemberDeleteDialogComponent,
-    TeamMemberDeletePopupComponent
-  ],
+  imports: [AutocutSharedModule, RouterModule.forChild(teamMemberRoute)],
+  declarations: [TeamMemberComponent, TeamMemberDetailComponent, TeamMemberUpdateComponent, TeamMemberDeleteDialogComponent],
   entryComponents: [TeamMemberDeleteDialogComponent]
 })
 export class AutocutTeamMemberModule {}

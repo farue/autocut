@@ -1,11 +1,11 @@
 package de.farue.autocut.domain;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
 
 /**
@@ -34,9 +34,8 @@ public class InternetAccess implements Serializable {
     @Column(name = "ip_2", nullable = false)
     private String ip2;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(optional = false)
     @NotNull
-
     @JoinColumn(unique = true)
     private Port port;
 

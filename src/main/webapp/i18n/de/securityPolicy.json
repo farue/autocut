@@ -18,7 +18,8 @@
       },
       "protectionUnit": "Geschützter Bereich",
       "access": "Zugang",
-      "teamMember": "AG Mitglied"
+      "teamMember": "AG Mitglied",
+      "tenant": "Mieter"
     }
   }
 }

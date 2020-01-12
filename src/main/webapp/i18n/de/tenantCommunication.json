@@ -16,7 +16,9 @@
       "detail": {
         "title": "Mieterkommunikation"
       },
+      "subject": "Betreff",
       "text": "Text",
+      "note": "Notiz",
       "date": "Datum",
       "tenant": "Mieter"
     }

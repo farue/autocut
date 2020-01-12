@@ -4,7 +4,7 @@
             <h2 id="jhi-port-heading" jhiTranslate="autocutApp.port.home.createOrEditLabel">Create or edit a Port</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!editForm.get('id').value">
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
                     <input type="text" class="form-control" id="id" name="id" formControlName="id"
                         readonly />
@@ -13,13 +13,13 @@
                     <label class="form-control-label" jhiTranslate="autocutApp.port.number" for="field_number">Number</label>
                     <input type="number" class="form-control" name="number" id="field_number"
                            formControlName="number"/>
-                    <div *ngIf="editForm.get('number').invalid && (editForm.get('number').dirty || editForm.get('number').touched)">
+                    <div *ngIf="editForm.get('number')!.invalid && (editForm.get('number')!.dirty || editForm.get('number')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('number').errors.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.get('number')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('number').errors.min" jhiTranslate="entity.validation.min" [translateValues]="{ min: 1 }">
+                               *ngIf="editForm.get('number')?.errors?.min" jhiTranslate="entity.validation.min" [translateValues]="{ min: 1 }">
                             This field should be at least 1.
                         </small>
                         <small class="form-text text-danger"
@@ -32,13 +32,13 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.port.networkSwitch" for="field_networkSwitch">Network Switch</label>
                     <select class="form-control" id="field_networkSwitch" name="networkSwitch" formControlName="networkSwitch">
-                        <option *ngIf="!editForm.get('networkSwitch').value" [ngValue]="null" selected></option>
-                        <option [ngValue]="networkSwitchOption.id === editForm.get('networkSwitch').value?.id ? editForm.get('networkSwitch').value : networkSwitchOption" *ngFor="let networkSwitchOption of networkswitches; trackBy: trackNetworkSwitchById">{{networkSwitchOption.id}}</option>
+                        <option *ngIf="!editForm.get('networkSwitch')!.value" [ngValue]="null" selected></option>
+                        <option [ngValue]="networkSwitchOption.id === editForm.get('networkSwitch')!.value?.id ? editForm.get('networkSwitch')!.value : networkSwitchOption" *ngFor="let networkSwitchOption of networkswitches; trackBy: trackById">{{networkSwitchOption.id}}</option>
                     </select>
                 </div>
-                <div *ngIf="editForm.get('networkSwitch').invalid && (editForm.get('networkSwitch').dirty || editForm.get('networkSwitch').touched)">
+                <div *ngIf="editForm.get('networkSwitch')!.invalid && (editForm.get('networkSwitch')!.dirty || editForm.get('networkSwitch')!.touched)">
                     <small class="form-text text-danger"
-                           *ngIf="editForm.get('networkSwitch').errors.required" jhiTranslate="entity.validation.required">
+                           *ngIf="editForm.get('networkSwitch')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                     </small>
                 </div>

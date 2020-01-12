@@ -1,0 +1,28 @@
+{
+  "autocutApp": {
+    "paymentEntry": {
+      "home": {
+        "title": "Payment Entries",
+        "createLabel": "Create a new Payment Entry",
+        "createOrEditLabel": "Create or edit a Payment Entry",
+        "notFound": "No Payment Entries found"
+      },
+      "created": "A new Payment Entry is created with identifier {{ param }}",
+      "updated": "A Payment Entry is updated with identifier {{ param }}",
+      "deleted": "A Payment Entry is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Payment Entry {{ id }}?"
+      },
+      "detail": {
+        "title": "Payment Entry"
+      },
+      "balanceBefore": "Balance Before",
+      "balanceAfter": "Balance After",
+      "payment": "Payment",
+      "date": "Date",
+      "description": "Description",
+      "transaction": "Transaction",
+      "account": "Payment Account"
+    }
+  }
+}

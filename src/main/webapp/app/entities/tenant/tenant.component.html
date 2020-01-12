@@ -22,6 +22,10 @@
             <th scope="col" ><span jhiTranslate="autocutApp.tenant.firstName">First Name</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.tenant.lastName">Last Name</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.tenant.email">Email</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.tenant.createdBy">Created By</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.tenant.createdDate">Created Date</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.tenant.lastModifiedBy">Last Modified By</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.tenant.lastModifiedDate">Last Modified Date</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.tenant.user">User</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.tenant.lease">Lease</span></th>
             <th scope="col"></th>
@@ -33,6 +37,10 @@
                 <td>{{tenant.firstName}}</td>
                 <td>{{tenant.lastName}}</td>
                 <td>{{tenant.email}}</td>
+                <td>{{tenant.createdBy}}</td>
+                <td>{{tenant.createdDate | date:'medium'}}</td>
+                <td>{{tenant.lastModifiedBy}}</td>
+                <td>{{tenant.lastModifiedDate | date:'medium'}}</td>
                 <td>
                     {{tenant.user?.id}}
                 </td>
@@ -55,10 +63,7 @@
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
-                        <button type="submit"
-                                [routerLink]="['/tenant', { outlets: { popup: tenant.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
+                        <button type="submit" (click)="delete(tenant)"
                                 class="btn btn-danger btn-sm">
                             <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>

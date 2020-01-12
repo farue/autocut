@@ -19,8 +19,13 @@
             <thead>
             <tr>
             <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.lease.nr">Nr</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.lease.start">Start</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.lease.end">End</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.lease.createdBy">Created By</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.lease.createdDate">Created Date</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.lease.lastModifiedBy">Last Modified By</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.lease.lastModifiedDate">Last Modified Date</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.lease.account">Account</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.lease.apartment">Apartment</span></th>
             <th scope="col"></th>
@@ -29,8 +34,13 @@
             <tbody>
             <tr *ngFor="let lease of leases ;trackBy: trackId">
                 <td><a [routerLink]="['/lease', lease.id, 'view' ]">{{lease.id}}</a></td>
+                <td>{{lease.nr}}</td>
                 <td>{{lease.start | date:'medium'}}</td>
                 <td>{{lease.end | date:'medium'}}</td>
+                <td>{{lease.createdBy}}</td>
+                <td>{{lease.createdDate | date:'medium'}}</td>
+                <td>{{lease.lastModifiedBy}}</td>
+                <td>{{lease.lastModifiedDate | date:'medium'}}</td>
                 <td>
                     <div *ngIf="lease.account">
                         <a [routerLink]="['/payment-account', lease.account?.id, 'view' ]" >{{lease.account?.id}}</a>
@@ -55,10 +65,7 @@
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
-                        <button type="submit"
-                                [routerLink]="['/lease', { outlets: { popup: lease.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
+                        <button type="submit" (click)="delete(lease)"
                                 class="btn btn-danger btn-sm">
                             <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>

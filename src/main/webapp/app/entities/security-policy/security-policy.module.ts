@@ -5,22 +5,16 @@ import { AutocutSharedModule } from 'app/shared/shared.module';
 import { SecurityPolicyComponent } from './security-policy.component';
 import { SecurityPolicyDetailComponent } from './security-policy-detail.component';
 import { SecurityPolicyUpdateComponent } from './security-policy-update.component';
-import {
-  SecurityPolicyDeleteDialogComponent,
-  SecurityPolicyDeletePopupComponent
-} from './security-policy-delete-dialog.component';
-import { securityPolicyPopupRoute, securityPolicyRoute } from './security-policy.route';
-
-const ENTITY_STATES = [...securityPolicyRoute, ...securityPolicyPopupRoute];
+import { SecurityPolicyDeleteDialogComponent } from './security-policy-delete-dialog.component';
+import { securityPolicyRoute } from './security-policy.route';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(ENTITY_STATES)],
+  imports: [AutocutSharedModule, RouterModule.forChild(securityPolicyRoute)],
   declarations: [
     SecurityPolicyComponent,
     SecurityPolicyDetailComponent,
     SecurityPolicyUpdateComponent,
-    SecurityPolicyDeleteDialogComponent,
-    SecurityPolicyDeletePopupComponent
+    SecurityPolicyDeleteDialogComponent
   ],
   entryComponents: [SecurityPolicyDeleteDialogComponent]
 })

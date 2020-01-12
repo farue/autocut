@@ -23,8 +23,7 @@
       "issuer": "Auftraggeber",
       "recipient": "Empfänger",
       "amount": "Betrag",
-      "balance": "Saldo",
-      "paymentAccount": "Zahlungsaccount"
+      "balance": "Saldo"
     }
   }
 }

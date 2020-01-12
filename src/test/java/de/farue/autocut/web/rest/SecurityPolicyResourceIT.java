@@ -2,10 +2,9 @@ package de.farue.autocut.web.rest;
 
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.SecurityPolicy;
-import de.farue.autocut.domain.enumeration.Access;
-import de.farue.autocut.domain.enumeration.ProtectionUnits;
 import de.farue.autocut.repository.SecurityPolicyRepository;
 import de.farue.autocut.web.rest.errors.ExceptionTranslator;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -27,6 +26,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import de.farue.autocut.domain.enumeration.ProtectionUnits;
+import de.farue.autocut.domain.enumeration.Access;
 /**
  * Integration tests for the {@link SecurityPolicyResource} REST controller.
  */
@@ -192,7 +194,7 @@ public class SecurityPolicyResourceIT {
             .andExpect(jsonPath("$.[*].protectionUnit").value(hasItem(DEFAULT_PROTECTION_UNIT.toString())))
             .andExpect(jsonPath("$.[*].access").value(hasItem(DEFAULT_ACCESS.toString())));
     }
-
+    
     @Test
     @Transactional
     public void getSecurityPolicy() throws Exception {

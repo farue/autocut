@@ -22,6 +22,7 @@
             <th scope="col" ><span jhiTranslate="autocutApp.securityPolicy.protectionUnit">Protection Unit</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.securityPolicy.access">Access</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.securityPolicy.teamMember">Team Member</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.securityPolicy.tenant">Tenant</span></th>
             <th scope="col"></th>
             </tr>
             </thead>
@@ -33,6 +34,11 @@
                 <td>
                     <div *ngIf="securityPolicy.teamMember">
                         <a [routerLink]="['/team-member', securityPolicy.teamMember?.id, 'view' ]" >{{securityPolicy.teamMember?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="securityPolicy.tenant">
+                        <a [routerLink]="['/tenant', securityPolicy.tenant?.id, 'view' ]" >{{securityPolicy.tenant?.id}}</a>
                     </div>
                 </td>
                 <td class="text-right">
@@ -49,10 +55,7 @@
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
-                        <button type="submit"
-                                [routerLink]="['/security-policy', { outlets: { popup: securityPolicy.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
+                        <button type="submit" (click)="delete(securityPolicy)"
                                 class="btn btn-danger btn-sm">
                             <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>

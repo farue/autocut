@@ -1,6 +1,8 @@
-import { getTestBed, TestBed } from '@angular/core/testing';
+import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { map, take } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
+import * as moment from 'moment';
+import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { TenantService } from 'app/entities/tenant/tenant.service';
 import { ITenant, Tenant } from 'app/shared/model/tenant.model';
 
@@ -10,47 +12,63 @@ describe('Service Tests', () => {
     let service: TenantService;
     let httpMock: HttpTestingController;
     let elemDefault: ITenant;
-    let expectedResult;
+    let expectedResult: ITenant | ITenant[] | boolean | null;
+    let currentDate: moment.Moment;
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule]
       });
-      expectedResult = {};
+      expectedResult = null;
       injector = getTestBed();
       service = injector.get(TenantService);
       httpMock = injector.get(HttpTestingController);
+      currentDate = moment();
 
-      elemDefault = new Tenant(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA');
+      elemDefault = new Tenant(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', currentDate, 'AAAAAAA', currentDate);
     });
 
     describe('Service methods', () => {
       it('should find an element', () => {
-        const returnedFromService = Object.assign({}, elemDefault);
+        const returnedFromService = Object.assign(
+          {
+            createdDate: currentDate.format(DATE_TIME_FORMAT),
+            lastModifiedDate: currentDate.format(DATE_TIME_FORMAT)
+          },
+          elemDefault
+        );
         service
           .find(123)
           .pipe(take(1))
-          .subscribe(resp => (expectedResult = resp));
+          .subscribe(resp => (expectedResult = resp.body));
 
         const req = httpMock.expectOne({ method: 'GET' });
         req.flush(returnedFromService);
-        expect(expectedResult).toMatchObject({ body: elemDefault });
+        expect(expectedResult).toMatchObject(elemDefault);
       });
 
       it('should create a Tenant', () => {
         const returnedFromService = Object.assign(
           {
-            id: 0
+            id: 0,
+            createdDate: currentDate.format(DATE_TIME_FORMAT),
+            lastModifiedDate: currentDate.format(DATE_TIME_FORMAT)
           },
           elemDefault
         );
-        const expected = Object.assign({}, returnedFromService);
+        const expected = Object.assign(
+          {
+            createdDate: currentDate,
+            lastModifiedDate: currentDate
+          },
+          returnedFromService
+        );
         service
-          .create(new Tenant(null))
+          .create(new Tenant())
           .pipe(take(1))
-          .subscribe(resp => (expectedResult = resp));
+          .subscribe(resp => (expectedResult = resp.body));
         const req = httpMock.expectOne({ method: 'POST' });
         req.flush(returnedFromService);
-        expect(expectedResult).toMatchObject({ body: expected });
+        expect(expectedResult).toMatchObject(expected);
       });
 
       it('should update a Tenant', () => {
@@ -58,19 +76,29 @@ describe('Service Tests', () => {
           {
             firstName: 'BBBBBB',
             lastName: 'BBBBBB',
-            email: 'BBBBBB'
+            email: 'BBBBBB',
+            createdBy: 'BBBBBB',
+            createdDate: currentDate.format(DATE_TIME_FORMAT),
+            lastModifiedBy: 'BBBBBB',
+            lastModifiedDate: currentDate.format(DATE_TIME_FORMAT)
           },
           elemDefault
         );
 
-        const expected = Object.assign({}, returnedFromService);
+        const expected = Object.assign(
+          {
+            createdDate: currentDate,
+            lastModifiedDate: currentDate
+          },
+          returnedFromService
+        );
         service
           .update(expected)
           .pipe(take(1))
-          .subscribe(resp => (expectedResult = resp));
+          .subscribe(resp => (expectedResult = resp.body));
         const req = httpMock.expectOne({ method: 'PUT' });
         req.flush(returnedFromService);
-        expect(expectedResult).toMatchObject({ body: expected });
+        expect(expectedResult).toMatchObject(expected);
       });
 
       it('should return a list of Tenant', () => {
@@ -78,13 +106,23 @@ describe('Service Tests', () => {
           {
             firstName: 'BBBBBB',
             lastName: 'BBBBBB',
-            email: 'BBBBBB'
+            email: 'BBBBBB',
+            createdBy: 'BBBBBB',
+            createdDate: currentDate.format(DATE_TIME_FORMAT),
+            lastModifiedBy: 'BBBBBB',
+            lastModifiedDate: currentDate.format(DATE_TIME_FORMAT)
           },
           elemDefault
         );
-        const expected = Object.assign({}, returnedFromService);
+        const expected = Object.assign(
+          {
+            createdDate: currentDate,
+            lastModifiedDate: currentDate
+          },
+          returnedFromService
+        );
         service
-          .query(expected)
+          .query()
           .pipe(
             take(1),
             map(resp => resp.body)

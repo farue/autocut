@@ -1,8 +1,8 @@
-import { getTestBed, TestBed } from '@angular/core/testing';
+import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { map, take } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
 import { ApartmentService } from 'app/entities/apartment/apartment.service';
-import { Apartment, IApartment } from 'app/shared/model/apartment.model';
+import { IApartment, Apartment } from 'app/shared/model/apartment.model';
 import { ApartmentTypes } from 'app/shared/model/enumerations/apartment-types.model';
 
 describe('Service Tests', () => {
@@ -11,17 +11,17 @@ describe('Service Tests', () => {
     let service: ApartmentService;
     let httpMock: HttpTestingController;
     let elemDefault: IApartment;
-    let expectedResult;
+    let expectedResult: IApartment | IApartment[] | boolean | null;
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule]
       });
-      expectedResult = {};
+      expectedResult = null;
       injector = getTestBed();
       service = injector.get(ApartmentService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new Apartment(0, 'AAAAAAA', ApartmentTypes.SHARED);
+      elemDefault = new Apartment(0, 'AAAAAAA', ApartmentTypes.SHARED, 0);
     });
 
     describe('Service methods', () => {
@@ -30,11 +30,11 @@ describe('Service Tests', () => {
         service
           .find(123)
           .pipe(take(1))
-          .subscribe(resp => (expectedResult = resp));
+          .subscribe(resp => (expectedResult = resp.body));
 
         const req = httpMock.expectOne({ method: 'GET' });
         req.flush(returnedFromService);
-        expect(expectedResult).toMatchObject({ body: elemDefault });
+        expect(expectedResult).toMatchObject(elemDefault);
       });
 
       it('should create a Apartment', () => {
@@ -46,19 +46,20 @@ describe('Service Tests', () => {
         );
         const expected = Object.assign({}, returnedFromService);
         service
-          .create(new Apartment(null))
+          .create(new Apartment())
           .pipe(take(1))
-          .subscribe(resp => (expectedResult = resp));
+          .subscribe(resp => (expectedResult = resp.body));
         const req = httpMock.expectOne({ method: 'POST' });
         req.flush(returnedFromService);
-        expect(expectedResult).toMatchObject({ body: expected });
+        expect(expectedResult).toMatchObject(expected);
       });
 
       it('should update a Apartment', () => {
         const returnedFromService = Object.assign(
           {
             apartmentNr: 'BBBBBB',
-            apartmentType: 'BBBBBB'
+            apartmentType: 'BBBBBB',
+            maxNumberOfLeases: 1
           },
           elemDefault
         );
@@ -67,23 +68,24 @@ describe('Service Tests', () => {
         service
           .update(expected)
           .pipe(take(1))
-          .subscribe(resp => (expectedResult = resp));
+          .subscribe(resp => (expectedResult = resp.body));
         const req = httpMock.expectOne({ method: 'PUT' });
         req.flush(returnedFromService);
-        expect(expectedResult).toMatchObject({ body: expected });
+        expect(expectedResult).toMatchObject(expected);
       });
 
       it('should return a list of Apartment', () => {
         const returnedFromService = Object.assign(
           {
             apartmentNr: 'BBBBBB',
-            apartmentType: 'BBBBBB'
+            apartmentType: 'BBBBBB',
+            maxNumberOfLeases: 1
           },
           elemDefault
         );
         const expected = Object.assign({}, returnedFromService);
         service
-          .query(expected)
+          .query()
           .pipe(
             take(1),
             map(resp => resp.body)

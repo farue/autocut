@@ -15,6 +15,15 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "maxNumberOfLeases",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         }
     ],
     "relationships": [
@@ -22,7 +31,6 @@
             "relationshipType": "one-to-one",
             "otherEntityName": "internetAccess",
             "otherEntityRelationshipName": "apartment",
-            "relationshipValidateRules": "required",
             "relationshipName": "internetAccess",
             "otherEntityField": "id",
             "ownerSide": true

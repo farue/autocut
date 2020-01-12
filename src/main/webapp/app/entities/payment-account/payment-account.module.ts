@@ -5,22 +5,16 @@ import { AutocutSharedModule } from 'app/shared/shared.module';
 import { PaymentAccountComponent } from './payment-account.component';
 import { PaymentAccountDetailComponent } from './payment-account-detail.component';
 import { PaymentAccountUpdateComponent } from './payment-account-update.component';
-import {
-  PaymentAccountDeleteDialogComponent,
-  PaymentAccountDeletePopupComponent
-} from './payment-account-delete-dialog.component';
-import { paymentAccountPopupRoute, paymentAccountRoute } from './payment-account.route';
-
-const ENTITY_STATES = [...paymentAccountRoute, ...paymentAccountPopupRoute];
+import { PaymentAccountDeleteDialogComponent } from './payment-account-delete-dialog.component';
+import { paymentAccountRoute } from './payment-account.route';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(ENTITY_STATES)],
+  imports: [AutocutSharedModule, RouterModule.forChild(paymentAccountRoute)],
   declarations: [
     PaymentAccountComponent,
     PaymentAccountDetailComponent,
     PaymentAccountUpdateComponent,
-    PaymentAccountDeleteDialogComponent,
-    PaymentAccountDeletePopupComponent
+    PaymentAccountDeleteDialogComponent
   ],
   entryComponents: [PaymentAccountDeleteDialogComponent]
 })

@@ -16,7 +16,9 @@
       "detail": {
         "title": "Tenant Communication"
       },
+      "subject": "Subject",
       "text": "Text",
+      "note": "Note",
       "date": "Date",
       "tenant": "Tenant"
     }

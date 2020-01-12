@@ -4,7 +4,7 @@
             <h2 id="jhi-security-policy-heading" jhiTranslate="autocutApp.securityPolicy.home.createOrEditLabel">Create or edit a Security Policy</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!editForm.get('id').value">
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
                     <input type="text" class="form-control" id="id" name="id" formControlName="id"
                         readonly />
@@ -18,9 +18,9 @@
                         <option value="TOOLS_MANAGEMENT">{{'autocutApp.ProtectionUnits.TOOLS_MANAGEMENT' | translate}}</option>
                         <option value="WASHING_SYSTEM_MANAGEMENT">{{'autocutApp.ProtectionUnits.WASHING_SYSTEM_MANAGEMENT' | translate}}</option>
                     </select>
-                    <div *ngIf="editForm.get('protectionUnit').invalid && (editForm.get('protectionUnit').dirty || editForm.get('protectionUnit').touched)">
+                    <div *ngIf="editForm.get('protectionUnit')!.invalid && (editForm.get('protectionUnit')!.dirty || editForm.get('protectionUnit')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('protectionUnit').errors.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.get('protectionUnit')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                     </div>
@@ -33,9 +33,9 @@
                         <option value="WRITE_DENY">{{'autocutApp.Access.WRITE_DENY' | translate}}</option>
                         <option value="READ_WRITE_DENY">{{'autocutApp.Access.READ_WRITE_DENY' | translate}}</option>
                     </select>
-                    <div *ngIf="editForm.get('access').invalid && (editForm.get('access').dirty || editForm.get('access').touched)">
+                    <div *ngIf="editForm.get('access')!.invalid && (editForm.get('access')!.dirty || editForm.get('access')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('access').errors.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.get('access')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                     </div>
@@ -45,7 +45,14 @@
                     <label class="form-control-label" jhiTranslate="autocutApp.securityPolicy.teamMember" for="field_teamMember">Team Member</label>
                     <select class="form-control" id="field_teamMember" name="teamMember" formControlName="teamMember">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="teamMemberOption.id === editForm.get('teamMember').value?.id ? editForm.get('teamMember').value : teamMemberOption" *ngFor="let teamMemberOption of teammembers; trackBy: trackTeamMemberById">{{teamMemberOption.id}}</option>
+                        <option [ngValue]="teamMemberOption.id === editForm.get('teamMember')!.value?.id ? editForm.get('teamMember')!.value : teamMemberOption" *ngFor="let teamMemberOption of teammembers; trackBy: trackById">{{teamMemberOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="autocutApp.securityPolicy.tenant" for="field_tenant">Tenant</label>
+                    <select class="form-control" id="field_tenant" name="tenant" formControlName="tenant">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="tenantOption.id === editForm.get('tenant')!.value?.id ? editForm.get('tenant')!.value : tenantOption" *ngFor="let tenantOption of tenants; trackBy: trackById">{{tenantOption.id}}</option>
                     </select>
                 </div>
             </div>

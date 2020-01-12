@@ -4,7 +4,7 @@
             <h2 id="jhi-internet-access-heading" jhiTranslate="autocutApp.internetAccess.home.createOrEditLabel">Create or edit a Internet Access</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!editForm.get('id').value">
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
                     <input type="text" class="form-control" id="id" name="id" formControlName="id"
                         readonly />
@@ -13,9 +13,9 @@
                     <label class="form-control-label" jhiTranslate="autocutApp.internetAccess.blocked" for="field_blocked">Blocked</label>
                     <input type="checkbox" class="form-control" name="blocked" id="field_blocked"
                            formControlName="blocked"/>
-                    <div *ngIf="editForm.get('blocked').invalid && (editForm.get('blocked').dirty || editForm.get('blocked').touched)">
+                    <div *ngIf="editForm.get('blocked')!.invalid && (editForm.get('blocked')!.dirty || editForm.get('blocked')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('blocked').errors.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.get('blocked')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                     </div>
@@ -24,9 +24,9 @@
                     <label class="form-control-label" jhiTranslate="autocutApp.internetAccess.ip1" for="field_ip1">Ip 1</label>
                     <input type="text" class="form-control" name="ip1" id="field_ip1"
                            formControlName="ip1"/>
-                    <div *ngIf="editForm.get('ip1').invalid && (editForm.get('ip1').dirty || editForm.get('ip1').touched)">
+                    <div *ngIf="editForm.get('ip1')!.invalid && (editForm.get('ip1')!.dirty || editForm.get('ip1')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('ip1').errors.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.get('ip1')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                     </div>
@@ -35,9 +35,9 @@
                     <label class="form-control-label" jhiTranslate="autocutApp.internetAccess.ip2" for="field_ip2">Ip 2</label>
                     <input type="text" class="form-control" name="ip2" id="field_ip2"
                            formControlName="ip2"/>
-                    <div *ngIf="editForm.get('ip2').invalid && (editForm.get('ip2').dirty || editForm.get('ip2').touched)">
+                    <div *ngIf="editForm.get('ip2')!.invalid && (editForm.get('ip2')!.dirty || editForm.get('ip2')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('ip2').errors.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.get('ip2')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                     </div>
@@ -46,13 +46,13 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.internetAccess.port" for="field_port">Port</label>
                     <select class="form-control" id="field_port" name="port" formControlName="port">
-                        <option *ngIf="!editForm.get('port').value" [ngValue]="null" selected></option>
-                        <option [ngValue]="portOption.id === editForm.get('port').value?.id ? editForm.get('port').value : portOption" *ngFor="let portOption of ports; trackBy: trackPortById">{{portOption.id}}</option>
+                        <option *ngIf="!editForm.get('port')!.value" [ngValue]="null" selected></option>
+                        <option [ngValue]="portOption.id === editForm.get('port')!.value?.id ? editForm.get('port')!.value : portOption" *ngFor="let portOption of ports; trackBy: trackById">{{portOption.id}}</option>
                     </select>
                 </div>
-                <div *ngIf="editForm.get('port').invalid && (editForm.get('port').dirty || editForm.get('port').touched)">
+                <div *ngIf="editForm.get('port')!.invalid && (editForm.get('port')!.dirty || editForm.get('port')!.touched)">
                     <small class="form-text text-danger"
-                           *ngIf="editForm.get('port').errors.required" jhiTranslate="entity.validation.required">
+                           *ngIf="editForm.get('port')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                     </small>
                 </div>

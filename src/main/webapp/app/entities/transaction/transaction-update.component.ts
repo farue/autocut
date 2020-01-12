@@ -1,26 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
-import { JhiAlertService } from 'ng-jhipster';
+
 import { ITransaction, Transaction } from 'app/shared/model/transaction.model';
 import { TransactionService } from './transaction.service';
-import { IPaymentAccount } from 'app/shared/model/payment-account.model';
-import { PaymentAccountService } from 'app/entities/payment-account/payment-account.service';
 
 @Component({
   selector: 'jhi-transaction-update',
   templateUrl: './transaction-update.component.html'
 })
 export class TransactionUpdateComponent implements OnInit {
-  isSaving: boolean;
-
-  paymentaccounts: IPaymentAccount[];
+  isSaving = false;
 
   editForm = this.fb.group({
     id: [],
@@ -31,32 +26,18 @@ export class TransactionUpdateComponent implements OnInit {
     issuer: [null, [Validators.required]],
     recipient: [],
     amount: [null, [Validators.required]],
-    balance: [null, [Validators.required]],
-    paymentAccount: []
+    balance: [null, [Validators.required]]
   });
 
-  constructor(
-    protected jhiAlertService: JhiAlertService,
-    protected transactionService: TransactionService,
-    protected paymentAccountService: PaymentAccountService,
-    protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
-  ) {}
+  constructor(protected transactionService: TransactionService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
 
-  ngOnInit() {
-    this.isSaving = false;
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ transaction }) => {
       this.updateForm(transaction);
     });
-    this.paymentAccountService
-      .query()
-      .subscribe(
-        (res: HttpResponse<IPaymentAccount[]>) => (this.paymentaccounts = res.body),
-        (res: HttpErrorResponse) => this.onError(res.message)
-      );
   }
 
-  updateForm(transaction: ITransaction) {
+  updateForm(transaction: ITransaction): void {
     this.editForm.patchValue({
       id: transaction.id,
       kind: transaction.kind,
@@ -66,16 +47,15 @@ export class TransactionUpdateComponent implements OnInit {
       issuer: transaction.issuer,
       recipient: transaction.recipient,
       amount: transaction.amount,
-      balance: transaction.balance,
-      paymentAccount: transaction.paymentAccount
+      balance: transaction.balance
     });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 
-  save() {
+  save(): void {
     this.isSaving = true;
     const transaction = this.createFromForm();
     if (transaction.id !== undefined) {
@@ -88,38 +68,33 @@ export class TransactionUpdateComponent implements OnInit {
   private createFromForm(): ITransaction {
     return {
       ...new Transaction(),
-      id: this.editForm.get(['id']).value,
-      kind: this.editForm.get(['kind']).value,
+      id: this.editForm.get(['id'])!.value,
+      kind: this.editForm.get(['kind'])!.value,
       bookingDate:
-        this.editForm.get(['bookingDate']).value != null ? moment(this.editForm.get(['bookingDate']).value, DATE_TIME_FORMAT) : undefined,
+        this.editForm.get(['bookingDate'])!.value != null ? moment(this.editForm.get(['bookingDate'])!.value, DATE_TIME_FORMAT) : undefined,
       valueDate:
-        this.editForm.get(['valueDate']).value != null ? moment(this.editForm.get(['valueDate']).value, DATE_TIME_FORMAT) : undefined,
-      details: this.editForm.get(['details']).value,
-      issuer: this.editForm.get(['issuer']).value,
-      recipient: this.editForm.get(['recipient']).value,
-      amount: this.editForm.get(['amount']).value,
-      balance: this.editForm.get(['balance']).value,
-      paymentAccount: this.editForm.get(['paymentAccount']).value
+        this.editForm.get(['valueDate'])!.value != null ? moment(this.editForm.get(['valueDate'])!.value, DATE_TIME_FORMAT) : undefined,
+      details: this.editForm.get(['details'])!.value,
+      issuer: this.editForm.get(['issuer'])!.value,
+      recipient: this.editForm.get(['recipient'])!.value,
+      amount: this.editForm.get(['amount'])!.value,
+      balance: this.editForm.get(['balance'])!.value
     };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<ITransaction>>) {
-    result.subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<ITransaction>>): void {
+    result.subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
   }
 
-  protected onSaveSuccess() {
+  protected onSaveSuccess(): void {
     this.isSaving = false;
     this.previousState();
   }
 
-  protected onSaveError() {
+  protected onSaveError(): void {
     this.isSaving = false;
-  }
-  protected onError(errorMessage: string) {
-    this.jhiAlertService.error(errorMessage, null, null);
-  }
-
-  trackPaymentAccountById(index: number, item: IPaymentAccount) {
-    return item.id;
   }
 }

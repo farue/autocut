@@ -1,24 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRouteSnapshot, Resolve, Routes } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
+import { Observable, of, EMPTY } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
+
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { ITenant, Tenant } from 'app/shared/model/tenant.model';
 import { TenantService } from './tenant.service';
 import { TenantComponent } from './tenant.component';
 import { TenantDetailComponent } from './tenant-detail.component';
 import { TenantUpdateComponent } from './tenant-update.component';
-import { TenantDeletePopupComponent } from './tenant-delete-dialog.component';
 
 @Injectable({ providedIn: 'root' })
 export class TenantResolve implements Resolve<ITenant> {
-  constructor(private service: TenantService) {}
+  constructor(private service: TenantService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<ITenant> {
+  resolve(route: ActivatedRouteSnapshot): Observable<ITenant> | Observable<never> {
     const id = route.params['id'];
     if (id) {
-      return this.service.find(id).pipe(map((tenant: HttpResponse<Tenant>) => tenant.body));
+      return this.service.find(id).pipe(
+        flatMap((tenant: HttpResponse<Tenant>) => {
+          if (tenant.body) {
+            return of(tenant.body);
+          } else {
+            this.router.navigate(['404']);
+            return EMPTY;
+          }
+        })
+      );
     }
     return of(new Tenant());
   }
@@ -69,21 +78,5 @@ export const tenantRoute: Routes = [
       pageTitle: 'autocutApp.tenant.home.title'
     },
     canActivate: [UserRouteAccessService]
-  }
-];
-
-export const tenantPopupRoute: Routes = [
-  {
-    path: ':id/delete',
-    component: TenantDeletePopupComponent,
-    resolve: {
-      tenant: TenantResolve
-    },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'autocutApp.tenant.home.title'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
   }
 ];

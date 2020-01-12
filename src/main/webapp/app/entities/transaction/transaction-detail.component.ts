@@ -8,17 +8,17 @@ import { ITransaction } from 'app/shared/model/transaction.model';
   templateUrl: './transaction-detail.component.html'
 })
 export class TransactionDetailComponent implements OnInit {
-  transaction: ITransaction;
+  transaction: ITransaction | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ transaction }) => {
       this.transaction = transaction;
     });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 }

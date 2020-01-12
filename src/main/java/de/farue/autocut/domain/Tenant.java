@@ -1,12 +1,13 @@
 package de.farue.autocut.domain;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,8 +37,21 @@ public class Tenant implements Serializable {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @NotNull
+    @Column(name = "created_by", nullable = false)
+    private String createdBy;
 
+    @NotNull
+    @Column(name = "created_date", nullable = false)
+    private Instant createdDate;
+
+    @Column(name = "last_modified_by")
+    private String lastModifiedBy;
+
+    @Column(name = "last_modified_date")
+    private Instant lastModifiedDate;
+
+    @OneToOne
     @JoinColumn(unique = true)
     private User user;
 
@@ -47,9 +61,17 @@ public class Tenant implements Serializable {
 
     @OneToMany(mappedBy = "tenant")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<SecurityPolicy> securityPolicies = new HashSet<>();
+
+    @OneToMany(mappedBy = "tenant")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Activity> activties = new HashSet<>();
+
+    @OneToMany(mappedBy = "tenant")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<TenantCommunication> messages = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JsonIgnoreProperties("tenants")
     private Lease lease;
 
@@ -101,6 +123,58 @@ public class Tenant implements Serializable {
         this.email = email;
     }
 
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public Tenant createdBy(String createdBy) {
+        this.createdBy = createdBy;
+        return this;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Instant getCreatedDate() {
+        return createdDate;
+    }
+
+    public Tenant createdDate(Instant createdDate) {
+        this.createdDate = createdDate;
+        return this;
+    }
+
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public Tenant lastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+        return this;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public Instant getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public Tenant lastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+        return this;
+    }
+
+    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
     public User getUser() {
         return user;
     }
@@ -137,6 +211,56 @@ public class Tenant implements Serializable {
 
     public void setTeamMemberships(Set<TeamMember> teamMembers) {
         this.teamMemberships = teamMembers;
+    }
+
+    public Set<SecurityPolicy> getSecurityPolicies() {
+        return securityPolicies;
+    }
+
+    public Tenant securityPolicies(Set<SecurityPolicy> securityPolicies) {
+        this.securityPolicies = securityPolicies;
+        return this;
+    }
+
+    public Tenant addSecurityPolicies(SecurityPolicy securityPolicy) {
+        this.securityPolicies.add(securityPolicy);
+        securityPolicy.setTenant(this);
+        return this;
+    }
+
+    public Tenant removeSecurityPolicies(SecurityPolicy securityPolicy) {
+        this.securityPolicies.remove(securityPolicy);
+        securityPolicy.setTenant(null);
+        return this;
+    }
+
+    public void setSecurityPolicies(Set<SecurityPolicy> securityPolicies) {
+        this.securityPolicies = securityPolicies;
+    }
+
+    public Set<Activity> getActivties() {
+        return activties;
+    }
+
+    public Tenant activties(Set<Activity> activities) {
+        this.activties = activities;
+        return this;
+    }
+
+    public Tenant addActivties(Activity activity) {
+        this.activties.add(activity);
+        activity.setTenant(this);
+        return this;
+    }
+
+    public Tenant removeActivties(Activity activity) {
+        this.activties.remove(activity);
+        activity.setTenant(null);
+        return this;
+    }
+
+    public void setActivties(Set<Activity> activities) {
+        this.activties = activities;
     }
 
     public Set<TenantCommunication> getMessages() {
@@ -201,6 +325,10 @@ public class Tenant implements Serializable {
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
             ", email='" + getEmail() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             "}";
     }
 }

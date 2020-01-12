@@ -5,14 +5,12 @@ import { AutocutSharedModule } from 'app/shared/shared.module';
 import { TenantComponent } from './tenant.component';
 import { TenantDetailComponent } from './tenant-detail.component';
 import { TenantUpdateComponent } from './tenant-update.component';
-import { TenantDeleteDialogComponent, TenantDeletePopupComponent } from './tenant-delete-dialog.component';
-import { tenantPopupRoute, tenantRoute } from './tenant.route';
-
-const ENTITY_STATES = [...tenantRoute, ...tenantPopupRoute];
+import { TenantDeleteDialogComponent } from './tenant-delete-dialog.component';
+import { tenantRoute } from './tenant.route';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(ENTITY_STATES)],
-  declarations: [TenantComponent, TenantDetailComponent, TenantUpdateComponent, TenantDeleteDialogComponent, TenantDeletePopupComponent],
+  imports: [AutocutSharedModule, RouterModule.forChild(tenantRoute)],
+  declarations: [TenantComponent, TenantDetailComponent, TenantUpdateComponent, TenantDeleteDialogComponent],
   entryComponents: [TenantDeleteDialogComponent]
 })
 export class AutocutTenantModule {}

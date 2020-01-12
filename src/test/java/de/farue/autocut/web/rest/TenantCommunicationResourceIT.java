@@ -1,10 +1,10 @@
 package de.farue.autocut.web.rest;
 
 import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.Tenant;
 import de.farue.autocut.domain.TenantCommunication;
 import de.farue.autocut.repository.TenantCommunicationRepository;
 import de.farue.autocut.web.rest.errors.ExceptionTranslator;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -16,6 +16,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
@@ -35,8 +36,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = AutocutApp.class)
 public class TenantCommunicationResourceIT {
 
+    private static final String DEFAULT_SUBJECT = "AAAAAAAAAA";
+    private static final String UPDATED_SUBJECT = "BBBBBBBBBB";
+
     private static final String DEFAULT_TEXT = "AAAAAAAAAA";
     private static final String UPDATED_TEXT = "BBBBBBBBBB";
+
+    private static final String DEFAULT_NOTE = "AAAAAAAAAA";
+    private static final String UPDATED_NOTE = "BBBBBBBBBB";
 
     private static final Instant DEFAULT_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -83,18 +90,10 @@ public class TenantCommunicationResourceIT {
      */
     public static TenantCommunication createEntity(EntityManager em) {
         TenantCommunication tenantCommunication = new TenantCommunication()
+            .subject(DEFAULT_SUBJECT)
             .text(DEFAULT_TEXT)
+            .note(DEFAULT_NOTE)
             .date(DEFAULT_DATE);
-        // Add required entity
-        Tenant tenant;
-        if (TestUtil.findAll(em, Tenant.class).isEmpty()) {
-            tenant = TenantResourceIT.createEntity(em);
-            em.persist(tenant);
-            em.flush();
-        } else {
-            tenant = TestUtil.findAll(em, Tenant.class).get(0);
-        }
-        tenantCommunication.setTenant(tenant);
         return tenantCommunication;
     }
     /**
@@ -105,18 +104,10 @@ public class TenantCommunicationResourceIT {
      */
     public static TenantCommunication createUpdatedEntity(EntityManager em) {
         TenantCommunication tenantCommunication = new TenantCommunication()
+            .subject(UPDATED_SUBJECT)
             .text(UPDATED_TEXT)
+            .note(UPDATED_NOTE)
             .date(UPDATED_DATE);
-        // Add required entity
-        Tenant tenant;
-        if (TestUtil.findAll(em, Tenant.class).isEmpty()) {
-            tenant = TenantResourceIT.createUpdatedEntity(em);
-            em.persist(tenant);
-            em.flush();
-        } else {
-            tenant = TestUtil.findAll(em, Tenant.class).get(0);
-        }
-        tenantCommunication.setTenant(tenant);
         return tenantCommunication;
     }
 
@@ -140,7 +131,9 @@ public class TenantCommunicationResourceIT {
         List<TenantCommunication> tenantCommunicationList = tenantCommunicationRepository.findAll();
         assertThat(tenantCommunicationList).hasSize(databaseSizeBeforeCreate + 1);
         TenantCommunication testTenantCommunication = tenantCommunicationList.get(tenantCommunicationList.size() - 1);
+        assertThat(testTenantCommunication.getSubject()).isEqualTo(DEFAULT_SUBJECT);
         assertThat(testTenantCommunication.getText()).isEqualTo(DEFAULT_TEXT);
+        assertThat(testTenantCommunication.getNote()).isEqualTo(DEFAULT_NOTE);
         assertThat(testTenantCommunication.getDate()).isEqualTo(DEFAULT_DATE);
     }
 
@@ -163,6 +156,24 @@ public class TenantCommunicationResourceIT {
         assertThat(tenantCommunicationList).hasSize(databaseSizeBeforeCreate);
     }
 
+
+    @Test
+    @Transactional
+    public void checkSubjectIsRequired() throws Exception {
+        int databaseSizeBeforeTest = tenantCommunicationRepository.findAll().size();
+        // set the field null
+        tenantCommunication.setSubject(null);
+
+        // Create the TenantCommunication, which fails.
+
+        restTenantCommunicationMockMvc.perform(post("/api/tenant-communications")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(tenantCommunication)))
+            .andExpect(status().isBadRequest());
+
+        List<TenantCommunication> tenantCommunicationList = tenantCommunicationRepository.findAll();
+        assertThat(tenantCommunicationList).hasSize(databaseSizeBeforeTest);
+    }
 
     @Test
     @Transactional
@@ -193,10 +204,12 @@ public class TenantCommunicationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(tenantCommunication.getId().intValue())))
+            .andExpect(jsonPath("$.[*].subject").value(hasItem(DEFAULT_SUBJECT)))
             .andExpect(jsonPath("$.[*].text").value(hasItem(DEFAULT_TEXT.toString())))
+            .andExpect(jsonPath("$.[*].note").value(hasItem(DEFAULT_NOTE.toString())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
     }
-
+    
     @Test
     @Transactional
     public void getTenantCommunication() throws Exception {
@@ -208,7 +221,9 @@ public class TenantCommunicationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(tenantCommunication.getId().intValue()))
+            .andExpect(jsonPath("$.subject").value(DEFAULT_SUBJECT))
             .andExpect(jsonPath("$.text").value(DEFAULT_TEXT.toString()))
+            .andExpect(jsonPath("$.note").value(DEFAULT_NOTE.toString()))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
     }
 
@@ -233,7 +248,9 @@ public class TenantCommunicationResourceIT {
         // Disconnect from session so that the updates on updatedTenantCommunication are not directly saved in db
         em.detach(updatedTenantCommunication);
         updatedTenantCommunication
+            .subject(UPDATED_SUBJECT)
             .text(UPDATED_TEXT)
+            .note(UPDATED_NOTE)
             .date(UPDATED_DATE);
 
         restTenantCommunicationMockMvc.perform(put("/api/tenant-communications")
@@ -245,7 +262,9 @@ public class TenantCommunicationResourceIT {
         List<TenantCommunication> tenantCommunicationList = tenantCommunicationRepository.findAll();
         assertThat(tenantCommunicationList).hasSize(databaseSizeBeforeUpdate);
         TenantCommunication testTenantCommunication = tenantCommunicationList.get(tenantCommunicationList.size() - 1);
+        assertThat(testTenantCommunication.getSubject()).isEqualTo(UPDATED_SUBJECT);
         assertThat(testTenantCommunication.getText()).isEqualTo(UPDATED_TEXT);
+        assertThat(testTenantCommunication.getNote()).isEqualTo(UPDATED_NOTE);
         assertThat(testTenantCommunication.getDate()).isEqualTo(UPDATED_DATE);
     }
 

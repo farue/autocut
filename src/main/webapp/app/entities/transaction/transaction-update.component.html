@@ -4,7 +4,7 @@
             <h2 id="jhi-transaction-heading" jhiTranslate="autocutApp.transaction.home.createOrEditLabel">Create or edit a Transaction</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!editForm.get('id').value">
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
                     <input type="text" class="form-control" id="id" name="id" formControlName="id"
                         readonly />
@@ -17,9 +17,9 @@
                         <option value="DEBIT">{{'autocutApp.TransactionKind.DEBIT' | translate}}</option>
                         <option value="TRANSFER">{{'autocutApp.TransactionKind.TRANSFER' | translate}}</option>
                     </select>
-                    <div *ngIf="editForm.get('kind').invalid && (editForm.get('kind').dirty || editForm.get('kind').touched)">
+                    <div *ngIf="editForm.get('kind')!.invalid && (editForm.get('kind')!.dirty || editForm.get('kind')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('kind').errors.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.get('kind')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                     </div>
@@ -29,13 +29,13 @@
                     <div class="d-flex">
                         <input id="field_bookingDate" type="datetime-local" class="form-control" name="bookingDate" formControlName="bookingDate" placeholder="YYYY-MM-DD HH:mm"/>
                     </div>
-                    <div *ngIf="editForm.get('bookingDate').invalid && (editForm.get('bookingDate').dirty || editForm.get('bookingDate').touched)">
+                    <div *ngIf="editForm.get('bookingDate')!.invalid && (editForm.get('bookingDate')!.dirty || editForm.get('bookingDate')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('bookingDate').errors.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.get('bookingDate')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                         <small class="form-text text-danger"
-                            [hidden]="!editForm.get('bookingDate').errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                            [hidden]="!editForm.get('bookingDate')?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
                             This field should be a date and time.
                         </small>
                     </div>
@@ -45,13 +45,13 @@
                     <div class="d-flex">
                         <input id="field_valueDate" type="datetime-local" class="form-control" name="valueDate" formControlName="valueDate" placeholder="YYYY-MM-DD HH:mm"/>
                     </div>
-                    <div *ngIf="editForm.get('valueDate').invalid && (editForm.get('valueDate').dirty || editForm.get('valueDate').touched)">
+                    <div *ngIf="editForm.get('valueDate')!.invalid && (editForm.get('valueDate')!.dirty || editForm.get('valueDate')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('valueDate').errors.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.get('valueDate')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                         <small class="form-text text-danger"
-                            [hidden]="!editForm.get('valueDate').errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                            [hidden]="!editForm.get('valueDate')?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
                             This field should be a date and time.
                         </small>
                     </div>
@@ -65,9 +65,9 @@
                     <label class="form-control-label" jhiTranslate="autocutApp.transaction.issuer" for="field_issuer">Issuer</label>
                     <input type="text" class="form-control" name="issuer" id="field_issuer"
                            formControlName="issuer"/>
-                    <div *ngIf="editForm.get('issuer').invalid && (editForm.get('issuer').dirty || editForm.get('issuer').touched)">
+                    <div *ngIf="editForm.get('issuer')!.invalid && (editForm.get('issuer')!.dirty || editForm.get('issuer')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('issuer').errors.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.get('issuer')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                     </div>
@@ -81,9 +81,9 @@
                     <label class="form-control-label" jhiTranslate="autocutApp.transaction.amount" for="field_amount">Amount</label>
                     <input type="number" class="form-control" name="amount" id="field_amount"
                            formControlName="amount"/>
-                    <div *ngIf="editForm.get('amount').invalid && (editForm.get('amount').dirty || editForm.get('amount').touched)">
+                    <div *ngIf="editForm.get('amount')!.invalid && (editForm.get('amount')!.dirty || editForm.get('amount')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('amount').errors.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.get('amount')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                         <small class="form-text text-danger"
@@ -96,9 +96,9 @@
                     <label class="form-control-label" jhiTranslate="autocutApp.transaction.balance" for="field_balance">Balance</label>
                     <input type="number" class="form-control" name="balance" id="field_balance"
                            formControlName="balance"/>
-                    <div *ngIf="editForm.get('balance').invalid && (editForm.get('balance').dirty || editForm.get('balance').touched)">
+                    <div *ngIf="editForm.get('balance')!.invalid && (editForm.get('balance')!.dirty || editForm.get('balance')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('balance').errors.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.get('balance')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                         <small class="form-text text-danger"
@@ -108,13 +108,6 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.transaction.paymentAccount" for="field_paymentAccount">Payment Account</label>
-                    <select class="form-control" id="field_paymentAccount" name="paymentAccount" formControlName="paymentAccount">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="paymentAccountOption.id === editForm.get('paymentAccount').value?.id ? editForm.get('paymentAccount').value : paymentAccountOption" *ngFor="let paymentAccountOption of paymentaccounts; trackBy: trackPaymentAccountById">{{paymentAccountOption.id}}</option>
-                    </select>
-                </div>
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">

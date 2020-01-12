@@ -18,7 +18,8 @@
       },
       "protectionUnit": "Protection Unit",
       "access": "Access",
-      "teamMember": "Team Member"
+      "teamMember": "Team Member",
+      "tenant": "Tenant"
     }
   }
 }

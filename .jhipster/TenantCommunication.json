@@ -2,12 +2,26 @@
     "name": "TenantCommunication",
     "fields": [
         {
+            "fieldName": "subject",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 80
+        },
+        {
             "fieldName": "text",
             "fieldType": "byte[]",
             "fieldTypeBlobContent": "text",
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "note",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
         },
         {
             "fieldName": "date",
@@ -22,7 +36,6 @@
             "relationshipType": "many-to-one",
             "otherEntityName": "tenant",
             "otherEntityRelationshipName": "messages",
-            "relationshipValidateRules": "required",
             "relationshipName": "tenant",
             "otherEntityField": "id"
         }

@@ -1,11 +1,11 @@
 package de.farue.autocut.domain;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -29,9 +29,9 @@ public class PaymentAccount implements Serializable {
     @Column(name = "balance", precision = 21, scale = 2, nullable = false)
     private BigDecimal balance;
 
-    @OneToMany(mappedBy = "paymentAccount")
+    @OneToMany(mappedBy = "account")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Transaction> transactions = new HashSet<>();
+    private Set<PaymentEntry> paymentEntries = new HashSet<>();
 
     @OneToOne(mappedBy = "account")
     @JsonIgnore
@@ -59,29 +59,29 @@ public class PaymentAccount implements Serializable {
         this.balance = balance;
     }
 
-    public Set<Transaction> getTransactions() {
-        return transactions;
+    public Set<PaymentEntry> getPaymentEntries() {
+        return paymentEntries;
     }
 
-    public PaymentAccount transactions(Set<Transaction> transactions) {
-        this.transactions = transactions;
+    public PaymentAccount paymentEntries(Set<PaymentEntry> paymentEntries) {
+        this.paymentEntries = paymentEntries;
         return this;
     }
 
-    public PaymentAccount addTransactions(Transaction transaction) {
-        this.transactions.add(transaction);
-        transaction.setPaymentAccount(this);
+    public PaymentAccount addPaymentEntries(PaymentEntry paymentEntry) {
+        this.paymentEntries.add(paymentEntry);
+        paymentEntry.setAccount(this);
         return this;
     }
 
-    public PaymentAccount removeTransactions(Transaction transaction) {
-        this.transactions.remove(transaction);
-        transaction.setPaymentAccount(null);
+    public PaymentAccount removePaymentEntries(PaymentEntry paymentEntry) {
+        this.paymentEntries.remove(paymentEntry);
+        paymentEntry.setAccount(null);
         return this;
     }
 
-    public void setTransactions(Set<Transaction> transactions) {
-        this.transactions = transactions;
+    public void setPaymentEntries(Set<PaymentEntry> paymentEntries) {
+        this.paymentEntries = paymentEntries;
     }
 
     public Lease getLease() {

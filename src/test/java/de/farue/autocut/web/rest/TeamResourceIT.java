@@ -4,6 +4,7 @@ import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Team;
 import de.farue.autocut.repository.TeamRepository;
 import de.farue.autocut.web.rest.errors.ExceptionTranslator;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -166,7 +167,7 @@ public class TeamResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(team.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
     }
-
+    
     @Test
     @Transactional
     public void getTeam() throws Exception {

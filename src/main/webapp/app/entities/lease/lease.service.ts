@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import * as moment from 'moment';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { map } from 'rxjs/operators';
+import * as moment from 'moment';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { DATE_FORMAT } from 'app/shared/constants/input.constants';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared/util/request-util';
 import { ILease } from 'app/shared/model/lease.model';
@@ -45,22 +46,26 @@ export class LeaseService {
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
-  delete(id: number): Observable<HttpResponse<any>> {
-    return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  delete(id: number): Observable<HttpResponse<{}>> {
+    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
   protected convertDateFromClient(lease: ILease): ILease {
     const copy: ILease = Object.assign({}, lease, {
-      start: lease.start != null && lease.start.isValid() ? lease.start.toJSON() : null,
-      end: lease.end != null && lease.end.isValid() ? lease.end.toJSON() : null
+      start: lease.start && lease.start.isValid() ? lease.start.toJSON() : undefined,
+      end: lease.end && lease.end.isValid() ? lease.end.toJSON() : undefined,
+      createdDate: lease.createdDate && lease.createdDate.isValid() ? lease.createdDate.toJSON() : undefined,
+      lastModifiedDate: lease.lastModifiedDate && lease.lastModifiedDate.isValid() ? lease.lastModifiedDate.toJSON() : undefined
     });
     return copy;
   }
 
   protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
     if (res.body) {
-      res.body.start = res.body.start != null ? moment(res.body.start) : null;
-      res.body.end = res.body.end != null ? moment(res.body.end) : null;
+      res.body.start = res.body.start ? moment(res.body.start) : undefined;
+      res.body.end = res.body.end ? moment(res.body.end) : undefined;
+      res.body.createdDate = res.body.createdDate ? moment(res.body.createdDate) : undefined;
+      res.body.lastModifiedDate = res.body.lastModifiedDate ? moment(res.body.lastModifiedDate) : undefined;
     }
     return res;
   }
@@ -68,8 +73,10 @@ export class LeaseService {
   protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
     if (res.body) {
       res.body.forEach((lease: ILease) => {
-        lease.start = lease.start != null ? moment(lease.start) : null;
-        lease.end = lease.end != null ? moment(lease.end) : null;
+        lease.start = lease.start ? moment(lease.start) : undefined;
+        lease.end = lease.end ? moment(lease.end) : undefined;
+        lease.createdDate = lease.createdDate ? moment(lease.createdDate) : undefined;
+        lease.lastModifiedDate = lease.lastModifiedDate ? moment(lease.lastModifiedDate) : undefined;
       });
     }
     return res;

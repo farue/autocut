@@ -18,6 +18,7 @@
       },
       "apartmentNr": "Wohnung Nr",
       "apartmentType": "Wohnung Typ",
+      "maxNumberOfLeases": "Max. Anzahl Mietverträge",
       "internetAccess": "Internetzugang",
       "leases": "Mietverträge",
       "address": "Adresse"

@@ -5,20 +5,12 @@ import { AutocutSharedModule } from 'app/shared/shared.module';
 import { ApartmentComponent } from './apartment.component';
 import { ApartmentDetailComponent } from './apartment-detail.component';
 import { ApartmentUpdateComponent } from './apartment-update.component';
-import { ApartmentDeleteDialogComponent, ApartmentDeletePopupComponent } from './apartment-delete-dialog.component';
-import { apartmentPopupRoute, apartmentRoute } from './apartment.route';
-
-const ENTITY_STATES = [...apartmentRoute, ...apartmentPopupRoute];
+import { ApartmentDeleteDialogComponent } from './apartment-delete-dialog.component';
+import { apartmentRoute } from './apartment.route';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(ENTITY_STATES)],
-  declarations: [
-    ApartmentComponent,
-    ApartmentDetailComponent,
-    ApartmentUpdateComponent,
-    ApartmentDeleteDialogComponent,
-    ApartmentDeletePopupComponent
-  ],
+  imports: [AutocutSharedModule, RouterModule.forChild(apartmentRoute)],
+  declarations: [ApartmentComponent, ApartmentDetailComponent, ApartmentUpdateComponent, ApartmentDeleteDialogComponent],
   entryComponents: [ApartmentDeleteDialogComponent]
 })
 export class AutocutApartmentModule {}

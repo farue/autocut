@@ -8,17 +8,17 @@ import { IInternetAccess } from 'app/shared/model/internet-access.model';
   templateUrl: './internet-access-detail.component.html'
 })
 export class InternetAccessDetailComponent implements OnInit {
-  internetAccess: IInternetAccess;
+  internetAccess: IInternetAccess | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ internetAccess }) => {
       this.internetAccess = internetAccess;
     });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 }

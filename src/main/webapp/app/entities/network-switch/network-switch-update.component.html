@@ -4,7 +4,7 @@
             <h2 id="jhi-network-switch-heading" jhiTranslate="autocutApp.networkSwitch.home.createOrEditLabel">Create or edit a Network Switch</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!editForm.get('id').value">
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
                     <input type="text" class="form-control" id="id" name="id" formControlName="id"
                         readonly />
@@ -13,9 +13,9 @@
                     <label class="form-control-label" jhiTranslate="autocutApp.networkSwitch.switchInterface" for="field_switchInterface">Switch Interface</label>
                     <input type="text" class="form-control" name="switchInterface" id="field_switchInterface"
                            formControlName="switchInterface"/>
-                    <div *ngIf="editForm.get('switchInterface').invalid && (editForm.get('switchInterface').dirty || editForm.get('switchInterface').touched)">
+                    <div *ngIf="editForm.get('switchInterface')!.invalid && (editForm.get('switchInterface')!.dirty || editForm.get('switchInterface')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('switchInterface').errors.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.get('switchInterface')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                     </div>

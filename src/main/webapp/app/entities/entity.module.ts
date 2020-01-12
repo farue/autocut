@@ -55,6 +55,14 @@ import { RouterModule } from '@angular/router';
       {
         path: 'tenant-communication',
         loadChildren: () => import('./tenant-communication/tenant-communication.module').then(m => m.AutocutTenantCommunicationModule)
+      },
+      {
+        path: 'payment-entry',
+        loadChildren: () => import('./payment-entry/payment-entry.module').then(m => m.AutocutPaymentEntryModule)
+      },
+      {
+        path: 'activity',
+        loadChildren: () => import('./activity/activity.module').then(m => m.AutocutActivityModule)
       }
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ])

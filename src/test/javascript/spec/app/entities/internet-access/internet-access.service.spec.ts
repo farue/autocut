@@ -1,6 +1,6 @@
-import { getTestBed, TestBed } from '@angular/core/testing';
+import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { map, take } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
 import { InternetAccessService } from 'app/entities/internet-access/internet-access.service';
 import { IInternetAccess, InternetAccess } from 'app/shared/model/internet-access.model';
 
@@ -10,12 +10,12 @@ describe('Service Tests', () => {
     let service: InternetAccessService;
     let httpMock: HttpTestingController;
     let elemDefault: IInternetAccess;
-    let expectedResult;
+    let expectedResult: IInternetAccess | IInternetAccess[] | boolean | null;
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule]
       });
-      expectedResult = {};
+      expectedResult = null;
       injector = getTestBed();
       service = injector.get(InternetAccessService);
       httpMock = injector.get(HttpTestingController);
@@ -29,11 +29,11 @@ describe('Service Tests', () => {
         service
           .find(123)
           .pipe(take(1))
-          .subscribe(resp => (expectedResult = resp));
+          .subscribe(resp => (expectedResult = resp.body));
 
         const req = httpMock.expectOne({ method: 'GET' });
         req.flush(returnedFromService);
-        expect(expectedResult).toMatchObject({ body: elemDefault });
+        expect(expectedResult).toMatchObject(elemDefault);
       });
 
       it('should create a InternetAccess', () => {
@@ -45,12 +45,12 @@ describe('Service Tests', () => {
         );
         const expected = Object.assign({}, returnedFromService);
         service
-          .create(new InternetAccess(null))
+          .create(new InternetAccess())
           .pipe(take(1))
-          .subscribe(resp => (expectedResult = resp));
+          .subscribe(resp => (expectedResult = resp.body));
         const req = httpMock.expectOne({ method: 'POST' });
         req.flush(returnedFromService);
-        expect(expectedResult).toMatchObject({ body: expected });
+        expect(expectedResult).toMatchObject(expected);
       });
 
       it('should update a InternetAccess', () => {
@@ -67,10 +67,10 @@ describe('Service Tests', () => {
         service
           .update(expected)
           .pipe(take(1))
-          .subscribe(resp => (expectedResult = resp));
+          .subscribe(resp => (expectedResult = resp.body));
         const req = httpMock.expectOne({ method: 'PUT' });
         req.flush(returnedFromService);
-        expect(expectedResult).toMatchObject({ body: expected });
+        expect(expectedResult).toMatchObject(expected);
       });
 
       it('should return a list of InternetAccess', () => {
@@ -84,7 +84,7 @@ describe('Service Tests', () => {
         );
         const expected = Object.assign({}, returnedFromService);
         service
-          .query(expected)
+          .query()
           .pipe(
             take(1),
             map(resp => resp.body)

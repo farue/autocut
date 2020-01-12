@@ -1,11 +1,11 @@
 package de.farue.autocut.domain;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
@@ -26,15 +26,32 @@ public class Lease implements Serializable {
     private Long id;
 
     @NotNull
+    @Column(name = "nr", nullable = false)
+    private String nr;
+
+    @NotNull
     @Column(name = "start", nullable = false)
     private Instant start;
 
     @Column(name = "end")
     private Instant end;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @NotNull
+    @Column(name = "created_by", nullable = false)
+    private String createdBy;
 
+    @NotNull
+    @Column(name = "created_date", nullable = false)
+    private Instant createdDate;
+
+    @Column(name = "last_modified_by")
+    private String lastModifiedBy;
+
+    @Column(name = "last_modified_date")
+    private Instant lastModifiedDate;
+
+    @OneToOne(optional = false)
+    @NotNull
     @JoinColumn(unique = true)
     private PaymentAccount account;
 
@@ -42,7 +59,7 @@ public class Lease implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Tenant> tenants = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JsonIgnoreProperties("leases")
     private Apartment apartment;
 
@@ -53,6 +70,19 @@ public class Lease implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getNr() {
+        return nr;
+    }
+
+    public Lease nr(String nr) {
+        this.nr = nr;
+        return this;
+    }
+
+    public void setNr(String nr) {
+        this.nr = nr;
     }
 
     public Instant getStart() {
@@ -79,6 +109,58 @@ public class Lease implements Serializable {
 
     public void setEnd(Instant end) {
         this.end = end;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public Lease createdBy(String createdBy) {
+        this.createdBy = createdBy;
+        return this;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Instant getCreatedDate() {
+        return createdDate;
+    }
+
+    public Lease createdDate(Instant createdDate) {
+        this.createdDate = createdDate;
+        return this;
+    }
+
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public Lease lastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+        return this;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public Instant getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public Lease lastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+        return this;
+    }
+
+    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     public PaymentAccount getAccount() {
@@ -153,8 +235,13 @@ public class Lease implements Serializable {
     public String toString() {
         return "Lease{" +
             "id=" + getId() +
+            ", nr='" + getNr() + "'" +
             ", start='" + getStart() + "'" +
             ", end='" + getEnd() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             "}";
     }
 }

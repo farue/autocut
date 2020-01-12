@@ -1,11 +1,11 @@
 package de.farue.autocut.web.rest;
 
 import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.InternetAccess;
-import de.farue.autocut.domain.NetworkSwitch;
 import de.farue.autocut.domain.Port;
+import de.farue.autocut.domain.NetworkSwitch;
 import de.farue.autocut.repository.PortRepository;
 import de.farue.autocut.web.rest.errors.ExceptionTranslator;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -81,16 +81,6 @@ public class PortResourceIT {
         Port port = new Port()
             .number(DEFAULT_NUMBER);
         // Add required entity
-        InternetAccess internetAccess;
-        if (TestUtil.findAll(em, InternetAccess.class).isEmpty()) {
-            internetAccess = InternetAccessResourceIT.createEntity(em);
-            em.persist(internetAccess);
-            em.flush();
-        } else {
-            internetAccess = TestUtil.findAll(em, InternetAccess.class).get(0);
-        }
-        port.setInternetAccess(internetAccess);
-        // Add required entity
         NetworkSwitch networkSwitch;
         if (TestUtil.findAll(em, NetworkSwitch.class).isEmpty()) {
             networkSwitch = NetworkSwitchResourceIT.createEntity(em);
@@ -111,16 +101,6 @@ public class PortResourceIT {
     public static Port createUpdatedEntity(EntityManager em) {
         Port port = new Port()
             .number(UPDATED_NUMBER);
-        // Add required entity
-        InternetAccess internetAccess;
-        if (TestUtil.findAll(em, InternetAccess.class).isEmpty()) {
-            internetAccess = InternetAccessResourceIT.createUpdatedEntity(em);
-            em.persist(internetAccess);
-            em.flush();
-        } else {
-            internetAccess = TestUtil.findAll(em, InternetAccess.class).get(0);
-        }
-        port.setInternetAccess(internetAccess);
         // Add required entity
         NetworkSwitch networkSwitch;
         if (TestUtil.findAll(em, NetworkSwitch.class).isEmpty()) {
@@ -208,7 +188,7 @@ public class PortResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(port.getId().intValue())))
             .andExpect(jsonPath("$.[*].number").value(hasItem(DEFAULT_NUMBER)));
     }
-
+    
     @Test
     @Transactional
     public void getPort() throws Exception {

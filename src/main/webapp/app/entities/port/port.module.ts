@@ -5,14 +5,12 @@ import { AutocutSharedModule } from 'app/shared/shared.module';
 import { PortComponent } from './port.component';
 import { PortDetailComponent } from './port-detail.component';
 import { PortUpdateComponent } from './port-update.component';
-import { PortDeleteDialogComponent, PortDeletePopupComponent } from './port-delete-dialog.component';
-import { portPopupRoute, portRoute } from './port.route';
-
-const ENTITY_STATES = [...portRoute, ...portPopupRoute];
+import { PortDeleteDialogComponent } from './port-delete-dialog.component';
+import { portRoute } from './port.route';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(ENTITY_STATES)],
-  declarations: [PortComponent, PortDetailComponent, PortUpdateComponent, PortDeleteDialogComponent, PortDeletePopupComponent],
+  imports: [AutocutSharedModule, RouterModule.forChild(portRoute)],
+  declarations: [PortComponent, PortDetailComponent, PortUpdateComponent, PortDeleteDialogComponent],
   entryComponents: [PortDeleteDialogComponent]
 })
 export class AutocutPortModule {}

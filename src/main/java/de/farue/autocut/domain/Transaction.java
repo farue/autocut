@@ -1,15 +1,15 @@
 package de.farue.autocut.domain;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import de.farue.autocut.domain.enumeration.TransactionKind;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
+
+import de.farue.autocut.domain.enumeration.TransactionKind;
 
 /**
  * A Transaction.
@@ -55,10 +55,6 @@ public class Transaction implements Serializable {
     @NotNull
     @Column(name = "balance", precision = 21, scale = 2, nullable = false)
     private BigDecimal balance;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties("transactions")
-    private PaymentAccount paymentAccount;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -171,19 +167,6 @@ public class Transaction implements Serializable {
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
-    }
-
-    public PaymentAccount getPaymentAccount() {
-        return paymentAccount;
-    }
-
-    public Transaction paymentAccount(PaymentAccount paymentAccount) {
-        this.paymentAccount = paymentAccount;
-        return this;
-    }
-
-    public void setPaymentAccount(PaymentAccount paymentAccount) {
-        this.paymentAccount = paymentAccount;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -37,12 +37,6 @@
                 <dd>
                     <span>{{transaction.balance}}</span>
                 </dd>
-                <dt><span jhiTranslate="autocutApp.transaction.paymentAccount">Payment Account</span></dt>
-                <dd>
-                    <div *ngIf="transaction.paymentAccount">
-                        <a [routerLink]="['/payment-account', transaction.paymentAccount?.id, 'view']">{{transaction.paymentAccount?.id}}</a>
-                    </div>
-                </dd>
             </dl>
 
             <button type="submit"

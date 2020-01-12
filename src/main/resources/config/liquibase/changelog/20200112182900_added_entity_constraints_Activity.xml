@@ -4,15 +4,15 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
     <!--
-        Added the constraints for entity Transaction.
+        Added the constraints for entity Activity.
     -->
-    <changeSet id="20191117011752-2" author="jhipster">
+    <changeSet id="20200112182900-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="payment_account_id"
-                                 baseTableName="transaction"
-                                 constraintName="fk_transaction_payment_account_id"
+        <addForeignKeyConstraint baseColumnNames="tenant_id"
+                                 baseTableName="activity"
+                                 constraintName="fk_activity_tenant_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="payment_account"/>
+                                 referencedTableName="tenant"/>
 
     </changeSet>
 </databaseChangeLog>

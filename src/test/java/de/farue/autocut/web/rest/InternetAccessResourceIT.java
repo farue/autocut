@@ -1,12 +1,12 @@
 package de.farue.autocut.web.rest;
 
 import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.Apartment;
 import de.farue.autocut.domain.InternetAccess;
 import de.farue.autocut.domain.Port;
 import de.farue.autocut.repository.InternetAccessRepository;
 import de.farue.autocut.service.InternetAccessService;
 import de.farue.autocut.web.rest.errors.ExceptionTranslator;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -102,16 +102,6 @@ public class InternetAccessResourceIT {
             port = TestUtil.findAll(em, Port.class).get(0);
         }
         internetAccess.setPort(port);
-        // Add required entity
-        Apartment apartment;
-        if (TestUtil.findAll(em, Apartment.class).isEmpty()) {
-            apartment = ApartmentResourceIT.createEntity(em);
-            em.persist(apartment);
-            em.flush();
-        } else {
-            apartment = TestUtil.findAll(em, Apartment.class).get(0);
-        }
-        internetAccess.setApartment(apartment);
         return internetAccess;
     }
     /**
@@ -135,16 +125,6 @@ public class InternetAccessResourceIT {
             port = TestUtil.findAll(em, Port.class).get(0);
         }
         internetAccess.setPort(port);
-        // Add required entity
-        Apartment apartment;
-        if (TestUtil.findAll(em, Apartment.class).isEmpty()) {
-            apartment = ApartmentResourceIT.createUpdatedEntity(em);
-            em.persist(apartment);
-            em.flush();
-        } else {
-            apartment = TestUtil.findAll(em, Apartment.class).get(0);
-        }
-        internetAccess.setApartment(apartment);
         return internetAccess;
     }
 
@@ -262,7 +242,7 @@ public class InternetAccessResourceIT {
             .andExpect(jsonPath("$.[*].ip1").value(hasItem(DEFAULT_IP_1)))
             .andExpect(jsonPath("$.[*].ip2").value(hasItem(DEFAULT_IP_2)));
     }
-
+    
     @Test
     @Transactional
     public void getInternetAccess() throws Exception {

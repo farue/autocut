@@ -3,17 +3,20 @@ package de.farue.autocut.web.rest;
 import de.farue.autocut.domain.TeamMember;
 import de.farue.autocut.repository.TeamMemberRepository;
 import de.farue.autocut.web.rest.errors.BadRequestAlertException;
+
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Transactional; 
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -46,7 +49,7 @@ public class TeamMemberResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/team-members")
-    public ResponseEntity<TeamMember> createTeamMember(@RequestBody TeamMember teamMember) throws URISyntaxException {
+    public ResponseEntity<TeamMember> createTeamMember(@Valid @RequestBody TeamMember teamMember) throws URISyntaxException {
         log.debug("REST request to save TeamMember : {}", teamMember);
         if (teamMember.getId() != null) {
             throw new BadRequestAlertException("A new teamMember cannot already have an ID", ENTITY_NAME, "idexists");
@@ -67,7 +70,7 @@ public class TeamMemberResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/team-members")
-    public ResponseEntity<TeamMember> updateTeamMember(@RequestBody TeamMember teamMember) throws URISyntaxException {
+    public ResponseEntity<TeamMember> updateTeamMember(@Valid @RequestBody TeamMember teamMember) throws URISyntaxException {
         log.debug("REST request to update TeamMember : {}", teamMember);
         if (teamMember.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

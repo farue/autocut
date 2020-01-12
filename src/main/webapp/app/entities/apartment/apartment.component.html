@@ -21,6 +21,7 @@
             <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.apartment.apartmentNr">Apartment Nr</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.apartment.apartmentType">Apartment Type</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.apartment.maxNumberOfLeases">Max Number Of Leases</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.apartment.internetAccess">Internet Access</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.apartment.address">Address</span></th>
             <th scope="col"></th>
@@ -31,6 +32,7 @@
                 <td><a [routerLink]="['/apartment', apartment.id, 'view' ]">{{apartment.id}}</a></td>
                 <td>{{apartment.apartmentNr}}</td>
                 <td jhiTranslate="{{'autocutApp.ApartmentTypes.' + apartment.apartmentType}}">{{apartment.apartmentType}}</td>
+                <td>{{apartment.maxNumberOfLeases}}</td>
                 <td>
                     <div *ngIf="apartment.internetAccess">
                         <a [routerLink]="['/internet-access', apartment.internetAccess?.id, 'view' ]" >{{apartment.internetAccess?.id}}</a>
@@ -55,10 +57,7 @@
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
-                        <button type="submit"
-                                [routerLink]="['/apartment', { outlets: { popup: apartment.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
+                        <button type="submit" (click)="delete(apartment)"
                                 class="btn btn-danger btn-sm">
                             <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>

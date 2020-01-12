@@ -2,9 +2,9 @@ package de.farue.autocut.web.rest;
 
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Transaction;
-import de.farue.autocut.domain.enumeration.TransactionKind;
 import de.farue.autocut.repository.TransactionRepository;
 import de.farue.autocut.web.rest.errors.ExceptionTranslator;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -29,6 +29,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import de.farue.autocut.domain.enumeration.TransactionKind;
 /**
  * Integration tests for the {@link TransactionResource} REST controller.
  */
@@ -308,7 +310,7 @@ public class TransactionResourceIT {
             .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.intValue())))
             .andExpect(jsonPath("$.[*].balance").value(hasItem(DEFAULT_BALANCE.intValue())));
     }
-
+    
     @Test
     @Transactional
     public void getTransaction() throws Exception {

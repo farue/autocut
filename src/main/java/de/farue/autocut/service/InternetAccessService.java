@@ -4,6 +4,7 @@ import de.farue.autocut.domain.InternetAccess;
 import de.farue.autocut.repository.InternetAccessRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,7 +56,7 @@ public class InternetAccessService {
     *  Get all the internetAccesses where Apartment is {@code null}.
      *  @return the list of entities.
      */
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true) 
     public List<InternetAccess> findAllWhereApartmentIsNull() {
         log.debug("Request to get all internetAccesses where Apartment is null");
         return StreamSupport

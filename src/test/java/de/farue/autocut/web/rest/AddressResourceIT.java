@@ -4,6 +4,7 @@ import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Address;
 import de.farue.autocut.repository.AddressRepository;
 import de.farue.autocut.web.rest.errors.ExceptionTranslator;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -38,8 +39,8 @@ public class AddressResourceIT {
     private static final String DEFAULT_STREET_NUMBER = "AAAAAAAAAA";
     private static final String UPDATED_STREET_NUMBER = "BBBBBBBBBB";
 
-    private static final String DEFAULT_ZIP = "42148";
-    private static final String UPDATED_ZIP = "56755";
+    private static final String DEFAULT_ZIP = "76728";
+    private static final String UPDATED_ZIP = "50230";
 
     private static final String DEFAULT_CITY = "AAAAAAAAAA";
     private static final String UPDATED_CITY = "BBBBBBBBBB";
@@ -266,7 +267,7 @@ public class AddressResourceIT {
             .andExpect(jsonPath("$.[*].city").value(hasItem(DEFAULT_CITY)))
             .andExpect(jsonPath("$.[*].country").value(hasItem(DEFAULT_COUNTRY)));
     }
-
+    
     @Test
     @Transactional
     public void getAddress() throws Exception {

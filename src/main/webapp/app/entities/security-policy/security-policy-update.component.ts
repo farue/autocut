@@ -1,67 +1,86 @@
 import { Component, OnInit } from '@angular/core';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { JhiAlertService } from 'ng-jhipster';
+import { map } from 'rxjs/operators';
+
 import { ISecurityPolicy, SecurityPolicy } from 'app/shared/model/security-policy.model';
 import { SecurityPolicyService } from './security-policy.service';
 import { ITeamMember } from 'app/shared/model/team-member.model';
 import { TeamMemberService } from 'app/entities/team-member/team-member.service';
+import { ITenant } from 'app/shared/model/tenant.model';
+import { TenantService } from 'app/entities/tenant/tenant.service';
+
+type SelectableEntity = ITeamMember | ITenant;
 
 @Component({
   selector: 'jhi-security-policy-update',
   templateUrl: './security-policy-update.component.html'
 })
 export class SecurityPolicyUpdateComponent implements OnInit {
-  isSaving: boolean;
+  isSaving = false;
 
-  teammembers: ITeamMember[];
+  teammembers: ITeamMember[] = [];
+
+  tenants: ITenant[] = [];
 
   editForm = this.fb.group({
     id: [],
     protectionUnit: [null, [Validators.required]],
     access: [null, [Validators.required]],
-    teamMember: []
+    teamMember: [],
+    tenant: []
   });
 
   constructor(
-    protected jhiAlertService: JhiAlertService,
     protected securityPolicyService: SecurityPolicyService,
     protected teamMemberService: TeamMemberService,
+    protected tenantService: TenantService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
 
-  ngOnInit() {
-    this.isSaving = false;
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ securityPolicy }) => {
       this.updateForm(securityPolicy);
+
+      this.teamMemberService
+        .query()
+        .pipe(
+          map((res: HttpResponse<ITeamMember[]>) => {
+            return res.body ? res.body : [];
+          })
+        )
+        .subscribe((resBody: ITeamMember[]) => (this.teammembers = resBody));
+
+      this.tenantService
+        .query()
+        .pipe(
+          map((res: HttpResponse<ITenant[]>) => {
+            return res.body ? res.body : [];
+          })
+        )
+        .subscribe((resBody: ITenant[]) => (this.tenants = resBody));
     });
-    this.teamMemberService
-      .query()
-      .subscribe(
-        (res: HttpResponse<ITeamMember[]>) => (this.teammembers = res.body),
-        (res: HttpErrorResponse) => this.onError(res.message)
-      );
   }
 
-  updateForm(securityPolicy: ISecurityPolicy) {
+  updateForm(securityPolicy: ISecurityPolicy): void {
     this.editForm.patchValue({
       id: securityPolicy.id,
       protectionUnit: securityPolicy.protectionUnit,
       access: securityPolicy.access,
-      teamMember: securityPolicy.teamMember
+      teamMember: securityPolicy.teamMember,
+      tenant: securityPolicy.tenant
     });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 
-  save() {
+  save(): void {
     this.isSaving = true;
     const securityPolicy = this.createFromForm();
     if (securityPolicy.id !== undefined) {
@@ -74,30 +93,31 @@ export class SecurityPolicyUpdateComponent implements OnInit {
   private createFromForm(): ISecurityPolicy {
     return {
       ...new SecurityPolicy(),
-      id: this.editForm.get(['id']).value,
-      protectionUnit: this.editForm.get(['protectionUnit']).value,
-      access: this.editForm.get(['access']).value,
-      teamMember: this.editForm.get(['teamMember']).value
+      id: this.editForm.get(['id'])!.value,
+      protectionUnit: this.editForm.get(['protectionUnit'])!.value,
+      access: this.editForm.get(['access'])!.value,
+      teamMember: this.editForm.get(['teamMember'])!.value,
+      tenant: this.editForm.get(['tenant'])!.value
     };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<ISecurityPolicy>>) {
-    result.subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<ISecurityPolicy>>): void {
+    result.subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
   }
 
-  protected onSaveSuccess() {
+  protected onSaveSuccess(): void {
     this.isSaving = false;
     this.previousState();
   }
 
-  protected onSaveError() {
+  protected onSaveError(): void {
     this.isSaving = false;
   }
-  protected onError(errorMessage: string) {
-    this.jhiAlertService.error(errorMessage, null, null);
-  }
 
-  trackTeamMemberById(index: number, item: ITeamMember) {
+  trackById(index: number, item: SelectableEntity): any {
     return item.id;
   }
 }

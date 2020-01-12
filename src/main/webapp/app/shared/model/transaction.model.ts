@@ -1,5 +1,4 @@
 import { Moment } from 'moment';
-import { IPaymentAccount } from 'app/shared/model/payment-account.model';
 import { TransactionKind } from 'app/shared/model/enumerations/transaction-kind.model';
 
 export interface ITransaction {
@@ -12,7 +11,6 @@ export interface ITransaction {
   recipient?: string;
   amount?: number;
   balance?: number;
-  paymentAccount?: IPaymentAccount;
 }
 
 export class Transaction implements ITransaction {
@@ -25,7 +23,6 @@ export class Transaction implements ITransaction {
     public issuer?: string,
     public recipient?: string,
     public amount?: number,
-    public balance?: number,
-    public paymentAccount?: IPaymentAccount
+    public balance?: number
   ) {}
 }

@@ -2,10 +2,9 @@ package de.farue.autocut.web.rest;
 
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Apartment;
-import de.farue.autocut.domain.InternetAccess;
-import de.farue.autocut.domain.enumeration.ApartmentTypes;
 import de.farue.autocut.repository.ApartmentRepository;
 import de.farue.autocut.web.rest.errors.ExceptionTranslator;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -27,6 +26,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import de.farue.autocut.domain.enumeration.ApartmentTypes;
 /**
  * Integration tests for the {@link ApartmentResource} REST controller.
  */
@@ -38,6 +39,9 @@ public class ApartmentResourceIT {
 
     private static final ApartmentTypes DEFAULT_APARTMENT_TYPE = ApartmentTypes.SHARED;
     private static final ApartmentTypes UPDATED_APARTMENT_TYPE = ApartmentTypes.SINGLE;
+
+    private static final Integer DEFAULT_MAX_NUMBER_OF_LEASES = 0;
+    private static final Integer UPDATED_MAX_NUMBER_OF_LEASES = 1;
 
     @Autowired
     private ApartmentRepository apartmentRepository;
@@ -82,17 +86,8 @@ public class ApartmentResourceIT {
     public static Apartment createEntity(EntityManager em) {
         Apartment apartment = new Apartment()
             .apartmentNr(DEFAULT_APARTMENT_NR)
-            .apartmentType(DEFAULT_APARTMENT_TYPE);
-        // Add required entity
-        InternetAccess internetAccess;
-        if (TestUtil.findAll(em, InternetAccess.class).isEmpty()) {
-            internetAccess = InternetAccessResourceIT.createEntity(em);
-            em.persist(internetAccess);
-            em.flush();
-        } else {
-            internetAccess = TestUtil.findAll(em, InternetAccess.class).get(0);
-        }
-        apartment.setInternetAccess(internetAccess);
+            .apartmentType(DEFAULT_APARTMENT_TYPE)
+            .maxNumberOfLeases(DEFAULT_MAX_NUMBER_OF_LEASES);
         return apartment;
     }
     /**
@@ -104,17 +99,8 @@ public class ApartmentResourceIT {
     public static Apartment createUpdatedEntity(EntityManager em) {
         Apartment apartment = new Apartment()
             .apartmentNr(UPDATED_APARTMENT_NR)
-            .apartmentType(UPDATED_APARTMENT_TYPE);
-        // Add required entity
-        InternetAccess internetAccess;
-        if (TestUtil.findAll(em, InternetAccess.class).isEmpty()) {
-            internetAccess = InternetAccessResourceIT.createUpdatedEntity(em);
-            em.persist(internetAccess);
-            em.flush();
-        } else {
-            internetAccess = TestUtil.findAll(em, InternetAccess.class).get(0);
-        }
-        apartment.setInternetAccess(internetAccess);
+            .apartmentType(UPDATED_APARTMENT_TYPE)
+            .maxNumberOfLeases(UPDATED_MAX_NUMBER_OF_LEASES);
         return apartment;
     }
 
@@ -140,6 +126,7 @@ public class ApartmentResourceIT {
         Apartment testApartment = apartmentList.get(apartmentList.size() - 1);
         assertThat(testApartment.getApartmentNr()).isEqualTo(DEFAULT_APARTMENT_NR);
         assertThat(testApartment.getApartmentType()).isEqualTo(DEFAULT_APARTMENT_TYPE);
+        assertThat(testApartment.getMaxNumberOfLeases()).isEqualTo(DEFAULT_MAX_NUMBER_OF_LEASES);
     }
 
     @Test
@@ -200,6 +187,24 @@ public class ApartmentResourceIT {
 
     @Test
     @Transactional
+    public void checkMaxNumberOfLeasesIsRequired() throws Exception {
+        int databaseSizeBeforeTest = apartmentRepository.findAll().size();
+        // set the field null
+        apartment.setMaxNumberOfLeases(null);
+
+        // Create the Apartment, which fails.
+
+        restApartmentMockMvc.perform(post("/api/apartments")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(apartment)))
+            .andExpect(status().isBadRequest());
+
+        List<Apartment> apartmentList = apartmentRepository.findAll();
+        assertThat(apartmentList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllApartments() throws Exception {
         // Initialize the database
         apartmentRepository.saveAndFlush(apartment);
@@ -210,9 +215,10 @@ public class ApartmentResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(apartment.getId().intValue())))
             .andExpect(jsonPath("$.[*].apartmentNr").value(hasItem(DEFAULT_APARTMENT_NR)))
-            .andExpect(jsonPath("$.[*].apartmentType").value(hasItem(DEFAULT_APARTMENT_TYPE.toString())));
+            .andExpect(jsonPath("$.[*].apartmentType").value(hasItem(DEFAULT_APARTMENT_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].maxNumberOfLeases").value(hasItem(DEFAULT_MAX_NUMBER_OF_LEASES)));
     }
-
+    
     @Test
     @Transactional
     public void getApartment() throws Exception {
@@ -225,7 +231,8 @@ public class ApartmentResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(apartment.getId().intValue()))
             .andExpect(jsonPath("$.apartmentNr").value(DEFAULT_APARTMENT_NR))
-            .andExpect(jsonPath("$.apartmentType").value(DEFAULT_APARTMENT_TYPE.toString()));
+            .andExpect(jsonPath("$.apartmentType").value(DEFAULT_APARTMENT_TYPE.toString()))
+            .andExpect(jsonPath("$.maxNumberOfLeases").value(DEFAULT_MAX_NUMBER_OF_LEASES));
     }
 
     @Test
@@ -250,7 +257,8 @@ public class ApartmentResourceIT {
         em.detach(updatedApartment);
         updatedApartment
             .apartmentNr(UPDATED_APARTMENT_NR)
-            .apartmentType(UPDATED_APARTMENT_TYPE);
+            .apartmentType(UPDATED_APARTMENT_TYPE)
+            .maxNumberOfLeases(UPDATED_MAX_NUMBER_OF_LEASES);
 
         restApartmentMockMvc.perform(put("/api/apartments")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -263,6 +271,7 @@ public class ApartmentResourceIT {
         Apartment testApartment = apartmentList.get(apartmentList.size() - 1);
         assertThat(testApartment.getApartmentNr()).isEqualTo(UPDATED_APARTMENT_NR);
         assertThat(testApartment.getApartmentType()).isEqualTo(UPDATED_APARTMENT_TYPE);
+        assertThat(testApartment.getMaxNumberOfLeases()).isEqualTo(UPDATED_MAX_NUMBER_OF_LEASES);
     }
 
     @Test

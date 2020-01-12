@@ -8,17 +8,17 @@ import { INetworkSwitch } from 'app/shared/model/network-switch.model';
   templateUrl: './network-switch-detail.component.html'
 })
 export class NetworkSwitchDetailComponent implements OnInit {
-  networkSwitch: INetworkSwitch;
+  networkSwitch: INetworkSwitch | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ networkSwitch }) => {
       this.networkSwitch = networkSwitch;
     });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 }

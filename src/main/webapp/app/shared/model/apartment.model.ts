@@ -7,6 +7,7 @@ export interface IApartment {
   id?: number;
   apartmentNr?: string;
   apartmentType?: ApartmentTypes;
+  maxNumberOfLeases?: number;
   internetAccess?: IInternetAccess;
   leases?: ILease[];
   address?: IAddress;
@@ -17,6 +18,7 @@ export class Apartment implements IApartment {
     public id?: number,
     public apartmentNr?: string,
     public apartmentType?: ApartmentTypes,
+    public maxNumberOfLeases?: number,
     public internetAccess?: IInternetAccess,
     public leases?: ILease[],
     public address?: IAddress

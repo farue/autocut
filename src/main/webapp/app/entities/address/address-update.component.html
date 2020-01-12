@@ -4,7 +4,7 @@
             <h2 id="jhi-address-heading" jhiTranslate="autocutApp.address.home.createOrEditLabel">Create or edit a Address</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!editForm.get('id').value">
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
                     <input type="text" class="form-control" id="id" name="id" formControlName="id"
                         readonly />
@@ -13,9 +13,9 @@
                     <label class="form-control-label" jhiTranslate="autocutApp.address.street" for="field_street">Street</label>
                     <input type="text" class="form-control" name="street" id="field_street"
                            formControlName="street"/>
-                    <div *ngIf="editForm.get('street').invalid && (editForm.get('street').dirty || editForm.get('street').touched)">
+                    <div *ngIf="editForm.get('street')!.invalid && (editForm.get('street')!.dirty || editForm.get('street')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('street').errors.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.get('street')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                     </div>
@@ -24,9 +24,9 @@
                     <label class="form-control-label" jhiTranslate="autocutApp.address.streetNumber" for="field_streetNumber">Street Number</label>
                     <input type="text" class="form-control" name="streetNumber" id="field_streetNumber"
                            formControlName="streetNumber"/>
-                    <div *ngIf="editForm.get('streetNumber').invalid && (editForm.get('streetNumber').dirty || editForm.get('streetNumber').touched)">
+                    <div *ngIf="editForm.get('streetNumber')!.invalid && (editForm.get('streetNumber')!.dirty || editForm.get('streetNumber')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('streetNumber').errors.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.get('streetNumber')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                     </div>
@@ -35,13 +35,13 @@
                     <label class="form-control-label" jhiTranslate="autocutApp.address.zip" for="field_zip">Zip</label>
                     <input type="text" class="form-control" name="zip" id="field_zip"
                            formControlName="zip"/>
-                    <div *ngIf="editForm.get('zip').invalid && (editForm.get('zip').dirty || editForm.get('zip').touched)">
+                    <div *ngIf="editForm.get('zip')!.invalid && (editForm.get('zip')!.dirty || editForm.get('zip')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('zip').errors.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.get('zip')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('zip').errors.pattern" jhiTranslate="entity.validation.pattern" [translateValues]="{ pattern: 'Zip' }">
+                               *ngIf="editForm.get('zip')?.errors?.pattern" jhiTranslate="entity.validation.pattern" [translateValues]="{ pattern: 'Zip' }">
                             This field should follow pattern for "Zip".
                         </small>
                     </div>
@@ -50,9 +50,9 @@
                     <label class="form-control-label" jhiTranslate="autocutApp.address.city" for="field_city">City</label>
                     <input type="text" class="form-control" name="city" id="field_city"
                            formControlName="city"/>
-                    <div *ngIf="editForm.get('city').invalid && (editForm.get('city').dirty || editForm.get('city').touched)">
+                    <div *ngIf="editForm.get('city')!.invalid && (editForm.get('city')!.dirty || editForm.get('city')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('city').errors.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.get('city')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                     </div>
@@ -61,9 +61,9 @@
                     <label class="form-control-label" jhiTranslate="autocutApp.address.country" for="field_country">Country</label>
                     <input type="text" class="form-control" name="country" id="field_country"
                            formControlName="country"/>
-                    <div *ngIf="editForm.get('country').invalid && (editForm.get('country').dirty || editForm.get('country').touched)">
+                    <div *ngIf="editForm.get('country')!.invalid && (editForm.get('country')!.dirty || editForm.get('country')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('country').errors.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.get('country')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                     </div>

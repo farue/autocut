@@ -1,0 +1,27 @@
+{
+  "autocutApp": {
+    "Aktivität": {
+      "home": {
+        "title": "Aktivitäten",
+        "createLabel": "Aktivität erstellen",
+        "createOrEditLabel": "Aktivität erstellen oder bearbeiten",
+        "notFound": "Keine Aktivitäten gefunden"
+      },
+      "created": "Aktivität erstellt mit ID {{ param }}",
+      "updated": "Aktivität aktualisiert mit ID {{ param }}",
+      "deleted": "Aktivität gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Aktivität {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Aktivität"
+      },
+      "semester": "Semester",
+      "date": "Datum",
+      "description": "Beschreibung",
+      "discount": "Rabatt",
+      "stwAktivität": "StW Aktivität",
+      "tenant": "Mieter"
+    }
+  }
+}

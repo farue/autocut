@@ -16,7 +16,6 @@
             "relationshipType": "one-to-one",
             "otherEntityName": "internetAccess",
             "otherEntityRelationshipName": "port",
-            "relationshipValidateRules": "required",
             "relationshipName": "internetAccess",
             "ownerSide": false
         },

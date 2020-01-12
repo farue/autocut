@@ -1,24 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRouteSnapshot, Resolve, Routes } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
+import { Observable, of, EMPTY } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
+
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { ITransaction, Transaction } from 'app/shared/model/transaction.model';
 import { TransactionService } from './transaction.service';
 import { TransactionComponent } from './transaction.component';
 import { TransactionDetailComponent } from './transaction-detail.component';
 import { TransactionUpdateComponent } from './transaction-update.component';
-import { TransactionDeletePopupComponent } from './transaction-delete-dialog.component';
 
 @Injectable({ providedIn: 'root' })
 export class TransactionResolve implements Resolve<ITransaction> {
-  constructor(private service: TransactionService) {}
+  constructor(private service: TransactionService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<ITransaction> {
+  resolve(route: ActivatedRouteSnapshot): Observable<ITransaction> | Observable<never> {
     const id = route.params['id'];
     if (id) {
-      return this.service.find(id).pipe(map((transaction: HttpResponse<Transaction>) => transaction.body));
+      return this.service.find(id).pipe(
+        flatMap((transaction: HttpResponse<Transaction>) => {
+          if (transaction.body) {
+            return of(transaction.body);
+          } else {
+            this.router.navigate(['404']);
+            return EMPTY;
+          }
+        })
+      );
     }
     return of(new Transaction());
   }
@@ -69,21 +78,5 @@ export const transactionRoute: Routes = [
       pageTitle: 'autocutApp.transaction.home.title'
     },
     canActivate: [UserRouteAccessService]
-  }
-];
-
-export const transactionPopupRoute: Routes = [
-  {
-    path: ':id/delete',
-    component: TransactionDeletePopupComponent,
-    resolve: {
-      transaction: TransactionResolve
-    },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'autocutApp.transaction.home.title'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
   }
 ];

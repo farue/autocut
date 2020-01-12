@@ -1,13 +1,12 @@
 package de.farue.autocut.domain;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
 
 /**
@@ -33,7 +32,7 @@ public class Port implements Serializable {
     @JsonIgnore
     private InternetAccess internetAccess;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties("ports")
     private NetworkSwitch networkSwitch;

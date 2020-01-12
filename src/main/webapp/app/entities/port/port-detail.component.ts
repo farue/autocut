@@ -8,17 +8,17 @@ import { IPort } from 'app/shared/model/port.model';
   templateUrl: './port-detail.component.html'
 })
 export class PortDetailComponent implements OnInit {
-  port: IPort;
+  port: IPort | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ port }) => {
       this.port = port;
     });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 }

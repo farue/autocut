@@ -3,6 +3,7 @@ package de.farue.autocut.web.rest;
 import de.farue.autocut.domain.InternetAccess;
 import de.farue.autocut.service.InternetAccessService;
 import de.farue.autocut.web.rest.errors.BadRequestAlertException;
+
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 /**
  * REST controller for managing {@link de.farue.autocut.domain.InternetAccess}.

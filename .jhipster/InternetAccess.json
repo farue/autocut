@@ -37,7 +37,6 @@
             "relationshipType": "one-to-one",
             "otherEntityName": "apartment",
             "otherEntityRelationshipName": "internetAccess",
-            "relationshipValidateRules": "required",
             "relationshipName": "apartment",
             "ownerSide": false
         }
