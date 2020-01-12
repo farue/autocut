@@ -45,6 +45,7 @@ frontend-test:
       - target/test-results
       - target/jacoco
     expire_in: 1 day
+
 sonar-analyze:
   stage: analyze
   dependencies:
@@ -63,14 +64,14 @@ maven-package:
     paths:
       - target/*.jar
     expire_in: 1 day
-# Uncomment the following line to use gitlabs container registry. You need to adapt the REGISTRY_URL in case you are not using gitlab.com
-#docker-push:
-#    stage: release
-#    variables:
-#        REGISTRY_URL: registry.gitlab.com
-#        IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-#    dependencies:
-#        - maven-package
-#    script:
-#        - ./mvnw jib:build -Djib.to.image=$IMAGE_TAG -Djib.to.auth.username=gitlab-ci-token  -Djib.to.auth.password=$CI_BUILD_TOKEN
+
+docker-push:
+    stage: release
+    variables:
+        REGISTRY_URL: registry.git.rwth-aachen.de
+        IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+    dependencies:
+        - maven-package
+    script:
+        - ./mvnw jib:build -Djib.to.image=$IMAGE_TAG -Djib.to.auth.username=gitlab-ci-token  -Djib.to.auth.password=$CI_BUILD_TOKEN
 
