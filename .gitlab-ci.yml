@@ -1,3 +1,11 @@
+variables:
+  SERVER_URL: '137.226.153.2'
+  SSH_OPTS: '-o StrictHostKeyChecking=no'
+  DOCKER_COMPOSE_APP: 'src/main/docker/app.yml'
+  DOCKER_COMPOSE_MYSQL: 'src/main/docker/mysql.yml'
+  REMOTE_DOCKER_COMPOSE_APP: '~/autocut/app.yml'
+  REMOTE_DOCKER_COMPOSE_MYSQL: '~/autocut/mysql.yml'
+
 image: jhipster/jhipster:v6.6.0
 
 cache:
@@ -76,6 +84,9 @@ maven-package:
       - target/*.jar
       - target/classes
     expire_in: 1 day
+  only:
+    refs:
+      - release
 
 docker-push:
   stage: release
@@ -86,3 +97,23 @@ docker-push:
     - maven-package
   script:
     - ./mvnw -ntp compile jib:build -Pprod -Djib.to.image=$IMAGE_TAG -Djib.to.auth.username=gitlab-ci-token  -Djib.to.auth.password=$CI_BUILD_TOKEN -Dmaven.repo.local=$MAVEN_USER_HOME
+  only:
+    refs:
+      - release
+
+docker-deploy:
+  stage: deploy
+  script:
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh
+    - chmod 600 ~/.ssh
+    - scp ${SSH_OPTS} ${DOCKER_COMPOSE_APP} gitlab@${SERVER_URL}:${REMOTE_DOCKER_COMPOSE_APP}
+    - scp ${SSH_OPTS} ${DOCKER_COMPOSE_MYSQL} gitlab@${SERVER_URL}:${REMOTE_DOCKER_COMPOSE_MYSQL}
+    - ssh ${SSH_OPTS} gitlab@${SERVER_URL} "docker login -u ${CI_DEPLOY_USER} -p ${CI_DEPLOY_PASSWORD} ${CI_REGISTRY}
+      && cd ~/autocut
+      && docker-compose -f app.yml pull
+      && docker-compose -f app.yml up -d"
+  only:
+    refs:
+      - release
