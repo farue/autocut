@@ -4,7 +4,7 @@
       "packageName": "de.farue.autocut",
       "nativeLanguage": "en"
     },
-    "jhipsterVersion": "6.5.0",
+    "jhipsterVersion": "6.6.0",
     "applicationType": "monolith",
     "baseName": "autocut",
     "packageName": "de.farue.autocut",
@@ -39,6 +39,7 @@
     "herokuAppName": "autocut",
     "herokuDeployType": "git",
     "embeddableLaunchScript": false,
-    "blueprints": []
+    "blueprints": [],
+    "creationTimestamp": 1578829876752
   }
 }

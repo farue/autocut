@@ -3,8 +3,8 @@ const path = require('path');
 const tsconfig = require('../tsconfig.json');
 
 module.exports = {
-  root,
-  mapTypescriptAliasToWebpackAlias
+    root,
+    mapTypescriptAliasToWebpackAlias
 };
 
 const _root = path.resolve(__dirname, '..');
@@ -15,28 +15,25 @@ function root(args) {
 }
 
 function mapTypescriptAliasToWebpackAlias(alias = {}) {
-  const webpackAliases = {...alias};
+  const webpackAliases = { ...alias };
   if (!tsconfig.compilerOptions.paths) {
     return webpackAliases;
   }
   Object.entries(tsconfig.compilerOptions.paths)
     .filter(([key, value]) => {
-    // use Typescript alias in Webpack only if this has value
-      if (value.length) {
-    return true;
-  }
-  return false;
-})
+      // use Typescript alias in Webpack only if this has value
+      return Boolean(value.length);
+    })
     .map(([key, value]) => {
-    // if Typescript alias ends with /* then remove this for Webpack
-    const regexToReplace = /\/\*$/;
-  const aliasKey = key.replace(regexToReplace, '');
-  const aliasValue = value[0].replace(regexToReplace, '');
-  return [aliasKey, root(aliasValue)];
-})
+      // if Typescript alias ends with /* then remove this for Webpack
+      const regexToReplace = /\/\*$/;
+      const aliasKey = key.replace(regexToReplace, '');
+      const aliasValue = value[0].replace(regexToReplace, '');
+      return [aliasKey, root(aliasValue)];
+    })
     .reduce((aliases, [key, value]) => {
-    aliases[key] = value;
-  return aliases;
+      aliases[key] = value;
+      return aliases;
     }, webpackAliases);
   return webpackAliases;
 }

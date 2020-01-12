@@ -1,5 +1,5 @@
 import { JhiAlertService } from 'ng-jhipster';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpResponse, HttpHandler, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -13,19 +13,17 @@ export class NotificationInterceptor implements HttpInterceptor {
       tap((event: HttpEvent<any>) => {
         if (event instanceof HttpResponse) {
           const arr = event.headers.keys();
-          let alert = null;
-          let alertParams = null;
+          let alert: string | null = null;
+          let alertParams: string | null = null;
           arr.forEach(entry => {
             if (entry.toLowerCase().endsWith('app-alert')) {
               alert = event.headers.get(entry);
             } else if (entry.toLowerCase().endsWith('app-params')) {
-              alertParams = event.headers.get(entry);
+              alertParams = decodeURIComponent(event.headers.get(entry)!.replace(/\+/g, ' '));
             }
           });
           if (alert) {
-            if (typeof alert === 'string') {
-              this.alertService.success(alert, {param: alertParams}, null);
-            }
+            this.alertService.success(alert, { param: alertParams });
           }
         }
       })

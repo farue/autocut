@@ -1,14 +1,13 @@
-import {NgModule} from '@angular/core';
-import {RouterModule} from '@angular/router';
-import {AutocutSharedModule} from 'app/shared/shared.module';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { AutocutSharedModule } from 'app/shared/shared.module';
 
-import {JhiDocsComponent} from './docs.component';
+import { DocsComponent } from './docs.component';
 
-import {docsRoute} from './docs.route';
+import { docsRoute } from './docs.route';
 
 @NgModule({
   imports: [AutocutSharedModule, RouterModule.forChild([docsRoute])],
-  declarations: [JhiDocsComponent]
+  declarations: [DocsComponent]
 })
-export class DocsModule {
-}
+export class DocsModule {}

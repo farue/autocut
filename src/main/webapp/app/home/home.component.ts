@@ -1,7 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
 import { Lightbox } from 'ngx-lightbox';
 
 import { LoginModalService } from 'app/core/login/login-modal.service';
@@ -14,24 +12,15 @@ import { Account } from 'app/core/user/account.model';
   styleUrls: ['home.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  account: Account;
-  authSubscription: Subscription;
-  modalRef: NgbModalRef;
+  account: Account | null = null;
+  authSubscription?: Subscription;
 
-  images: any[];
+  images: any[] = [];
 
-  constructor(
-    private accountService: AccountService,
-    private loginModalService: LoginModalService,
-    private eventManager: JhiEventManager,
-    private _lightbox: Lightbox
-  ) {}
+  constructor(private accountService: AccountService, private loginModalService: LoginModalService, private _lightbox: Lightbox) {}
 
-  ngOnInit() {
-    this.accountService.identity().subscribe((account: Account) => {
-      this.account = account;
-    });
-    this.registerAuthenticationSuccess();
+  ngOnInit(): void {
+    this.authSubscription = this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
     this.images = [];
     this.images.push({source: '/content/images/farue0.jpg', src: '/content/images/farue0.jpg'});
     this.images.push({source: '/content/images/farue1.jpg', src: '/content/images/farue1.jpg'});
@@ -47,25 +36,17 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.images.push({source: '/content/images/farueeingang3.jpg', src: '/content/images/farueeingang3.jpg'});
   }
 
-  registerAuthenticationSuccess() {
-    this.authSubscription = this.eventManager.subscribe('authenticationSuccess', () => {
-      this.accountService.identity().subscribe(account => {
-        this.account = account;
-      });
-    });
-  }
-
-  isAuthenticated() {
+  isAuthenticated(): boolean {
     return this.accountService.isAuthenticated();
   }
 
-  login() {
-    this.modalRef = this.loginModalService.open();
+  login(): void {
+    this.loginModalService.open();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.authSubscription) {
-      this.eventManager.destroy(this.authSubscription);
+      this.authSubscription.unsubscribe();
     }
   }
 

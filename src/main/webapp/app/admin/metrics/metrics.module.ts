@@ -1,14 +1,13 @@
-import {NgModule} from '@angular/core';
-import {RouterModule} from '@angular/router';
-import {AutocutSharedModule} from 'app/shared/shared.module';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { AutocutSharedModule } from 'app/shared/shared.module';
 
-import {JhiMetricsMonitoringComponent} from './metrics.component';
+import { MetricsComponent } from './metrics.component';
 
-import {metricsRoute} from './metrics.route';
+import { metricsRoute } from './metrics.route';
 
 @NgModule({
   imports: [AutocutSharedModule, RouterModule.forChild([metricsRoute])],
-  declarations: [JhiMetricsMonitoringComponent]
+  declarations: [MetricsComponent]
 })
-export class MetricsModule {
-}
+export class MetricsModule {}
