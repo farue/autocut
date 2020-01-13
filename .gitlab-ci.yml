@@ -107,7 +107,7 @@ docker-deploy:
     - eval $(ssh-agent -s)
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
     - mkdir -p ~/.ssh
-    - chmod 600 ~/.ssh
+    - chmod 700 ~/.ssh
     - scp ${SSH_OPTS} ${DOCKER_COMPOSE_APP} gitlab@${SERVER_URL}:${REMOTE_DOCKER_COMPOSE_APP}
     - scp ${SSH_OPTS} ${DOCKER_COMPOSE_MYSQL} gitlab@${SERVER_URL}:${REMOTE_DOCKER_COMPOSE_MYSQL}
     - ssh ${SSH_OPTS} gitlab@${SERVER_URL} "docker login -u ${CI_DEPLOY_USER} -p ${CI_DEPLOY_PASSWORD} ${CI_REGISTRY}
