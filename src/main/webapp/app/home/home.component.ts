@@ -22,18 +22,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.authSubscription = this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
     this.images = [];
-    this.images.push({source: '/content/images/farue0.jpg', src: '/content/images/farue0.jpg'});
-    this.images.push({source: '/content/images/farue1.jpg', src: '/content/images/farue1.jpg'});
-    this.images.push({source: '/content/images/farue2.jpg', src: '/content/images/farue2.jpg'});
-    this.images.push({source: '/content/images/farue3.jpg', src: '/content/images/farue3.jpg'});
-    this.images.push({source: '/content/images/farue4.jpg', src: '/content/images/farue4.jpg'});
-    this.images.push({source: '/content/images/farue5.jpg', src: '/content/images/farue5.jpg'});
-    this.images.push({source: '/content/images/farue6.jpg', src: '/content/images/farue6.jpg'});
-    this.images.push({source: '/content/images/farue7.jpg', src: '/content/images/farue7.jpg'});
-    this.images.push({source: '/content/images/farue8.jpg', src: '/content/images/farue8.jpg'});
-    this.images.push({source: '/content/images/farueeingang1.jpg', src: '/content/images/farueeingang1.jpg'});
-    this.images.push({source: '/content/images/farueeingang2.jpg', src: '/content/images/farueeingang2.jpg'});
-    this.images.push({source: '/content/images/farueeingang3.jpg', src: '/content/images/farueeingang3.jpg'});
+    this.images.push({ source: '/content/images/farue0.jpg', src: '/content/images/farue0.jpg' });
+    this.images.push({ source: '/content/images/farue1.jpg', src: '/content/images/farue1.jpg' });
+    this.images.push({ source: '/content/images/farue2.jpg', src: '/content/images/farue2.jpg' });
+    this.images.push({ source: '/content/images/farue3.jpg', src: '/content/images/farue3.jpg' });
+    this.images.push({ source: '/content/images/farue4.jpg', src: '/content/images/farue4.jpg' });
+    this.images.push({ source: '/content/images/farue5.jpg', src: '/content/images/farue5.jpg' });
+    this.images.push({ source: '/content/images/farue6.jpg', src: '/content/images/farue6.jpg' });
+    this.images.push({ source: '/content/images/farue7.jpg', src: '/content/images/farue7.jpg' });
+    this.images.push({ source: '/content/images/farue8.jpg', src: '/content/images/farue8.jpg' });
+    this.images.push({ source: '/content/images/farueeingang1.jpg', src: '/content/images/farueeingang1.jpg' });
+    this.images.push({ source: '/content/images/farueeingang2.jpg', src: '/content/images/farueeingang2.jpg' });
+    this.images.push({ source: '/content/images/farueeingang3.jpg', src: '/content/images/farueeingang3.jpg' });
   }
 
   isAuthenticated(): boolean {
@@ -52,5 +52,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   onImageClicked($event: any): void {
     this._lightbox.open(this.images, $event.index);
+  }
+
+  redirectToOldWebsite(): void {
+    window.location.href = 'http://www.farue.rwth-aachen.de/old/index.html';
   }
 }

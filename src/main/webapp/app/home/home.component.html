@@ -9,7 +9,7 @@
 
         <div class="alert alert-warning">
             <p jhiTranslate="home.message.development">This website is under active development.</p>
-            <span jhiTranslate="home.message.oldwebsite">Follow this link to the old website:</span> <a href="http://www.farue.rwth-aachen.de/old">http://www.farue.rwth-aachen.de/old</a>
+            <span jhiTranslate="home.message.oldwebsite">Follow this link to the old website:</span> <a (click)="redirectToOldWebsite()">http://www.farue.rwth-aachen.de/old/index.html</a>
         </div>
 
         <!--<div [ngSwitch]="isAuthenticated()">
