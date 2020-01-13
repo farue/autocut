@@ -582,7 +582,7 @@
                         <to>
                             <image>autocut:latest</image>
                             <tags>
-                                <tag>registry.git.rwth-aachen.de/farue/autocut:latest</tag>
+                                <tag>latest</tag>
                             </tags>
                         </to>
                         <container>
