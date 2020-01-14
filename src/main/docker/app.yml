@@ -20,7 +20,7 @@ services:
       - 8080:8080
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.autocut-r1.rule=Host(`www.farue.rwth-aachen.de`)'
+      - 'traefik.http.routers.autocut-r1.rule=Host(`farue.rwth-aachen.de`, `www.farue.rwth-aachen.de`)'
       - 'traefik.http.routers.autocut-r1.entrypoints=web'
       - 'traefik.http.services.autocut-s1.loadbalancer.server.port=8080'
   autocut-mysql:
