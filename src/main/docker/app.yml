@@ -20,9 +20,25 @@ services:
       - 8080:8080
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.autocut-r1.rule=Host(`farue.rwth-aachen.de`, `www.farue.rwth-aachen.de`)'
-      - 'traefik.http.routers.autocut-r1.entrypoints=web'
-      - 'traefik.http.services.autocut-s1.loadbalancer.server.port=8080'
+      # www redirect
+      - 'traefik.http.middlewares.www-redirect.redirectregex.regex=^(https?)://farue.rwth-aachen.de(.*)'
+      - 'traefik.http.middlewares.www-redirect.redirectregex.replacement=$${1}://www.farue.rwth-aachen.de$${2}'
+      - 'traefik.http.middlewares.www-redirect.redirectregex.permanent=true'
+      # http route
+      - 'traefik.http.routers.autocut-http.rule=Host(`farue.rwth-aachen.de`, `www.farue.rwth-aachen.de`)'
+      - 'traefik.http.routers.autocut-http.entrypoints=web'
+      - 'traefik.http.middlewares.https-redirect.redirectscheme.scheme=https'
+      - 'traefik.http.middlewares.https-redirect.redirectscheme.permanent=true'
+      - 'traefik.http.routers.autocut-http.middlewares=www-redirect@docker, https-redirect@docker'
+      - 'traefik.http.routers.autocut-http.service=autocut-service'
+      # https route
+      - 'traefik.http.routers.autocut-https.rule=Host(`farue.rwth-aachen.de`, `www.farue.rwth-aachen.de`)'
+      - 'traefik.http.routers.autocut-https.entrypoints=websecure'
+      - 'traefik.http.routers.autocut-https.tls=true'
+      - 'traefik.http.routers.autocut-https.middlewares=www-redirect@docker'
+      - 'traefik.http.routers.autocut-https.service=autocut-service'
+      # autocut service
+      - 'traefik.http.services.autocut-service.loadbalancer.server.port=8080'
   autocut-mysql:
     extends:
       file: mysql.yml
