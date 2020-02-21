@@ -27,12 +27,12 @@ before_script:
   - ./mvnw -ntp com.github.eirslett:frontend-maven-plugin:install-node-and-npm -DnodeVersion=v12.13.1 -DnpmVersion=6.13.4 -Dmaven.repo.local=$MAVEN_USER_HOME
   - ./mvnw -ntp com.github.eirslett:frontend-maven-plugin:npm -Dmaven.repo.local=$MAVEN_USER_HOME
 
-.nohttp:
+nohttp:
   stage: check
   script:
     - ./mvnw -ntp checkstyle:check -Dmaven.repo.local=$MAVEN_USER_HOME
 
-.maven-compile:
+maven-compile:
   stage: build
   script:
     - ./mvnw -ntp compile -Dmaven.repo.local=$MAVEN_USER_HOME
@@ -42,7 +42,7 @@ before_script:
       - target/generated-sources/
     expire_in: 1 day
 
-.maven-test:
+maven-test:
   stage: test
   script:
     - ./mvnw -ntp verify -Dmaven.repo.local=$MAVEN_USER_HOME
@@ -54,7 +54,7 @@ before_script:
       - target/jacoco
     expire_in: 1 day
 
-.frontend-test:
+frontend-test:
   stage: test
   script:
     - ./mvnw -ntp com.github.eirslett:frontend-maven-plugin:npm -Dfrontend.npm.arguments='run test' -Dmaven.repo.local=$MAVEN_USER_HOME
@@ -65,7 +65,7 @@ before_script:
       - target/test-results
       - target/jacoco
     expire_in: 1 day
-.sonar-analyze:
+sonar-analyze:
   stage: analyze
   dependencies:
     - maven-test
