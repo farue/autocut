@@ -10,7 +10,7 @@
       "janitor": "Hausmeister",
       "teams": "AGs",
       "network-team": "Netzwerk AG",
-      "wash-team": "Wasch AG",
+      "washing-team": "Wasch AG",
       "tools-team": "Werkzeug AG",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {

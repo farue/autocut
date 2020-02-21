@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'jhi-wash-team',
-  templateUrl: './wash-team.component.html',
-  styleUrls: ['wash-team.component.scss']
+  selector: 'jhi-washing-team',
+  templateUrl: './washing-team.component.html',
+  styleUrls: ['washing-team.component.scss']
 })
-export class WashTeamComponent implements OnInit {
+export class WashingTeamComponent implements OnInit {
   message: string;
 
   constructor() {
