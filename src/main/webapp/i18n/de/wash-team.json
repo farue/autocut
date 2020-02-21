@@ -1,7 +1,28 @@
 {
   "wash-team": {
     "title": "Wasch AG",
-    "subtitle": "Kurzbeschreibung Zeile 1<br>Kurzbeschreibung Zeile 2",
-    "content": "Detailbeschreibung<br><br>"
+    "subtitle": "Die Wasch-AG betreut 3 Waschmaschinen und 2 Trockner, die im mittleren Keller stehen. Jeder Mitbewohner, der sich in der Liste eintrgt, darf waschen und trocknen, weitere Infos hängen vor Ort.",
+    "spokesperson": {
+      "title-m": "Wasch AG Sprecher:",
+      "title-f": "Wasch AG Sprecherin:",
+      "name": "<a href=\"mailto:waschag@farue.rwth-aachen.de\">Friederike Kimmich</a>",
+      "apartment": "(123/23)"
+    },
+    "deputy": {
+      "title-m": "Wasch AG Vertreter:",
+      "title-f": "Wasch AG Vertreterin:",
+      "name": "Haytin Acer",
+      "apartment": "(123/14)"
+    },
+    "content": {
+      "text1": "Wasch-AG Mitglieder bei denen man Waschmnzen kaufen kann:",
+      "text2": "Bitte beachtet die Verkaufszeiten! Auerhalb der Verkaufszeiten werden keine Marken ausgegeben.",
+      "text3": "Bei Problemen, könnt ihr euch gerne an die Sprecherin der Wasch AG wenden.",
+      "table": {
+        "name": "Name",
+        "apartment": "Wohnungsnr.",
+        "salesTime": "Verkaufszeit"
+      }
+    }
   }
 }

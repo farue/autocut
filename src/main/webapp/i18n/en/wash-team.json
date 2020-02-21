@@ -1,7 +1,28 @@
 {
   "wash-team": {
-    "title": "Wash Team",
-    "subtitle": "Short description line 1<br>Short description line 2",
-    "content": "Detailed description<br><br>"
+    "title": "Washing Team",
+    "subtitle": "The Washing Team maintains 3 washing machines and 2 dryers located in the middle basement. Every tenant may wash and dry there as long as they enter into the list. Further information is available on site.",
+    "spokesperson": {
+      "title-m": "Washing Team Spokesperson:",
+      "title-f": "Washing Team Spokesperson:",
+      "name": "<a href=\"mailto:waschag@farue.rwth-aachen.de\">Friederike Kimmich</a>",
+      "apartment": "(123/23)"
+    },
+    "deputy": {
+      "title-m": "Washing Team Deputy:",
+      "title-f": "Washing Team Deputy:",
+      "name": "Haytin Acer",
+      "apartment": "(123/14)"
+    },
+    "content": {
+      "text1": "Washing Team members selling coins:",
+      "text2": "Please mind the sales times! No coins will be sold outside these sales times.",
+      "text3": "Feel free to contact the Washing Team spokesperson in case of any problems.",
+      "table": {
+        "name": "Name",
+        "apartment": "Apartment No.",
+        "salesTime": "Sales time"
+      }
+    }
   }
 }
