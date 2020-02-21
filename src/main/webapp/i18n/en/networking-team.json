@@ -1,6 +1,6 @@
 {
-  "network-team": {
-    "title": "Network Team",
+  "networking-team": {
+    "title": "Networking Team",
     "subtitle": "Short description line 1<br>Short description line 2",
     "content": "Detailed description<br><br>"
   }
