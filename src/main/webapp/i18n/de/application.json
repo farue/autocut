@@ -3,6 +3,10 @@
     "title": "Bewerbung",
     "text1": "Unsere Wohnanlage verfügt über zwei verschiedene Wohnraum-Angebote. Zum einen gibt es 39 Familienwohnungen, die ausschließlich für Paare mit mindestens einem Kind, bzw.einem alleinerziehenden Elternteil bedacht sind. Die Miete hierzu beträgt 440-460 €. Zum anderen verfügen wir über 40 WG-Zimmer für zwei Personen. Der Mietpreis beträgt hier 352 € je Mieter.",
     "text2": "In beiden Wohnungsvarianten hat die Wohnung eine Größe von ca. 61 m². Der Mietpreis beinhaltet auch schon alle Nebenkosten und Heizkosten. Nur Kosten für Strom kommen noch dazu und werden separat vom jeweiligen Anbieter in Rechnung gestellt. Zusätzlich sammeln wir als Gemeinschaft einen geringen <a href=\"./info/fee\">Beitrag</a> von jedem Bewohner ein.",
-    "text3": "Die <a href=\"https://www.studierendenwerk-aachen.de/de/wohnen/faq.html\">FAQs des Studierendenwerks</a> beantworten die am häufigsten gestellten Fragen der Bewerber und Bewerberinnen. Über das zentrale <a href=\"https://bewerberportal.stw.rwth-aachen.de/app.php/de/\">Bewerberportal</a> könnt ihr euch um einen Wohnplatz in unserem Wohnheim bewerben."
+    "text3": "Die <a href=\"https://www.studierendenwerk-aachen.de/de/wohnen/faq.html\">FAQs des Studierendenwerks</a> beantworten die am häufigsten gestellten Fragen der Bewerber und Bewerberinnen. Über das zentrale <a href=\"https://bewerberportal.stw.rwth-aachen.de/app.php/de/\">Bewerberportal</a> könnt ihr euch um einen Wohnplatz in unserem Wohnheim bewerben.",
+    "faq": {
+      "question1": "Sind die Wohnungen möbliert?",
+      "answer1": "Die Familienwohnungen werden komplett leer übergeben. Die WG Wohnungen enthalten eine Küche."
+    }
   }
 }
