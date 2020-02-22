@@ -55,6 +55,51 @@
                     </li>
                 </ul>
             </li>
+            <li ngbDropdown class="nav-item dropdown pointer" display="dynamic">
+                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="infonavBarDropdown">
+                    <span>
+                        <fa-icon icon="info"></fa-icon>
+                        <span jhiTranslate="global.menu.info">Info</span>
+                    </span>
+                </a>
+                <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="languagesnavBarDropdown">
+                    <li>
+                        <a class="dropdown-item" routerLink="info/application" routerLinkActive="active"
+                           (click)="collapseNavbar()">
+                            <fa-icon icon="id-card" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="application.title">Application</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="info/registration" routerLinkActive="active"
+                           (click)="collapseNavbar()">
+                            <fa-icon icon="wifi" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="registration.title">Registration</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="info/fee" routerLinkActive="active"
+                           (click)="collapseNavbar()">
+                            <fa-icon icon="dollar-sign" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="fee.title">Fee</span>
+                        </a>
+                    </li>
+                    <li *ngSwitchCase="true">
+                        <a class="dropdown-item" routerLink="info/protocols" routerLinkActive="active"
+                           (click)="collapseNavbar()">
+                            <fa-icon icon="clipboard" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="protocols.title">Protocols</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="info/contacts" routerLinkActive="active"
+                           (click)="collapseNavbar()">
+                            <fa-icon icon="address-book" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="contacts.title">Contacts</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
             <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
             <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer" display="dynamic"
                 routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">

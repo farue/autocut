@@ -9,6 +9,7 @@ import { AutocutHomeModule } from './home/home.module';
 import { AutocutEntityModule } from './entities/entity.module';
 import { AutocutAppSelfAdministrationModule } from './self-administration/self-administration.module';
 import { AutocutAppTeamsModule } from './teams/teams.module';
+import { AutocutAppInfoModule } from './info/info.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { MainComponent } from './layouts/main/main.component';
 import { NavbarComponent } from './layouts/navbar/navbar.component';
@@ -25,6 +26,7 @@ import { ErrorComponent } from './layouts/error/error.component';
     AutocutHomeModule,
     AutocutAppSelfAdministrationModule,
     AutocutAppTeamsModule,
+    AutocutAppInfoModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     AutocutEntityModule,
     AutocutAppRoutingModule

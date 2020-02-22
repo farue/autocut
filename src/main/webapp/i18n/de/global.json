@@ -12,6 +12,12 @@
       "networking-team": "Netzwerk AG",
       "washing-team": "Wasch AG",
       "tools-team": "Werkzeug AG",
+      "info": "Infos",
+      "application": "Application",
+      "registration": "Registration",
+      "fee": "Fee",
+      "protocols": "Protocols",
+      "contacts": "Contacts",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entitäten",
