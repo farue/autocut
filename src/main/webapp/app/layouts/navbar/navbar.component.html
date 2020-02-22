@@ -24,11 +24,36 @@
                 </a>
             </li>
 
-            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                <a class="nav-link" routerLink="teams" (click)="collapseNavbar()">
-                    <i class="fa fa-hand-spock-o" aria-hidden="true"></i>
-                    <span jhiTranslate="global.menu.teams">Teams</span>
+            <li ngbDropdown class="nav-item dropdown pointer" display="dynamic">
+                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="teamsnavBarDropdown">
+                    <span>
+                        <fa-icon icon="rocket"></fa-icon>
+                        <span jhiTranslate="global.menu.teams">Teams</span>
+                    </span>
                 </a>
+                <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="languagesnavBarDropdown">
+                    <li>
+                        <a class="dropdown-item" routerLink="teams/networking" routerLinkActive="active"
+                           (click)="collapseNavbar()">
+                            <fa-icon icon="network-wired" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="networking-team.title">Networking Team</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="teams/washing" routerLinkActive="active"
+                           (click)="collapseNavbar()">
+                            <fa-icon icon="tshirt" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="washing-team.title">Washing Team</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="teams/tools" routerLinkActive="active"
+                           (click)="collapseNavbar()">
+                            <fa-icon icon="tools" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="tools-team.title">Tools Team</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
             <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
             <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer" display="dynamic"
