@@ -82,13 +82,13 @@ relationship OneToOne {
 
 relationship OneToMany {
 	Team{members} to TeamMember{team required}
-    Tenant{teamMemberships} to TeamMember{tenant}
     Lease{tenants} to Tenant{lease}
     Apartment{leases} to Lease{apartment}
 }
 
 relationship ManyToOne {
 	Apartment{address} to Address
+    TeamMember{tenant} to Tenant
 }
 
 relationship OneToMany {
@@ -103,45 +103,23 @@ entity InternetAccess {
 	blocked Boolean required
     ip1 String required
     ip2 String required
-}
-
-entity Port {
-	number Integer required min(1)
-}
-
-entity NetworkSwitch {
-	switchInterface String required
+    switchInterface String required
+    port Integer required min(1)
 }
 
 relationship OneToOne {
 	Apartment{internetAccess} to InternetAccess{apartment}
-    InternetAccess{port required} to Port{internetAccess}
-}
-
-relationship OneToMany {
-	NetworkSwitch{ports} to Port{networkSwitch required}
 }
 
 // Transactions
-
-@service(serviceClass)
-entity PaymentAccount {
-	balance BigDecimal required
-}
-
-entity PaymentEntry {
-	balanceBefore BigDecimal required
-    balanceAfter BigDecimal required
-    payment BigDecimal required
-    date Instant required
-    description String
-}
 
 entity Transaction {
 	kind TransactionKind required
 	bookingDate Instant required
     valueDate Instant required
-    details String
+    value BigDecimal required
+    balanceAfter BigDecimal required
+    description String
     issuer String required
     recipient String
     amount BigDecimal required
@@ -151,45 +129,51 @@ entity Transaction {
 enum TransactionKind {
 	FEE,
     CREDIT,
-    DEBIT,
-    TRANSFER
-}
-
-relationship OneToOne {
-	Lease{account required} to PaymentAccount{lease}
-    PaymentEntry{transaction} to Transaction
+    TRANSFER,
+    CORRECTION
 }
 
 relationship OneToMany {
-	PaymentAccount{paymentEntries} to PaymentEntry{account}
+	Lease{account required} to Transaction
 }
 
 // Activities
 
 entity Activity {
-	semester String required
-    date Instant
-    description String required
+	year Integer required
+    term SemesterTerms required
+    startDate Instant
+    endDate Instant
+    description String
     // whether or not the tenant should get a discount next semester
-    discount Boolean required
+    discount Boolean
     // whether or not this activity is sent to StW
-    stwActivity Boolean required
+    stwActivity Boolean
+}
+
+enum SemesterTerms {
+	SUMMER_TERM,
+    WINTER_TERM
+}
+
+relationship ManyToOne {
+	 Activity{tenant} to Tenant
 }
 
 relationship OneToMany {
-	 Tenant{activties} to Activity{tenant}
+	Activity to TeamMember
 }
 
 // Communication
 
-entity TenantCommunication {
+entity Communication {
     subject String required maxlength(80)
 	text TextBlob required
 	note TextBlob
     date Instant required
 }
 
-relationship OneToMany {
-	Tenant{messages} to TenantCommunication{tenant}
+relationship ManyToOne {
+	Communication{tenant} to User
 }
 
