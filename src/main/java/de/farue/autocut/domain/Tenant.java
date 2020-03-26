@@ -57,19 +57,7 @@ public class Tenant implements Serializable {
 
     @OneToMany(mappedBy = "tenant")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<TeamMember> teamMemberships = new HashSet<>();
-
-    @OneToMany(mappedBy = "tenant")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SecurityPolicy> securityPolicies = new HashSet<>();
-
-    @OneToMany(mappedBy = "tenant")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Activity> activties = new HashSet<>();
-
-    @OneToMany(mappedBy = "tenant")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<TenantCommunication> messages = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties("tenants")
@@ -188,31 +176,6 @@ public class Tenant implements Serializable {
         this.user = user;
     }
 
-    public Set<TeamMember> getTeamMemberships() {
-        return teamMemberships;
-    }
-
-    public Tenant teamMemberships(Set<TeamMember> teamMembers) {
-        this.teamMemberships = teamMembers;
-        return this;
-    }
-
-    public Tenant addTeamMemberships(TeamMember teamMember) {
-        this.teamMemberships.add(teamMember);
-        teamMember.setTenant(this);
-        return this;
-    }
-
-    public Tenant removeTeamMemberships(TeamMember teamMember) {
-        this.teamMemberships.remove(teamMember);
-        teamMember.setTenant(null);
-        return this;
-    }
-
-    public void setTeamMemberships(Set<TeamMember> teamMembers) {
-        this.teamMemberships = teamMembers;
-    }
-
     public Set<SecurityPolicy> getSecurityPolicies() {
         return securityPolicies;
     }
@@ -236,56 +199,6 @@ public class Tenant implements Serializable {
 
     public void setSecurityPolicies(Set<SecurityPolicy> securityPolicies) {
         this.securityPolicies = securityPolicies;
-    }
-
-    public Set<Activity> getActivties() {
-        return activties;
-    }
-
-    public Tenant activties(Set<Activity> activities) {
-        this.activties = activities;
-        return this;
-    }
-
-    public Tenant addActivties(Activity activity) {
-        this.activties.add(activity);
-        activity.setTenant(this);
-        return this;
-    }
-
-    public Tenant removeActivties(Activity activity) {
-        this.activties.remove(activity);
-        activity.setTenant(null);
-        return this;
-    }
-
-    public void setActivties(Set<Activity> activities) {
-        this.activties = activities;
-    }
-
-    public Set<TenantCommunication> getMessages() {
-        return messages;
-    }
-
-    public Tenant messages(Set<TenantCommunication> tenantCommunications) {
-        this.messages = tenantCommunications;
-        return this;
-    }
-
-    public Tenant addMessages(TenantCommunication tenantCommunication) {
-        this.messages.add(tenantCommunication);
-        tenantCommunication.setTenant(this);
-        return this;
-    }
-
-    public Tenant removeMessages(TenantCommunication tenantCommunication) {
-        this.messages.remove(tenantCommunication);
-        tenantCommunication.setTenant(null);
-        return this;
-    }
-
-    public void setMessages(Set<TenantCommunication> tenantCommunications) {
-        this.messages = tenantCommunications;
     }
 
     public Lease getLease() {

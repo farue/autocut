@@ -34,10 +34,14 @@ public class InternetAccess implements Serializable {
     @Column(name = "ip_2", nullable = false)
     private String ip2;
 
-    @OneToOne(optional = false)
     @NotNull
-    @JoinColumn(unique = true)
-    private Port port;
+    @Column(name = "switch_interface", nullable = false)
+    private String switchInterface;
+
+    @NotNull
+    @Min(value = 1)
+    @Column(name = "port", nullable = false)
+    private Integer port;
 
     @OneToOne(mappedBy = "internetAccess")
     @JsonIgnore
@@ -91,16 +95,29 @@ public class InternetAccess implements Serializable {
         this.ip2 = ip2;
     }
 
-    public Port getPort() {
+    public String getSwitchInterface() {
+        return switchInterface;
+    }
+
+    public InternetAccess switchInterface(String switchInterface) {
+        this.switchInterface = switchInterface;
+        return this;
+    }
+
+    public void setSwitchInterface(String switchInterface) {
+        this.switchInterface = switchInterface;
+    }
+
+    public Integer getPort() {
         return port;
     }
 
-    public InternetAccess port(Port port) {
+    public InternetAccess port(Integer port) {
         this.port = port;
         return this;
     }
 
-    public void setPort(Port port) {
+    public void setPort(Integer port) {
         this.port = port;
     }
 
@@ -141,6 +158,8 @@ public class InternetAccess implements Serializable {
             ", blocked='" + isBlocked() + "'" +
             ", ip1='" + getIp1() + "'" +
             ", ip2='" + getIp2() + "'" +
+            ", switchInterface='" + getSwitchInterface() + "'" +
+            ", port=" + getPort() +
             "}";
     }
 }

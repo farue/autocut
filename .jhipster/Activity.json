@@ -2,43 +2,52 @@
     "name": "Activity",
     "fields": [
         {
-            "fieldName": "semester",
-            "fieldType": "String",
+            "fieldName": "year",
+            "fieldType": "Integer",
             "fieldValidateRules": [
                 "required"
             ]
         },
         {
-            "fieldName": "date",
+            "fieldName": "term",
+            "fieldType": "SemesterTerms",
+            "fieldValues": "SUMMER_TERM,WINTER_TERM",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "startDate",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "endDate",
             "fieldType": "Instant"
         },
         {
             "fieldName": "description",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldType": "String"
         },
         {
             "fieldName": "discount",
-            "fieldType": "Boolean",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldType": "Boolean"
         },
         {
             "fieldName": "stwActivity",
-            "fieldType": "Boolean",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldType": "Boolean"
         }
     ],
     "relationships": [
         {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "teamMember",
+            "otherEntityRelationshipName": "activity",
+            "relationshipName": "teamMember"
+        },
+        {
             "relationshipType": "many-to-one",
             "otherEntityName": "tenant",
-            "otherEntityRelationshipName": "activties",
+            "otherEntityRelationshipName": "activity",
             "relationshipName": "tenant",
             "otherEntityField": "id"
         }

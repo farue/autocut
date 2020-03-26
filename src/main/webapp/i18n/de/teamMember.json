@@ -2,24 +2,25 @@
   "autocutApp": {
     "teamMember": {
       "home": {
-        "title": "AG Mitglieder",
-        "createLabel": "AG Mitglied erstellen",
-        "createOrEditLabel": "AG Mitglied erstellen oder bearbeiten",
-        "notFound": "Keine AG Mitglieder gefunden"
+        "title": "Team Members",
+        "createLabel": "Team Member erstellen",
+        "createOrEditLabel": "Team Member erstellen oder bearbeiten",
+        "notFound": "No Team Members found"
       },
-      "created": "AG Mitglied erstellt mit ID {{ param }}",
-      "updated": "AG Mitglied aktualisiert mit ID {{ param }}",
-      "deleted": "AG Mitglied gelöscht mit ID {{ param }}",
+      "created": "Team Member erstellt mit ID {{ param }}",
+      "updated": "Team Member aktualisiert mit ID {{ param }}",
+      "deleted": "Team Member gelöscht mit ID {{ param }}",
       "delete": {
-        "question": "Soll AG Mitglied {{ id }} wirklich dauerhaft gelöscht werden?"
+        "question": "Soll Team Member {{ id }} wirklich dauerhaft gelöscht werden?"
       },
       "detail": {
-        "title": "AG Mitglied"
+        "title": "Team Member"
       },
-      "role": "Rolle",
-      "securityPolicies": "Sicherheitsrichtlinien",
-      "team": "AG",
-      "tenant": "Mieter"
+      "role": "Role",
+      "securityPolicies": "Security Policies",
+      "tenant": "Tenant",
+      "team": "Team",
+      "activity": "Activity"
     }
   }
 }

@@ -4,11 +4,14 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 
 import { ITransaction, Transaction } from 'app/shared/model/transaction.model';
 import { TransactionService } from './transaction.service';
+import { ILease } from 'app/shared/model/lease.model';
+import { LeaseService } from 'app/entities/lease/lease.service';
 
 @Component({
   selector: 'jhi-transaction-update',
@@ -17,23 +20,42 @@ import { TransactionService } from './transaction.service';
 export class TransactionUpdateComponent implements OnInit {
   isSaving = false;
 
+  leases: ILease[] = [];
+
   editForm = this.fb.group({
     id: [],
     kind: [null, [Validators.required]],
     bookingDate: [null, [Validators.required]],
     valueDate: [null, [Validators.required]],
-    details: [],
+    value: [null, [Validators.required]],
+    balanceAfter: [null, [Validators.required]],
+    description: [],
     issuer: [null, [Validators.required]],
     recipient: [],
     amount: [null, [Validators.required]],
-    balance: [null, [Validators.required]]
+    balance: [null, [Validators.required]],
+    lease: []
   });
 
-  constructor(protected transactionService: TransactionService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
+  constructor(
+    protected transactionService: TransactionService,
+    protected leaseService: LeaseService,
+    protected activatedRoute: ActivatedRoute,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ transaction }) => {
       this.updateForm(transaction);
+
+      this.leaseService
+        .query()
+        .pipe(
+          map((res: HttpResponse<ILease[]>) => {
+            return res.body ? res.body : [];
+          })
+        )
+        .subscribe((resBody: ILease[]) => (this.leases = resBody));
     });
   }
 
@@ -43,11 +65,14 @@ export class TransactionUpdateComponent implements OnInit {
       kind: transaction.kind,
       bookingDate: transaction.bookingDate != null ? transaction.bookingDate.format(DATE_TIME_FORMAT) : null,
       valueDate: transaction.valueDate != null ? transaction.valueDate.format(DATE_TIME_FORMAT) : null,
-      details: transaction.details,
+      value: transaction.value,
+      balanceAfter: transaction.balanceAfter,
+      description: transaction.description,
       issuer: transaction.issuer,
       recipient: transaction.recipient,
       amount: transaction.amount,
-      balance: transaction.balance
+      balance: transaction.balance,
+      lease: transaction.lease
     });
   }
 
@@ -74,11 +99,14 @@ export class TransactionUpdateComponent implements OnInit {
         this.editForm.get(['bookingDate'])!.value != null ? moment(this.editForm.get(['bookingDate'])!.value, DATE_TIME_FORMAT) : undefined,
       valueDate:
         this.editForm.get(['valueDate'])!.value != null ? moment(this.editForm.get(['valueDate'])!.value, DATE_TIME_FORMAT) : undefined,
-      details: this.editForm.get(['details'])!.value,
+      value: this.editForm.get(['value'])!.value,
+      balanceAfter: this.editForm.get(['balanceAfter'])!.value,
+      description: this.editForm.get(['description'])!.value,
       issuer: this.editForm.get(['issuer'])!.value,
       recipient: this.editForm.get(['recipient'])!.value,
       amount: this.editForm.get(['amount'])!.value,
-      balance: this.editForm.get(['balance'])!.value
+      balance: this.editForm.get(['balance'])!.value,
+      lease: this.editForm.get(['lease'])!.value
     };
   }
 
@@ -96,5 +124,9 @@ export class TransactionUpdateComponent implements OnInit {
 
   protected onSaveError(): void {
     this.isSaving = false;
+  }
+
+  trackById(index: number, item: ILease): any {
+    return item.id;
   }
 }

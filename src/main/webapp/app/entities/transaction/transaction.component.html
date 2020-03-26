@@ -22,11 +22,14 @@
             <th scope="col" ><span jhiTranslate="autocutApp.transaction.kind">Kind</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.transaction.bookingDate">Booking Date</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.transaction.valueDate">Value Date</span></th>
-            <th scope="col" ><span jhiTranslate="autocutApp.transaction.details">Details</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.transaction.value">Value</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.transaction.balanceAfter">Balance After</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.transaction.description">Description</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.transaction.issuer">Issuer</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.transaction.recipient">Recipient</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.transaction.amount">Amount</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.transaction.balance">Balance</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.transaction.lease">Lease</span></th>
             <th scope="col"></th>
             </tr>
             </thead>
@@ -36,11 +39,18 @@
                 <td jhiTranslate="{{'autocutApp.TransactionKind.' + transaction.kind}}">{{transaction.kind}}</td>
                 <td>{{transaction.bookingDate | date:'medium'}}</td>
                 <td>{{transaction.valueDate | date:'medium'}}</td>
-                <td>{{transaction.details}}</td>
+                <td>{{transaction.value}}</td>
+                <td>{{transaction.balanceAfter}}</td>
+                <td>{{transaction.description}}</td>
                 <td>{{transaction.issuer}}</td>
                 <td>{{transaction.recipient}}</td>
                 <td>{{transaction.amount}}</td>
                 <td>{{transaction.balance}}</td>
+                <td>
+                    <div *ngIf="transaction.lease">
+                        <a [routerLink]="['/lease', transaction.lease?.id, 'view' ]" >{{transaction.lease?.id}}</a>
+                    </div>
+                </td>
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"

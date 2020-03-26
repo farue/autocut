@@ -25,8 +25,11 @@
             <column name="ip_2" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="port_id" type="bigint">
-                <constraints unique="true" nullable="false" uniqueConstraintName="ux_internet_access_port_id" />
+            <column name="switch_interface" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="port" type="integer">
+                <constraints nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
@@ -54,7 +57,8 @@
             <column name="blocked" type="boolean"/>
             <column name="ip_1" type="string"/>
             <column name="ip_2" type="string"/>
-            <column name="port_id" type="numeric"/>
+            <column name="switch_interface" type="string"/>
+            <column name="port" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>
     </changeSet>

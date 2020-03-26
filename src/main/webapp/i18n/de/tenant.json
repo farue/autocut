@@ -2,27 +2,30 @@
   "autocutApp": {
     "tenant": {
       "home": {
-        "title": "Mieter",
-        "createLabel": "Mieter erstellen",
-        "createOrEditLabel": "Mieter erstellen oder bearbeiten",
-        "notFound": "Keine Mieter gefunden"
+        "title": "Tenants",
+        "createLabel": "Tenant erstellen",
+        "createOrEditLabel": "Tenant erstellen oder bearbeiten",
+        "notFound": "No Tenants found"
       },
-      "created": "Mieter erstellt mit ID {{ param }}",
-      "updated": "Mieter aktualisiert mit ID {{ param }}",
-      "deleted": "Mieter gelöscht mit ID {{ param }}",
+      "created": "Tenant erstellt mit ID {{ param }}",
+      "updated": "Tenant aktualisiert mit ID {{ param }}",
+      "deleted": "Tenant gelöscht mit ID {{ param }}",
       "delete": {
-        "question": "Soll Mieter {{ id }} wirklich dauerhaft gelöscht werden?"
+        "question": "Soll Tenant {{ id }} wirklich dauerhaft gelöscht werden?"
       },
       "detail": {
-        "title": "Mieter"
+        "title": "Tenant"
       },
-      "firstName": "Vorname",
-      "lastName": "Nachname",
+      "firstName": "First Name",
+      "lastName": "Last Name",
       "email": "Email",
-      "user": "Benutzer",
-      "teamMemberships": "AG Mitgliedschaften",
-      "messages": "Nachrichten",
-      "lease": "Mietvertrag"
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date",
+      "user": "User",
+      "securityPolicies": "Security Policies",
+      "lease": "Lease"
     }
   }
 }

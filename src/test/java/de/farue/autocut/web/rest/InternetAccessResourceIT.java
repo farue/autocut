@@ -2,7 +2,6 @@ package de.farue.autocut.web.rest;
 
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.InternetAccess;
-import de.farue.autocut.domain.Port;
 import de.farue.autocut.repository.InternetAccessRepository;
 import de.farue.autocut.service.InternetAccessService;
 import de.farue.autocut.web.rest.errors.ExceptionTranslator;
@@ -43,6 +42,12 @@ public class InternetAccessResourceIT {
 
     private static final String DEFAULT_IP_2 = "AAAAAAAAAA";
     private static final String UPDATED_IP_2 = "BBBBBBBBBB";
+
+    private static final String DEFAULT_SWITCH_INTERFACE = "AAAAAAAAAA";
+    private static final String UPDATED_SWITCH_INTERFACE = "BBBBBBBBBB";
+
+    private static final Integer DEFAULT_PORT = 1;
+    private static final Integer UPDATED_PORT = 2;
 
     @Autowired
     private InternetAccessRepository internetAccessRepository;
@@ -91,17 +96,9 @@ public class InternetAccessResourceIT {
         InternetAccess internetAccess = new InternetAccess()
             .blocked(DEFAULT_BLOCKED)
             .ip1(DEFAULT_IP_1)
-            .ip2(DEFAULT_IP_2);
-        // Add required entity
-        Port port;
-        if (TestUtil.findAll(em, Port.class).isEmpty()) {
-            port = PortResourceIT.createEntity(em);
-            em.persist(port);
-            em.flush();
-        } else {
-            port = TestUtil.findAll(em, Port.class).get(0);
-        }
-        internetAccess.setPort(port);
+            .ip2(DEFAULT_IP_2)
+            .switchInterface(DEFAULT_SWITCH_INTERFACE)
+            .port(DEFAULT_PORT);
         return internetAccess;
     }
     /**
@@ -114,17 +111,9 @@ public class InternetAccessResourceIT {
         InternetAccess internetAccess = new InternetAccess()
             .blocked(UPDATED_BLOCKED)
             .ip1(UPDATED_IP_1)
-            .ip2(UPDATED_IP_2);
-        // Add required entity
-        Port port;
-        if (TestUtil.findAll(em, Port.class).isEmpty()) {
-            port = PortResourceIT.createUpdatedEntity(em);
-            em.persist(port);
-            em.flush();
-        } else {
-            port = TestUtil.findAll(em, Port.class).get(0);
-        }
-        internetAccess.setPort(port);
+            .ip2(UPDATED_IP_2)
+            .switchInterface(UPDATED_SWITCH_INTERFACE)
+            .port(UPDATED_PORT);
         return internetAccess;
     }
 
@@ -151,6 +140,8 @@ public class InternetAccessResourceIT {
         assertThat(testInternetAccess.isBlocked()).isEqualTo(DEFAULT_BLOCKED);
         assertThat(testInternetAccess.getIp1()).isEqualTo(DEFAULT_IP_1);
         assertThat(testInternetAccess.getIp2()).isEqualTo(DEFAULT_IP_2);
+        assertThat(testInternetAccess.getSwitchInterface()).isEqualTo(DEFAULT_SWITCH_INTERFACE);
+        assertThat(testInternetAccess.getPort()).isEqualTo(DEFAULT_PORT);
     }
 
     @Test
@@ -229,6 +220,42 @@ public class InternetAccessResourceIT {
 
     @Test
     @Transactional
+    public void checkSwitchInterfaceIsRequired() throws Exception {
+        int databaseSizeBeforeTest = internetAccessRepository.findAll().size();
+        // set the field null
+        internetAccess.setSwitchInterface(null);
+
+        // Create the InternetAccess, which fails.
+
+        restInternetAccessMockMvc.perform(post("/api/internet-accesses")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(internetAccess)))
+            .andExpect(status().isBadRequest());
+
+        List<InternetAccess> internetAccessList = internetAccessRepository.findAll();
+        assertThat(internetAccessList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkPortIsRequired() throws Exception {
+        int databaseSizeBeforeTest = internetAccessRepository.findAll().size();
+        // set the field null
+        internetAccess.setPort(null);
+
+        // Create the InternetAccess, which fails.
+
+        restInternetAccessMockMvc.perform(post("/api/internet-accesses")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(internetAccess)))
+            .andExpect(status().isBadRequest());
+
+        List<InternetAccess> internetAccessList = internetAccessRepository.findAll();
+        assertThat(internetAccessList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllInternetAccesses() throws Exception {
         // Initialize the database
         internetAccessRepository.saveAndFlush(internetAccess);
@@ -240,7 +267,9 @@ public class InternetAccessResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(internetAccess.getId().intValue())))
             .andExpect(jsonPath("$.[*].blocked").value(hasItem(DEFAULT_BLOCKED.booleanValue())))
             .andExpect(jsonPath("$.[*].ip1").value(hasItem(DEFAULT_IP_1)))
-            .andExpect(jsonPath("$.[*].ip2").value(hasItem(DEFAULT_IP_2)));
+            .andExpect(jsonPath("$.[*].ip2").value(hasItem(DEFAULT_IP_2)))
+            .andExpect(jsonPath("$.[*].switchInterface").value(hasItem(DEFAULT_SWITCH_INTERFACE)))
+            .andExpect(jsonPath("$.[*].port").value(hasItem(DEFAULT_PORT)));
     }
     
     @Test
@@ -256,7 +285,9 @@ public class InternetAccessResourceIT {
             .andExpect(jsonPath("$.id").value(internetAccess.getId().intValue()))
             .andExpect(jsonPath("$.blocked").value(DEFAULT_BLOCKED.booleanValue()))
             .andExpect(jsonPath("$.ip1").value(DEFAULT_IP_1))
-            .andExpect(jsonPath("$.ip2").value(DEFAULT_IP_2));
+            .andExpect(jsonPath("$.ip2").value(DEFAULT_IP_2))
+            .andExpect(jsonPath("$.switchInterface").value(DEFAULT_SWITCH_INTERFACE))
+            .andExpect(jsonPath("$.port").value(DEFAULT_PORT));
     }
 
     @Test
@@ -282,7 +313,9 @@ public class InternetAccessResourceIT {
         updatedInternetAccess
             .blocked(UPDATED_BLOCKED)
             .ip1(UPDATED_IP_1)
-            .ip2(UPDATED_IP_2);
+            .ip2(UPDATED_IP_2)
+            .switchInterface(UPDATED_SWITCH_INTERFACE)
+            .port(UPDATED_PORT);
 
         restInternetAccessMockMvc.perform(put("/api/internet-accesses")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -296,6 +329,8 @@ public class InternetAccessResourceIT {
         assertThat(testInternetAccess.isBlocked()).isEqualTo(UPDATED_BLOCKED);
         assertThat(testInternetAccess.getIp1()).isEqualTo(UPDATED_IP_1);
         assertThat(testInternetAccess.getIp2()).isEqualTo(UPDATED_IP_2);
+        assertThat(testInternetAccess.getSwitchInterface()).isEqualTo(UPDATED_SWITCH_INTERFACE);
+        assertThat(testInternetAccess.getPort()).isEqualTo(UPDATED_PORT);
     }
 
     @Test

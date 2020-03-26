@@ -1,0 +1,43 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="communication">
+            <h2><span jhiTranslate="autocutApp.communication.detail.title">Communication</span> {{communication.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="autocutApp.communication.subject">Subject</span></dt>
+                <dd>
+                    <span>{{communication.subject}}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.communication.text">Text</span></dt>
+                <dd>
+                    <span>{{communication.text}}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.communication.note">Note</span></dt>
+                <dd>
+                    <span>{{communication.note}}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.communication.date">Date</span></dt>
+                <dd>
+                    <span>{{communication.date}}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.communication.tenant">Tenant</span></dt>
+                <dd>
+                    {{communication.tenant?.id}}
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/communication', communication.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

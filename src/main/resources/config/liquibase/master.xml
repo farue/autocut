@@ -22,23 +22,28 @@
     <include file="config/liquibase/changelog/20191117011746_added_entity_Address.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191117011747_added_entity_SecurityPolicy.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191117011748_added_entity_InternetAccess.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20191117011749_added_entity_Port.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20191117011750_added_entity_NetworkSwitch.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20191117011751_added_entity_PaymentAccount.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191117011752_added_entity_Transaction.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191117011753_added_entity_TenantCommunication.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20200112182858_added_entity_PaymentEntry.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200112182900_added_entity_Activity.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200326184242_added_entity_Communication.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200326184243_added_entity_Totp.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200326184244_added_entity_Coin.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200326184245_added_entity_LaundryMachine.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200326184246_added_entity_LaundryMachineProgram.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200326184247_added_entity_WashHistory.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20191117011741_added_entity_constraints_Tenant.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191117011743_added_entity_constraints_TeamMember.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191117011744_added_entity_constraints_Lease.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191117011745_added_entity_constraints_Apartment.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191117011747_added_entity_constraints_SecurityPolicy.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20191117011748_added_entity_constraints_InternetAccess.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20191117011749_added_entity_constraints_Port.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191117011753_added_entity_constraints_TenantCommunication.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20200112182858_added_entity_constraints_PaymentEntry.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200112182900_added_entity_constraints_Activity.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191117011752_added_entity_constraints_Transaction.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200326184242_added_entity_constraints_Communication.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200326184243_added_entity_constraints_Totp.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200326184244_added_entity_constraints_Coin.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200326184246_added_entity_constraints_LaundryMachineProgram.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200326184247_added_entity_constraints_WashHistory.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

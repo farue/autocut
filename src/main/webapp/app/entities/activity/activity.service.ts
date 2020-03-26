@@ -52,14 +52,16 @@ export class ActivityService {
 
   protected convertDateFromClient(activity: IActivity): IActivity {
     const copy: IActivity = Object.assign({}, activity, {
-      date: activity.date && activity.date.isValid() ? activity.date.toJSON() : undefined
+      startDate: activity.startDate && activity.startDate.isValid() ? activity.startDate.toJSON() : undefined,
+      endDate: activity.endDate && activity.endDate.isValid() ? activity.endDate.toJSON() : undefined
     });
     return copy;
   }
 
   protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
     if (res.body) {
-      res.body.date = res.body.date ? moment(res.body.date) : undefined;
+      res.body.startDate = res.body.startDate ? moment(res.body.startDate) : undefined;
+      res.body.endDate = res.body.endDate ? moment(res.body.endDate) : undefined;
     }
     return res;
   }
@@ -67,7 +69,8 @@ export class ActivityService {
   protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
     if (res.body) {
       res.body.forEach((activity: IActivity) => {
-        activity.date = activity.date ? moment(activity.date) : undefined;
+        activity.startDate = activity.startDate ? moment(activity.startDate) : undefined;
+        activity.endDate = activity.endDate ? moment(activity.endDate) : undefined;
       });
     }
     return res;

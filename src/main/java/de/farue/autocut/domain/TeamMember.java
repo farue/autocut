@@ -34,14 +34,18 @@ public class TeamMember implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SecurityPolicy> securityPolicies = new HashSet<>();
 
+    @ManyToOne
+    @JsonIgnoreProperties("teamMembers")
+    private Tenant tenant;
+
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties("members")
     private Team team;
 
     @ManyToOne
-    @JsonIgnoreProperties("teamMemberships")
-    private Tenant tenant;
+    @JsonIgnoreProperties("teamMembers")
+    private Activity activity;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -90,6 +94,19 @@ public class TeamMember implements Serializable {
         this.securityPolicies = securityPolicies;
     }
 
+    public Tenant getTenant() {
+        return tenant;
+    }
+
+    public TeamMember tenant(Tenant tenant) {
+        this.tenant = tenant;
+        return this;
+    }
+
+    public void setTenant(Tenant tenant) {
+        this.tenant = tenant;
+    }
+
     public Team getTeam() {
         return team;
     }
@@ -103,17 +120,17 @@ public class TeamMember implements Serializable {
         this.team = team;
     }
 
-    public Tenant getTenant() {
-        return tenant;
+    public Activity getActivity() {
+        return activity;
     }
 
-    public TeamMember tenant(Tenant tenant) {
-        this.tenant = tenant;
+    public TeamMember activity(Activity activity) {
+        this.activity = activity;
         return this;
     }
 
-    public void setTenant(Tenant tenant) {
-        this.tenant = tenant;
+    public void setActivity(Activity activity) {
+        this.activity = activity;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

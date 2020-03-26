@@ -1,0 +1,57 @@
+{
+    "name": "WashHistory",
+    "fields": [
+        {
+            "fieldName": "date",
+            "fieldType": "Instant",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "reservation",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "coin",
+            "otherEntityRelationshipName": "washHistory",
+            "relationshipName": "coin",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "tenant",
+            "otherEntityRelationshipName": "washHistory",
+            "relationshipName": "tenant",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "laundryMachine",
+            "otherEntityRelationshipName": "washHistory",
+            "relationshipName": "machine",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "laundryMachineProgram",
+            "otherEntityRelationshipName": "washHistory",
+            "relationshipName": "program",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200326184247",
+    "entityTableName": "wash_history",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

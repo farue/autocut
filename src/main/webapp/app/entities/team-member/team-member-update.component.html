@@ -19,6 +19,13 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="autocutApp.teamMember.tenant" for="field_tenant">Tenant</label>
+                    <select class="form-control" id="field_tenant" name="tenant" formControlName="tenant">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="tenantOption.id === editForm.get('tenant')!.value?.id ? editForm.get('tenant')!.value : tenantOption" *ngFor="let tenantOption of tenants; trackBy: trackById">{{tenantOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.teamMember.team" for="field_team">Team</label>
                     <select class="form-control" id="field_team" name="team" formControlName="team">
                         <option *ngIf="!editForm.get('team')!.value" [ngValue]="null" selected></option>
@@ -32,10 +39,10 @@
                     </small>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.teamMember.tenant" for="field_tenant">Tenant</label>
-                    <select class="form-control" id="field_tenant" name="tenant" formControlName="tenant">
+                    <label class="form-control-label" jhiTranslate="autocutApp.teamMember.activity" for="field_activity">Activity</label>
+                    <select class="form-control" id="field_activity" name="activity" formControlName="activity">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="tenantOption.id === editForm.get('tenant')!.value?.id ? editForm.get('tenant')!.value : tenantOption" *ngFor="let tenantOption of tenants; trackBy: trackById">{{tenantOption.id}}</option>
+                        <option [ngValue]="activityOption.id === editForm.get('activity')!.value?.id ? editForm.get('activity')!.value : activityOption" *ngFor="let activityOption of activities; trackBy: trackById">{{activityOption.id}}</option>
                     </select>
                 </div>
             </div>

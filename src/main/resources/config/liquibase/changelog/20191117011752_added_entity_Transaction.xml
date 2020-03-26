@@ -25,7 +25,13 @@
             <column name="value_date" type="datetime">
                 <constraints nullable="false" />
             </column>
-            <column name="details" type="varchar(255)">
+            <column name="value" type="decimal(21,2)">
+                <constraints nullable="false" />
+            </column>
+            <column name="balance_after" type="decimal(21,2)">
+                <constraints nullable="false" />
+            </column>
+            <column name="description" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="issuer" type="varchar(255)">
@@ -39,6 +45,9 @@
             </column>
             <column name="balance" type="decimal(21,2)">
                 <constraints nullable="false" />
+            </column>
+            <column name="lease_id" type="bigint">
+                <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
@@ -68,7 +77,9 @@
             <column name="kind" type="string"/>
             <column name="booking_date" type="datetime"/>
             <column name="value_date" type="datetime"/>
-            <column name="details" type="string"/>
+            <column name="value" type="numeric"/>
+            <column name="balance_after" type="numeric"/>
+            <column name="description" type="string"/>
             <column name="issuer" type="string"/>
             <column name="recipient" type="string"/>
             <column name="amount" type="numeric"/>

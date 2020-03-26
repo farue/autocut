@@ -2,10 +2,10 @@
   "autocutApp": {
     "TransactionKind": {
       "null": "",
-      "FEE": "Entgelt",
-      "CREDIT": "Gutschrift",
-      "DEBIT": "Lastschrift",
-      "TRANSFER": "Überweisung"
+      "FEE": "FEE",
+      "CREDIT": "CREDIT",
+      "TRANSFER": "TRANSFER",
+      "CORRECTION": "CORRECTION"
     }
   }
 }

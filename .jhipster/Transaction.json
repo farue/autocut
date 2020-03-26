@@ -4,7 +4,7 @@
         {
             "fieldName": "kind",
             "fieldType": "TransactionKind",
-            "fieldValues": "FEE,CREDIT,DEBIT,TRANSFER",
+            "fieldValues": "FEE,CREDIT,TRANSFER,CORRECTION",
             "fieldValidateRules": [
                 "required"
             ]
@@ -24,7 +24,21 @@
             ]
         },
         {
-            "fieldName": "details",
+            "fieldName": "value",
+            "fieldType": "BigDecimal",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "balanceAfter",
+            "fieldType": "BigDecimal",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "description",
             "fieldType": "String"
         },
         {
@@ -53,7 +67,15 @@
             ]
         }
     ],
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "lease",
+            "otherEntityRelationshipName": "account",
+            "relationshipName": "lease",
+            "otherEntityField": "id"
+        }
+    ],
     "changelogDate": "20191117011752",
     "entityTableName": "transaction",
     "dto": "no",

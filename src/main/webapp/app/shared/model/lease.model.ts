@@ -1,6 +1,6 @@
 import { Moment } from 'moment';
-import { IPaymentAccount } from 'app/shared/model/payment-account.model';
 import { ITenant } from 'app/shared/model/tenant.model';
+import { ITransaction } from 'app/shared/model/transaction.model';
 import { IApartment } from 'app/shared/model/apartment.model';
 
 export interface ILease {
@@ -12,8 +12,8 @@ export interface ILease {
   createdDate?: Moment;
   lastModifiedBy?: string;
   lastModifiedDate?: Moment;
-  account?: IPaymentAccount;
   tenants?: ITenant[];
+  accounts?: ITransaction[];
   apartment?: IApartment;
 }
 
@@ -27,8 +27,8 @@ export class Lease implements ILease {
     public createdDate?: Moment,
     public lastModifiedBy?: string,
     public lastModifiedDate?: Moment,
-    public account?: IPaymentAccount,
     public tenants?: ITenant[],
+    public accounts?: ITransaction[],
     public apartment?: IApartment
   ) {}
 }

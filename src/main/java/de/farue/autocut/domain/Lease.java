@@ -50,14 +50,13 @@ public class Lease implements Serializable {
     @Column(name = "last_modified_date")
     private Instant lastModifiedDate;
 
-    @OneToOne(optional = false)
-    @NotNull
-    @JoinColumn(unique = true)
-    private PaymentAccount account;
-
     @OneToMany(mappedBy = "lease")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Tenant> tenants = new HashSet<>();
+
+    @OneToMany(mappedBy = "lease")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Transaction> accounts = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties("leases")
@@ -163,19 +162,6 @@ public class Lease implements Serializable {
         this.lastModifiedDate = lastModifiedDate;
     }
 
-    public PaymentAccount getAccount() {
-        return account;
-    }
-
-    public Lease account(PaymentAccount paymentAccount) {
-        this.account = paymentAccount;
-        return this;
-    }
-
-    public void setAccount(PaymentAccount paymentAccount) {
-        this.account = paymentAccount;
-    }
-
     public Set<Tenant> getTenants() {
         return tenants;
     }
@@ -199,6 +185,31 @@ public class Lease implements Serializable {
 
     public void setTenants(Set<Tenant> tenants) {
         this.tenants = tenants;
+    }
+
+    public Set<Transaction> getAccounts() {
+        return accounts;
+    }
+
+    public Lease accounts(Set<Transaction> transactions) {
+        this.accounts = transactions;
+        return this;
+    }
+
+    public Lease addAccount(Transaction transaction) {
+        this.accounts.add(transaction);
+        transaction.setLease(this);
+        return this;
+    }
+
+    public Lease removeAccount(Transaction transaction) {
+        this.accounts.remove(transaction);
+        transaction.setLease(null);
+        return this;
+    }
+
+    public void setAccounts(Set<Transaction> transactions) {
+        this.accounts = transactions;
     }
 
     public Apartment getApartment() {

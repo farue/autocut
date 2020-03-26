@@ -16,11 +16,14 @@
       "detail": {
         "title": "Activity"
       },
-      "semester": "Semester",
-      "date": "Date",
+      "year": "Year",
+      "term": "Term",
+      "startDate": "Start Date",
+      "endDate": "End Date",
       "description": "Description",
       "discount": "Discount",
       "stwActivity": "Stw Activity",
+      "teamMember": "Team Member",
       "tenant": "Tenant"
     }
   }

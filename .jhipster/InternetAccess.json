@@ -21,18 +21,25 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "switchInterface",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "port",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 1
         }
     ],
     "relationships": [
-        {
-            "relationshipType": "one-to-one",
-            "otherEntityName": "port",
-            "otherEntityRelationshipName": "internetAccess",
-            "relationshipValidateRules": "required",
-            "relationshipName": "port",
-            "otherEntityField": "id",
-            "ownerSide": true
-        },
         {
             "relationshipType": "one-to-one",
             "otherEntityName": "apartment",

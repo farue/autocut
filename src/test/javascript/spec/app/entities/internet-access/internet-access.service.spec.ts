@@ -20,7 +20,7 @@ describe('Service Tests', () => {
       service = injector.get(InternetAccessService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new InternetAccess(0, false, 'AAAAAAA', 'AAAAAAA');
+      elemDefault = new InternetAccess(0, false, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 0);
     });
 
     describe('Service methods', () => {
@@ -58,7 +58,9 @@ describe('Service Tests', () => {
           {
             blocked: true,
             ip1: 'BBBBBB',
-            ip2: 'BBBBBB'
+            ip2: 'BBBBBB',
+            switchInterface: 'BBBBBB',
+            port: 1
           },
           elemDefault
         );
@@ -78,7 +80,9 @@ describe('Service Tests', () => {
           {
             blocked: true,
             ip1: 'BBBBBB',
-            ip2: 'BBBBBB'
+            ip2: 'BBBBBB',
+            switchInterface: 'BBBBBB',
+            port: 1
           },
           elemDefault
         );

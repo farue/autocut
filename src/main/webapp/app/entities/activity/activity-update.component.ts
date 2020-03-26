@@ -24,11 +24,13 @@ export class ActivityUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    semester: [null, [Validators.required]],
-    date: [],
-    description: [null, [Validators.required]],
-    discount: [null, [Validators.required]],
-    stwActivity: [null, [Validators.required]],
+    year: [null, [Validators.required]],
+    term: [null, [Validators.required]],
+    startDate: [],
+    endDate: [],
+    description: [],
+    discount: [],
+    stwActivity: [],
     tenant: []
   });
 
@@ -57,8 +59,10 @@ export class ActivityUpdateComponent implements OnInit {
   updateForm(activity: IActivity): void {
     this.editForm.patchValue({
       id: activity.id,
-      semester: activity.semester,
-      date: activity.date != null ? activity.date.format(DATE_TIME_FORMAT) : null,
+      year: activity.year,
+      term: activity.term,
+      startDate: activity.startDate != null ? activity.startDate.format(DATE_TIME_FORMAT) : null,
+      endDate: activity.endDate != null ? activity.endDate.format(DATE_TIME_FORMAT) : null,
       description: activity.description,
       discount: activity.discount,
       stwActivity: activity.stwActivity,
@@ -84,8 +88,11 @@ export class ActivityUpdateComponent implements OnInit {
     return {
       ...new Activity(),
       id: this.editForm.get(['id'])!.value,
-      semester: this.editForm.get(['semester'])!.value,
-      date: this.editForm.get(['date'])!.value != null ? moment(this.editForm.get(['date'])!.value, DATE_TIME_FORMAT) : undefined,
+      year: this.editForm.get(['year'])!.value,
+      term: this.editForm.get(['term'])!.value,
+      startDate:
+        this.editForm.get(['startDate'])!.value != null ? moment(this.editForm.get(['startDate'])!.value, DATE_TIME_FORMAT) : undefined,
+      endDate: this.editForm.get(['endDate'])!.value != null ? moment(this.editForm.get(['endDate'])!.value, DATE_TIME_FORMAT) : undefined,
       description: this.editForm.get(['description'])!.value,
       discount: this.editForm.get(['discount'])!.value,
       stwActivity: this.editForm.get(['stwActivity'])!.value,

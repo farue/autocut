@@ -1,4 +1,5 @@
 package de.farue.autocut.domain;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -38,8 +39,16 @@ public class Transaction implements Serializable {
     @Column(name = "value_date", nullable = false)
     private Instant valueDate;
 
-    @Column(name = "details")
-    private String details;
+    @NotNull
+    @Column(name = "value", precision = 21, scale = 2, nullable = false)
+    private BigDecimal value;
+
+    @NotNull
+    @Column(name = "balance_after", precision = 21, scale = 2, nullable = false)
+    private BigDecimal balanceAfter;
+
+    @Column(name = "description")
+    private String description;
 
     @NotNull
     @Column(name = "issuer", nullable = false)
@@ -55,6 +64,10 @@ public class Transaction implements Serializable {
     @NotNull
     @Column(name = "balance", precision = 21, scale = 2, nullable = false)
     private BigDecimal balance;
+
+    @ManyToOne
+    @JsonIgnoreProperties("accounts")
+    private Lease lease;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -104,17 +117,43 @@ public class Transaction implements Serializable {
         this.valueDate = valueDate;
     }
 
-    public String getDetails() {
-        return details;
+    public BigDecimal getValue() {
+        return value;
     }
 
-    public Transaction details(String details) {
-        this.details = details;
+    public Transaction value(BigDecimal value) {
+        this.value = value;
         return this;
     }
 
-    public void setDetails(String details) {
-        this.details = details;
+    public void setValue(BigDecimal value) {
+        this.value = value;
+    }
+
+    public BigDecimal getBalanceAfter() {
+        return balanceAfter;
+    }
+
+    public Transaction balanceAfter(BigDecimal balanceAfter) {
+        this.balanceAfter = balanceAfter;
+        return this;
+    }
+
+    public void setBalanceAfter(BigDecimal balanceAfter) {
+        this.balanceAfter = balanceAfter;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Transaction description(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getIssuer() {
@@ -168,6 +207,19 @@ public class Transaction implements Serializable {
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
+
+    public Lease getLease() {
+        return lease;
+    }
+
+    public Transaction lease(Lease lease) {
+        this.lease = lease;
+        return this;
+    }
+
+    public void setLease(Lease lease) {
+        this.lease = lease;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -193,7 +245,9 @@ public class Transaction implements Serializable {
             ", kind='" + getKind() + "'" +
             ", bookingDate='" + getBookingDate() + "'" +
             ", valueDate='" + getValueDate() + "'" +
-            ", details='" + getDetails() + "'" +
+            ", value=" + getValue() +
+            ", balanceAfter=" + getBalanceAfter() +
+            ", description='" + getDescription() + "'" +
             ", issuer='" + getIssuer() + "'" +
             ", recipient='" + getRecipient() + "'" +
             ", amount=" + getAmount() +

@@ -1,0 +1,23 @@
+{
+  "autocutApp": {
+    "totp": {
+      "home": {
+        "title": "Totps",
+        "createLabel": "Totp erstellen",
+        "createOrEditLabel": "Totp erstellen oder bearbeiten",
+        "notFound": "No Totps found"
+      },
+      "created": "Totp erstellt mit ID {{ param }}",
+      "updated": "Totp aktualisiert mit ID {{ param }}",
+      "deleted": "Totp gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Totp {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Totp"
+      },
+      "secret": "Secret",
+      "tenant": "Tenant"
+    }
+  }
+}

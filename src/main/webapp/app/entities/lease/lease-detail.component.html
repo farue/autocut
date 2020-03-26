@@ -33,12 +33,6 @@
                 <dd>
                     <span>{{lease.lastModifiedDate}}</span>
                 </dd>
-                <dt><span jhiTranslate="autocutApp.lease.account">Account</span></dt>
-                <dd>
-                    <div *ngIf="lease.account">
-                        <a [routerLink]="['/payment-account', lease.account?.id, 'view']">{{lease.account?.id}}</a>
-                    </div>
-                </dd>
                 <dt><span jhiTranslate="autocutApp.lease.apartment">Apartment</span></dt>
                 <dd>
                     <div *ngIf="lease.apartment">

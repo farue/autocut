@@ -1,0 +1,45 @@
+{
+    "name": "LaundryMachine",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "LaundryMachineType",
+            "fieldValues": "WASHING_MACHINE,DRYER",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "enabled",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "laundryMachineProgram",
+            "otherEntityRelationshipName": "laundryMachine",
+            "relationshipName": "programs"
+        }
+    ],
+    "changelogDate": "20200326184245",
+    "entityTableName": "laundry_machine",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

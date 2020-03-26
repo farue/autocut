@@ -17,9 +17,17 @@
                 <dd>
                     <span>{{transaction.valueDate}}</span>
                 </dd>
-                <dt><span jhiTranslate="autocutApp.transaction.details">Details</span></dt>
+                <dt><span jhiTranslate="autocutApp.transaction.value">Value</span></dt>
                 <dd>
-                    <span>{{transaction.details}}</span>
+                    <span>{{transaction.value}}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.transaction.balanceAfter">Balance After</span></dt>
+                <dd>
+                    <span>{{transaction.balanceAfter}}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.transaction.description">Description</span></dt>
+                <dd>
+                    <span>{{transaction.description}}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.transaction.issuer">Issuer</span></dt>
                 <dd>
@@ -36,6 +44,12 @@
                 <dt><span jhiTranslate="autocutApp.transaction.balance">Balance</span></dt>
                 <dd>
                     <span>{{transaction.balance}}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.transaction.lease">Lease</span></dt>
+                <dd>
+                    <div *ngIf="transaction.lease">
+                        <a [routerLink]="['/lease', transaction.lease?.id, 'view']">{{transaction.lease?.id}}</a>
+                    </div>
                 </dd>
             </dl>
 

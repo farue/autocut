@@ -14,8 +14,8 @@
                     <select class="form-control" name="kind" formControlName="kind" id="field_kind">
                         <option value="FEE">{{'autocutApp.TransactionKind.FEE' | translate}}</option>
                         <option value="CREDIT">{{'autocutApp.TransactionKind.CREDIT' | translate}}</option>
-                        <option value="DEBIT">{{'autocutApp.TransactionKind.DEBIT' | translate}}</option>
                         <option value="TRANSFER">{{'autocutApp.TransactionKind.TRANSFER' | translate}}</option>
+                        <option value="CORRECTION">{{'autocutApp.TransactionKind.CORRECTION' | translate}}</option>
                     </select>
                     <div *ngIf="editForm.get('kind')!.invalid && (editForm.get('kind')!.dirty || editForm.get('kind')!.touched)">
                         <small class="form-text text-danger"
@@ -57,9 +57,39 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.transaction.details" for="field_details">Details</label>
-                    <input type="text" class="form-control" name="details" id="field_details"
-                           formControlName="details"/>
+                    <label class="form-control-label" jhiTranslate="autocutApp.transaction.value" for="field_value">Value</label>
+                    <input type="number" class="form-control" name="value" id="field_value"
+                           formControlName="value"/>
+                    <div *ngIf="editForm.get('value')!.invalid && (editForm.get('value')!.dirty || editForm.get('value')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('value')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('value')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="autocutApp.transaction.balanceAfter" for="field_balanceAfter">Balance After</label>
+                    <input type="number" class="form-control" name="balanceAfter" id="field_balanceAfter"
+                           formControlName="balanceAfter"/>
+                    <div *ngIf="editForm.get('balanceAfter')!.invalid && (editForm.get('balanceAfter')!.dirty || editForm.get('balanceAfter')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('balanceAfter')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('balanceAfter')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="autocutApp.transaction.description" for="field_description">Description</label>
+                    <input type="text" class="form-control" name="description" id="field_description"
+                           formControlName="description"/>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.transaction.issuer" for="field_issuer">Issuer</label>
@@ -108,6 +138,13 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="autocutApp.transaction.lease" for="field_lease">Lease</label>
+                    <select class="form-control" id="field_lease" name="lease" formControlName="lease">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="leaseOption.id === editForm.get('lease')!.value?.id ? editForm.get('lease')!.value : leaseOption" *ngFor="let leaseOption of leases; trackBy: trackById">{{leaseOption.id}}</option>
+                    </select>
+                </div>
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">

@@ -56,27 +56,9 @@
         },
         {
             "relationshipType": "one-to-many",
-            "otherEntityName": "teamMember",
-            "otherEntityRelationshipName": "tenant",
-            "relationshipName": "teamMemberships"
-        },
-        {
-            "relationshipType": "one-to-many",
             "otherEntityName": "securityPolicy",
             "otherEntityRelationshipName": "tenant",
             "relationshipName": "securityPolicies"
-        },
-        {
-            "relationshipType": "one-to-many",
-            "otherEntityName": "activity",
-            "otherEntityRelationshipName": "tenant",
-            "relationshipName": "activties"
-        },
-        {
-            "relationshipType": "one-to-many",
-            "otherEntityName": "tenantCommunication",
-            "otherEntityRelationshipName": "tenant",
-            "relationshipName": "messages"
         },
         {
             "relationshipType": "many-to-one",

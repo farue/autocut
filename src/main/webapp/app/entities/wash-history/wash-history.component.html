@@ -1,0 +1,81 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="autocutApp.washHistory.home.title">Wash Histories</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-wash-history" [routerLink]="['/wash-history/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="autocutApp.washHistory.home.createLabel">
+            Create a new Wash History
+            </span>
+        </button>
+    </h2>
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="washHistories?.length === 0">
+        <span jhiTranslate="autocutApp.washHistory.home.notFound">No washHistories found</span>
+    </div>
+    <div class="table-responsive" *ngIf="washHistories?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+            <tr>
+            <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.washHistory.date">Date</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.washHistory.reservation">Reservation</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.washHistory.coin">Coin</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.washHistory.tenant">Tenant</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.washHistory.machine">Machine</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.washHistory.program">Program</span></th>
+            <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let washHistory of washHistories ;trackBy: trackId">
+                <td><a [routerLink]="['/wash-history', washHistory.id, 'view' ]">{{washHistory.id}}</a></td>
+                <td>{{washHistory.date | date:'medium'}}</td>
+                <td>{{washHistory.reservation | date:'medium'}}</td>
+                <td>
+                    <div *ngIf="washHistory.coin">
+                        <a [routerLink]="['/coin', washHistory.coin?.id, 'view' ]" >{{washHistory.coin?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="washHistory.tenant">
+                        <a [routerLink]="['/tenant', washHistory.tenant?.id, 'view' ]" >{{washHistory.tenant?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="washHistory.machine">
+                        <a [routerLink]="['/laundry-machine', washHistory.machine?.id, 'view' ]" >{{washHistory.machine?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="washHistory.program">
+                        <a [routerLink]="['/laundry-machine-program', washHistory.program?.id, 'view' ]" >{{washHistory.program?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/wash-history', washHistory.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/wash-history', washHistory.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit" (click)="delete(washHistory)"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

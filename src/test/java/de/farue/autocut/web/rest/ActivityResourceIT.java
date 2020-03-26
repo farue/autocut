@@ -29,17 +29,24 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import de.farue.autocut.domain.enumeration.SemesterTerms;
 /**
  * Integration tests for the {@link ActivityResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
 public class ActivityResourceIT {
 
-    private static final String DEFAULT_SEMESTER = "AAAAAAAAAA";
-    private static final String UPDATED_SEMESTER = "BBBBBBBBBB";
+    private static final Integer DEFAULT_YEAR = 1;
+    private static final Integer UPDATED_YEAR = 2;
 
-    private static final Instant DEFAULT_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final SemesterTerms DEFAULT_TERM = SemesterTerms.SUMMER_TERM;
+    private static final SemesterTerms UPDATED_TERM = SemesterTerms.WINTER_TERM;
+
+    private static final Instant DEFAULT_START_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_START_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Instant DEFAULT_END_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_END_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
@@ -92,8 +99,10 @@ public class ActivityResourceIT {
      */
     public static Activity createEntity(EntityManager em) {
         Activity activity = new Activity()
-            .semester(DEFAULT_SEMESTER)
-            .date(DEFAULT_DATE)
+            .year(DEFAULT_YEAR)
+            .term(DEFAULT_TERM)
+            .startDate(DEFAULT_START_DATE)
+            .endDate(DEFAULT_END_DATE)
             .description(DEFAULT_DESCRIPTION)
             .discount(DEFAULT_DISCOUNT)
             .stwActivity(DEFAULT_STW_ACTIVITY);
@@ -107,8 +116,10 @@ public class ActivityResourceIT {
      */
     public static Activity createUpdatedEntity(EntityManager em) {
         Activity activity = new Activity()
-            .semester(UPDATED_SEMESTER)
-            .date(UPDATED_DATE)
+            .year(UPDATED_YEAR)
+            .term(UPDATED_TERM)
+            .startDate(UPDATED_START_DATE)
+            .endDate(UPDATED_END_DATE)
             .description(UPDATED_DESCRIPTION)
             .discount(UPDATED_DISCOUNT)
             .stwActivity(UPDATED_STW_ACTIVITY);
@@ -135,8 +146,10 @@ public class ActivityResourceIT {
         List<Activity> activityList = activityRepository.findAll();
         assertThat(activityList).hasSize(databaseSizeBeforeCreate + 1);
         Activity testActivity = activityList.get(activityList.size() - 1);
-        assertThat(testActivity.getSemester()).isEqualTo(DEFAULT_SEMESTER);
-        assertThat(testActivity.getDate()).isEqualTo(DEFAULT_DATE);
+        assertThat(testActivity.getYear()).isEqualTo(DEFAULT_YEAR);
+        assertThat(testActivity.getTerm()).isEqualTo(DEFAULT_TERM);
+        assertThat(testActivity.getStartDate()).isEqualTo(DEFAULT_START_DATE);
+        assertThat(testActivity.getEndDate()).isEqualTo(DEFAULT_END_DATE);
         assertThat(testActivity.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testActivity.isDiscount()).isEqualTo(DEFAULT_DISCOUNT);
         assertThat(testActivity.isStwActivity()).isEqualTo(DEFAULT_STW_ACTIVITY);
@@ -164,10 +177,10 @@ public class ActivityResourceIT {
 
     @Test
     @Transactional
-    public void checkSemesterIsRequired() throws Exception {
+    public void checkYearIsRequired() throws Exception {
         int databaseSizeBeforeTest = activityRepository.findAll().size();
         // set the field null
-        activity.setSemester(null);
+        activity.setYear(null);
 
         // Create the Activity, which fails.
 
@@ -182,46 +195,10 @@ public class ActivityResourceIT {
 
     @Test
     @Transactional
-    public void checkDescriptionIsRequired() throws Exception {
+    public void checkTermIsRequired() throws Exception {
         int databaseSizeBeforeTest = activityRepository.findAll().size();
         // set the field null
-        activity.setDescription(null);
-
-        // Create the Activity, which fails.
-
-        restActivityMockMvc.perform(post("/api/activities")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(activity)))
-            .andExpect(status().isBadRequest());
-
-        List<Activity> activityList = activityRepository.findAll();
-        assertThat(activityList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkDiscountIsRequired() throws Exception {
-        int databaseSizeBeforeTest = activityRepository.findAll().size();
-        // set the field null
-        activity.setDiscount(null);
-
-        // Create the Activity, which fails.
-
-        restActivityMockMvc.perform(post("/api/activities")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(activity)))
-            .andExpect(status().isBadRequest());
-
-        List<Activity> activityList = activityRepository.findAll();
-        assertThat(activityList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkStwActivityIsRequired() throws Exception {
-        int databaseSizeBeforeTest = activityRepository.findAll().size();
-        // set the field null
-        activity.setStwActivity(null);
+        activity.setTerm(null);
 
         // Create the Activity, which fails.
 
@@ -245,8 +222,10 @@ public class ActivityResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(activity.getId().intValue())))
-            .andExpect(jsonPath("$.[*].semester").value(hasItem(DEFAULT_SEMESTER)))
-            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
+            .andExpect(jsonPath("$.[*].year").value(hasItem(DEFAULT_YEAR)))
+            .andExpect(jsonPath("$.[*].term").value(hasItem(DEFAULT_TERM.toString())))
+            .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
+            .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].discount").value(hasItem(DEFAULT_DISCOUNT.booleanValue())))
             .andExpect(jsonPath("$.[*].stwActivity").value(hasItem(DEFAULT_STW_ACTIVITY.booleanValue())));
@@ -263,8 +242,10 @@ public class ActivityResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(activity.getId().intValue()))
-            .andExpect(jsonPath("$.semester").value(DEFAULT_SEMESTER))
-            .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
+            .andExpect(jsonPath("$.year").value(DEFAULT_YEAR))
+            .andExpect(jsonPath("$.term").value(DEFAULT_TERM.toString()))
+            .andExpect(jsonPath("$.startDate").value(DEFAULT_START_DATE.toString()))
+            .andExpect(jsonPath("$.endDate").value(DEFAULT_END_DATE.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.discount").value(DEFAULT_DISCOUNT.booleanValue()))
             .andExpect(jsonPath("$.stwActivity").value(DEFAULT_STW_ACTIVITY.booleanValue()));
@@ -291,8 +272,10 @@ public class ActivityResourceIT {
         // Disconnect from session so that the updates on updatedActivity are not directly saved in db
         em.detach(updatedActivity);
         updatedActivity
-            .semester(UPDATED_SEMESTER)
-            .date(UPDATED_DATE)
+            .year(UPDATED_YEAR)
+            .term(UPDATED_TERM)
+            .startDate(UPDATED_START_DATE)
+            .endDate(UPDATED_END_DATE)
             .description(UPDATED_DESCRIPTION)
             .discount(UPDATED_DISCOUNT)
             .stwActivity(UPDATED_STW_ACTIVITY);
@@ -306,8 +289,10 @@ public class ActivityResourceIT {
         List<Activity> activityList = activityRepository.findAll();
         assertThat(activityList).hasSize(databaseSizeBeforeUpdate);
         Activity testActivity = activityList.get(activityList.size() - 1);
-        assertThat(testActivity.getSemester()).isEqualTo(UPDATED_SEMESTER);
-        assertThat(testActivity.getDate()).isEqualTo(UPDATED_DATE);
+        assertThat(testActivity.getYear()).isEqualTo(UPDATED_YEAR);
+        assertThat(testActivity.getTerm()).isEqualTo(UPDATED_TERM);
+        assertThat(testActivity.getStartDate()).isEqualTo(UPDATED_START_DATE);
+        assertThat(testActivity.getEndDate()).isEqualTo(UPDATED_END_DATE);
         assertThat(testActivity.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testActivity.isDiscount()).isEqualTo(UPDATED_DISCOUNT);
         assertThat(testActivity.isStwActivity()).isEqualTo(UPDATED_STW_ACTIVITY);

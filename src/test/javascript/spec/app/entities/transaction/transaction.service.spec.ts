@@ -25,7 +25,7 @@ describe('Service Tests', () => {
       httpMock = injector.get(HttpTestingController);
       currentDate = moment();
 
-      elemDefault = new Transaction(0, TransactionKind.FEE, currentDate, currentDate, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 0, 0);
+      elemDefault = new Transaction(0, TransactionKind.FEE, currentDate, currentDate, 0, 0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 0, 0);
     });
 
     describe('Service methods', () => {
@@ -78,7 +78,9 @@ describe('Service Tests', () => {
             kind: 'BBBBBB',
             bookingDate: currentDate.format(DATE_TIME_FORMAT),
             valueDate: currentDate.format(DATE_TIME_FORMAT),
-            details: 'BBBBBB',
+            value: 1,
+            balanceAfter: 1,
+            description: 'BBBBBB',
             issuer: 'BBBBBB',
             recipient: 'BBBBBB',
             amount: 1,
@@ -109,7 +111,9 @@ describe('Service Tests', () => {
             kind: 'BBBBBB',
             bookingDate: currentDate.format(DATE_TIME_FORMAT),
             valueDate: currentDate.format(DATE_TIME_FORMAT),
-            details: 'BBBBBB',
+            value: 1,
+            balanceAfter: 1,
+            description: 'BBBBBB',
             issuer: 'BBBBBB',
             recipient: 'BBBBBB',
             amount: 1,

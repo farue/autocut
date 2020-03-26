@@ -1,0 +1,62 @@
+{
+    "name": "LaundryMachineProgram",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "time",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "temperature",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "spin",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "preWash",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "protect",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "shortCycle",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "wrinkle",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "laundryMachine",
+            "otherEntityRelationshipName": "programs",
+            "relationshipName": "laundryMachine",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200326184246",
+    "entityTableName": "laundry_machine_program",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -19,11 +19,14 @@
       "kind": "Kind",
       "bookingDate": "Booking Date",
       "valueDate": "Value Date",
-      "details": "Details",
+      "value": "Value",
+      "balanceAfter": "Balance After",
+      "description": "Description",
       "issuer": "Issuer",
       "recipient": "Recipient",
       "amount": "Amount",
-      "balance": "Balance"
+      "balance": "Balance",
+      "lease": "Lease"
     }
   }
 }

@@ -1,27 +1,30 @@
 {
   "autocutApp": {
-    "Aktivität": {
+    "activity": {
       "home": {
-        "title": "Aktivitäten",
-        "createLabel": "Aktivität erstellen",
-        "createOrEditLabel": "Aktivität erstellen oder bearbeiten",
-        "notFound": "Keine Aktivitäten gefunden"
+        "title": "Activities",
+        "createLabel": "Activity erstellen",
+        "createOrEditLabel": "Activity erstellen oder bearbeiten",
+        "notFound": "No Activities found"
       },
-      "created": "Aktivität erstellt mit ID {{ param }}",
-      "updated": "Aktivität aktualisiert mit ID {{ param }}",
-      "deleted": "Aktivität gelöscht mit ID {{ param }}",
+      "created": "Activity erstellt mit ID {{ param }}",
+      "updated": "Activity aktualisiert mit ID {{ param }}",
+      "deleted": "Activity gelöscht mit ID {{ param }}",
       "delete": {
-        "question": "Soll Aktivität {{ id }} wirklich dauerhaft gelöscht werden?"
+        "question": "Soll Activity {{ id }} wirklich dauerhaft gelöscht werden?"
       },
       "detail": {
-        "title": "Aktivität"
+        "title": "Activity"
       },
-      "semester": "Semester",
-      "date": "Datum",
-      "description": "Beschreibung",
-      "discount": "Rabatt",
-      "stwAktivität": "StW Aktivität",
-      "tenant": "Mieter"
+      "year": "Year",
+      "term": "Term",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "description": "Description",
+      "discount": "Discount",
+      "stwActivity": "Stw Activity",
+      "teamMember": "Team Member",
+      "tenant": "Tenant"
     }
   }
 }

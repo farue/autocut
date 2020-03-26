@@ -1,24 +1,32 @@
 import { Moment } from 'moment';
+import { ITeamMember } from 'app/shared/model/team-member.model';
 import { ITenant } from 'app/shared/model/tenant.model';
+import { SemesterTerms } from 'app/shared/model/enumerations/semester-terms.model';
 
 export interface IActivity {
   id?: number;
-  semester?: string;
-  date?: Moment;
+  year?: number;
+  term?: SemesterTerms;
+  startDate?: Moment;
+  endDate?: Moment;
   description?: string;
   discount?: boolean;
   stwActivity?: boolean;
+  teamMembers?: ITeamMember[];
   tenant?: ITenant;
 }
 
 export class Activity implements IActivity {
   constructor(
     public id?: number,
-    public semester?: string,
-    public date?: Moment,
+    public year?: number,
+    public term?: SemesterTerms,
+    public startDate?: Moment,
+    public endDate?: Moment,
     public description?: string,
     public discount?: boolean,
     public stwActivity?: boolean,
+    public teamMembers?: ITeamMember[],
     public tenant?: ITenant
   ) {
     this.discount = this.discount || false;

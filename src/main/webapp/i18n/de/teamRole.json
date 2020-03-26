@@ -2,9 +2,9 @@
   "autocutApp": {
     "TeamRole": {
       "null": "",
-      "SPOKESPERSON": "Sprecher",
-      "DEPUTY": "Stellvertreter",
-      "MEMBER": "Mitglied"
+      "SPOKESPERSON": "SPOKESPERSON",
+      "DEPUTY": "DEPUTY",
+      "MEMBER": "MEMBER"
     }
   }
 }

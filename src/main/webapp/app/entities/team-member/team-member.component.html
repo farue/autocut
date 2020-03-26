@@ -20,8 +20,9 @@
             <tr>
             <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.teamMember.role">Role</span></th>
-            <th scope="col" ><span jhiTranslate="autocutApp.teamMember.team">Team</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.teamMember.tenant">Tenant</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.teamMember.team">Team</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.teamMember.activity">Activity</span></th>
             <th scope="col"></th>
             </tr>
             </thead>
@@ -30,13 +31,18 @@
                 <td><a [routerLink]="['/team-member', teamMember.id, 'view' ]">{{teamMember.id}}</a></td>
                 <td jhiTranslate="{{'autocutApp.TeamRole.' + teamMember.role}}">{{teamMember.role}}</td>
                 <td>
+                    <div *ngIf="teamMember.tenant">
+                        <a [routerLink]="['/tenant', teamMember.tenant?.id, 'view' ]" >{{teamMember.tenant?.id}}</a>
+                    </div>
+                </td>
+                <td>
                     <div *ngIf="teamMember.team">
                         <a [routerLink]="['/team', teamMember.team?.id, 'view' ]" >{{teamMember.team?.id}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="teamMember.tenant">
-                        <a [routerLink]="['/tenant', teamMember.tenant?.id, 'view' ]" >{{teamMember.tenant?.id}}</a>
+                    <div *ngIf="teamMember.activity">
+                        <a [routerLink]="['/activity', teamMember.activity?.id, 'view' ]" >{{teamMember.activity?.id}}</a>
                     </div>
                 </td>
                 <td class="text-right">

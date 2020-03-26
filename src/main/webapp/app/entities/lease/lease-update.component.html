@@ -82,19 +82,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.lease.account" for="field_account">Account</label>
-                    <select class="form-control" id="field_account" name="account" formControlName="account">
-                        <option *ngIf="!editForm.get('account')!.value" [ngValue]="null" selected></option>
-                        <option [ngValue]="paymentAccountOption.id === editForm.get('account')!.value?.id ? editForm.get('account')!.value : paymentAccountOption" *ngFor="let paymentAccountOption of accounts; trackBy: trackById">{{paymentAccountOption.id}}</option>
-                    </select>
-                </div>
-                <div *ngIf="editForm.get('account')!.invalid && (editForm.get('account')!.dirty || editForm.get('account')!.touched)">
-                    <small class="form-text text-danger"
-                           *ngIf="editForm.get('account')?.errors?.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                    </small>
-                </div>
-                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.lease.apartment" for="field_apartment">Apartment</label>
                     <select class="form-control" id="field_apartment" name="apartment" formControlName="apartment">
                         <option [ngValue]="null"></option>

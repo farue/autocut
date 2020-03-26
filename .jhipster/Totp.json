@@ -1,0 +1,32 @@
+{
+    "name": "Totp",
+    "fields": [
+        {
+            "fieldName": "secret",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "tenant",
+            "otherEntityRelationshipName": "totp",
+            "relationshipName": "tenant",
+            "otherEntityField": "id",
+            "ownerSide": true
+        }
+    ],
+    "changelogDate": "20200326184243",
+    "entityTableName": "totp",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

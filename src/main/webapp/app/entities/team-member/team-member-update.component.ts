@@ -8,12 +8,14 @@ import { map } from 'rxjs/operators';
 
 import { ITeamMember, TeamMember } from 'app/shared/model/team-member.model';
 import { TeamMemberService } from './team-member.service';
-import { ITeam } from 'app/shared/model/team.model';
-import { TeamService } from 'app/entities/team/team.service';
 import { ITenant } from 'app/shared/model/tenant.model';
 import { TenantService } from 'app/entities/tenant/tenant.service';
+import { ITeam } from 'app/shared/model/team.model';
+import { TeamService } from 'app/entities/team/team.service';
+import { IActivity } from 'app/shared/model/activity.model';
+import { ActivityService } from 'app/entities/activity/activity.service';
 
-type SelectableEntity = ITeam | ITenant;
+type SelectableEntity = ITenant | ITeam | IActivity;
 
 @Component({
   selector: 'jhi-team-member-update',
@@ -22,21 +24,25 @@ type SelectableEntity = ITeam | ITenant;
 export class TeamMemberUpdateComponent implements OnInit {
   isSaving = false;
 
+  tenants: ITenant[] = [];
+
   teams: ITeam[] = [];
 
-  tenants: ITenant[] = [];
+  activities: IActivity[] = [];
 
   editForm = this.fb.group({
     id: [],
     role: [],
+    tenant: [],
     team: [null, Validators.required],
-    tenant: []
+    activity: []
   });
 
   constructor(
     protected teamMemberService: TeamMemberService,
-    protected teamService: TeamService,
     protected tenantService: TenantService,
+    protected teamService: TeamService,
+    protected activityService: ActivityService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -44,6 +50,15 @@ export class TeamMemberUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ teamMember }) => {
       this.updateForm(teamMember);
+
+      this.tenantService
+        .query()
+        .pipe(
+          map((res: HttpResponse<ITenant[]>) => {
+            return res.body ? res.body : [];
+          })
+        )
+        .subscribe((resBody: ITenant[]) => (this.tenants = resBody));
 
       this.teamService
         .query()
@@ -54,14 +69,14 @@ export class TeamMemberUpdateComponent implements OnInit {
         )
         .subscribe((resBody: ITeam[]) => (this.teams = resBody));
 
-      this.tenantService
+      this.activityService
         .query()
         .pipe(
-          map((res: HttpResponse<ITenant[]>) => {
+          map((res: HttpResponse<IActivity[]>) => {
             return res.body ? res.body : [];
           })
         )
-        .subscribe((resBody: ITenant[]) => (this.tenants = resBody));
+        .subscribe((resBody: IActivity[]) => (this.activities = resBody));
     });
   }
 
@@ -69,8 +84,9 @@ export class TeamMemberUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: teamMember.id,
       role: teamMember.role,
+      tenant: teamMember.tenant,
       team: teamMember.team,
-      tenant: teamMember.tenant
+      activity: teamMember.activity
     });
   }
 
@@ -93,8 +109,9 @@ export class TeamMemberUpdateComponent implements OnInit {
       ...new TeamMember(),
       id: this.editForm.get(['id'])!.value,
       role: this.editForm.get(['role'])!.value,
+      tenant: this.editForm.get(['tenant'])!.value,
       team: this.editForm.get(['team'])!.value,
-      tenant: this.editForm.get(['tenant'])!.value
+      activity: this.editForm.get(['activity'])!.value
     };
   }
 

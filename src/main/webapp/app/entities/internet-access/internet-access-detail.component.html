@@ -17,11 +17,13 @@
                 <dd>
                     <span>{{internetAccess.ip2}}</span>
                 </dd>
+                <dt><span jhiTranslate="autocutApp.internetAccess.switchInterface">Switch Interface</span></dt>
+                <dd>
+                    <span>{{internetAccess.switchInterface}}</span>
+                </dd>
                 <dt><span jhiTranslate="autocutApp.internetAccess.port">Port</span></dt>
                 <dd>
-                    <div *ngIf="internetAccess.port">
-                        <a [routerLink]="['/port', internetAccess.port?.id, 'view']">{{internetAccess.port?.id}}</a>
-                    </div>
+                    <span>{{internetAccess.port}}</span>
                 </dd>
             </dl>
 

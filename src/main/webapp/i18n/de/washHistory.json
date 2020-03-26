@@ -1,0 +1,27 @@
+{
+  "autocutApp": {
+    "washHistory": {
+      "home": {
+        "title": "Wash Histories",
+        "createLabel": "Wash History erstellen",
+        "createOrEditLabel": "Wash History erstellen oder bearbeiten",
+        "notFound": "No Wash Histories found"
+      },
+      "created": "Wash History erstellt mit ID {{ param }}",
+      "updated": "Wash History aktualisiert mit ID {{ param }}",
+      "deleted": "Wash History gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Wash History {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Wash History"
+      },
+      "date": "Date",
+      "reservation": "Reservation",
+      "coin": "Coin",
+      "tenant": "Tenant",
+      "machine": "Machine",
+      "program": "Program"
+    }
+  }
+}

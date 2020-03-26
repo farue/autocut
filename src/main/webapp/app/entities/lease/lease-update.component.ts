@@ -10,12 +10,8 @@ import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 
 import { ILease, Lease } from 'app/shared/model/lease.model';
 import { LeaseService } from './lease.service';
-import { IPaymentAccount } from 'app/shared/model/payment-account.model';
-import { PaymentAccountService } from 'app/entities/payment-account/payment-account.service';
 import { IApartment } from 'app/shared/model/apartment.model';
 import { ApartmentService } from 'app/entities/apartment/apartment.service';
-
-type SelectableEntity = IPaymentAccount | IApartment;
 
 @Component({
   selector: 'jhi-lease-update',
@@ -23,8 +19,6 @@ type SelectableEntity = IPaymentAccount | IApartment;
 })
 export class LeaseUpdateComponent implements OnInit {
   isSaving = false;
-
-  accounts: IPaymentAccount[] = [];
 
   apartments: IApartment[] = [];
 
@@ -37,13 +31,11 @@ export class LeaseUpdateComponent implements OnInit {
     createdDate: [null, [Validators.required]],
     lastModifiedBy: [],
     lastModifiedDate: [],
-    account: [null, Validators.required],
     apartment: []
   });
 
   constructor(
     protected leaseService: LeaseService,
-    protected paymentAccountService: PaymentAccountService,
     protected apartmentService: ApartmentService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
@@ -52,30 +44,6 @@ export class LeaseUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ lease }) => {
       this.updateForm(lease);
-
-      this.paymentAccountService
-        .query({ filter: 'lease-is-null' })
-        .pipe(
-          map((res: HttpResponse<IPaymentAccount[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: IPaymentAccount[]) => {
-          if (!lease.account || !lease.account.id) {
-            this.accounts = resBody;
-          } else {
-            this.paymentAccountService
-              .find(lease.account.id)
-              .pipe(
-                map((subRes: HttpResponse<IPaymentAccount>) => {
-                  return subRes.body ? [subRes.body].concat(resBody) : resBody;
-                })
-              )
-              .subscribe((concatRes: IPaymentAccount[]) => {
-                this.accounts = concatRes;
-              });
-          }
-        });
 
       this.apartmentService
         .query()
@@ -98,7 +66,6 @@ export class LeaseUpdateComponent implements OnInit {
       createdDate: lease.createdDate != null ? lease.createdDate.format(DATE_TIME_FORMAT) : null,
       lastModifiedBy: lease.lastModifiedBy,
       lastModifiedDate: lease.lastModifiedDate != null ? lease.lastModifiedDate.format(DATE_TIME_FORMAT) : null,
-      account: lease.account,
       apartment: lease.apartment
     });
   }
@@ -132,7 +99,6 @@ export class LeaseUpdateComponent implements OnInit {
         this.editForm.get(['lastModifiedDate'])!.value != null
           ? moment(this.editForm.get(['lastModifiedDate'])!.value, DATE_TIME_FORMAT)
           : undefined,
-      account: this.editForm.get(['account'])!.value,
       apartment: this.editForm.get(['apartment'])!.value
     };
   }
@@ -153,7 +119,7 @@ export class LeaseUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  trackById(index: number, item: SelectableEntity): any {
+  trackById(index: number, item: IApartment): any {
     return item.id;
   }
 }

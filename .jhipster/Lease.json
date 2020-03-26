@@ -44,19 +44,17 @@
     ],
     "relationships": [
         {
-            "relationshipType": "one-to-one",
-            "otherEntityName": "paymentAccount",
-            "otherEntityRelationshipName": "lease",
-            "relationshipValidateRules": "required",
-            "relationshipName": "account",
-            "otherEntityField": "id",
-            "ownerSide": true
-        },
-        {
             "relationshipType": "one-to-many",
             "otherEntityName": "tenant",
             "otherEntityRelationshipName": "lease",
             "relationshipName": "tenants"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "transaction",
+            "otherEntityRelationshipName": "lease",
+            "relationshipValidateRules": "required",
+            "relationshipName": "account"
         },
         {
             "relationshipType": "many-to-one",

@@ -1,0 +1,33 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="totp">
+            <h2><span jhiTranslate="autocutApp.totp.detail.title">Totp</span> {{totp.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="autocutApp.totp.secret">Secret</span></dt>
+                <dd>
+                    <span>{{totp.secret}}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.totp.tenant">Tenant</span></dt>
+                <dd>
+                    <div *ngIf="totp.tenant">
+                        <a [routerLink]="['/tenant', totp.tenant?.id, 'view']">{{totp.tenant?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/totp', totp.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

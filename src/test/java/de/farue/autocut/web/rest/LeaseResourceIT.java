@@ -2,7 +2,7 @@ package de.farue.autocut.web.rest;
 
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Lease;
-import de.farue.autocut.domain.PaymentAccount;
+import de.farue.autocut.domain.Transaction;
 import de.farue.autocut.repository.LeaseRepository;
 import de.farue.autocut.web.rest.errors.ExceptionTranslator;
 
@@ -107,15 +107,15 @@ public class LeaseResourceIT {
             .lastModifiedBy(DEFAULT_LAST_MODIFIED_BY)
             .lastModifiedDate(DEFAULT_LAST_MODIFIED_DATE);
         // Add required entity
-        PaymentAccount paymentAccount;
-        if (TestUtil.findAll(em, PaymentAccount.class).isEmpty()) {
-            paymentAccount = PaymentAccountResourceIT.createEntity(em);
-            em.persist(paymentAccount);
+        Transaction transaction;
+        if (TestUtil.findAll(em, Transaction.class).isEmpty()) {
+            transaction = TransactionResourceIT.createEntity(em);
+            em.persist(transaction);
             em.flush();
         } else {
-            paymentAccount = TestUtil.findAll(em, PaymentAccount.class).get(0);
+            transaction = TestUtil.findAll(em, Transaction.class).get(0);
         }
-        lease.setAccount(paymentAccount);
+        lease.getAccounts().add(transaction);
         return lease;
     }
     /**
@@ -134,15 +134,15 @@ public class LeaseResourceIT {
             .lastModifiedBy(UPDATED_LAST_MODIFIED_BY)
             .lastModifiedDate(UPDATED_LAST_MODIFIED_DATE);
         // Add required entity
-        PaymentAccount paymentAccount;
-        if (TestUtil.findAll(em, PaymentAccount.class).isEmpty()) {
-            paymentAccount = PaymentAccountResourceIT.createUpdatedEntity(em);
-            em.persist(paymentAccount);
+        Transaction transaction;
+        if (TestUtil.findAll(em, Transaction.class).isEmpty()) {
+            transaction = TransactionResourceIT.createUpdatedEntity(em);
+            em.persist(transaction);
             em.flush();
         } else {
-            paymentAccount = TestUtil.findAll(em, PaymentAccount.class).get(0);
+            transaction = TestUtil.findAll(em, Transaction.class).get(0);
         }
-        lease.setAccount(paymentAccount);
+        lease.getAccounts().add(transaction);
         return lease;
     }
 

@@ -16,6 +16,13 @@
         },
         {
             "relationshipType": "many-to-one",
+            "otherEntityName": "tenant",
+            "otherEntityRelationshipName": "teamMember",
+            "relationshipName": "tenant",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
             "otherEntityName": "team",
             "otherEntityRelationshipName": "members",
             "relationshipValidateRules": "required",
@@ -24,9 +31,9 @@
         },
         {
             "relationshipType": "many-to-one",
-            "otherEntityName": "tenant",
-            "otherEntityRelationshipName": "teamMemberships",
-            "relationshipName": "tenant",
+            "otherEntityName": "activity",
+            "otherEntityRelationshipName": "teamMember",
+            "relationshipName": "activity",
             "otherEntityField": "id"
         }
     ],

@@ -37,18 +37,6 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./internet-access/internet-access.module').then(m => m.AutocutInternetAccessModule)
       },
       {
-        path: 'port',
-        loadChildren: () => import('./port/port.module').then(m => m.AutocutPortModule)
-      },
-      {
-        path: 'network-switch',
-        loadChildren: () => import('./network-switch/network-switch.module').then(m => m.AutocutNetworkSwitchModule)
-      },
-      {
-        path: 'payment-account',
-        loadChildren: () => import('./payment-account/payment-account.module').then(m => m.AutocutPaymentAccountModule)
-      },
-      {
         path: 'transaction',
         loadChildren: () => import('./transaction/transaction.module').then(m => m.AutocutTransactionModule)
       },
@@ -57,12 +45,33 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./tenant-communication/tenant-communication.module').then(m => m.AutocutTenantCommunicationModule)
       },
       {
-        path: 'payment-entry',
-        loadChildren: () => import('./payment-entry/payment-entry.module').then(m => m.AutocutPaymentEntryModule)
-      },
-      {
         path: 'activity',
         loadChildren: () => import('./activity/activity.module').then(m => m.AutocutActivityModule)
+      },
+      {
+        path: 'communication',
+        loadChildren: () => import('./communication/communication.module').then(m => m.AutocutCommunicationModule)
+      },
+      {
+        path: 'totp',
+        loadChildren: () => import('./totp/totp.module').then(m => m.AutocutTotpModule)
+      },
+      {
+        path: 'coin',
+        loadChildren: () => import('./coin/coin.module').then(m => m.AutocutCoinModule)
+      },
+      {
+        path: 'laundry-machine',
+        loadChildren: () => import('./laundry-machine/laundry-machine.module').then(m => m.AutocutLaundryMachineModule)
+      },
+      {
+        path: 'laundry-machine-program',
+        loadChildren: () =>
+          import('./laundry-machine-program/laundry-machine-program.module').then(m => m.AutocutLaundryMachineProgramModule)
+      },
+      {
+        path: 'wash-history',
+        loadChildren: () => import('./wash-history/wash-history.module').then(m => m.AutocutWashHistoryModule)
       }
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ])

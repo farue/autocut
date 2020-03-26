@@ -1,0 +1,26 @@
+{
+  "autocutApp": {
+    "communication": {
+      "home": {
+        "title": "Communications",
+        "createLabel": "Communication erstellen",
+        "createOrEditLabel": "Communication erstellen oder bearbeiten",
+        "notFound": "No Communications found"
+      },
+      "created": "Communication erstellt mit ID {{ param }}",
+      "updated": "Communication aktualisiert mit ID {{ param }}",
+      "deleted": "Communication gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Communication {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Communication"
+      },
+      "subject": "Subject",
+      "text": "Text",
+      "note": "Note",
+      "date": "Date",
+      "tenant": "Tenant"
+    }
+  }
+}

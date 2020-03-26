@@ -2,26 +2,30 @@
   "autocutApp": {
     "lease": {
       "home": {
-        "title": "Mietverträge",
-        "createLabel": "Mietvertrag erstellen",
-        "createOrEditLabel": "Mietvertrag erstellen oder bearbeiten",
-        "notFound": "Keine Mietverträge gefunden"
+        "title": "Leases",
+        "createLabel": "Lease erstellen",
+        "createOrEditLabel": "Lease erstellen oder bearbeiten",
+        "notFound": "No Leases found"
       },
-      "created": "Mietvertrag erstellt mit ID {{ param }}",
-      "updated": "Mietvertrag aktualisiert mit ID {{ param }}",
-      "deleted": "Mietvertrag gelöscht mit ID {{ param }}",
+      "created": "Lease erstellt mit ID {{ param }}",
+      "updated": "Lease aktualisiert mit ID {{ param }}",
+      "deleted": "Lease gelöscht mit ID {{ param }}",
       "delete": {
-        "question": "Soll Mietvertrag {{ id }} wirklich dauerhaft gelöscht werden?"
+        "question": "Soll Lease {{ id }} wirklich dauerhaft gelöscht werden?"
       },
       "detail": {
-        "title": "Mietvertrag"
+        "title": "Lease"
       },
       "nr": "Nr",
-      "start": "Einzug",
-      "end": "Auszug",
-      "account": "Zahlungsaccount",
-      "tenants": "Mieter",
-      "apartment": "Wohnung"
+      "start": "Start",
+      "end": "End",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date",
+      "tenants": "Tenants",
+      "account": "Account",
+      "apartment": "Apartment"
     }
   }
 }

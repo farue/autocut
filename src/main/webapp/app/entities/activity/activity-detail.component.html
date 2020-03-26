@@ -5,13 +5,21 @@
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="autocutApp.activity.semester">Semester</span></dt>
+                <dt><span jhiTranslate="autocutApp.activity.year">Year</span></dt>
                 <dd>
-                    <span>{{activity.semester}}</span>
+                    <span>{{activity.year}}</span>
                 </dd>
-                <dt><span jhiTranslate="autocutApp.activity.date">Date</span></dt>
+                <dt><span jhiTranslate="autocutApp.activity.term">Term</span></dt>
                 <dd>
-                    <span>{{activity.date}}</span>
+                    <span jhiTranslate="{{'autocutApp.SemesterTerms.' + activity.term}}">{{activity.term}}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.activity.startDate">Start Date</span></dt>
+                <dd>
+                    <span>{{activity.startDate}}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.activity.endDate">End Date</span></dt>
+                <dd>
+                    <span>{{activity.endDate}}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.activity.description">Description</span></dt>
                 <dd>

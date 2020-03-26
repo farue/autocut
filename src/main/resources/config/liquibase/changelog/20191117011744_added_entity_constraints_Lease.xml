@@ -8,12 +8,6 @@
     -->
     <changeSet id="20191117011744-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="account_id"
-                                 baseTableName="lease"
-                                 constraintName="fk_lease_account_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="payment_account"/>
-
         <addForeignKeyConstraint baseColumnNames="apartment_id"
                                  baseTableName="lease"
                                  constraintName="fk_lease_apartment_id"

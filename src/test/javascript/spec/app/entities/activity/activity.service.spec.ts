@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { ActivityService } from 'app/entities/activity/activity.service';
 import { IActivity, Activity } from 'app/shared/model/activity.model';
+import { SemesterTerms } from 'app/shared/model/enumerations/semester-terms.model';
 
 describe('Service Tests', () => {
   describe('Activity Service', () => {
@@ -24,14 +25,15 @@ describe('Service Tests', () => {
       httpMock = injector.get(HttpTestingController);
       currentDate = moment();
 
-      elemDefault = new Activity(0, 'AAAAAAA', currentDate, 'AAAAAAA', false, false);
+      elemDefault = new Activity(0, 0, SemesterTerms.SUMMER_TERM, currentDate, currentDate, 'AAAAAAA', false, false);
     });
 
     describe('Service methods', () => {
       it('should find an element', () => {
         const returnedFromService = Object.assign(
           {
-            date: currentDate.format(DATE_TIME_FORMAT)
+            startDate: currentDate.format(DATE_TIME_FORMAT),
+            endDate: currentDate.format(DATE_TIME_FORMAT)
           },
           elemDefault
         );
@@ -49,13 +51,15 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 0,
-            date: currentDate.format(DATE_TIME_FORMAT)
+            startDate: currentDate.format(DATE_TIME_FORMAT),
+            endDate: currentDate.format(DATE_TIME_FORMAT)
           },
           elemDefault
         );
         const expected = Object.assign(
           {
-            date: currentDate
+            startDate: currentDate,
+            endDate: currentDate
           },
           returnedFromService
         );
@@ -71,8 +75,10 @@ describe('Service Tests', () => {
       it('should update a Activity', () => {
         const returnedFromService = Object.assign(
           {
-            semester: 'BBBBBB',
-            date: currentDate.format(DATE_TIME_FORMAT),
+            year: 1,
+            term: 'BBBBBB',
+            startDate: currentDate.format(DATE_TIME_FORMAT),
+            endDate: currentDate.format(DATE_TIME_FORMAT),
             description: 'BBBBBB',
             discount: true,
             stwActivity: true
@@ -82,7 +88,8 @@ describe('Service Tests', () => {
 
         const expected = Object.assign(
           {
-            date: currentDate
+            startDate: currentDate,
+            endDate: currentDate
           },
           returnedFromService
         );
@@ -98,8 +105,10 @@ describe('Service Tests', () => {
       it('should return a list of Activity', () => {
         const returnedFromService = Object.assign(
           {
-            semester: 'BBBBBB',
-            date: currentDate.format(DATE_TIME_FORMAT),
+            year: 1,
+            term: 'BBBBBB',
+            startDate: currentDate.format(DATE_TIME_FORMAT),
+            endDate: currentDate.format(DATE_TIME_FORMAT),
             description: 'BBBBBB',
             discount: true,
             stwActivity: true
@@ -108,7 +117,8 @@ describe('Service Tests', () => {
         );
         const expected = Object.assign(
           {
-            date: currentDate
+            startDate: currentDate,
+            endDate: currentDate
           },
           returnedFromService
         );

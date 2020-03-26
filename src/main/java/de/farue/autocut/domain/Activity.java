@@ -8,6 +8,10 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
+
+import de.farue.autocut.domain.enumeration.SemesterTerms;
 
 /**
  * A Activity.
@@ -24,26 +28,35 @@ public class Activity implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "semester", nullable = false)
-    private String semester;
-
-    @Column(name = "date")
-    private Instant date;
+    @Column(name = "year", nullable = false)
+    private Integer year;
 
     @NotNull
-    @Column(name = "description", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "term", nullable = false)
+    private SemesterTerms term;
+
+    @Column(name = "start_date")
+    private Instant startDate;
+
+    @Column(name = "end_date")
+    private Instant endDate;
+
+    @Column(name = "description")
     private String description;
 
-    @NotNull
-    @Column(name = "discount", nullable = false)
+    @Column(name = "discount")
     private Boolean discount;
 
-    @NotNull
-    @Column(name = "stw_activity", nullable = false)
+    @Column(name = "stw_activity")
     private Boolean stwActivity;
 
+    @OneToMany(mappedBy = "activity")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<TeamMember> teamMembers = new HashSet<>();
+
     @ManyToOne
-    @JsonIgnoreProperties("activties")
+    @JsonIgnoreProperties("activities")
     private Tenant tenant;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -55,30 +68,56 @@ public class Activity implements Serializable {
         this.id = id;
     }
 
-    public String getSemester() {
-        return semester;
+    public Integer getYear() {
+        return year;
     }
 
-    public Activity semester(String semester) {
-        this.semester = semester;
+    public Activity year(Integer year) {
+        this.year = year;
         return this;
     }
 
-    public void setSemester(String semester) {
-        this.semester = semester;
+    public void setYear(Integer year) {
+        this.year = year;
     }
 
-    public Instant getDate() {
-        return date;
+    public SemesterTerms getTerm() {
+        return term;
     }
 
-    public Activity date(Instant date) {
-        this.date = date;
+    public Activity term(SemesterTerms term) {
+        this.term = term;
         return this;
     }
 
-    public void setDate(Instant date) {
-        this.date = date;
+    public void setTerm(SemesterTerms term) {
+        this.term = term;
+    }
+
+    public Instant getStartDate() {
+        return startDate;
+    }
+
+    public Activity startDate(Instant startDate) {
+        this.startDate = startDate;
+        return this;
+    }
+
+    public void setStartDate(Instant startDate) {
+        this.startDate = startDate;
+    }
+
+    public Instant getEndDate() {
+        return endDate;
+    }
+
+    public Activity endDate(Instant endDate) {
+        this.endDate = endDate;
+        return this;
+    }
+
+    public void setEndDate(Instant endDate) {
+        this.endDate = endDate;
     }
 
     public String getDescription() {
@@ -120,6 +159,31 @@ public class Activity implements Serializable {
         this.stwActivity = stwActivity;
     }
 
+    public Set<TeamMember> getTeamMembers() {
+        return teamMembers;
+    }
+
+    public Activity teamMembers(Set<TeamMember> teamMembers) {
+        this.teamMembers = teamMembers;
+        return this;
+    }
+
+    public Activity addTeamMember(TeamMember teamMember) {
+        this.teamMembers.add(teamMember);
+        teamMember.setActivity(this);
+        return this;
+    }
+
+    public Activity removeTeamMember(TeamMember teamMember) {
+        this.teamMembers.remove(teamMember);
+        teamMember.setActivity(null);
+        return this;
+    }
+
+    public void setTeamMembers(Set<TeamMember> teamMembers) {
+        this.teamMembers = teamMembers;
+    }
+
     public Tenant getTenant() {
         return tenant;
     }
@@ -154,8 +218,10 @@ public class Activity implements Serializable {
     public String toString() {
         return "Activity{" +
             "id=" + getId() +
-            ", semester='" + getSemester() + "'" +
-            ", date='" + getDate() + "'" +
+            ", year=" + getYear() +
+            ", term='" + getTerm() + "'" +
+            ", startDate='" + getStartDate() + "'" +
+            ", endDate='" + getEndDate() + "'" +
             ", description='" + getDescription() + "'" +
             ", discount='" + isDiscount() + "'" +
             ", stwActivity='" + isStwActivity() + "'" +

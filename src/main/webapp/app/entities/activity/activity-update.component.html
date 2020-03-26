@@ -10,54 +10,59 @@
                         readonly />
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.activity.semester" for="field_semester">Semester</label>
-                    <input type="text" class="form-control" name="semester" id="field_semester"
-                           formControlName="semester"/>
-                    <div *ngIf="editForm.get('semester')!.invalid && (editForm.get('semester')!.dirty || editForm.get('semester')!.touched)">
+                    <label class="form-control-label" jhiTranslate="autocutApp.activity.year" for="field_year">Year</label>
+                    <input type="number" class="form-control" name="year" id="field_year"
+                           formControlName="year"/>
+                    <div *ngIf="editForm.get('year')!.invalid && (editForm.get('year')!.dirty || editForm.get('year')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('semester')?.errors?.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.get('year')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('year')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="autocutApp.activity.term" for="field_term">Term</label>
+                    <select class="form-control" name="term" formControlName="term" id="field_term">
+                        <option value="SUMMER_TERM">{{'autocutApp.SemesterTerms.SUMMER_TERM' | translate}}</option>
+                        <option value="WINTER_TERM">{{'autocutApp.SemesterTerms.WINTER_TERM' | translate}}</option>
+                    </select>
+                    <div *ngIf="editForm.get('term')!.invalid && (editForm.get('term')!.dirty || editForm.get('term')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('term')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.activity.date" for="field_date">Date</label>
+                    <label class="form-control-label" jhiTranslate="autocutApp.activity.startDate" for="field_startDate">Start Date</label>
                     <div class="d-flex">
-                        <input id="field_date" type="datetime-local" class="form-control" name="date" formControlName="date" placeholder="YYYY-MM-DD HH:mm"/>
+                        <input id="field_startDate" type="datetime-local" class="form-control" name="startDate" formControlName="startDate" placeholder="YYYY-MM-DD HH:mm"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="autocutApp.activity.endDate" for="field_endDate">End Date</label>
+                    <div class="d-flex">
+                        <input id="field_endDate" type="datetime-local" class="form-control" name="endDate" formControlName="endDate" placeholder="YYYY-MM-DD HH:mm"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.activity.description" for="field_description">Description</label>
                     <input type="text" class="form-control" name="description" id="field_description"
                            formControlName="description"/>
-                    <div *ngIf="editForm.get('description')!.invalid && (editForm.get('description')!.dirty || editForm.get('description')!.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('description')?.errors?.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.activity.discount" for="field_discount">Discount</label>
                     <input type="checkbox" class="form-control" name="discount" id="field_discount"
                            formControlName="discount"/>
-                    <div *ngIf="editForm.get('discount')!.invalid && (editForm.get('discount')!.dirty || editForm.get('discount')!.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('discount')?.errors?.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.activity.stwActivity" for="field_stwActivity">Stw Activity</label>
                     <input type="checkbox" class="form-control" name="stwActivity" id="field_stwActivity"
                            formControlName="stwActivity"/>
-                    <div *ngIf="editForm.get('stwActivity')!.invalid && (editForm.get('stwActivity')!.dirty || editForm.get('stwActivity')!.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('stwActivity')?.errors?.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                    </div>
                 </div>
 
                 <div class="form-group">

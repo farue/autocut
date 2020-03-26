@@ -46,8 +46,14 @@ public class TransactionResourceIT {
     private static final Instant DEFAULT_VALUE_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_VALUE_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
-    private static final String DEFAULT_DETAILS = "AAAAAAAAAA";
-    private static final String UPDATED_DETAILS = "BBBBBBBBBB";
+    private static final BigDecimal DEFAULT_VALUE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_VALUE = new BigDecimal(2);
+
+    private static final BigDecimal DEFAULT_BALANCE_AFTER = new BigDecimal(1);
+    private static final BigDecimal UPDATED_BALANCE_AFTER = new BigDecimal(2);
+
+    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
     private static final String DEFAULT_ISSUER = "AAAAAAAAAA";
     private static final String UPDATED_ISSUER = "BBBBBBBBBB";
@@ -106,7 +112,9 @@ public class TransactionResourceIT {
             .kind(DEFAULT_KIND)
             .bookingDate(DEFAULT_BOOKING_DATE)
             .valueDate(DEFAULT_VALUE_DATE)
-            .details(DEFAULT_DETAILS)
+            .value(DEFAULT_VALUE)
+            .balanceAfter(DEFAULT_BALANCE_AFTER)
+            .description(DEFAULT_DESCRIPTION)
             .issuer(DEFAULT_ISSUER)
             .recipient(DEFAULT_RECIPIENT)
             .amount(DEFAULT_AMOUNT)
@@ -124,7 +132,9 @@ public class TransactionResourceIT {
             .kind(UPDATED_KIND)
             .bookingDate(UPDATED_BOOKING_DATE)
             .valueDate(UPDATED_VALUE_DATE)
-            .details(UPDATED_DETAILS)
+            .value(UPDATED_VALUE)
+            .balanceAfter(UPDATED_BALANCE_AFTER)
+            .description(UPDATED_DESCRIPTION)
             .issuer(UPDATED_ISSUER)
             .recipient(UPDATED_RECIPIENT)
             .amount(UPDATED_AMOUNT)
@@ -155,7 +165,9 @@ public class TransactionResourceIT {
         assertThat(testTransaction.getKind()).isEqualTo(DEFAULT_KIND);
         assertThat(testTransaction.getBookingDate()).isEqualTo(DEFAULT_BOOKING_DATE);
         assertThat(testTransaction.getValueDate()).isEqualTo(DEFAULT_VALUE_DATE);
-        assertThat(testTransaction.getDetails()).isEqualTo(DEFAULT_DETAILS);
+        assertThat(testTransaction.getValue()).isEqualTo(DEFAULT_VALUE);
+        assertThat(testTransaction.getBalanceAfter()).isEqualTo(DEFAULT_BALANCE_AFTER);
+        assertThat(testTransaction.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testTransaction.getIssuer()).isEqualTo(DEFAULT_ISSUER);
         assertThat(testTransaction.getRecipient()).isEqualTo(DEFAULT_RECIPIENT);
         assertThat(testTransaction.getAmount()).isEqualTo(DEFAULT_AMOUNT);
@@ -238,6 +250,42 @@ public class TransactionResourceIT {
 
     @Test
     @Transactional
+    public void checkValueIsRequired() throws Exception {
+        int databaseSizeBeforeTest = transactionRepository.findAll().size();
+        // set the field null
+        transaction.setValue(null);
+
+        // Create the Transaction, which fails.
+
+        restTransactionMockMvc.perform(post("/api/transactions")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(transaction)))
+            .andExpect(status().isBadRequest());
+
+        List<Transaction> transactionList = transactionRepository.findAll();
+        assertThat(transactionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkBalanceAfterIsRequired() throws Exception {
+        int databaseSizeBeforeTest = transactionRepository.findAll().size();
+        // set the field null
+        transaction.setBalanceAfter(null);
+
+        // Create the Transaction, which fails.
+
+        restTransactionMockMvc.perform(post("/api/transactions")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(transaction)))
+            .andExpect(status().isBadRequest());
+
+        List<Transaction> transactionList = transactionRepository.findAll();
+        assertThat(transactionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void checkIssuerIsRequired() throws Exception {
         int databaseSizeBeforeTest = transactionRepository.findAll().size();
         // set the field null
@@ -304,7 +352,9 @@ public class TransactionResourceIT {
             .andExpect(jsonPath("$.[*].kind").value(hasItem(DEFAULT_KIND.toString())))
             .andExpect(jsonPath("$.[*].bookingDate").value(hasItem(DEFAULT_BOOKING_DATE.toString())))
             .andExpect(jsonPath("$.[*].valueDate").value(hasItem(DEFAULT_VALUE_DATE.toString())))
-            .andExpect(jsonPath("$.[*].details").value(hasItem(DEFAULT_DETAILS)))
+            .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.intValue())))
+            .andExpect(jsonPath("$.[*].balanceAfter").value(hasItem(DEFAULT_BALANCE_AFTER.intValue())))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].issuer").value(hasItem(DEFAULT_ISSUER)))
             .andExpect(jsonPath("$.[*].recipient").value(hasItem(DEFAULT_RECIPIENT)))
             .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.intValue())))
@@ -325,7 +375,9 @@ public class TransactionResourceIT {
             .andExpect(jsonPath("$.kind").value(DEFAULT_KIND.toString()))
             .andExpect(jsonPath("$.bookingDate").value(DEFAULT_BOOKING_DATE.toString()))
             .andExpect(jsonPath("$.valueDate").value(DEFAULT_VALUE_DATE.toString()))
-            .andExpect(jsonPath("$.details").value(DEFAULT_DETAILS))
+            .andExpect(jsonPath("$.value").value(DEFAULT_VALUE.intValue()))
+            .andExpect(jsonPath("$.balanceAfter").value(DEFAULT_BALANCE_AFTER.intValue()))
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.issuer").value(DEFAULT_ISSUER))
             .andExpect(jsonPath("$.recipient").value(DEFAULT_RECIPIENT))
             .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT.intValue()))
@@ -356,7 +408,9 @@ public class TransactionResourceIT {
             .kind(UPDATED_KIND)
             .bookingDate(UPDATED_BOOKING_DATE)
             .valueDate(UPDATED_VALUE_DATE)
-            .details(UPDATED_DETAILS)
+            .value(UPDATED_VALUE)
+            .balanceAfter(UPDATED_BALANCE_AFTER)
+            .description(UPDATED_DESCRIPTION)
             .issuer(UPDATED_ISSUER)
             .recipient(UPDATED_RECIPIENT)
             .amount(UPDATED_AMOUNT)
@@ -374,7 +428,9 @@ public class TransactionResourceIT {
         assertThat(testTransaction.getKind()).isEqualTo(UPDATED_KIND);
         assertThat(testTransaction.getBookingDate()).isEqualTo(UPDATED_BOOKING_DATE);
         assertThat(testTransaction.getValueDate()).isEqualTo(UPDATED_VALUE_DATE);
-        assertThat(testTransaction.getDetails()).isEqualTo(UPDATED_DETAILS);
+        assertThat(testTransaction.getValue()).isEqualTo(UPDATED_VALUE);
+        assertThat(testTransaction.getBalanceAfter()).isEqualTo(UPDATED_BALANCE_AFTER);
+        assertThat(testTransaction.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testTransaction.getIssuer()).isEqualTo(UPDATED_ISSUER);
         assertThat(testTransaction.getRecipient()).isEqualTo(UPDATED_RECIPIENT);
         assertThat(testTransaction.getAmount()).isEqualTo(UPDATED_AMOUNT);

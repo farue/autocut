@@ -16,27 +16,34 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="semester" type="varchar(255)">
+            <column name="year" type="integer">
                 <constraints nullable="false" />
             </column>
-            <column name="date" type="datetime">
+            <column name="term" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="start_date" type="datetime">
+                <constraints nullable="true" />
+            </column>
+            <column name="end_date" type="datetime">
                 <constraints nullable="true" />
             </column>
             <column name="description" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="discount" type="boolean">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="stw_activity" type="boolean">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="tenant_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="activity" columnName="date" columnDataType="datetime"/>
+        <dropDefaultValue tableName="activity" columnName="start_date" columnDataType="datetime"/>
+        <dropDefaultValue tableName="activity" columnName="end_date" columnDataType="datetime"/>
     </changeSet>
 
     <changeSet id="20200112182900-1-relations" author="jhipster">
@@ -58,8 +65,10 @@
                   separator=";"
                   tableName="activity">
             <column name="id" type="numeric"/>
-            <column name="semester" type="string"/>
-            <column name="date" type="datetime"/>
+            <column name="year" type="numeric"/>
+            <column name="term" type="string"/>
+            <column name="start_date" type="datetime"/>
+            <column name="end_date" type="datetime"/>
             <column name="description" type="string"/>
             <column name="discount" type="boolean"/>
             <column name="stw_activity" type="boolean"/>

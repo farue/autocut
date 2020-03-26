@@ -1,4 +1,5 @@
 import { Moment } from 'moment';
+import { ILease } from 'app/shared/model/lease.model';
 import { TransactionKind } from 'app/shared/model/enumerations/transaction-kind.model';
 
 export interface ITransaction {
@@ -6,11 +7,14 @@ export interface ITransaction {
   kind?: TransactionKind;
   bookingDate?: Moment;
   valueDate?: Moment;
-  details?: string;
+  value?: number;
+  balanceAfter?: number;
+  description?: string;
   issuer?: string;
   recipient?: string;
   amount?: number;
   balance?: number;
+  lease?: ILease;
 }
 
 export class Transaction implements ITransaction {
@@ -19,10 +23,13 @@ export class Transaction implements ITransaction {
     public kind?: TransactionKind,
     public bookingDate?: Moment,
     public valueDate?: Moment,
-    public details?: string,
+    public value?: number,
+    public balanceAfter?: number,
+    public description?: string,
     public issuer?: string,
     public recipient?: string,
     public amount?: number,
-    public balance?: number
+    public balance?: number,
+    public lease?: ILease
   ) {}
 }

@@ -22,6 +22,7 @@
             <th scope="col" ><span jhiTranslate="autocutApp.internetAccess.blocked">Blocked</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.internetAccess.ip1">Ip 1</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.internetAccess.ip2">Ip 2</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.internetAccess.switchInterface">Switch Interface</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.internetAccess.port">Port</span></th>
             <th scope="col"></th>
             </tr>
@@ -32,11 +33,8 @@
                 <td>{{internetAccess.blocked}}</td>
                 <td>{{internetAccess.ip1}}</td>
                 <td>{{internetAccess.ip2}}</td>
-                <td>
-                    <div *ngIf="internetAccess.port">
-                        <a [routerLink]="['/port', internetAccess.port?.id, 'view' ]" >{{internetAccess.port?.id}}</a>
-                    </div>
-                </td>
+                <td>{{internetAccess.switchInterface}}</td>
+                <td>{{internetAccess.port}}</td>
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"

@@ -18,8 +18,9 @@
       },
       "role": "Role",
       "securityPolicies": "Security Policies",
+      "tenant": "Tenant",
       "team": "Team",
-      "tenant": "Tenant"
+      "activity": "Activity"
     }
   }
 }

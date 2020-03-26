@@ -1,0 +1,39 @@
+{
+    "name": "Coin",
+    "fields": [
+        {
+            "fieldName": "token",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "datePurchase",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "dateRedeem",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "lease",
+            "otherEntityRelationshipName": "coin",
+            "relationshipName": "tenant",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200326184244",
+    "entityTableName": "coin",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}
