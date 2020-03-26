@@ -177,3 +177,60 @@ relationship ManyToOne {
 	Communication{tenant} to User
 }
 
+// Wash System
+
+entity Totp {
+	secret String required
+}
+
+@service(serviceClass)
+entity Coin {
+	token String required
+    datePurchase Instant
+    dateRedeem Instant
+}
+
+entity LaundryMachine {
+	name String required
+    type LaundryMachineType required
+    enabled Boolean required
+}
+
+entity LaundryMachineProgram {
+	name String required
+    time Integer required
+    // washing machine
+    temperature Integer
+    spin Integer
+    preWash Boolean
+    // dryer
+    protect Boolean
+    short Boolean
+    wrinkle Boolean
+}
+
+entity WashHistory {
+	date Instant required
+    reservation Instant
+}
+
+enum LaundryMachineType {
+	WASHING_MACHINE,
+    DRYER
+}
+
+relationship OneToOne {
+	Totp{tenant} to Tenant
+    WashHistory{coin} to Coin
+}
+
+relationship OneToMany {
+	LaundryMachine{programs} to LaundryMachineProgram
+}
+
+relationship ManyToOne {
+	Coin{tenant} to Lease
+	WashHistory{tenant} to Tenant
+	WashHistory{machine} to LaundryMachine
+	WashHistory{program} to LaundryMachineProgram
+}
