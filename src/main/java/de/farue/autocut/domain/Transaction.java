@@ -22,6 +22,10 @@ public class Transaction implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    // TODO: Add field indicating which user or subsystem initiated the transaction
+    //  for coins it should be CoinService
+    //  for tenant fee it should be TenantFeeBatch
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

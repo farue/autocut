@@ -23,8 +23,7 @@ public class WashHistory implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Column(name = "date", nullable = false)
+    @Column(name = "date")
     private Instant date;
 
     @Column(name = "reservation")

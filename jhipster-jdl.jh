@@ -113,6 +113,7 @@ relationship OneToOne {
 
 // Transactions
 
+@service(serviceClass)
 entity Transaction {
 	kind TransactionKind required
 	bookingDate Instant required
@@ -129,8 +130,10 @@ entity Transaction {
 enum TransactionKind {
 	FEE,
     CREDIT,
+    DEBIT,
     TRANSFER,
-    CORRECTION
+    CORRECTION,
+    PURCHASE
 }
 
 relationship OneToMany {
@@ -210,7 +213,7 @@ entity LaundryMachineProgram {
 }
 
 entity WashHistory {
-	date Instant required
+	date Instant
     reservation Instant
 }
 
@@ -229,7 +232,7 @@ relationship OneToMany {
 }
 
 relationship ManyToOne {
-	Coin{tenant} to Lease
+	Coin{lease} to Lease
 	WashHistory{tenant} to Tenant
 	WashHistory{machine} to LaundryMachine
 	WashHistory{program} to LaundryMachineProgram

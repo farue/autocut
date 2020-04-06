@@ -23,7 +23,7 @@ import java.util.Optional;
  * REST controller for managing {@link de.farue.autocut.domain.Coin}.
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/washing")
 public class CoinResource {
 
     private final Logger log = LoggerFactory.getLogger(CoinResource.class);
@@ -37,6 +37,15 @@ public class CoinResource {
 
     public CoinResource(CoinService coinService) {
         this.coinService = coinService;
+    }
+
+    @PostMapping("/coins")
+    public ResponseEntity<Coin> buyCoin() throws URISyntaxException {
+        log.debug("REST request to buy a Coin");
+        Coin result = coinService.buyCoin();
+        return ResponseEntity.created(new URI("/api/coins/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
     /**

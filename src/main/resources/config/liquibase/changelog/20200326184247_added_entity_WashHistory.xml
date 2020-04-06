@@ -17,7 +17,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="date" type="datetime">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="reservation" type="datetime">
                 <constraints nullable="true" />

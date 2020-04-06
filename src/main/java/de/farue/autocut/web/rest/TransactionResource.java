@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional; 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -39,6 +39,18 @@ public class TransactionResource {
 
     public TransactionResource(TransactionRepository transactionRepository) {
         this.transactionRepository = transactionRepository;
+    }
+
+    /**
+     * {@code GET  /transactions} : get all the transactions.
+     *
+
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of transactions in body.
+     */
+    @GetMapping("/transactions")
+    public List<Transaction> getAllTransactionsForCurrentUser() {
+        log.debug("REST request to get all Transactions for current user");
+        return transactionRepository.findAll();
     }
 
     /**
