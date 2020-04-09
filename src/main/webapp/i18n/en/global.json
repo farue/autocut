@@ -33,8 +33,6 @@
         "tenantCommunication": "Tenant Communication",
         "activity": "Activity",
         "communication": "Communication",
-        "totp": "Totp",
-        "coin": "Coin",
         "laundryMachine": "Laundry Machine",
         "laundryMachineProgram": "Laundry Machine Program",
         "washHistory": "Wash History",

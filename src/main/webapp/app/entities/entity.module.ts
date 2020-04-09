@@ -53,14 +53,6 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./communication/communication.module').then(m => m.AutocutCommunicationModule)
       },
       {
-        path: 'totp',
-        loadChildren: () => import('./totp/totp.module').then(m => m.AutocutTotpModule)
-      },
-      {
-        path: 'coin',
-        loadChildren: () => import('./coin/coin.module').then(m => m.AutocutCoinModule)
-      },
-      {
         path: 'laundry-machine',
         loadChildren: () => import('./laundry-machine/laundry-machine.module').then(m => m.AutocutLaundryMachineModule)
       },

@@ -65,8 +65,6 @@ public class CacheConfiguration {
             createCache(cm, de.farue.autocut.domain.Lease.class.getName() + ".accounts");
             createCache(cm, de.farue.autocut.domain.Activity.class.getName() + ".teamMembers");
             createCache(cm, de.farue.autocut.domain.Communication.class.getName());
-            createCache(cm, de.farue.autocut.domain.Totp.class.getName());
-            createCache(cm, de.farue.autocut.domain.Coin.class.getName());
             createCache(cm, de.farue.autocut.domain.LaundryMachine.class.getName());
             createCache(cm, de.farue.autocut.domain.LaundryMachine.class.getName() + ".programs");
             createCache(cm, de.farue.autocut.domain.LaundryMachineProgram.class.getName());
