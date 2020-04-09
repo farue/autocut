@@ -52,16 +52,20 @@ export class WashHistoryService {
 
   protected convertDateFromClient(washHistory: IWashHistory): IWashHistory {
     const copy: IWashHistory = Object.assign({}, washHistory, {
-      date: washHistory.date && washHistory.date.isValid() ? washHistory.date.toJSON() : undefined,
-      reservation: washHistory.reservation && washHistory.reservation.isValid() ? washHistory.reservation.toJSON() : undefined
+      usingDate: washHistory.usingDate && washHistory.usingDate.isValid() ? washHistory.usingDate.toJSON() : undefined,
+      reservationDate:
+        washHistory.reservationDate && washHistory.reservationDate.isValid() ? washHistory.reservationDate.toJSON() : undefined,
+      lastModifiedDate:
+        washHistory.lastModifiedDate && washHistory.lastModifiedDate.isValid() ? washHistory.lastModifiedDate.toJSON() : undefined
     });
     return copy;
   }
 
   protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
     if (res.body) {
-      res.body.date = res.body.date ? moment(res.body.date) : undefined;
-      res.body.reservation = res.body.reservation ? moment(res.body.reservation) : undefined;
+      res.body.usingDate = res.body.usingDate ? moment(res.body.usingDate) : undefined;
+      res.body.reservationDate = res.body.reservationDate ? moment(res.body.reservationDate) : undefined;
+      res.body.lastModifiedDate = res.body.lastModifiedDate ? moment(res.body.lastModifiedDate) : undefined;
     }
     return res;
   }
@@ -69,8 +73,9 @@ export class WashHistoryService {
   protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
     if (res.body) {
       res.body.forEach((washHistory: IWashHistory) => {
-        washHistory.date = washHistory.date ? moment(washHistory.date) : undefined;
-        washHistory.reservation = washHistory.reservation ? moment(washHistory.reservation) : undefined;
+        washHistory.usingDate = washHistory.usingDate ? moment(washHistory.usingDate) : undefined;
+        washHistory.reservationDate = washHistory.reservationDate ? moment(washHistory.reservationDate) : undefined;
+        washHistory.lastModifiedDate = washHistory.lastModifiedDate ? moment(washHistory.lastModifiedDate) : undefined;
       });
     }
     return res;

@@ -16,9 +16,12 @@
       "detail": {
         "title": "Wash History"
       },
-      "date": "Date",
-      "reservation": "Reservation",
-      "tenant": "Tenant",
+      "usingDate": "Using Date",
+      "reservationDate": "Reservation Date",
+      "lastModifiedDate": "Last Modified Date",
+      "status": "Status",
+      "reservationTenant": "Reservation Tenant",
+      "usingTenant": "Using Tenant",
       "machine": "Machine",
       "program": "Program"
     }

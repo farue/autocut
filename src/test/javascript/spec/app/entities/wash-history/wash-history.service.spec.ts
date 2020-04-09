@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { WashHistoryService } from 'app/entities/wash-history/wash-history.service';
 import { IWashHistory, WashHistory } from 'app/shared/model/wash-history.model';
+import { WashHistoryStatus } from 'app/shared/model/enumerations/wash-history-status.model';
 
 describe('Service Tests', () => {
   describe('WashHistory Service', () => {
@@ -24,15 +25,16 @@ describe('Service Tests', () => {
       httpMock = injector.get(HttpTestingController);
       currentDate = moment();
 
-      elemDefault = new WashHistory(0, currentDate, currentDate);
+      elemDefault = new WashHistory(0, currentDate, currentDate, currentDate, WashHistoryStatus.OPEN);
     });
 
     describe('Service methods', () => {
       it('should find an element', () => {
         const returnedFromService = Object.assign(
           {
-            date: currentDate.format(DATE_TIME_FORMAT),
-            reservation: currentDate.format(DATE_TIME_FORMAT)
+            usingDate: currentDate.format(DATE_TIME_FORMAT),
+            reservationDate: currentDate.format(DATE_TIME_FORMAT),
+            lastModifiedDate: currentDate.format(DATE_TIME_FORMAT)
           },
           elemDefault
         );
@@ -50,15 +52,17 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 0,
-            date: currentDate.format(DATE_TIME_FORMAT),
-            reservation: currentDate.format(DATE_TIME_FORMAT)
+            usingDate: currentDate.format(DATE_TIME_FORMAT),
+            reservationDate: currentDate.format(DATE_TIME_FORMAT),
+            lastModifiedDate: currentDate.format(DATE_TIME_FORMAT)
           },
           elemDefault
         );
         const expected = Object.assign(
           {
-            date: currentDate,
-            reservation: currentDate
+            usingDate: currentDate,
+            reservationDate: currentDate,
+            lastModifiedDate: currentDate
           },
           returnedFromService
         );
@@ -74,16 +78,19 @@ describe('Service Tests', () => {
       it('should update a WashHistory', () => {
         const returnedFromService = Object.assign(
           {
-            date: currentDate.format(DATE_TIME_FORMAT),
-            reservation: currentDate.format(DATE_TIME_FORMAT)
+            usingDate: currentDate.format(DATE_TIME_FORMAT),
+            reservationDate: currentDate.format(DATE_TIME_FORMAT),
+            lastModifiedDate: currentDate.format(DATE_TIME_FORMAT),
+            status: 'BBBBBB'
           },
           elemDefault
         );
 
         const expected = Object.assign(
           {
-            date: currentDate,
-            reservation: currentDate
+            usingDate: currentDate,
+            reservationDate: currentDate,
+            lastModifiedDate: currentDate
           },
           returnedFromService
         );
@@ -99,15 +106,18 @@ describe('Service Tests', () => {
       it('should return a list of WashHistory', () => {
         const returnedFromService = Object.assign(
           {
-            date: currentDate.format(DATE_TIME_FORMAT),
-            reservation: currentDate.format(DATE_TIME_FORMAT)
+            usingDate: currentDate.format(DATE_TIME_FORMAT),
+            reservationDate: currentDate.format(DATE_TIME_FORMAT),
+            lastModifiedDate: currentDate.format(DATE_TIME_FORMAT),
+            status: 'BBBBBB'
           },
           elemDefault
         );
         const expected = Object.assign(
           {
-            date: currentDate,
-            reservation: currentDate
+            usingDate: currentDate,
+            reservationDate: currentDate,
+            lastModifiedDate: currentDate
           },
           returnedFromService
         );

@@ -19,9 +19,12 @@
             <thead>
             <tr>
             <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-            <th scope="col" ><span jhiTranslate="autocutApp.washHistory.date">Date</span></th>
-            <th scope="col" ><span jhiTranslate="autocutApp.washHistory.reservation">Reservation</span></th>
-            <th scope="col" ><span jhiTranslate="autocutApp.washHistory.tenant">Tenant</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.washHistory.usingDate">Using Date</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.washHistory.reservationDate">Reservation Date</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.washHistory.lastModifiedDate">Last Modified Date</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.washHistory.status">Status</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.washHistory.reservationTenant">Reservation Tenant</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.washHistory.usingTenant">Using Tenant</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.washHistory.machine">Machine</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.washHistory.program">Program</span></th>
             <th scope="col"></th>
@@ -30,11 +33,18 @@
             <tbody>
             <tr *ngFor="let washHistory of washHistories ;trackBy: trackId">
                 <td><a [routerLink]="['/wash-history', washHistory.id, 'view' ]">{{washHistory.id}}</a></td>
-                <td>{{washHistory.date | date:'medium'}}</td>
-                <td>{{washHistory.reservation | date:'medium'}}</td>
+                <td>{{washHistory.usingDate | date:'medium'}}</td>
+                <td>{{washHistory.reservationDate | date:'medium'}}</td>
+                <td>{{washHistory.lastModifiedDate | date:'medium'}}</td>
+                <td jhiTranslate="{{'autocutApp.WashHistoryStatus.' + washHistory.status}}">{{washHistory.status}}</td>
                 <td>
-                    <div *ngIf="washHistory.tenant">
-                        <a [routerLink]="['/tenant', washHistory.tenant?.id, 'view' ]" >{{washHistory.tenant?.id}}</a>
+                    <div *ngIf="washHistory.reservationTenant">
+                        <a [routerLink]="['/tenant', washHistory.reservationTenant?.id, 'view' ]" >{{washHistory.reservationTenant?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="washHistory.usingTenant">
+                        <a [routerLink]="['/tenant', washHistory.usingTenant?.id, 'view' ]" >{{washHistory.usingTenant?.id}}</a>
                     </div>
                 </td>
                 <td>

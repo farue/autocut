@@ -16,13 +16,22 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="date" type="datetime">
+            <column name="using_date" type="datetime">
                 <constraints nullable="true" />
             </column>
-            <column name="reservation" type="datetime">
+            <column name="reservation_date" type="datetime">
                 <constraints nullable="true" />
             </column>
-            <column name="tenant_id" type="bigint">
+            <column name="last_modified_date" type="datetime">
+                <constraints nullable="true" />
+            </column>
+            <column name="status" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="reservation_tenant_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="using_tenant_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <column name="machine_id" type="bigint">
@@ -33,8 +42,9 @@
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="wash_history" columnName="date" columnDataType="datetime"/>
-        <dropDefaultValue tableName="wash_history" columnName="reservation" columnDataType="datetime"/>
+        <dropDefaultValue tableName="wash_history" columnName="using_date" columnDataType="datetime"/>
+        <dropDefaultValue tableName="wash_history" columnName="reservation_date" columnDataType="datetime"/>
+        <dropDefaultValue tableName="wash_history" columnName="last_modified_date" columnDataType="datetime"/>
     </changeSet>
 
     <changeSet id="20200326184247-1-relations" author="jhipster">
@@ -56,8 +66,10 @@
                   separator=";"
                   tableName="wash_history">
             <column name="id" type="numeric"/>
-            <column name="date" type="datetime"/>
-            <column name="reservation" type="datetime"/>
+            <column name="using_date" type="datetime"/>
+            <column name="reservation_date" type="datetime"/>
+            <column name="last_modified_date" type="datetime"/>
+            <column name="status" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>
     </changeSet>

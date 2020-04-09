@@ -34,9 +34,12 @@ export class WashHistoryUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    date: [],
-    reservation: [],
-    tenant: [],
+    usingDate: [],
+    reservationDate: [],
+    lastModifiedDate: [],
+    status: [],
+    reservationTenant: [],
+    usingTenant: [],
     machine: [],
     program: []
   });
@@ -86,9 +89,12 @@ export class WashHistoryUpdateComponent implements OnInit {
   updateForm(washHistory: IWashHistory): void {
     this.editForm.patchValue({
       id: washHistory.id,
-      date: washHistory.date != null ? washHistory.date.format(DATE_TIME_FORMAT) : null,
-      reservation: washHistory.reservation != null ? washHistory.reservation.format(DATE_TIME_FORMAT) : null,
-      tenant: washHistory.tenant,
+      usingDate: washHistory.usingDate != null ? washHistory.usingDate.format(DATE_TIME_FORMAT) : null,
+      reservationDate: washHistory.reservationDate != null ? washHistory.reservationDate.format(DATE_TIME_FORMAT) : null,
+      lastModifiedDate: washHistory.lastModifiedDate != null ? washHistory.lastModifiedDate.format(DATE_TIME_FORMAT) : null,
+      status: washHistory.status,
+      reservationTenant: washHistory.reservationTenant,
+      usingTenant: washHistory.usingTenant,
       machine: washHistory.machine,
       program: washHistory.program
     });
@@ -112,10 +118,19 @@ export class WashHistoryUpdateComponent implements OnInit {
     return {
       ...new WashHistory(),
       id: this.editForm.get(['id'])!.value,
-      date: this.editForm.get(['date'])!.value != null ? moment(this.editForm.get(['date'])!.value, DATE_TIME_FORMAT) : undefined,
-      reservation:
-        this.editForm.get(['reservation'])!.value != null ? moment(this.editForm.get(['reservation'])!.value, DATE_TIME_FORMAT) : undefined,
-      tenant: this.editForm.get(['tenant'])!.value,
+      usingDate:
+        this.editForm.get(['usingDate'])!.value != null ? moment(this.editForm.get(['usingDate'])!.value, DATE_TIME_FORMAT) : undefined,
+      reservationDate:
+        this.editForm.get(['reservationDate'])!.value != null
+          ? moment(this.editForm.get(['reservationDate'])!.value, DATE_TIME_FORMAT)
+          : undefined,
+      lastModifiedDate:
+        this.editForm.get(['lastModifiedDate'])!.value != null
+          ? moment(this.editForm.get(['lastModifiedDate'])!.value, DATE_TIME_FORMAT)
+          : undefined,
+      status: this.editForm.get(['status'])!.value,
+      reservationTenant: this.editForm.get(['reservationTenant'])!.value,
+      usingTenant: this.editForm.get(['usingTenant'])!.value,
       machine: this.editForm.get(['machine'])!.value,
       program: this.editForm.get(['program'])!.value
     };

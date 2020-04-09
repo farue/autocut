@@ -2,12 +2,21 @@
     "name": "WashHistory",
     "fields": [
         {
-            "fieldName": "date",
+            "fieldName": "usingDate",
             "fieldType": "Instant"
         },
         {
-            "fieldName": "reservation",
+            "fieldName": "reservationDate",
             "fieldType": "Instant"
+        },
+        {
+            "fieldName": "lastModifiedDate",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "WashHistoryStatus",
+            "fieldValues": "OPEN,EXPIRED,COMPLETED,CANCELLED_BY_USER,CANCELLED_BY_SYSTEM"
         }
     ],
     "relationships": [
@@ -15,7 +24,14 @@
             "relationshipType": "many-to-one",
             "otherEntityName": "tenant",
             "otherEntityRelationshipName": "washHistory",
-            "relationshipName": "tenant",
+            "relationshipName": "reservationTenant",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "tenant",
+            "otherEntityRelationshipName": "washHistory",
+            "relationshipName": "usingTenant",
             "otherEntityField": "id"
         },
         {

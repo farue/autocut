@@ -203,8 +203,18 @@ entity LaundryMachineProgram {
 }
 
 entity WashHistory {
-	date Instant
-    reservation Instant
+	usingDate Instant
+    reservationDate Instant
+    lastModifiedDate Instant
+    status WashHistoryStatus
+}
+
+enum WashHistoryStatus {
+	OPEN,
+    EXPIRED,
+    COMPLETED,
+	CANCELLED_BY_USER,
+    CANCELLED_BY_SYSTEM
 }
 
 enum LaundryMachineType {
@@ -217,7 +227,8 @@ relationship OneToMany {
 }
 
 relationship ManyToOne {
-	WashHistory{tenant} to Tenant
+	WashHistory{reservationTenant} to Tenant
+    WashHistory{usingTenant} to Tenant
 	WashHistory{machine} to LaundryMachine
 	WashHistory{program} to LaundryMachineProgram
 }

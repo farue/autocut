@@ -10,23 +10,46 @@
                         readonly />
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.washHistory.date" for="field_date">Date</label>
+                    <label class="form-control-label" jhiTranslate="autocutApp.washHistory.usingDate" for="field_usingDate">Using Date</label>
                     <div class="d-flex">
-                        <input id="field_date" type="datetime-local" class="form-control" name="date" formControlName="date" placeholder="YYYY-MM-DD HH:mm"/>
+                        <input id="field_usingDate" type="datetime-local" class="form-control" name="usingDate" formControlName="usingDate" placeholder="YYYY-MM-DD HH:mm"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.washHistory.reservation" for="field_reservation">Reservation</label>
+                    <label class="form-control-label" jhiTranslate="autocutApp.washHistory.reservationDate" for="field_reservationDate">Reservation Date</label>
                     <div class="d-flex">
-                        <input id="field_reservation" type="datetime-local" class="form-control" name="reservation" formControlName="reservation" placeholder="YYYY-MM-DD HH:mm"/>
+                        <input id="field_reservationDate" type="datetime-local" class="form-control" name="reservationDate" formControlName="reservationDate" placeholder="YYYY-MM-DD HH:mm"/>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="autocutApp.washHistory.lastModifiedDate" for="field_lastModifiedDate">Last Modified Date</label>
+                    <div class="d-flex">
+                        <input id="field_lastModifiedDate" type="datetime-local" class="form-control" name="lastModifiedDate" formControlName="lastModifiedDate" placeholder="YYYY-MM-DD HH:mm"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="autocutApp.washHistory.status" for="field_status">Status</label>
+                    <select class="form-control" name="status" formControlName="status" id="field_status">
+                        <option value="OPEN">{{'autocutApp.WashHistoryStatus.OPEN' | translate}}</option>
+                        <option value="EXPIRED">{{'autocutApp.WashHistoryStatus.EXPIRED' | translate}}</option>
+                        <option value="COMPLETED">{{'autocutApp.WashHistoryStatus.COMPLETED' | translate}}</option>
+                        <option value="CANCELLED_BY_USER">{{'autocutApp.WashHistoryStatus.CANCELLED_BY_USER' | translate}}</option>
+                        <option value="CANCELLED_BY_SYSTEM">{{'autocutApp.WashHistoryStatus.CANCELLED_BY_SYSTEM' | translate}}</option>
+                    </select>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.washHistory.tenant" for="field_tenant">Tenant</label>
-                    <select class="form-control" id="field_tenant" name="tenant" formControlName="tenant">
+                    <label class="form-control-label" jhiTranslate="autocutApp.washHistory.reservationTenant" for="field_reservationTenant">Reservation Tenant</label>
+                    <select class="form-control" id="field_reservationTenant" name="reservationTenant" formControlName="reservationTenant">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="tenantOption.id === editForm.get('tenant')!.value?.id ? editForm.get('tenant')!.value : tenantOption" *ngFor="let tenantOption of tenants; trackBy: trackById">{{tenantOption.id}}</option>
+                        <option [ngValue]="tenantOption.id === editForm.get('reservationTenant')!.value?.id ? editForm.get('reservationTenant')!.value : tenantOption" *ngFor="let tenantOption of tenants; trackBy: trackById">{{tenantOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="autocutApp.washHistory.usingTenant" for="field_usingTenant">Using Tenant</label>
+                    <select class="form-control" id="field_usingTenant" name="usingTenant" formControlName="usingTenant">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="tenantOption.id === editForm.get('usingTenant')!.value?.id ? editForm.get('usingTenant')!.value : tenantOption" *ngFor="let tenantOption of tenants; trackBy: trackById">{{tenantOption.id}}</option>
                     </select>
                 </div>
                 <div class="form-group">

@@ -8,6 +8,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
 
+import de.farue.autocut.domain.enumeration.WashHistoryStatus;
+
 /**
  * A WashHistory.
  */
@@ -22,15 +24,26 @@ public class WashHistory implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "date")
-    private Instant date;
+    @Column(name = "using_date")
+    private Instant usingDate;
 
-    @Column(name = "reservation")
-    private Instant reservation;
+    @Column(name = "reservation_date")
+    private Instant reservationDate;
+
+    @Column(name = "last_modified_date")
+    private Instant lastModifiedDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private WashHistoryStatus status;
 
     @ManyToOne
     @JsonIgnoreProperties("washHistories")
-    private Tenant tenant;
+    private Tenant reservationTenant;
+
+    @ManyToOne
+    @JsonIgnoreProperties("washHistories")
+    private Tenant usingTenant;
 
     @ManyToOne
     @JsonIgnoreProperties("washHistories")
@@ -49,43 +62,82 @@ public class WashHistory implements Serializable {
         this.id = id;
     }
 
-    public Instant getDate() {
-        return date;
+    public Instant getUsingDate() {
+        return usingDate;
     }
 
-    public WashHistory date(Instant date) {
-        this.date = date;
+    public WashHistory usingDate(Instant usingDate) {
+        this.usingDate = usingDate;
         return this;
     }
 
-    public void setDate(Instant date) {
-        this.date = date;
+    public void setUsingDate(Instant usingDate) {
+        this.usingDate = usingDate;
     }
 
-    public Instant getReservation() {
-        return reservation;
+    public Instant getReservationDate() {
+        return reservationDate;
     }
 
-    public WashHistory reservation(Instant reservation) {
-        this.reservation = reservation;
+    public WashHistory reservationDate(Instant reservationDate) {
+        this.reservationDate = reservationDate;
         return this;
     }
 
-    public void setReservation(Instant reservation) {
-        this.reservation = reservation;
+    public void setReservationDate(Instant reservationDate) {
+        this.reservationDate = reservationDate;
     }
 
-    public Tenant getTenant() {
-        return tenant;
+    public Instant getLastModifiedDate() {
+        return lastModifiedDate;
     }
 
-    public WashHistory tenant(Tenant tenant) {
-        this.tenant = tenant;
+    public WashHistory lastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
         return this;
     }
 
-    public void setTenant(Tenant tenant) {
-        this.tenant = tenant;
+    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public WashHistoryStatus getStatus() {
+        return status;
+    }
+
+    public WashHistory status(WashHistoryStatus status) {
+        this.status = status;
+        return this;
+    }
+
+    public void setStatus(WashHistoryStatus status) {
+        this.status = status;
+    }
+
+    public Tenant getReservationTenant() {
+        return reservationTenant;
+    }
+
+    public WashHistory reservationTenant(Tenant tenant) {
+        this.reservationTenant = tenant;
+        return this;
+    }
+
+    public void setReservationTenant(Tenant tenant) {
+        this.reservationTenant = tenant;
+    }
+
+    public Tenant getUsingTenant() {
+        return usingTenant;
+    }
+
+    public WashHistory usingTenant(Tenant tenant) {
+        this.usingTenant = tenant;
+        return this;
+    }
+
+    public void setUsingTenant(Tenant tenant) {
+        this.usingTenant = tenant;
     }
 
     public LaundryMachine getMachine() {
@@ -135,8 +187,10 @@ public class WashHistory implements Serializable {
     public String toString() {
         return "WashHistory{" +
             "id=" + getId() +
-            ", date='" + getDate() + "'" +
-            ", reservation='" + getReservation() + "'" +
+            ", usingDate='" + getUsingDate() + "'" +
+            ", reservationDate='" + getReservationDate() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
+            ", status='" + getStatus() + "'" +
             "}";
     }
 }
