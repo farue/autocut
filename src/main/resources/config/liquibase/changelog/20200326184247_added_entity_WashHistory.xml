@@ -22,9 +22,6 @@
             <column name="reservation" type="datetime">
                 <constraints nullable="true" />
             </column>
-            <column name="coin_id" type="bigint">
-                <constraints unique="true" nullable="true" uniqueConstraintName="ux_wash_history_coin_id" />
-            </column>
             <column name="tenant_id" type="bigint">
                 <constraints nullable="true" />
             </column>

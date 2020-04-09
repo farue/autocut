@@ -1,7 +1,7 @@
 package de.farue.autocut.web.rest;
 
 import de.farue.autocut.domain.Transaction;
-import de.farue.autocut.repository.TransactionRepository;
+import de.farue.autocut.service.TransactionService;
 import de.farue.autocut.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,7 +24,6 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class TransactionResource {
 
     private final Logger log = LoggerFactory.getLogger(TransactionResource.class);
@@ -35,22 +33,10 @@ public class TransactionResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final TransactionRepository transactionRepository;
+    private final TransactionService transactionService;
 
-    public TransactionResource(TransactionRepository transactionRepository) {
-        this.transactionRepository = transactionRepository;
-    }
-
-    /**
-     * {@code GET  /transactions} : get all the transactions.
-     *
-
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of transactions in body.
-     */
-    @GetMapping("/transactions")
-    public List<Transaction> getAllTransactionsForCurrentUser() {
-        log.debug("REST request to get all Transactions for current user");
-        return transactionRepository.findAll();
+    public TransactionResource(TransactionService transactionService) {
+        this.transactionService = transactionService;
     }
 
     /**
@@ -66,7 +52,7 @@ public class TransactionResource {
         if (transaction.getId() != null) {
             throw new BadRequestAlertException("A new transaction cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Transaction result = transactionRepository.save(transaction);
+        Transaction result = transactionService.save(transaction);
         return ResponseEntity.created(new URI("/api/transactions/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -87,7 +73,7 @@ public class TransactionResource {
         if (transaction.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Transaction result = transactionRepository.save(transaction);
+        Transaction result = transactionService.save(transaction);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, transaction.getId().toString()))
             .body(result);
@@ -102,7 +88,7 @@ public class TransactionResource {
     @GetMapping("/transactions")
     public List<Transaction> getAllTransactions() {
         log.debug("REST request to get all Transactions");
-        return transactionRepository.findAll();
+        return transactionService.findAll();
     }
 
     /**
@@ -114,7 +100,7 @@ public class TransactionResource {
     @GetMapping("/transactions/{id}")
     public ResponseEntity<Transaction> getTransaction(@PathVariable Long id) {
         log.debug("REST request to get Transaction : {}", id);
-        Optional<Transaction> transaction = transactionRepository.findById(id);
+        Optional<Transaction> transaction = transactionService.findOne(id);
         return ResponseUtil.wrapOrNotFound(transaction);
     }
 
@@ -127,7 +113,7 @@ public class TransactionResource {
     @DeleteMapping("/transactions/{id}")
     public ResponseEntity<Void> deleteTransaction(@PathVariable Long id) {
         log.debug("REST request to delete Transaction : {}", id);
-        transactionRepository.deleteById(id);
+        transactionService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }

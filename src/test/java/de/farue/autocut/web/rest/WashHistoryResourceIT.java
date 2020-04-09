@@ -146,24 +146,6 @@ public class WashHistoryResourceIT {
 
     @Test
     @Transactional
-    public void checkDateIsRequired() throws Exception {
-        int databaseSizeBeforeTest = washHistoryRepository.findAll().size();
-        // set the field null
-        washHistory.setDate(null);
-
-        // Create the WashHistory, which fails.
-
-        restWashHistoryMockMvc.perform(post("/api/wash-histories")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(washHistory)))
-            .andExpect(status().isBadRequest());
-
-        List<WashHistory> washHistoryList = washHistoryRepository.findAll();
-        assertThat(washHistoryList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllWashHistories() throws Exception {
         // Initialize the database
         washHistoryRepository.saveAndFlush(washHistory);

@@ -10,8 +10,6 @@ import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 
 import { IWashHistory, WashHistory } from 'app/shared/model/wash-history.model';
 import { WashHistoryService } from './wash-history.service';
-import { ICoin } from 'app/shared/model/coin.model';
-import { CoinService } from 'app/entities/coin/coin.service';
 import { ITenant } from 'app/shared/model/tenant.model';
 import { TenantService } from 'app/entities/tenant/tenant.service';
 import { ILaundryMachine } from 'app/shared/model/laundry-machine.model';
@@ -19,7 +17,7 @@ import { LaundryMachineService } from 'app/entities/laundry-machine/laundry-mach
 import { ILaundryMachineProgram } from 'app/shared/model/laundry-machine-program.model';
 import { LaundryMachineProgramService } from 'app/entities/laundry-machine-program/laundry-machine-program.service';
 
-type SelectableEntity = ICoin | ITenant | ILaundryMachine | ILaundryMachineProgram;
+type SelectableEntity = ITenant | ILaundryMachine | ILaundryMachineProgram;
 
 @Component({
   selector: 'jhi-wash-history-update',
@@ -27,8 +25,6 @@ type SelectableEntity = ICoin | ITenant | ILaundryMachine | ILaundryMachineProgr
 })
 export class WashHistoryUpdateComponent implements OnInit {
   isSaving = false;
-
-  coins: ICoin[] = [];
 
   tenants: ITenant[] = [];
 
@@ -38,9 +34,8 @@ export class WashHistoryUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    date: [null, [Validators.required]],
+    date: [],
     reservation: [],
-    coin: [],
     tenant: [],
     machine: [],
     program: []
@@ -48,7 +43,6 @@ export class WashHistoryUpdateComponent implements OnInit {
 
   constructor(
     protected washHistoryService: WashHistoryService,
-    protected coinService: CoinService,
     protected tenantService: TenantService,
     protected laundryMachineService: LaundryMachineService,
     protected laundryMachineProgramService: LaundryMachineProgramService,
@@ -59,30 +53,6 @@ export class WashHistoryUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ washHistory }) => {
       this.updateForm(washHistory);
-
-      this.coinService
-        .query({ filter: 'washhistory-is-null' })
-        .pipe(
-          map((res: HttpResponse<ICoin[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: ICoin[]) => {
-          if (!washHistory.coin || !washHistory.coin.id) {
-            this.coins = resBody;
-          } else {
-            this.coinService
-              .find(washHistory.coin.id)
-              .pipe(
-                map((subRes: HttpResponse<ICoin>) => {
-                  return subRes.body ? [subRes.body].concat(resBody) : resBody;
-                })
-              )
-              .subscribe((concatRes: ICoin[]) => {
-                this.coins = concatRes;
-              });
-          }
-        });
 
       this.tenantService
         .query()
@@ -118,7 +88,6 @@ export class WashHistoryUpdateComponent implements OnInit {
       id: washHistory.id,
       date: washHistory.date != null ? washHistory.date.format(DATE_TIME_FORMAT) : null,
       reservation: washHistory.reservation != null ? washHistory.reservation.format(DATE_TIME_FORMAT) : null,
-      coin: washHistory.coin,
       tenant: washHistory.tenant,
       machine: washHistory.machine,
       program: washHistory.program
@@ -146,7 +115,6 @@ export class WashHistoryUpdateComponent implements OnInit {
       date: this.editForm.get(['date'])!.value != null ? moment(this.editForm.get(['date'])!.value, DATE_TIME_FORMAT) : undefined,
       reservation:
         this.editForm.get(['reservation'])!.value != null ? moment(this.editForm.get(['reservation'])!.value, DATE_TIME_FORMAT) : undefined,
-      coin: this.editForm.get(['coin'])!.value,
       tenant: this.editForm.get(['tenant'])!.value,
       machine: this.editForm.get(['machine'])!.value,
       program: this.editForm.get(['program'])!.value

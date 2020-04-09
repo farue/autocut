@@ -14,8 +14,10 @@
                     <select class="form-control" name="kind" formControlName="kind" id="field_kind">
                         <option value="FEE">{{'autocutApp.TransactionKind.FEE' | translate}}</option>
                         <option value="CREDIT">{{'autocutApp.TransactionKind.CREDIT' | translate}}</option>
+                        <option value="DEBIT">{{'autocutApp.TransactionKind.DEBIT' | translate}}</option>
                         <option value="TRANSFER">{{'autocutApp.TransactionKind.TRANSFER' | translate}}</option>
                         <option value="CORRECTION">{{'autocutApp.TransactionKind.CORRECTION' | translate}}</option>
+                        <option value="PURCHASE">{{'autocutApp.TransactionKind.PURCHASE' | translate}}</option>
                     </select>
                     <div *ngIf="editForm.get('kind')!.invalid && (editForm.get('kind')!.dirty || editForm.get('kind')!.touched)">
                         <small class="form-text text-danger"

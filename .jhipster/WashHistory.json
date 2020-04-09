@@ -3,10 +3,7 @@
     "fields": [
         {
             "fieldName": "date",
-            "fieldType": "Instant",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldType": "Instant"
         },
         {
             "fieldName": "reservation",
@@ -14,14 +11,6 @@
         }
     ],
     "relationships": [
-        {
-            "relationshipType": "one-to-one",
-            "otherEntityName": "coin",
-            "otherEntityRelationshipName": "washHistory",
-            "relationshipName": "coin",
-            "otherEntityField": "id",
-            "ownerSide": true
-        },
         {
             "relationshipType": "many-to-one",
             "otherEntityName": "tenant",

@@ -2,10 +2,10 @@ id;kind;booking_date;value_date;value;balance_after;description;issuer;recipient
 1;CREDIT;2019-11-16T23:34:25;2019-11-16T23:01:10;25397;61420;Chips COM;Response B2B US Dollar;Buckinghamshire orchestrate grow;18598;1914
 2;CREDIT;2019-11-16T12:34:28;2019-11-16T16:17:58;73402;99633;Innovative Fresh didactic;Cotton Executive;Operations;63183;59276
 3;TRANSFER;2019-11-16T05:04:50;2019-11-16T19:04:49;72941;41434;invoice;next-generation incentivize;high-level Small Assistant;78429;19104
-4;CREDIT;2019-11-16T23:26:32;2019-11-16T06:27:19;8602;55302;Bedfordshire programming;programming deliver withdrawal;Cloned;39083;72853
+4;DEBIT;2019-11-16T23:26:32;2019-11-16T06:27:19;8602;55302;Bedfordshire programming;programming deliver withdrawal;Cloned;39083;72853
 5;FEE;2019-11-16T07:19:50;2019-11-16T05:41:49;55214;18074;optical Costa Rica CFA Franc BEAC;plum Clothing port;capacitor invoice;27839;4116
-6;CREDIT;2019-11-16T03:18:25;2019-11-16T21:43:17;86056;90732;Montana models South Carolina;Networked Tools Svalbard & Jan Mayen Islands;metrics Architect even-keeled;98102;59376
+6;DEBIT;2019-11-16T03:18:25;2019-11-16T21:43:17;86056;90732;Montana models South Carolina;Networked Tools Svalbard & Jan Mayen Islands;metrics Architect even-keeled;98102;59376
 7;CREDIT;2019-11-16T12:29:42;2019-11-16T15:30:48;85805;87303;Industrial Danish Krone Producer;Awesome Personal Loan Account;Sleek Cotton Salad Dynamic calculating;66488;5002
-8;CORRECTION;2019-11-16T12:18:53;2019-11-16T23:17:15;16567;57896;sky blue;CFA Franc BEAC ADP;Chair;47008;19495
+8;PURCHASE;2019-11-16T12:18:53;2019-11-16T23:17:15;16567;57896;sky blue;CFA Franc BEAC ADP;Chair;47008;19495
 9;TRANSFER;2019-11-16T16:42:52;2019-11-16T14:57:14;1616;95961;Granite withdrawal;Automotive digital;capacitor Pound Sterling;57169;60001
 10;CORRECTION;2019-11-16T04:51:42;2019-11-16T19:42:27;81014;89946;USB Delaware;Assistant Functionality;Coves Central African Republic invoice;19483;40355

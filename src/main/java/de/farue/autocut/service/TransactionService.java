@@ -7,10 +7,14 @@ import de.farue.autocut.domain.User;
 import de.farue.autocut.repository.LeaseRepository;
 import de.farue.autocut.repository.TenantRepository;
 import de.farue.autocut.repository.TransactionRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Service Implementation for managing {@link Transaction}.
@@ -18,6 +22,8 @@ import java.math.BigDecimal;
 @Service
 @Transactional
 public class TransactionService {
+
+    private final Logger log = LoggerFactory.getLogger(TransactionService.class);
 
     private final TransactionRepository transactionRepository;
     private final LeaseRepository leaseRepository;
@@ -28,6 +34,51 @@ public class TransactionService {
         this.transactionRepository = transactionRepository;
         this.leaseRepository = leaseRepository;
         this.tenantRepository = tenantRepository;
+    }
+
+    /**
+     * Save a transaction.
+     *
+     * @param transaction the entity to save.
+     * @return the persisted entity.
+     */
+    public Transaction save(Transaction transaction) {
+        log.debug("Request to save Transaction : {}", transaction);
+        return transactionRepository.save(transaction);
+    }
+
+    /**
+     * Get all the transactions.
+     *
+     * @return the list of entities.
+     */
+    @Transactional(readOnly = true)
+    public List<Transaction> findAll() {
+        log.debug("Request to get all Transactions");
+        return transactionRepository.findAll();
+    }
+
+
+    /**
+     * Get one transaction by id.
+     *
+     * @param id the id of the entity.
+     * @return the entity.
+     */
+    @Transactional(readOnly = true)
+    public Optional<Transaction> findOne(Long id) {
+        log.debug("Request to get Transaction : {}", id);
+        return transactionRepository.findById(id);
+    }
+
+    /**
+     * Delete the transaction by id.
+     *
+     * @param id the id of the entity.
+     */
+    public void delete(Long id) {
+        log.debug("Request to delete Transaction : {}", id);
+        transactionRepository.deleteById(id);
     }
 
     public BigDecimal getCurrentBalance(User user) {

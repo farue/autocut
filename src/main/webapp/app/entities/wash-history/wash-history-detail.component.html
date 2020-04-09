@@ -13,12 +13,6 @@
                 <dd>
                     <span>{{washHistory.reservation}}</span>
                 </dd>
-                <dt><span jhiTranslate="autocutApp.washHistory.coin">Coin</span></dt>
-                <dd>
-                    <div *ngIf="washHistory.coin">
-                        <a [routerLink]="['/coin', washHistory.coin?.id, 'view']">{{washHistory.coin?.id}}</a>
-                    </div>
-                </dd>
                 <dt><span jhiTranslate="autocutApp.washHistory.tenant">Tenant</span></dt>
                 <dd>
                     <div *ngIf="washHistory.tenant">

@@ -4,7 +4,6 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -28,10 +27,6 @@ public class WashHistory implements Serializable {
 
     @Column(name = "reservation")
     private Instant reservation;
-
-    @OneToOne
-    @JoinColumn(unique = true)
-    private Coin coin;
 
     @ManyToOne
     @JsonIgnoreProperties("washHistories")
@@ -78,19 +73,6 @@ public class WashHistory implements Serializable {
 
     public void setReservation(Instant reservation) {
         this.reservation = reservation;
-    }
-
-    public Coin getCoin() {
-        return coin;
-    }
-
-    public WashHistory coin(Coin coin) {
-        this.coin = coin;
-        return this;
-    }
-
-    public void setCoin(Coin coin) {
-        this.coin = coin;
     }
 
     public Tenant getTenant() {

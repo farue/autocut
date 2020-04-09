@@ -4,7 +4,7 @@
         {
             "fieldName": "kind",
             "fieldType": "TransactionKind",
-            "fieldValues": "FEE,CREDIT,TRANSFER,CORRECTION",
+            "fieldValues": "FEE,CREDIT,DEBIT,TRANSFER,CORRECTION,PURCHASE",
             "fieldValidateRules": [
                 "required"
             ]
@@ -80,7 +80,7 @@
     "entityTableName": "transaction",
     "dto": "no",
     "pagination": "no",
-    "service": "no",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
     "readOnly": false,

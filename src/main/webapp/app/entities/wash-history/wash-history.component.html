@@ -21,7 +21,6 @@
             <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.washHistory.date">Date</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.washHistory.reservation">Reservation</span></th>
-            <th scope="col" ><span jhiTranslate="autocutApp.washHistory.coin">Coin</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.washHistory.tenant">Tenant</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.washHistory.machine">Machine</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.washHistory.program">Program</span></th>
@@ -33,11 +32,6 @@
                 <td><a [routerLink]="['/wash-history', washHistory.id, 'view' ]">{{washHistory.id}}</a></td>
                 <td>{{washHistory.date | date:'medium'}}</td>
                 <td>{{washHistory.reservation | date:'medium'}}</td>
-                <td>
-                    <div *ngIf="washHistory.coin">
-                        <a [routerLink]="['/coin', washHistory.coin?.id, 'view' ]" >{{washHistory.coin?.id}}</a>
-                    </div>
-                </td>
                 <td>
                     <div *ngIf="washHistory.tenant">
                         <a [routerLink]="['/tenant', washHistory.tenant?.id, 'view' ]" >{{washHistory.tenant?.id}}</a>

@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional; 
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -49,7 +48,7 @@ public class WashHistoryResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/wash-histories")
-    public ResponseEntity<WashHistory> createWashHistory(@Valid @RequestBody WashHistory washHistory) throws URISyntaxException {
+    public ResponseEntity<WashHistory> createWashHistory(@RequestBody WashHistory washHistory) throws URISyntaxException {
         log.debug("REST request to save WashHistory : {}", washHistory);
         if (washHistory.getId() != null) {
             throw new BadRequestAlertException("A new washHistory cannot already have an ID", ENTITY_NAME, "idexists");
@@ -70,7 +69,7 @@ public class WashHistoryResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/wash-histories")
-    public ResponseEntity<WashHistory> updateWashHistory(@Valid @RequestBody WashHistory washHistory) throws URISyntaxException {
+    public ResponseEntity<WashHistory> updateWashHistory(@RequestBody WashHistory washHistory) throws URISyntaxException {
         log.debug("REST request to update WashHistory : {}", washHistory);
         if (washHistory.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

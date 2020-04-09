@@ -3,6 +3,7 @@ package de.farue.autocut.web.rest;
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Transaction;
 import de.farue.autocut.repository.TransactionRepository;
+import de.farue.autocut.service.TransactionService;
 import de.farue.autocut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -71,6 +72,9 @@ public class TransactionResourceIT {
     private TransactionRepository transactionRepository;
 
     @Autowired
+    private TransactionService transactionService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -92,7 +96,7 @@ public class TransactionResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final TransactionResource transactionResource = new TransactionResource(transactionRepository);
+        final TransactionResource transactionResource = new TransactionResource(transactionService);
         this.restTransactionMockMvc = MockMvcBuilders.standaloneSetup(transactionResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -396,7 +400,7 @@ public class TransactionResourceIT {
     @Transactional
     public void updateTransaction() throws Exception {
         // Initialize the database
-        transactionRepository.saveAndFlush(transaction);
+        transactionService.save(transaction);
 
         int databaseSizeBeforeUpdate = transactionRepository.findAll().size();
 
@@ -459,7 +463,7 @@ public class TransactionResourceIT {
     @Transactional
     public void deleteTransaction() throws Exception {
         // Initialize the database
-        transactionRepository.saveAndFlush(transaction);
+        transactionService.save(transaction);
 
         int databaseSizeBeforeDelete = transactionRepository.findAll().size();
 

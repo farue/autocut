@@ -48,24 +48,24 @@ public class CoinResource {
             .body(result);
     }
 
-    /**
-     * {@code POST  /coins} : Create a new coin.
-     *
-     * @param coin the coin to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new coin, or with status {@code 400 (Bad Request)} if the coin has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PostMapping("/coins")
-    public ResponseEntity<Coin> createCoin(@Valid @RequestBody Coin coin) throws URISyntaxException {
-        log.debug("REST request to save Coin : {}", coin);
-        if (coin.getId() != null) {
-            throw new BadRequestAlertException("A new coin cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        Coin result = coinService.save(coin);
-        return ResponseEntity.created(new URI("/api/coins/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
-    }
+//    /**
+//     * {@code POST  /coins} : Create a new coin.
+//     *
+//     * @param coin the coin to create.
+//     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new coin, or with status {@code 400 (Bad Request)} if the coin has already an ID.
+//     * @throws URISyntaxException if the Location URI syntax is incorrect.
+//     */
+//    @PostMapping("/coins")
+//    public ResponseEntity<Coin> createCoin(@Valid @RequestBody Coin coin) throws URISyntaxException {
+//        log.debug("REST request to save Coin : {}", coin);
+//        if (coin.getId() != null) {
+//            throw new BadRequestAlertException("A new coin cannot already have an ID", ENTITY_NAME, "idexists");
+//        }
+//        Coin result = coinService.save(coin);
+//        return ResponseEntity.created(new URI("/api/coins/" + result.getId()))
+//            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+//            .body(result);
+//    }
 
     /**
      * {@code PUT  /coins} : Updates an existing coin.

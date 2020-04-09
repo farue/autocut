@@ -8,12 +8,6 @@
     -->
     <changeSet id="20200326184247-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="coin_id"
-                                 baseTableName="wash_history"
-                                 constraintName="fk_wash_history_coin_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="coin"/>
-
         <addForeignKeyConstraint baseColumnNames="tenant_id"
                                  baseTableName="wash_history"
                                  constraintName="fk_wash_history_tenant_id"
