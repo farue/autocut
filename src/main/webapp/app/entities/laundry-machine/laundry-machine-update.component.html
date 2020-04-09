@@ -10,6 +10,17 @@
                         readonly />
                 </div>
                 <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="autocutApp.laundryMachine.identifier" for="field_identifier">Identifier</label>
+                    <input type="text" class="form-control" name="identifier" id="field_identifier"
+                           formControlName="identifier"/>
+                    <div *ngIf="editForm.get('identifier')!.invalid && (editForm.get('identifier')!.dirty || editForm.get('identifier')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('identifier')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.laundryMachine.name" for="field_name">Name</label>
                     <input type="text" class="form-control" name="name" id="field_name"
                            formControlName="name"/>

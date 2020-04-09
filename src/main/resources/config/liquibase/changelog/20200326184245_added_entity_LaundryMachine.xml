@@ -16,6 +16,9 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="identifier" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
             <column name="name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
@@ -48,6 +51,7 @@
                   separator=";"
                   tableName="laundry_machine">
             <column name="id" type="numeric"/>
+            <column name="identifier" type="string"/>
             <column name="name" type="string"/>
             <column name="type" type="string"/>
             <column name="enabled" type="boolean"/>

@@ -17,6 +17,7 @@ export class LaundryMachineUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
+    identifier: [null, [Validators.required]],
     name: [null, [Validators.required]],
     type: [null, [Validators.required]],
     enabled: [null, [Validators.required]]
@@ -33,6 +34,7 @@ export class LaundryMachineUpdateComponent implements OnInit {
   updateForm(laundryMachine: ILaundryMachine): void {
     this.editForm.patchValue({
       id: laundryMachine.id,
+      identifier: laundryMachine.identifier,
       name: laundryMachine.name,
       type: laundryMachine.type,
       enabled: laundryMachine.enabled
@@ -57,6 +59,7 @@ export class LaundryMachineUpdateComponent implements OnInit {
     return {
       ...new LaundryMachine(),
       id: this.editForm.get(['id'])!.value,
+      identifier: this.editForm.get(['identifier'])!.value,
       name: this.editForm.get(['name'])!.value,
       type: this.editForm.get(['type'])!.value,
       enabled: this.editForm.get(['enabled'])!.value

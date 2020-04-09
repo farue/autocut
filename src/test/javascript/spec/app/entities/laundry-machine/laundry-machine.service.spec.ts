@@ -21,7 +21,7 @@ describe('Service Tests', () => {
       service = injector.get(LaundryMachineService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new LaundryMachine(0, 'AAAAAAA', LaundryMachineType.WASHING_MACHINE, false);
+      elemDefault = new LaundryMachine(0, 'AAAAAAA', 'AAAAAAA', LaundryMachineType.WASHING_MACHINE, false);
     });
 
     describe('Service methods', () => {
@@ -57,6 +57,7 @@ describe('Service Tests', () => {
       it('should update a LaundryMachine', () => {
         const returnedFromService = Object.assign(
           {
+            identifier: 'BBBBBB',
             name: 'BBBBBB',
             type: 'BBBBBB',
             enabled: true
@@ -77,6 +78,7 @@ describe('Service Tests', () => {
       it('should return a list of LaundryMachine', () => {
         const returnedFromService = Object.assign(
           {
+            identifier: 'BBBBBB',
             name: 'BBBBBB',
             type: 'BBBBBB',
             enabled: true

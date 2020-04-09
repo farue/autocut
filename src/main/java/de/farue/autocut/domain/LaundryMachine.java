@@ -26,6 +26,10 @@ public class LaundryMachine implements Serializable {
     private Long id;
 
     @NotNull
+    @Column(name = "identifier", nullable = false)
+    private String identifier;
+
+    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -49,6 +53,19 @@ public class LaundryMachine implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public LaundryMachine identifier(String identifier) {
+        this.identifier = identifier;
+        return this;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     public String getName() {
@@ -136,6 +153,7 @@ public class LaundryMachine implements Serializable {
     public String toString() {
         return "LaundryMachine{" +
             "id=" + getId() +
+            ", identifier='" + getIdentifier() + "'" +
             ", name='" + getName() + "'" +
             ", type='" + getType() + "'" +
             ", enabled='" + isEnabled() + "'" +

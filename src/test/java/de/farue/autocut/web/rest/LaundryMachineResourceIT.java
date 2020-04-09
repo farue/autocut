@@ -34,6 +34,9 @@ import de.farue.autocut.domain.enumeration.LaundryMachineType;
 @SpringBootTest(classes = AutocutApp.class)
 public class LaundryMachineResourceIT {
 
+    private static final String DEFAULT_IDENTIFIER = "AAAAAAAAAA";
+    private static final String UPDATED_IDENTIFIER = "BBBBBBBBBB";
+
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
@@ -85,6 +88,7 @@ public class LaundryMachineResourceIT {
      */
     public static LaundryMachine createEntity(EntityManager em) {
         LaundryMachine laundryMachine = new LaundryMachine()
+            .identifier(DEFAULT_IDENTIFIER)
             .name(DEFAULT_NAME)
             .type(DEFAULT_TYPE)
             .enabled(DEFAULT_ENABLED);
@@ -98,6 +102,7 @@ public class LaundryMachineResourceIT {
      */
     public static LaundryMachine createUpdatedEntity(EntityManager em) {
         LaundryMachine laundryMachine = new LaundryMachine()
+            .identifier(UPDATED_IDENTIFIER)
             .name(UPDATED_NAME)
             .type(UPDATED_TYPE)
             .enabled(UPDATED_ENABLED);
@@ -124,6 +129,7 @@ public class LaundryMachineResourceIT {
         List<LaundryMachine> laundryMachineList = laundryMachineRepository.findAll();
         assertThat(laundryMachineList).hasSize(databaseSizeBeforeCreate + 1);
         LaundryMachine testLaundryMachine = laundryMachineList.get(laundryMachineList.size() - 1);
+        assertThat(testLaundryMachine.getIdentifier()).isEqualTo(DEFAULT_IDENTIFIER);
         assertThat(testLaundryMachine.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testLaundryMachine.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testLaundryMachine.isEnabled()).isEqualTo(DEFAULT_ENABLED);
@@ -148,6 +154,24 @@ public class LaundryMachineResourceIT {
         assertThat(laundryMachineList).hasSize(databaseSizeBeforeCreate);
     }
 
+
+    @Test
+    @Transactional
+    public void checkIdentifierIsRequired() throws Exception {
+        int databaseSizeBeforeTest = laundryMachineRepository.findAll().size();
+        // set the field null
+        laundryMachine.setIdentifier(null);
+
+        // Create the LaundryMachine, which fails.
+
+        restLaundryMachineMockMvc.perform(post("/api/laundry-machines")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(laundryMachine)))
+            .andExpect(status().isBadRequest());
+
+        List<LaundryMachine> laundryMachineList = laundryMachineRepository.findAll();
+        assertThat(laundryMachineList).hasSize(databaseSizeBeforeTest);
+    }
 
     @Test
     @Transactional
@@ -214,6 +238,7 @@ public class LaundryMachineResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(laundryMachine.getId().intValue())))
+            .andExpect(jsonPath("$.[*].identifier").value(hasItem(DEFAULT_IDENTIFIER)))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].enabled").value(hasItem(DEFAULT_ENABLED.booleanValue())));
@@ -230,6 +255,7 @@ public class LaundryMachineResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(laundryMachine.getId().intValue()))
+            .andExpect(jsonPath("$.identifier").value(DEFAULT_IDENTIFIER))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
             .andExpect(jsonPath("$.enabled").value(DEFAULT_ENABLED.booleanValue()));
@@ -256,6 +282,7 @@ public class LaundryMachineResourceIT {
         // Disconnect from session so that the updates on updatedLaundryMachine are not directly saved in db
         em.detach(updatedLaundryMachine);
         updatedLaundryMachine
+            .identifier(UPDATED_IDENTIFIER)
             .name(UPDATED_NAME)
             .type(UPDATED_TYPE)
             .enabled(UPDATED_ENABLED);
@@ -269,6 +296,7 @@ public class LaundryMachineResourceIT {
         List<LaundryMachine> laundryMachineList = laundryMachineRepository.findAll();
         assertThat(laundryMachineList).hasSize(databaseSizeBeforeUpdate);
         LaundryMachine testLaundryMachine = laundryMachineList.get(laundryMachineList.size() - 1);
+        assertThat(testLaundryMachine.getIdentifier()).isEqualTo(UPDATED_IDENTIFIER);
         assertThat(testLaundryMachine.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testLaundryMachine.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testLaundryMachine.isEnabled()).isEqualTo(UPDATED_ENABLED);

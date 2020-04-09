@@ -183,6 +183,7 @@ relationship ManyToOne {
 // Wash System
 
 entity LaundryMachine {
+    identifier String required
 	name String required
     type LaundryMachineType required
     enabled Boolean required

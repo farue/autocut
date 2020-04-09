@@ -19,6 +19,7 @@
             <thead>
             <tr>
             <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
+            <th scope="col" ><span jhiTranslate="autocutApp.laundryMachine.identifier">Identifier</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.laundryMachine.name">Name</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.laundryMachine.type">Type</span></th>
             <th scope="col" ><span jhiTranslate="autocutApp.laundryMachine.enabled">Enabled</span></th>
@@ -28,6 +29,7 @@
             <tbody>
             <tr *ngFor="let laundryMachine of laundryMachines ;trackBy: trackId">
                 <td><a [routerLink]="['/laundry-machine', laundryMachine.id, 'view' ]">{{laundryMachine.id}}</a></td>
+                <td>{{laundryMachine.identifier}}</td>
                 <td>{{laundryMachine.name}}</td>
                 <td jhiTranslate="{{'autocutApp.LaundryMachineType.' + laundryMachine.type}}">{{laundryMachine.type}}</td>
                 <td>{{laundryMachine.enabled}}</td>

@@ -2,6 +2,13 @@
     "name": "LaundryMachine",
     "fields": [
         {
+            "fieldName": "identifier",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
             "fieldName": "name",
             "fieldType": "String",
             "fieldValidateRules": [

@@ -3,6 +3,7 @@ import { LaundryMachineType } from 'app/shared/model/enumerations/laundry-machin
 
 export interface ILaundryMachine {
   id?: number;
+  identifier?: string;
   name?: string;
   type?: LaundryMachineType;
   enabled?: boolean;
@@ -12,6 +13,7 @@ export interface ILaundryMachine {
 export class LaundryMachine implements ILaundryMachine {
   constructor(
     public id?: number,
+    public identifier?: string,
     public name?: string,
     public type?: LaundryMachineType,
     public enabled?: boolean,

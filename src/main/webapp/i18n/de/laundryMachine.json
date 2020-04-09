@@ -16,6 +16,7 @@
       "detail": {
         "title": "Laundry Machine"
       },
+      "identifier": "Identifier",
       "name": "Name",
       "type": "Type",
       "enabled": "Enabled",
