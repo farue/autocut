@@ -23,9 +23,7 @@ export class SecurityPolicyComponent implements OnInit, OnDestroy {
   ) {}
 
   loadAll(): void {
-    this.securityPolicyService.query().subscribe((res: HttpResponse<ISecurityPolicy[]>) => {
-      this.securityPolicies = res.body ? res.body : [];
-    });
+    this.securityPolicyService.query().subscribe((res: HttpResponse<ISecurityPolicy[]>) => (this.securityPolicies = res.body || []));
   }
 
   ngOnInit(): void {

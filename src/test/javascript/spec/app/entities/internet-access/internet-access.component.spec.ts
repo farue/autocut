@@ -16,8 +16,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [AutocutTestModule],
-        declarations: [InternetAccessComponent],
-        providers: []
+        declarations: [InternetAccessComponent]
       })
         .overrideTemplate(InternetAccessComponent, '')
         .compileComponents();

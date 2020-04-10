@@ -13,9 +13,7 @@ export class SecurityPolicyDetailComponent implements OnInit {
   constructor(protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ securityPolicy }) => {
-      this.securityPolicy = securityPolicy;
-    });
+    this.activatedRoute.data.subscribe(({ securityPolicy }) => (this.securityPolicy = securityPolicy));
   }
 
   previousState(): void {

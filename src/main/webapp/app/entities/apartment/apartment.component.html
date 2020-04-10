@@ -1,70 +1,76 @@
 <div>
     <h2 id="page-heading">
         <span jhiTranslate="autocutApp.apartment.home.title">Apartments</span>
+
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-apartment" [routerLink]="['/apartment/new']">
-            <fa-icon [icon]="'plus'"></fa-icon>
+            <fa-icon icon="plus"></fa-icon>
             <span  jhiTranslate="autocutApp.apartment.home.createLabel">
             Create a new Apartment
             </span>
         </button>
     </h2>
+
     <jhi-alert-error></jhi-alert-error>
+
     <jhi-alert></jhi-alert>
-    <br/>
-    <div class="alert alert-warning" *ngIf="apartments?.length === 0">
+
+    <div class="alert alert-warning" id="no-result" *ngIf="apartments?.length === 0">
         <span jhiTranslate="autocutApp.apartment.home.notFound">No apartments found</span>
     </div>
-    <div class="table-responsive" *ngIf="apartments?.length > 0">
+
+    <div class="table-responsive" id="entities" *ngIf="apartments?.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-            <tr>
-            <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-            <th scope="col" ><span jhiTranslate="autocutApp.apartment.apartmentNr">Apartment Nr</span></th>
-            <th scope="col" ><span jhiTranslate="autocutApp.apartment.apartmentType">Apartment Type</span></th>
-            <th scope="col" ><span jhiTranslate="autocutApp.apartment.maxNumberOfLeases">Max Number Of Leases</span></th>
-            <th scope="col" ><span jhiTranslate="autocutApp.apartment.internetAccess">Internet Access</span></th>
-            <th scope="col" ><span jhiTranslate="autocutApp.apartment.address">Address</span></th>
-            <th scope="col"></th>
-            </tr>
+                <tr>
+                    <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.apartment.apartmentNr">Apartment Nr</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.apartment.apartmentType">Apartment Type</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.apartment.maxNumberOfLeases">Max Number Of Leases</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.apartment.internetAccess">Internet Access</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.apartment.address">Address</span></th>
+                    <th scope="col"></th>
+                </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let apartment of apartments ;trackBy: trackId">
-                <td><a [routerLink]="['/apartment', apartment.id, 'view' ]">{{apartment.id}}</a></td>
-                <td>{{apartment.apartmentNr}}</td>
-                <td jhiTranslate="{{'autocutApp.ApartmentTypes.' + apartment.apartmentType}}">{{apartment.apartmentType}}</td>
-                <td>{{apartment.maxNumberOfLeases}}</td>
-                <td>
-                    <div *ngIf="apartment.internetAccess">
-                        <a [routerLink]="['/internet-access', apartment.internetAccess?.id, 'view' ]" >{{apartment.internetAccess?.id}}</a>
-                    </div>
-                </td>
-                <td>
-                    <div *ngIf="apartment.address">
-                        <a [routerLink]="['/address', apartment.address?.id, 'view' ]" >{{apartment.address?.id}}</a>
-                    </div>
-                </td>
-                <td class="text-right">
-                    <div class="btn-group">
-                        <button type="submit"
-                                [routerLink]="['/apartment', apartment.id, 'view' ]"
-                                class="btn btn-info btn-sm">
-                            <fa-icon [icon]="'eye'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/apartment', apartment.id, 'edit']"
-                                class="btn btn-primary btn-sm">
-                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit" (click)="delete(apartment)"
-                                class="btn btn-danger btn-sm">
-                            <fa-icon [icon]="'times'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+                <tr *ngFor="let apartment of apartments ;trackBy: trackId">
+                    <td><a [routerLink]="['/apartment', apartment.id, 'view']">{{ apartment.id }}</a></td>
+                    <td>{{ apartment.apartmentNr }}</td>
+                    <td jhiTranslate="{{ 'autocutApp.ApartmentTypes.' + apartment.apartmentType }}">{{ apartment.apartmentType }}</td>
+                    <td>{{ apartment.maxNumberOfLeases }}</td>
+                    <td>
+                        <div *ngIf="apartment.internetAccess">
+                            <a [routerLink]="['/internet-access', apartment.internetAccess?.id, 'view']" >{{ apartment.internetAccess?.id }}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div *ngIf="apartment.address">
+                            <a [routerLink]="['/address', apartment.address?.id, 'view']" >{{ apartment.address?.id }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/apartment', apartment.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/apartment', apartment.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(apartment)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

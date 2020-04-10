@@ -23,9 +23,7 @@ export class LaundryMachineComponent implements OnInit, OnDestroy {
   ) {}
 
   loadAll(): void {
-    this.laundryMachineService.query().subscribe((res: HttpResponse<ILaundryMachine[]>) => {
-      this.laundryMachines = res.body ? res.body : [];
-    });
+    this.laundryMachineService.query().subscribe((res: HttpResponse<ILaundryMachine[]>) => (this.laundryMachines = res.body || []));
   }
 
   ngOnInit(): void {

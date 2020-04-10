@@ -1,42 +1,45 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="internetAccess">
-            <h2><span jhiTranslate="autocutApp.internetAccess.detail.title">Internet Access</span> {{internetAccess.id}}</h2>
+            <h2><span jhiTranslate="autocutApp.internetAccess.detail.title">Internet Access</span> {{ internetAccess.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
                 <dt><span jhiTranslate="autocutApp.internetAccess.blocked">Blocked</span></dt>
                 <dd>
-                    <span>{{internetAccess.blocked}}</span>
+                    <span>{{ internetAccess.blocked }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.internetAccess.ip1">Ip 1</span></dt>
                 <dd>
-                    <span>{{internetAccess.ip1}}</span>
+                    <span>{{ internetAccess.ip1 }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.internetAccess.ip2">Ip 2</span></dt>
                 <dd>
-                    <span>{{internetAccess.ip2}}</span>
+                    <span>{{ internetAccess.ip2 }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.internetAccess.switchInterface">Switch Interface</span></dt>
                 <dd>
-                    <span>{{internetAccess.switchInterface}}</span>
+                    <span>{{ internetAccess.switchInterface }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.internetAccess.port">Port</span></dt>
                 <dd>
-                    <span>{{internetAccess.port}}</span>
+                    <span>{{ internetAccess.port }}</span>
                 </dd>
             </dl>
 
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/internet-access', internetAccess.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

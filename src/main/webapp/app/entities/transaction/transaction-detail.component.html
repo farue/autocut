@@ -1,54 +1,57 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="transaction">
-            <h2><span jhiTranslate="autocutApp.transaction.detail.title">Transaction</span> {{transaction.id}}</h2>
+            <h2><span jhiTranslate="autocutApp.transaction.detail.title">Transaction</span> {{ transaction.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
                 <dt><span jhiTranslate="autocutApp.transaction.kind">Kind</span></dt>
                 <dd>
-                    <span jhiTranslate="{{'autocutApp.TransactionKind.' + transaction.kind}}">{{transaction.kind}}</span>
+                    <span jhiTranslate="{{ 'autocutApp.TransactionKind.' + transaction.kind }}">{{ transaction.kind }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.transaction.bookingDate">Booking Date</span></dt>
                 <dd>
-                    <span>{{transaction.bookingDate}}</span>
+                    <span>{{ transaction.bookingDate }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.transaction.valueDate">Value Date</span></dt>
                 <dd>
-                    <span>{{transaction.valueDate}}</span>
+                    <span>{{ transaction.valueDate }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.transaction.value">Value</span></dt>
                 <dd>
-                    <span>{{transaction.value}}</span>
+                    <span>{{ transaction.value }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.transaction.balanceAfter">Balance After</span></dt>
                 <dd>
-                    <span>{{transaction.balanceAfter}}</span>
+                    <span>{{ transaction.balanceAfter }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.transaction.description">Description</span></dt>
                 <dd>
-                    <span>{{transaction.description}}</span>
+                    <span>{{ transaction.description }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.transaction.issuer">Issuer</span></dt>
                 <dd>
-                    <span>{{transaction.issuer}}</span>
+                    <span>{{ transaction.issuer }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.transaction.recipient">Recipient</span></dt>
                 <dd>
-                    <span>{{transaction.recipient}}</span>
+                    <span>{{ transaction.recipient }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.transaction.amount">Amount</span></dt>
                 <dd>
-                    <span>{{transaction.amount}}</span>
+                    <span>{{ transaction.amount }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.transaction.balance">Balance</span></dt>
                 <dd>
-                    <span>{{transaction.balance}}</span>
+                    <span>{{ transaction.balance }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.transaction.lease">Lease</span></dt>
                 <dd>
                     <div *ngIf="transaction.lease">
-                        <a [routerLink]="['/lease', transaction.lease?.id, 'view']">{{transaction.lease?.id}}</a>
+                        <a [routerLink]="['/lease', transaction.lease?.id, 'view']">{{ transaction.lease?.id }}</a>
                     </div>
                 </dd>
             </dl>
@@ -56,13 +59,13 @@
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/transaction', transaction.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

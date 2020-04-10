@@ -19,9 +19,7 @@ export class TenantComponent implements OnInit, OnDestroy {
   constructor(protected tenantService: TenantService, protected eventManager: JhiEventManager, protected modalService: NgbModal) {}
 
   loadAll(): void {
-    this.tenantService.query().subscribe((res: HttpResponse<ITenant[]>) => {
-      this.tenants = res.body ? res.body : [];
-    });
+    this.tenantService.query().subscribe((res: HttpResponse<ITenant[]>) => (this.tenants = res.body || []));
   }
 
   ngOnInit(): void {

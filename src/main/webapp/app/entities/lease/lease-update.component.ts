@@ -4,7 +4,6 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 
@@ -19,7 +18,6 @@ import { ApartmentService } from 'app/entities/apartment/apartment.service';
 })
 export class LeaseUpdateComponent implements OnInit {
   isSaving = false;
-
   apartments: IApartment[] = [];
 
   editForm = this.fb.group({
@@ -43,16 +41,17 @@ export class LeaseUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ lease }) => {
+      if (!lease.id) {
+        const today = moment().startOf('day');
+        lease.start = today;
+        lease.end = today;
+        lease.createdDate = today;
+        lease.lastModifiedDate = today;
+      }
+
       this.updateForm(lease);
 
-      this.apartmentService
-        .query()
-        .pipe(
-          map((res: HttpResponse<IApartment[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: IApartment[]) => (this.apartments = resBody));
+      this.apartmentService.query().subscribe((res: HttpResponse<IApartment[]>) => (this.apartments = res.body || []));
     });
   }
 
@@ -60,12 +59,12 @@ export class LeaseUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: lease.id,
       nr: lease.nr,
-      start: lease.start != null ? lease.start.format(DATE_TIME_FORMAT) : null,
-      end: lease.end != null ? lease.end.format(DATE_TIME_FORMAT) : null,
+      start: lease.start ? lease.start.format(DATE_TIME_FORMAT) : null,
+      end: lease.end ? lease.end.format(DATE_TIME_FORMAT) : null,
       createdBy: lease.createdBy,
-      createdDate: lease.createdDate != null ? lease.createdDate.format(DATE_TIME_FORMAT) : null,
+      createdDate: lease.createdDate ? lease.createdDate.format(DATE_TIME_FORMAT) : null,
       lastModifiedBy: lease.lastModifiedBy,
-      lastModifiedDate: lease.lastModifiedDate != null ? lease.lastModifiedDate.format(DATE_TIME_FORMAT) : null,
+      lastModifiedDate: lease.lastModifiedDate ? lease.lastModifiedDate.format(DATE_TIME_FORMAT) : null,
       apartment: lease.apartment
     });
   }
@@ -89,16 +88,16 @@ export class LeaseUpdateComponent implements OnInit {
       ...new Lease(),
       id: this.editForm.get(['id'])!.value,
       nr: this.editForm.get(['nr'])!.value,
-      start: this.editForm.get(['start'])!.value != null ? moment(this.editForm.get(['start'])!.value, DATE_TIME_FORMAT) : undefined,
-      end: this.editForm.get(['end'])!.value != null ? moment(this.editForm.get(['end'])!.value, DATE_TIME_FORMAT) : undefined,
+      start: this.editForm.get(['start'])!.value ? moment(this.editForm.get(['start'])!.value, DATE_TIME_FORMAT) : undefined,
+      end: this.editForm.get(['end'])!.value ? moment(this.editForm.get(['end'])!.value, DATE_TIME_FORMAT) : undefined,
       createdBy: this.editForm.get(['createdBy'])!.value,
-      createdDate:
-        this.editForm.get(['createdDate'])!.value != null ? moment(this.editForm.get(['createdDate'])!.value, DATE_TIME_FORMAT) : undefined,
+      createdDate: this.editForm.get(['createdDate'])!.value
+        ? moment(this.editForm.get(['createdDate'])!.value, DATE_TIME_FORMAT)
+        : undefined,
       lastModifiedBy: this.editForm.get(['lastModifiedBy'])!.value,
-      lastModifiedDate:
-        this.editForm.get(['lastModifiedDate'])!.value != null
-          ? moment(this.editForm.get(['lastModifiedDate'])!.value, DATE_TIME_FORMAT)
-          : undefined,
+      lastModifiedDate: this.editForm.get(['lastModifiedDate'])!.value
+        ? moment(this.editForm.get(['lastModifiedDate'])!.value, DATE_TIME_FORMAT)
+        : undefined,
       apartment: this.editForm.get(['apartment'])!.value
     };
   }

@@ -4,6 +4,7 @@ import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router
 import { Observable, of, EMPTY } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
+import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 import { ITeamMember, TeamMember } from 'app/shared/model/team-member.model';
 import { TeamMemberService } from './team-member.service';
@@ -38,7 +39,7 @@ export const teamMemberRoute: Routes = [
     path: '',
     component: TeamMemberComponent,
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: [Authority.USER],
       pageTitle: 'autocutApp.teamMember.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -50,7 +51,7 @@ export const teamMemberRoute: Routes = [
       teamMember: TeamMemberResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: [Authority.USER],
       pageTitle: 'autocutApp.teamMember.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -62,7 +63,7 @@ export const teamMemberRoute: Routes = [
       teamMember: TeamMemberResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: [Authority.USER],
       pageTitle: 'autocutApp.teamMember.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -74,7 +75,7 @@ export const teamMemberRoute: Routes = [
       teamMember: TeamMemberResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: [Authority.USER],
       pageTitle: 'autocutApp.teamMember.home.title'
     },
     canActivate: [UserRouteAccessService]

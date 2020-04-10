@@ -13,9 +13,7 @@ export class TransactionDetailComponent implements OnInit {
   constructor(protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ transaction }) => {
-      this.transaction = transaction;
-    });
+    this.activatedRoute.data.subscribe(({ transaction }) => (this.transaction = transaction));
   }
 
   previousState(): void {

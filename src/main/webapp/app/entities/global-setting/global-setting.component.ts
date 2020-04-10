@@ -23,9 +23,7 @@ export class GlobalSettingComponent implements OnInit, OnDestroy {
   ) {}
 
   loadAll(): void {
-    this.globalSettingService.query().subscribe((res: HttpResponse<IGlobalSetting[]>) => {
-      this.globalSettings = res.body ? res.body : [];
-    });
+    this.globalSettingService.query().subscribe((res: HttpResponse<IGlobalSetting[]>) => (this.globalSettings = res.body || []));
   }
 
   ngOnInit(): void {

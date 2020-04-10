@@ -13,9 +13,7 @@ export class LaundryMachineDetailComponent implements OnInit {
   constructor(protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ laundryMachine }) => {
-      this.laundryMachine = laundryMachine;
-    });
+    this.activatedRoute.data.subscribe(({ laundryMachine }) => (this.laundryMachine = laundryMachine));
   }
 
   previousState(): void {

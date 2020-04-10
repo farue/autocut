@@ -13,7 +13,7 @@ export class TenantDeleteDialogComponent {
 
   constructor(protected tenantService: TenantService, public activeModal: NgbActiveModal, protected eventManager: JhiEventManager) {}
 
-  clear(): void {
+  cancel(): void {
     this.activeModal.dismiss();
   }
 

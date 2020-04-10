@@ -19,9 +19,7 @@ export class ActivityComponent implements OnInit, OnDestroy {
   constructor(protected activityService: ActivityService, protected eventManager: JhiEventManager, protected modalService: NgbModal) {}
 
   loadAll(): void {
-    this.activityService.query().subscribe((res: HttpResponse<IActivity[]>) => {
-      this.activities = res.body ? res.body : [];
-    });
+    this.activityService.query().subscribe((res: HttpResponse<IActivity[]>) => (this.activities = res.body || []));
   }
 
   ngOnInit(): void {

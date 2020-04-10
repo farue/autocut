@@ -23,9 +23,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
   ) {}
 
   loadAll(): void {
-    this.transactionService.query().subscribe((res: HttpResponse<ITransaction[]>) => {
-      this.transactions = res.body ? res.body : [];
-    });
+    this.transactionService.query().subscribe((res: HttpResponse<ITransaction[]>) => (this.transactions = res.body || []));
   }
 
   ngOnInit(): void {

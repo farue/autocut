@@ -4,7 +4,6 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import { ILaundryMachineProgram, LaundryMachineProgram } from 'app/shared/model/laundry-machine-program.model';
 import { LaundryMachineProgramService } from './laundry-machine-program.service';
@@ -17,7 +16,6 @@ import { LaundryMachineService } from 'app/entities/laundry-machine/laundry-mach
 })
 export class LaundryMachineProgramUpdateComponent implements OnInit {
   isSaving = false;
-
   laundrymachines: ILaundryMachine[] = [];
 
   editForm = this.fb.group({
@@ -44,14 +42,7 @@ export class LaundryMachineProgramUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ laundryMachineProgram }) => {
       this.updateForm(laundryMachineProgram);
 
-      this.laundryMachineService
-        .query()
-        .pipe(
-          map((res: HttpResponse<ILaundryMachine[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: ILaundryMachine[]) => (this.laundrymachines = resBody));
+      this.laundryMachineService.query().subscribe((res: HttpResponse<ILaundryMachine[]>) => (this.laundrymachines = res.body || []));
     });
   }
 

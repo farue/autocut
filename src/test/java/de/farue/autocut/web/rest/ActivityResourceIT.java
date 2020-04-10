@@ -3,27 +3,21 @@ package de.farue.autocut.web.rest;
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Activity;
 import de.farue.autocut.repository.ActivityRepository;
-import de.farue.autocut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Validator;
-
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import static de.farue.autocut.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -34,6 +28,9 @@ import de.farue.autocut.domain.enumeration.SemesterTerms;
  * Integration tests for the {@link ActivityResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
+
+@AutoConfigureMockMvc
+@WithMockUser
 public class ActivityResourceIT {
 
     private static final Integer DEFAULT_YEAR = 1;
@@ -61,35 +58,12 @@ public class ActivityResourceIT {
     private ActivityRepository activityRepository;
 
     @Autowired
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
-    @Autowired
-    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
-
-    @Autowired
-    private ExceptionTranslator exceptionTranslator;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
-    private Validator validator;
-
     private MockMvc restActivityMockMvc;
 
     private Activity activity;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final ActivityResource activityResource = new ActivityResource(activityRepository);
-        this.restActivityMockMvc = MockMvcBuilders.standaloneSetup(activityResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
-    }
 
     /**
      * Create an entity for this test.
@@ -138,7 +112,7 @@ public class ActivityResourceIT {
 
         // Create the Activity
         restActivityMockMvc.perform(post("/api/activities")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(activity)))
             .andExpect(status().isCreated());
 
@@ -165,7 +139,7 @@ public class ActivityResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restActivityMockMvc.perform(post("/api/activities")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(activity)))
             .andExpect(status().isBadRequest());
 
@@ -185,7 +159,7 @@ public class ActivityResourceIT {
         // Create the Activity, which fails.
 
         restActivityMockMvc.perform(post("/api/activities")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(activity)))
             .andExpect(status().isBadRequest());
 
@@ -203,7 +177,7 @@ public class ActivityResourceIT {
         // Create the Activity, which fails.
 
         restActivityMockMvc.perform(post("/api/activities")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(activity)))
             .andExpect(status().isBadRequest());
 
@@ -220,7 +194,7 @@ public class ActivityResourceIT {
         // Get all the activityList
         restActivityMockMvc.perform(get("/api/activities?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(activity.getId().intValue())))
             .andExpect(jsonPath("$.[*].year").value(hasItem(DEFAULT_YEAR)))
             .andExpect(jsonPath("$.[*].term").value(hasItem(DEFAULT_TERM.toString())))
@@ -240,7 +214,7 @@ public class ActivityResourceIT {
         // Get the activity
         restActivityMockMvc.perform(get("/api/activities/{id}", activity.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(activity.getId().intValue()))
             .andExpect(jsonPath("$.year").value(DEFAULT_YEAR))
             .andExpect(jsonPath("$.term").value(DEFAULT_TERM.toString()))
@@ -281,7 +255,7 @@ public class ActivityResourceIT {
             .stwActivity(UPDATED_STW_ACTIVITY);
 
         restActivityMockMvc.perform(put("/api/activities")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedActivity)))
             .andExpect(status().isOk());
 
@@ -307,7 +281,7 @@ public class ActivityResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restActivityMockMvc.perform(put("/api/activities")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(activity)))
             .andExpect(status().isBadRequest());
 
@@ -326,7 +300,7 @@ public class ActivityResourceIT {
 
         // Delete the activity
         restActivityMockMvc.perform(delete("/api/activities/{id}", activity.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

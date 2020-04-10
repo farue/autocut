@@ -13,9 +13,7 @@ export class TenantDetailComponent implements OnInit {
   constructor(protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ tenant }) => {
-      this.tenant = tenant;
-    });
+    this.activatedRoute.data.subscribe(({ tenant }) => (this.tenant = tenant));
   }
 
   previousState(): void {

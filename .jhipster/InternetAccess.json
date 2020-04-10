@@ -36,7 +36,7 @@
                 "required",
                 "min"
             ],
-            "fieldValidateRulesMin": 1
+            "fieldValidateRulesMin": "1"
         }
     ],
     "relationships": [
@@ -57,5 +57,6 @@
     "fluentMethods": true,
     "readOnly": false,
     "clientRootFolder": "",
-    "applications": "*"
+    "applications": "*",
+    "embedded": false
 }

@@ -8,7 +8,7 @@
                 "required",
                 "maxlength"
             ],
-            "fieldValidateRulesMaxlength": 80
+            "fieldValidateRulesMaxlength": "80"
         },
         {
             "fieldName": "text",
@@ -49,5 +49,6 @@
     "fluentMethods": true,
     "readOnly": false,
     "clientRootFolder": "",
-    "applications": "*"
+    "applications": "*",
+    "embedded": false
 }

@@ -13,9 +13,7 @@ export class LeaseDetailComponent implements OnInit {
   constructor(protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ lease }) => {
-      this.lease = lease;
-    });
+    this.activatedRoute.data.subscribe(({ lease }) => (this.lease = lease));
   }
 
   previousState(): void {

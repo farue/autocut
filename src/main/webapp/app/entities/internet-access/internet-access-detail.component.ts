@@ -13,9 +13,7 @@ export class InternetAccessDetailComponent implements OnInit {
   constructor(protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ internetAccess }) => {
-      this.internetAccess = internetAccess;
-    });
+    this.activatedRoute.data.subscribe(({ internetAccess }) => (this.internetAccess = internetAccess));
   }
 
   previousState(): void {

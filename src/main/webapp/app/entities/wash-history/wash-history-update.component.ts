@@ -4,7 +4,6 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 
@@ -25,11 +24,8 @@ type SelectableEntity = ITenant | ILaundryMachine | ILaundryMachineProgram;
 })
 export class WashHistoryUpdateComponent implements OnInit {
   isSaving = false;
-
   tenants: ITenant[] = [];
-
   laundrymachines: ILaundryMachine[] = [];
-
   laundrymachineprograms: ILaundryMachineProgram[] = [];
 
   editForm = this.fb.group({
@@ -55,43 +51,31 @@ export class WashHistoryUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ washHistory }) => {
+      if (!washHistory.id) {
+        const today = moment().startOf('day');
+        washHistory.usingDate = today;
+        washHistory.reservationDate = today;
+        washHistory.lastModifiedDate = today;
+      }
+
       this.updateForm(washHistory);
 
-      this.tenantService
-        .query()
-        .pipe(
-          map((res: HttpResponse<ITenant[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: ITenant[]) => (this.tenants = resBody));
+      this.tenantService.query().subscribe((res: HttpResponse<ITenant[]>) => (this.tenants = res.body || []));
 
-      this.laundryMachineService
-        .query()
-        .pipe(
-          map((res: HttpResponse<ILaundryMachine[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: ILaundryMachine[]) => (this.laundrymachines = resBody));
+      this.laundryMachineService.query().subscribe((res: HttpResponse<ILaundryMachine[]>) => (this.laundrymachines = res.body || []));
 
       this.laundryMachineProgramService
         .query()
-        .pipe(
-          map((res: HttpResponse<ILaundryMachineProgram[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: ILaundryMachineProgram[]) => (this.laundrymachineprograms = resBody));
+        .subscribe((res: HttpResponse<ILaundryMachineProgram[]>) => (this.laundrymachineprograms = res.body || []));
     });
   }
 
   updateForm(washHistory: IWashHistory): void {
     this.editForm.patchValue({
       id: washHistory.id,
-      usingDate: washHistory.usingDate != null ? washHistory.usingDate.format(DATE_TIME_FORMAT) : null,
-      reservationDate: washHistory.reservationDate != null ? washHistory.reservationDate.format(DATE_TIME_FORMAT) : null,
-      lastModifiedDate: washHistory.lastModifiedDate != null ? washHistory.lastModifiedDate.format(DATE_TIME_FORMAT) : null,
+      usingDate: washHistory.usingDate ? washHistory.usingDate.format(DATE_TIME_FORMAT) : null,
+      reservationDate: washHistory.reservationDate ? washHistory.reservationDate.format(DATE_TIME_FORMAT) : null,
+      lastModifiedDate: washHistory.lastModifiedDate ? washHistory.lastModifiedDate.format(DATE_TIME_FORMAT) : null,
       status: washHistory.status,
       reservationTenant: washHistory.reservationTenant,
       usingTenant: washHistory.usingTenant,
@@ -118,16 +102,13 @@ export class WashHistoryUpdateComponent implements OnInit {
     return {
       ...new WashHistory(),
       id: this.editForm.get(['id'])!.value,
-      usingDate:
-        this.editForm.get(['usingDate'])!.value != null ? moment(this.editForm.get(['usingDate'])!.value, DATE_TIME_FORMAT) : undefined,
-      reservationDate:
-        this.editForm.get(['reservationDate'])!.value != null
-          ? moment(this.editForm.get(['reservationDate'])!.value, DATE_TIME_FORMAT)
-          : undefined,
-      lastModifiedDate:
-        this.editForm.get(['lastModifiedDate'])!.value != null
-          ? moment(this.editForm.get(['lastModifiedDate'])!.value, DATE_TIME_FORMAT)
-          : undefined,
+      usingDate: this.editForm.get(['usingDate'])!.value ? moment(this.editForm.get(['usingDate'])!.value, DATE_TIME_FORMAT) : undefined,
+      reservationDate: this.editForm.get(['reservationDate'])!.value
+        ? moment(this.editForm.get(['reservationDate'])!.value, DATE_TIME_FORMAT)
+        : undefined,
+      lastModifiedDate: this.editForm.get(['lastModifiedDate'])!.value
+        ? moment(this.editForm.get(['lastModifiedDate'])!.value, DATE_TIME_FORMAT)
+        : undefined,
       status: this.editForm.get(['status'])!.value,
       reservationTenant: this.editForm.get(['reservationTenant'])!.value,
       usingTenant: this.editForm.get(['usingTenant'])!.value,

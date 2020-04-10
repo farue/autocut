@@ -13,9 +13,7 @@ export class GlobalSettingDetailComponent implements OnInit {
   constructor(protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ globalSetting }) => {
-      this.globalSetting = globalSetting;
-    });
+    this.activatedRoute.data.subscribe(({ globalSetting }) => (this.globalSetting = globalSetting));
   }
 
   previousState(): void {

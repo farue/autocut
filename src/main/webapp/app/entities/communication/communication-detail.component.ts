@@ -14,9 +14,7 @@ export class CommunicationDetailComponent implements OnInit {
   constructor(protected dataUtils: JhiDataUtils, protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ communication }) => {
-      this.communication = communication;
-    });
+    this.activatedRoute.data.subscribe(({ communication }) => (this.communication = communication));
   }
 
   byteSize(base64String: string): string {

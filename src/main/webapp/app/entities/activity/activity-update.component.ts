@@ -4,7 +4,6 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 
@@ -19,7 +18,6 @@ import { TenantService } from 'app/entities/tenant/tenant.service';
 })
 export class ActivityUpdateComponent implements OnInit {
   isSaving = false;
-
   tenants: ITenant[] = [];
 
   editForm = this.fb.group({
@@ -43,16 +41,15 @@ export class ActivityUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ activity }) => {
+      if (!activity.id) {
+        const today = moment().startOf('day');
+        activity.startDate = today;
+        activity.endDate = today;
+      }
+
       this.updateForm(activity);
 
-      this.tenantService
-        .query()
-        .pipe(
-          map((res: HttpResponse<ITenant[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: ITenant[]) => (this.tenants = resBody));
+      this.tenantService.query().subscribe((res: HttpResponse<ITenant[]>) => (this.tenants = res.body || []));
     });
   }
 
@@ -61,8 +58,8 @@ export class ActivityUpdateComponent implements OnInit {
       id: activity.id,
       year: activity.year,
       term: activity.term,
-      startDate: activity.startDate != null ? activity.startDate.format(DATE_TIME_FORMAT) : null,
-      endDate: activity.endDate != null ? activity.endDate.format(DATE_TIME_FORMAT) : null,
+      startDate: activity.startDate ? activity.startDate.format(DATE_TIME_FORMAT) : null,
+      endDate: activity.endDate ? activity.endDate.format(DATE_TIME_FORMAT) : null,
       description: activity.description,
       discount: activity.discount,
       stwActivity: activity.stwActivity,
@@ -90,9 +87,8 @@ export class ActivityUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       year: this.editForm.get(['year'])!.value,
       term: this.editForm.get(['term'])!.value,
-      startDate:
-        this.editForm.get(['startDate'])!.value != null ? moment(this.editForm.get(['startDate'])!.value, DATE_TIME_FORMAT) : undefined,
-      endDate: this.editForm.get(['endDate'])!.value != null ? moment(this.editForm.get(['endDate'])!.value, DATE_TIME_FORMAT) : undefined,
+      startDate: this.editForm.get(['startDate'])!.value ? moment(this.editForm.get(['startDate'])!.value, DATE_TIME_FORMAT) : undefined,
+      endDate: this.editForm.get(['endDate'])!.value ? moment(this.editForm.get(['endDate'])!.value, DATE_TIME_FORMAT) : undefined,
       description: this.editForm.get(['description'])!.value,
       discount: this.editForm.get(['discount'])!.value,
       stwActivity: this.editForm.get(['stwActivity'])!.value,

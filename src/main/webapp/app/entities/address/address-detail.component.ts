@@ -13,9 +13,7 @@ export class AddressDetailComponent implements OnInit {
   constructor(protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ address }) => {
-      this.address = address;
-    });
+    this.activatedRoute.data.subscribe(({ address }) => (this.address = address));
   }
 
   previousState(): void {

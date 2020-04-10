@@ -13,9 +13,7 @@ export class ApartmentDetailComponent implements OnInit {
   constructor(protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ apartment }) => {
-      this.apartment = apartment;
-    });
+    this.activatedRoute.data.subscribe(({ apartment }) => (this.apartment = apartment));
   }
 
   previousState(): void {

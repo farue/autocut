@@ -1,6 +1,7 @@
 package de.farue.autocut.repository;
 
 import de.farue.autocut.domain.Communication;
+
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +16,4 @@ public interface CommunicationRepository extends JpaRepository<Communication, Lo
 
     @Query("select communication from Communication communication where communication.tenant.login = ?#{principal.username}")
     List<Communication> findByTenantIsCurrentUser();
-
 }

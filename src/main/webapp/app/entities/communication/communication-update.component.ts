@@ -4,7 +4,6 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
@@ -21,7 +20,6 @@ import { UserService } from 'app/core/user/user.service';
 })
 export class CommunicationUpdateComponent implements OnInit {
   isSaving = false;
-
   users: IUser[] = [];
 
   editForm = this.fb.group({
@@ -44,16 +42,14 @@ export class CommunicationUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ communication }) => {
+      if (!communication.id) {
+        const today = moment().startOf('day');
+        communication.date = today;
+      }
+
       this.updateForm(communication);
 
-      this.userService
-        .query()
-        .pipe(
-          map((res: HttpResponse<IUser[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: IUser[]) => (this.users = resBody));
+      this.userService.query().subscribe((res: HttpResponse<IUser[]>) => (this.users = res.body || []));
     });
   }
 
@@ -63,7 +59,7 @@ export class CommunicationUpdateComponent implements OnInit {
       subject: communication.subject,
       text: communication.text,
       note: communication.note,
-      date: communication.date != null ? communication.date.format(DATE_TIME_FORMAT) : null,
+      date: communication.date ? communication.date.format(DATE_TIME_FORMAT) : null,
       tenant: communication.tenant
     });
   }
@@ -105,7 +101,7 @@ export class CommunicationUpdateComponent implements OnInit {
       subject: this.editForm.get(['subject'])!.value,
       text: this.editForm.get(['text'])!.value,
       note: this.editForm.get(['note'])!.value,
-      date: this.editForm.get(['date'])!.value != null ? moment(this.editForm.get(['date'])!.value, DATE_TIME_FORMAT) : undefined,
+      date: this.editForm.get(['date'])!.value ? moment(this.editForm.get(['date'])!.value, DATE_TIME_FORMAT) : undefined,
       tenant: this.editForm.get(['tenant'])!.value
     };
   }

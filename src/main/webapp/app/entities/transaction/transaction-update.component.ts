@@ -4,7 +4,6 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 
@@ -19,7 +18,6 @@ import { LeaseService } from 'app/entities/lease/lease.service';
 })
 export class TransactionUpdateComponent implements OnInit {
   isSaving = false;
-
   leases: ILease[] = [];
 
   editForm = this.fb.group({
@@ -46,16 +44,15 @@ export class TransactionUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ transaction }) => {
+      if (!transaction.id) {
+        const today = moment().startOf('day');
+        transaction.bookingDate = today;
+        transaction.valueDate = today;
+      }
+
       this.updateForm(transaction);
 
-      this.leaseService
-        .query()
-        .pipe(
-          map((res: HttpResponse<ILease[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: ILease[]) => (this.leases = resBody));
+      this.leaseService.query().subscribe((res: HttpResponse<ILease[]>) => (this.leases = res.body || []));
     });
   }
 
@@ -63,8 +60,8 @@ export class TransactionUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: transaction.id,
       kind: transaction.kind,
-      bookingDate: transaction.bookingDate != null ? transaction.bookingDate.format(DATE_TIME_FORMAT) : null,
-      valueDate: transaction.valueDate != null ? transaction.valueDate.format(DATE_TIME_FORMAT) : null,
+      bookingDate: transaction.bookingDate ? transaction.bookingDate.format(DATE_TIME_FORMAT) : null,
+      valueDate: transaction.valueDate ? transaction.valueDate.format(DATE_TIME_FORMAT) : null,
       value: transaction.value,
       balanceAfter: transaction.balanceAfter,
       description: transaction.description,
@@ -95,10 +92,10 @@ export class TransactionUpdateComponent implements OnInit {
       ...new Transaction(),
       id: this.editForm.get(['id'])!.value,
       kind: this.editForm.get(['kind'])!.value,
-      bookingDate:
-        this.editForm.get(['bookingDate'])!.value != null ? moment(this.editForm.get(['bookingDate'])!.value, DATE_TIME_FORMAT) : undefined,
-      valueDate:
-        this.editForm.get(['valueDate'])!.value != null ? moment(this.editForm.get(['valueDate'])!.value, DATE_TIME_FORMAT) : undefined,
+      bookingDate: this.editForm.get(['bookingDate'])!.value
+        ? moment(this.editForm.get(['bookingDate'])!.value, DATE_TIME_FORMAT)
+        : undefined,
+      valueDate: this.editForm.get(['valueDate'])!.value ? moment(this.editForm.get(['valueDate'])!.value, DATE_TIME_FORMAT) : undefined,
       value: this.editForm.get(['value'])!.value,
       balanceAfter: this.editForm.get(['balanceAfter'])!.value,
       description: this.editForm.get(['description'])!.value,

@@ -16,8 +16,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [AutocutTestModule],
-        declarations: [LaundryMachineProgramComponent],
-        providers: []
+        declarations: [LaundryMachineProgramComponent]
       })
         .overrideTemplate(LaundryMachineProgramComponent, '')
         .compileComponents();

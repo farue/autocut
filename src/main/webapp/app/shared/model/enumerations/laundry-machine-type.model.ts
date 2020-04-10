@@ -1,4 +1,4 @@
 export const enum LaundryMachineType {
-  WASHING_MACHINE,
-  DRYER
+  WASHING_MACHINE = 'WASHING_MACHINE',
+  DRYER = 'DRYER'
 }

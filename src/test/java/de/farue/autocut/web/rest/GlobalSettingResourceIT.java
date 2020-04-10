@@ -3,25 +3,19 @@ package de.farue.autocut.web.rest;
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.GlobalSetting;
 import de.farue.autocut.repository.GlobalSettingRepository;
-import de.farue.autocut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Validator;
-
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static de.farue.autocut.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -31,6 +25,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link GlobalSettingResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
+
+@AutoConfigureMockMvc
+@WithMockUser
 public class GlobalSettingResourceIT {
 
     private static final String DEFAULT_KEY = "AAAAAAAAAA";
@@ -46,35 +43,12 @@ public class GlobalSettingResourceIT {
     private GlobalSettingRepository globalSettingRepository;
 
     @Autowired
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
-    @Autowired
-    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
-
-    @Autowired
-    private ExceptionTranslator exceptionTranslator;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
-    private Validator validator;
-
     private MockMvc restGlobalSettingMockMvc;
 
     private GlobalSetting globalSetting;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final GlobalSettingResource globalSettingResource = new GlobalSettingResource(globalSettingRepository);
-        this.restGlobalSettingMockMvc = MockMvcBuilders.standaloneSetup(globalSettingResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
-    }
 
     /**
      * Create an entity for this test.
@@ -115,7 +89,7 @@ public class GlobalSettingResourceIT {
 
         // Create the GlobalSetting
         restGlobalSettingMockMvc.perform(post("/api/global-settings")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(globalSetting)))
             .andExpect(status().isCreated());
 
@@ -138,7 +112,7 @@ public class GlobalSettingResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restGlobalSettingMockMvc.perform(post("/api/global-settings")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(globalSetting)))
             .andExpect(status().isBadRequest());
 
@@ -157,7 +131,7 @@ public class GlobalSettingResourceIT {
         // Get all the globalSettingList
         restGlobalSettingMockMvc.perform(get("/api/global-settings?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(globalSetting.getId().intValue())))
             .andExpect(jsonPath("$.[*].key").value(hasItem(DEFAULT_KEY)))
             .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE)))
@@ -173,7 +147,7 @@ public class GlobalSettingResourceIT {
         // Get the globalSetting
         restGlobalSettingMockMvc.perform(get("/api/global-settings/{id}", globalSetting.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(globalSetting.getId().intValue()))
             .andExpect(jsonPath("$.key").value(DEFAULT_KEY))
             .andExpect(jsonPath("$.value").value(DEFAULT_VALUE))
@@ -206,7 +180,7 @@ public class GlobalSettingResourceIT {
             .valueType(UPDATED_VALUE_TYPE);
 
         restGlobalSettingMockMvc.perform(put("/api/global-settings")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedGlobalSetting)))
             .andExpect(status().isOk());
 
@@ -228,7 +202,7 @@ public class GlobalSettingResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restGlobalSettingMockMvc.perform(put("/api/global-settings")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(globalSetting)))
             .andExpect(status().isBadRequest());
 
@@ -247,7 +221,7 @@ public class GlobalSettingResourceIT {
 
         // Delete the globalSetting
         restGlobalSettingMockMvc.perform(delete("/api/global-settings/{id}", globalSetting.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

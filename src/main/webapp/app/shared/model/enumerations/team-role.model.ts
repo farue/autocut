@@ -1,5 +1,5 @@
 export const enum TeamRole {
-  SPOKESPERSON,
-  DEPUTY,
-  MEMBER
+  SPOKESPERSON = 'SPOKESPERSON',
+  DEPUTY = 'DEPUTY',
+  MEMBER = 'MEMBER'
 }

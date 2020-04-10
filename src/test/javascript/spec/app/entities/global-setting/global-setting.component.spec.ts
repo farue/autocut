@@ -16,8 +16,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [AutocutTestModule],
-        declarations: [GlobalSettingComponent],
-        providers: []
+        declarations: [GlobalSettingComponent]
       })
         .overrideTemplate(GlobalSettingComponent, '')
         .compileComponents();

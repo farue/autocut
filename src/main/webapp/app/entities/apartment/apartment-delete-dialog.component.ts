@@ -13,7 +13,7 @@ export class ApartmentDeleteDialogComponent {
 
   constructor(protected apartmentService: ApartmentService, public activeModal: NgbActiveModal, protected eventManager: JhiEventManager) {}
 
-  clear(): void {
+  cancel(): void {
     this.activeModal.dismiss();
   }
 

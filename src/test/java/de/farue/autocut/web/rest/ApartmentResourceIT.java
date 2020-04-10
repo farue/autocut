@@ -3,25 +3,19 @@ package de.farue.autocut.web.rest;
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Apartment;
 import de.farue.autocut.repository.ApartmentRepository;
-import de.farue.autocut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Validator;
-
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static de.farue.autocut.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -32,6 +26,9 @@ import de.farue.autocut.domain.enumeration.ApartmentTypes;
  * Integration tests for the {@link ApartmentResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
+
+@AutoConfigureMockMvc
+@WithMockUser
 public class ApartmentResourceIT {
 
     private static final String DEFAULT_APARTMENT_NR = "AAAAAAAAAA";
@@ -47,35 +44,12 @@ public class ApartmentResourceIT {
     private ApartmentRepository apartmentRepository;
 
     @Autowired
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
-    @Autowired
-    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
-
-    @Autowired
-    private ExceptionTranslator exceptionTranslator;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
-    private Validator validator;
-
     private MockMvc restApartmentMockMvc;
 
     private Apartment apartment;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final ApartmentResource apartmentResource = new ApartmentResource(apartmentRepository);
-        this.restApartmentMockMvc = MockMvcBuilders.standaloneSetup(apartmentResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
-    }
 
     /**
      * Create an entity for this test.
@@ -116,7 +90,7 @@ public class ApartmentResourceIT {
 
         // Create the Apartment
         restApartmentMockMvc.perform(post("/api/apartments")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(apartment)))
             .andExpect(status().isCreated());
 
@@ -139,7 +113,7 @@ public class ApartmentResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restApartmentMockMvc.perform(post("/api/apartments")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(apartment)))
             .andExpect(status().isBadRequest());
 
@@ -159,7 +133,7 @@ public class ApartmentResourceIT {
         // Create the Apartment, which fails.
 
         restApartmentMockMvc.perform(post("/api/apartments")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(apartment)))
             .andExpect(status().isBadRequest());
 
@@ -177,7 +151,7 @@ public class ApartmentResourceIT {
         // Create the Apartment, which fails.
 
         restApartmentMockMvc.perform(post("/api/apartments")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(apartment)))
             .andExpect(status().isBadRequest());
 
@@ -195,7 +169,7 @@ public class ApartmentResourceIT {
         // Create the Apartment, which fails.
 
         restApartmentMockMvc.perform(post("/api/apartments")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(apartment)))
             .andExpect(status().isBadRequest());
 
@@ -212,7 +186,7 @@ public class ApartmentResourceIT {
         // Get all the apartmentList
         restApartmentMockMvc.perform(get("/api/apartments?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(apartment.getId().intValue())))
             .andExpect(jsonPath("$.[*].apartmentNr").value(hasItem(DEFAULT_APARTMENT_NR)))
             .andExpect(jsonPath("$.[*].apartmentType").value(hasItem(DEFAULT_APARTMENT_TYPE.toString())))
@@ -228,7 +202,7 @@ public class ApartmentResourceIT {
         // Get the apartment
         restApartmentMockMvc.perform(get("/api/apartments/{id}", apartment.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(apartment.getId().intValue()))
             .andExpect(jsonPath("$.apartmentNr").value(DEFAULT_APARTMENT_NR))
             .andExpect(jsonPath("$.apartmentType").value(DEFAULT_APARTMENT_TYPE.toString()))
@@ -261,7 +235,7 @@ public class ApartmentResourceIT {
             .maxNumberOfLeases(UPDATED_MAX_NUMBER_OF_LEASES);
 
         restApartmentMockMvc.perform(put("/api/apartments")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedApartment)))
             .andExpect(status().isOk());
 
@@ -283,7 +257,7 @@ public class ApartmentResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restApartmentMockMvc.perform(put("/api/apartments")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(apartment)))
             .andExpect(status().isBadRequest());
 
@@ -302,7 +276,7 @@ public class ApartmentResourceIT {
 
         // Delete the apartment
         restApartmentMockMvc.perform(delete("/api/apartments/{id}", apartment.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

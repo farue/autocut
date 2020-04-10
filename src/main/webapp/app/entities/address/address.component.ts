@@ -19,9 +19,7 @@ export class AddressComponent implements OnInit, OnDestroy {
   constructor(protected addressService: AddressService, protected eventManager: JhiEventManager, protected modalService: NgbModal) {}
 
   loadAll(): void {
-    this.addressService.query().subscribe((res: HttpResponse<IAddress[]>) => {
-      this.addresses = res.body ? res.body : [];
-    });
+    this.addressService.query().subscribe((res: HttpResponse<IAddress[]>) => (this.addresses = res.body || []));
   }
 
   ngOnInit(): void {

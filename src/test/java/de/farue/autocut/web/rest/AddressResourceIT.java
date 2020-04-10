@@ -3,25 +3,19 @@ package de.farue.autocut.web.rest;
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Address;
 import de.farue.autocut.repository.AddressRepository;
-import de.farue.autocut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Validator;
-
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static de.farue.autocut.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -31,6 +25,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link AddressResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
+
+@AutoConfigureMockMvc
+@WithMockUser
 public class AddressResourceIT {
 
     private static final String DEFAULT_STREET = "AAAAAAAAAA";
@@ -52,35 +49,12 @@ public class AddressResourceIT {
     private AddressRepository addressRepository;
 
     @Autowired
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
-    @Autowired
-    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
-
-    @Autowired
-    private ExceptionTranslator exceptionTranslator;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
-    private Validator validator;
-
     private MockMvc restAddressMockMvc;
 
     private Address address;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final AddressResource addressResource = new AddressResource(addressRepository);
-        this.restAddressMockMvc = MockMvcBuilders.standaloneSetup(addressResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
-    }
 
     /**
      * Create an entity for this test.
@@ -125,7 +99,7 @@ public class AddressResourceIT {
 
         // Create the Address
         restAddressMockMvc.perform(post("/api/addresses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(address)))
             .andExpect(status().isCreated());
 
@@ -150,7 +124,7 @@ public class AddressResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restAddressMockMvc.perform(post("/api/addresses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(address)))
             .andExpect(status().isBadRequest());
 
@@ -170,7 +144,7 @@ public class AddressResourceIT {
         // Create the Address, which fails.
 
         restAddressMockMvc.perform(post("/api/addresses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(address)))
             .andExpect(status().isBadRequest());
 
@@ -188,7 +162,7 @@ public class AddressResourceIT {
         // Create the Address, which fails.
 
         restAddressMockMvc.perform(post("/api/addresses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(address)))
             .andExpect(status().isBadRequest());
 
@@ -206,7 +180,7 @@ public class AddressResourceIT {
         // Create the Address, which fails.
 
         restAddressMockMvc.perform(post("/api/addresses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(address)))
             .andExpect(status().isBadRequest());
 
@@ -224,7 +198,7 @@ public class AddressResourceIT {
         // Create the Address, which fails.
 
         restAddressMockMvc.perform(post("/api/addresses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(address)))
             .andExpect(status().isBadRequest());
 
@@ -242,7 +216,7 @@ public class AddressResourceIT {
         // Create the Address, which fails.
 
         restAddressMockMvc.perform(post("/api/addresses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(address)))
             .andExpect(status().isBadRequest());
 
@@ -259,7 +233,7 @@ public class AddressResourceIT {
         // Get all the addressList
         restAddressMockMvc.perform(get("/api/addresses?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(address.getId().intValue())))
             .andExpect(jsonPath("$.[*].street").value(hasItem(DEFAULT_STREET)))
             .andExpect(jsonPath("$.[*].streetNumber").value(hasItem(DEFAULT_STREET_NUMBER)))
@@ -277,7 +251,7 @@ public class AddressResourceIT {
         // Get the address
         restAddressMockMvc.perform(get("/api/addresses/{id}", address.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(address.getId().intValue()))
             .andExpect(jsonPath("$.street").value(DEFAULT_STREET))
             .andExpect(jsonPath("$.streetNumber").value(DEFAULT_STREET_NUMBER))
@@ -314,7 +288,7 @@ public class AddressResourceIT {
             .country(UPDATED_COUNTRY);
 
         restAddressMockMvc.perform(put("/api/addresses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedAddress)))
             .andExpect(status().isOk());
 
@@ -338,7 +312,7 @@ public class AddressResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restAddressMockMvc.perform(put("/api/addresses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(address)))
             .andExpect(status().isBadRequest());
 
@@ -357,7 +331,7 @@ public class AddressResourceIT {
 
         // Delete the address
         restAddressMockMvc.perform(delete("/api/addresses/{id}", address.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

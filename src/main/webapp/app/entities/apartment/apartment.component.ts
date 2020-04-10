@@ -19,9 +19,7 @@ export class ApartmentComponent implements OnInit, OnDestroy {
   constructor(protected apartmentService: ApartmentService, protected eventManager: JhiEventManager, protected modalService: NgbModal) {}
 
   loadAll(): void {
-    this.apartmentService.query().subscribe((res: HttpResponse<IApartment[]>) => {
-      this.apartments = res.body ? res.body : [];
-    });
+    this.apartmentService.query().subscribe((res: HttpResponse<IApartment[]>) => (this.apartments = res.body || []));
   }
 
   ngOnInit(): void {

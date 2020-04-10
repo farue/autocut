@@ -13,7 +13,7 @@ export class LeaseDeleteDialogComponent {
 
   constructor(protected leaseService: LeaseService, public activeModal: NgbActiveModal, protected eventManager: JhiEventManager) {}
 
-  clear(): void {
+  cancel(): void {
     this.activeModal.dismiss();
   }
 

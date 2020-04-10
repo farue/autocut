@@ -16,8 +16,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [AutocutTestModule],
-        declarations: [CommunicationComponent],
-        providers: []
+        declarations: [CommunicationComponent]
       })
         .overrideTemplate(CommunicationComponent, '')
         .compileComponents();

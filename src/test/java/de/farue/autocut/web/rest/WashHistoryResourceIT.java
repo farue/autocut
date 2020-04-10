@@ -3,27 +3,21 @@ package de.farue.autocut.web.rest;
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.WashHistory;
 import de.farue.autocut.repository.WashHistoryRepository;
-import de.farue.autocut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Validator;
-
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import static de.farue.autocut.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -34,6 +28,9 @@ import de.farue.autocut.domain.enumeration.WashHistoryStatus;
  * Integration tests for the {@link WashHistoryResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
+
+@AutoConfigureMockMvc
+@WithMockUser
 public class WashHistoryResourceIT {
 
     private static final Instant DEFAULT_USING_DATE = Instant.ofEpochMilli(0L);
@@ -52,35 +49,12 @@ public class WashHistoryResourceIT {
     private WashHistoryRepository washHistoryRepository;
 
     @Autowired
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
-    @Autowired
-    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
-
-    @Autowired
-    private ExceptionTranslator exceptionTranslator;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
-    private Validator validator;
-
     private MockMvc restWashHistoryMockMvc;
 
     private WashHistory washHistory;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final WashHistoryResource washHistoryResource = new WashHistoryResource(washHistoryRepository);
-        this.restWashHistoryMockMvc = MockMvcBuilders.standaloneSetup(washHistoryResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
-    }
 
     /**
      * Create an entity for this test.
@@ -123,7 +97,7 @@ public class WashHistoryResourceIT {
 
         // Create the WashHistory
         restWashHistoryMockMvc.perform(post("/api/wash-histories")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(washHistory)))
             .andExpect(status().isCreated());
 
@@ -147,7 +121,7 @@ public class WashHistoryResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restWashHistoryMockMvc.perform(post("/api/wash-histories")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(washHistory)))
             .andExpect(status().isBadRequest());
 
@@ -166,7 +140,7 @@ public class WashHistoryResourceIT {
         // Get all the washHistoryList
         restWashHistoryMockMvc.perform(get("/api/wash-histories?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(washHistory.getId().intValue())))
             .andExpect(jsonPath("$.[*].usingDate").value(hasItem(DEFAULT_USING_DATE.toString())))
             .andExpect(jsonPath("$.[*].reservationDate").value(hasItem(DEFAULT_RESERVATION_DATE.toString())))
@@ -183,7 +157,7 @@ public class WashHistoryResourceIT {
         // Get the washHistory
         restWashHistoryMockMvc.perform(get("/api/wash-histories/{id}", washHistory.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(washHistory.getId().intValue()))
             .andExpect(jsonPath("$.usingDate").value(DEFAULT_USING_DATE.toString()))
             .andExpect(jsonPath("$.reservationDate").value(DEFAULT_RESERVATION_DATE.toString()))
@@ -218,7 +192,7 @@ public class WashHistoryResourceIT {
             .status(UPDATED_STATUS);
 
         restWashHistoryMockMvc.perform(put("/api/wash-histories")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedWashHistory)))
             .andExpect(status().isOk());
 
@@ -241,7 +215,7 @@ public class WashHistoryResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restWashHistoryMockMvc.perform(put("/api/wash-histories")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(washHistory)))
             .andExpect(status().isBadRequest());
 
@@ -260,7 +234,7 @@ public class WashHistoryResourceIT {
 
         // Delete the washHistory
         restWashHistoryMockMvc.perform(delete("/api/wash-histories/{id}", washHistory.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

@@ -23,9 +23,7 @@ export class InternetAccessComponent implements OnInit, OnDestroy {
   ) {}
 
   loadAll(): void {
-    this.internetAccessService.query().subscribe((res: HttpResponse<IInternetAccess[]>) => {
-      this.internetAccesses = res.body ? res.body : [];
-    });
+    this.internetAccessService.query().subscribe((res: HttpResponse<IInternetAccess[]>) => (this.internetAccesses = res.body || []));
   }
 
   ngOnInit(): void {

@@ -4,25 +4,19 @@ import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.InternetAccess;
 import de.farue.autocut.repository.InternetAccessRepository;
 import de.farue.autocut.service.InternetAccessService;
-import de.farue.autocut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Validator;
-
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static de.farue.autocut.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -32,6 +26,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link InternetAccessResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
+
+@AutoConfigureMockMvc
+@WithMockUser
 public class InternetAccessResourceIT {
 
     private static final Boolean DEFAULT_BLOCKED = false;
@@ -56,35 +53,12 @@ public class InternetAccessResourceIT {
     private InternetAccessService internetAccessService;
 
     @Autowired
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
-    @Autowired
-    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
-
-    @Autowired
-    private ExceptionTranslator exceptionTranslator;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
-    private Validator validator;
-
     private MockMvc restInternetAccessMockMvc;
 
     private InternetAccess internetAccess;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final InternetAccessResource internetAccessResource = new InternetAccessResource(internetAccessService);
-        this.restInternetAccessMockMvc = MockMvcBuilders.standaloneSetup(internetAccessResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
-    }
 
     /**
      * Create an entity for this test.
@@ -129,7 +103,7 @@ public class InternetAccessResourceIT {
 
         // Create the InternetAccess
         restInternetAccessMockMvc.perform(post("/api/internet-accesses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(internetAccess)))
             .andExpect(status().isCreated());
 
@@ -154,7 +128,7 @@ public class InternetAccessResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restInternetAccessMockMvc.perform(post("/api/internet-accesses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(internetAccess)))
             .andExpect(status().isBadRequest());
 
@@ -174,7 +148,7 @@ public class InternetAccessResourceIT {
         // Create the InternetAccess, which fails.
 
         restInternetAccessMockMvc.perform(post("/api/internet-accesses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(internetAccess)))
             .andExpect(status().isBadRequest());
 
@@ -192,7 +166,7 @@ public class InternetAccessResourceIT {
         // Create the InternetAccess, which fails.
 
         restInternetAccessMockMvc.perform(post("/api/internet-accesses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(internetAccess)))
             .andExpect(status().isBadRequest());
 
@@ -210,7 +184,7 @@ public class InternetAccessResourceIT {
         // Create the InternetAccess, which fails.
 
         restInternetAccessMockMvc.perform(post("/api/internet-accesses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(internetAccess)))
             .andExpect(status().isBadRequest());
 
@@ -228,7 +202,7 @@ public class InternetAccessResourceIT {
         // Create the InternetAccess, which fails.
 
         restInternetAccessMockMvc.perform(post("/api/internet-accesses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(internetAccess)))
             .andExpect(status().isBadRequest());
 
@@ -246,7 +220,7 @@ public class InternetAccessResourceIT {
         // Create the InternetAccess, which fails.
 
         restInternetAccessMockMvc.perform(post("/api/internet-accesses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(internetAccess)))
             .andExpect(status().isBadRequest());
 
@@ -263,7 +237,7 @@ public class InternetAccessResourceIT {
         // Get all the internetAccessList
         restInternetAccessMockMvc.perform(get("/api/internet-accesses?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(internetAccess.getId().intValue())))
             .andExpect(jsonPath("$.[*].blocked").value(hasItem(DEFAULT_BLOCKED.booleanValue())))
             .andExpect(jsonPath("$.[*].ip1").value(hasItem(DEFAULT_IP_1)))
@@ -281,7 +255,7 @@ public class InternetAccessResourceIT {
         // Get the internetAccess
         restInternetAccessMockMvc.perform(get("/api/internet-accesses/{id}", internetAccess.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(internetAccess.getId().intValue()))
             .andExpect(jsonPath("$.blocked").value(DEFAULT_BLOCKED.booleanValue()))
             .andExpect(jsonPath("$.ip1").value(DEFAULT_IP_1))
@@ -318,7 +292,7 @@ public class InternetAccessResourceIT {
             .port(UPDATED_PORT);
 
         restInternetAccessMockMvc.perform(put("/api/internet-accesses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedInternetAccess)))
             .andExpect(status().isOk());
 
@@ -342,7 +316,7 @@ public class InternetAccessResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restInternetAccessMockMvc.perform(put("/api/internet-accesses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(internetAccess)))
             .andExpect(status().isBadRequest());
 
@@ -361,7 +335,7 @@ public class InternetAccessResourceIT {
 
         // Delete the internetAccess
         restInternetAccessMockMvc.perform(delete("/api/internet-accesses/{id}", internetAccess.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

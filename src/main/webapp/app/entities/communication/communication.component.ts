@@ -24,9 +24,7 @@ export class CommunicationComponent implements OnInit, OnDestroy {
   ) {}
 
   loadAll(): void {
-    this.communicationService.query().subscribe((res: HttpResponse<ICommunication[]>) => {
-      this.communications = res.body ? res.body : [];
-    });
+    this.communicationService.query().subscribe((res: HttpResponse<ICommunication[]>) => (this.communications = res.body || []));
   }
 
   ngOnInit(): void {

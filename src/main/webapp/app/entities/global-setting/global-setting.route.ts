@@ -4,6 +4,7 @@ import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router
 import { Observable, of, EMPTY } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
+import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 import { IGlobalSetting, GlobalSetting } from 'app/shared/model/global-setting.model';
 import { GlobalSettingService } from './global-setting.service';
@@ -38,7 +39,7 @@ export const globalSettingRoute: Routes = [
     path: '',
     component: GlobalSettingComponent,
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: [Authority.USER],
       pageTitle: 'autocutApp.globalSetting.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -50,7 +51,7 @@ export const globalSettingRoute: Routes = [
       globalSetting: GlobalSettingResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: [Authority.USER],
       pageTitle: 'autocutApp.globalSetting.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -62,7 +63,7 @@ export const globalSettingRoute: Routes = [
       globalSetting: GlobalSettingResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: [Authority.USER],
       pageTitle: 'autocutApp.globalSetting.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -74,7 +75,7 @@ export const globalSettingRoute: Routes = [
       globalSetting: GlobalSettingResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: [Authority.USER],
       pageTitle: 'autocutApp.globalSetting.home.title'
     },
     canActivate: [UserRouteAccessService]

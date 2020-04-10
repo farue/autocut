@@ -21,9 +21,7 @@ type SelectableEntity = IInternetAccess | IAddress;
 })
 export class ApartmentUpdateComponent implements OnInit {
   isSaving = false;
-
   internetaccesses: IInternetAccess[] = [];
-
   addresses: IAddress[] = [];
 
   editForm = this.fb.group({
@@ -51,7 +49,7 @@ export class ApartmentUpdateComponent implements OnInit {
         .query({ filter: 'apartment-is-null' })
         .pipe(
           map((res: HttpResponse<IInternetAccess[]>) => {
-            return res.body ? res.body : [];
+            return res.body || [];
           })
         )
         .subscribe((resBody: IInternetAccess[]) => {
@@ -65,20 +63,11 @@ export class ApartmentUpdateComponent implements OnInit {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
                 })
               )
-              .subscribe((concatRes: IInternetAccess[]) => {
-                this.internetaccesses = concatRes;
-              });
+              .subscribe((concatRes: IInternetAccess[]) => (this.internetaccesses = concatRes));
           }
         });
 
-      this.addressService
-        .query()
-        .pipe(
-          map((res: HttpResponse<IAddress[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: IAddress[]) => (this.addresses = resBody));
+      this.addressService.query().subscribe((res: HttpResponse<IAddress[]>) => (this.addresses = res.body || []));
     });
   }
 

@@ -4,6 +4,7 @@ import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router
 import { Observable, of, EMPTY } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
+import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 import { ISecurityPolicy, SecurityPolicy } from 'app/shared/model/security-policy.model';
 import { SecurityPolicyService } from './security-policy.service';
@@ -38,7 +39,7 @@ export const securityPolicyRoute: Routes = [
     path: '',
     component: SecurityPolicyComponent,
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: [Authority.USER],
       pageTitle: 'autocutApp.securityPolicy.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -50,7 +51,7 @@ export const securityPolicyRoute: Routes = [
       securityPolicy: SecurityPolicyResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: [Authority.USER],
       pageTitle: 'autocutApp.securityPolicy.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -62,7 +63,7 @@ export const securityPolicyRoute: Routes = [
       securityPolicy: SecurityPolicyResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: [Authority.USER],
       pageTitle: 'autocutApp.securityPolicy.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -74,7 +75,7 @@ export const securityPolicyRoute: Routes = [
       securityPolicy: SecurityPolicyResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: [Authority.USER],
       pageTitle: 'autocutApp.securityPolicy.home.title'
     },
     canActivate: [UserRouteAccessService]

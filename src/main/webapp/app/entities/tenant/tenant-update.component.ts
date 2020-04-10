@@ -4,7 +4,6 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 
@@ -23,9 +22,7 @@ type SelectableEntity = IUser | ILease;
 })
 export class TenantUpdateComponent implements OnInit {
   isSaving = false;
-
   users: IUser[] = [];
-
   leases: ILease[] = [];
 
   editForm = this.fb.group({
@@ -51,25 +48,17 @@ export class TenantUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ tenant }) => {
+      if (!tenant.id) {
+        const today = moment().startOf('day');
+        tenant.createdDate = today;
+        tenant.lastModifiedDate = today;
+      }
+
       this.updateForm(tenant);
 
-      this.userService
-        .query()
-        .pipe(
-          map((res: HttpResponse<IUser[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: IUser[]) => (this.users = resBody));
+      this.userService.query().subscribe((res: HttpResponse<IUser[]>) => (this.users = res.body || []));
 
-      this.leaseService
-        .query()
-        .pipe(
-          map((res: HttpResponse<ILease[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: ILease[]) => (this.leases = resBody));
+      this.leaseService.query().subscribe((res: HttpResponse<ILease[]>) => (this.leases = res.body || []));
     });
   }
 
@@ -80,9 +69,9 @@ export class TenantUpdateComponent implements OnInit {
       lastName: tenant.lastName,
       email: tenant.email,
       createdBy: tenant.createdBy,
-      createdDate: tenant.createdDate != null ? tenant.createdDate.format(DATE_TIME_FORMAT) : null,
+      createdDate: tenant.createdDate ? tenant.createdDate.format(DATE_TIME_FORMAT) : null,
       lastModifiedBy: tenant.lastModifiedBy,
-      lastModifiedDate: tenant.lastModifiedDate != null ? tenant.lastModifiedDate.format(DATE_TIME_FORMAT) : null,
+      lastModifiedDate: tenant.lastModifiedDate ? tenant.lastModifiedDate.format(DATE_TIME_FORMAT) : null,
       user: tenant.user,
       lease: tenant.lease
     });
@@ -110,13 +99,13 @@ export class TenantUpdateComponent implements OnInit {
       lastName: this.editForm.get(['lastName'])!.value,
       email: this.editForm.get(['email'])!.value,
       createdBy: this.editForm.get(['createdBy'])!.value,
-      createdDate:
-        this.editForm.get(['createdDate'])!.value != null ? moment(this.editForm.get(['createdDate'])!.value, DATE_TIME_FORMAT) : undefined,
+      createdDate: this.editForm.get(['createdDate'])!.value
+        ? moment(this.editForm.get(['createdDate'])!.value, DATE_TIME_FORMAT)
+        : undefined,
       lastModifiedBy: this.editForm.get(['lastModifiedBy'])!.value,
-      lastModifiedDate:
-        this.editForm.get(['lastModifiedDate'])!.value != null
-          ? moment(this.editForm.get(['lastModifiedDate'])!.value, DATE_TIME_FORMAT)
-          : undefined,
+      lastModifiedDate: this.editForm.get(['lastModifiedDate'])!.value
+        ? moment(this.editForm.get(['lastModifiedDate'])!.value, DATE_TIME_FORMAT)
+        : undefined,
       user: this.editForm.get(['user'])!.value,
       lease: this.editForm.get(['lease'])!.value
     };

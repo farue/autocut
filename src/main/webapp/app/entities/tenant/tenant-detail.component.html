@@ -1,46 +1,49 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="tenant">
-            <h2><span jhiTranslate="autocutApp.tenant.detail.title">Tenant</span> {{tenant.id}}</h2>
+            <h2><span jhiTranslate="autocutApp.tenant.detail.title">Tenant</span> {{ tenant.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
                 <dt><span jhiTranslate="autocutApp.tenant.firstName">First Name</span></dt>
                 <dd>
-                    <span>{{tenant.firstName}}</span>
+                    <span>{{ tenant.firstName }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.tenant.lastName">Last Name</span></dt>
                 <dd>
-                    <span>{{tenant.lastName}}</span>
+                    <span>{{ tenant.lastName }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.tenant.email">Email</span></dt>
                 <dd>
-                    <span>{{tenant.email}}</span>
+                    <span>{{ tenant.email }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.tenant.createdBy">Created By</span></dt>
                 <dd>
-                    <span>{{tenant.createdBy}}</span>
+                    <span>{{ tenant.createdBy }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.tenant.createdDate">Created Date</span></dt>
                 <dd>
-                    <span>{{tenant.createdDate}}</span>
+                    <span>{{ tenant.createdDate }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.tenant.lastModifiedBy">Last Modified By</span></dt>
                 <dd>
-                    <span>{{tenant.lastModifiedBy}}</span>
+                    <span>{{ tenant.lastModifiedBy }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.tenant.lastModifiedDate">Last Modified Date</span></dt>
                 <dd>
-                    <span>{{tenant.lastModifiedDate}}</span>
+                    <span>{{ tenant.lastModifiedDate }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.tenant.user">User</span></dt>
                 <dd>
-                    {{tenant.user?.id}}
+                    {{ tenant.user?.id }}
                 </dd>
                 <dt><span jhiTranslate="autocutApp.tenant.lease">Lease</span></dt>
                 <dd>
                     <div *ngIf="tenant.lease">
-                        <a [routerLink]="['/lease', tenant.lease?.id, 'view']">{{tenant.lease?.id}}</a>
+                        <a [routerLink]="['/lease', tenant.lease?.id, 'view']">{{ tenant.lease?.id }}</a>
                     </div>
                 </dd>
             </dl>
@@ -48,13 +51,13 @@
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/tenant', tenant.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

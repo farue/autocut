@@ -1,4 +1,5 @@
 package de.farue.autocut.domain;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -7,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.math.BigDecimal;
 import java.time.Instant;
 
@@ -21,10 +23,6 @@ import de.farue.autocut.domain.enumeration.TransactionKind;
 public class Transaction implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    // TODO: Add field indicating which user or subsystem initiated the transaction
-    //  for coins it should be CoinService
-    //  for tenant fee it should be TenantFeeBatch
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

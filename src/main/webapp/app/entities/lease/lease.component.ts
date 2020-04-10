@@ -19,9 +19,7 @@ export class LeaseComponent implements OnInit, OnDestroy {
   constructor(protected leaseService: LeaseService, protected eventManager: JhiEventManager, protected modalService: NgbModal) {}
 
   loadAll(): void {
-    this.leaseService.query().subscribe((res: HttpResponse<ILease[]>) => {
-      this.leases = res.body ? res.body : [];
-    });
+    this.leaseService.query().subscribe((res: HttpResponse<ILease[]>) => (this.leases = res.body || []));
   }
 
   ngOnInit(): void {

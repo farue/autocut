@@ -4,28 +4,22 @@ import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Transaction;
 import de.farue.autocut.repository.TransactionRepository;
 import de.farue.autocut.service.TransactionService;
-import de.farue.autocut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Validator;
-
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import static de.farue.autocut.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -36,6 +30,9 @@ import de.farue.autocut.domain.enumeration.TransactionKind;
  * Integration tests for the {@link TransactionResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
+
+@AutoConfigureMockMvc
+@WithMockUser
 public class TransactionResourceIT {
 
     private static final TransactionKind DEFAULT_KIND = TransactionKind.FEE;
@@ -75,35 +72,12 @@ public class TransactionResourceIT {
     private TransactionService transactionService;
 
     @Autowired
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
-    @Autowired
-    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
-
-    @Autowired
-    private ExceptionTranslator exceptionTranslator;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
-    private Validator validator;
-
     private MockMvc restTransactionMockMvc;
 
     private Transaction transaction;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final TransactionResource transactionResource = new TransactionResource(transactionService);
-        this.restTransactionMockMvc = MockMvcBuilders.standaloneSetup(transactionResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
-    }
 
     /**
      * Create an entity for this test.
@@ -158,7 +132,7 @@ public class TransactionResourceIT {
 
         // Create the Transaction
         restTransactionMockMvc.perform(post("/api/transactions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(transaction)))
             .andExpect(status().isCreated());
 
@@ -188,7 +162,7 @@ public class TransactionResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restTransactionMockMvc.perform(post("/api/transactions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(transaction)))
             .andExpect(status().isBadRequest());
 
@@ -208,7 +182,7 @@ public class TransactionResourceIT {
         // Create the Transaction, which fails.
 
         restTransactionMockMvc.perform(post("/api/transactions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(transaction)))
             .andExpect(status().isBadRequest());
 
@@ -226,7 +200,7 @@ public class TransactionResourceIT {
         // Create the Transaction, which fails.
 
         restTransactionMockMvc.perform(post("/api/transactions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(transaction)))
             .andExpect(status().isBadRequest());
 
@@ -244,7 +218,7 @@ public class TransactionResourceIT {
         // Create the Transaction, which fails.
 
         restTransactionMockMvc.perform(post("/api/transactions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(transaction)))
             .andExpect(status().isBadRequest());
 
@@ -262,7 +236,7 @@ public class TransactionResourceIT {
         // Create the Transaction, which fails.
 
         restTransactionMockMvc.perform(post("/api/transactions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(transaction)))
             .andExpect(status().isBadRequest());
 
@@ -280,7 +254,7 @@ public class TransactionResourceIT {
         // Create the Transaction, which fails.
 
         restTransactionMockMvc.perform(post("/api/transactions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(transaction)))
             .andExpect(status().isBadRequest());
 
@@ -298,7 +272,7 @@ public class TransactionResourceIT {
         // Create the Transaction, which fails.
 
         restTransactionMockMvc.perform(post("/api/transactions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(transaction)))
             .andExpect(status().isBadRequest());
 
@@ -316,7 +290,7 @@ public class TransactionResourceIT {
         // Create the Transaction, which fails.
 
         restTransactionMockMvc.perform(post("/api/transactions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(transaction)))
             .andExpect(status().isBadRequest());
 
@@ -334,7 +308,7 @@ public class TransactionResourceIT {
         // Create the Transaction, which fails.
 
         restTransactionMockMvc.perform(post("/api/transactions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(transaction)))
             .andExpect(status().isBadRequest());
 
@@ -351,7 +325,7 @@ public class TransactionResourceIT {
         // Get all the transactionList
         restTransactionMockMvc.perform(get("/api/transactions?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(transaction.getId().intValue())))
             .andExpect(jsonPath("$.[*].kind").value(hasItem(DEFAULT_KIND.toString())))
             .andExpect(jsonPath("$.[*].bookingDate").value(hasItem(DEFAULT_BOOKING_DATE.toString())))
@@ -374,7 +348,7 @@ public class TransactionResourceIT {
         // Get the transaction
         restTransactionMockMvc.perform(get("/api/transactions/{id}", transaction.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(transaction.getId().intValue()))
             .andExpect(jsonPath("$.kind").value(DEFAULT_KIND.toString()))
             .andExpect(jsonPath("$.bookingDate").value(DEFAULT_BOOKING_DATE.toString()))
@@ -421,7 +395,7 @@ public class TransactionResourceIT {
             .balance(UPDATED_BALANCE);
 
         restTransactionMockMvc.perform(put("/api/transactions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedTransaction)))
             .andExpect(status().isOk());
 
@@ -450,7 +424,7 @@ public class TransactionResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restTransactionMockMvc.perform(put("/api/transactions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(transaction)))
             .andExpect(status().isBadRequest());
 
@@ -469,7 +443,7 @@ public class TransactionResourceIT {
 
         // Delete the transaction
         restTransactionMockMvc.perform(delete("/api/transactions/{id}", transaction.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

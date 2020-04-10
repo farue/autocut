@@ -23,9 +23,7 @@ export class WashHistoryComponent implements OnInit, OnDestroy {
   ) {}
 
   loadAll(): void {
-    this.washHistoryService.query().subscribe((res: HttpResponse<IWashHistory[]>) => {
-      this.washHistories = res.body ? res.body : [];
-    });
+    this.washHistoryService.query().subscribe((res: HttpResponse<IWashHistory[]>) => (this.washHistories = res.body || []));
   }
 
   ngOnInit(): void {

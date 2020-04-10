@@ -4,7 +4,6 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import { ISecurityPolicy, SecurityPolicy } from 'app/shared/model/security-policy.model';
 import { SecurityPolicyService } from './security-policy.service';
@@ -21,9 +20,7 @@ type SelectableEntity = ITeamMember | ITenant;
 })
 export class SecurityPolicyUpdateComponent implements OnInit {
   isSaving = false;
-
   teammembers: ITeamMember[] = [];
-
   tenants: ITenant[] = [];
 
   editForm = this.fb.group({
@@ -46,23 +43,9 @@ export class SecurityPolicyUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ securityPolicy }) => {
       this.updateForm(securityPolicy);
 
-      this.teamMemberService
-        .query()
-        .pipe(
-          map((res: HttpResponse<ITeamMember[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: ITeamMember[]) => (this.teammembers = resBody));
+      this.teamMemberService.query().subscribe((res: HttpResponse<ITeamMember[]>) => (this.teammembers = res.body || []));
 
-      this.tenantService
-        .query()
-        .pipe(
-          map((res: HttpResponse<ITenant[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: ITenant[]) => (this.tenants = resBody));
+      this.tenantService.query().subscribe((res: HttpResponse<ITenant[]>) => (this.tenants = res.body || []));
     });
   }
 

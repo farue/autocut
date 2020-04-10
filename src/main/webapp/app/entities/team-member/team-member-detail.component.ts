@@ -13,9 +13,7 @@ export class TeamMemberDetailComponent implements OnInit {
   constructor(protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ teamMember }) => {
-      this.teamMember = teamMember;
-    });
+    this.activatedRoute.data.subscribe(({ teamMember }) => (this.teamMember = teamMember));
   }
 
   previousState(): void {

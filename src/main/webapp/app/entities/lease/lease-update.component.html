@@ -2,13 +2,15 @@
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
             <h2 id="jhi-lease-heading" jhiTranslate="autocutApp.lease.home.createOrEditLabel">Create or edit a Lease</h2>
+
             <div>
                 <jhi-alert-error></jhi-alert-error>
+
                 <div class="form-group" [hidden]="!editForm.get('id')!.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
-                        readonly />
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.lease.nr" for="field_nr">Nr</label>
                     <input type="text" class="form-control" name="nr" id="field_nr"
@@ -20,6 +22,7 @@
                         </small>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.lease.start" for="field_start">Start</label>
                     <div class="d-flex">
@@ -36,12 +39,14 @@
                         </small>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.lease.end" for="field_end">End</label>
                     <div class="d-flex">
                         <input id="field_end" type="datetime-local" class="form-control" name="end" formControlName="end" placeholder="YYYY-MM-DD HH:mm"/>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.lease.createdBy" for="field_createdBy">Created By</label>
                     <input type="text" class="form-control" name="createdBy" id="field_createdBy"
@@ -53,6 +58,7 @@
                         </small>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.lease.createdDate" for="field_createdDate">Created Date</label>
                     <div class="d-flex">
@@ -69,11 +75,13 @@
                         </small>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.lease.lastModifiedBy" for="field_lastModifiedBy">Last Modified By</label>
                     <input type="text" class="form-control" name="lastModifiedBy" id="field_lastModifiedBy"
                            formControlName="lastModifiedBy"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.lease.lastModifiedDate" for="field_lastModifiedDate">Last Modified Date</label>
                     <div class="d-flex">
@@ -85,16 +93,18 @@
                     <label class="form-control-label" jhiTranslate="autocutApp.lease.apartment" for="field_apartment">Apartment</label>
                     <select class="form-control" id="field_apartment" name="apartment" formControlName="apartment">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="apartmentOption.id === editForm.get('apartment')!.value?.id ? editForm.get('apartment')!.value : apartmentOption" *ngFor="let apartmentOption of apartments; trackBy: trackById">{{apartmentOption.id}}</option>
+                        <option [ngValue]="apartmentOption.id === editForm.get('apartment')!.value?.id ? editForm.get('apartment')!.value : apartmentOption" *ngFor="let apartmentOption of apartments; trackBy: trackById">{{ apartmentOption.id }}</option>
                     </select>
                 </div>
             </div>
+
             <div>
-                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
-                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
                 </button>
+
                 <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
-                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
                 </button>
             </div>
         </form>

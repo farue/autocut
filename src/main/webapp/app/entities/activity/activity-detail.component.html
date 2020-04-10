@@ -1,42 +1,45 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="activity">
-            <h2><span jhiTranslate="autocutApp.activity.detail.title">Activity</span> {{activity.id}}</h2>
+            <h2><span jhiTranslate="autocutApp.activity.detail.title">Activity</span> {{ activity.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
                 <dt><span jhiTranslate="autocutApp.activity.year">Year</span></dt>
                 <dd>
-                    <span>{{activity.year}}</span>
+                    <span>{{ activity.year }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.activity.term">Term</span></dt>
                 <dd>
-                    <span jhiTranslate="{{'autocutApp.SemesterTerms.' + activity.term}}">{{activity.term}}</span>
+                    <span jhiTranslate="{{ 'autocutApp.SemesterTerms.' + activity.term }}">{{ activity.term }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.activity.startDate">Start Date</span></dt>
                 <dd>
-                    <span>{{activity.startDate}}</span>
+                    <span>{{ activity.startDate }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.activity.endDate">End Date</span></dt>
                 <dd>
-                    <span>{{activity.endDate}}</span>
+                    <span>{{ activity.endDate }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.activity.description">Description</span></dt>
                 <dd>
-                    <span>{{activity.description}}</span>
+                    <span>{{ activity.description }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.activity.discount">Discount</span></dt>
                 <dd>
-                    <span>{{activity.discount}}</span>
+                    <span>{{ activity.discount }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.activity.stwActivity">Stw Activity</span></dt>
                 <dd>
-                    <span>{{activity.stwActivity}}</span>
+                    <span>{{ activity.stwActivity }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.activity.tenant">Tenant</span></dt>
                 <dd>
                     <div *ngIf="activity.tenant">
-                        <a [routerLink]="['/tenant', activity.tenant?.id, 'view']">{{activity.tenant?.id}}</a>
+                        <a [routerLink]="['/tenant', activity.tenant?.id, 'view']">{{ activity.tenant?.id }}</a>
                     </div>
                 </dd>
             </dl>
@@ -44,13 +47,13 @@
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/activity', activity.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

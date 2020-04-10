@@ -51,9 +51,8 @@ public class InternetAccessService {
     }
 
 
-
     /**
-    *  Get all the internetAccesses where Apartment is {@code null}.
+     *  Get all the internetAccesses where Apartment is {@code null}.
      *  @return the list of entities.
      */
     @Transactional(readOnly = true) 

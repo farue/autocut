@@ -4,7 +4,6 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import { ITeamMember, TeamMember } from 'app/shared/model/team-member.model';
 import { TeamMemberService } from './team-member.service';
@@ -23,11 +22,8 @@ type SelectableEntity = ITenant | ITeam | IActivity;
 })
 export class TeamMemberUpdateComponent implements OnInit {
   isSaving = false;
-
   tenants: ITenant[] = [];
-
   teams: ITeam[] = [];
-
   activities: IActivity[] = [];
 
   editForm = this.fb.group({
@@ -51,32 +47,11 @@ export class TeamMemberUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ teamMember }) => {
       this.updateForm(teamMember);
 
-      this.tenantService
-        .query()
-        .pipe(
-          map((res: HttpResponse<ITenant[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: ITenant[]) => (this.tenants = resBody));
+      this.tenantService.query().subscribe((res: HttpResponse<ITenant[]>) => (this.tenants = res.body || []));
 
-      this.teamService
-        .query()
-        .pipe(
-          map((res: HttpResponse<ITeam[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: ITeam[]) => (this.teams = resBody));
+      this.teamService.query().subscribe((res: HttpResponse<ITeam[]>) => (this.teams = res.body || []));
 
-      this.activityService
-        .query()
-        .pipe(
-          map((res: HttpResponse<IActivity[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: IActivity[]) => (this.activities = resBody));
+      this.activityService.query().subscribe((res: HttpResponse<IActivity[]>) => (this.activities = res.body || []));
     });
   }
 

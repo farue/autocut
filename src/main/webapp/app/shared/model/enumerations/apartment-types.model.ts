@@ -1,4 +1,4 @@
 export const enum ApartmentTypes {
-  SHARED,
-  SINGLE
+  SHARED = 'SHARED',
+  SINGLE = 'SINGLE'
 }

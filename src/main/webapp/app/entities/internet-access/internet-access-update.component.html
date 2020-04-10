@@ -2,13 +2,15 @@
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
             <h2 id="jhi-internet-access-heading" jhiTranslate="autocutApp.internetAccess.home.createOrEditLabel">Create or edit a Internet Access</h2>
+
             <div>
                 <jhi-alert-error></jhi-alert-error>
+
                 <div class="form-group" [hidden]="!editForm.get('id')!.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
-                        readonly />
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.internetAccess.blocked" for="field_blocked">Blocked</label>
                     <input type="checkbox" class="form-control" name="blocked" id="field_blocked"
@@ -20,6 +22,7 @@
                         </small>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.internetAccess.ip1" for="field_ip1">Ip 1</label>
                     <input type="text" class="form-control" name="ip1" id="field_ip1"
@@ -31,6 +34,7 @@
                         </small>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.internetAccess.ip2" for="field_ip2">Ip 2</label>
                     <input type="text" class="form-control" name="ip2" id="field_ip2"
@@ -42,6 +46,7 @@
                         </small>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.internetAccess.switchInterface" for="field_switchInterface">Switch Interface</label>
                     <input type="text" class="form-control" name="switchInterface" id="field_switchInterface"
@@ -53,6 +58,7 @@
                         </small>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.internetAccess.port" for="field_port">Port</label>
                     <input type="number" class="form-control" name="port" id="field_port"
@@ -72,14 +78,15 @@
                         </small>
                     </div>
                 </div>
-
             </div>
+
             <div>
-                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
-                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
                 </button>
+
                 <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
-                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
                 </button>
             </div>
         </form>

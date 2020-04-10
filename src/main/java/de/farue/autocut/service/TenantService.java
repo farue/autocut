@@ -48,7 +48,6 @@ public class TenantService {
         return tenantRepository.findAll();
     }
 
-
     /**
      * Get one tenant by id.
      *

@@ -3,25 +3,19 @@ package de.farue.autocut.web.rest;
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.LaundryMachine;
 import de.farue.autocut.repository.LaundryMachineRepository;
-import de.farue.autocut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Validator;
-
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static de.farue.autocut.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -32,6 +26,9 @@ import de.farue.autocut.domain.enumeration.LaundryMachineType;
  * Integration tests for the {@link LaundryMachineResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
+
+@AutoConfigureMockMvc
+@WithMockUser
 public class LaundryMachineResourceIT {
 
     private static final String DEFAULT_IDENTIFIER = "AAAAAAAAAA";
@@ -50,35 +47,12 @@ public class LaundryMachineResourceIT {
     private LaundryMachineRepository laundryMachineRepository;
 
     @Autowired
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
-    @Autowired
-    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
-
-    @Autowired
-    private ExceptionTranslator exceptionTranslator;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
-    private Validator validator;
-
     private MockMvc restLaundryMachineMockMvc;
 
     private LaundryMachine laundryMachine;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final LaundryMachineResource laundryMachineResource = new LaundryMachineResource(laundryMachineRepository);
-        this.restLaundryMachineMockMvc = MockMvcBuilders.standaloneSetup(laundryMachineResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
-    }
 
     /**
      * Create an entity for this test.
@@ -121,7 +95,7 @@ public class LaundryMachineResourceIT {
 
         // Create the LaundryMachine
         restLaundryMachineMockMvc.perform(post("/api/laundry-machines")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(laundryMachine)))
             .andExpect(status().isCreated());
 
@@ -145,7 +119,7 @@ public class LaundryMachineResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restLaundryMachineMockMvc.perform(post("/api/laundry-machines")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(laundryMachine)))
             .andExpect(status().isBadRequest());
 
@@ -165,7 +139,7 @@ public class LaundryMachineResourceIT {
         // Create the LaundryMachine, which fails.
 
         restLaundryMachineMockMvc.perform(post("/api/laundry-machines")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(laundryMachine)))
             .andExpect(status().isBadRequest());
 
@@ -183,7 +157,7 @@ public class LaundryMachineResourceIT {
         // Create the LaundryMachine, which fails.
 
         restLaundryMachineMockMvc.perform(post("/api/laundry-machines")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(laundryMachine)))
             .andExpect(status().isBadRequest());
 
@@ -201,7 +175,7 @@ public class LaundryMachineResourceIT {
         // Create the LaundryMachine, which fails.
 
         restLaundryMachineMockMvc.perform(post("/api/laundry-machines")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(laundryMachine)))
             .andExpect(status().isBadRequest());
 
@@ -219,7 +193,7 @@ public class LaundryMachineResourceIT {
         // Create the LaundryMachine, which fails.
 
         restLaundryMachineMockMvc.perform(post("/api/laundry-machines")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(laundryMachine)))
             .andExpect(status().isBadRequest());
 
@@ -236,7 +210,7 @@ public class LaundryMachineResourceIT {
         // Get all the laundryMachineList
         restLaundryMachineMockMvc.perform(get("/api/laundry-machines?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(laundryMachine.getId().intValue())))
             .andExpect(jsonPath("$.[*].identifier").value(hasItem(DEFAULT_IDENTIFIER)))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
@@ -253,7 +227,7 @@ public class LaundryMachineResourceIT {
         // Get the laundryMachine
         restLaundryMachineMockMvc.perform(get("/api/laundry-machines/{id}", laundryMachine.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(laundryMachine.getId().intValue()))
             .andExpect(jsonPath("$.identifier").value(DEFAULT_IDENTIFIER))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
@@ -288,7 +262,7 @@ public class LaundryMachineResourceIT {
             .enabled(UPDATED_ENABLED);
 
         restLaundryMachineMockMvc.perform(put("/api/laundry-machines")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedLaundryMachine)))
             .andExpect(status().isOk());
 
@@ -311,7 +285,7 @@ public class LaundryMachineResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restLaundryMachineMockMvc.perform(put("/api/laundry-machines")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(laundryMachine)))
             .andExpect(status().isBadRequest());
 
@@ -330,7 +304,7 @@ public class LaundryMachineResourceIT {
 
         // Delete the laundryMachine
         restLaundryMachineMockMvc.perform(delete("/api/laundry-machines/{id}", laundryMachine.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

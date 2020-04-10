@@ -19,9 +19,7 @@ export class TeamComponent implements OnInit, OnDestroy {
   constructor(protected teamService: TeamService, protected eventManager: JhiEventManager, protected modalService: NgbModal) {}
 
   loadAll(): void {
-    this.teamService.query().subscribe((res: HttpResponse<ITeam[]>) => {
-      this.teams = res.body ? res.body : [];
-    });
+    this.teamService.query().subscribe((res: HttpResponse<ITeam[]>) => (this.teams = res.body || []));
   }
 
   ngOnInit(): void {

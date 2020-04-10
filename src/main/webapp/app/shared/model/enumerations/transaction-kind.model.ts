@@ -1,8 +1,8 @@
 export const enum TransactionKind {
-  FEE,
-  CREDIT,
-  DEBIT,
-  TRANSFER,
-  CORRECTION,
-  PURCHASE
+  FEE = 'FEE',
+  CREDIT = 'CREDIT',
+  DEBIT = 'DEBIT',
+  TRANSFER = 'TRANSFER',
+  CORRECTION = 'CORRECTION',
+  PURCHASE = 'PURCHASE'
 }

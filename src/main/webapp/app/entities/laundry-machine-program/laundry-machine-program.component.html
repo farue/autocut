@@ -1,74 +1,80 @@
 <div>
     <h2 id="page-heading">
         <span jhiTranslate="autocutApp.laundryMachineProgram.home.title">Laundry Machine Programs</span>
+
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-laundry-machine-program" [routerLink]="['/laundry-machine-program/new']">
-            <fa-icon [icon]="'plus'"></fa-icon>
+            <fa-icon icon="plus"></fa-icon>
             <span  jhiTranslate="autocutApp.laundryMachineProgram.home.createLabel">
             Create a new Laundry Machine Program
             </span>
         </button>
     </h2>
+
     <jhi-alert-error></jhi-alert-error>
+
     <jhi-alert></jhi-alert>
-    <br/>
-    <div class="alert alert-warning" *ngIf="laundryMachinePrograms?.length === 0">
+
+    <div class="alert alert-warning" id="no-result" *ngIf="laundryMachinePrograms?.length === 0">
         <span jhiTranslate="autocutApp.laundryMachineProgram.home.notFound">No laundryMachinePrograms found</span>
     </div>
-    <div class="table-responsive" *ngIf="laundryMachinePrograms?.length > 0">
+
+    <div class="table-responsive" id="entities" *ngIf="laundryMachinePrograms?.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-            <tr>
-            <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-            <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.name">Name</span></th>
-            <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.time">Time</span></th>
-            <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.temperature">Temperature</span></th>
-            <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.spin">Spin</span></th>
-            <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.preWash">Pre Wash</span></th>
-            <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.protect">Protect</span></th>
-            <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.shortCycle">Short Cycle</span></th>
-            <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.wrinkle">Wrinkle</span></th>
-            <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.laundryMachine">Laundry Machine</span></th>
-            <th scope="col"></th>
-            </tr>
+                <tr>
+                    <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.name">Name</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.time">Time</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.temperature">Temperature</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.spin">Spin</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.preWash">Pre Wash</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.protect">Protect</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.shortCycle">Short Cycle</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.wrinkle">Wrinkle</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.laundryMachine">Laundry Machine</span></th>
+                    <th scope="col"></th>
+                </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let laundryMachineProgram of laundryMachinePrograms ;trackBy: trackId">
-                <td><a [routerLink]="['/laundry-machine-program', laundryMachineProgram.id, 'view' ]">{{laundryMachineProgram.id}}</a></td>
-                <td>{{laundryMachineProgram.name}}</td>
-                <td>{{laundryMachineProgram.time}}</td>
-                <td>{{laundryMachineProgram.temperature}}</td>
-                <td>{{laundryMachineProgram.spin}}</td>
-                <td>{{laundryMachineProgram.preWash}}</td>
-                <td>{{laundryMachineProgram.protect}}</td>
-                <td>{{laundryMachineProgram.shortCycle}}</td>
-                <td>{{laundryMachineProgram.wrinkle}}</td>
-                <td>
-                    <div *ngIf="laundryMachineProgram.laundryMachine">
-                        <a [routerLink]="['/laundry-machine', laundryMachineProgram.laundryMachine?.id, 'view' ]" >{{laundryMachineProgram.laundryMachine?.id}}</a>
-                    </div>
-                </td>
-                <td class="text-right">
-                    <div class="btn-group">
-                        <button type="submit"
-                                [routerLink]="['/laundry-machine-program', laundryMachineProgram.id, 'view' ]"
-                                class="btn btn-info btn-sm">
-                            <fa-icon [icon]="'eye'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/laundry-machine-program', laundryMachineProgram.id, 'edit']"
-                                class="btn btn-primary btn-sm">
-                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit" (click)="delete(laundryMachineProgram)"
-                                class="btn btn-danger btn-sm">
-                            <fa-icon [icon]="'times'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+                <tr *ngFor="let laundryMachineProgram of laundryMachinePrograms ;trackBy: trackId">
+                    <td><a [routerLink]="['/laundry-machine-program', laundryMachineProgram.id, 'view']">{{ laundryMachineProgram.id }}</a></td>
+                    <td>{{ laundryMachineProgram.name }}</td>
+                    <td>{{ laundryMachineProgram.time }}</td>
+                    <td>{{ laundryMachineProgram.temperature }}</td>
+                    <td>{{ laundryMachineProgram.spin }}</td>
+                    <td>{{ laundryMachineProgram.preWash }}</td>
+                    <td>{{ laundryMachineProgram.protect }}</td>
+                    <td>{{ laundryMachineProgram.shortCycle }}</td>
+                    <td>{{ laundryMachineProgram.wrinkle }}</td>
+                    <td>
+                        <div *ngIf="laundryMachineProgram.laundryMachine">
+                            <a [routerLink]="['/laundry-machine', laundryMachineProgram.laundryMachine?.id, 'view']" >{{ laundryMachineProgram.laundryMachine?.id }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/laundry-machine-program', laundryMachineProgram.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/laundry-machine-program', laundryMachineProgram.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(laundryMachineProgram)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

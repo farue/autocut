@@ -13,9 +13,7 @@ export class WashHistoryDetailComponent implements OnInit {
   constructor(protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ washHistory }) => {
-      this.washHistory = washHistory;
-    });
+    this.activatedRoute.data.subscribe(({ washHistory }) => (this.washHistory = washHistory));
   }
 
   previousState(): void {

@@ -16,8 +16,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [AutocutTestModule],
-        declarations: [TeamMemberComponent],
-        providers: []
+        declarations: [TeamMemberComponent]
       })
         .overrideTemplate(TeamMemberComponent, '')
         .compileComponents();
