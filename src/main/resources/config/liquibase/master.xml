@@ -29,6 +29,7 @@
     <include file="config/liquibase/changelog/20200326184245_added_entity_LaundryMachine.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200326184246_added_entity_LaundryMachineProgram.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200326184247_added_entity_WashHistory.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200410002948_added_entity_GlobalSetting.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20191117011741_added_entity_constraints_Tenant.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191117011743_added_entity_constraints_TeamMember.xml" relativeToChangelogFile="false"/>

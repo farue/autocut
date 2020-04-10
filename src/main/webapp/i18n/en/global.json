@@ -36,6 +36,7 @@
         "laundryMachine": "Laundry Machine",
         "laundryMachineProgram": "Laundry Machine Program",
         "washHistory": "Wash History",
+        "globalSetting": "Global Setting",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

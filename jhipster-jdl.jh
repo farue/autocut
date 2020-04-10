@@ -232,3 +232,9 @@ relationship ManyToOne {
 	WashHistory{machine} to LaundryMachine
 	WashHistory{program} to LaundryMachineProgram
 }
+
+entity GlobalSetting {
+	key String,
+    value String,
+    valueType String
+}

@@ -64,6 +64,10 @@ import { RouterModule } from '@angular/router';
       {
         path: 'wash-history',
         loadChildren: () => import('./wash-history/wash-history.module').then(m => m.AutocutWashHistoryModule)
+      },
+      {
+        path: 'global-setting',
+        loadChildren: () => import('./global-setting/global-setting.module').then(m => m.AutocutGlobalSettingModule)
       }
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ])

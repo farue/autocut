@@ -1,0 +1,257 @@
+package de.farue.autocut.web.rest;
+
+import de.farue.autocut.AutocutApp;
+import de.farue.autocut.domain.GlobalSetting;
+import de.farue.autocut.repository.GlobalSettingRepository;
+import de.farue.autocut.web.rest.errors.ExceptionTranslator;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Validator;
+
+import javax.persistence.EntityManager;
+import java.util.List;
+
+import static de.farue.autocut.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+/**
+ * Integration tests for the {@link GlobalSettingResource} REST controller.
+ */
+@SpringBootTest(classes = AutocutApp.class)
+public class GlobalSettingResourceIT {
+
+    private static final String DEFAULT_KEY = "AAAAAAAAAA";
+    private static final String UPDATED_KEY = "BBBBBBBBBB";
+
+    private static final String DEFAULT_VALUE = "AAAAAAAAAA";
+    private static final String UPDATED_VALUE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_VALUE_TYPE = "AAAAAAAAAA";
+    private static final String UPDATED_VALUE_TYPE = "BBBBBBBBBB";
+
+    @Autowired
+    private GlobalSettingRepository globalSettingRepository;
+
+    @Autowired
+    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
+
+    @Autowired
+    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
+
+    @Autowired
+    private ExceptionTranslator exceptionTranslator;
+
+    @Autowired
+    private EntityManager em;
+
+    @Autowired
+    private Validator validator;
+
+    private MockMvc restGlobalSettingMockMvc;
+
+    private GlobalSetting globalSetting;
+
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        final GlobalSettingResource globalSettingResource = new GlobalSettingResource(globalSettingRepository);
+        this.restGlobalSettingMockMvc = MockMvcBuilders.standaloneSetup(globalSettingResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
+            .setMessageConverters(jacksonMessageConverter)
+            .setValidator(validator).build();
+    }
+
+    /**
+     * Create an entity for this test.
+     *
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which requires the current entity.
+     */
+    public static GlobalSetting createEntity(EntityManager em) {
+        GlobalSetting globalSetting = new GlobalSetting()
+            .key(DEFAULT_KEY)
+            .value(DEFAULT_VALUE)
+            .valueType(DEFAULT_VALUE_TYPE);
+        return globalSetting;
+    }
+    /**
+     * Create an updated entity for this test.
+     *
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which requires the current entity.
+     */
+    public static GlobalSetting createUpdatedEntity(EntityManager em) {
+        GlobalSetting globalSetting = new GlobalSetting()
+            .key(UPDATED_KEY)
+            .value(UPDATED_VALUE)
+            .valueType(UPDATED_VALUE_TYPE);
+        return globalSetting;
+    }
+
+    @BeforeEach
+    public void initTest() {
+        globalSetting = createEntity(em);
+    }
+
+    @Test
+    @Transactional
+    public void createGlobalSetting() throws Exception {
+        int databaseSizeBeforeCreate = globalSettingRepository.findAll().size();
+
+        // Create the GlobalSetting
+        restGlobalSettingMockMvc.perform(post("/api/global-settings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(globalSetting)))
+            .andExpect(status().isCreated());
+
+        // Validate the GlobalSetting in the database
+        List<GlobalSetting> globalSettingList = globalSettingRepository.findAll();
+        assertThat(globalSettingList).hasSize(databaseSizeBeforeCreate + 1);
+        GlobalSetting testGlobalSetting = globalSettingList.get(globalSettingList.size() - 1);
+        assertThat(testGlobalSetting.getKey()).isEqualTo(DEFAULT_KEY);
+        assertThat(testGlobalSetting.getValue()).isEqualTo(DEFAULT_VALUE);
+        assertThat(testGlobalSetting.getValueType()).isEqualTo(DEFAULT_VALUE_TYPE);
+    }
+
+    @Test
+    @Transactional
+    public void createGlobalSettingWithExistingId() throws Exception {
+        int databaseSizeBeforeCreate = globalSettingRepository.findAll().size();
+
+        // Create the GlobalSetting with an existing ID
+        globalSetting.setId(1L);
+
+        // An entity with an existing ID cannot be created, so this API call must fail
+        restGlobalSettingMockMvc.perform(post("/api/global-settings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(globalSetting)))
+            .andExpect(status().isBadRequest());
+
+        // Validate the GlobalSetting in the database
+        List<GlobalSetting> globalSettingList = globalSettingRepository.findAll();
+        assertThat(globalSettingList).hasSize(databaseSizeBeforeCreate);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllGlobalSettings() throws Exception {
+        // Initialize the database
+        globalSettingRepository.saveAndFlush(globalSetting);
+
+        // Get all the globalSettingList
+        restGlobalSettingMockMvc.perform(get("/api/global-settings?sort=id,desc"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(globalSetting.getId().intValue())))
+            .andExpect(jsonPath("$.[*].key").value(hasItem(DEFAULT_KEY)))
+            .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE)))
+            .andExpect(jsonPath("$.[*].valueType").value(hasItem(DEFAULT_VALUE_TYPE)));
+    }
+    
+    @Test
+    @Transactional
+    public void getGlobalSetting() throws Exception {
+        // Initialize the database
+        globalSettingRepository.saveAndFlush(globalSetting);
+
+        // Get the globalSetting
+        restGlobalSettingMockMvc.perform(get("/api/global-settings/{id}", globalSetting.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.id").value(globalSetting.getId().intValue()))
+            .andExpect(jsonPath("$.key").value(DEFAULT_KEY))
+            .andExpect(jsonPath("$.value").value(DEFAULT_VALUE))
+            .andExpect(jsonPath("$.valueType").value(DEFAULT_VALUE_TYPE));
+    }
+
+    @Test
+    @Transactional
+    public void getNonExistingGlobalSetting() throws Exception {
+        // Get the globalSetting
+        restGlobalSettingMockMvc.perform(get("/api/global-settings/{id}", Long.MAX_VALUE))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    public void updateGlobalSetting() throws Exception {
+        // Initialize the database
+        globalSettingRepository.saveAndFlush(globalSetting);
+
+        int databaseSizeBeforeUpdate = globalSettingRepository.findAll().size();
+
+        // Update the globalSetting
+        GlobalSetting updatedGlobalSetting = globalSettingRepository.findById(globalSetting.getId()).get();
+        // Disconnect from session so that the updates on updatedGlobalSetting are not directly saved in db
+        em.detach(updatedGlobalSetting);
+        updatedGlobalSetting
+            .key(UPDATED_KEY)
+            .value(UPDATED_VALUE)
+            .valueType(UPDATED_VALUE_TYPE);
+
+        restGlobalSettingMockMvc.perform(put("/api/global-settings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(updatedGlobalSetting)))
+            .andExpect(status().isOk());
+
+        // Validate the GlobalSetting in the database
+        List<GlobalSetting> globalSettingList = globalSettingRepository.findAll();
+        assertThat(globalSettingList).hasSize(databaseSizeBeforeUpdate);
+        GlobalSetting testGlobalSetting = globalSettingList.get(globalSettingList.size() - 1);
+        assertThat(testGlobalSetting.getKey()).isEqualTo(UPDATED_KEY);
+        assertThat(testGlobalSetting.getValue()).isEqualTo(UPDATED_VALUE);
+        assertThat(testGlobalSetting.getValueType()).isEqualTo(UPDATED_VALUE_TYPE);
+    }
+
+    @Test
+    @Transactional
+    public void updateNonExistingGlobalSetting() throws Exception {
+        int databaseSizeBeforeUpdate = globalSettingRepository.findAll().size();
+
+        // Create the GlobalSetting
+
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        restGlobalSettingMockMvc.perform(put("/api/global-settings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(globalSetting)))
+            .andExpect(status().isBadRequest());
+
+        // Validate the GlobalSetting in the database
+        List<GlobalSetting> globalSettingList = globalSettingRepository.findAll();
+        assertThat(globalSettingList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    public void deleteGlobalSetting() throws Exception {
+        // Initialize the database
+        globalSettingRepository.saveAndFlush(globalSetting);
+
+        int databaseSizeBeforeDelete = globalSettingRepository.findAll().size();
+
+        // Delete the globalSetting
+        restGlobalSettingMockMvc.perform(delete("/api/global-settings/{id}", globalSetting.getId())
+            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isNoContent());
+
+        // Validate the database contains one less item
+        List<GlobalSetting> globalSettingList = globalSettingRepository.findAll();
+        assertThat(globalSettingList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+}
