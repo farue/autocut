@@ -18,9 +18,9 @@ class ArchTest {
 
         noClasses()
             .that()
-            .resideInAnyPackage("..service..")
+            .resideInAnyPackage("de.farue.autocut.service..")
             .or()
-            .resideInAnyPackage("..repository..")
+            .resideInAnyPackage("de.farue.autocut.repository..")
             .should().dependOnClassesThat()
             .resideInAnyPackage("..de.farue.autocut.web..")
             .because("Services and repositories should not depend on web layer")

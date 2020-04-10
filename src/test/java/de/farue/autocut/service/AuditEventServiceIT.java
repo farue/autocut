@@ -47,7 +47,6 @@ public class AuditEventServiceIT {
         auditEventWithinRetention.setAuditEventDate(Instant.now().minus(jHipsterProperties.getAuditEvents().getRetentionPeriod() - 1, ChronoUnit.DAYS));
         auditEventWithinRetention.setPrincipal("test-user-retention");
         auditEventWithinRetention.setAuditEventType("test-type");
-        ;
 
         auditEventNew = new PersistentAuditEvent();
         auditEventNew.setAuditEventDate(Instant.now());
@@ -64,9 +63,7 @@ public class AuditEventServiceIT {
         persistenceAuditEventRepository.save(auditEventNew);
 
         persistenceAuditEventRepository.flush();
-
         auditEventService.removeOldAuditEvents();
-
         persistenceAuditEventRepository.flush();
 
         assertThat(persistenceAuditEventRepository.findAll().size()).isEqualTo(2);
