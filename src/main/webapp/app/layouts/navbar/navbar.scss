@@ -33,12 +33,58 @@ Navbar
   a.nav-link {
     font-weight: 400;
   }
+}
 
-  .navbar-toggler {
-    &:hover {
-      color: $navbar-dark-hover-color;
-    }
+.navbar-toggler {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  width: 22px;
+  height: 22px;
+  position: relative;
+
+  &:hover span {
+    background-color: $navbar-dark-hover-color;
   }
+
+  span {
+    width: 22px;
+    height: 2px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    position: absolute;
+    background-color: $navbar-dark-color;
+    left: 0;
+    transition: 0.55s;
+  }
+}
+
+.navbar-toggler .top-bar {
+  top: 0;
+}
+
+.navbar-toggler .middle-bar {
+  top: 6px;
+}
+
+.navbar-toggler .bottom-bar {
+  top: 12px;
+}
+
+.navbar-toggler.open .top-bar {
+  top: 6px;
+  transform: rotate(45deg);
+  transition: 0.55s 0.5s;
+}
+
+.navbar-toggler.open .middle-bar {
+  opacity: 0;
+}
+
+.navbar-toggler.open .bottom-bar {
+  top: 6px;
+  transform: rotate(-405deg);
+  transition: 0.55s 0.5s;
 }
 
 /* ==========================================================================
@@ -51,4 +97,11 @@ Logo styles
   vertical-align: middle;
   background: url('../../../content/images/logo.svg') no-repeat center center;
   background-size: contain;
+}
+
+/* ==========================================================================
+Icons
+========================================================================== */
+.icon {
+  width: 30px;
 }
