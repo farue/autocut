@@ -33,11 +33,11 @@ public class LaundryMachineProgramResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
+    private static final String DEFAULT_SUBPROGRAM = "AAAAAAAAAA";
+    private static final String UPDATED_SUBPROGRAM = "BBBBBBBBBB";
+
     private static final Integer DEFAULT_TIME = 1;
     private static final Integer UPDATED_TIME = 2;
-
-    private static final Integer DEFAULT_TEMPERATURE = 1;
-    private static final Integer UPDATED_TEMPERATURE = 2;
 
     private static final Integer DEFAULT_SPIN = 1;
     private static final Integer UPDATED_SPIN = 2;
@@ -47,12 +47,6 @@ public class LaundryMachineProgramResourceIT {
 
     private static final Boolean DEFAULT_PROTECT = false;
     private static final Boolean UPDATED_PROTECT = true;
-
-    private static final Boolean DEFAULT_SHORT_CYCLE = false;
-    private static final Boolean UPDATED_SHORT_CYCLE = true;
-
-    private static final Boolean DEFAULT_WRINKLE = false;
-    private static final Boolean UPDATED_WRINKLE = true;
 
     @Autowired
     private LaundryMachineProgramRepository laundryMachineProgramRepository;
@@ -74,13 +68,11 @@ public class LaundryMachineProgramResourceIT {
     public static LaundryMachineProgram createEntity(EntityManager em) {
         LaundryMachineProgram laundryMachineProgram = new LaundryMachineProgram()
             .name(DEFAULT_NAME)
+            .subprogram(DEFAULT_SUBPROGRAM)
             .time(DEFAULT_TIME)
-            .temperature(DEFAULT_TEMPERATURE)
             .spin(DEFAULT_SPIN)
             .preWash(DEFAULT_PRE_WASH)
-            .protect(DEFAULT_PROTECT)
-            .shortCycle(DEFAULT_SHORT_CYCLE)
-            .wrinkle(DEFAULT_WRINKLE);
+            .protect(DEFAULT_PROTECT);
         return laundryMachineProgram;
     }
     /**
@@ -92,13 +84,11 @@ public class LaundryMachineProgramResourceIT {
     public static LaundryMachineProgram createUpdatedEntity(EntityManager em) {
         LaundryMachineProgram laundryMachineProgram = new LaundryMachineProgram()
             .name(UPDATED_NAME)
+            .subprogram(UPDATED_SUBPROGRAM)
             .time(UPDATED_TIME)
-            .temperature(UPDATED_TEMPERATURE)
             .spin(UPDATED_SPIN)
             .preWash(UPDATED_PRE_WASH)
-            .protect(UPDATED_PROTECT)
-            .shortCycle(UPDATED_SHORT_CYCLE)
-            .wrinkle(UPDATED_WRINKLE);
+            .protect(UPDATED_PROTECT);
         return laundryMachineProgram;
     }
 
@@ -123,13 +113,11 @@ public class LaundryMachineProgramResourceIT {
         assertThat(laundryMachineProgramList).hasSize(databaseSizeBeforeCreate + 1);
         LaundryMachineProgram testLaundryMachineProgram = laundryMachineProgramList.get(laundryMachineProgramList.size() - 1);
         assertThat(testLaundryMachineProgram.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testLaundryMachineProgram.getSubprogram()).isEqualTo(DEFAULT_SUBPROGRAM);
         assertThat(testLaundryMachineProgram.getTime()).isEqualTo(DEFAULT_TIME);
-        assertThat(testLaundryMachineProgram.getTemperature()).isEqualTo(DEFAULT_TEMPERATURE);
         assertThat(testLaundryMachineProgram.getSpin()).isEqualTo(DEFAULT_SPIN);
         assertThat(testLaundryMachineProgram.isPreWash()).isEqualTo(DEFAULT_PRE_WASH);
         assertThat(testLaundryMachineProgram.isProtect()).isEqualTo(DEFAULT_PROTECT);
-        assertThat(testLaundryMachineProgram.isShortCycle()).isEqualTo(DEFAULT_SHORT_CYCLE);
-        assertThat(testLaundryMachineProgram.isWrinkle()).isEqualTo(DEFAULT_WRINKLE);
     }
 
     @Test
@@ -200,13 +188,11 @@ public class LaundryMachineProgramResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(laundryMachineProgram.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].subprogram").value(hasItem(DEFAULT_SUBPROGRAM)))
             .andExpect(jsonPath("$.[*].time").value(hasItem(DEFAULT_TIME)))
-            .andExpect(jsonPath("$.[*].temperature").value(hasItem(DEFAULT_TEMPERATURE)))
             .andExpect(jsonPath("$.[*].spin").value(hasItem(DEFAULT_SPIN)))
             .andExpect(jsonPath("$.[*].preWash").value(hasItem(DEFAULT_PRE_WASH.booleanValue())))
-            .andExpect(jsonPath("$.[*].protect").value(hasItem(DEFAULT_PROTECT.booleanValue())))
-            .andExpect(jsonPath("$.[*].shortCycle").value(hasItem(DEFAULT_SHORT_CYCLE.booleanValue())))
-            .andExpect(jsonPath("$.[*].wrinkle").value(hasItem(DEFAULT_WRINKLE.booleanValue())));
+            .andExpect(jsonPath("$.[*].protect").value(hasItem(DEFAULT_PROTECT.booleanValue())));
     }
     
     @Test
@@ -221,13 +207,11 @@ public class LaundryMachineProgramResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(laundryMachineProgram.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.subprogram").value(DEFAULT_SUBPROGRAM))
             .andExpect(jsonPath("$.time").value(DEFAULT_TIME))
-            .andExpect(jsonPath("$.temperature").value(DEFAULT_TEMPERATURE))
             .andExpect(jsonPath("$.spin").value(DEFAULT_SPIN))
             .andExpect(jsonPath("$.preWash").value(DEFAULT_PRE_WASH.booleanValue()))
-            .andExpect(jsonPath("$.protect").value(DEFAULT_PROTECT.booleanValue()))
-            .andExpect(jsonPath("$.shortCycle").value(DEFAULT_SHORT_CYCLE.booleanValue()))
-            .andExpect(jsonPath("$.wrinkle").value(DEFAULT_WRINKLE.booleanValue()));
+            .andExpect(jsonPath("$.protect").value(DEFAULT_PROTECT.booleanValue()));
     }
 
     @Test
@@ -252,13 +236,11 @@ public class LaundryMachineProgramResourceIT {
         em.detach(updatedLaundryMachineProgram);
         updatedLaundryMachineProgram
             .name(UPDATED_NAME)
+            .subprogram(UPDATED_SUBPROGRAM)
             .time(UPDATED_TIME)
-            .temperature(UPDATED_TEMPERATURE)
             .spin(UPDATED_SPIN)
             .preWash(UPDATED_PRE_WASH)
-            .protect(UPDATED_PROTECT)
-            .shortCycle(UPDATED_SHORT_CYCLE)
-            .wrinkle(UPDATED_WRINKLE);
+            .protect(UPDATED_PROTECT);
 
         restLaundryMachineProgramMockMvc.perform(put("/api/laundry-machine-programs")
             .contentType(MediaType.APPLICATION_JSON)
@@ -270,13 +252,11 @@ public class LaundryMachineProgramResourceIT {
         assertThat(laundryMachineProgramList).hasSize(databaseSizeBeforeUpdate);
         LaundryMachineProgram testLaundryMachineProgram = laundryMachineProgramList.get(laundryMachineProgramList.size() - 1);
         assertThat(testLaundryMachineProgram.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testLaundryMachineProgram.getSubprogram()).isEqualTo(UPDATED_SUBPROGRAM);
         assertThat(testLaundryMachineProgram.getTime()).isEqualTo(UPDATED_TIME);
-        assertThat(testLaundryMachineProgram.getTemperature()).isEqualTo(UPDATED_TEMPERATURE);
         assertThat(testLaundryMachineProgram.getSpin()).isEqualTo(UPDATED_SPIN);
         assertThat(testLaundryMachineProgram.isPreWash()).isEqualTo(UPDATED_PRE_WASH);
         assertThat(testLaundryMachineProgram.isProtect()).isEqualTo(UPDATED_PROTECT);
-        assertThat(testLaundryMachineProgram.isShortCycle()).isEqualTo(UPDATED_SHORT_CYCLE);
-        assertThat(testLaundryMachineProgram.isWrinkle()).isEqualTo(UPDATED_WRINKLE);
     }
 
     @Test

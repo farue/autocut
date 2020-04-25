@@ -17,13 +17,11 @@
         "title": "Laundry Machine Program"
       },
       "name": "Name",
+      "subprogram": "Subprogram",
       "time": "Time",
-      "temperature": "Temperature",
       "spin": "Spin",
       "preWash": "Pre Wash",
       "protect": "Protect",
-      "shortCycle": "Short Cycle",
-      "wrinkle": "Wrinkle",
       "laundryMachine": "Laundry Machine"
     }
   }

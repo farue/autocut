@@ -212,6 +212,12 @@
                             <span jhiTranslate="global.menu.entities.globalSetting">Global Setting</span>
                         </a>
                     </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="laundry-machine-program" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.laundryMachineProgram">Laundry Machine Program</span>
+                        </a>
+                    </li>
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>

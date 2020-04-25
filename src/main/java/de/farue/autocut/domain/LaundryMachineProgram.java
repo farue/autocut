@@ -28,12 +28,12 @@ public class LaundryMachineProgram implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "subprogram")
+    private String subprogram;
+
     @NotNull
     @Column(name = "time", nullable = false)
     private Integer time;
-
-    @Column(name = "temperature")
-    private Integer temperature;
 
     @Column(name = "spin")
     private Integer spin;
@@ -43,12 +43,6 @@ public class LaundryMachineProgram implements Serializable {
 
     @Column(name = "protect")
     private Boolean protect;
-
-    @Column(name = "short_cycle")
-    private Boolean shortCycle;
-
-    @Column(name = "wrinkle")
-    private Boolean wrinkle;
 
     @ManyToOne
     @JsonIgnoreProperties("programs")
@@ -76,6 +70,19 @@ public class LaundryMachineProgram implements Serializable {
         this.name = name;
     }
 
+    public String getSubprogram() {
+        return subprogram;
+    }
+
+    public LaundryMachineProgram subprogram(String subprogram) {
+        this.subprogram = subprogram;
+        return this;
+    }
+
+    public void setSubprogram(String subprogram) {
+        this.subprogram = subprogram;
+    }
+
     public Integer getTime() {
         return time;
     }
@@ -87,19 +94,6 @@ public class LaundryMachineProgram implements Serializable {
 
     public void setTime(Integer time) {
         this.time = time;
-    }
-
-    public Integer getTemperature() {
-        return temperature;
-    }
-
-    public LaundryMachineProgram temperature(Integer temperature) {
-        this.temperature = temperature;
-        return this;
-    }
-
-    public void setTemperature(Integer temperature) {
-        this.temperature = temperature;
     }
 
     public Integer getSpin() {
@@ -141,32 +135,6 @@ public class LaundryMachineProgram implements Serializable {
         this.protect = protect;
     }
 
-    public Boolean isShortCycle() {
-        return shortCycle;
-    }
-
-    public LaundryMachineProgram shortCycle(Boolean shortCycle) {
-        this.shortCycle = shortCycle;
-        return this;
-    }
-
-    public void setShortCycle(Boolean shortCycle) {
-        this.shortCycle = shortCycle;
-    }
-
-    public Boolean isWrinkle() {
-        return wrinkle;
-    }
-
-    public LaundryMachineProgram wrinkle(Boolean wrinkle) {
-        this.wrinkle = wrinkle;
-        return this;
-    }
-
-    public void setWrinkle(Boolean wrinkle) {
-        this.wrinkle = wrinkle;
-    }
-
     public LaundryMachine getLaundryMachine() {
         return laundryMachine;
     }
@@ -202,13 +170,11 @@ public class LaundryMachineProgram implements Serializable {
         return "LaundryMachineProgram{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", subprogram='" + getSubprogram() + "'" +
             ", time=" + getTime() +
-            ", temperature=" + getTemperature() +
             ", spin=" + getSpin() +
             ", preWash='" + isPreWash() + "'" +
             ", protect='" + isProtect() + "'" +
-            ", shortCycle='" + isShortCycle() + "'" +
-            ", wrinkle='" + isWrinkle() + "'" +
             "}";
     }
 }

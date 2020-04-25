@@ -9,15 +9,15 @@
             ]
         },
         {
+            "fieldName": "subprogram",
+            "fieldType": "String"
+        },
+        {
             "fieldName": "time",
             "fieldType": "Integer",
             "fieldValidateRules": [
                 "required"
             ]
-        },
-        {
-            "fieldName": "temperature",
-            "fieldType": "Integer"
         },
         {
             "fieldName": "spin",
@@ -29,14 +29,6 @@
         },
         {
             "fieldName": "protect",
-            "fieldType": "Boolean"
-        },
-        {
-            "fieldName": "shortCycle",
-            "fieldType": "Boolean"
-        },
-        {
-            "fieldName": "wrinkle",
             "fieldType": "Boolean"
         }
     ],

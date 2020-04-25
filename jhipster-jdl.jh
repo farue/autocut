@@ -191,15 +191,13 @@ entity LaundryMachine {
 
 entity LaundryMachineProgram {
 	name String required
+    subprogram String
     time Integer required
     // washing machine
-    temperature Integer
     spin Integer
     preWash Boolean
     // dryer
     protect Boolean
-    shortCycle Boolean
-    wrinkle Boolean
 }
 
 entity WashHistory {

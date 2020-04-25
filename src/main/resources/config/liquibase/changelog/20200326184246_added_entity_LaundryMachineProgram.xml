@@ -19,11 +19,11 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
+            <column name="subprogram" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="time" type="integer">
                 <constraints nullable="false" />
-            </column>
-            <column name="temperature" type="integer">
-                <constraints nullable="true" />
             </column>
             <column name="spin" type="integer">
                 <constraints nullable="true" />
@@ -32,12 +32,6 @@
                 <constraints nullable="true" />
             </column>
             <column name="protect" type="boolean">
-                <constraints nullable="true" />
-            </column>
-            <column name="short_cycle" type="boolean">
-                <constraints nullable="true" />
-            </column>
-            <column name="wrinkle" type="boolean">
                 <constraints nullable="true" />
             </column>
             <column name="laundry_machine_id" type="bigint">
@@ -67,13 +61,11 @@
                   tableName="laundry_machine_program">
             <column name="id" type="numeric"/>
             <column name="name" type="string"/>
+            <column name="subprogram" type="string"/>
             <column name="time" type="numeric"/>
-            <column name="temperature" type="numeric"/>
             <column name="spin" type="numeric"/>
             <column name="pre_wash" type="boolean"/>
             <column name="protect" type="boolean"/>
-            <column name="short_cycle" type="boolean"/>
-            <column name="wrinkle" type="boolean"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>
     </changeSet>

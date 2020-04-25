@@ -21,13 +21,11 @@ export class LaundryMachineProgramUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     name: [null, [Validators.required]],
+    subprogram: [],
     time: [null, [Validators.required]],
-    temperature: [],
     spin: [],
     preWash: [],
     protect: [],
-    shortCycle: [],
-    wrinkle: [],
     laundryMachine: []
   });
 
@@ -50,13 +48,11 @@ export class LaundryMachineProgramUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: laundryMachineProgram.id,
       name: laundryMachineProgram.name,
+      subprogram: laundryMachineProgram.subprogram,
       time: laundryMachineProgram.time,
-      temperature: laundryMachineProgram.temperature,
       spin: laundryMachineProgram.spin,
       preWash: laundryMachineProgram.preWash,
       protect: laundryMachineProgram.protect,
-      shortCycle: laundryMachineProgram.shortCycle,
-      wrinkle: laundryMachineProgram.wrinkle,
       laundryMachine: laundryMachineProgram.laundryMachine
     });
   }
@@ -80,13 +76,11 @@ export class LaundryMachineProgramUpdateComponent implements OnInit {
       ...new LaundryMachineProgram(),
       id: this.editForm.get(['id'])!.value,
       name: this.editForm.get(['name'])!.value,
+      subprogram: this.editForm.get(['subprogram'])!.value,
       time: this.editForm.get(['time'])!.value,
-      temperature: this.editForm.get(['temperature'])!.value,
       spin: this.editForm.get(['spin'])!.value,
       preWash: this.editForm.get(['preWash'])!.value,
       protect: this.editForm.get(['protect'])!.value,
-      shortCycle: this.editForm.get(['shortCycle'])!.value,
-      wrinkle: this.editForm.get(['wrinkle'])!.value,
       laundryMachine: this.editForm.get(['laundryMachine'])!.value
     };
   }

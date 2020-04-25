@@ -20,7 +20,7 @@ describe('Service Tests', () => {
       service = injector.get(LaundryMachineProgramService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new LaundryMachineProgram(0, 'AAAAAAA', 0, 0, 0, false, false, false, false);
+      elemDefault = new LaundryMachineProgram(0, 'AAAAAAA', 'AAAAAAA', 0, 0, false, false);
     });
 
     describe('Service methods', () => {
@@ -55,13 +55,11 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             name: 'BBBBBB',
+            subprogram: 'BBBBBB',
             time: 1,
-            temperature: 1,
             spin: 1,
             preWash: true,
-            protect: true,
-            shortCycle: true,
-            wrinkle: true
+            protect: true
           },
           elemDefault
         );
@@ -79,13 +77,11 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             name: 'BBBBBB',
+            subprogram: 'BBBBBB',
             time: 1,
-            temperature: 1,
             spin: 1,
             preWash: true,
-            protect: true,
-            shortCycle: true,
-            wrinkle: true
+            protect: true
           },
           elemDefault
         );
