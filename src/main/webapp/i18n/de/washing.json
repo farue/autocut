@@ -1,0 +1,13 @@
+{
+  "washing": {
+    "title": "Waschmaschine / Trockner freischalten",
+    "selectMachine": "Maschine auswählen",
+    "selectProgram": "Programm wählen",
+    "buyAndUnlock": "Maschine freischalten (0,80 €)",
+    "messages": {
+      "success": "Maschine {{selectedMachine}} wurde erfolgreich freigeschaltet",
+      "initError": "Fehler bei der Initialisierung. Bitte versuchen Sie es später nochmal.",
+      "error": "Maschine {{selectedMachine}} konnte nicht freigeschaltet werden."
+    }
+  }
+}

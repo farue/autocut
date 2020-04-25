@@ -1,16 +1,23 @@
 package de.farue.autocut.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import de.farue.autocut.domain.enumeration.WashHistoryStatus;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.*;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.Objects;
 import java.time.Instant;
-
-import de.farue.autocut.domain.enumeration.WashHistoryStatus;
 
 /**
  * A WashHistory.
@@ -32,8 +39,10 @@ public class WashHistory implements Serializable {
     @Column(name = "reservation_date")
     private Instant reservationDate;
 
+    @LastModifiedDate
     @Column(name = "last_modified_date")
-    private Instant lastModifiedDate;
+    @JsonIgnore
+    private Instant lastModifiedDate = Instant.now();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")

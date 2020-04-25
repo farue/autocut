@@ -19,4 +19,12 @@ public class BigDecimalUtil {
     public static boolean isNotPositive(BigDecimal d) {
         return d != null && !isPositive(d);
     }
+
+    public static BigDecimal negative(BigDecimal d) {
+        return isPositive(d) ? d.negate() : d;
+    }
+
+    public static BigDecimal positive(BigDecimal d) {
+        return isNegative(d) ? d.negate() : d;
+    }
 }

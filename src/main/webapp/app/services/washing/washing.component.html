@@ -1,0 +1,44 @@
+<div>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 jhiTranslate="washing.title">Unlock washing machine / dryer</h1>
+
+            <div class="alert alert-success" *ngIf="success" jhiTranslate="washing.messages.success">
+                The laundry machine has been unlocked
+            </div>
+
+            <div class="alert alert-danger" *ngIf="error" jhiTranslate="washing.messages.error.fail">
+                Something went wrong. Please try again later.
+            </div>
+
+            <div class="alert alert-danger" *ngIf="initError" jhiTranslate="washing.messages.error.userexists">
+                The service is currently not available. Please try again later.
+            </div>
+
+            <div class="alert alert-danger" *ngIf="errorInsufficientFunds" jhiTranslate="washing.messages.error.insufficientfunds">
+                Not enough funds. Please add money to your account.
+            </div>
+
+            <div class="alert alert-danger" *ngIf="errorMachineUnavailable" jhiTranslate="washing.messages.error.machinenotavailable">
+                The machine is currently not available.
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!initError" class="row justify-content-center">
+        <div class="col-md-8">
+            <label jhiTranslate="washing.selectMachine" for="field_select_machine">Select Machine</label>
+            <select id="field_select_machine" [(ngModel)]="selectedMachine">
+                <option [ngValue]="null"></option>
+                <option *ngFor="let machine of machines" [ngValue]="machine">{{machine.name}}</option>
+            </select>
+        </div>
+        <div *ngIf="selectedMachine"  class="col-md-8">
+            <label jhiTranslate="washing.selectProgram" for="field_select_program">Select Program</label>
+            <select id="field_select_program" [(ngModel)]="selectedProgram">
+                <option [ngValue]="null"></option>
+                <option *ngFor="let program of selectedMachine!.programs" [ngValue]="program">{{program.name}}</option>
+            </select>
+        </div>
+        <button type="submit" [disabled]="invalid()" (click)="unlockAction()" class="btn btn-primary" jhiTranslate="washing.buyAndUnlock">Buy and Unlock</button>
+    </div>
+</div>

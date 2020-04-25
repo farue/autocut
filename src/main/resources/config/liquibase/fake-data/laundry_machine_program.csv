@@ -1,11 +1,11 @@
-id;name;time;temperature;spin;pre_wash;protect;short_cycle;wrinkle
-1;Mandatory connect;70602;43569;53251;true;true;false;true
-2;synthesizing compress Court;19792;82259;36590;false;true;false;true
-3;Web Customizable;3832;35659;400;false;false;false;false
-4;Russian Ruble;79510;91485;52556;true;false;false;true
-5;Shirt Future Avon;91734;33810;11763;true;true;true;true
-6;Global holistic;1397;80979;32804;false;false;false;false
-7;Belize Dollar;65091;72136;55317;true;true;true;true
-8;olive supply-chains Group;99295;90333;1955;true;true;false;false
-9;Auto Loan Account Checking Account;23567;42439;27314;false;false;true;false
-10;Solutions global navigating;66624;84385;10973;true;true;true;true
+id;laundry_machine_id;name;time;temperature;spin;pre_wash;protect;short_cycle;wrinkle
+1;1;Mandatory connect;70602;43569;53251;true;true;false;true
+2;1;synthesizing compress Court;19792;82259;36590;false;true;false;true
+3;1;Web Customizable;3832;35659;400;false;false;false;false
+4;2;Russian Ruble;79510;91485;52556;true;false;false;true
+5;2;Shirt Future Avon;91734;33810;11763;true;true;true;true
+6;2;Global holistic;1397;80979;32804;false;false;false;false
+7;3;Belize Dollar;65091;72136;55317;true;true;true;true
+8;3;olive supply-chains Group;99295;90333;1955;true;true;false;false
+9;3;Auto Loan Account Checking Account;23567;42439;27314;false;false;true;false
+10;4;Solutions global navigating;66624;84385;10973;true;true;true;true

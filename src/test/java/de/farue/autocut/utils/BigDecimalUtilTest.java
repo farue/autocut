@@ -34,4 +34,18 @@ class BigDecimalUtilTest {
         Assertions.assertThat(BigDecimalUtil.isNotPositive(new BigDecimal("0.00"))).isTrue();
         Assertions.assertThat(BigDecimalUtil.isNotPositive(new BigDecimal("-1.23"))).isTrue();
     }
+
+    @Test
+    void testNegative() {
+        Assertions.assertThat(BigDecimalUtil.negative(new BigDecimal("1.23"))).isNegative();
+        Assertions.assertThat(BigDecimalUtil.negative(new BigDecimal("0.00"))).isZero();
+        Assertions.assertThat(BigDecimalUtil.negative(new BigDecimal("-1.23"))).isNegative();
+    }
+
+    @Test
+    void testPositive() {
+        Assertions.assertThat(BigDecimalUtil.positive(new BigDecimal("1.23"))).isPositive();
+        Assertions.assertThat(BigDecimalUtil.positive(new BigDecimal("0.00"))).isZero();
+        Assertions.assertThat(BigDecimalUtil.positive(new BigDecimal("-1.23"))).isPositive();
+    }
 }

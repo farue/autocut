@@ -3,10 +3,13 @@ package de.farue.autocut.domain;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A GlobalSetting.
@@ -17,6 +20,9 @@ import java.util.Objects;
 public class GlobalSetting implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    public static final String WASHING_PRICE_WASHING_MACHINE = "washing.price.washingmachine";
+    public static final String WASHING_PRICE_DRYER = "washing.price.dryer";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

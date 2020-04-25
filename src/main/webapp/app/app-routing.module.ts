@@ -29,6 +29,10 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
           path: 'info',
           loadChildren: () => import('./info/info-routing.module').then(m => m.InfoRoutingModule)
         },
+        {
+          path: 'services',
+          loadChildren: () => import('./services/services-routing.module').then(m => m.ServicesRoutingModule)
+        },
         ...LAYOUT_ROUTES
       ],
       { enableTracing: DEBUG_INFO_ENABLED }

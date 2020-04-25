@@ -1,7 +1,7 @@
 package de.farue.autocut.web.rest.errors;
 
+import de.farue.autocut.service.InsufficientFundsException;
 import io.github.jhipster.web.util.HeaderUtil;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.ResponseEntity;
@@ -120,5 +120,11 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
             .with(MESSAGE_KEY, ErrorConstants.ERR_CONCURRENCY_FAILURE)
             .build();
         return create(ex, problem, request);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleInsufficientFundsException(InsufficientFundsException ex,
+        NativeWebRequest request) {
+        return create(ex, request);
     }
 }
