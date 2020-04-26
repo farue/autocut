@@ -15,30 +15,67 @@
                 The service is currently not available. Please try again later.
             </div>
 
-            <div class="alert alert-danger" *ngIf="errorInsufficientFunds" jhiTranslate="washing.messages.error.insufficientfunds">
+            <div class="alert alert-danger" *ngIf="errorInsufficientFunds"
+                 jhiTranslate="washing.messages.error.insufficientfunds">
                 Not enough funds. Please add money to your account.
             </div>
 
-            <div class="alert alert-danger" *ngIf="errorMachineUnavailable" jhiTranslate="washing.messages.error.machinenotavailable">
+            <div class="alert alert-danger" *ngIf="errorMachineUnavailable"
+                 jhiTranslate="washing.messages.error.machinenotavailable">
                 The machine is currently not available.
             </div>
         </div>
     </div>
     <div *ngIf="!initError" class="row justify-content-center">
         <div class="col-md-8">
-            <label jhiTranslate="washing.selectMachine" for="field_select_machine">Select Machine</label>
-            <select id="field_select_machine" [(ngModel)]="selectedMachine">
-                <option [ngValue]="null"></option>
-                <option *ngFor="let machine of machines" [ngValue]="machine">{{machine.name}}</option>
-            </select>
+            <div class="row form-group">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                    <ng-select [items]="machines" [(ngModel)]="selectedMachine" bindLabel="name"
+                               placeholder="{{ 'washing.selectMachine' | translate }}" (change)="update()"></ng-select>
+                </div>
+            </div>
+            <div *ngIf="isShowProgramSelect()" class="row form-group">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                    <ng-select [items]="programs" [(ngModel)]="selectedProgram"
+                               placeholder="{{ 'washing.selectProgram' | translate }}" (change)="update()"></ng-select>
+                </div>
+            </div>
+            <div *ngIf="isShowSubprogramSelect()" class="row form-group">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                    <ng-select [items]="subprograms" [(ngModel)]="selectedSubprogram"
+                               placeholder="{{ 'washing.selectSubprogram' | translate }}"
+                               (change)="update()"></ng-select>
+                </div>
+            </div>
+            <div *ngIf="isShowSpinSelect()" class="row form-group">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                    <ng-select [items]="spins" [(ngModel)]="selectedSpin"
+                               placeholder="{{ 'washing.selectSpin' | translate }}" (change)="update()"></ng-select>
+                </div>
+            </div>
+            <div *ngIf="isShowPreWashCheckbox()" class="row custom-control form-group">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 custom-checkbox">
+                    <input id="field_checkbox_prewash" type="checkbox" class="custom-control-input"
+                           [(ngModel)]="selectedPreWash">
+                    <label jhiTranslate="washing.preWashCheckbox" for="field_checkbox_prewash"
+                           class="custom-control-label">Vorwäsche</label>
+                </div>
+            </div>
+            <div *ngIf="isShowProtectCheckbox()" class="row custom-control form-group">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 custom-checkbox">
+                    <input id="field_checkbox_protect" type="checkbox" class="custom-control-input"
+                           [(ngModel)]="selectedProtect">
+                    <label jhiTranslate="washing.protectCheckbox" for="field_checkbox_protect"
+                           class="custom-control-label">Schonen</label>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                    <button type="submit" [disabled]="invalid()" (click)="unlockAction()" class="btn btn-primary"
+                            jhiTranslate="washing.buyAndUnlock">Buy and Unlock
+                    </button>
+                </div>
+            </div>
         </div>
-        <div *ngIf="selectedMachine"  class="col-md-8">
-            <label jhiTranslate="washing.selectProgram" for="field_select_program">Select Program</label>
-            <select id="field_select_program" [(ngModel)]="selectedProgram">
-                <option [ngValue]="null"></option>
-                <option *ngFor="let program of selectedMachine!.programs" [ngValue]="program">{{program.name}}</option>
-            </select>
-        </div>
-        <button type="submit" [disabled]="invalid()" (click)="unlockAction()" class="btn btn-primary" jhiTranslate="washing.buyAndUnlock">Buy and Unlock</button>
     </div>
 </div>

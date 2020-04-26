@@ -1,5 +1,17 @@
 {
-  "selectMachine": "Select Machine",
-  "selectProgram": "Select Program",
-  "buyAndUnlock": "Unlock Machine (0.80 €)"
+  "washing": {
+    "title": "Unlock washing machine / dryer",
+    "selectMachine": "Machine",
+    "selectProgram": "Program",
+    "buyAndUnlock": "Unlock Machine (0.80 €)",
+    "selectSubprogram": "Subprogramm",
+    "selectSpin": "Schleudern",
+    "preWashCheckbox": "Vorwäsche",
+    "protectCheckbox": "Schonen",
+    "messages": {
+      "success": "{{selectedMachine}} was unlocked successfully",
+      "initError": "Error during initialization. Please try again later.",
+      "error": "Machine {{selectedMachine}} could not be unlocked."
+    }
+  }
 }
