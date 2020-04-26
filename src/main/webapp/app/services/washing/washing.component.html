@@ -3,7 +3,7 @@
         <div class="col-md-8">
             <h1 jhiTranslate="washing.title">Unlock washing machine / dryer</h1>
 
-            <div class="alert alert-success" *ngIf="success" jhiTranslate="washing.messages.success">
+            <div class="alert alert-success" *ngIf="success" jhiTranslate="washing.messages.success" [translateValues]="{ machine: selectedMachine?.name }">
                 The laundry machine has been unlocked
             </div>
 

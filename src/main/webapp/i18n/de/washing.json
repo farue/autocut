@@ -9,7 +9,7 @@
     "preWashCheckbox": "Vorwäsche",
     "protectCheckbox": "Schonen",
     "messages": {
-      "success": "{{selectedMachine}} wurde erfolgreich freigeschaltet",
+      "success": "{{machine}} wurde erfolgreich freigeschaltet",
       "initError": "Fehler bei der Initialisierung. Bitte versuchen Sie es später nochmal.",
       "error": "Maschine {{selectedMachine}} konnte nicht freigeschaltet werden."
     }

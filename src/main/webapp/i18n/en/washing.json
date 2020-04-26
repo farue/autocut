@@ -9,7 +9,7 @@
     "preWashCheckbox": "Vorwäsche",
     "protectCheckbox": "Schonen",
     "messages": {
-      "success": "{{selectedMachine}} was unlocked successfully",
+      "success": "{{machine}} was unlocked successfully",
       "initError": "Error during initialization. Please try again later.",
       "error": "Machine {{selectedMachine}} could not be unlocked."
     }
