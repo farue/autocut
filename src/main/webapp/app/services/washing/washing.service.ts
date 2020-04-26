@@ -16,9 +16,9 @@ export class WashingService {
   }
 
   unlock(laundryMachine: LaundryMachine, laundryMachineProgram: LaundryMachineProgram): Observable<{}> {
-    return this.http.post(this.resourceUrl + '/unlock', {
-      laundryMachine,
-      laundryMachineProgram
-    });
+    const machineId = laundryMachine.id!;
+    const programId = laundryMachineProgram.id!;
+    const params = { programId: String(programId) };
+    return this.http.post(`${this.resourceUrl}/laundry-machines/${machineId}/unlock`, {}, { params });
   }
 }

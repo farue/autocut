@@ -4,7 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-@FeignClient(name = "${spring.application.name}", url = "${application.washit.url}")
+@FeignClient(name = "${spring.application.name}", url = "${application.washit.url}/api/v1/washing")
 public interface WashItClient {
 
     @PostMapping("/activate/{id}")

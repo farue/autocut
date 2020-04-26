@@ -130,4 +130,4 @@ jhipster:
 
 application:
   washit:
-    url: localhost
+    url: localhost:8090

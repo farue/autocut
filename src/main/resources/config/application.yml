@@ -167,4 +167,4 @@ jhipster:
 
 application:
   washit:
-    url: http://137.226.153.3
+    url: http://137.226.153.3:8080

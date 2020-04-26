@@ -6,6 +6,7 @@ import de.farue.autocut.domain.LaundryMachineProgram;
 import de.farue.autocut.domain.Tenant;
 import de.farue.autocut.domain.Transaction;
 import de.farue.autocut.domain.WashHistory;
+import de.farue.autocut.domain.enumeration.TransactionKind;
 import de.farue.autocut.domain.enumeration.WashHistoryStatus;
 import de.farue.autocut.repository.LaundryMachineRepository;
 import de.farue.autocut.repository.TenantRepository;
@@ -63,7 +64,17 @@ public class WashingService {
             .collect(Collectors.toList());
     }
 
-    public void purchaseAndUnlock(@Nullable LaundryMachine machine, @Nullable LaundryMachineProgram program) {
+    public void purchaseAndUnlock(Long machineId, Long programId) {
+        LaundryMachine machine = laundryMachineRepository.findById(machineId)
+            .orElseThrow(LaundryMachineDoesNotExistException::new);
+        LaundryMachineProgram program = machine.getPrograms().stream()
+            .filter(p -> p.getId().equals(programId))
+            .findFirst()
+            .orElseThrow(IllegalArgumentException::new);
+        purchaseAndUnlock(machine, program);
+    }
+
+    public void purchaseAndUnlock(LaundryMachine machine, LaundryMachineProgram program) {
         SecurityUtils.getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
             .flatMap(tenantRepository::findOneByUser)
@@ -79,21 +90,19 @@ public class WashingService {
         laundryMachineRepository.saveAndFlush(loadedMachine);
     }
 
-    private void doUnlock(Tenant tenant, @Nullable LaundryMachine machine,
-        @Nullable LaundryMachineProgram program) {
+    private void doUnlock(Tenant tenant, LaundryMachine machine, LaundryMachineProgram program) {
+        assert machine.getPrograms().contains(program);
+
         Instant timestamp = Instant.now();
-        LaundryMachine loadedMachine = laundryMachineRepository
-            .findByIdentifier(machine.getIdentifier())
-            .orElseThrow(LaundryMachineDoesNotExistException::new);
         WashHistory washHistory = findOrCreateWashHistory(tenant, timestamp, machine, program);
-        if (!loadedMachine.isEnabled()) {
+        if (!machine.isEnabled()) {
             log.debug("{} is disabled. Adding history item {}", machine.getName(), washHistory);
             washHistory.setStatus(WashHistoryStatus.CANCELLED_BY_SYSTEM);
             washHistoryService.saveAndFlush(washHistory);
             throw new LaundryMachineUnavailableException();
         }
         BigDecimal balance = transactionService.getCurrentBalance(tenant);
-        BigDecimal cost = switch (loadedMachine.getType()) {
+        BigDecimal cost = switch (machine.getType()) {
             case WASHING_MACHINE -> globalSettingService
                 .getValue(GlobalSetting.WASHING_PRICE_WASHING_MACHINE);
             case DRYER -> globalSettingService
@@ -107,8 +116,10 @@ public class WashingService {
             throw new InsufficientFundsException();
         }
         Transaction transaction = new Transaction();
+        transaction.setKind(TransactionKind.PURCHASE);
         transaction.setBalanceAfter(newBalance);
         transaction.setValue(amount);
+        transaction.setAmount(amount);
         transaction.setLease(tenant.getLease());
         transaction.setBalance(balance);
         transaction.setBookingDate(timestamp);

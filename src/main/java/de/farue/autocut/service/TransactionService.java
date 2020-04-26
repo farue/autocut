@@ -101,14 +101,14 @@ public class TransactionService {
     public void setBalanceAfter(Transaction transaction) {
         Lease lease = transaction.getLease();
         BigDecimal currentBalance = getCurrentBalance(lease);
-        BigDecimal newBalance = currentBalance.add(transaction.getAmount());
+        BigDecimal newBalance = currentBalance.add(transaction.getValue());
         transaction.setBalanceAfter(newBalance);
     }
 
     public void addTransactionWithBalanceCheck(Transaction transaction) {
         Lease lease = transaction.getLease();
         BigDecimal currentBalance = getCurrentBalance(lease);
-        if (currentBalance.add(transaction.getAmount()).compareTo(BigDecimal.ZERO) < 0) {
+        if (currentBalance.add(transaction.getValue()).compareTo(BigDecimal.ZERO) < 0) {
             // TODO: New exception class
             throw new RuntimeException("Not enough funds");
         }
