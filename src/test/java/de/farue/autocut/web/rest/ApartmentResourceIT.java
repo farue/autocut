@@ -31,11 +31,11 @@ import de.farue.autocut.domain.enumeration.ApartmentTypes;
 @WithMockUser
 public class ApartmentResourceIT {
 
-    private static final String DEFAULT_APARTMENT_NR = "AAAAAAAAAA";
-    private static final String UPDATED_APARTMENT_NR = "BBBBBBBBBB";
+    private static final String DEFAULT_NR = "AAAAAAAAAA";
+    private static final String UPDATED_NR = "BBBBBBBBBB";
 
-    private static final ApartmentTypes DEFAULT_APARTMENT_TYPE = ApartmentTypes.SHARED;
-    private static final ApartmentTypes UPDATED_APARTMENT_TYPE = ApartmentTypes.SINGLE;
+    private static final ApartmentTypes DEFAULT_TYPE = ApartmentTypes.SHARED;
+    private static final ApartmentTypes UPDATED_TYPE = ApartmentTypes.SINGLE;
 
     private static final Integer DEFAULT_MAX_NUMBER_OF_LEASES = 0;
     private static final Integer UPDATED_MAX_NUMBER_OF_LEASES = 1;
@@ -59,8 +59,8 @@ public class ApartmentResourceIT {
      */
     public static Apartment createEntity(EntityManager em) {
         Apartment apartment = new Apartment()
-            .apartmentNr(DEFAULT_APARTMENT_NR)
-            .apartmentType(DEFAULT_APARTMENT_TYPE)
+            .nr(DEFAULT_NR)
+            .type(DEFAULT_TYPE)
             .maxNumberOfLeases(DEFAULT_MAX_NUMBER_OF_LEASES);
         return apartment;
     }
@@ -72,8 +72,8 @@ public class ApartmentResourceIT {
      */
     public static Apartment createUpdatedEntity(EntityManager em) {
         Apartment apartment = new Apartment()
-            .apartmentNr(UPDATED_APARTMENT_NR)
-            .apartmentType(UPDATED_APARTMENT_TYPE)
+            .nr(UPDATED_NR)
+            .type(UPDATED_TYPE)
             .maxNumberOfLeases(UPDATED_MAX_NUMBER_OF_LEASES);
         return apartment;
     }
@@ -98,8 +98,8 @@ public class ApartmentResourceIT {
         List<Apartment> apartmentList = apartmentRepository.findAll();
         assertThat(apartmentList).hasSize(databaseSizeBeforeCreate + 1);
         Apartment testApartment = apartmentList.get(apartmentList.size() - 1);
-        assertThat(testApartment.getApartmentNr()).isEqualTo(DEFAULT_APARTMENT_NR);
-        assertThat(testApartment.getApartmentType()).isEqualTo(DEFAULT_APARTMENT_TYPE);
+        assertThat(testApartment.getNr()).isEqualTo(DEFAULT_NR);
+        assertThat(testApartment.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testApartment.getMaxNumberOfLeases()).isEqualTo(DEFAULT_MAX_NUMBER_OF_LEASES);
     }
 
@@ -125,10 +125,10 @@ public class ApartmentResourceIT {
 
     @Test
     @Transactional
-    public void checkApartmentNrIsRequired() throws Exception {
+    public void checkNrIsRequired() throws Exception {
         int databaseSizeBeforeTest = apartmentRepository.findAll().size();
         // set the field null
-        apartment.setApartmentNr(null);
+        apartment.setNr(null);
 
         // Create the Apartment, which fails.
 
@@ -143,10 +143,10 @@ public class ApartmentResourceIT {
 
     @Test
     @Transactional
-    public void checkApartmentTypeIsRequired() throws Exception {
+    public void checkTypeIsRequired() throws Exception {
         int databaseSizeBeforeTest = apartmentRepository.findAll().size();
         // set the field null
-        apartment.setApartmentType(null);
+        apartment.setType(null);
 
         // Create the Apartment, which fails.
 
@@ -188,8 +188,8 @@ public class ApartmentResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(apartment.getId().intValue())))
-            .andExpect(jsonPath("$.[*].apartmentNr").value(hasItem(DEFAULT_APARTMENT_NR)))
-            .andExpect(jsonPath("$.[*].apartmentType").value(hasItem(DEFAULT_APARTMENT_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].nr").value(hasItem(DEFAULT_NR)))
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].maxNumberOfLeases").value(hasItem(DEFAULT_MAX_NUMBER_OF_LEASES)));
     }
     
@@ -204,8 +204,8 @@ public class ApartmentResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(apartment.getId().intValue()))
-            .andExpect(jsonPath("$.apartmentNr").value(DEFAULT_APARTMENT_NR))
-            .andExpect(jsonPath("$.apartmentType").value(DEFAULT_APARTMENT_TYPE.toString()))
+            .andExpect(jsonPath("$.nr").value(DEFAULT_NR))
+            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
             .andExpect(jsonPath("$.maxNumberOfLeases").value(DEFAULT_MAX_NUMBER_OF_LEASES));
     }
 
@@ -230,8 +230,8 @@ public class ApartmentResourceIT {
         // Disconnect from session so that the updates on updatedApartment are not directly saved in db
         em.detach(updatedApartment);
         updatedApartment
-            .apartmentNr(UPDATED_APARTMENT_NR)
-            .apartmentType(UPDATED_APARTMENT_TYPE)
+            .nr(UPDATED_NR)
+            .type(UPDATED_TYPE)
             .maxNumberOfLeases(UPDATED_MAX_NUMBER_OF_LEASES);
 
         restApartmentMockMvc.perform(put("/api/apartments")
@@ -243,8 +243,8 @@ public class ApartmentResourceIT {
         List<Apartment> apartmentList = apartmentRepository.findAll();
         assertThat(apartmentList).hasSize(databaseSizeBeforeUpdate);
         Apartment testApartment = apartmentList.get(apartmentList.size() - 1);
-        assertThat(testApartment.getApartmentNr()).isEqualTo(UPDATED_APARTMENT_NR);
-        assertThat(testApartment.getApartmentType()).isEqualTo(UPDATED_APARTMENT_TYPE);
+        assertThat(testApartment.getNr()).isEqualTo(UPDATED_NR);
+        assertThat(testApartment.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testApartment.getMaxNumberOfLeases()).isEqualTo(UPDATED_MAX_NUMBER_OF_LEASES);
     }
 

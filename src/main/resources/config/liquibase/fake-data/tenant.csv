@@ -1,11 +1,11 @@
-id;first_name;last_name;email;created_by;created_date;last_modified_by;last_modified_date
-1;Alessia;Wolf;Jodie.Murray@hotmail.com;withdrawal;2019-11-16T17:15:11;functionalities Kentucky;2019-11-16T20:44:41
-2;Hildegard;D'Amore;Scot_Ritchie10@yahoo.com;Usability Fresh;2019-11-16T14:05:46;revolutionize;2019-11-16T19:30:28
-3;Jeffry;Spinka;Johnathon.Blanda@gmail.com;invoice;2019-11-16T23:31:36;payment;2019-11-17T01:16:02
-4;Hallie;Cartwright;Ebony.Flatley@gmail.com;quantifying Rue;2019-11-16T19:17:48;invoice Kentucky Cambridgeshire;2019-11-16T08:56:15
-5;Dewitt;Halvorson;Hilma_Cremin57@gmail.com;Sports;2019-11-16T23:10:50;Markets monitor;2019-11-16T11:04:35
-6;Erwin;Heathcote;Gladyce_Deckow84@gmail.com;networks;2019-11-16T16:56:52;web services forecast;2019-11-16T04:15:06
-7;Rose;Kilback;Brown51@yahoo.com;front-end Ball;2019-11-16T05:24:30;Unbranded Soft Chair Integrated;2019-11-16T21:29:18
-8;Gennaro;Fisher;Adell67@gmail.com;Lock;2019-11-16T02:12:38;Industrial wireless;2019-11-16T04:36:04
-9;Adah;Thompson;Velda_Kris6@gmail.com;Valleys platforms;2019-11-16T23:54:54;Vermont innovate Group;2019-11-16T19:54:54
-10;Ubaldo;Doyle;Pearl_Legros@gmail.com;Indiana Legacy;2019-11-16T22:17:03;Belarussian Ruble;2019-11-16T20:30:44
+id;picture_id;picture_id_content_type;verified
+1;../fake-data/blob/hipster.png;image/png;false
+2;../fake-data/blob/hipster.png;image/png;true
+3;../fake-data/blob/hipster.png;image/png;true
+4;../fake-data/blob/hipster.png;image/png;true
+5;../fake-data/blob/hipster.png;image/png;true
+6;../fake-data/blob/hipster.png;image/png;true
+7;../fake-data/blob/hipster.png;image/png;false
+8;../fake-data/blob/hipster.png;image/png;false
+9;../fake-data/blob/hipster.png;image/png;true
+10;../fake-data/blob/hipster.png;image/png;false

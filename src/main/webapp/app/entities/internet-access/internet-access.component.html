@@ -28,6 +28,7 @@
                     <th scope="col" ><span jhiTranslate="autocutApp.internetAccess.ip2">Ip 2</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.internetAccess.switchInterface">Switch Interface</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.internetAccess.port">Port</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.internetAccess.networkSwitch">Network Switch</span></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -39,6 +40,11 @@
                     <td>{{ internetAccess.ip2 }}</td>
                     <td>{{ internetAccess.switchInterface }}</td>
                     <td>{{ internetAccess.port }}</td>
+                    <td>
+                        <div *ngIf="internetAccess.networkSwitch">
+                            <a [routerLink]="['/network-switch', internetAccess.networkSwitch?.id, 'view']" >{{ internetAccess.networkSwitch?.id }}</a>
+                        </div>
+                    </td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"

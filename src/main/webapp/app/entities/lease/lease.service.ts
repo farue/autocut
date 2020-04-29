@@ -51,9 +51,7 @@ export class LeaseService {
   protected convertDateFromClient(lease: ILease): ILease {
     const copy: ILease = Object.assign({}, lease, {
       start: lease.start && lease.start.isValid() ? lease.start.toJSON() : undefined,
-      end: lease.end && lease.end.isValid() ? lease.end.toJSON() : undefined,
-      createdDate: lease.createdDate && lease.createdDate.isValid() ? lease.createdDate.toJSON() : undefined,
-      lastModifiedDate: lease.lastModifiedDate && lease.lastModifiedDate.isValid() ? lease.lastModifiedDate.toJSON() : undefined
+      end: lease.end && lease.end.isValid() ? lease.end.toJSON() : undefined
     });
     return copy;
   }
@@ -62,8 +60,6 @@ export class LeaseService {
     if (res.body) {
       res.body.start = res.body.start ? moment(res.body.start) : undefined;
       res.body.end = res.body.end ? moment(res.body.end) : undefined;
-      res.body.createdDate = res.body.createdDate ? moment(res.body.createdDate) : undefined;
-      res.body.lastModifiedDate = res.body.lastModifiedDate ? moment(res.body.lastModifiedDate) : undefined;
     }
     return res;
   }
@@ -73,8 +69,6 @@ export class LeaseService {
       res.body.forEach((lease: ILease) => {
         lease.start = lease.start ? moment(lease.start) : undefined;
         lease.end = lease.end ? moment(lease.end) : undefined;
-        lease.createdDate = lease.createdDate ? moment(lease.createdDate) : undefined;
-        lease.lastModifiedDate = lease.lastModifiedDate ? moment(lease.lastModifiedDate) : undefined;
       });
     }
     return res;

@@ -1,4 +1,3 @@
-<script src="../../services/washing/washing.component.ts"></script>
 <div class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
@@ -13,81 +12,27 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.tenant.firstName" for="field_firstName">First Name</label>
-                    <input type="text" class="form-control" name="firstName" id="field_firstName"
-                           formControlName="firstName"/>
-                    <div *ngIf="editForm.get('firstName')!.invalid && (editForm.get('firstName')!.dirty || editForm.get('firstName')!.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('firstName')?.errors?.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
+                    <label class="form-control-label" jhiTranslate="autocutApp.tenant.pictureId" for="field_pictureId">Picture Id</label>
+                    <div>
+                        <img [src]="'data:' + editForm.get('pictureIdContentType')!.value + ';base64,' + editForm.get('pictureId')!.value" style="max-height: 100px;" *ngIf="editForm.get('pictureId')!.value" alt="tenant image"/>
+                        <div *ngIf="editForm.get('pictureId')!.value" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{ editForm.get('pictureIdContentType')!.value }}, {{ byteSize(editForm.get('pictureId')!.value) }}</span>
+                            <button type="button" (click)="clearInputImage('pictureId', 'pictureIdContentType', 'file_pictureId')" class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon icon="times"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_pictureId" (change)="setFileData($event, 'pictureId', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
                     </div>
+                    <input type="hidden" class="form-control" name="pictureId" id="field_pictureId"
+                           formControlName="pictureId"/>
+                    <input type="hidden" class="form-control" name="pictureIdContentType" id="field_pictureIdContentType"
+                           formControlName="pictureIdContentType" />
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.tenant.lastName" for="field_lastName">Last Name</label>
-                    <input type="text" class="form-control" name="lastName" id="field_lastName"
-                           formControlName="lastName"/>
-                    <div *ngIf="editForm.get('lastName')!.invalid && (editForm.get('lastName')!.dirty || editForm.get('lastName')!.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('lastName')?.errors?.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.tenant.email" for="field_email">Email</label>
-                    <input type="text" class="form-control" name="email" id="field_email"
-                           formControlName="email"/>
-                    <div *ngIf="editForm.get('email')!.invalid && (editForm.get('email')!.dirty || editForm.get('email')!.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('email')?.errors?.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.tenant.createdBy" for="field_createdBy">Created By</label>
-                    <input type="text" class="form-control" name="createdBy" id="field_createdBy"
-                           formControlName="createdBy"/>
-                    <div *ngIf="editForm.get('createdBy')!.invalid && (editForm.get('createdBy')!.dirty || editForm.get('createdBy')!.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('createdBy')?.errors?.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.tenant.createdDate" for="field_createdDate">Created Date</label>
-                    <div class="d-flex">
-                        <input id="field_createdDate" type="datetime-local" class="form-control" name="createdDate" formControlName="createdDate" placeholder="YYYY-MM-DD HH:mm"/>
-                    </div>
-                    <div *ngIf="editForm.get('createdDate')!.invalid && (editForm.get('createdDate')!.dirty || editForm.get('createdDate')!.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('createdDate')?.errors?.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                        <small class="form-text text-danger"
-                            [hidden]="!editForm.get('createdDate')?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
-                            This field should be a date and time.
-                        </small>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.tenant.lastModifiedBy" for="field_lastModifiedBy">Last Modified By</label>
-                    <input type="text" class="form-control" name="lastModifiedBy" id="field_lastModifiedBy"
-                           formControlName="lastModifiedBy"/>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.tenant.lastModifiedDate" for="field_lastModifiedDate">Last Modified Date</label>
-                    <div class="d-flex">
-                        <input id="field_lastModifiedDate" type="datetime-local" class="form-control" name="lastModifiedDate" formControlName="lastModifiedDate" placeholder="YYYY-MM-DD HH:mm"/>
-                    </div>
+                    <label class="form-control-label" jhiTranslate="autocutApp.tenant.verified" for="field_verified">Verified</label>
+                    <input type="checkbox" class="form-control" name="verified" id="field_verified"
+                           formControlName="verified"/>
                 </div>
 
                 <div class="form-group">

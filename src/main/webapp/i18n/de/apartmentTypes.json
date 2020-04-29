@@ -3,7 +3,8 @@
     "ApartmentTypes": {
       "null": "",
       "SHARED": "WG",
-      "SINGLE": "Einzel"
+      "SINGLE": "Einzel",
+      "SHORT_TERM": "Kurzzeit"
     }
   }
 }

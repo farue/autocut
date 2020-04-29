@@ -26,8 +26,8 @@ export class ApartmentUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    apartmentNr: [null, [Validators.required]],
-    apartmentType: [null, [Validators.required]],
+    nr: [null, [Validators.required]],
+    type: [null, [Validators.required]],
     maxNumberOfLeases: [null, [Validators.required, Validators.min(0)]],
     internetAccess: [],
     address: []
@@ -74,8 +74,8 @@ export class ApartmentUpdateComponent implements OnInit {
   updateForm(apartment: IApartment): void {
     this.editForm.patchValue({
       id: apartment.id,
-      apartmentNr: apartment.apartmentNr,
-      apartmentType: apartment.apartmentType,
+      nr: apartment.nr,
+      type: apartment.type,
       maxNumberOfLeases: apartment.maxNumberOfLeases,
       internetAccess: apartment.internetAccess,
       address: apartment.address
@@ -100,8 +100,8 @@ export class ApartmentUpdateComponent implements OnInit {
     return {
       ...new Apartment(),
       id: this.editForm.get(['id'])!.value,
-      apartmentNr: this.editForm.get(['apartmentNr'])!.value,
-      apartmentType: this.editForm.get(['apartmentType'])!.value,
+      nr: this.editForm.get(['nr'])!.value,
+      type: this.editForm.get(['type'])!.value,
       maxNumberOfLeases: this.editForm.get(['maxNumberOfLeases'])!.value,
       internetAccess: this.editForm.get(['internetAccess'])!.value,
       address: this.editForm.get(['address'])!.value

@@ -19,12 +19,9 @@
       "nr": "Nr",
       "start": "Start",
       "end": "End",
-      "createdBy": "Created By",
-      "createdDate": "Created Date",
-      "lastModifiedBy": "Last Modified By",
-      "lastModifiedDate": "Last Modified Date",
+      "blocked": "Blocked",
+      "pictureContract": "Picture Contract",
       "tenants": "Tenants",
-      "account": "Account",
       "apartment": "Apartment"
     }
   }

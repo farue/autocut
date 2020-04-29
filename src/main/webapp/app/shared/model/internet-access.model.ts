@@ -1,3 +1,4 @@
+import { INetworkSwitch } from 'app/shared/model/network-switch.model';
 import { IApartment } from 'app/shared/model/apartment.model';
 
 export interface IInternetAccess {
@@ -7,6 +8,7 @@ export interface IInternetAccess {
   ip2?: string;
   switchInterface?: string;
   port?: number;
+  networkSwitch?: INetworkSwitch;
   apartment?: IApartment;
 }
 
@@ -18,6 +20,7 @@ export class InternetAccess implements IInternetAccess {
     public ip2?: string,
     public switchInterface?: string,
     public port?: number,
+    public networkSwitch?: INetworkSwitch,
     public apartment?: IApartment
   ) {
     this.blocked = this.blocked || false;

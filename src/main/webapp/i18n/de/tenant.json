@@ -16,13 +16,8 @@
       "detail": {
         "title": "Tenant"
       },
-      "firstName": "First Name",
-      "lastName": "Last Name",
-      "email": "Email",
-      "createdBy": "Created By",
-      "createdDate": "Created Date",
-      "lastModifiedBy": "Last Modified By",
-      "lastModifiedDate": "Last Modified Date",
+      "pictureId": "Ausweis Foto",
+      "verified": "Verifiziert",
       "user": "User",
       "securityPolicies": "Security Policies",
       "lease": "Lease"

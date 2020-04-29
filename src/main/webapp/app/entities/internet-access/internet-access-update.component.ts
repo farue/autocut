@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 
 import { IInternetAccess, InternetAccess } from 'app/shared/model/internet-access.model';
 import { InternetAccessService } from './internet-access.service';
+import { INetworkSwitch } from 'app/shared/model/network-switch.model';
+import { NetworkSwitchService } from 'app/entities/network-switch/network-switch.service';
 
 @Component({
   selector: 'jhi-internet-access-update',
@@ -14,6 +16,7 @@ import { InternetAccessService } from './internet-access.service';
 })
 export class InternetAccessUpdateComponent implements OnInit {
   isSaving = false;
+  networkswitches: INetworkSwitch[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -21,14 +24,22 @@ export class InternetAccessUpdateComponent implements OnInit {
     ip1: [null, [Validators.required]],
     ip2: [null, [Validators.required]],
     switchInterface: [null, [Validators.required]],
-    port: [null, [Validators.required, Validators.min(1)]]
+    port: [null, [Validators.required, Validators.min(1)]],
+    networkSwitch: []
   });
 
-  constructor(protected internetAccessService: InternetAccessService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
+  constructor(
+    protected internetAccessService: InternetAccessService,
+    protected networkSwitchService: NetworkSwitchService,
+    protected activatedRoute: ActivatedRoute,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ internetAccess }) => {
       this.updateForm(internetAccess);
+
+      this.networkSwitchService.query().subscribe((res: HttpResponse<INetworkSwitch[]>) => (this.networkswitches = res.body || []));
     });
   }
 
@@ -39,7 +50,8 @@ export class InternetAccessUpdateComponent implements OnInit {
       ip1: internetAccess.ip1,
       ip2: internetAccess.ip2,
       switchInterface: internetAccess.switchInterface,
-      port: internetAccess.port
+      port: internetAccess.port,
+      networkSwitch: internetAccess.networkSwitch
     });
   }
 
@@ -65,7 +77,8 @@ export class InternetAccessUpdateComponent implements OnInit {
       ip1: this.editForm.get(['ip1'])!.value,
       ip2: this.editForm.get(['ip2'])!.value,
       switchInterface: this.editForm.get(['switchInterface'])!.value,
-      port: this.editForm.get(['port'])!.value
+      port: this.editForm.get(['port'])!.value,
+      networkSwitch: this.editForm.get(['networkSwitch'])!.value
     };
   }
 
@@ -83,5 +96,9 @@ export class InternetAccessUpdateComponent implements OnInit {
 
   protected onSaveError(): void {
     this.isSaving = false;
+  }
+
+  trackById(index: number, item: INetworkSwitch): any {
+    return item.id;
   }
 }

@@ -2,47 +2,13 @@
     "name": "Tenant",
     "fields": [
         {
-            "fieldName": "firstName",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldName": "pictureId",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
         },
         {
-            "fieldName": "lastName",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "email",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "createdBy",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "createdDate",
-            "fieldType": "Instant",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "lastModifiedBy",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "lastModifiedDate",
-            "fieldType": "Instant"
+            "fieldName": "verified",
+            "fieldType": "Boolean"
         }
     ],
     "relationships": [

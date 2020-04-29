@@ -32,10 +32,7 @@
         },
         {
             "fieldName": "balanceAfter",
-            "fieldType": "BigDecimal",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldType": "BigDecimal"
         },
         {
             "fieldName": "description",
@@ -51,27 +48,13 @@
         {
             "fieldName": "recipient",
             "fieldType": "String"
-        },
-        {
-            "fieldName": "amount",
-            "fieldType": "BigDecimal",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "balance",
-            "fieldType": "BigDecimal",
-            "fieldValidateRules": [
-                "required"
-            ]
         }
     ],
     "relationships": [
         {
             "relationshipType": "many-to-one",
             "otherEntityName": "lease",
-            "otherEntityRelationshipName": "account",
+            "otherEntityRelationshipName": "transaction",
             "relationshipName": "lease",
             "otherEntityField": "id"
         }

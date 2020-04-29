@@ -12,8 +12,6 @@ export interface ITransaction {
   description?: string;
   issuer?: string;
   recipient?: string;
-  amount?: number;
-  balance?: number;
   lease?: ILease;
 }
 
@@ -28,8 +26,6 @@ export class Transaction implements ITransaction {
     public description?: string,
     public issuer?: string,
     public recipient?: string,
-    public amount?: number,
-    public balance?: number,
     public lease?: ILease
   ) {}
 }

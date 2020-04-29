@@ -83,16 +83,6 @@
                     <label class="form-control-label" jhiTranslate="autocutApp.transaction.balanceAfter" for="field_balanceAfter">Balance After</label>
                     <input type="number" class="form-control" name="balanceAfter" id="field_balanceAfter"
                            formControlName="balanceAfter"/>
-                    <div *ngIf="editForm.get('balanceAfter')!.invalid && (editForm.get('balanceAfter')!.dirty || editForm.get('balanceAfter')!.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('balanceAfter')?.errors?.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                        <small class="form-text text-danger"
-                            [hidden]="!editForm.get('balanceAfter')?.errors?.number" jhiTranslate="entity.validation.number">
-                            This field should be a number.
-                        </small>
-                    </div>
                 </div>
 
                 <div class="form-group">
@@ -117,38 +107,6 @@
                     <label class="form-control-label" jhiTranslate="autocutApp.transaction.recipient" for="field_recipient">Recipient</label>
                     <input type="text" class="form-control" name="recipient" id="field_recipient"
                            formControlName="recipient"/>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.transaction.amount" for="field_amount">Amount</label>
-                    <input type="number" class="form-control" name="amount" id="field_amount"
-                           formControlName="amount"/>
-                    <div *ngIf="editForm.get('amount')!.invalid && (editForm.get('amount')!.dirty || editForm.get('amount')!.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('amount')?.errors?.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                        <small class="form-text text-danger"
-                            [hidden]="!editForm.get('amount')?.errors?.number" jhiTranslate="entity.validation.number">
-                            This field should be a number.
-                        </small>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.transaction.balance" for="field_balance">Balance</label>
-                    <input type="number" class="form-control" name="balance" id="field_balance"
-                           formControlName="balance"/>
-                    <div *ngIf="editForm.get('balance')!.invalid && (editForm.get('balance')!.dirty || editForm.get('balance')!.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('balance')?.errors?.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                        <small class="form-text text-danger"
-                            [hidden]="!editForm.get('balance')?.errors?.number" jhiTranslate="entity.validation.number">
-                            This field should be a number.
-                        </small>
-                    </div>
                 </div>
 
                 <div class="form-group">

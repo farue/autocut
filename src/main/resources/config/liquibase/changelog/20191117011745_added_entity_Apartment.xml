@@ -16,10 +16,10 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="apartment_nr" type="varchar(255)">
+            <column name="nr" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="apartment_type" type="varchar(255)">
+            <column name="type" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
             <column name="max_number_of_leases" type="integer">
@@ -54,8 +54,8 @@
                   separator=";"
                   tableName="apartment">
             <column name="id" type="numeric"/>
-            <column name="apartment_nr" type="string"/>
-            <column name="apartment_type" type="string"/>
+            <column name="nr" type="string"/>
+            <column name="type" type="string"/>
             <column name="max_number_of_leases" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>

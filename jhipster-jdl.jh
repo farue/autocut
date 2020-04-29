@@ -1,12 +1,7 @@
 @service(serviceClass)
 entity Tenant {
-	firstName String required
-    lastName String required
-    email String required
-    createdBy String required
-    createdDate Instant required
-    lastModifiedBy String
-    lastModifiedDate Instant
+	pictureId ImageBlob
+	verified Boolean
 }
 
 entity Team {
@@ -27,15 +22,14 @@ entity Lease {
 	nr String required // number given by StW, e.g. 30-41
 	start Instant required
     end Instant
-    createdBy String required
-    createdDate Instant required
-    lastModifiedBy String
-    lastModifiedDate Instant
+    blocked Boolean
+    pictureContract ImageBlob
 }
 
 entity Apartment {
-	apartmentNr String required
-    apartmentType ApartmentTypes required
+    // simple apartment nr, cannot be stw number because there are two different ones for shared apartments
+	nr String required
+    type ApartmentTypes required
     maxNumberOfLeases Integer required min(0)
 }
 
@@ -43,7 +37,8 @@ entity Apartment {
 // -> does not need to be persisted
 enum ApartmentTypes {
     SHARED,
-    SINGLE
+    SINGLE,
+    SHORT_TERM
 }
 
 entity Address {
@@ -107,8 +102,19 @@ entity InternetAccess {
     port Integer required min(1)
 }
 
+entity NetworkSwitch {
+    interfaceName String required
+    sshHost String required
+    sshPort Integer required min(0) max(65535)
+    sshKey TextBlob required
+}
+
 relationship OneToOne {
 	Apartment{internetAccess} to InternetAccess{apartment}
+}
+
+relationship ManyToOne {
+	InternetAccess{networkSwitch} to NetworkSwitch
 }
 
 // Transactions
@@ -119,14 +125,21 @@ entity Transaction {
 	bookingDate Instant required
     valueDate Instant required
     value BigDecimal required
-    balanceAfter BigDecimal required
+    balanceAfter BigDecimal
     description String
     issuer String required
     recipient String
-    amount BigDecimal required
-    balance BigDecimal required
 }
 
+/**
+ * FEE: A transaction with negative amount. The difference between a fee and a purchase is that a
+ * fee is not paid in exchange for an immediate good.
+ * CREDIT: A transaction with a positive amount. The amount is credited to the account.
+ * DEBIT: A transaction with a negative amount. The amount is withdrawn from the account.
+ * TRANSFER: A transfer to a different account.
+ * CORRECTION: A corrective booking due to cancellation or system malfunctions.
+ * PURCHASE: A transaction with a negative amount. In exchange the payer receives a different good.
+ */
 enum TransactionKind {
 	FEE,
     CREDIT,
@@ -136,8 +149,8 @@ enum TransactionKind {
     PURCHASE
 }
 
-relationship OneToMany {
-	Lease{account required} to Transaction
+relationship ManyToOne {
+	Transaction{lease} to Lease
 }
 
 // Activities

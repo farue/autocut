@@ -8,33 +8,18 @@
             <jhi-alert-error></jhi-alert-error>
 
             <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="autocutApp.tenant.firstName">First Name</span></dt>
+                <dt><span jhiTranslate="autocutApp.tenant.pictureId">Picture Id</span></dt>
                 <dd>
-                    <span>{{ tenant.firstName }}</span>
+                    <div *ngIf="tenant.pictureId">
+                        <a (click)="openFile(tenant?.pictureIdContentType!, tenant?.pictureId)">
+                            <img [src]="'data:' + tenant.pictureIdContentType + ';base64,' + tenant.pictureId" style="max-width: 100%;" alt="tenant image"/>
+                        </a>
+                        {{ tenant.pictureIdContentType }}, {{ byteSize(tenant.pictureId) }}
+                    </div>
                 </dd>
-                <dt><span jhiTranslate="autocutApp.tenant.lastName">Last Name</span></dt>
+                <dt><span jhiTranslate="autocutApp.tenant.verified">Verified</span></dt>
                 <dd>
-                    <span>{{ tenant.lastName }}</span>
-                </dd>
-                <dt><span jhiTranslate="autocutApp.tenant.email">Email</span></dt>
-                <dd>
-                    <span>{{ tenant.email }}</span>
-                </dd>
-                <dt><span jhiTranslate="autocutApp.tenant.createdBy">Created By</span></dt>
-                <dd>
-                    <span>{{ tenant.createdBy }}</span>
-                </dd>
-                <dt><span jhiTranslate="autocutApp.tenant.createdDate">Created Date</span></dt>
-                <dd>
-                    <span>{{ tenant.createdDate }}</span>
-                </dd>
-                <dt><span jhiTranslate="autocutApp.tenant.lastModifiedBy">Last Modified By</span></dt>
-                <dd>
-                    <span>{{ tenant.lastModifiedBy }}</span>
-                </dd>
-                <dt><span jhiTranslate="autocutApp.tenant.lastModifiedDate">Last Modified Date</span></dt>
-                <dd>
-                    <span>{{ tenant.lastModifiedDate }}</span>
+                    <span>{{ tenant.verified }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.tenant.user">User</span></dt>
                 <dd>

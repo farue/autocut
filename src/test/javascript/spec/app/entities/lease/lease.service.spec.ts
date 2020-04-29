@@ -24,7 +24,7 @@ describe('Service Tests', () => {
       httpMock = injector.get(HttpTestingController);
       currentDate = moment();
 
-      elemDefault = new Lease(0, 'AAAAAAA', currentDate, currentDate, 'AAAAAAA', currentDate, 'AAAAAAA', currentDate);
+      elemDefault = new Lease(0, 'AAAAAAA', currentDate, currentDate, false, 'image/png', 'AAAAAAA');
     });
 
     describe('Service methods', () => {
@@ -32,9 +32,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             start: currentDate.format(DATE_TIME_FORMAT),
-            end: currentDate.format(DATE_TIME_FORMAT),
-            createdDate: currentDate.format(DATE_TIME_FORMAT),
-            lastModifiedDate: currentDate.format(DATE_TIME_FORMAT)
+            end: currentDate.format(DATE_TIME_FORMAT)
           },
           elemDefault
         );
@@ -51,9 +49,7 @@ describe('Service Tests', () => {
           {
             id: 0,
             start: currentDate.format(DATE_TIME_FORMAT),
-            end: currentDate.format(DATE_TIME_FORMAT),
-            createdDate: currentDate.format(DATE_TIME_FORMAT),
-            lastModifiedDate: currentDate.format(DATE_TIME_FORMAT)
+            end: currentDate.format(DATE_TIME_FORMAT)
           },
           elemDefault
         );
@@ -61,9 +57,7 @@ describe('Service Tests', () => {
         const expected = Object.assign(
           {
             start: currentDate,
-            end: currentDate,
-            createdDate: currentDate,
-            lastModifiedDate: currentDate
+            end: currentDate
           },
           returnedFromService
         );
@@ -81,10 +75,8 @@ describe('Service Tests', () => {
             nr: 'BBBBBB',
             start: currentDate.format(DATE_TIME_FORMAT),
             end: currentDate.format(DATE_TIME_FORMAT),
-            createdBy: 'BBBBBB',
-            createdDate: currentDate.format(DATE_TIME_FORMAT),
-            lastModifiedBy: 'BBBBBB',
-            lastModifiedDate: currentDate.format(DATE_TIME_FORMAT)
+            blocked: true,
+            pictureContract: 'BBBBBB'
           },
           elemDefault
         );
@@ -92,9 +84,7 @@ describe('Service Tests', () => {
         const expected = Object.assign(
           {
             start: currentDate,
-            end: currentDate,
-            createdDate: currentDate,
-            lastModifiedDate: currentDate
+            end: currentDate
           },
           returnedFromService
         );
@@ -112,10 +102,8 @@ describe('Service Tests', () => {
             nr: 'BBBBBB',
             start: currentDate.format(DATE_TIME_FORMAT),
             end: currentDate.format(DATE_TIME_FORMAT),
-            createdBy: 'BBBBBB',
-            createdDate: currentDate.format(DATE_TIME_FORMAT),
-            lastModifiedBy: 'BBBBBB',
-            lastModifiedDate: currentDate.format(DATE_TIME_FORMAT)
+            blocked: true,
+            pictureContract: 'BBBBBB'
           },
           elemDefault
         );
@@ -123,9 +111,7 @@ describe('Service Tests', () => {
         const expected = Object.assign(
           {
             start: currentDate,
-            end: currentDate,
-            createdDate: currentDate,
-            lastModifiedDate: currentDate
+            end: currentDate
           },
           returnedFromService
         );

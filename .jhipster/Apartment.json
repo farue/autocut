@@ -2,16 +2,16 @@
     "name": "Apartment",
     "fields": [
         {
-            "fieldName": "apartmentNr",
+            "fieldName": "nr",
             "fieldType": "String",
             "fieldValidateRules": [
                 "required"
             ]
         },
         {
-            "fieldName": "apartmentType",
+            "fieldName": "type",
             "fieldType": "ApartmentTypes",
-            "fieldValues": "SHARED,SINGLE",
+            "fieldValues": "SHARED,SINGLE,SHORT_TERM",
             "fieldValidateRules": [
                 "required"
             ]

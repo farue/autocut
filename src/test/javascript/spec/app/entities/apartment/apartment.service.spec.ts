@@ -55,8 +55,8 @@ describe('Service Tests', () => {
       it('should update a Apartment', () => {
         const returnedFromService = Object.assign(
           {
-            apartmentNr: 'BBBBBB',
-            apartmentType: 'BBBBBB',
+            nr: 'BBBBBB',
+            type: 'BBBBBB',
             maxNumberOfLeases: 1
           },
           elemDefault
@@ -74,8 +74,8 @@ describe('Service Tests', () => {
       it('should return a list of Apartment', () => {
         const returnedFromService = Object.assign(
           {
-            apartmentNr: 'BBBBBB',
-            apartmentType: 'BBBBBB',
+            nr: 'BBBBBB',
+            type: 'BBBBBB',
             maxNumberOfLeases: 1
           },
           elemDefault

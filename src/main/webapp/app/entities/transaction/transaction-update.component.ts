@@ -26,12 +26,10 @@ export class TransactionUpdateComponent implements OnInit {
     bookingDate: [null, [Validators.required]],
     valueDate: [null, [Validators.required]],
     value: [null, [Validators.required]],
-    balanceAfter: [null, [Validators.required]],
+    balanceAfter: [],
     description: [],
     issuer: [null, [Validators.required]],
     recipient: [],
-    amount: [null, [Validators.required]],
-    balance: [null, [Validators.required]],
     lease: []
   });
 
@@ -67,8 +65,6 @@ export class TransactionUpdateComponent implements OnInit {
       description: transaction.description,
       issuer: transaction.issuer,
       recipient: transaction.recipient,
-      amount: transaction.amount,
-      balance: transaction.balance,
       lease: transaction.lease
     });
   }
@@ -101,8 +97,6 @@ export class TransactionUpdateComponent implements OnInit {
       description: this.editForm.get(['description'])!.value,
       issuer: this.editForm.get(['issuer'])!.value,
       recipient: this.editForm.get(['recipient'])!.value,
-      amount: this.editForm.get(['amount'])!.value,
-      balance: this.editForm.get(['balance'])!.value,
       lease: this.editForm.get(['lease'])!.value
     };
   }

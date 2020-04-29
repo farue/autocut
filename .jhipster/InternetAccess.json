@@ -41,6 +41,13 @@
     ],
     "relationships": [
         {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "networkSwitch",
+            "otherEntityRelationshipName": "internetAccess",
+            "relationshipName": "networkSwitch",
+            "otherEntityField": "id"
+        },
+        {
             "relationshipType": "one-to-one",
             "otherEntityName": "apartment",
             "otherEntityRelationshipName": "internetAccess",

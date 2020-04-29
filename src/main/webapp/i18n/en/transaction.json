@@ -24,8 +24,6 @@
       "description": "Description",
       "issuer": "Issuer",
       "recipient": "Recipient",
-      "amount": "Amount",
-      "balance": "Balance",
       "lease": "Lease"
     }
   }

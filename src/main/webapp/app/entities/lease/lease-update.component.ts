@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
@@ -6,9 +6,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
+import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 
 import { ILease, Lease } from 'app/shared/model/lease.model';
 import { LeaseService } from './lease.service';
+import { AlertError } from 'app/shared/alert/alert-error.model';
 import { IApartment } from 'app/shared/model/apartment.model';
 import { ApartmentService } from 'app/entities/apartment/apartment.service';
 
@@ -25,16 +27,18 @@ export class LeaseUpdateComponent implements OnInit {
     nr: [null, [Validators.required]],
     start: [null, [Validators.required]],
     end: [],
-    createdBy: [null, [Validators.required]],
-    createdDate: [null, [Validators.required]],
-    lastModifiedBy: [],
-    lastModifiedDate: [],
+    blocked: [],
+    pictureContract: [],
+    pictureContractContentType: [],
     apartment: []
   });
 
   constructor(
+    protected dataUtils: JhiDataUtils,
+    protected eventManager: JhiEventManager,
     protected leaseService: LeaseService,
     protected apartmentService: ApartmentService,
+    protected elementRef: ElementRef,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -45,8 +49,6 @@ export class LeaseUpdateComponent implements OnInit {
         const today = moment().startOf('day');
         lease.start = today;
         lease.end = today;
-        lease.createdDate = today;
-        lease.lastModifiedDate = today;
       }
 
       this.updateForm(lease);
@@ -61,12 +63,37 @@ export class LeaseUpdateComponent implements OnInit {
       nr: lease.nr,
       start: lease.start ? lease.start.format(DATE_TIME_FORMAT) : null,
       end: lease.end ? lease.end.format(DATE_TIME_FORMAT) : null,
-      createdBy: lease.createdBy,
-      createdDate: lease.createdDate ? lease.createdDate.format(DATE_TIME_FORMAT) : null,
-      lastModifiedBy: lease.lastModifiedBy,
-      lastModifiedDate: lease.lastModifiedDate ? lease.lastModifiedDate.format(DATE_TIME_FORMAT) : null,
+      blocked: lease.blocked,
+      pictureContract: lease.pictureContract,
+      pictureContractContentType: lease.pictureContractContentType,
       apartment: lease.apartment
     });
+  }
+
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
+  }
+
+  openFile(contentType: string, base64String: string): void {
+    this.dataUtils.openFile(contentType, base64String);
+  }
+
+  setFileData(event: Event, field: string, isImage: boolean): void {
+    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
+      this.eventManager.broadcast(
+        new JhiEventWithContent<AlertError>('autocutApp.error', { ...err, key: 'error.file.' + err.key })
+      );
+    });
+  }
+
+  clearInputImage(field: string, fieldContentType: string, idInput: string): void {
+    this.editForm.patchValue({
+      [field]: null,
+      [fieldContentType]: null
+    });
+    if (this.elementRef && idInput && this.elementRef.nativeElement.querySelector('#' + idInput)) {
+      this.elementRef.nativeElement.querySelector('#' + idInput).value = null;
+    }
   }
 
   previousState(): void {
@@ -90,14 +117,9 @@ export class LeaseUpdateComponent implements OnInit {
       nr: this.editForm.get(['nr'])!.value,
       start: this.editForm.get(['start'])!.value ? moment(this.editForm.get(['start'])!.value, DATE_TIME_FORMAT) : undefined,
       end: this.editForm.get(['end'])!.value ? moment(this.editForm.get(['end'])!.value, DATE_TIME_FORMAT) : undefined,
-      createdBy: this.editForm.get(['createdBy'])!.value,
-      createdDate: this.editForm.get(['createdDate'])!.value
-        ? moment(this.editForm.get(['createdDate'])!.value, DATE_TIME_FORMAT)
-        : undefined,
-      lastModifiedBy: this.editForm.get(['lastModifiedBy'])!.value,
-      lastModifiedDate: this.editForm.get(['lastModifiedDate'])!.value
-        ? moment(this.editForm.get(['lastModifiedDate'])!.value, DATE_TIME_FORMAT)
-        : undefined,
+      blocked: this.editForm.get(['blocked'])!.value,
+      pictureContractContentType: this.editForm.get(['pictureContractContentType'])!.value,
+      pictureContract: this.editForm.get(['pictureContract'])!.value,
       apartment: this.editForm.get(['apartment'])!.value
     };
   }

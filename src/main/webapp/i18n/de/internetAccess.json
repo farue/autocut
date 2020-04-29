@@ -21,6 +21,7 @@
       "ip2": "Ip 2",
       "switchInterface": "Switch Interface",
       "port": "Port",
+      "networkSwitch": "Switch",
       "apartment": "Apartment"
     }
   }

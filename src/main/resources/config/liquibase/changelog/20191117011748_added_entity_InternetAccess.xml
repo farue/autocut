@@ -31,6 +31,9 @@
             <column name="port" type="integer">
                 <constraints nullable="false" />
             </column>
+            <column name="network_switch_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
     </changeSet>

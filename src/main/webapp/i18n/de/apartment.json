@@ -16,8 +16,8 @@
       "detail": {
         "title": "Wohnung"
       },
-      "apartmentNr": "Wohnung Nr",
-      "apartmentType": "Wohnung Typ",
+      "nr": "Wohnung Nr",
+      "type": "Wohnung Typ",
       "maxNumberOfLeases": "Max. Anzahl Mietverträge",
       "internetAccess": "Internetzugang",
       "leases": "Mietverträge",

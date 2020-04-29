@@ -1,11 +1,11 @@
-id;apartment_nr;apartment_type;max_number_of_leases
-1;Ohio Devolved;SINGLE;17221
+id;nr;type;max_number_of_leases
+1;Ohio Devolved;SHORT_TERM;17221
 2;Sleek collaboration;SINGLE;6686
-3;initiatives Qatar indexing;SINGLE;33568
+3;initiatives Qatar indexing;SHORT_TERM;33568
 4;Streamlined solid state Balanced;SHARED;3509
-5;quantify Knoll;SINGLE;74349
-6;cross-platform;SINGLE;14142
-7;application enable;SINGLE;58700
-8;Extended Operations;SINGLE;1528
-9;Multi-layered Security;SINGLE;36535
+5;quantify Knoll;SHORT_TERM;74349
+6;cross-platform;SHORT_TERM;14142
+7;application enable;SHORT_TERM;58700
+8;Extended Operations;SHORT_TERM;1528
+9;Multi-layered Security;SHORT_TERM;36535
 10;Human open-source;SINGLE;63195

@@ -29,7 +29,7 @@
                 <constraints nullable="false" />
             </column>
             <column name="balance_after" type="decimal(21,2)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="description" type="varchar(255)">
                 <constraints nullable="true" />
@@ -39,12 +39,6 @@
             </column>
             <column name="recipient" type="varchar(255)">
                 <constraints nullable="true" />
-            </column>
-            <column name="amount" type="decimal(21,2)">
-                <constraints nullable="false" />
-            </column>
-            <column name="balance" type="decimal(21,2)">
-                <constraints nullable="false" />
             </column>
             <column name="lease_id" type="bigint">
                 <constraints nullable="true" />
@@ -82,8 +76,6 @@
             <column name="description" type="string"/>
             <column name="issuer" type="string"/>
             <column name="recipient" type="string"/>
-            <column name="amount" type="numeric"/>
-            <column name="balance" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>
     </changeSet>

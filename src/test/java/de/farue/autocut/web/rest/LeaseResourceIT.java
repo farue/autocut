@@ -2,7 +2,6 @@ package de.farue.autocut.web.rest;
 
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Lease;
-import de.farue.autocut.domain.Transaction;
 import de.farue.autocut.repository.LeaseRepository;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -42,17 +42,13 @@ public class LeaseResourceIT {
     private static final Instant DEFAULT_END = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_END = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
-    private static final String DEFAULT_CREATED_BY = "AAAAAAAAAA";
-    private static final String UPDATED_CREATED_BY = "BBBBBBBBBB";
+    private static final Boolean DEFAULT_BLOCKED = false;
+    private static final Boolean UPDATED_BLOCKED = true;
 
-    private static final Instant DEFAULT_CREATED_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_CREATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
-
-    private static final String DEFAULT_LAST_MODIFIED_BY = "AAAAAAAAAA";
-    private static final String UPDATED_LAST_MODIFIED_BY = "BBBBBBBBBB";
-
-    private static final Instant DEFAULT_LAST_MODIFIED_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_LAST_MODIFIED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final byte[] DEFAULT_PICTURE_CONTRACT = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_PICTURE_CONTRACT = TestUtil.createByteArray(1, "1");
+    private static final String DEFAULT_PICTURE_CONTRACT_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_PICTURE_CONTRACT_CONTENT_TYPE = "image/png";
 
     @Autowired
     private LeaseRepository leaseRepository;
@@ -76,20 +72,9 @@ public class LeaseResourceIT {
             .nr(DEFAULT_NR)
             .start(DEFAULT_START)
             .end(DEFAULT_END)
-            .createdBy(DEFAULT_CREATED_BY)
-            .createdDate(DEFAULT_CREATED_DATE)
-            .lastModifiedBy(DEFAULT_LAST_MODIFIED_BY)
-            .lastModifiedDate(DEFAULT_LAST_MODIFIED_DATE);
-        // Add required entity
-        Transaction transaction;
-        if (TestUtil.findAll(em, Transaction.class).isEmpty()) {
-            transaction = TransactionResourceIT.createEntity(em);
-            em.persist(transaction);
-            em.flush();
-        } else {
-            transaction = TestUtil.findAll(em, Transaction.class).get(0);
-        }
-        lease.getAccounts().add(transaction);
+            .blocked(DEFAULT_BLOCKED)
+            .pictureContract(DEFAULT_PICTURE_CONTRACT)
+            .pictureContractContentType(DEFAULT_PICTURE_CONTRACT_CONTENT_TYPE);
         return lease;
     }
     /**
@@ -103,20 +88,9 @@ public class LeaseResourceIT {
             .nr(UPDATED_NR)
             .start(UPDATED_START)
             .end(UPDATED_END)
-            .createdBy(UPDATED_CREATED_BY)
-            .createdDate(UPDATED_CREATED_DATE)
-            .lastModifiedBy(UPDATED_LAST_MODIFIED_BY)
-            .lastModifiedDate(UPDATED_LAST_MODIFIED_DATE);
-        // Add required entity
-        Transaction transaction;
-        if (TestUtil.findAll(em, Transaction.class).isEmpty()) {
-            transaction = TransactionResourceIT.createUpdatedEntity(em);
-            em.persist(transaction);
-            em.flush();
-        } else {
-            transaction = TestUtil.findAll(em, Transaction.class).get(0);
-        }
-        lease.getAccounts().add(transaction);
+            .blocked(UPDATED_BLOCKED)
+            .pictureContract(UPDATED_PICTURE_CONTRACT)
+            .pictureContractContentType(UPDATED_PICTURE_CONTRACT_CONTENT_TYPE);
         return lease;
     }
 
@@ -143,10 +117,9 @@ public class LeaseResourceIT {
         assertThat(testLease.getNr()).isEqualTo(DEFAULT_NR);
         assertThat(testLease.getStart()).isEqualTo(DEFAULT_START);
         assertThat(testLease.getEnd()).isEqualTo(DEFAULT_END);
-        assertThat(testLease.getCreatedBy()).isEqualTo(DEFAULT_CREATED_BY);
-        assertThat(testLease.getCreatedDate()).isEqualTo(DEFAULT_CREATED_DATE);
-        assertThat(testLease.getLastModifiedBy()).isEqualTo(DEFAULT_LAST_MODIFIED_BY);
-        assertThat(testLease.getLastModifiedDate()).isEqualTo(DEFAULT_LAST_MODIFIED_DATE);
+        assertThat(testLease.isBlocked()).isEqualTo(DEFAULT_BLOCKED);
+        assertThat(testLease.getPictureContract()).isEqualTo(DEFAULT_PICTURE_CONTRACT);
+        assertThat(testLease.getPictureContractContentType()).isEqualTo(DEFAULT_PICTURE_CONTRACT_CONTENT_TYPE);
     }
 
     @Test
@@ -207,42 +180,6 @@ public class LeaseResourceIT {
 
     @Test
     @Transactional
-    public void checkCreatedByIsRequired() throws Exception {
-        int databaseSizeBeforeTest = leaseRepository.findAll().size();
-        // set the field null
-        lease.setCreatedBy(null);
-
-        // Create the Lease, which fails.
-
-        restLeaseMockMvc.perform(post("/api/leases")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(lease)))
-            .andExpect(status().isBadRequest());
-
-        List<Lease> leaseList = leaseRepository.findAll();
-        assertThat(leaseList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkCreatedDateIsRequired() throws Exception {
-        int databaseSizeBeforeTest = leaseRepository.findAll().size();
-        // set the field null
-        lease.setCreatedDate(null);
-
-        // Create the Lease, which fails.
-
-        restLeaseMockMvc.perform(post("/api/leases")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(lease)))
-            .andExpect(status().isBadRequest());
-
-        List<Lease> leaseList = leaseRepository.findAll();
-        assertThat(leaseList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllLeases() throws Exception {
         // Initialize the database
         leaseRepository.saveAndFlush(lease);
@@ -255,10 +192,9 @@ public class LeaseResourceIT {
             .andExpect(jsonPath("$.[*].nr").value(hasItem(DEFAULT_NR)))
             .andExpect(jsonPath("$.[*].start").value(hasItem(DEFAULT_START.toString())))
             .andExpect(jsonPath("$.[*].end").value(hasItem(DEFAULT_END.toString())))
-            .andExpect(jsonPath("$.[*].createdBy").value(hasItem(DEFAULT_CREATED_BY)))
-            .andExpect(jsonPath("$.[*].createdDate").value(hasItem(DEFAULT_CREATED_DATE.toString())))
-            .andExpect(jsonPath("$.[*].lastModifiedBy").value(hasItem(DEFAULT_LAST_MODIFIED_BY)))
-            .andExpect(jsonPath("$.[*].lastModifiedDate").value(hasItem(DEFAULT_LAST_MODIFIED_DATE.toString())));
+            .andExpect(jsonPath("$.[*].blocked").value(hasItem(DEFAULT_BLOCKED.booleanValue())))
+            .andExpect(jsonPath("$.[*].pictureContractContentType").value(hasItem(DEFAULT_PICTURE_CONTRACT_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].pictureContract").value(hasItem(Base64Utils.encodeToString(DEFAULT_PICTURE_CONTRACT))));
     }
     
     @Test
@@ -275,10 +211,9 @@ public class LeaseResourceIT {
             .andExpect(jsonPath("$.nr").value(DEFAULT_NR))
             .andExpect(jsonPath("$.start").value(DEFAULT_START.toString()))
             .andExpect(jsonPath("$.end").value(DEFAULT_END.toString()))
-            .andExpect(jsonPath("$.createdBy").value(DEFAULT_CREATED_BY))
-            .andExpect(jsonPath("$.createdDate").value(DEFAULT_CREATED_DATE.toString()))
-            .andExpect(jsonPath("$.lastModifiedBy").value(DEFAULT_LAST_MODIFIED_BY))
-            .andExpect(jsonPath("$.lastModifiedDate").value(DEFAULT_LAST_MODIFIED_DATE.toString()));
+            .andExpect(jsonPath("$.blocked").value(DEFAULT_BLOCKED.booleanValue()))
+            .andExpect(jsonPath("$.pictureContractContentType").value(DEFAULT_PICTURE_CONTRACT_CONTENT_TYPE))
+            .andExpect(jsonPath("$.pictureContract").value(Base64Utils.encodeToString(DEFAULT_PICTURE_CONTRACT)));
     }
 
     @Test
@@ -305,10 +240,9 @@ public class LeaseResourceIT {
             .nr(UPDATED_NR)
             .start(UPDATED_START)
             .end(UPDATED_END)
-            .createdBy(UPDATED_CREATED_BY)
-            .createdDate(UPDATED_CREATED_DATE)
-            .lastModifiedBy(UPDATED_LAST_MODIFIED_BY)
-            .lastModifiedDate(UPDATED_LAST_MODIFIED_DATE);
+            .blocked(UPDATED_BLOCKED)
+            .pictureContract(UPDATED_PICTURE_CONTRACT)
+            .pictureContractContentType(UPDATED_PICTURE_CONTRACT_CONTENT_TYPE);
 
         restLeaseMockMvc.perform(put("/api/leases")
             .contentType(MediaType.APPLICATION_JSON)
@@ -322,10 +256,9 @@ public class LeaseResourceIT {
         assertThat(testLease.getNr()).isEqualTo(UPDATED_NR);
         assertThat(testLease.getStart()).isEqualTo(UPDATED_START);
         assertThat(testLease.getEnd()).isEqualTo(UPDATED_END);
-        assertThat(testLease.getCreatedBy()).isEqualTo(UPDATED_CREATED_BY);
-        assertThat(testLease.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
-        assertThat(testLease.getLastModifiedBy()).isEqualTo(UPDATED_LAST_MODIFIED_BY);
-        assertThat(testLease.getLastModifiedDate()).isEqualTo(UPDATED_LAST_MODIFIED_DATE);
+        assertThat(testLease.isBlocked()).isEqualTo(UPDATED_BLOCKED);
+        assertThat(testLease.getPictureContract()).isEqualTo(UPDATED_PICTURE_CONTRACT);
+        assertThat(testLease.getPictureContractContentType()).isEqualTo(UPDATED_PICTURE_CONTRACT_CONTENT_TYPE);
     }
 
     @Test

@@ -20,21 +20,18 @@
                 <dd>
                     <span>{{ lease.end }}</span>
                 </dd>
-                <dt><span jhiTranslate="autocutApp.lease.createdBy">Created By</span></dt>
+                <dt><span jhiTranslate="autocutApp.lease.blocked">Blocked</span></dt>
                 <dd>
-                    <span>{{ lease.createdBy }}</span>
+                    <span>{{ lease.blocked }}</span>
                 </dd>
-                <dt><span jhiTranslate="autocutApp.lease.createdDate">Created Date</span></dt>
+                <dt><span jhiTranslate="autocutApp.lease.pictureContract">Picture Contract</span></dt>
                 <dd>
-                    <span>{{ lease.createdDate }}</span>
-                </dd>
-                <dt><span jhiTranslate="autocutApp.lease.lastModifiedBy">Last Modified By</span></dt>
-                <dd>
-                    <span>{{ lease.lastModifiedBy }}</span>
-                </dd>
-                <dt><span jhiTranslate="autocutApp.lease.lastModifiedDate">Last Modified Date</span></dt>
-                <dd>
-                    <span>{{ lease.lastModifiedDate }}</span>
+                    <div *ngIf="lease.pictureContract">
+                        <a (click)="openFile(lease?.pictureContractContentType!, lease?.pictureContract)">
+                            <img [src]="'data:' + lease.pictureContractContentType + ';base64,' + lease.pictureContract" style="max-width: 100%;" alt="lease image"/>
+                        </a>
+                        {{ lease.pictureContractContentType }}, {{ byteSize(lease.pictureContract) }}
+                    </div>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.lease.apartment">Apartment</span></dt>
                 <dd>

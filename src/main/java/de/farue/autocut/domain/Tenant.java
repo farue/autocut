@@ -5,11 +5,9 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,31 +25,15 @@ public class Tenant implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
+    @Lob
+    @Column(name = "picture_id")
+    private byte[] pictureId;
 
-    @NotNull
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
+    @Column(name = "picture_id_content_type")
+    private String pictureIdContentType;
 
-    @NotNull
-    @Column(name = "email", nullable = false)
-    private String email;
-
-    @NotNull
-    @Column(name = "created_by", nullable = false)
-    private String createdBy;
-
-    @NotNull
-    @Column(name = "created_date", nullable = false)
-    private Instant createdDate;
-
-    @Column(name = "last_modified_by")
-    private String lastModifiedBy;
-
-    @Column(name = "last_modified_date")
-    private Instant lastModifiedDate;
+    @Column(name = "verified")
+    private Boolean verified;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -74,95 +56,43 @@ public class Tenant implements Serializable {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public byte[] getPictureId() {
+        return pictureId;
     }
 
-    public Tenant firstName(String firstName) {
-        this.firstName = firstName;
+    public Tenant pictureId(byte[] pictureId) {
+        this.pictureId = pictureId;
         return this;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setPictureId(byte[] pictureId) {
+        this.pictureId = pictureId;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getPictureIdContentType() {
+        return pictureIdContentType;
     }
 
-    public Tenant lastName(String lastName) {
-        this.lastName = lastName;
+    public Tenant pictureIdContentType(String pictureIdContentType) {
+        this.pictureIdContentType = pictureIdContentType;
         return this;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setPictureIdContentType(String pictureIdContentType) {
+        this.pictureIdContentType = pictureIdContentType;
     }
 
-    public String getEmail() {
-        return email;
+    public Boolean isVerified() {
+        return verified;
     }
 
-    public Tenant email(String email) {
-        this.email = email;
+    public Tenant verified(Boolean verified) {
+        this.verified = verified;
         return this;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public Tenant createdBy(String createdBy) {
-        this.createdBy = createdBy;
-        return this;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Instant getCreatedDate() {
-        return createdDate;
-    }
-
-    public Tenant createdDate(Instant createdDate) {
-        this.createdDate = createdDate;
-        return this;
-    }
-
-    public void setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public Tenant lastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-        return this;
-    }
-
-    public void setLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public Instant getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public Tenant lastModifiedDate(Instant lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-        return this;
-    }
-
-    public void setLastModifiedDate(Instant lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
+    public void setVerified(Boolean verified) {
+        this.verified = verified;
     }
 
     public User getUser() {
@@ -237,13 +167,9 @@ public class Tenant implements Serializable {
     public String toString() {
         return "Tenant{" +
             "id=" + getId() +
-            ", firstName='" + getFirstName() + "'" +
-            ", lastName='" + getLastName() + "'" +
-            ", email='" + getEmail() + "'" +
-            ", createdBy='" + getCreatedBy() + "'" +
-            ", createdDate='" + getCreatedDate() + "'" +
-            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
-            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
+            ", pictureId='" + getPictureId() + "'" +
+            ", pictureIdContentType='" + getPictureIdContentType() + "'" +
+            ", verified='" + isVerified() + "'" +
             "}";
     }
 }

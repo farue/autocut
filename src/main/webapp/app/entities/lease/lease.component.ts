@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ILease } from 'app/shared/model/lease.model';
@@ -16,7 +16,12 @@ export class LeaseComponent implements OnInit, OnDestroy {
   leases?: ILease[];
   eventSubscriber?: Subscription;
 
-  constructor(protected leaseService: LeaseService, protected eventManager: JhiEventManager, protected modalService: NgbModal) {}
+  constructor(
+    protected leaseService: LeaseService,
+    protected dataUtils: JhiDataUtils,
+    protected eventManager: JhiEventManager,
+    protected modalService: NgbModal
+  ) {}
 
   loadAll(): void {
     this.leaseService.query().subscribe((res: HttpResponse<ILease[]>) => (this.leases = res.body || []));
@@ -36,6 +41,14 @@ export class LeaseComponent implements OnInit, OnDestroy {
   trackId(index: number, item: ILease): number {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     return item.id!;
+  }
+
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
+  }
+
+  openFile(contentType: string, base64String: string): void {
+    return this.dataUtils.openFile(contentType, base64String);
   }
 
   registerChangeInLeases(): void {

@@ -29,13 +29,13 @@ public class Apartment implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "apartment_nr", nullable = false)
-    private String apartmentNr;
+    @Column(name = "nr", nullable = false)
+    private String nr;
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "apartment_type", nullable = false)
-    private ApartmentTypes apartmentType;
+    @Column(name = "type", nullable = false)
+    private ApartmentTypes type;
 
     @NotNull
     @Min(value = 0)
@@ -63,30 +63,30 @@ public class Apartment implements Serializable {
         this.id = id;
     }
 
-    public String getApartmentNr() {
-        return apartmentNr;
+    public String getNr() {
+        return nr;
     }
 
-    public Apartment apartmentNr(String apartmentNr) {
-        this.apartmentNr = apartmentNr;
+    public Apartment nr(String nr) {
+        this.nr = nr;
         return this;
     }
 
-    public void setApartmentNr(String apartmentNr) {
-        this.apartmentNr = apartmentNr;
+    public void setNr(String nr) {
+        this.nr = nr;
     }
 
-    public ApartmentTypes getApartmentType() {
-        return apartmentType;
+    public ApartmentTypes getType() {
+        return type;
     }
 
-    public Apartment apartmentType(ApartmentTypes apartmentType) {
-        this.apartmentType = apartmentType;
+    public Apartment type(ApartmentTypes type) {
+        this.type = type;
         return this;
     }
 
-    public void setApartmentType(ApartmentTypes apartmentType) {
-        this.apartmentType = apartmentType;
+    public void setType(ApartmentTypes type) {
+        this.type = type;
     }
 
     public Integer getMaxNumberOfLeases() {
@@ -174,8 +174,8 @@ public class Apartment implements Serializable {
     public String toString() {
         return "Apartment{" +
             "id=" + getId() +
-            ", apartmentNr='" + getApartmentNr() + "'" +
-            ", apartmentType='" + getApartmentType() + "'" +
+            ", nr='" + getNr() + "'" +
+            ", type='" + getType() + "'" +
             ", maxNumberOfLeases=" + getMaxNumberOfLeases() +
             "}";
     }

@@ -38,27 +38,19 @@ public class Lease implements Serializable {
     @Column(name = "end")
     private Instant end;
 
-    @NotNull
-    @Column(name = "created_by", nullable = false)
-    private String createdBy;
+    @Column(name = "blocked")
+    private Boolean blocked;
 
-    @NotNull
-    @Column(name = "created_date", nullable = false)
-    private Instant createdDate;
+    @Lob
+    @Column(name = "picture_contract")
+    private byte[] pictureContract;
 
-    @Column(name = "last_modified_by")
-    private String lastModifiedBy;
-
-    @Column(name = "last_modified_date")
-    private Instant lastModifiedDate;
+    @Column(name = "picture_contract_content_type")
+    private String pictureContractContentType;
 
     @OneToMany(mappedBy = "lease")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Tenant> tenants = new HashSet<>();
-
-    @OneToMany(mappedBy = "lease")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Transaction> accounts = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties("leases")
@@ -112,56 +104,43 @@ public class Lease implements Serializable {
         this.end = end;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
+    public Boolean isBlocked() {
+        return blocked;
     }
 
-    public Lease createdBy(String createdBy) {
-        this.createdBy = createdBy;
+    public Lease blocked(Boolean blocked) {
+        this.blocked = blocked;
         return this;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    public void setBlocked(Boolean blocked) {
+        this.blocked = blocked;
     }
 
-    public Instant getCreatedDate() {
-        return createdDate;
+    public byte[] getPictureContract() {
+        return pictureContract;
     }
 
-    public Lease createdDate(Instant createdDate) {
-        this.createdDate = createdDate;
+    public Lease pictureContract(byte[] pictureContract) {
+        this.pictureContract = pictureContract;
         return this;
     }
 
-    public void setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
+    public void setPictureContract(byte[] pictureContract) {
+        this.pictureContract = pictureContract;
     }
 
-    public String getLastModifiedBy() {
-        return lastModifiedBy;
+    public String getPictureContractContentType() {
+        return pictureContractContentType;
     }
 
-    public Lease lastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
+    public Lease pictureContractContentType(String pictureContractContentType) {
+        this.pictureContractContentType = pictureContractContentType;
         return this;
     }
 
-    public void setLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public Instant getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public Lease lastModifiedDate(Instant lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-        return this;
-    }
-
-    public void setLastModifiedDate(Instant lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
+    public void setPictureContractContentType(String pictureContractContentType) {
+        this.pictureContractContentType = pictureContractContentType;
     }
 
     public Set<Tenant> getTenants() {
@@ -187,31 +166,6 @@ public class Lease implements Serializable {
 
     public void setTenants(Set<Tenant> tenants) {
         this.tenants = tenants;
-    }
-
-    public Set<Transaction> getAccounts() {
-        return accounts;
-    }
-
-    public Lease accounts(Set<Transaction> transactions) {
-        this.accounts = transactions;
-        return this;
-    }
-
-    public Lease addAccount(Transaction transaction) {
-        this.accounts.add(transaction);
-        transaction.setLease(this);
-        return this;
-    }
-
-    public Lease removeAccount(Transaction transaction) {
-        this.accounts.remove(transaction);
-        transaction.setLease(null);
-        return this;
-    }
-
-    public void setAccounts(Set<Transaction> transactions) {
-        this.accounts = transactions;
     }
 
     public Apartment getApartment() {
@@ -251,10 +205,9 @@ public class Lease implements Serializable {
             ", nr='" + getNr() + "'" +
             ", start='" + getStart() + "'" +
             ", end='" + getEnd() + "'" +
-            ", createdBy='" + getCreatedBy() + "'" +
-            ", createdDate='" + getCreatedDate() + "'" +
-            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
-            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
+            ", blocked='" + isBlocked() + "'" +
+            ", pictureContract='" + getPictureContract() + "'" +
+            ", pictureContractContentType='" + getPictureContractContentType() + "'" +
             "}";
     }
 }

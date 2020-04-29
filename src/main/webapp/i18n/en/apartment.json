@@ -16,9 +16,9 @@
       "detail": {
         "title": "Apartment"
       },
-      "apartmentNr": "Apartment Nr",
-      "apartmentType": "Apartment Type",
-      "maxNumberOfLeases": "Max. Number Of Leases",
+      "nr": "Nr",
+      "type": "Type",
+      "maxNumberOfLeases": "Max Number Of Leases",
       "internetAccess": "Internet Access",
       "leases": "Leases",
       "address": "Address"

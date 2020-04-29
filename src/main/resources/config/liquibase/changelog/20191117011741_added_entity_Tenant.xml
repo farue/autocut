@@ -16,25 +16,13 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="first_name" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            <column name="last_name" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            <column name="email" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            <column name="created_by" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            <column name="created_date" type="datetime">
-                <constraints nullable="false" />
-            </column>
-            <column name="last_modified_by" type="varchar(255)">
+            <column name="picture_id" type="longblob">
                 <constraints nullable="true" />
             </column>
-            <column name="last_modified_date" type="datetime">
+            <column name="picture_id_content_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="verified" type="boolean">
                 <constraints nullable="true" />
             </column>
             <column name="user_id" type="bigint">
@@ -45,8 +33,6 @@
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="tenant" columnName="created_date" columnDataType="datetime"/>
-        <dropDefaultValue tableName="tenant" columnName="last_modified_date" columnDataType="datetime"/>
     </changeSet>
 
     <changeSet id="20191117011741-1-relations" author="jhipster">
@@ -68,13 +54,9 @@
                   separator=";"
                   tableName="tenant">
             <column name="id" type="numeric"/>
-            <column name="first_name" type="string"/>
-            <column name="last_name" type="string"/>
-            <column name="email" type="string"/>
-            <column name="created_by" type="string"/>
-            <column name="created_date" type="datetime"/>
-            <column name="last_modified_by" type="string"/>
-            <column name="last_modified_date" type="datetime"/>
+            <column name="picture_id" type="blob"/>
+            <column name="picture_id_content_type" type="string"/>
+            <column name="verified" type="boolean"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>
     </changeSet>

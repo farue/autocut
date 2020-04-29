@@ -34,9 +34,10 @@
         "activity": "Activity",
         "communication": "Communication",
         "laundryMachine": "Laundry Machine",
-        "laundryMachineProgram": "Laundry Machine Program",
+        "laundryMachineProgram": "Program",
         "washHistory": "Wash History",
         "globalSetting": "Global Setting",
+        "networkSwitch": "Switch",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

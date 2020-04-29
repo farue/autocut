@@ -5,8 +5,8 @@ import { ApartmentTypes } from 'app/shared/model/enumerations/apartment-types.mo
 
 export interface IApartment {
   id?: number;
-  apartmentNr?: string;
-  apartmentType?: ApartmentTypes;
+  nr?: string;
+  type?: ApartmentTypes;
   maxNumberOfLeases?: number;
   internetAccess?: IInternetAccess;
   leases?: ILease[];
@@ -16,8 +16,8 @@ export interface IApartment {
 export class Apartment implements IApartment {
   constructor(
     public id?: number,
-    public apartmentNr?: string,
-    public apartmentType?: ApartmentTypes,
+    public nr?: string,
+    public type?: ApartmentTypes,
     public maxNumberOfLeases?: number,
     public internetAccess?: IInternetAccess,
     public leases?: ILease[],

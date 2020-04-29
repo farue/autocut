@@ -78,6 +78,14 @@
                         </small>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="autocutApp.internetAccess.networkSwitch" for="field_networkSwitch">Network Switch</label>
+                    <select class="form-control" id="field_networkSwitch" name="networkSwitch" formControlName="networkSwitch">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="networkSwitchOption.id === editForm.get('networkSwitch')!.value?.id ? editForm.get('networkSwitch')!.value : networkSwitchOption" *ngFor="let networkSwitchOption of networkswitches; trackBy: trackById">{{ networkSwitchOption.id }}</option>
+                    </select>
+                </div>
             </div>
 
             <div>

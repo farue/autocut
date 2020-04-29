@@ -48,45 +48,27 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.lease.createdBy" for="field_createdBy">Created By</label>
-                    <input type="text" class="form-control" name="createdBy" id="field_createdBy"
-                           formControlName="createdBy"/>
-                    <div *ngIf="editForm.get('createdBy')!.invalid && (editForm.get('createdBy')!.dirty || editForm.get('createdBy')!.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('createdBy')?.errors?.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                    </div>
+                    <label class="form-control-label" jhiTranslate="autocutApp.lease.blocked" for="field_blocked">Blocked</label>
+                    <input type="checkbox" class="form-control" name="blocked" id="field_blocked"
+                           formControlName="blocked"/>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.lease.createdDate" for="field_createdDate">Created Date</label>
-                    <div class="d-flex">
-                        <input id="field_createdDate" type="datetime-local" class="form-control" name="createdDate" formControlName="createdDate" placeholder="YYYY-MM-DD HH:mm"/>
+                    <label class="form-control-label" jhiTranslate="autocutApp.lease.pictureContract" for="field_pictureContract">Picture Contract</label>
+                    <div>
+                        <img [src]="'data:' + editForm.get('pictureContractContentType')!.value + ';base64,' + editForm.get('pictureContract')!.value" style="max-height: 100px;" *ngIf="editForm.get('pictureContract')!.value" alt="lease image"/>
+                        <div *ngIf="editForm.get('pictureContract')!.value" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{ editForm.get('pictureContractContentType')!.value }}, {{ byteSize(editForm.get('pictureContract')!.value) }}</span>
+                            <button type="button" (click)="clearInputImage('pictureContract', 'pictureContractContentType', 'file_pictureContract')" class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon icon="times"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_pictureContract" (change)="setFileData($event, 'pictureContract', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
                     </div>
-                    <div *ngIf="editForm.get('createdDate')!.invalid && (editForm.get('createdDate')!.dirty || editForm.get('createdDate')!.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('createdDate')?.errors?.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                        <small class="form-text text-danger"
-                            [hidden]="!editForm.get('createdDate')?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
-                            This field should be a date and time.
-                        </small>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.lease.lastModifiedBy" for="field_lastModifiedBy">Last Modified By</label>
-                    <input type="text" class="form-control" name="lastModifiedBy" id="field_lastModifiedBy"
-                           formControlName="lastModifiedBy"/>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.lease.lastModifiedDate" for="field_lastModifiedDate">Last Modified Date</label>
-                    <div class="d-flex">
-                        <input id="field_lastModifiedDate" type="datetime-local" class="form-control" name="lastModifiedDate" formControlName="lastModifiedDate" placeholder="YYYY-MM-DD HH:mm"/>
-                    </div>
+                    <input type="hidden" class="form-control" name="pictureContract" id="field_pictureContract"
+                           formControlName="pictureContract"/>
+                    <input type="hidden" class="form-control" name="pictureContractContentType" id="field_pictureContractContentType"
+                           formControlName="pictureContractContentType" />
                 </div>
 
                 <div class="form-group">

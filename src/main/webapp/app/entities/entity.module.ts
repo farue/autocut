@@ -68,6 +68,10 @@ import { RouterModule } from '@angular/router';
       {
         path: 'global-setting',
         loadChildren: () => import('./global-setting/global-setting.module').then(m => m.AutocutGlobalSettingModule)
+      },
+      {
+        path: 'network-switch',
+        loadChildren: () => import('./network-switch/network-switch.module').then(m => m.AutocutNetworkSwitchModule)
       }
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ])

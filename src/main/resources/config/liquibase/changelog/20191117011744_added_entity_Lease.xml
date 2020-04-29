@@ -25,16 +25,13 @@
             <column name="end" type="datetime">
                 <constraints nullable="true" />
             </column>
-            <column name="created_by" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            <column name="created_date" type="datetime">
-                <constraints nullable="false" />
-            </column>
-            <column name="last_modified_by" type="varchar(255)">
+            <column name="blocked" type="boolean">
                 <constraints nullable="true" />
             </column>
-            <column name="last_modified_date" type="datetime">
+            <column name="picture_contract" type="longblob">
+                <constraints nullable="true" />
+            </column>
+            <column name="picture_contract_content_type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="apartment_id" type="bigint">
@@ -44,8 +41,6 @@
         </createTable>
         <dropDefaultValue tableName="lease" columnName="start" columnDataType="datetime"/>
         <dropDefaultValue tableName="lease" columnName="end" columnDataType="datetime"/>
-        <dropDefaultValue tableName="lease" columnName="created_date" columnDataType="datetime"/>
-        <dropDefaultValue tableName="lease" columnName="last_modified_date" columnDataType="datetime"/>
     </changeSet>
 
     <changeSet id="20191117011744-1-relations" author="jhipster">
@@ -70,10 +65,9 @@
             <column name="nr" type="string"/>
             <column name="start" type="datetime"/>
             <column name="end" type="datetime"/>
-            <column name="created_by" type="string"/>
-            <column name="created_date" type="datetime"/>
-            <column name="last_modified_by" type="string"/>
-            <column name="last_modified_date" type="datetime"/>
+            <column name="blocked" type="boolean"/>
+            <column name="picture_contract" type="blob"/>
+            <column name="picture_contract_content_type" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>
     </changeSet>

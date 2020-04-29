@@ -70,6 +70,7 @@ public class CacheConfiguration {
             createCache(cm, de.farue.autocut.domain.LaundryMachineProgram.class.getName());
             createCache(cm, de.farue.autocut.domain.WashHistory.class.getName());
             createCache(cm, de.farue.autocut.domain.GlobalSetting.class.getName());
+            createCache(cm, de.farue.autocut.domain.NetworkSwitch.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

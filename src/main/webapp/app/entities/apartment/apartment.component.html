@@ -23,8 +23,8 @@
             <thead>
                 <tr>
                     <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.apartment.apartmentNr">Apartment Nr</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.apartment.apartmentType">Apartment Type</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.apartment.nr">Nr</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.apartment.type">Type</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.apartment.maxNumberOfLeases">Max Number Of Leases</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.apartment.internetAccess">Internet Access</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.apartment.address">Address</span></th>
@@ -34,8 +34,8 @@
             <tbody>
                 <tr *ngFor="let apartment of apartments ;trackBy: trackId">
                     <td><a [routerLink]="['/apartment', apartment.id, 'view']">{{ apartment.id }}</a></td>
-                    <td>{{ apartment.apartmentNr }}</td>
-                    <td jhiTranslate="{{ 'autocutApp.ApartmentTypes.' + apartment.apartmentType }}">{{ apartment.apartmentType }}</td>
+                    <td>{{ apartment.nr }}</td>
+                    <td jhiTranslate="{{ 'autocutApp.ApartmentTypes.' + apartment.type }}">{{ apartment.type }}</td>
                     <td>{{ apartment.maxNumberOfLeases }}</td>
                     <td>
                         <div *ngIf="apartment.internetAccess">

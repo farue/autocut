@@ -20,26 +20,13 @@
             "fieldType": "Instant"
         },
         {
-            "fieldName": "createdBy",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldName": "blocked",
+            "fieldType": "Boolean"
         },
         {
-            "fieldName": "createdDate",
-            "fieldType": "Instant",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "lastModifiedBy",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "lastModifiedDate",
-            "fieldType": "Instant"
+            "fieldName": "pictureContract",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
         }
     ],
     "relationships": [
@@ -48,13 +35,6 @@
             "otherEntityName": "tenant",
             "otherEntityRelationshipName": "lease",
             "relationshipName": "tenants"
-        },
-        {
-            "relationshipType": "one-to-many",
-            "otherEntityName": "transaction",
-            "otherEntityRelationshipName": "lease",
-            "relationshipValidateRules": "required",
-            "relationshipName": "account"
         },
         {
             "relationshipType": "many-to-one",

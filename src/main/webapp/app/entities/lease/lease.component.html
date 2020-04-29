@@ -26,10 +26,8 @@
                     <th scope="col" ><span jhiTranslate="autocutApp.lease.nr">Nr</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.lease.start">Start</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.lease.end">End</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.lease.createdBy">Created By</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.lease.createdDate">Created Date</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.lease.lastModifiedBy">Last Modified By</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.lease.lastModifiedDate">Last Modified Date</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.lease.blocked">Blocked</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.lease.pictureContract">Picture Contract</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.lease.apartment">Apartment</span></th>
                     <th scope="col"></th>
                 </tr>
@@ -40,10 +38,13 @@
                     <td>{{ lease.nr }}</td>
                     <td>{{ lease.start | date:'medium' }}</td>
                     <td>{{ lease.end | date:'medium' }}</td>
-                    <td>{{ lease.createdBy }}</td>
-                    <td>{{ lease.createdDate | date:'medium' }}</td>
-                    <td>{{ lease.lastModifiedBy }}</td>
-                    <td>{{ lease.lastModifiedDate | date:'medium' }}</td>
+                    <td>{{ lease.blocked }}</td>
+                    <td>
+                        <a *ngIf="lease.pictureContract" (click)="openFile(lease.pictureContractContentType, lease.pictureContract)">
+                            <img [src]="'data:' + lease.pictureContractContentType + ';base64,' + lease.pictureContract" style="max-height: 30px;" alt="lease image"/>
+                        </a>
+                        <span *ngIf="lease.pictureContract">{{ lease.pictureContractContentType }}, {{ byteSize(lease.pictureContract) }}</span>
+                    </td>
                     <td>
                         <div *ngIf="lease.apartment">
                             <a [routerLink]="['/apartment', lease.apartment?.id, 'view']" >{{ lease.apartment?.id }}</a>

@@ -59,12 +59,6 @@ public class TransactionResourceIT {
     private static final String DEFAULT_RECIPIENT = "AAAAAAAAAA";
     private static final String UPDATED_RECIPIENT = "BBBBBBBBBB";
 
-    private static final BigDecimal DEFAULT_AMOUNT = new BigDecimal(1);
-    private static final BigDecimal UPDATED_AMOUNT = new BigDecimal(2);
-
-    private static final BigDecimal DEFAULT_BALANCE = new BigDecimal(1);
-    private static final BigDecimal UPDATED_BALANCE = new BigDecimal(2);
-
     @Autowired
     private TransactionRepository transactionRepository;
 
@@ -94,9 +88,7 @@ public class TransactionResourceIT {
             .balanceAfter(DEFAULT_BALANCE_AFTER)
             .description(DEFAULT_DESCRIPTION)
             .issuer(DEFAULT_ISSUER)
-            .recipient(DEFAULT_RECIPIENT)
-            .amount(DEFAULT_AMOUNT)
-            .balance(DEFAULT_BALANCE);
+            .recipient(DEFAULT_RECIPIENT);
         return transaction;
     }
     /**
@@ -114,9 +106,7 @@ public class TransactionResourceIT {
             .balanceAfter(UPDATED_BALANCE_AFTER)
             .description(UPDATED_DESCRIPTION)
             .issuer(UPDATED_ISSUER)
-            .recipient(UPDATED_RECIPIENT)
-            .amount(UPDATED_AMOUNT)
-            .balance(UPDATED_BALANCE);
+            .recipient(UPDATED_RECIPIENT);
         return transaction;
     }
 
@@ -148,8 +138,6 @@ public class TransactionResourceIT {
         assertThat(testTransaction.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testTransaction.getIssuer()).isEqualTo(DEFAULT_ISSUER);
         assertThat(testTransaction.getRecipient()).isEqualTo(DEFAULT_RECIPIENT);
-        assertThat(testTransaction.getAmount()).isEqualTo(DEFAULT_AMOUNT);
-        assertThat(testTransaction.getBalance()).isEqualTo(DEFAULT_BALANCE);
     }
 
     @Test
@@ -246,64 +234,10 @@ public class TransactionResourceIT {
 
     @Test
     @Transactional
-    public void checkBalanceAfterIsRequired() throws Exception {
-        int databaseSizeBeforeTest = transactionRepository.findAll().size();
-        // set the field null
-        transaction.setBalanceAfter(null);
-
-        // Create the Transaction, which fails.
-
-        restTransactionMockMvc.perform(post("/api/transactions")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(transaction)))
-            .andExpect(status().isBadRequest());
-
-        List<Transaction> transactionList = transactionRepository.findAll();
-        assertThat(transactionList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void checkIssuerIsRequired() throws Exception {
         int databaseSizeBeforeTest = transactionRepository.findAll().size();
         // set the field null
         transaction.setIssuer(null);
-
-        // Create the Transaction, which fails.
-
-        restTransactionMockMvc.perform(post("/api/transactions")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(transaction)))
-            .andExpect(status().isBadRequest());
-
-        List<Transaction> transactionList = transactionRepository.findAll();
-        assertThat(transactionList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkAmountIsRequired() throws Exception {
-        int databaseSizeBeforeTest = transactionRepository.findAll().size();
-        // set the field null
-        transaction.setAmount(null);
-
-        // Create the Transaction, which fails.
-
-        restTransactionMockMvc.perform(post("/api/transactions")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(transaction)))
-            .andExpect(status().isBadRequest());
-
-        List<Transaction> transactionList = transactionRepository.findAll();
-        assertThat(transactionList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkBalanceIsRequired() throws Exception {
-        int databaseSizeBeforeTest = transactionRepository.findAll().size();
-        // set the field null
-        transaction.setBalance(null);
 
         // Create the Transaction, which fails.
 
@@ -334,9 +268,7 @@ public class TransactionResourceIT {
             .andExpect(jsonPath("$.[*].balanceAfter").value(hasItem(DEFAULT_BALANCE_AFTER.intValue())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].issuer").value(hasItem(DEFAULT_ISSUER)))
-            .andExpect(jsonPath("$.[*].recipient").value(hasItem(DEFAULT_RECIPIENT)))
-            .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.intValue())))
-            .andExpect(jsonPath("$.[*].balance").value(hasItem(DEFAULT_BALANCE.intValue())));
+            .andExpect(jsonPath("$.[*].recipient").value(hasItem(DEFAULT_RECIPIENT)));
     }
     
     @Test
@@ -357,9 +289,7 @@ public class TransactionResourceIT {
             .andExpect(jsonPath("$.balanceAfter").value(DEFAULT_BALANCE_AFTER.intValue()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.issuer").value(DEFAULT_ISSUER))
-            .andExpect(jsonPath("$.recipient").value(DEFAULT_RECIPIENT))
-            .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT.intValue()))
-            .andExpect(jsonPath("$.balance").value(DEFAULT_BALANCE.intValue()));
+            .andExpect(jsonPath("$.recipient").value(DEFAULT_RECIPIENT));
     }
 
     @Test
@@ -390,9 +320,7 @@ public class TransactionResourceIT {
             .balanceAfter(UPDATED_BALANCE_AFTER)
             .description(UPDATED_DESCRIPTION)
             .issuer(UPDATED_ISSUER)
-            .recipient(UPDATED_RECIPIENT)
-            .amount(UPDATED_AMOUNT)
-            .balance(UPDATED_BALANCE);
+            .recipient(UPDATED_RECIPIENT);
 
         restTransactionMockMvc.perform(put("/api/transactions")
             .contentType(MediaType.APPLICATION_JSON)
@@ -411,8 +339,6 @@ public class TransactionResourceIT {
         assertThat(testTransaction.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testTransaction.getIssuer()).isEqualTo(UPDATED_ISSUER);
         assertThat(testTransaction.getRecipient()).isEqualTo(UPDATED_RECIPIENT);
-        assertThat(testTransaction.getAmount()).isEqualTo(UPDATED_AMOUNT);
-        assertThat(testTransaction.getBalance()).isEqualTo(UPDATED_BALANCE);
     }
 
     @Test

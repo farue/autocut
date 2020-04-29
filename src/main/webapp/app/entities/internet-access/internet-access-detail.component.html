@@ -28,6 +28,12 @@
                 <dd>
                     <span>{{ internetAccess.port }}</span>
                 </dd>
+                <dt><span jhiTranslate="autocutApp.internetAccess.networkSwitch">Network Switch</span></dt>
+                <dd>
+                    <div *ngIf="internetAccess.networkSwitch">
+                        <a [routerLink]="['/network-switch', internetAccess.networkSwitch?.id, 'view']">{{ internetAccess.networkSwitch?.id }}</a>
+                    </div>
+                </dd>
             </dl>
 
             <button type="submit"

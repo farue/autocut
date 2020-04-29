@@ -1,6 +1,7 @@
 package de.farue.autocut.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -44,6 +45,10 @@ public class InternetAccess implements Serializable {
     @Min(value = 1)
     @Column(name = "port", nullable = false)
     private Integer port;
+
+    @ManyToOne
+    @JsonIgnoreProperties("internetAccesses")
+    private NetworkSwitch networkSwitch;
 
     @OneToOne(mappedBy = "internetAccess")
     @JsonIgnore
@@ -121,6 +126,19 @@ public class InternetAccess implements Serializable {
 
     public void setPort(Integer port) {
         this.port = port;
+    }
+
+    public NetworkSwitch getNetworkSwitch() {
+        return networkSwitch;
+    }
+
+    public InternetAccess networkSwitch(NetworkSwitch networkSwitch) {
+        this.networkSwitch = networkSwitch;
+        return this;
+    }
+
+    public void setNetworkSwitch(NetworkSwitch networkSwitch) {
+        this.networkSwitch = networkSwitch;
     }
 
     public Apartment getApartment() {

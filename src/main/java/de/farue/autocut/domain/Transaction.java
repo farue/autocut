@@ -45,8 +45,7 @@ public class Transaction implements Serializable {
     @Column(name = "value", precision = 21, scale = 2, nullable = false)
     private BigDecimal value;
 
-    @NotNull
-    @Column(name = "balance_after", precision = 21, scale = 2, nullable = false)
+    @Column(name = "balance_after", precision = 21, scale = 2)
     private BigDecimal balanceAfter;
 
     @Column(name = "description")
@@ -59,16 +58,8 @@ public class Transaction implements Serializable {
     @Column(name = "recipient")
     private String recipient;
 
-    @NotNull
-    @Column(name = "amount", precision = 21, scale = 2, nullable = false)
-    private BigDecimal amount;
-
-    @NotNull
-    @Column(name = "balance", precision = 21, scale = 2, nullable = false)
-    private BigDecimal balance;
-
     @ManyToOne
-    @JsonIgnoreProperties("accounts")
+    @JsonIgnoreProperties("transactions")
     private Lease lease;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -184,32 +175,6 @@ public class Transaction implements Serializable {
         this.recipient = recipient;
     }
 
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public Transaction amount(BigDecimal amount) {
-        this.amount = amount;
-        return this;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
-    public Transaction balance(BigDecimal balance) {
-        this.balance = balance;
-        return this;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
-    }
-
     public Lease getLease() {
         return lease;
     }
@@ -252,8 +217,6 @@ public class Transaction implements Serializable {
             ", description='" + getDescription() + "'" +
             ", issuer='" + getIssuer() + "'" +
             ", recipient='" + getRecipient() + "'" +
-            ", amount=" + getAmount() +
-            ", balance=" + getBalance() +
             "}";
     }
 }
