@@ -119,14 +119,12 @@ public class WashingService {
         transaction.setKind(TransactionKind.PURCHASE);
         transaction.setBalanceAfter(newBalance);
         transaction.setValue(amount);
-        transaction.setAmount(amount);
         transaction.setLease(tenant.getLease());
-        transaction.setBalance(balance);
         transaction.setBookingDate(timestamp);
         transaction.setValueDate(timestamp);
         transaction.setIssuer(WashingService.class.getSimpleName());
         transaction.setDescription(machine.getName());
-        transactionService.addTransactionWithBalanceCheck(transaction);
+        transactionService.saveWithBalanceCheck(transaction);
         washHistoryService.saveAndFlush(washHistory);
         washItClient.activate(Integer.valueOf(machine.getIdentifier()));
         log.debug("{} activated with transaction {}", machine.getName(), transaction);

@@ -7,12 +7,16 @@ import de.farue.autocut.domain.User;
 import de.farue.autocut.repository.LeaseRepository;
 import de.farue.autocut.repository.TenantRepository;
 import de.farue.autocut.repository.TransactionRepository;
+import de.farue.autocut.utils.BigDecimalUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +24,7 @@ import java.util.Optional;
  * Service Implementation for managing {@link Transaction}.
  */
 @Service
-@Transactional
+@Transactional(isolation = Isolation.SERIALIZABLE)
 public class TransactionService {
 
     private final Logger log = LoggerFactory.getLogger(TransactionService.class);
@@ -44,6 +48,22 @@ public class TransactionService {
      */
     public Transaction save(Transaction transaction) {
         log.debug("Request to save Transaction : {}", transaction);
+        validateAndUpdateBalance(transaction);
+        return transactionRepository.save(transaction);
+    }
+
+    /**
+     * Save a transaction with balance check.
+     *
+     * @param transaction the entity to save.
+     * @return the persisted entity.
+     */
+    public Transaction saveWithBalanceCheck(Transaction transaction) {
+        log.debug("Request to save Transaction : {}", transaction);
+        validateAndUpdateBalance(transaction);
+        if (BigDecimalUtil.isNegative(transaction.getBalanceAfter())) {
+            throw new InsufficientFundsException();
+        }
         return transactionRepository.save(transaction);
     }
 
@@ -93,9 +113,7 @@ public class TransactionService {
     }
 
     public BigDecimal getCurrentBalance(Lease lease) {
-        return transactionRepository.findFirstByLeaseOrderByIdDesc(lease)
-            .map(Transaction::getBalanceAfter)
-            .orElse(BigDecimal.ZERO);
+        return updateAndGetCurrentBalance(lease);
     }
 
     public void setBalanceAfter(Transaction transaction) {
@@ -105,18 +123,60 @@ public class TransactionService {
         transaction.setBalanceAfter(newBalance);
     }
 
-    public void addTransactionWithBalanceCheck(Transaction transaction) {
-        Lease lease = transaction.getLease();
-        BigDecimal currentBalance = getCurrentBalance(lease);
-        if (currentBalance.add(transaction.getValue()).compareTo(BigDecimal.ZERO) < 0) {
-            // TODO: New exception class
-            throw new RuntimeException("Not enough funds");
-        }
-        setBalanceAfter(transaction);
-        addTransactionWithoutBalanceCheck(transaction);
+    /**
+     * Updates balances for every lease once a day and verifies that they do not have a negative balance.
+     * <p>
+     * This is scheduled to get fired everyday, at 01:00 (am).
+     */
+    @Scheduled(cron = "0 0 1 * * ?")
+    public void updateBalances() {
+        leaseRepository.findAll().forEach(lease -> {
+            final BigDecimal currentBalance = getCurrentBalance(lease);
+            if (BigDecimalUtil.isNegative(currentBalance)) {
+                lease.setBlocked(true);
+                // TODO: Send email
+                leaseRepository.save(lease);
+            }
+        });
     }
 
-    public void addTransactionWithoutBalanceCheck(Transaction transaction) {
-        transactionRepository.saveAndFlush(transaction);
+    private BigDecimal updateAndGetCurrentBalance(Lease lease) {
+        updateBalanceInFutureTransactions(lease);
+        return getBalanceOfLastValuedTransaction(lease);
+    }
+
+    private void updateBalanceInFutureTransactions(Lease lease) {
+        List<Transaction> orderedTransactions = transactionRepository
+            .findAllByLeaseAndBalanceAfterIsNullAndValueDateLessThanEqualOrderByValueDateAscIdAsc(lease, Instant.now());
+        BigDecimal balance = getBalanceOfLastValuedTransaction(lease);
+        for (Transaction transaction : orderedTransactions) {
+            balance = balance.add(transaction.getValue());
+            transaction.setBalanceAfter(balance);
+        }
+        transactionRepository.saveAll(orderedTransactions);
+    }
+
+    private BigDecimal getBalanceOfLastValuedTransaction(Lease lease) {
+        return transactionRepository
+            .findFirstByLeaseAndBalanceAfterIsNotNullOrderByValueDateDescIdDesc(lease)
+            .map(Transaction::getBalanceAfter)
+            .orElse(BigDecimal.ZERO);
+    }
+
+    private void validateAndUpdateBalance(Transaction transaction) {
+        if (transaction.getLease() != null) {
+            if (transaction.getBalanceAfter() != null) {
+                throw new IllegalArgumentException(
+                    "Balance for lease transactions must be assigned by TransactionService");
+            }
+            if (!transaction.getValueDate().isAfter(Instant.now())) {
+                final BigDecimal currentBalance = getCurrentBalance(transaction.getLease());
+                transaction.setBalanceAfter(currentBalance.add(transaction.getValue()));
+            }
+        } else {
+            if (transaction.getBalanceAfter() == null) {
+                throw new IllegalArgumentException("Balance for non-lease transactions must be calculated in advance");
+            }
+        }
     }
 }

@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -22,9 +24,12 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
      *
      * @return last transaction
      */
-    Optional<Transaction> findFirstByLeaseOrderByIdDesc(Lease lease);
+    Optional<Transaction> findFirstByLeaseAndBalanceAfterIsNotNullOrderByValueDateDescIdDesc(Lease lease);
 
-    Page<Transaction> findAllByLeaseOrderByIdDesc(Lease lease, Pageable pageable);
+    Page<Transaction> findAllByLeaseOrderByValueDateDesc(Lease lease, Pageable pageable);
+
+    List<Transaction> findAllByLeaseAndBalanceAfterIsNullAndValueDateLessThanEqualOrderByValueDateAscIdAsc(Lease lease,
+        Instant date);
 
 }
 
