@@ -26,7 +26,7 @@
                 <constraints nullable="true" />
             </column>
             <column name="blocked" type="boolean">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="picture_contract" type="longblob">
                 <constraints nullable="true" />
@@ -41,6 +41,7 @@
         </createTable>
         <dropDefaultValue tableName="lease" columnName="start" columnDataType="datetime"/>
         <dropDefaultValue tableName="lease" columnName="end" columnDataType="datetime"/>
+        <addDefaultValue tableName="lease" columnName="blocked" defaultValueBoolean="false" />
     </changeSet>
 
     <changeSet id="20191117011744-1-relations" author="jhipster">

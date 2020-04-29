@@ -36,6 +36,8 @@
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+
+        <addDefaultValue tableName="internet_access" columnName="blocked" defaultValueBoolean="false" />
     </changeSet>
 
     <changeSet id="20191117011748-1-relations" author="jhipster">
