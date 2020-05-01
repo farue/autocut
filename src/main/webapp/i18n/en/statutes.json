@@ -1,0 +1,12 @@
+{
+  "statutes": {
+    "title": "Statutes",
+    "menu": {
+      "general": "General Statute",
+      "network": "Network Statute",
+      "assignment": "Assignment Statute",
+      "washing": "Washing Statute",
+      "tools": "Tool Rental Statute"
+    }
+  }
+}

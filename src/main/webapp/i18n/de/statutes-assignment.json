@@ -1,0 +1,63 @@
+{
+  "statutes-assignment": {
+    "title": "Belegungsordnung",
+    "version": "Stand: 10. Oktober 2008",
+    "section1": {
+      "title": "1. Allgemeines",
+      "par1": "Im Rahmen der studentischen Selbstverwaltung, hat das Studentenwerk Aachen den Bewohnern\ndieses Wohnheimes den Auftrag erteilt, freien oder frei werdenden Wohnraum an Studierende zu\nvermitteln. Die Bewohner dieses Wohnheimes unterhalten seither, für die Wohnraumvermittlung\neinen Belegungsausschuss (BA). Dieser wurde, seit der Gründung dieses Vereines, an den FaRü e. V.\nübergeben.",
+      "par2": "Vertragliche Angelegenheiten bezüglich des Mietverhältnisses zwischen Mieter und Vermieter\nobliegen weiterhin und vor allem alleine dem Stundentenwerk Aachen A. ö. R., daher können\ngemachte Zu- oder Absagen durch den Belegungsausschuss vom Studentenwerk Aachen jederzeit\nwiderrufen werden.",
+      "par3": "Interessenten an Wohnraum in diesem Wohnheim richten sich an den Belegungsausschuss mit\neinem Antrag zur Wohnraumzuweisung (Bewerbung)."
+    },
+    "section2": {
+      "title": "2. Zusammensetzung des Belegungsausschusses",
+      "ol1": {
+        "item1": {
+          "par1": "Der Belegungsausschuss besteht mindestens aus",
+          "ul1": {
+            "item1": "dem Belegungsausschusssprecher",
+            "item2": "dem Vertreter des Belegungsausschusssprechers",
+            "item3": "einer weiteren Person"
+          },
+          "par2": "und maximal einer weiteren Person.<br/>Die Mitglieder werden von der Vollversammlung ernannt."
+        },
+        "item2": "Die AG kann, mit Zustimmung des Senates, ein Mitglied aus der AG ausschließen, wenn\nsein Verhalten in grober Weise gegen die Satzung, diese Nutzungsbestimmungen oder\ndie Interessen des Vereines verstößt.",
+        "item3": "Sollte die Mindestmitgliederzahl unterschritten werden, darf die AG, mit Zustimmung\ndes Senates, für die Zeit bis zur nächsten Vollversammlung, ein neues Mitglied ernennen.",
+        "item4": "Mindestens einmal im Semester ruft der Sprecher des Belegungsausschusses eine\nSitzung ein, die mindestens eine Woche vorher bekannt zu machen ist. Die Sitzung ist\nbeschlussfähig, wenn mindestens zweidrittel der Mitglieder anwesend sind.\nStimmberechtigt ist jedes Mitglied. Die Sitzungen sind für Bewohner öffentlich."
+      }
+    },
+    "section3": {
+      "title": "3. Aufgaben des Belegungsausschusses",
+      "par1": "Der Belegungsausschuss verwaltet die Bewerberlisten und schlägt dem Vermieter Kandidaten für\nfreiwerdende Wohnungen vor."
+    },
+    "section4": {
+      "title": "4. Bewerbung auf Wohnraum in der FaRü",
+      "ol1": {
+        "item1": "Die Bewerbung wird über das zentrale Bewerberportal des Studierendenwerks Aachen durchgeführt."
+      }
+    },
+    "section5": {
+      "title": "5. Wartelisten",
+      "ol1": {
+        "item1": "Die Zuteilung von Wohnraum erfolgt nach Wartelisten.",
+        "item2": "Den Bewerbern auf der ersten Warteliste wird vor den Bewerbern auf der zweiten und\ndritten Warteliste eine Wohnung in diesem Wohnheim zugeteilt. Den Bewerbern auf der\nzweiten Warteliste wird vor den Bewerbern auf der dritten Warteliste eine Wohnung in\ndiesem Wohnheim zugeteilt.",
+        "item3": "Der Zeitpunkt des Einreichens einer Bewerbung ist nur innerhalb einer Liste von Relevanz\nund regelt die Reihenfolge der Wohnungszuweisung an Bewerber in einer Liste.",
+        "item4": {
+          "par1": "Der Belegungsausschuss führt drei Wartelisten in die die Bewerber aufgenommen und\nnach denen ihnen Wohnraum zugesprochen wird.",
+          "ul1": {
+            "item1": "In die erste Warteliste werden alleinerziehende Mütter oder Väter\naufgenommen.\nAls alleinerziehend gilt eine Person, welche mit mindestens einem Kind oder\nschwanger ist, aber mit keiner anderen erwachsenen Person, in einem\nHaushalt lebt. Ein Nachweis über die häuslichen Bedingungen ist, in Form einer\nMeldebescheinigung des zuständigen Einwohnermeldeamtes, zu erbringen.\nDer Status alleinerziehend erlischt, sobald diese Person die Absicht äußert, mit\neiner weiteren erwachsenen Person in eine Wohnung dieses Wohnheimes zu\nziehen.",
+            "item2": "In die zweite Warteliste werden Paare, oder mindestens zwei erwachsene\nPersonen die in einem Haushalt leben oder die Absicht äußern ihre Haushalte\nzusammen zulegen, aufgenommen, die entweder nachweislich ein Kind\nerwarten oder bereits mit mindestens einem in einem Haushalt leben.",
+            "item3": "In die dritte Warteliste werden Paare aufgenommen, die entweder in einem\nHaushalt leben oder die Absicht haben ihre Haushalte zusammen zulegen, die\nweder ein Kind erwarten noch mit einem in einem Haushalt leben. Dabei\nwerden verheiratete Paare bevorzugt behandelt."
+          }
+        },
+        "item5": "Bewerber werden erst nach der Abgabe aller erforderlichen Unterlagen in eine\nWarteliste aufgenommen.",
+        "item6": "Bewerber können zweimal eine zugewiesene Wohnung zurückweisen, ohne ihren\nWartelistenplatz zu verlieren."
+      }
+    },
+    "section6": {
+      "title": "6. Pflichten der Bewerber",
+      "ol1": {
+        "item1": "Es gelten die <a href=\"https://bewerberportal.stw.rwth-aachen.de/pdf/Vergaberichtlinien_seit_Juni_2017.pdf\" target=\"_blank\">Vergaberichtlinien des Studierendenwerks</a>"
+      }
+    }
+  }
+}

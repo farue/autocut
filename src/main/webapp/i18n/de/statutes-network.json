@@ -1,0 +1,114 @@
+{
+  "statutes-network": {
+    "title": "Nutzungsbestimmungen der Netzwerk-AG (FaRüNet)",
+    "version": "Stand: 10. Oktober 2008",
+    "section1": {
+      "title": "1. Allgemeines",
+      "par1": "Das FaRüNet ist ein kostenloser Service des FaRü e. V., der jedes ordentliche oder geborene Mitglied des Vereines mit einem Zugang zu dem Computernetzwerk der FaRü versorgen soll. Dieser Service wird durch die vereinseigene Computertechnik sichergestellt.",
+      "par2": "Betrieben wird es durch Mitglieder dieses Vereines, die diese Tätigkeit während ihrer Freizeit und ehrenamtlich durchführen und welche sich im Zusammenschluss als Netzwerk-AG bezeichnen. Der Betrieb des Netzwerkes unterteilt sich in zwei Bereiche:",
+      "par3": "Einerseits betreuen die Netzwerkbeauftragten die vereinseigene Computertechnik und unterstützen Einrichtungen, die mit anderen Wohnheimen gemeinsam genutzt werden, andererseits werden Dienstleistungen der RWTH Aachen weitergegeben.",
+      "par4": "<b>Der erste Bereich</b> umfasst die Finanzierung, Wartung und Betreuung der vereinseigenen Netzwerkgeräte, wie Switches, Kabel und Server. Dieser Bereich wird durch Anteile an den Vereinsbeiträgen finanziert.",
+      "par5": "<b>Zum zweiten Bereich</b> gehören unter anderem die Anbindung an das Internet und die Vergabe von IP Adressen. Diese Dienstleistungen werden kostenlos durch die RWTH Aachen zur Verfügung gestellt, und auch kostenlos an die ordentlichen und geborenen Mitglieder dieses Vereines weitergegeben. Die hierbei eventuell nötigen Verwaltungsmaßnahmen, wie zum Beispiel die Vergabe von IP Adressen, werden von den Netzwerkbeauftragten durchgeführt."
+    },
+    "section2": {
+      "title": "2. Geltung weiterer Vorschriften",
+      "par1": "Durch den Anschluss an das Datennetz der RWTH Aachen gelten für unser Wohnheimnetzwerk die Netzordnung der RWTH Aachen inklusive der dazugehörigen Ausführungsbestimmungen sowie alle anderen Vorschriften und Anordnungen, die seitens der Hochschule (also etwa durch das Rechenzentrum) beschlossen oder erlassen werden.",
+      "par2": "Außerdem gilt unser Netzwerk als Bestandteil des deutschen Wissenschaftsnetzes, das vom „Verein zur Förderung eines Deutschen Forschungsnetzes e.V. - DFN-Verein“ betreut wird. Dadurch gelten entsprechende Nutzungsrichtlinien, etwa die Benutzungsordnung des DFN-Vereins oder der „Leitfaden zur verantwortungsvollen Nutzung von Datennetzen“."
+    },
+    "section3": {
+      "title": "3. Betreiber",
+      "ol1": {
+        "item1": "Betreiber des Netzwerkes ist der FaRü e. V. Dieser setzt einen oder mehrere Netzwerkbeauftragte, in unserem Fall die Netzwerk-AG, ein, die für den Betrieb zuständig sind.",
+        "item2": {
+          "par1": "Die Netzwerk-AG besteht mindestens aus",
+          "ul1": {
+            "item1": "dem Sprecher der Netzwerk-AG",
+            "item2": "dem Vertreter des Sprechers der Netzwerk-AG",
+            "item3": "einer weiteren Person"
+          },
+          "par2": "und maximal einer weiteren Person.<br/>Der AG-Sprecher vertritt die AG gegenüber der Vollversammlung.<br/>Die Mitglieder werden von der Vollversammlung ernannt."
+        },
+        "item3": "Die AG kann, mit Zustimmung des Senates, ein Mitglied aus der AG ausschließen, wenn sein Verhalten in grober Weise gegen die Satzung, die Nutzungsbestimmungen des FaRüNet oder die Interessen des Vereines verstößt. Dazu bedarf es einen Senatsbeschluss.",
+        "item4": "Sollte die Mindestmitgliederzahl unterschritten werden, darf die AG, mit Zustimmung des Senates, für die Zeit bis zur nächsten Vollversammlung, ein neues Mitglied ernennen.",
+        "item5": "Mindestens einmal im Semester ruft der AG-Sprecher eine Sitzung ein, die mindestens eine Woche vorher bekannt zu machen ist. Die AG-Sitzung ist beschlussfähig, wenn mindestens zweidrittel der AG-Mitglieder anwesend sind. Stimmberechtigt ist jedes Mitglied der AG. Die Sitzungen sind für Bewohner öffentlich."
+      }
+    },
+    "section4": {
+      "title": "4. Teilnahmevoraussetzungen",
+      "ol1": {
+        "item1": "Jedes ordentliche oder geborene Mitglied des Vereines, maximal jedoch eine Wohnungseinheit der FaRü, kann einen Netzwerkzugang beantragen. Eine Voraussetzung für die Gewährung dieses Netzwerkzuganges ist die Anerkennung dieser Netzordnung und der übergeordneten Netzordnungen, wie z.B. die Netzordnung der RWTH Aachen.",
+        "item2": "Der Nutzer verpflichtet sich, in öffentlichen Diskussionsforen, sowie beim Versenden von E-Mail an Dritte eine funktionierende Absenderadresse sowie seinen Vor- und Nachnamen anzugeben. Die Netzwerkbeauftragten können Ausnahmen hiervon zulassen.",
+        "item3": "Der Nutzer verpflichtet sich, sicherheitsrelevante Software, wie zum Beispiel Betriebssystem, Virenscanner und ähnliches, auf einem aktuellen Stand zu halten.",
+        "item4": "Der Nutzer verpflichtet sich, sich entsprechend der Satzung dieses Vereines, zu der diese Nutzungsbestimmungen gehören, zu verhalten.",
+        "item5": "Der Nutzer verpflichtet sich, seine bei der Anmeldung angegebene E-Mail Adresse regelmäßig, mindestens einmal pro Woche, abzurufen und gegebenenfalls auf E-Mails, die das Wohnheim oder das Netzwerk betreffen, zu reagieren."
+      }
+    },
+    "section5": {
+      "title": "5. Leistungen",
+      "ol1": {
+        "item1": "Es wird eine Anbindung an das FaRüNet in Ethernet-Technik geboten, mit einer Übertragungskapazität von bis zu 100 MBit/s innerhalb des Wohnheimes.",
+        "item2": "Es wird dem Nutzer die Mitbenutzung des gemeinschaftlichen Anschlusses des FaRüNet an das RWTH-Datennetz ermöglicht. Dabei wird, im Rahmen von § 1 und § 2, zumindest die Nutzung der weltweiten Internet-Dienste WWW, E-Mail und News angeboten.",
+        "item3": "Höchstmögliche Zuverlässigkeit der Dienste wird angestrebt, jedoch kann hierfür keine Gewähr übernommen werden."
+      }
+    },
+    "section6": {
+      "title": "6. Anmeldung",
+      "ol1": {
+        "item1": "Ein Bewohner muss sich anmelden, bevor er Anschluss an das Wohnheimnetzwerk erhält.",
+        "item2": "Alle Komponenten, die zwischen Glasfaserkabel in den Kellern und den Anschlusskabeln in den Wohnungen installiert sind, gehören dem FaRü e. V., und dürfen weder entfernt noch an Nachmieter verkauft werden.",
+        "item3": "Jegliche Hard- und Software, die auf Nutzerseite zusätzlich zu den im vorherigen Absatz genannten Komponenten benötigt wird, um den Netzwerkzugang zu benutzen (etwa Anschlusskabel, Hub, Netzwerkkarte), muss vom Nutzer beschafft werden und geht nicht in das Eigentum des FaRü e. V. über."
+      }
+    },
+    "section7": {
+      "title": "7. Kündigung",
+      "ol1": {
+        "item1": "Die Kündigungsfrist beträgt eine Woche.",
+        "item2": "Es kann nur zum Monatsende gekündigt werden.",
+        "item3": "Die Kündigung kann formlos schriftlich oder per E-Mail erfolgen; maßgeblich ist der fristgerechte Eingang.",
+        "item4": "Eine Beendigung des Mietverhältnisses im Wohnheim bewirkt automatisch eine Kündigung des Netzwerkanschlusses zum selben Datum."
+      }
+    },
+    "section8": {
+      "title": "8. Wohnzeitunterbrecher",
+      "ol1": {
+        "item1": "Wer beim Belegungsausschuss eine Wohnzeitunterbrechung beantragt hat, kann für die Zeit seiner Abwesenheit seine Teilnahme am Netzwerk auf Antrag ruhen lassen. Es ist nicht gestattet, einen Rechner am Netzwerk zu betreiben. Der Account auf dem Wohnheimserver kann jedoch genutzt werden; er bleibt während dieser Zeit erhalten.",
+        "item2": "Nach dem Wiedereinzug ist vor dem Anschluss oder Betrieb eines Rechners eine erneute Anmeldung vorzunehmen."
+      }
+    },
+    "section9": {
+      "title": "9. Betrieb",
+      "ol1": {
+        "item1": "Das Netzwerk wird dauerhaft betrieben. Es kann jedoch durch Wartungsmaßnahmen oder Betriebsstörungen, sowohl auf Seiten unseres Netzwerkes als auch im Bereich des Datennetzes der RWTH Aachen oder bei Dritten, zu Ausfällen bzw. zur Nichterreichbarkeit von Netzwerkteilnehmern oder Netzwerkdiensten kommen.",
+        "item2": "Wartungs- oder Umbaumaßnahmen innerhalb des Wohnheimnetzwerkes werden nach Möglichkeit frühzeitig bekannt gegeben.",
+        "item3": "Bei Ausfällen oder Betriebsstörungen des wohnheimseigenen Netzwerks besteht generell kein Anspruch auf Schadenersatz."
+      }
+    },
+    "section10": {
+      "title": "10. Vergabe von IP Adressen",
+      "ol1": {
+        "item1": "Dem Wohnheim wurde vom Rechen- und Kommunikationszentrum der RWTH Aachen ein Block mit IP Adressen zugewiesen. Diese werden durch die Netzwerkbeauftragten vergeben. Da die Adressen nach Vorgabe der RWTH Aachen statisch einem Rechner zuordenbar sein sollen, darf jede IP nur an einem Rechner benutzt werden.",
+        "item2": "Zur Kommunikation über das Wohnheimnetzwerk dürfen nur die von den Netzwerkbeauftragten jeweils zugewiesenen IP Adressen verwendet werden. Die Zuweisung erfolgt bei der Anmeldung des Rechners.",
+        "item3": "Jedem Nutzer steht mindestens eine IP-Adresse zur Verfügung. Bei Bedarf kann ein Nutzer weitere IP Adressen erhalten, soweit noch ausreichend Adressen vorhanden sind.",
+        "item4": "Dieselbe IP Adresse darf nicht auf mehreren Rechnern verwendet werden, die im regelmäßigen Wechsel betrieben werden.",
+        "item5": "Ein Nutzer darf die ihm zugeteilten IP Adressen nur für seine eigenen Rechner verwenden, also für Rechner, die in seiner Wohnung stehen. Insbesondere eine Überlassung von IP Adressen an andere ist ohne ausdrückliche Zustimmung der Netzwerkbeauftragten nicht zulässig."
+      }
+    },
+    "section11": {
+      "title": "11. Verstöße",
+      "ol1": {
+        "item1": "Ein Verstoß gegen diese Netzordnung oder gegen Vorschriften gemäß § 7.1.3. kann zu vorübergehendem oder vollständigem Ausschluss vom Netzwerk führen. Die Dauer des Ausschlusses setzen die Netzwerkbeauftragten in Absprache mit dem Senat fest, allerdings maximal bis zur nächsten Vollversammlung. Über vollständige Ausschlüsse vom Netzwerk kann nur die Vollversammlung, per Beschluss entscheiden."
+      }
+    },
+    "section12": {
+      "title": "12. Ausnahmen",
+      "par1": "Von den Vorschriften dieser Netzordnung können die Netzwerkbeauftragten in wohlbegründeten Einzelfällen Ausnahmen zulassen. Solche Ausnahmeregelungen sind unter Bezugnahme auf den betreffenden Absatz der Netzwerkordnung zu dokumentieren und dem Senat mitzuteilen."
+    },
+    "section13": {
+      "title": "13. Sonstiges",
+      "ol1": {
+        "item1": "Des weiteren ist zu beachten, dass sowohl die <a href=\"https://www.rwth-aachen.de/global/show_document.asp?id=aaaaaaaaaaddfye\" target=\"_blank\">Netzordnung der RWTH Aachen</a> als auch die <a href=\"https://www.dfn.de/dienstleistungen/dfninternet/benutzungsordnung/\" target=\"_blank\">Nutzerordnung des deutschen Forschungsnetzes (DFN)</a> gelten. Zur weiteren Information: <a href=\"http://www.saw.rwth-aachen.de/wp-content/uploads/2011/08/NAG_verhaltensregeln.pdf\" target=\"_blank\">Leitfaden zur verantwortungsvollen Nutzung von Datennetzen</a>.",
+        "item2": "Auf Beschluss der Wasch-AG, wird einem Nutzer des Services der Wasch-AG der Zugang zum Netzwerk gesperrt (siehe Nutzungsbestimmung der Wasch-AG)."
+      }
+    }
+  }
+}

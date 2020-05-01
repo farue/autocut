@@ -1,0 +1,12 @@
+{
+  "statutes": {
+    "title": "Satzungen",
+    "menu": {
+      "general": "Satzung",
+      "network": "Netzwerknutzungsbestimmungen",
+      "assignment": "Belegungsordnung",
+      "washing": "Nutzungsbestimmungen Wasch AG",
+      "tools": "Nutzungsbestimmungen Werkzeug AG"
+    }
+  }
+}
