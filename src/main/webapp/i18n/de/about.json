@@ -1,0 +1,12 @@
+{
+  "about": {
+    "title": "Über uns",
+    "subtitle": "Familienwohnheim Rütscher Straße",
+    "menu": {
+      "terms": "Nutzungsbedingungen",
+      "privacy": "Datenschutzerklärung",
+      "cookies": "Cookie Richtlinie",
+      "imprint": "Impressum"
+    }
+  }
+}

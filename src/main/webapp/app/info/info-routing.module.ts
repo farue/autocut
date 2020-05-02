@@ -27,6 +27,10 @@ import { RouterModule } from '@angular/router';
       {
         path: 'statutes',
         loadChildren: () => import('./statutes/statutes.module').then(m => m.StatutesModule)
+      },
+      {
+        path: 'about',
+        loadChildren: () => import('./about/about.module').then(m => m.AboutModule)
       }
     ])
   ]

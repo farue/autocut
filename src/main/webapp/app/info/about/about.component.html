@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <h1 class="text-capitalize text-center" jhiTranslate="about.title">Title</h1>
+        <h5 class="text-center" jhiTranslate="about.subtitle">Subtitle</h5>
+        <hr/>
+
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a routerLinkActive="active" class="nav-link" routerLink="terms"
+                   jhiTranslate="about.menu.terms">Terms of Service</a>
+            </li>
+            <li class="nav-item">
+                <a routerLinkActive="active" class="nav-link" routerLink="privacy"
+                   jhiTranslate="about.menu.privacy">Data Policy</a>
+            </li>
+            <li class="nav-item">
+                <a routerLinkActive="active" class="nav-link" routerLink="cookies"
+                   jhiTranslate="about.menu.cookies">Cookies Policy</a>
+            </li>
+            <li class="nav-item">
+                <a routerLinkActive="active" class="nav-link" routerLink="impressum"
+                   jhiTranslate="about.menu.imprint">Impressum</a>
+            </li>
+        </ul>
+
+        <router-outlet></router-outlet>
+    </div>
+    <div class="col-md-1"></div>
+</div>

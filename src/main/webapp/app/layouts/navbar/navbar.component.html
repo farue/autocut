@@ -110,6 +110,13 @@
                             <span jhiTranslate="statutes.title">Statutes</span>
                         </a>
                     </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="info/about" routerLinkActive="active"
+                           (click)="collapseNavbar()">
+                            <fa-icon icon="question" [fixedWidth]="true"></fa-icon>
+                            <span jhiTranslate="about.title">About</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
