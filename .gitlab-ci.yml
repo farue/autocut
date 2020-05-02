@@ -85,9 +85,8 @@ sonar-analyze:
     - frontend-test
   script:
     - mvn ${MVN_OPTS} compile
-    - mvn ${MVN_OPTS} org.jacoco:jacoco-maven-plugin:prepare-agent initialize sonar:sonar -Dsonar.organization="Farue RWTH" -Dsonar.host.url=http://localhost:9001 -Dsonar.login=$SONAR_TOKEN
+    - mvn org.jacoco:jacoco-maven-plugin:prepare-agent initialize sonar:sonar -Dsonar.projectKey=autocut -Dsonar.host.url=https://www.farue.rwth-aachen.de/sonar -Dsonar.login=$SONAR_TOKEN
   allow_failure: true
-  needs: []
 
 maven-package:
   stage: package
@@ -101,6 +100,9 @@ maven-package:
   only:
     refs:
       - release
+  needs:
+    - maven-test
+    - frontend-test
 
 docker-push:
   stage: release
