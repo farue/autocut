@@ -118,8 +118,10 @@ docker-push:
       - release
 
 docker-deploy:
+  image: alpine
   stage: deploy
   script:
+    - apk add openssh
     - eval $(ssh-agent -s)
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
     - mkdir -p ~/.ssh
