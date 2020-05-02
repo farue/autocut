@@ -2,8 +2,8 @@ package de.farue.autocut.web.rest;
 
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.WashHistory;
+import de.farue.autocut.domain.enumeration.WashHistoryStatus;
 import de.farue.autocut.repository.WashHistoryRepository;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -20,10 +21,13 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import de.farue.autocut.domain.enumeration.WashHistoryStatus;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 /**
  * Integration tests for the {@link WashHistoryResource} REST controller.
  */
@@ -107,7 +111,7 @@ public class WashHistoryResourceIT {
         WashHistory testWashHistory = washHistoryList.get(washHistoryList.size() - 1);
         assertThat(testWashHistory.getUsingDate()).isEqualTo(DEFAULT_USING_DATE);
         assertThat(testWashHistory.getReservationDate()).isEqualTo(DEFAULT_RESERVATION_DATE);
-        assertThat(testWashHistory.getLastModifiedDate()).isEqualTo(DEFAULT_LAST_MODIFIED_DATE);
+        assertThat(testWashHistory.getLastModifiedDate()).isAfterOrEqualTo(DEFAULT_LAST_MODIFIED_DATE);
         assertThat(testWashHistory.getStatus()).isEqualTo(DEFAULT_STATUS);
     }
 
@@ -144,10 +148,9 @@ public class WashHistoryResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(washHistory.getId().intValue())))
             .andExpect(jsonPath("$.[*].usingDate").value(hasItem(DEFAULT_USING_DATE.toString())))
             .andExpect(jsonPath("$.[*].reservationDate").value(hasItem(DEFAULT_RESERVATION_DATE.toString())))
-            .andExpect(jsonPath("$.[*].lastModifiedDate").value(hasItem(DEFAULT_LAST_MODIFIED_DATE.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
     }
-    
+
     @Test
     @Transactional
     public void getWashHistory() throws Exception {
@@ -161,7 +164,6 @@ public class WashHistoryResourceIT {
             .andExpect(jsonPath("$.id").value(washHistory.getId().intValue()))
             .andExpect(jsonPath("$.usingDate").value(DEFAULT_USING_DATE.toString()))
             .andExpect(jsonPath("$.reservationDate").value(DEFAULT_RESERVATION_DATE.toString()))
-            .andExpect(jsonPath("$.lastModifiedDate").value(DEFAULT_LAST_MODIFIED_DATE.toString()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()));
     }
 
@@ -202,7 +204,7 @@ public class WashHistoryResourceIT {
         WashHistory testWashHistory = washHistoryList.get(washHistoryList.size() - 1);
         assertThat(testWashHistory.getUsingDate()).isEqualTo(UPDATED_USING_DATE);
         assertThat(testWashHistory.getReservationDate()).isEqualTo(UPDATED_RESERVATION_DATE);
-        assertThat(testWashHistory.getLastModifiedDate()).isEqualTo(UPDATED_LAST_MODIFIED_DATE);
+        assertThat(testWashHistory.getLastModifiedDate()).isAfterOrEqualTo(UPDATED_LAST_MODIFIED_DATE);
         assertThat(testWashHistory.getStatus()).isEqualTo(UPDATED_STATUS);
     }
 
