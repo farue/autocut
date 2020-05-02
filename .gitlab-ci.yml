@@ -1,4 +1,7 @@
 variables:
+  M2_HOME: '$CI_PROJECT_DIR/.maven'
+  MVN_OPTS: '-ntp -Dmaven.repo.local=$MAVEN_USER_HOME'
+  MVN_DISABLE_WEBPACK: '-P !webpack'
   SERVER_URL: '137.226.153.2'
   SSH_OPTS: '-o StrictHostKeyChecking=no'
   DOCKER_COMPOSE_APP: 'src/main/docker/app.yml'
@@ -11,7 +14,8 @@ image: maven:3.6-jdk-14
 cache:
   key: '$CI_COMMIT_REF_NAME'
   paths:
-    - .maven/
+    - ${MAVEN_USER_HOME}
+
 stages:
   - check
   - build
@@ -21,31 +25,35 @@ stages:
   - release
   - deploy
 
-before_script:
-  - export NG_CLI_ANALYTICS="false"
-  - export MAVEN_USER_HOME=`pwd`/.maven
-  - ./mvnw -ntp com.github.eirslett:frontend-maven-plugin:install-node-and-npm -DnodeVersion=v12.13.1 -DnpmVersion=6.13.4 -Dmaven.repo.local=$MAVEN_USER_HOME
-  - ./mvnw -ntp com.github.eirslett:frontend-maven-plugin:npm -Dmaven.repo.local=$MAVEN_USER_HOME
-
 nohttp:
   stage: check
   script:
-    - ./mvnw -ntp checkstyle:check -Dmaven.repo.local=$MAVEN_USER_HOME
+    - mvn ${MVN_OPTS} ${MVN_DISABLE_WEBPACK} checkstyle:check
 
 maven-compile:
   stage: build
   script:
-    - ./mvnw -ntp compile -Dmaven.repo.local=$MAVEN_USER_HOME
+    - mvn ${MVN_OPTS} ${MVN_DISABLE_WEBPACK} compile
   artifacts:
     paths:
       - target/classes/
       - target/generated-sources/
     expire_in: 1 day
+  needs: []
+
+frontend-compile:
+  stage: build
+  before_script:
+    - export NG_CLI_ANALYTICS="false"
+    - mvn ${MVN_OPTS} com.github.eirslett:frontend-maven-plugin:install-node-and-npm -DnodeVersion=v12.13.1 -DnpmVersion=6.13.4
+  script:
+    - mvn ${MVN_OPTS} com.github.eirslett:frontend-maven-plugin:npm
+  needs: []
 
 maven-test:
   stage: test
   script:
-    - ./mvnw -ntp verify -Dmaven.repo.local=$MAVEN_USER_HOME
+    - mvn ${MVN_OPTS} ${MVN_DISABLE_WEBPACK} verify
   artifacts:
     reports:
       junit: target/test-results/**/TEST-*.xml
@@ -56,8 +64,12 @@ maven-test:
 
 frontend-test:
   stage: test
+  before_script:
+    - export NG_CLI_ANALYTICS="false"
+    - mvn ${MVN_OPTS} com.github.eirslett:frontend-maven-plugin:install-node-and-npm -DnodeVersion=v12.13.1 -DnpmVersion=6.13.4
   script:
-    - ./mvnw -ntp com.github.eirslett:frontend-maven-plugin:npm -Dfrontend.npm.arguments='run test' -Dmaven.repo.local=$MAVEN_USER_HOME
+    - mvn ${MVN_OPTS} com.github.eirslett:frontend-maven-plugin:npm
+    - mvn ${MVN_OPTS} com.github.eirslett:frontend-maven-plugin:npm -Dfrontend.npm.arguments='run test'
   artifacts:
     reports:
       junit: target/test-results/TESTS-results-jest.xml
@@ -65,20 +77,22 @@ frontend-test:
       - target/test-results
       - target/jacoco
     expire_in: 1 day
+
 sonar-analyze:
   stage: analyze
   dependencies:
     - maven-test
     - frontend-test
   script:
-    - ./mvnw -ntp compile -Dmaven.repo.local=$MAVEN_USER_HOME
-    - ./mvnw -ntp org.jacoco:jacoco-maven-plugin:prepare-agent initialize sonar:sonar -Dsonar.organization="Farue RWTH" -Dsonar.host.url=http://localhost:9001 -Dsonar.login=$SONAR_TOKEN -Dmaven.repo.local=$MAVEN_USER_HOME
+    - mvn ${MVN_OPTS} compile
+    - mvn ${MVN_OPTS} org.jacoco:jacoco-maven-plugin:prepare-agent initialize sonar:sonar -Dsonar.organization="Farue RWTH" -Dsonar.host.url=http://localhost:9001 -Dsonar.login=$SONAR_TOKEN
   allow_failure: true
+  needs: []
 
 maven-package:
   stage: package
   script:
-    - ./mvnw -ntp verify -Pprod -DskipTests -Dmaven.repo.local=$MAVEN_USER_HOME
+    - mvn ${MVN_OPTS} verify -Pprod -DskipTests
   artifacts:
     paths:
       - target/*.jar
@@ -96,7 +110,7 @@ docker-push:
   dependencies:
     - maven-package
   script:
-    - ./mvnw -ntp compile jib:build -Pprod -Djib.to.image=$IMAGE_TAG -Djib.to.auth.username=gitlab-ci-token  -Djib.to.auth.password=$CI_BUILD_TOKEN -Dmaven.repo.local=$MAVEN_USER_HOME
+    - mvn ${MVN_OPTS} compile jib:build -Pprod -Djib.to.image=$IMAGE_TAG -Djib.to.auth.username=gitlab-ci-token  -Djib.to.auth.password=$CI_BUILD_TOKEN
   only:
     refs:
       - release
