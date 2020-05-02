@@ -31,12 +31,10 @@ public class WashingResource {
     }
 
     @GetMapping("/laundry-machines")
-    public List<LaundryMachine> getAllLaundryMachines(
-        @RequestParam(required = false) Boolean enabled) {
-        List<LaundryMachine> list = washingService.getAllEnabledLaundryMachines().stream()
-            .filter(machine -> enabled == null || enabled == machine.isEnabled())
+    public List<LaundryMachine> getAllLaundryMachines(@RequestParam(required = false) Boolean enabled) {
+        return washingService.getAllEnabledLaundryMachines().stream()
+            .filter(machine -> enabled == null || enabled.equals(machine.isEnabled()))
             .collect(Collectors.toList());
-        return list;
     }
 
     @PostMapping("/laundry-machines/{machineId}/unlock")
