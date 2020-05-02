@@ -1,7 +1,4 @@
-package de.farue.autocut.service;
-
-import de.farue.autocut.web.rest.errors.BadRequestAlertException;
-import de.farue.autocut.web.rest.errors.ErrorConstants;
+package de.farue.autocut.web.rest.errors;
 
 public class LaundryMachineDoesNotExistException extends BadRequestAlertException {
 

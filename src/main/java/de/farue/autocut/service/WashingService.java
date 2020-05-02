@@ -13,6 +13,7 @@ import de.farue.autocut.repository.TenantRepository;
 import de.farue.autocut.repository.UserRepository;
 import de.farue.autocut.security.SecurityUtils;
 import de.farue.autocut.utils.BigDecimalUtil;
+import de.farue.autocut.web.rest.errors.LaundryMachineDoesNotExistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,16 +63,6 @@ public class WashingService {
         return laundryMachineRepository.findAll().stream()
             .filter(LaundryMachine::isEnabled)
             .collect(Collectors.toList());
-    }
-
-    public void purchaseAndUnlock(Long machineId, Long programId) {
-        LaundryMachine machine = laundryMachineRepository.findById(machineId)
-            .orElseThrow(LaundryMachineDoesNotExistException::new);
-        LaundryMachineProgram program = machine.getPrograms().stream()
-            .filter(p -> p.getId().equals(programId))
-            .findFirst()
-            .orElseThrow(IllegalArgumentException::new);
-        purchaseAndUnlock(machine, program);
     }
 
     public void purchaseAndUnlock(LaundryMachine machine, LaundryMachineProgram program) {

@@ -1,7 +1,10 @@
 package de.farue.autocut.web.rest;
 
 import de.farue.autocut.domain.LaundryMachine;
+import de.farue.autocut.domain.LaundryMachineProgram;
+import de.farue.autocut.repository.LaundryMachineRepository;
 import de.farue.autocut.service.WashingService;
+import de.farue.autocut.web.rest.errors.LaundryMachineDoesNotExistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +28,13 @@ public class WashingResource {
 
     private final WashingService washingService;
 
+    private final LaundryMachineRepository laundryMachineRepository;
+
     @Autowired
-    public WashingResource(WashingService washingService) {
+    public WashingResource(WashingService washingService,
+        LaundryMachineRepository laundryMachineRepository) {
         this.washingService = washingService;
+        this.laundryMachineRepository = laundryMachineRepository;
     }
 
     @GetMapping("/laundry-machines")
@@ -39,6 +46,12 @@ public class WashingResource {
 
     @PostMapping("/laundry-machines/{machineId}/unlock")
     public void unlock(@PathVariable Long machineId, @RequestParam Long programId) {
-        washingService.purchaseAndUnlock(machineId, programId);
+        LaundryMachine machine = laundryMachineRepository.findById(machineId)
+            .orElseThrow(LaundryMachineDoesNotExistException::new);
+        LaundryMachineProgram program = machine.getPrograms().stream()
+            .filter(p -> p.getId().equals(programId))
+            .findFirst()
+            .orElseThrow(IllegalArgumentException::new);
+        washingService.purchaseAndUnlock(machine, program);
     }
 }

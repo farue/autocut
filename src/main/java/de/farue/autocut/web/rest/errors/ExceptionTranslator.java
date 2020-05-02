@@ -1,6 +1,5 @@
 package de.farue.autocut.web.rest.errors;
 
-import de.farue.autocut.service.InsufficientFundsException;
 import io.github.jhipster.web.util.HeaderUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.ConcurrencyFailureException;
@@ -123,8 +122,20 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
-    public ResponseEntity<Problem> handleInsufficientFundsException(InsufficientFundsException ex,
-        NativeWebRequest request) {
-        return create(ex, request);
+    public ResponseEntity<Problem> handleInsufficientFundsException(
+        de.farue.autocut.service.InsufficientFundsException ex, NativeWebRequest request) {
+        InsufficientFundsException problem = new InsufficientFundsException();
+        return create(problem, request, HeaderUtil
+            .createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(),
+                problem.getMessage()));
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleLaundryMachineUnavailableException(
+        de.farue.autocut.service.LaundryMachineUnavailableException ex, NativeWebRequest request) {
+        LaundryMachineUnavailableException problem = new LaundryMachineUnavailableException();
+        return create(problem, request, HeaderUtil
+            .createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(),
+                problem.getMessage()));
     }
 }
