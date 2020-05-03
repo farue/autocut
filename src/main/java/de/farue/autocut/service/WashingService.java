@@ -92,29 +92,21 @@ public class WashingService {
             washHistoryService.saveAndFlush(washHistory);
             throw new LaundryMachineUnavailableException();
         }
-        BigDecimal balance = transactionService.getCurrentBalance(tenant);
         BigDecimal cost = switch (machine.getType()) {
             case WASHING_MACHINE -> globalSettingService
                 .getValue(GlobalSetting.WASHING_PRICE_WASHING_MACHINE);
             case DRYER -> globalSettingService
                 .getValue(GlobalSetting.WASHING_PRICE_DRYER);
         };
-        BigDecimal amount = BigDecimalUtil.negative(cost);
-        BigDecimal newBalance = balance.add(amount);
-        if (BigDecimalUtil.isNegative(newBalance)) {
-            log.debug("{} has insufficient funds. Current: {}, After: {}", tenant, balance,
-                newBalance);
-            throw new InsufficientFundsException();
-        }
-        Transaction transaction = new Transaction();
-        transaction.setKind(TransactionKind.PURCHASE);
-        transaction.setBalanceAfter(newBalance);
-        transaction.setValue(amount);
-        transaction.setLease(tenant.getLease());
-        transaction.setBookingDate(timestamp);
-        transaction.setValueDate(timestamp);
-        transaction.setIssuer(WashingService.class.getSimpleName());
-        transaction.setDescription(machine.getName());
+        BigDecimal value = BigDecimalUtil.negative(cost);
+        Transaction transaction = new Transaction()
+            .kind(TransactionKind.PURCHASE)
+            .value(value)
+            .lease(tenant.getLease())
+            .bookingDate(timestamp)
+            .valueDate(timestamp)
+            .issuer(WashingService.class.getSimpleName())
+            .description(machine.getName());
         transactionService.saveWithBalanceCheck(transaction);
         washHistoryService.saveAndFlush(washHistory);
         washItClient.activate(Integer.valueOf(machine.getIdentifier()));

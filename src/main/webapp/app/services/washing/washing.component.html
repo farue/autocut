@@ -3,15 +3,17 @@
         <div class="col-md-8">
             <h1 jhiTranslate="washing.title">Unlock washing machine / dryer</h1>
 
-            <div class="alert alert-success" *ngIf="success" jhiTranslate="washing.messages.success" [translateValues]="{ machine: selectedMachine?.name }">
+            <div class="alert alert-success" *ngIf="success" jhiTranslate="washing.messages.info.success"
+                 [translateValues]="{ machine: selectedMachine?.name }">
                 The laundry machine has been unlocked
             </div>
 
-            <div class="alert alert-danger" *ngIf="error" jhiTranslate="washing.messages.error.fail">
+            <div class="alert alert-danger" *ngIf="error" jhiTranslate="washing.messages.error.fail"
+                 [translateValues]="{ machine: selectedMachine?.name }">
                 Something went wrong. Please try again later.
             </div>
 
-            <div class="alert alert-danger" *ngIf="initError" jhiTranslate="washing.messages.error.userexists">
+            <div class="alert alert-danger" *ngIf="initError" jhiTranslate="washing.messages.error.init">
                 The service is currently not available. Please try again later.
             </div>
 
@@ -21,7 +23,8 @@
             </div>
 
             <div class="alert alert-danger" *ngIf="errorMachineUnavailable"
-                 jhiTranslate="washing.messages.error.machinenotavailable">
+                 jhiTranslate="washing.messages.error.machinenotavailable"
+                 [translateValues]="{ machine: selectedMachine?.name }">
                 The machine is currently not available.
             </div>
         </div>

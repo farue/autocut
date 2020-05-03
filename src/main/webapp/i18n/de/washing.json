@@ -9,9 +9,15 @@
     "preWashCheckbox": "Vorwäsche",
     "protectCheckbox": "Schonen",
     "messages": {
-      "success": "{{machine}} wurde erfolgreich freigeschaltet",
-      "initError": "Fehler bei der Initialisierung. Bitte versuchen Sie es später nochmal.",
-      "error": "Maschine {{selectedMachine}} konnte nicht freigeschaltet werden."
+      "info": {
+        "success": "{{machine}} wurde erfolgreich freigeschaltet"
+      },
+      "error": {
+        "init": "Fehler bei der Initialisierung. Bitte versuchen Sie es später nochmal.",
+        "fail": "{{machine}} konnte nicht freigeschaltet werden.",
+        "insufficientfunds": "Sie haben nicht genügend Geld zur Verfügung.",
+        "machinenotavailable": "{{machine}} ist zur Zeit leider nicht verfügbar."
+      }
     }
   }
 }

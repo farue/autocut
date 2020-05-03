@@ -9,9 +9,15 @@
     "preWashCheckbox": "Vorwäsche",
     "protectCheckbox": "Schonen",
     "messages": {
-      "success": "{{machine}} was unlocked successfully",
-      "initError": "Error during initialization. Please try again later.",
-      "error": "Machine {{selectedMachine}} could not be unlocked."
+      "info": {
+        "success": "{{machine}} was unlocked successfully"
+      },
+      "error": {
+        "init": "Error during initialization. Please try again later.",
+        "fail": "{{machine}} could not be unlocked.",
+        "insufficientfunds": "You have not enough funds.",
+        "machinenotavailable": "Unfortunately, {{machine}} is temporarily not available."
+      }
     }
   }
 }

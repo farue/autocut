@@ -103,10 +103,10 @@ export class WashingComponent implements OnInit {
     }
     return this.selectedMachine
       .programs!.filter(p => (p.name == null && program == null) || p.name === program)
-      .filter(p => (p.subprogram == null && subprogram == null) || p.subprogram === subprogram)
-      .filter(p => (p.spin == null && spin == null) || p.spin === spin)
-      .filter(p => (p.preWash == null && preWash == null) || p.preWash === preWash)
-      .filter(p => (p.protect == null && protect == null) || p.protect === protect);
+    .filter(p => (p.subprogram == null && subprogram == null) || p.subprogram === subprogram)
+    .filter(p => (p.spin == null && spin == null) || p.spin === spin)
+    .filter(p => (p.preWash == null && !preWash) || p.preWash === preWash)
+    .filter(p => (p.protect == null && !protect) || p.protect === protect);
   }
 
   isShowProgramSelect(): boolean {
@@ -148,8 +148,6 @@ export class WashingComponent implements OnInit {
     if (this.selectedMachine == null) {
       return [];
     }
-    // const programs = this.selectedMachine.programs!.map(p => p.name!);
-    // return [...new Set(programs)];
     return this.selectedMachine.programs!.map(p => p.name!).filter(WashingComponent.onlyUnique);
   }
 
@@ -164,10 +162,6 @@ export class WashingComponent implements OnInit {
     if (!this.isShowSpinSelect()) {
       return [];
     }
-    // const spins = this.getProgramsFilteredByProgramNameAndSubprogram(this.selectedProgram!, this.selectedSubprogram)
-    // .map(p => p.spin)
-    // .filter(WashingComponent.notEmpty);
-    // return [...new Set(spins)];
     return this.getProgramsFilteredByProgramNameAndSubprogram(this.selectedProgram!, this.selectedSubprogram)
       .map(p => p.spin)
       .filter(WashingComponent.notEmpty)
@@ -217,9 +211,6 @@ export class WashingComponent implements OnInit {
     if (this.selectedMachine == null || program == null) {
       return [];
     }
-    // const subprograms = this.selectedMachine?.programs?.filter(p => p.name === program).map(p => p.subprogram)
-    // .filter(WashingComponent.notEmpty);
-    // return [...new Set(subprograms)];
     return this.selectedMachine
       .programs!.filter(p => p.name === program)
       .map(p => p.subprogram)
