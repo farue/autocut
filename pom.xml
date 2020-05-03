@@ -608,7 +608,7 @@
                     <version>${jib-maven-plugin.version}</version>
                     <configuration>
                         <from>
-                            <image>adoptopenjdk:11-jre-hotspot</image>
+                            <image>adoptopenjdk:14-jre-hotspot</image>
                         </from>
                         <to>
                             <image>autocut:latest</image>
