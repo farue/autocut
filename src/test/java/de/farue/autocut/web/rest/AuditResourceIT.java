@@ -1,22 +1,16 @@
 package de.farue.autocut.web.rest;
 
 import de.farue.autocut.AutocutApp;
-import io.github.jhipster.config.JHipsterProperties;
-import de.farue.autocut.config.audit.AuditEventConverter;
 import de.farue.autocut.domain.PersistentAuditEvent;
 import de.farue.autocut.repository.PersistenceAuditEventRepository;
 import de.farue.autocut.security.AuthoritiesConstants;
 
-import de.farue.autocut.service.AuditEventService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
-import org.springframework.format.support.FormattingConversionService;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -126,7 +120,6 @@ public class AuditResourceIT {
     }
 
     @Test
-    @Transactional
     public void testPersistentAuditEventEquals() throws Exception {
         TestUtil.equalsVerifier(PersistentAuditEvent.class);
         PersistentAuditEvent auditEvent1 = new PersistentAuditEvent();
