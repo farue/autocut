@@ -11,6 +11,6 @@ import { addressRoute } from './address.route';
 @NgModule({
   imports: [AutocutSharedModule, RouterModule.forChild(addressRoute)],
   declarations: [AddressComponent, AddressDetailComponent, AddressUpdateComponent, AddressDeleteDialogComponent],
-  entryComponents: [AddressDeleteDialogComponent]
+  entryComponents: [AddressDeleteDialogComponent],
 })
 export class AutocutAddressModule {}

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
-import { Observable, of, EMPTY } from 'rxjs';
+import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
+import { EMPTY, Observable, of } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
 import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { IApartment, Apartment } from 'app/shared/model/apartment.model';
+import { Apartment, IApartment } from 'app/shared/model/apartment.model';
 import { ApartmentService } from './apartment.service';
 import { ApartmentComponent } from './apartment.component';
 import { ApartmentDetailComponent } from './apartment-detail.component';
@@ -40,44 +40,44 @@ export const apartmentRoute: Routes = [
     component: ApartmentComponent,
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.apartment.home.title'
+      pageTitle: 'autocutApp.apartment.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
     component: ApartmentDetailComponent,
     resolve: {
-      apartment: ApartmentResolve
+      apartment: ApartmentResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.apartment.home.title'
+      pageTitle: 'autocutApp.apartment.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',
     component: ApartmentUpdateComponent,
     resolve: {
-      apartment: ApartmentResolve
+      apartment: ApartmentResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.apartment.home.title'
+      pageTitle: 'autocutApp.apartment.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/edit',
     component: ApartmentUpdateComponent,
     resolve: {
-      apartment: ApartmentResolve
+      apartment: ApartmentResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.apartment.home.title'
+      pageTitle: 'autocutApp.apartment.home.title',
     },
-    canActivate: [UserRouteAccessService]
-  }
+    canActivate: [UserRouteAccessService],
+  },
 ];

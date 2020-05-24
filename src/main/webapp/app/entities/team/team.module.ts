@@ -11,6 +11,6 @@ import { teamRoute } from './team.route';
 @NgModule({
   imports: [AutocutSharedModule, RouterModule.forChild(teamRoute)],
   declarations: [TeamComponent, TeamDetailComponent, TeamUpdateComponent, TeamDeleteDialogComponent],
-  entryComponents: [TeamDeleteDialogComponent]
+  entryComponents: [TeamDeleteDialogComponent],
 })
 export class AutocutTeamModule {}

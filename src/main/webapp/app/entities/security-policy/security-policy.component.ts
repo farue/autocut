@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
@@ -10,7 +10,7 @@ import { SecurityPolicyDeleteDialogComponent } from './security-policy-delete-di
 
 @Component({
   selector: 'jhi-security-policy',
-  templateUrl: './security-policy.component.html'
+  templateUrl: './security-policy.component.html',
 })
 export class SecurityPolicyComponent implements OnInit, OnDestroy {
   securityPolicies?: ISecurityPolicy[];

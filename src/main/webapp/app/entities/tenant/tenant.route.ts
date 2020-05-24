@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
-import { Observable, of, EMPTY } from 'rxjs';
+import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
+import { EMPTY, Observable, of } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
 import { Authority } from 'app/shared/constants/authority.constants';
@@ -40,44 +40,44 @@ export const tenantRoute: Routes = [
     component: TenantComponent,
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.tenant.home.title'
+      pageTitle: 'autocutApp.tenant.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
     component: TenantDetailComponent,
     resolve: {
-      tenant: TenantResolve
+      tenant: TenantResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.tenant.home.title'
+      pageTitle: 'autocutApp.tenant.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',
     component: TenantUpdateComponent,
     resolve: {
-      tenant: TenantResolve
+      tenant: TenantResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.tenant.home.title'
+      pageTitle: 'autocutApp.tenant.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/edit',
     component: TenantUpdateComponent,
     resolve: {
-      tenant: TenantResolve
+      tenant: TenantResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.tenant.home.title'
+      pageTitle: 'autocutApp.tenant.home.title',
     },
-    canActivate: [UserRouteAccessService]
-  }
+    canActivate: [UserRouteAccessService],
+  },
 ];

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
@@ -10,7 +10,7 @@ import { InternetAccessDeleteDialogComponent } from './internet-access-delete-di
 
 @Component({
   selector: 'jhi-internet-access',
-  templateUrl: './internet-access.component.html'
+  templateUrl: './internet-access.component.html',
 })
 export class InternetAccessComponent implements OnInit, OnDestroy {
   internetAccesses?: IInternetAccess[];

@@ -2,8 +2,8 @@ package de.farue.autocut.web.rest;
 
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Apartment;
+import de.farue.autocut.domain.enumeration.ApartmentTypes;
 import de.farue.autocut.repository.ApartmentRepository;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,20 +13,23 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import de.farue.autocut.domain.enumeration.ApartmentTypes;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 /**
  * Integration tests for the {@link ApartmentResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class ApartmentResourceIT {
@@ -87,7 +90,6 @@ public class ApartmentResourceIT {
     @Transactional
     public void createApartment() throws Exception {
         int databaseSizeBeforeCreate = apartmentRepository.findAll().size();
-
         // Create the Apartment
         restApartmentMockMvc.perform(post("/api/apartments")
             .contentType(MediaType.APPLICATION_JSON)
@@ -192,7 +194,7 @@ public class ApartmentResourceIT {
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].maxNumberOfLeases").value(hasItem(DEFAULT_MAX_NUMBER_OF_LEASES)));
     }
-    
+
     @Test
     @Transactional
     public void getApartment() throws Exception {
@@ -208,7 +210,6 @@ public class ApartmentResourceIT {
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
             .andExpect(jsonPath("$.maxNumberOfLeases").value(DEFAULT_MAX_NUMBER_OF_LEASES));
     }
-
     @Test
     @Transactional
     public void getNonExistingApartment() throws Exception {
@@ -252,8 +253,6 @@ public class ApartmentResourceIT {
     @Transactional
     public void updateNonExistingApartment() throws Exception {
         int databaseSizeBeforeUpdate = apartmentRepository.findAll().size();
-
-        // Create the Apartment
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restApartmentMockMvc.perform(put("/api/apartments")

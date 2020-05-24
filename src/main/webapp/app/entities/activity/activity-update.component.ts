@@ -7,14 +7,14 @@ import { Observable } from 'rxjs';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 
-import { IActivity, Activity } from 'app/shared/model/activity.model';
+import { Activity, IActivity } from 'app/shared/model/activity.model';
 import { ActivityService } from './activity.service';
 import { ITenant } from 'app/shared/model/tenant.model';
 import { TenantService } from 'app/entities/tenant/tenant.service';
 
 @Component({
   selector: 'jhi-activity-update',
-  templateUrl: './activity-update.component.html'
+  templateUrl: './activity-update.component.html',
 })
 export class ActivityUpdateComponent implements OnInit {
   isSaving = false;
@@ -29,7 +29,7 @@ export class ActivityUpdateComponent implements OnInit {
     description: [],
     discount: [],
     stwActivity: [],
-    tenant: []
+    tenant: [],
   });
 
   constructor(
@@ -63,7 +63,7 @@ export class ActivityUpdateComponent implements OnInit {
       description: activity.description,
       discount: activity.discount,
       stwActivity: activity.stwActivity,
-      tenant: activity.tenant
+      tenant: activity.tenant,
     });
   }
 
@@ -92,7 +92,7 @@ export class ActivityUpdateComponent implements OnInit {
       description: this.editForm.get(['description'])!.value,
       discount: this.editForm.get(['discount'])!.value,
       stwActivity: this.editForm.get(['stwActivity'])!.value,
-      tenant: this.editForm.get(['tenant'])!.value
+      tenant: this.editForm.get(['tenant'])!.value,
     };
   }
 

@@ -6,7 +6,7 @@ import { ITeam } from 'app/shared/model/team.model';
 import { TeamService } from './team.service';
 
 @Component({
-  templateUrl: './team-delete-dialog.component.html'
+  templateUrl: './team-delete-dialog.component.html',
 })
 export class TeamDeleteDialogComponent {
   team?: ITeam;

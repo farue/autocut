@@ -18,17 +18,17 @@
         <span jhiTranslate="autocutApp.communication.home.notFound">No communications found</span>
     </div>
 
-    <div class="table-responsive" id="entities" *ngIf="communications?.length > 0">
+    <div class="table-responsive" id="entities" *ngIf="communications && communications.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-                <tr>
-                    <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.communication.subject">Subject</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.communication.text">Text</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.communication.note">Note</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.communication.date">Date</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.communication.tenant">Tenant</span></th>
-                    <th scope="col"></th>
+            <tr>
+                <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.communication.subject">Subject</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.communication.text">Text</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.communication.note">Note</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.communication.date">Date</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.communication.tenant">Tenant</span></th>
+                <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>

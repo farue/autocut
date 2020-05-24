@@ -18,17 +18,17 @@
         <span jhiTranslate="autocutApp.address.home.notFound">No addresses found</span>
     </div>
 
-    <div class="table-responsive" id="entities" *ngIf="addresses?.length > 0">
+    <div class="table-responsive" id="entities" *ngIf="addresses && addresses.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-                <tr>
-                    <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.address.street">Street</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.address.streetNumber">Street Number</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.address.zip">Zip</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.address.city">City</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.address.country">Country</span></th>
-                    <th scope="col"></th>
+            <tr>
+                <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.address.street">Street</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.address.streetNumber">Street Number</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.address.zip">Zip</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.address.city">City</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.address.country">Country</span></th>
+                <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>

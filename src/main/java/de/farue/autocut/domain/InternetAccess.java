@@ -5,18 +5,24 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A InternetAccess.
  */
 @Entity
 @Table(name = "internet_access")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class InternetAccess implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,14 +53,14 @@ public class InternetAccess implements Serializable {
     private Integer port;
 
     @ManyToOne
-    @JsonIgnoreProperties("internetAccesses")
+    @JsonIgnoreProperties(value = "internetAccesses", allowSetters = true)
     private NetworkSwitch networkSwitch;
 
     @OneToOne(mappedBy = "internetAccess")
     @JsonIgnore
     private Apartment apartment;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -153,7 +159,7 @@ public class InternetAccess implements Serializable {
     public void setApartment(Apartment apartment) {
         this.apartment = apartment;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -171,6 +177,7 @@ public class InternetAccess implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "InternetAccess{" +

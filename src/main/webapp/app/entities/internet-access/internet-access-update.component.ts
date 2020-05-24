@@ -12,7 +12,7 @@ import { NetworkSwitchService } from 'app/entities/network-switch/network-switch
 
 @Component({
   selector: 'jhi-internet-access-update',
-  templateUrl: './internet-access-update.component.html'
+  templateUrl: './internet-access-update.component.html',
 })
 export class InternetAccessUpdateComponent implements OnInit {
   isSaving = false;
@@ -25,7 +25,7 @@ export class InternetAccessUpdateComponent implements OnInit {
     ip2: [null, [Validators.required]],
     switchInterface: [null, [Validators.required]],
     port: [null, [Validators.required, Validators.min(1)]],
-    networkSwitch: []
+    networkSwitch: [],
   });
 
   constructor(
@@ -51,7 +51,7 @@ export class InternetAccessUpdateComponent implements OnInit {
       ip2: internetAccess.ip2,
       switchInterface: internetAccess.switchInterface,
       port: internetAccess.port,
-      networkSwitch: internetAccess.networkSwitch
+      networkSwitch: internetAccess.networkSwitch,
     });
   }
 
@@ -78,7 +78,7 @@ export class InternetAccessUpdateComponent implements OnInit {
       ip2: this.editForm.get(['ip2'])!.value,
       switchInterface: this.editForm.get(['switchInterface'])!.value,
       port: this.editForm.get(['port'])!.value,
-      networkSwitch: this.editForm.get(['networkSwitch'])!.value
+      networkSwitch: this.editForm.get(['networkSwitch'])!.value,
     };
   }
 

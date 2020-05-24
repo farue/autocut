@@ -18,17 +18,17 @@
         <span jhiTranslate="autocutApp.lease.home.notFound">No leases found</span>
     </div>
 
-    <div class="table-responsive" id="entities" *ngIf="leases?.length > 0">
+    <div class="table-responsive" id="entities" *ngIf="leases && leases.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-                <tr>
-                    <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.lease.nr">Nr</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.lease.start">Start</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.lease.end">End</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.lease.blocked">Blocked</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.lease.pictureContract">Picture Contract</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.lease.apartment">Apartment</span></th>
+            <tr>
+                <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.lease.nr">Nr</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.lease.start">Start</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.lease.end">End</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.lease.blocked">Blocked</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.lease.pictureContract">Picture Contract</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.lease.apartment">Apartment</span></th>
                     <th scope="col"></th>
                 </tr>
             </thead>

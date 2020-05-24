@@ -11,6 +11,6 @@ import { communicationRoute } from './communication.route';
 @NgModule({
   imports: [AutocutSharedModule, RouterModule.forChild(communicationRoute)],
   declarations: [CommunicationComponent, CommunicationDetailComponent, CommunicationUpdateComponent, CommunicationDeleteDialogComponent],
-  entryComponents: [CommunicationDeleteDialogComponent]
+  entryComponents: [CommunicationDeleteDialogComponent],
 })
 export class AutocutCommunicationModule {}

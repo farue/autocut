@@ -16,7 +16,7 @@ type SelectableEntity = ITeamMember | ITenant;
 
 @Component({
   selector: 'jhi-security-policy-update',
-  templateUrl: './security-policy-update.component.html'
+  templateUrl: './security-policy-update.component.html',
 })
 export class SecurityPolicyUpdateComponent implements OnInit {
   isSaving = false;
@@ -28,7 +28,7 @@ export class SecurityPolicyUpdateComponent implements OnInit {
     protectionUnit: [null, [Validators.required]],
     access: [null, [Validators.required]],
     teamMember: [],
-    tenant: []
+    tenant: [],
   });
 
   constructor(
@@ -55,7 +55,7 @@ export class SecurityPolicyUpdateComponent implements OnInit {
       protectionUnit: securityPolicy.protectionUnit,
       access: securityPolicy.access,
       teamMember: securityPolicy.teamMember,
-      tenant: securityPolicy.tenant
+      tenant: securityPolicy.tenant,
     });
   }
 
@@ -80,7 +80,7 @@ export class SecurityPolicyUpdateComponent implements OnInit {
       protectionUnit: this.editForm.get(['protectionUnit'])!.value,
       access: this.editForm.get(['access'])!.value,
       teamMember: this.editForm.get(['teamMember'])!.value,
-      tenant: this.editForm.get(['tenant'])!.value
+      tenant: this.editForm.get(['tenant'])!.value,
     };
   }
 

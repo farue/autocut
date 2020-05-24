@@ -3,7 +3,6 @@ package de.farue.autocut.web.rest;
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Address;
 import de.farue.autocut.repository.AddressRepository;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,19 +12,24 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Integration tests for the {@link AddressResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class AddressResourceIT {
@@ -96,7 +100,6 @@ public class AddressResourceIT {
     @Transactional
     public void createAddress() throws Exception {
         int databaseSizeBeforeCreate = addressRepository.findAll().size();
-
         // Create the Address
         restAddressMockMvc.perform(post("/api/addresses")
             .contentType(MediaType.APPLICATION_JSON)
@@ -241,7 +244,7 @@ public class AddressResourceIT {
             .andExpect(jsonPath("$.[*].city").value(hasItem(DEFAULT_CITY)))
             .andExpect(jsonPath("$.[*].country").value(hasItem(DEFAULT_COUNTRY)));
     }
-    
+
     @Test
     @Transactional
     public void getAddress() throws Exception {
@@ -259,7 +262,6 @@ public class AddressResourceIT {
             .andExpect(jsonPath("$.city").value(DEFAULT_CITY))
             .andExpect(jsonPath("$.country").value(DEFAULT_COUNTRY));
     }
-
     @Test
     @Transactional
     public void getNonExistingAddress() throws Exception {
@@ -307,8 +309,6 @@ public class AddressResourceIT {
     @Transactional
     public void updateNonExistingAddress() throws Exception {
         int databaseSizeBeforeUpdate = addressRepository.findAll().size();
-
-        // Create the Address
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restAddressMockMvc.perform(put("/api/addresses")

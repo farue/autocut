@@ -1,7 +1,7 @@
-import { TestBed, getTestBed } from '@angular/core/testing';
+import { getTestBed, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { AddressService } from 'app/entities/address/address.service';
-import { IAddress, Address } from 'app/shared/model/address.model';
+import { Address, IAddress } from 'app/shared/model/address.model';
 
 describe('Service Tests', () => {
   describe('Address Service', () => {
@@ -13,7 +13,7 @@ describe('Service Tests', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
       });
       expectedResult = null;
       injector = getTestBed();
@@ -37,7 +37,7 @@ describe('Service Tests', () => {
       it('should create a Address', () => {
         const returnedFromService = Object.assign(
           {
-            id: 0
+            id: 0,
           },
           elemDefault
         );
@@ -58,7 +58,7 @@ describe('Service Tests', () => {
             streetNumber: 'BBBBBB',
             zip: 'BBBBBB',
             city: 'BBBBBB',
-            country: 'BBBBBB'
+            country: 'BBBBBB',
           },
           elemDefault
         );
@@ -79,7 +79,7 @@ describe('Service Tests', () => {
             streetNumber: 'BBBBBB',
             zip: 'BBBBBB',
             city: 'BBBBBB',
-            country: 'BBBBBB'
+            country: 'BBBBBB',
           },
           elemDefault
         );

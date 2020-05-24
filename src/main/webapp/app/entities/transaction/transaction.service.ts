@@ -51,7 +51,7 @@ export class TransactionService {
   protected convertDateFromClient(transaction: ITransaction): ITransaction {
     const copy: ITransaction = Object.assign({}, transaction, {
       bookingDate: transaction.bookingDate && transaction.bookingDate.isValid() ? transaction.bookingDate.toJSON() : undefined,
-      valueDate: transaction.valueDate && transaction.valueDate.isValid() ? transaction.valueDate.toJSON() : undefined
+      valueDate: transaction.valueDate && transaction.valueDate.isValid() ? transaction.valueDate.toJSON() : undefined,
     });
     return copy;
   }

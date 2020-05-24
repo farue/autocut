@@ -2,9 +2,9 @@ package de.farue.autocut.web.rest;
 
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Transaction;
+import de.farue.autocut.domain.enumeration.TransactionKind;
 import de.farue.autocut.repository.TransactionRepository;
 import de.farue.autocut.service.TransactionService;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -22,15 +23,17 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import de.farue.autocut.domain.enumeration.TransactionKind;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 /**
  * Integration tests for the {@link TransactionResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class TransactionResourceIT {
@@ -119,7 +122,6 @@ public class TransactionResourceIT {
     @Transactional
     public void createTransaction() throws Exception {
         int databaseSizeBeforeCreate = transactionRepository.findAll().size();
-
         // Create the Transaction
         restTransactionMockMvc.perform(post("/api/transactions")
             .contentType(MediaType.APPLICATION_JSON)
@@ -270,7 +272,7 @@ public class TransactionResourceIT {
             .andExpect(jsonPath("$.[*].issuer").value(hasItem(DEFAULT_ISSUER)))
             .andExpect(jsonPath("$.[*].recipient").value(hasItem(DEFAULT_RECIPIENT)));
     }
-    
+
     @Test
     @Transactional
     public void getTransaction() throws Exception {
@@ -291,7 +293,6 @@ public class TransactionResourceIT {
             .andExpect(jsonPath("$.issuer").value(DEFAULT_ISSUER))
             .andExpect(jsonPath("$.recipient").value(DEFAULT_RECIPIENT));
     }
-
     @Test
     @Transactional
     public void getNonExistingTransaction() throws Exception {
@@ -345,8 +346,6 @@ public class TransactionResourceIT {
     @Transactional
     public void updateNonExistingTransaction() throws Exception {
         int databaseSizeBeforeUpdate = transactionRepository.findAll().size();
-
-        // Create the Transaction
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restTransactionMockMvc.perform(put("/api/transactions")

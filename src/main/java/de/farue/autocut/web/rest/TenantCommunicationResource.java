@@ -3,20 +3,25 @@ package de.farue.autocut.web.rest;
 import de.farue.autocut.domain.TenantCommunication;
 import de.farue.autocut.repository.TenantCommunicationRepository;
 import de.farue.autocut.web.rest.errors.BadRequestAlertException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional; 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -84,7 +89,6 @@ public class TenantCommunicationResource {
     /**
      * {@code GET  /tenant-communications} : get all the tenantCommunications.
      *
-
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of tenantCommunications in body.
      */
     @GetMapping("/tenant-communications")
@@ -115,6 +119,7 @@ public class TenantCommunicationResource {
     @DeleteMapping("/tenant-communications/{id}")
     public ResponseEntity<Void> deleteTenantCommunication(@PathVariable Long id) {
         log.debug("REST request to delete TenantCommunication : {}", id);
+
         tenantCommunicationRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }

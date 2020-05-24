@@ -1,4 +1,4 @@
-import { TestBed, getTestBed } from '@angular/core/testing';
+import { getTestBed, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
@@ -16,7 +16,7 @@ describe('Service Tests', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
       });
       expectedResult = null;
       injector = getTestBed();
@@ -32,7 +32,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             start: currentDate.format(DATE_TIME_FORMAT),
-            end: currentDate.format(DATE_TIME_FORMAT)
+            end: currentDate.format(DATE_TIME_FORMAT),
           },
           elemDefault
         );
@@ -49,7 +49,7 @@ describe('Service Tests', () => {
           {
             id: 0,
             start: currentDate.format(DATE_TIME_FORMAT),
-            end: currentDate.format(DATE_TIME_FORMAT)
+            end: currentDate.format(DATE_TIME_FORMAT),
           },
           elemDefault
         );
@@ -57,7 +57,7 @@ describe('Service Tests', () => {
         const expected = Object.assign(
           {
             start: currentDate,
-            end: currentDate
+            end: currentDate,
           },
           returnedFromService
         );
@@ -76,7 +76,7 @@ describe('Service Tests', () => {
             start: currentDate.format(DATE_TIME_FORMAT),
             end: currentDate.format(DATE_TIME_FORMAT),
             blocked: true,
-            pictureContract: 'BBBBBB'
+            pictureContract: 'BBBBBB',
           },
           elemDefault
         );
@@ -84,7 +84,7 @@ describe('Service Tests', () => {
         const expected = Object.assign(
           {
             start: currentDate,
-            end: currentDate
+            end: currentDate,
           },
           returnedFromService
         );
@@ -103,7 +103,7 @@ describe('Service Tests', () => {
             start: currentDate.format(DATE_TIME_FORMAT),
             end: currentDate.format(DATE_TIME_FORMAT),
             blocked: true,
-            pictureContract: 'BBBBBB'
+            pictureContract: 'BBBBBB',
           },
           elemDefault
         );
@@ -111,7 +111,7 @@ describe('Service Tests', () => {
         const expected = Object.assign(
           {
             start: currentDate,
-            end: currentDate
+            end: currentDate,
           },
           returnedFromService
         );

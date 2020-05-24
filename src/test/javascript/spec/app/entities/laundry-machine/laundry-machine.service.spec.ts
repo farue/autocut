@@ -1,4 +1,4 @@
-import { TestBed, getTestBed } from '@angular/core/testing';
+import { getTestBed, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { LaundryMachineService } from 'app/entities/laundry-machine/laundry-machine.service';
 import { ILaundryMachine, LaundryMachine } from 'app/shared/model/laundry-machine.model';
@@ -14,7 +14,7 @@ describe('Service Tests', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
       });
       expectedResult = null;
       injector = getTestBed();
@@ -38,7 +38,7 @@ describe('Service Tests', () => {
       it('should create a LaundryMachine', () => {
         const returnedFromService = Object.assign(
           {
-            id: 0
+            id: 0,
           },
           elemDefault
         );
@@ -58,7 +58,7 @@ describe('Service Tests', () => {
             identifier: 'BBBBBB',
             name: 'BBBBBB',
             type: 'BBBBBB',
-            enabled: true
+            enabled: true,
           },
           elemDefault
         );
@@ -78,7 +78,7 @@ describe('Service Tests', () => {
             identifier: 'BBBBBB',
             name: 'BBBBBB',
             type: 'BBBBBB',
-            enabled: true
+            enabled: true,
           },
           elemDefault
         );

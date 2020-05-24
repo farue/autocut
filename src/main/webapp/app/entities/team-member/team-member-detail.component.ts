@@ -5,7 +5,7 @@ import { ITeamMember } from 'app/shared/model/team-member.model';
 
 @Component({
   selector: 'jhi-team-member-detail',
-  templateUrl: './team-member-detail.component.html'
+  templateUrl: './team-member-detail.component.html',
 })
 export class TeamMemberDetailComponent implements OnInit {
   teamMember: ITeamMember | null = null;

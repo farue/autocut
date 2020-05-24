@@ -3,7 +3,6 @@ package de.farue.autocut.web.rest;
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Lease;
 import de.farue.autocut.repository.LeaseRepository;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
+
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -21,14 +21,18 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Integration tests for the {@link LeaseResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class LeaseResourceIT {
@@ -103,7 +107,6 @@ public class LeaseResourceIT {
     @Transactional
     public void createLease() throws Exception {
         int databaseSizeBeforeCreate = leaseRepository.findAll().size();
-
         // Create the Lease
         restLeaseMockMvc.perform(post("/api/leases")
             .contentType(MediaType.APPLICATION_JSON)
@@ -196,7 +199,7 @@ public class LeaseResourceIT {
             .andExpect(jsonPath("$.[*].pictureContractContentType").value(hasItem(DEFAULT_PICTURE_CONTRACT_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].pictureContract").value(hasItem(Base64Utils.encodeToString(DEFAULT_PICTURE_CONTRACT))));
     }
-    
+
     @Test
     @Transactional
     public void getLease() throws Exception {
@@ -215,7 +218,6 @@ public class LeaseResourceIT {
             .andExpect(jsonPath("$.pictureContractContentType").value(DEFAULT_PICTURE_CONTRACT_CONTENT_TYPE))
             .andExpect(jsonPath("$.pictureContract").value(Base64Utils.encodeToString(DEFAULT_PICTURE_CONTRACT)));
     }
-
     @Test
     @Transactional
     public void getNonExistingLease() throws Exception {
@@ -265,8 +267,6 @@ public class LeaseResourceIT {
     @Transactional
     public void updateNonExistingLease() throws Exception {
         int databaseSizeBeforeUpdate = leaseRepository.findAll().size();
-
-        // Create the Lease
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restLeaseMockMvc.perform(put("/api/leases")

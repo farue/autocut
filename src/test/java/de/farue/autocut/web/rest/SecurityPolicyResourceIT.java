@@ -2,8 +2,9 @@ package de.farue.autocut.web.rest;
 
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.SecurityPolicy;
+import de.farue.autocut.domain.enumeration.Access;
+import de.farue.autocut.domain.enumeration.ProtectionUnits;
 import de.farue.autocut.repository.SecurityPolicyRepository;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,21 +14,23 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import de.farue.autocut.domain.enumeration.ProtectionUnits;
-import de.farue.autocut.domain.enumeration.Access;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 /**
  * Integration tests for the {@link SecurityPolicyResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class SecurityPolicyResourceIT {
@@ -83,7 +86,6 @@ public class SecurityPolicyResourceIT {
     @Transactional
     public void createSecurityPolicy() throws Exception {
         int databaseSizeBeforeCreate = securityPolicyRepository.findAll().size();
-
         // Create the SecurityPolicy
         restSecurityPolicyMockMvc.perform(post("/api/security-policies")
             .contentType(MediaType.APPLICATION_JSON)
@@ -168,7 +170,7 @@ public class SecurityPolicyResourceIT {
             .andExpect(jsonPath("$.[*].protectionUnit").value(hasItem(DEFAULT_PROTECTION_UNIT.toString())))
             .andExpect(jsonPath("$.[*].access").value(hasItem(DEFAULT_ACCESS.toString())));
     }
-    
+
     @Test
     @Transactional
     public void getSecurityPolicy() throws Exception {
@@ -183,7 +185,6 @@ public class SecurityPolicyResourceIT {
             .andExpect(jsonPath("$.protectionUnit").value(DEFAULT_PROTECTION_UNIT.toString()))
             .andExpect(jsonPath("$.access").value(DEFAULT_ACCESS.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingSecurityPolicy() throws Exception {
@@ -225,8 +226,6 @@ public class SecurityPolicyResourceIT {
     @Transactional
     public void updateNonExistingSecurityPolicy() throws Exception {
         int databaseSizeBeforeUpdate = securityPolicyRepository.findAll().size();
-
-        // Create the SecurityPolicy
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restSecurityPolicyMockMvc.perform(put("/api/security-policies")

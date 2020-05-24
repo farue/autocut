@@ -5,7 +5,7 @@ import { IApartment } from 'app/shared/model/apartment.model';
 
 @Component({
   selector: 'jhi-apartment-detail',
-  templateUrl: './apartment-detail.component.html'
+  templateUrl: './apartment-detail.component.html',
 })
 export class ApartmentDetailComponent implements OnInit {
   apartment: IApartment | null = null;

@@ -5,7 +5,7 @@ import { ITransaction } from 'app/shared/model/transaction.model';
 
 @Component({
   selector: 'jhi-transaction-detail',
-  templateUrl: './transaction-detail.component.html'
+  templateUrl: './transaction-detail.component.html',
 })
 export class TransactionDetailComponent implements OnInit {
   transaction: ITransaction | null = null;

@@ -1,4 +1,4 @@
-import { TestBed, getTestBed } from '@angular/core/testing';
+import { getTestBed, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
@@ -17,7 +17,7 @@ describe('Service Tests', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
       });
       expectedResult = null;
       injector = getTestBed();
@@ -33,7 +33,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             bookingDate: currentDate.format(DATE_TIME_FORMAT),
-            valueDate: currentDate.format(DATE_TIME_FORMAT)
+            valueDate: currentDate.format(DATE_TIME_FORMAT),
           },
           elemDefault
         );
@@ -50,7 +50,7 @@ describe('Service Tests', () => {
           {
             id: 0,
             bookingDate: currentDate.format(DATE_TIME_FORMAT),
-            valueDate: currentDate.format(DATE_TIME_FORMAT)
+            valueDate: currentDate.format(DATE_TIME_FORMAT),
           },
           elemDefault
         );
@@ -58,7 +58,7 @@ describe('Service Tests', () => {
         const expected = Object.assign(
           {
             bookingDate: currentDate,
-            valueDate: currentDate
+            valueDate: currentDate,
           },
           returnedFromService
         );
@@ -80,7 +80,7 @@ describe('Service Tests', () => {
             balanceAfter: 1,
             description: 'BBBBBB',
             issuer: 'BBBBBB',
-            recipient: 'BBBBBB'
+            recipient: 'BBBBBB',
           },
           elemDefault
         );
@@ -88,7 +88,7 @@ describe('Service Tests', () => {
         const expected = Object.assign(
           {
             bookingDate: currentDate,
-            valueDate: currentDate
+            valueDate: currentDate,
           },
           returnedFromService
         );
@@ -110,7 +110,7 @@ describe('Service Tests', () => {
             balanceAfter: 1,
             description: 'BBBBBB',
             issuer: 'BBBBBB',
-            recipient: 'BBBBBB'
+            recipient: 'BBBBBB',
           },
           elemDefault
         );
@@ -118,7 +118,7 @@ describe('Service Tests', () => {
         const expected = Object.assign(
           {
             bookingDate: currentDate,
-            valueDate: currentDate
+            valueDate: currentDate,
           },
           returnedFromService
         );

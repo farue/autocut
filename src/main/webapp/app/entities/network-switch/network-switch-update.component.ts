@@ -4,7 +4,7 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
+import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
 import { INetworkSwitch, NetworkSwitch } from 'app/shared/model/network-switch.model';
 import { NetworkSwitchService } from './network-switch.service';
@@ -12,7 +12,7 @@ import { AlertError } from 'app/shared/alert/alert-error.model';
 
 @Component({
   selector: 'jhi-network-switch-update',
-  templateUrl: './network-switch-update.component.html'
+  templateUrl: './network-switch-update.component.html',
 })
 export class NetworkSwitchUpdateComponent implements OnInit {
   isSaving = false;
@@ -22,7 +22,7 @@ export class NetworkSwitchUpdateComponent implements OnInit {
     interfaceName: [null, [Validators.required]],
     sshHost: [null, [Validators.required]],
     sshPort: [null, [Validators.required, Validators.min(0), Validators.max(65535)]],
-    sshKey: [null, [Validators.required]]
+    sshKey: [null, [Validators.required]],
   });
 
   constructor(
@@ -45,7 +45,7 @@ export class NetworkSwitchUpdateComponent implements OnInit {
       interfaceName: networkSwitch.interfaceName,
       sshHost: networkSwitch.sshHost,
       sshPort: networkSwitch.sshPort,
-      sshKey: networkSwitch.sshKey
+      sshKey: networkSwitch.sshKey,
     });
   }
 
@@ -86,7 +86,7 @@ export class NetworkSwitchUpdateComponent implements OnInit {
       interfaceName: this.editForm.get(['interfaceName'])!.value,
       sshHost: this.editForm.get(['sshHost'])!.value,
       sshPort: this.editForm.get(['sshPort'])!.value,
-      sshKey: this.editForm.get(['sshKey'])!.value
+      sshKey: this.editForm.get(['sshKey'])!.value,
     };
   }
 

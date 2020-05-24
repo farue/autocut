@@ -4,10 +4,9 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
-import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
+import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
 import { ITenantCommunication, TenantCommunication } from 'app/shared/model/tenant-communication.model';
 import { TenantCommunicationService } from './tenant-communication.service';
@@ -17,11 +16,10 @@ import { TenantService } from 'app/entities/tenant/tenant.service';
 
 @Component({
   selector: 'jhi-tenant-communication-update',
-  templateUrl: './tenant-communication-update.component.html'
+  templateUrl: './tenant-communication-update.component.html',
 })
 export class TenantCommunicationUpdateComponent implements OnInit {
   isSaving = false;
-
   tenants: ITenant[] = [];
 
   editForm = this.fb.group({
@@ -30,7 +28,7 @@ export class TenantCommunicationUpdateComponent implements OnInit {
     text: [null, [Validators.required]],
     note: [],
     date: [null, [Validators.required]],
-    tenant: []
+    tenant: [],
   });
 
   constructor(
@@ -44,16 +42,14 @@ export class TenantCommunicationUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ tenantCommunication }) => {
+      if (!tenantCommunication.id) {
+        const today = moment().startOf('day');
+        tenantCommunication.date = today;
+      }
+
       this.updateForm(tenantCommunication);
 
-      this.tenantService
-        .query()
-        .pipe(
-          map((res: HttpResponse<ITenant[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: ITenant[]) => (this.tenants = resBody));
+      this.tenantService.query().subscribe((res: HttpResponse<ITenant[]>) => (this.tenants = res.body || []));
     });
   }
 
@@ -63,8 +59,8 @@ export class TenantCommunicationUpdateComponent implements OnInit {
       subject: tenantCommunication.subject,
       text: tenantCommunication.text,
       note: tenantCommunication.note,
-      date: tenantCommunication.date != null ? tenantCommunication.date.format(DATE_TIME_FORMAT) : null,
-      tenant: tenantCommunication.tenant
+      date: tenantCommunication.date ? tenantCommunication.date.format(DATE_TIME_FORMAT) : null,
+      tenant: tenantCommunication.tenant,
     });
   }
 
@@ -105,8 +101,8 @@ export class TenantCommunicationUpdateComponent implements OnInit {
       subject: this.editForm.get(['subject'])!.value,
       text: this.editForm.get(['text'])!.value,
       note: this.editForm.get(['note'])!.value,
-      date: this.editForm.get(['date'])!.value != null ? moment(this.editForm.get(['date'])!.value, DATE_TIME_FORMAT) : undefined,
-      tenant: this.editForm.get(['tenant'])!.value
+      date: this.editForm.get(['date'])!.value ? moment(this.editForm.get(['date'])!.value, DATE_TIME_FORMAT) : undefined,
+      tenant: this.editForm.get(['tenant'])!.value,
     };
   }
 

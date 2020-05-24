@@ -14,7 +14,7 @@ import { LeaseService } from 'app/entities/lease/lease.service';
 
 @Component({
   selector: 'jhi-transaction-update',
-  templateUrl: './transaction-update.component.html'
+  templateUrl: './transaction-update.component.html',
 })
 export class TransactionUpdateComponent implements OnInit {
   isSaving = false;
@@ -30,7 +30,7 @@ export class TransactionUpdateComponent implements OnInit {
     description: [],
     issuer: [null, [Validators.required]],
     recipient: [],
-    lease: []
+    lease: [],
   });
 
   constructor(
@@ -65,7 +65,7 @@ export class TransactionUpdateComponent implements OnInit {
       description: transaction.description,
       issuer: transaction.issuer,
       recipient: transaction.recipient,
-      lease: transaction.lease
+      lease: transaction.lease,
     });
   }
 
@@ -97,7 +97,7 @@ export class TransactionUpdateComponent implements OnInit {
       description: this.editForm.get(['description'])!.value,
       issuer: this.editForm.get(['issuer'])!.value,
       recipient: this.editForm.get(['recipient'])!.value,
-      lease: this.editForm.get(['lease'])!.value
+      lease: this.editForm.get(['lease'])!.value,
     };
   }
 

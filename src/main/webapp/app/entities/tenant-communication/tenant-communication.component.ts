@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
+import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ITenantCommunication } from 'app/shared/model/tenant-communication.model';
@@ -10,7 +10,7 @@ import { TenantCommunicationDeleteDialogComponent } from './tenant-communication
 
 @Component({
   selector: 'jhi-tenant-communication',
-  templateUrl: './tenant-communication.component.html'
+  templateUrl: './tenant-communication.component.html',
 })
 export class TenantCommunicationComponent implements OnInit, OnDestroy {
   tenantCommunications?: ITenantCommunication[];
@@ -24,9 +24,9 @@ export class TenantCommunicationComponent implements OnInit, OnDestroy {
   ) {}
 
   loadAll(): void {
-    this.tenantCommunicationService.query().subscribe((res: HttpResponse<ITenantCommunication[]>) => {
-      this.tenantCommunications = res.body ? res.body : [];
-    });
+    this.tenantCommunicationService
+      .query()
+      .subscribe((res: HttpResponse<ITenantCommunication[]>) => (this.tenantCommunications = res.body || []));
   }
 
   ngOnInit(): void {
@@ -49,7 +49,7 @@ export class TenantCommunicationComponent implements OnInit, OnDestroy {
     return this.dataUtils.byteSize(base64String);
   }
 
-  openFile(contentType: string, base64String: string): void {
+  openFile(contentType = '', base64String: string): void {
     return this.dataUtils.openFile(contentType, base64String);
   }
 

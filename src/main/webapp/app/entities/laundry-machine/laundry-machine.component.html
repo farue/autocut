@@ -18,17 +18,17 @@
         <span jhiTranslate="autocutApp.laundryMachine.home.notFound">No laundryMachines found</span>
     </div>
 
-    <div class="table-responsive" id="entities" *ngIf="laundryMachines?.length > 0">
+    <div class="table-responsive" id="entities" *ngIf="laundryMachines && laundryMachines.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-                <tr>
-                    <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.laundryMachine.identifier">Identifier</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.laundryMachine.name">Name</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.laundryMachine.type">Type</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.laundryMachine.enabled">Enabled</span></th>
-                    <th scope="col"></th>
-                </tr>
+            <tr>
+                <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.laundryMachine.identifier">Identifier</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.laundryMachine.name">Name</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.laundryMachine.type">Type</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.laundryMachine.enabled">Enabled</span></th>
+                <th scope="col"></th>
+            </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let laundryMachine of laundryMachines ;trackBy: trackId">

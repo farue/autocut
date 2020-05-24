@@ -14,8 +14,8 @@ import { laundryMachineRoute } from './laundry-machine.route';
     LaundryMachineComponent,
     LaundryMachineDetailComponent,
     LaundryMachineUpdateComponent,
-    LaundryMachineDeleteDialogComponent
+    LaundryMachineDeleteDialogComponent,
   ],
-  entryComponents: [LaundryMachineDeleteDialogComponent]
+  entryComponents: [LaundryMachineDeleteDialogComponent],
 })
 export class AutocutLaundryMachineModule {}

@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
-                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
 
-        <property name="autoIncrement" value="true"/>
+    <property name="autoIncrement" value="true"/>
 
     <!--
         Added the entity Transaction.
@@ -43,7 +41,7 @@
             <column name="lease_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="transaction" columnName="booking_date" columnDataType="datetime"/>
         <dropDefaultValue tableName="transaction" columnName="value_date" columnDataType="datetime"/>
@@ -52,7 +50,7 @@
     <changeSet id="20191117011752-1-relations" author="jhipster">
 
     </changeSet>
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
     <!--
         Load sample data generated with Faker.js
@@ -76,7 +74,7 @@
             <column name="description" type="string"/>
             <column name="issuer" type="string"/>
             <column name="recipient" type="string"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
 

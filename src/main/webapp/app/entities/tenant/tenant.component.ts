@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
+import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ITenant } from 'app/shared/model/tenant.model';
@@ -10,7 +10,7 @@ import { TenantDeleteDialogComponent } from './tenant-delete-dialog.component';
 
 @Component({
   selector: 'jhi-tenant',
-  templateUrl: './tenant.component.html'
+  templateUrl: './tenant.component.html',
 })
 export class TenantComponent implements OnInit, OnDestroy {
   tenants?: ITenant[];
@@ -47,7 +47,7 @@ export class TenantComponent implements OnInit, OnDestroy {
     return this.dataUtils.byteSize(base64String);
   }
 
-  openFile(contentType: string, base64String: string): void {
+  openFile(contentType = '', base64String: string): void {
     return this.dataUtils.openFile(contentType, base64String);
   }
 

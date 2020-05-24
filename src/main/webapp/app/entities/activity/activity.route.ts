@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
-import { Observable, of, EMPTY } from 'rxjs';
+import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
+import { EMPTY, Observable, of } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
 import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { IActivity, Activity } from 'app/shared/model/activity.model';
+import { Activity, IActivity } from 'app/shared/model/activity.model';
 import { ActivityService } from './activity.service';
 import { ActivityComponent } from './activity.component';
 import { ActivityDetailComponent } from './activity-detail.component';
@@ -40,44 +40,44 @@ export const activityRoute: Routes = [
     component: ActivityComponent,
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.activity.home.title'
+      pageTitle: 'autocutApp.activity.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
     component: ActivityDetailComponent,
     resolve: {
-      activity: ActivityResolve
+      activity: ActivityResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.activity.home.title'
+      pageTitle: 'autocutApp.activity.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',
     component: ActivityUpdateComponent,
     resolve: {
-      activity: ActivityResolve
+      activity: ActivityResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.activity.home.title'
+      pageTitle: 'autocutApp.activity.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/edit',
     component: ActivityUpdateComponent,
     resolve: {
-      activity: ActivityResolve
+      activity: ActivityResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.activity.home.title'
+      pageTitle: 'autocutApp.activity.home.title',
     },
-    canActivate: [UserRouteAccessService]
-  }
+    canActivate: [UserRouteAccessService],
+  },
 ];

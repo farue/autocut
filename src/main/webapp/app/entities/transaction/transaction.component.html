@@ -18,17 +18,17 @@
         <span jhiTranslate="autocutApp.transaction.home.notFound">No transactions found</span>
     </div>
 
-    <div class="table-responsive" id="entities" *ngIf="transactions?.length > 0">
+    <div class="table-responsive" id="entities" *ngIf="transactions && transactions.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-                <tr>
-                    <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.transaction.kind">Kind</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.transaction.bookingDate">Booking Date</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.transaction.valueDate">Value Date</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.transaction.value">Value</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.transaction.balanceAfter">Balance After</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.transaction.description">Description</span></th>
+            <tr>
+                <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.transaction.kind">Kind</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.transaction.bookingDate">Booking Date</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.transaction.valueDate">Value Date</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.transaction.value">Value</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.transaction.balanceAfter">Balance After</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.transaction.description">Description</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.transaction.issuer">Issuer</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.transaction.recipient">Recipient</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.transaction.lease">Lease</span></th>

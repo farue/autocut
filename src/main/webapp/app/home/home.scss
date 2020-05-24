@@ -10,14 +10,6 @@ Main page styles
   background-size: contain;
 }
 
-:host {
-  ::ng-deep .ui-panel-images {
-    width      : 100% ! important;
-    height     : 100% ! important;
-    object-fit : contain ! important;
-  }
-}
-
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
 @media only screen and (-webkit-min-device-pixel-ratio: 2),
   only screen and (-moz-min-device-pixel-ratio: 2),

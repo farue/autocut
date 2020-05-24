@@ -1,25 +1,29 @@
 package de.farue.autocut.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import de.farue.autocut.domain.enumeration.Access;
+import de.farue.autocut.domain.enumeration.ProtectionUnits;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Objects;
-
-import de.farue.autocut.domain.enumeration.ProtectionUnits;
-
-import de.farue.autocut.domain.enumeration.Access;
 
 /**
  * A SecurityPolicy.
  */
 @Entity
 @Table(name = "security_policy")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SecurityPolicy implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,14 +43,14 @@ public class SecurityPolicy implements Serializable {
     private Access access;
 
     @ManyToOne
-    @JsonIgnoreProperties("securityPolicies")
+    @JsonIgnoreProperties(value = "securityPolicies", allowSetters = true)
     private TeamMember teamMember;
 
     @ManyToOne
-    @JsonIgnoreProperties("securityPolicies")
+    @JsonIgnoreProperties(value = "securityPolicies", allowSetters = true)
     private Tenant tenant;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -106,7 +110,7 @@ public class SecurityPolicy implements Serializable {
     public void setTenant(Tenant tenant) {
         this.tenant = tenant;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -124,6 +128,7 @@ public class SecurityPolicy implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "SecurityPolicy{" +

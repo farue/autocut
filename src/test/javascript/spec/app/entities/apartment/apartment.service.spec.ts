@@ -1,7 +1,7 @@
-import { TestBed, getTestBed } from '@angular/core/testing';
+import { getTestBed, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ApartmentService } from 'app/entities/apartment/apartment.service';
-import { IApartment, Apartment } from 'app/shared/model/apartment.model';
+import { Apartment, IApartment } from 'app/shared/model/apartment.model';
 import { ApartmentTypes } from 'app/shared/model/enumerations/apartment-types.model';
 
 describe('Service Tests', () => {
@@ -14,7 +14,7 @@ describe('Service Tests', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
       });
       expectedResult = null;
       injector = getTestBed();
@@ -38,7 +38,7 @@ describe('Service Tests', () => {
       it('should create a Apartment', () => {
         const returnedFromService = Object.assign(
           {
-            id: 0
+            id: 0,
           },
           elemDefault
         );
@@ -57,7 +57,7 @@ describe('Service Tests', () => {
           {
             nr: 'BBBBBB',
             type: 'BBBBBB',
-            maxNumberOfLeases: 1
+            maxNumberOfLeases: 1,
           },
           elemDefault
         );
@@ -76,7 +76,7 @@ describe('Service Tests', () => {
           {
             nr: 'BBBBBB',
             type: 'BBBBBB',
-            maxNumberOfLeases: 1
+            maxNumberOfLeases: 1,
           },
           elemDefault
         );

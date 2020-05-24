@@ -6,7 +6,7 @@ import { IInternetAccess } from 'app/shared/model/internet-access.model';
 import { InternetAccessService } from './internet-access.service';
 
 @Component({
-  templateUrl: './internet-access-delete-dialog.component.html'
+  templateUrl: './internet-access-delete-dialog.component.html',
 })
 export class InternetAccessDeleteDialogComponent {
   internetAccess?: IInternetAccess;

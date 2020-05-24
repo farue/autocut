@@ -14,8 +14,8 @@ import { securityPolicyRoute } from './security-policy.route';
     SecurityPolicyComponent,
     SecurityPolicyDetailComponent,
     SecurityPolicyUpdateComponent,
-    SecurityPolicyDeleteDialogComponent
+    SecurityPolicyDeleteDialogComponent,
   ],
-  entryComponents: [SecurityPolicyDeleteDialogComponent]
+  entryComponents: [SecurityPolicyDeleteDialogComponent],
 })
 export class AutocutSecurityPolicyModule {}

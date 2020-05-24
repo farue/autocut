@@ -16,7 +16,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [AutocutTestModule],
-        declarations: [LaundryMachineProgramComponent]
+        declarations: [LaundryMachineProgramComponent],
       })
         .overrideTemplate(LaundryMachineProgramComponent, '')
         .compileComponents();
@@ -33,7 +33,7 @@ describe('Component Tests', () => {
         of(
           new HttpResponse({
             body: [new LaundryMachineProgram(123)],
-            headers
+            headers,
           })
         )
       );

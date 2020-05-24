@@ -3,18 +3,24 @@ package de.farue.autocut.domain;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A NetworkSwitch.
  */
 @Entity
 @Table(name = "network_switch")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class NetworkSwitch implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,12 +43,12 @@ public class NetworkSwitch implements Serializable {
     @Column(name = "ssh_port", nullable = false)
     private Integer sshPort;
 
-    
+
     @Lob
     @Column(name = "ssh_key", nullable = false)
     private String sshKey;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -102,7 +108,7 @@ public class NetworkSwitch implements Serializable {
     public void setSshKey(String sshKey) {
         this.sshKey = sshKey;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -120,6 +126,7 @@ public class NetworkSwitch implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "NetworkSwitch{" +

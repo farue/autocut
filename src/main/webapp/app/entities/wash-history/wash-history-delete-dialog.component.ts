@@ -6,7 +6,7 @@ import { IWashHistory } from 'app/shared/model/wash-history.model';
 import { WashHistoryService } from './wash-history.service';
 
 @Component({
-  templateUrl: './wash-history-delete-dialog.component.html'
+  templateUrl: './wash-history-delete-dialog.component.html',
 })
 export class WashHistoryDeleteDialogComponent {
   washHistory?: IWashHistory;

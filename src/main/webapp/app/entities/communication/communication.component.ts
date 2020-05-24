@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
+import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ICommunication } from 'app/shared/model/communication.model';
@@ -10,7 +10,7 @@ import { CommunicationDeleteDialogComponent } from './communication-delete-dialo
 
 @Component({
   selector: 'jhi-communication',
-  templateUrl: './communication.component.html'
+  templateUrl: './communication.component.html',
 })
 export class CommunicationComponent implements OnInit, OnDestroy {
   communications?: ICommunication[];
@@ -47,7 +47,7 @@ export class CommunicationComponent implements OnInit, OnDestroy {
     return this.dataUtils.byteSize(base64String);
   }
 
-  openFile(contentType: string, base64String: string): void {
+  openFile(contentType = '', base64String: string): void {
     return this.dataUtils.openFile(contentType, base64String);
   }
 

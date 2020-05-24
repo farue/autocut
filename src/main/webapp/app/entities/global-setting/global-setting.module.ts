@@ -11,6 +11,6 @@ import { globalSettingRoute } from './global-setting.route';
 @NgModule({
   imports: [AutocutSharedModule, RouterModule.forChild(globalSettingRoute)],
   declarations: [GlobalSettingComponent, GlobalSettingDetailComponent, GlobalSettingUpdateComponent, GlobalSettingDeleteDialogComponent],
-  entryComponents: [GlobalSettingDeleteDialogComponent]
+  entryComponents: [GlobalSettingDeleteDialogComponent],
 })
 export class AutocutGlobalSettingModule {}

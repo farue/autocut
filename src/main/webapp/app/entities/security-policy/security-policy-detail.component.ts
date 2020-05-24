@@ -5,7 +5,7 @@ import { ISecurityPolicy } from 'app/shared/model/security-policy.model';
 
 @Component({
   selector: 'jhi-security-policy-detail',
-  templateUrl: './security-policy-detail.component.html'
+  templateUrl: './security-policy-detail.component.html',
 })
 export class SecurityPolicyDetailComponent implements OnInit {
   securityPolicy: ISecurityPolicy | null = null;

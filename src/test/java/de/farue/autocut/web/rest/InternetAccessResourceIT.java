@@ -4,7 +4,6 @@ import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.InternetAccess;
 import de.farue.autocut.repository.InternetAccessRepository;
 import de.farue.autocut.service.InternetAccessService;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,19 +13,24 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Integration tests for the {@link InternetAccessResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class InternetAccessResourceIT {
@@ -100,7 +104,6 @@ public class InternetAccessResourceIT {
     @Transactional
     public void createInternetAccess() throws Exception {
         int databaseSizeBeforeCreate = internetAccessRepository.findAll().size();
-
         // Create the InternetAccess
         restInternetAccessMockMvc.perform(post("/api/internet-accesses")
             .contentType(MediaType.APPLICATION_JSON)
@@ -245,7 +248,7 @@ public class InternetAccessResourceIT {
             .andExpect(jsonPath("$.[*].switchInterface").value(hasItem(DEFAULT_SWITCH_INTERFACE)))
             .andExpect(jsonPath("$.[*].port").value(hasItem(DEFAULT_PORT)));
     }
-    
+
     @Test
     @Transactional
     public void getInternetAccess() throws Exception {
@@ -263,7 +266,6 @@ public class InternetAccessResourceIT {
             .andExpect(jsonPath("$.switchInterface").value(DEFAULT_SWITCH_INTERFACE))
             .andExpect(jsonPath("$.port").value(DEFAULT_PORT));
     }
-
     @Test
     @Transactional
     public void getNonExistingInternetAccess() throws Exception {
@@ -311,8 +313,6 @@ public class InternetAccessResourceIT {
     @Transactional
     public void updateNonExistingInternetAccess() throws Exception {
         int databaseSizeBeforeUpdate = internetAccessRepository.findAll().size();
-
-        // Create the InternetAccess
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restInternetAccessMockMvc.perform(put("/api/internet-accesses")

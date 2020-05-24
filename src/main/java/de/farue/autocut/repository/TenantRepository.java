@@ -17,4 +17,3 @@ public interface TenantRepository extends JpaRepository<Tenant, Long> {
     Optional<Tenant> findOneByUser(User user);
 
 }
-

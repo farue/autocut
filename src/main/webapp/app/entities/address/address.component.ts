@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
@@ -10,7 +10,7 @@ import { AddressDeleteDialogComponent } from './address-delete-dialog.component'
 
 @Component({
   selector: 'jhi-address',
-  templateUrl: './address.component.html'
+  templateUrl: './address.component.html',
 })
 export class AddressComponent implements OnInit, OnDestroy {
   addresses?: IAddress[];

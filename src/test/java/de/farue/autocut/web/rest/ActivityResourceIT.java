@@ -2,8 +2,8 @@ package de.farue.autocut.web.rest;
 
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Activity;
+import de.farue.autocut.domain.enumeration.SemesterTerms;
 import de.farue.autocut.repository.ActivityRepository;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -20,15 +21,17 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import de.farue.autocut.domain.enumeration.SemesterTerms;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 /**
  * Integration tests for the {@link ActivityResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class ActivityResourceIT {
@@ -109,7 +112,6 @@ public class ActivityResourceIT {
     @Transactional
     public void createActivity() throws Exception {
         int databaseSizeBeforeCreate = activityRepository.findAll().size();
-
         // Create the Activity
         restActivityMockMvc.perform(post("/api/activities")
             .contentType(MediaType.APPLICATION_JSON)
@@ -204,7 +206,7 @@ public class ActivityResourceIT {
             .andExpect(jsonPath("$.[*].discount").value(hasItem(DEFAULT_DISCOUNT.booleanValue())))
             .andExpect(jsonPath("$.[*].stwActivity").value(hasItem(DEFAULT_STW_ACTIVITY.booleanValue())));
     }
-    
+
     @Test
     @Transactional
     public void getActivity() throws Exception {
@@ -224,7 +226,6 @@ public class ActivityResourceIT {
             .andExpect(jsonPath("$.discount").value(DEFAULT_DISCOUNT.booleanValue()))
             .andExpect(jsonPath("$.stwActivity").value(DEFAULT_STW_ACTIVITY.booleanValue()));
     }
-
     @Test
     @Transactional
     public void getNonExistingActivity() throws Exception {
@@ -276,8 +277,6 @@ public class ActivityResourceIT {
     @Transactional
     public void updateNonExistingActivity() throws Exception {
         int databaseSizeBeforeUpdate = activityRepository.findAll().size();
-
-        // Create the Activity
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restActivityMockMvc.perform(put("/api/activities")

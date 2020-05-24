@@ -11,6 +11,6 @@ import { washHistoryRoute } from './wash-history.route';
 @NgModule({
   imports: [AutocutSharedModule, RouterModule.forChild(washHistoryRoute)],
   declarations: [WashHistoryComponent, WashHistoryDetailComponent, WashHistoryUpdateComponent, WashHistoryDeleteDialogComponent],
-  entryComponents: [WashHistoryDeleteDialogComponent]
+  entryComponents: [WashHistoryDeleteDialogComponent],
 })
 export class AutocutWashHistoryModule {}

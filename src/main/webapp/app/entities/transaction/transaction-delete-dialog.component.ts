@@ -6,7 +6,7 @@ import { ITransaction } from 'app/shared/model/transaction.model';
 import { TransactionService } from './transaction.service';
 
 @Component({
-  templateUrl: './transaction-delete-dialog.component.html'
+  templateUrl: './transaction-delete-dialog.component.html',
 })
 export class TransactionDeleteDialogComponent {
   transaction?: ITransaction;

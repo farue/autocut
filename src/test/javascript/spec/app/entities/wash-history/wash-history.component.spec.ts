@@ -16,7 +16,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [AutocutTestModule],
-        declarations: [WashHistoryComponent]
+        declarations: [WashHistoryComponent],
       })
         .overrideTemplate(WashHistoryComponent, '')
         .compileComponents();
@@ -33,7 +33,7 @@ describe('Component Tests', () => {
         of(
           new HttpResponse({
             body: [new WashHistory(123)],
-            headers
+            headers,
           })
         )
       );

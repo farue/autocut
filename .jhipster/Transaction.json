@@ -1,73 +1,73 @@
 {
-    "name": "Transaction",
-    "fields": [
-        {
-            "fieldName": "kind",
-            "fieldType": "TransactionKind",
-            "fieldValues": "FEE,CREDIT,DEBIT,TRANSFER,CORRECTION,PURCHASE",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "bookingDate",
-            "fieldType": "Instant",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "valueDate",
-            "fieldType": "Instant",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "value",
-            "fieldType": "BigDecimal",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "balanceAfter",
-            "fieldType": "BigDecimal"
-        },
-        {
-            "fieldName": "description",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "issuer",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "recipient",
-            "fieldType": "String"
-        }
-    ],
-    "relationships": [
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "lease",
-            "otherEntityRelationshipName": "transaction",
-            "relationshipName": "lease",
-            "otherEntityField": "id"
-        }
-    ],
-    "changelogDate": "20191117011752",
-    "entityTableName": "transaction",
-    "dto": "no",
-    "pagination": "no",
-    "service": "serviceClass",
-    "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "readOnly": false,
-    "clientRootFolder": "",
-    "applications": "*",
-    "embedded": false
+  "name": "Transaction",
+  "fields": [
+    {
+      "fieldName": "kind",
+      "fieldType": "TransactionKind",
+      "fieldValues": "FEE,CREDIT,DEBIT,TRANSFER,CORRECTION,PURCHASE",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "bookingDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "valueDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "value",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "balanceAfter",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "issuer",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "recipient",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "lease",
+      "otherEntityRelationshipName": "transaction",
+      "relationshipName": "lease",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20191117011752",
+  "entityTableName": "transaction",
+  "dto": "no",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "clientRootFolder": "",
+  "applications": "*",
+  "embedded": false
 }

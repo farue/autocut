@@ -5,7 +5,7 @@ import { IGlobalSetting } from 'app/shared/model/global-setting.model';
 
 @Component({
   selector: 'jhi-global-setting-detail',
-  templateUrl: './global-setting-detail.component.html'
+  templateUrl: './global-setting-detail.component.html',
 })
 export class GlobalSettingDetailComponent implements OnInit {
   globalSetting: IGlobalSetting | null = null;

@@ -3,7 +3,6 @@ package de.farue.autocut.web.rest;
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Communication;
 import de.farue.autocut.repository.CommunicationRepository;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
+
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -21,14 +20,18 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Integration tests for the {@link CommunicationResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class CommunicationResourceIT {
@@ -94,7 +97,6 @@ public class CommunicationResourceIT {
     @Transactional
     public void createCommunication() throws Exception {
         int databaseSizeBeforeCreate = communicationRepository.findAll().size();
-
         // Create the Communication
         restCommunicationMockMvc.perform(post("/api/communications")
             .contentType(MediaType.APPLICATION_JSON)
@@ -183,7 +185,7 @@ public class CommunicationResourceIT {
             .andExpect(jsonPath("$.[*].note").value(hasItem(DEFAULT_NOTE.toString())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
     }
-    
+
     @Test
     @Transactional
     public void getCommunication() throws Exception {
@@ -200,7 +202,6 @@ public class CommunicationResourceIT {
             .andExpect(jsonPath("$.note").value(DEFAULT_NOTE.toString()))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingCommunication() throws Exception {
@@ -246,8 +247,6 @@ public class CommunicationResourceIT {
     @Transactional
     public void updateNonExistingCommunication() throws Exception {
         int databaseSizeBeforeUpdate = communicationRepository.findAll().size();
-
-        // Create the Communication
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restCommunicationMockMvc.perform(put("/api/communications")

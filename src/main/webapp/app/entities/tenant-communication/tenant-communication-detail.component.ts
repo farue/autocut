@@ -6,7 +6,7 @@ import { ITenantCommunication } from 'app/shared/model/tenant-communication.mode
 
 @Component({
   selector: 'jhi-tenant-communication-detail',
-  templateUrl: './tenant-communication-detail.component.html'
+  templateUrl: './tenant-communication-detail.component.html',
 })
 export class TenantCommunicationDetailComponent implements OnInit {
   tenantCommunication: ITenantCommunication | null = null;
@@ -14,16 +14,14 @@ export class TenantCommunicationDetailComponent implements OnInit {
   constructor(protected dataUtils: JhiDataUtils, protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ tenantCommunication }) => {
-      this.tenantCommunication = tenantCommunication;
-    });
+    this.activatedRoute.data.subscribe(({ tenantCommunication }) => (this.tenantCommunication = tenantCommunication));
   }
 
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
   }
 
-  openFile(contentType: string, base64String: string): void {
+  openFile(contentType = '', base64String: string): void {
     this.dataUtils.openFile(contentType, base64String);
   }
 

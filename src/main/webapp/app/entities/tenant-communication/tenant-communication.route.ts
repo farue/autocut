@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
-import { Observable, of, EMPTY } from 'rxjs';
+import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
+import { EMPTY, Observable, of } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
+import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 import { ITenantCommunication, TenantCommunication } from 'app/shared/model/tenant-communication.model';
 import { TenantCommunicationService } from './tenant-communication.service';
@@ -38,45 +39,45 @@ export const tenantCommunicationRoute: Routes = [
     path: '',
     component: TenantCommunicationComponent,
     data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'autocutApp.tenantCommunication.home.title'
+      authorities: [Authority.USER],
+      pageTitle: 'autocutApp.tenantCommunication.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
     component: TenantCommunicationDetailComponent,
     resolve: {
-      tenantCommunication: TenantCommunicationResolve
+      tenantCommunication: TenantCommunicationResolve,
     },
     data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'autocutApp.tenantCommunication.home.title'
+      authorities: [Authority.USER],
+      pageTitle: 'autocutApp.tenantCommunication.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',
     component: TenantCommunicationUpdateComponent,
     resolve: {
-      tenantCommunication: TenantCommunicationResolve
+      tenantCommunication: TenantCommunicationResolve,
     },
     data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'autocutApp.tenantCommunication.home.title'
+      authorities: [Authority.USER],
+      pageTitle: 'autocutApp.tenantCommunication.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/edit',
     component: TenantCommunicationUpdateComponent,
     resolve: {
-      tenantCommunication: TenantCommunicationResolve
+      tenantCommunication: TenantCommunicationResolve,
     },
     data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'autocutApp.tenantCommunication.home.title'
+      authorities: [Authority.USER],
+      pageTitle: 'autocutApp.tenantCommunication.home.title',
     },
-    canActivate: [UserRouteAccessService]
-  }
+    canActivate: [UserRouteAccessService],
+  },
 ];

@@ -6,7 +6,7 @@ import { IAddress } from 'app/shared/model/address.model';
 import { AddressService } from './address.service';
 
 @Component({
-  templateUrl: './address-delete-dialog.component.html'
+  templateUrl: './address-delete-dialog.component.html',
 })
 export class AddressDeleteDialogComponent {
   address?: IAddress;

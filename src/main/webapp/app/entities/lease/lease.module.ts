@@ -11,6 +11,6 @@ import { leaseRoute } from './lease.route';
 @NgModule({
   imports: [AutocutSharedModule, RouterModule.forChild(leaseRoute)],
   declarations: [LeaseComponent, LeaseDetailComponent, LeaseUpdateComponent, LeaseDeleteDialogComponent],
-  entryComponents: [LeaseDeleteDialogComponent]
+  entryComponents: [LeaseDeleteDialogComponent],
 })
 export class AutocutLeaseModule {}

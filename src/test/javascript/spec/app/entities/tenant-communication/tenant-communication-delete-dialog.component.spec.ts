@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
@@ -20,7 +20,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [AutocutTestModule],
-        declarations: [TenantCommunicationDeleteDialogComponent]
+        declarations: [TenantCommunicationDeleteDialogComponent],
       })
         .overrideTemplate(TenantCommunicationDeleteDialogComponent, '')
         .compileComponents();
@@ -48,12 +48,13 @@ describe('Component Tests', () => {
           expect(mockEventManager.broadcastSpy).toHaveBeenCalled();
         })
       ));
+
       it('Should not call delete service on clear', () => {
         // GIVEN
         spyOn(service, 'delete');
 
         // WHEN
-        comp.clear();
+        comp.cancel();
 
         // THEN
         expect(service.delete).not.toHaveBeenCalled();

@@ -1,48 +1,48 @@
 {
-    "name": "Tenant",
-    "fields": [
-        {
-            "fieldName": "pictureId",
-            "fieldType": "byte[]",
-            "fieldTypeBlobContent": "image"
-        },
-        {
-            "fieldName": "verified",
-            "fieldType": "Boolean"
-        }
-    ],
-    "relationships": [
-        {
-            "relationshipType": "one-to-one",
-            "otherEntityName": "user",
-            "otherEntityRelationshipName": "tenant",
-            "relationshipName": "user",
-            "otherEntityField": "id",
-            "ownerSide": true
-        },
-        {
-            "relationshipType": "one-to-many",
-            "otherEntityName": "securityPolicy",
-            "otherEntityRelationshipName": "tenant",
-            "relationshipName": "securityPolicies"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "lease",
-            "otherEntityRelationshipName": "tenants",
-            "relationshipName": "lease",
-            "otherEntityField": "id"
-        }
-    ],
-    "changelogDate": "20191117011741",
-    "entityTableName": "tenant",
-    "dto": "no",
-    "pagination": "no",
-    "service": "serviceClass",
-    "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "readOnly": false,
-    "clientRootFolder": "",
-    "applications": "*",
-    "embedded": false
+  "name": "Tenant",
+  "fields": [
+    {
+      "fieldName": "pictureId",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
+    },
+    {
+      "fieldName": "verified",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "tenant",
+      "relationshipName": "user",
+      "otherEntityField": "id",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "securityPolicy",
+      "otherEntityRelationshipName": "tenant",
+      "relationshipName": "securityPolicies"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "lease",
+      "otherEntityRelationshipName": "tenants",
+      "relationshipName": "lease",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20191117011741",
+  "entityTableName": "tenant",
+  "dto": "no",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "clientRootFolder": "",
+  "applications": "*",
+  "embedded": false
 }

@@ -1,7 +1,7 @@
-import { TestBed, getTestBed } from '@angular/core/testing';
+import { getTestBed, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { GlobalSettingService } from 'app/entities/global-setting/global-setting.service';
-import { IGlobalSetting, GlobalSetting } from 'app/shared/model/global-setting.model';
+import { GlobalSetting, IGlobalSetting } from 'app/shared/model/global-setting.model';
 
 describe('Service Tests', () => {
   describe('GlobalSetting Service', () => {
@@ -13,7 +13,7 @@ describe('Service Tests', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
       });
       expectedResult = null;
       injector = getTestBed();
@@ -37,7 +37,7 @@ describe('Service Tests', () => {
       it('should create a GlobalSetting', () => {
         const returnedFromService = Object.assign(
           {
-            id: 0
+            id: 0,
           },
           elemDefault
         );
@@ -56,7 +56,7 @@ describe('Service Tests', () => {
           {
             key: 'BBBBBB',
             value: 'BBBBBB',
-            valueType: 'BBBBBB'
+            valueType: 'BBBBBB',
           },
           elemDefault
         );
@@ -75,7 +75,7 @@ describe('Service Tests', () => {
           {
             key: 'BBBBBB',
             value: 'BBBBBB',
-            valueType: 'BBBBBB'
+            valueType: 'BBBBBB',
           },
           elemDefault
         );

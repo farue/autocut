@@ -6,7 +6,7 @@ import { ICommunication } from 'app/shared/model/communication.model';
 
 @Component({
   selector: 'jhi-communication-detail',
-  templateUrl: './communication-detail.component.html'
+  templateUrl: './communication-detail.component.html',
 })
 export class CommunicationDetailComponent implements OnInit {
   communication: ICommunication | null = null;
@@ -21,7 +21,7 @@ export class CommunicationDetailComponent implements OnInit {
     return this.dataUtils.byteSize(base64String);
   }
 
-  openFile(contentType: string, base64String: string): void {
+  openFile(contentType = '', base64String: string): void {
     this.dataUtils.openFile(contentType, base64String);
   }
 

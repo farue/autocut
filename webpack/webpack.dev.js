@@ -27,14 +27,14 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
               '/h2-console',
               '/auth'
             ],
-            target: `http${options.tls ? 's' : ''}://localhost:8080`,
-            secure: false,
-            changeOrigin: options.tls
+          target: `http${options.tls ? 's' : ''}://localhost:8080`,
+          secure: false,
+          changeOrigin: options.tls
         }],
-        stats: options.stats,
-        watchOptions: {
-            ignored: /node_modules/
-        },
+      stats: options.stats,
+      watchOptions: {
+        ignored: /node_modules/
+      },
       https: options.tls,
       historyApiFallback: true
     },
@@ -50,7 +50,7 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
     module: {
         rules: [{
           test: /\.(j|t)s$/,
-            enforce: 'pre',
+          enforce: 'pre',
           loader: 'eslint-loader',
           exclude: /node_modules/
         },

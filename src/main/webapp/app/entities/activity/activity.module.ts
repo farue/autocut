@@ -11,6 +11,6 @@ import { activityRoute } from './activity.route';
 @NgModule({
   imports: [AutocutSharedModule, RouterModule.forChild(activityRoute)],
   declarations: [ActivityComponent, ActivityDetailComponent, ActivityUpdateComponent, ActivityDeleteDialogComponent],
-  entryComponents: [ActivityDeleteDialogComponent]
+  entryComponents: [ActivityDeleteDialogComponent],
 })
 export class AutocutActivityModule {}

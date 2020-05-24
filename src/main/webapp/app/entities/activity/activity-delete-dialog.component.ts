@@ -6,7 +6,7 @@ import { IActivity } from 'app/shared/model/activity.model';
 import { ActivityService } from './activity.service';
 
 @Component({
-  templateUrl: './activity-delete-dialog.component.html'
+  templateUrl: './activity-delete-dialog.component.html',
 })
 export class ActivityDeleteDialogComponent {
   activity?: IActivity;

@@ -24,7 +24,7 @@ import java.time.Instant;
  */
 @Entity
 @Table(name = "wash_history")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class WashHistory implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,22 +49,22 @@ public class WashHistory implements Serializable {
     private WashHistoryStatus status;
 
     @ManyToOne
-    @JsonIgnoreProperties("washHistories")
+    @JsonIgnoreProperties(value = "washHistories", allowSetters = true)
     private Tenant reservationTenant;
 
     @ManyToOne
-    @JsonIgnoreProperties("washHistories")
+    @JsonIgnoreProperties(value = "washHistories", allowSetters = true)
     private Tenant usingTenant;
 
     @ManyToOne
-    @JsonIgnoreProperties("washHistories")
+    @JsonIgnoreProperties(value = "washHistories", allowSetters = true)
     private LaundryMachine machine;
 
     @ManyToOne
-    @JsonIgnoreProperties("washHistories")
+    @JsonIgnoreProperties(value = "washHistories", allowSetters = true)
     private LaundryMachineProgram program;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -176,7 +176,7 @@ public class WashHistory implements Serializable {
     public void setProgram(LaundryMachineProgram laundryMachineProgram) {
         this.program = laundryMachineProgram;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -194,6 +194,7 @@ public class WashHistory implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "WashHistory{" +

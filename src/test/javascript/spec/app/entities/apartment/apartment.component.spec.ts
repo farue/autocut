@@ -16,7 +16,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [AutocutTestModule],
-        declarations: [ApartmentComponent]
+        declarations: [ApartmentComponent],
       })
         .overrideTemplate(ApartmentComponent, '')
         .compileComponents();
@@ -33,7 +33,7 @@ describe('Component Tests', () => {
         of(
           new HttpResponse({
             body: [new Apartment(123)],
-            headers
+            headers,
           })
         )
       );

@@ -1,4 +1,4 @@
-import { TestBed, getTestBed } from '@angular/core/testing';
+import { getTestBed, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
@@ -17,7 +17,7 @@ describe('Service Tests', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
       });
       expectedResult = null;
       injector = getTestBed();
@@ -34,7 +34,7 @@ describe('Service Tests', () => {
           {
             usingDate: currentDate.format(DATE_TIME_FORMAT),
             reservationDate: currentDate.format(DATE_TIME_FORMAT),
-            lastModifiedDate: currentDate.format(DATE_TIME_FORMAT)
+            lastModifiedDate: currentDate.format(DATE_TIME_FORMAT),
           },
           elemDefault
         );
@@ -52,7 +52,7 @@ describe('Service Tests', () => {
             id: 0,
             usingDate: currentDate.format(DATE_TIME_FORMAT),
             reservationDate: currentDate.format(DATE_TIME_FORMAT),
-            lastModifiedDate: currentDate.format(DATE_TIME_FORMAT)
+            lastModifiedDate: currentDate.format(DATE_TIME_FORMAT),
           },
           elemDefault
         );
@@ -61,7 +61,7 @@ describe('Service Tests', () => {
           {
             usingDate: currentDate,
             reservationDate: currentDate,
-            lastModifiedDate: currentDate
+            lastModifiedDate: currentDate,
           },
           returnedFromService
         );
@@ -79,7 +79,7 @@ describe('Service Tests', () => {
             usingDate: currentDate.format(DATE_TIME_FORMAT),
             reservationDate: currentDate.format(DATE_TIME_FORMAT),
             lastModifiedDate: currentDate.format(DATE_TIME_FORMAT),
-            status: 'BBBBBB'
+            status: 'BBBBBB',
           },
           elemDefault
         );
@@ -88,7 +88,7 @@ describe('Service Tests', () => {
           {
             usingDate: currentDate,
             reservationDate: currentDate,
-            lastModifiedDate: currentDate
+            lastModifiedDate: currentDate,
           },
           returnedFromService
         );
@@ -106,7 +106,7 @@ describe('Service Tests', () => {
             usingDate: currentDate.format(DATE_TIME_FORMAT),
             reservationDate: currentDate.format(DATE_TIME_FORMAT),
             lastModifiedDate: currentDate.format(DATE_TIME_FORMAT),
-            status: 'BBBBBB'
+            status: 'BBBBBB',
           },
           elemDefault
         );
@@ -115,7 +115,7 @@ describe('Service Tests', () => {
           {
             usingDate: currentDate,
             reservationDate: currentDate,
-            lastModifiedDate: currentDate
+            lastModifiedDate: currentDate,
           },
           returnedFromService
         );

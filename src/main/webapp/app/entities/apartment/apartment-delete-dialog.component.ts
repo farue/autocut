@@ -6,7 +6,7 @@ import { IApartment } from 'app/shared/model/apartment.model';
 import { ApartmentService } from './apartment.service';
 
 @Component({
-  templateUrl: './apartment-delete-dialog.component.html'
+  templateUrl: './apartment-delete-dialog.component.html',
 })
 export class ApartmentDeleteDialogComponent {
   apartment?: IApartment;

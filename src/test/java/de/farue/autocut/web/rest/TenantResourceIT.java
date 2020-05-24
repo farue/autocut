@@ -4,7 +4,6 @@ import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Tenant;
 import de.farue.autocut.repository.TenantRepository;
 import de.farue.autocut.service.TenantService;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +14,24 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
+
 import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Integration tests for the {@link TenantResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class TenantResourceIT {
@@ -90,7 +94,6 @@ public class TenantResourceIT {
     @Transactional
     public void createTenant() throws Exception {
         int databaseSizeBeforeCreate = tenantRepository.findAll().size();
-
         // Create the Tenant
         restTenantMockMvc.perform(post("/api/tenants")
             .contentType(MediaType.APPLICATION_JSON)
@@ -141,7 +144,7 @@ public class TenantResourceIT {
             .andExpect(jsonPath("$.[*].pictureId").value(hasItem(Base64Utils.encodeToString(DEFAULT_PICTURE_ID))))
             .andExpect(jsonPath("$.[*].verified").value(hasItem(DEFAULT_VERIFIED.booleanValue())));
     }
-    
+
     @Test
     @Transactional
     public void getTenant() throws Exception {
@@ -157,7 +160,6 @@ public class TenantResourceIT {
             .andExpect(jsonPath("$.pictureId").value(Base64Utils.encodeToString(DEFAULT_PICTURE_ID)))
             .andExpect(jsonPath("$.verified").value(DEFAULT_VERIFIED.booleanValue()));
     }
-
     @Test
     @Transactional
     public void getNonExistingTenant() throws Exception {
@@ -201,8 +203,6 @@ public class TenantResourceIT {
     @Transactional
     public void updateNonExistingTenant() throws Exception {
         int databaseSizeBeforeUpdate = tenantRepository.findAll().size();
-
-        // Create the Tenant
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restTenantMockMvc.perform(put("/api/tenants")

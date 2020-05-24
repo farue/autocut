@@ -4,7 +4,6 @@ import de.farue.autocut.domain.Tenant;
 import de.farue.autocut.repository.TenantRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,6 +66,7 @@ public class TenantService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Tenant : {}", id);
+
         tenantRepository.deleteById(id);
     }
 }

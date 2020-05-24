@@ -1,63 +1,63 @@
 {
-    "name": "WashHistory",
-    "fields": [
-        {
-            "fieldName": "usingDate",
-            "fieldType": "Instant"
-        },
-        {
-            "fieldName": "reservationDate",
-            "fieldType": "Instant"
-        },
-        {
-            "fieldName": "lastModifiedDate",
-            "fieldType": "Instant"
-        },
-        {
-            "fieldName": "status",
-            "fieldType": "WashHistoryStatus",
-            "fieldValues": "OPEN,EXPIRED,COMPLETED,CANCELLED_BY_USER,CANCELLED_BY_SYSTEM"
-        }
-    ],
-    "relationships": [
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "tenant",
-            "otherEntityRelationshipName": "washHistory",
-            "relationshipName": "reservationTenant",
-            "otherEntityField": "id"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "tenant",
-            "otherEntityRelationshipName": "washHistory",
-            "relationshipName": "usingTenant",
-            "otherEntityField": "id"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "laundryMachine",
-            "otherEntityRelationshipName": "washHistory",
-            "relationshipName": "machine",
-            "otherEntityField": "id"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "laundryMachineProgram",
-            "otherEntityRelationshipName": "washHistory",
-            "relationshipName": "program",
-            "otherEntityField": "id"
-        }
-    ],
-    "changelogDate": "20200326184247",
-    "entityTableName": "wash_history",
-    "dto": "no",
-    "pagination": "no",
-    "service": "no",
-    "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "readOnly": false,
-    "clientRootFolder": "",
-    "applications": "*",
-    "embedded": false
+  "name": "WashHistory",
+  "fields": [
+    {
+      "fieldName": "usingDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "reservationDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "WashHistoryStatus",
+      "fieldValues": "OPEN,EXPIRED,COMPLETED,CANCELLED_BY_USER,CANCELLED_BY_SYSTEM"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "tenant",
+      "otherEntityRelationshipName": "washHistory",
+      "relationshipName": "reservationTenant",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "tenant",
+      "otherEntityRelationshipName": "washHistory",
+      "relationshipName": "usingTenant",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "laundryMachine",
+      "otherEntityRelationshipName": "washHistory",
+      "relationshipName": "machine",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "laundryMachineProgram",
+      "otherEntityRelationshipName": "washHistory",
+      "relationshipName": "program",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20200326184247",
+  "entityTableName": "wash_history",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "clientRootFolder": "",
+  "applications": "*",
+  "embedded": false
 }

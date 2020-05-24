@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
@@ -10,7 +10,7 @@ import { TransactionDeleteDialogComponent } from './transaction-delete-dialog.co
 
 @Component({
   selector: 'jhi-transaction',
-  templateUrl: './transaction.component.html'
+  templateUrl: './transaction.component.html',
 })
 export class TransactionComponent implements OnInit, OnDestroy {
   transactions?: ITransaction[];

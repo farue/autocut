@@ -16,7 +16,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [AutocutTestModule],
-        declarations: [NetworkSwitchComponent]
+        declarations: [NetworkSwitchComponent],
       })
         .overrideTemplate(NetworkSwitchComponent, '')
         .compileComponents();
@@ -33,7 +33,7 @@ describe('Component Tests', () => {
         of(
           new HttpResponse({
             body: [new NetworkSwitch(123)],
-            headers
+            headers,
           })
         )
       );

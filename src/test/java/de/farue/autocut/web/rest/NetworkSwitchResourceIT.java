@@ -3,7 +3,6 @@ package de.farue.autocut.web.rest;
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.NetworkSwitch;
 import de.farue.autocut.repository.NetworkSwitchRepository;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,20 +12,24 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
+
 import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Integration tests for the {@link NetworkSwitchResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class NetworkSwitchResourceIT {
@@ -92,7 +95,6 @@ public class NetworkSwitchResourceIT {
     @Transactional
     public void createNetworkSwitch() throws Exception {
         int databaseSizeBeforeCreate = networkSwitchRepository.findAll().size();
-
         // Create the NetworkSwitch
         restNetworkSwitchMockMvc.perform(post("/api/network-switches")
             .contentType(MediaType.APPLICATION_JSON)
@@ -199,7 +201,7 @@ public class NetworkSwitchResourceIT {
             .andExpect(jsonPath("$.[*].sshPort").value(hasItem(DEFAULT_SSH_PORT)))
             .andExpect(jsonPath("$.[*].sshKey").value(hasItem(DEFAULT_SSH_KEY.toString())));
     }
-    
+
     @Test
     @Transactional
     public void getNetworkSwitch() throws Exception {
@@ -216,7 +218,6 @@ public class NetworkSwitchResourceIT {
             .andExpect(jsonPath("$.sshPort").value(DEFAULT_SSH_PORT))
             .andExpect(jsonPath("$.sshKey").value(DEFAULT_SSH_KEY.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingNetworkSwitch() throws Exception {
@@ -262,8 +263,6 @@ public class NetworkSwitchResourceIT {
     @Transactional
     public void updateNonExistingNetworkSwitch() throws Exception {
         int databaseSizeBeforeUpdate = networkSwitchRepository.findAll().size();
-
-        // Create the NetworkSwitch
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restNetworkSwitchMockMvc.perform(put("/api/network-switches")

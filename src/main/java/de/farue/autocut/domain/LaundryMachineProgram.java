@@ -4,18 +4,22 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A LaundryMachineProgram.
  */
 @Entity
 @Table(name = "laundry_machine_program")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class LaundryMachineProgram implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,10 +49,10 @@ public class LaundryMachineProgram implements Serializable {
     private Boolean protect;
 
     @ManyToOne
-    @JsonIgnoreProperties("programs")
+    @JsonIgnoreProperties(value = "programs", allowSetters = true)
     private LaundryMachine laundryMachine;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -147,7 +151,7 @@ public class LaundryMachineProgram implements Serializable {
     public void setLaundryMachine(LaundryMachine laundryMachine) {
         this.laundryMachine = laundryMachine;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -165,6 +169,7 @@ public class LaundryMachineProgram implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "LaundryMachineProgram{" +

@@ -51,7 +51,7 @@ export class LeaseService {
   protected convertDateFromClient(lease: ILease): ILease {
     const copy: ILease = Object.assign({}, lease, {
       start: lease.start && lease.start.isValid() ? lease.start.toJSON() : undefined,
-      end: lease.end && lease.end.isValid() ? lease.end.toJSON() : undefined
+      end: lease.end && lease.end.isValid() ? lease.end.toJSON() : undefined,
     });
     return copy;
   }

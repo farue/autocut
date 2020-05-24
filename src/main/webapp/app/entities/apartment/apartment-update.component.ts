@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { IApartment, Apartment } from 'app/shared/model/apartment.model';
+import { Apartment, IApartment } from 'app/shared/model/apartment.model';
 import { ApartmentService } from './apartment.service';
 import { IInternetAccess } from 'app/shared/model/internet-access.model';
 import { InternetAccessService } from 'app/entities/internet-access/internet-access.service';
@@ -17,7 +17,7 @@ type SelectableEntity = IInternetAccess | IAddress;
 
 @Component({
   selector: 'jhi-apartment-update',
-  templateUrl: './apartment-update.component.html'
+  templateUrl: './apartment-update.component.html',
 })
 export class ApartmentUpdateComponent implements OnInit {
   isSaving = false;
@@ -30,7 +30,7 @@ export class ApartmentUpdateComponent implements OnInit {
     type: [null, [Validators.required]],
     maxNumberOfLeases: [null, [Validators.required, Validators.min(0)]],
     internetAccess: [],
-    address: []
+    address: [],
   });
 
   constructor(
@@ -78,7 +78,7 @@ export class ApartmentUpdateComponent implements OnInit {
       type: apartment.type,
       maxNumberOfLeases: apartment.maxNumberOfLeases,
       internetAccess: apartment.internetAccess,
-      address: apartment.address
+      address: apartment.address,
     });
   }
 
@@ -104,7 +104,7 @@ export class ApartmentUpdateComponent implements OnInit {
       type: this.editForm.get(['type'])!.value,
       maxNumberOfLeases: this.editForm.get(['maxNumberOfLeases'])!.value,
       internetAccess: this.editForm.get(['internetAccess'])!.value,
-      address: this.editForm.get(['address'])!.value
+      address: this.editForm.get(['address'])!.value,
     };
   }
 

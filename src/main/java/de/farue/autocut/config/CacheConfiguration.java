@@ -1,19 +1,19 @@
 package de.farue.autocut.config;
 
 import io.github.jhipster.config.JHipsterProperties;
+import io.github.jhipster.config.cache.PrefixedKeyGenerator;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.ehcache.config.builders.ExpiryPolicyBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
 import org.ehcache.jsr107.Eh107Configuration;
 import org.hibernate.cache.jcache.ConfigSettings;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.info.GitProperties;
-import org.springframework.cache.interceptor.KeyGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
-import io.github.jhipster.config.cache.PrefixedKeyGenerator;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -50,8 +50,7 @@ public class CacheConfiguration {
             createCache(cm, de.farue.autocut.domain.Authority.class.getName());
             createCache(cm, de.farue.autocut.domain.User.class.getName() + ".authorities");
             createCache(cm, de.farue.autocut.domain.Tenant.class.getName());
-            createCache(cm, de.farue.autocut.domain.Tenant.class.getName() + ".teamMemberships");
-            createCache(cm, de.farue.autocut.domain.Tenant.class.getName() + ".messages");
+            createCache(cm, de.farue.autocut.domain.Tenant.class.getName() + ".securityPolicies");
             createCache(cm, de.farue.autocut.domain.Team.class.getName());
             createCache(cm, de.farue.autocut.domain.Team.class.getName() + ".members");
             createCache(cm, de.farue.autocut.domain.TeamMember.class.getName());
@@ -65,10 +64,7 @@ public class CacheConfiguration {
             createCache(cm, de.farue.autocut.domain.InternetAccess.class.getName());
             createCache(cm, de.farue.autocut.domain.Transaction.class.getName());
             createCache(cm, de.farue.autocut.domain.TenantCommunication.class.getName());
-            createCache(cm, de.farue.autocut.domain.Tenant.class.getName() + ".securityPolicies");
-            createCache(cm, de.farue.autocut.domain.Tenant.class.getName() + ".activties");
             createCache(cm, de.farue.autocut.domain.Activity.class.getName());
-            createCache(cm, de.farue.autocut.domain.Lease.class.getName() + ".accounts");
             createCache(cm, de.farue.autocut.domain.Activity.class.getName() + ".teamMembers");
             createCache(cm, de.farue.autocut.domain.Communication.class.getName());
             createCache(cm, de.farue.autocut.domain.LaundryMachine.class.getName());

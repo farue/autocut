@@ -6,7 +6,7 @@ import { ILease } from 'app/shared/model/lease.model';
 import { LeaseService } from './lease.service';
 
 @Component({
-  templateUrl: './lease-delete-dialog.component.html'
+  templateUrl: './lease-delete-dialog.component.html',
 })
 export class LeaseDeleteDialogComponent {
   lease?: ILease;

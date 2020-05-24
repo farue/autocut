@@ -16,7 +16,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "global_setting")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class GlobalSetting implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,7 +37,7 @@ public class GlobalSetting implements Serializable {
     @Column(name = "value_type")
     private String valueType;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -84,7 +84,7 @@ public class GlobalSetting implements Serializable {
     public void setValueType(String valueType) {
         this.valueType = valueType;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -102,6 +102,7 @@ public class GlobalSetting implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "GlobalSetting{" +

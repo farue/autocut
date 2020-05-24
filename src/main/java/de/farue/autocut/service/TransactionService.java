@@ -97,6 +97,7 @@ public class TransactionService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Transaction : {}", id);
+
         transactionRepository.deleteById(id);
     }
 

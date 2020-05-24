@@ -50,7 +50,7 @@ export class CommunicationService {
 
   protected convertDateFromClient(communication: ICommunication): ICommunication {
     const copy: ICommunication = Object.assign({}, communication, {
-      date: communication.date && communication.date.isValid() ? communication.date.toJSON() : undefined
+      date: communication.date && communication.date.isValid() ? communication.date.toJSON() : undefined,
     });
     return copy;
   }

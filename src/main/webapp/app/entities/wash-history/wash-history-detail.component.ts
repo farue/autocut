@@ -5,7 +5,7 @@ import { IWashHistory } from 'app/shared/model/wash-history.model';
 
 @Component({
   selector: 'jhi-wash-history-detail',
-  templateUrl: './wash-history-detail.component.html'
+  templateUrl: './wash-history-detail.component.html',
 })
 export class WashHistoryDetailComponent implements OnInit {
   washHistory: IWashHistory | null = null;

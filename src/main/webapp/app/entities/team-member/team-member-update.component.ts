@@ -18,7 +18,7 @@ type SelectableEntity = ITenant | ITeam | IActivity;
 
 @Component({
   selector: 'jhi-team-member-update',
-  templateUrl: './team-member-update.component.html'
+  templateUrl: './team-member-update.component.html',
 })
 export class TeamMemberUpdateComponent implements OnInit {
   isSaving = false;
@@ -31,7 +31,7 @@ export class TeamMemberUpdateComponent implements OnInit {
     role: [],
     tenant: [],
     team: [null, Validators.required],
-    activity: []
+    activity: [],
   });
 
   constructor(
@@ -61,7 +61,7 @@ export class TeamMemberUpdateComponent implements OnInit {
       role: teamMember.role,
       tenant: teamMember.tenant,
       team: teamMember.team,
-      activity: teamMember.activity
+      activity: teamMember.activity,
     });
   }
 
@@ -86,7 +86,7 @@ export class TeamMemberUpdateComponent implements OnInit {
       role: this.editForm.get(['role'])!.value,
       tenant: this.editForm.get(['tenant'])!.value,
       team: this.editForm.get(['team'])!.value,
-      activity: this.editForm.get(['activity'])!.value
+      activity: this.editForm.get(['activity'])!.value,
     };
   }
 

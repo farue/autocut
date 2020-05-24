@@ -18,17 +18,17 @@
         <span jhiTranslate="autocutApp.laundryMachineProgram.home.notFound">No laundryMachinePrograms found</span>
     </div>
 
-    <div class="table-responsive" id="entities" *ngIf="laundryMachinePrograms?.length > 0">
+    <div class="table-responsive" id="entities" *ngIf="laundryMachinePrograms && laundryMachinePrograms.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-                <tr>
-                    <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.name">Name</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.subprogram">Subprogram</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.time">Time</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.spin">Spin</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.preWash">Pre Wash</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.protect">Protect</span></th>
+            <tr>
+                <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.laundryMachineProgram.name">Name</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.laundryMachineProgram.subprogram">Subprogram</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.laundryMachineProgram.time">Time</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.laundryMachineProgram.spin">Spin</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.laundryMachineProgram.preWash">Pre Wash</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.laundryMachineProgram.protect">Protect</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.laundryMachineProgram.laundryMachine">Laundry Machine</span></th>
                     <th scope="col"></th>
                 </tr>

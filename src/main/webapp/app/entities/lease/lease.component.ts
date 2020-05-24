@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
+import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ILease } from 'app/shared/model/lease.model';
@@ -10,7 +10,7 @@ import { LeaseDeleteDialogComponent } from './lease-delete-dialog.component';
 
 @Component({
   selector: 'jhi-lease',
-  templateUrl: './lease.component.html'
+  templateUrl: './lease.component.html',
 })
 export class LeaseComponent implements OnInit, OnDestroy {
   leases?: ILease[];
@@ -47,7 +47,7 @@ export class LeaseComponent implements OnInit, OnDestroy {
     return this.dataUtils.byteSize(base64String);
   }
 
-  openFile(contentType: string, base64String: string): void {
+  openFile(contentType = '', base64String: string): void {
     return this.dataUtils.openFile(contentType, base64String);
   }
 

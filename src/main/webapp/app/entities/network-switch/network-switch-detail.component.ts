@@ -6,7 +6,7 @@ import { INetworkSwitch } from 'app/shared/model/network-switch.model';
 
 @Component({
   selector: 'jhi-network-switch-detail',
-  templateUrl: './network-switch-detail.component.html'
+  templateUrl: './network-switch-detail.component.html',
 })
 export class NetworkSwitchDetailComponent implements OnInit {
   networkSwitch: INetworkSwitch | null = null;
@@ -21,7 +21,7 @@ export class NetworkSwitchDetailComponent implements OnInit {
     return this.dataUtils.byteSize(base64String);
   }
 
-  openFile(contentType: string, base64String: string): void {
+  openFile(contentType = '', base64String: string): void {
     this.dataUtils.openFile(contentType, base64String);
   }
 

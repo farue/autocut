@@ -16,7 +16,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [AutocutTestModule],
-        declarations: [GlobalSettingComponent]
+        declarations: [GlobalSettingComponent],
       })
         .overrideTemplate(GlobalSettingComponent, '')
         .compileComponents();
@@ -33,7 +33,7 @@ describe('Component Tests', () => {
         of(
           new HttpResponse({
             body: [new GlobalSetting(123)],
-            headers
+            headers,
           })
         )
       );

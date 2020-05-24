@@ -1,4 +1,4 @@
-import { TestBed, getTestBed } from '@angular/core/testing';
+import { getTestBed, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TenantService } from 'app/entities/tenant/tenant.service';
 import { ITenant, Tenant } from 'app/shared/model/tenant.model';
@@ -13,7 +13,7 @@ describe('Service Tests', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
       });
       expectedResult = null;
       injector = getTestBed();
@@ -37,7 +37,7 @@ describe('Service Tests', () => {
       it('should create a Tenant', () => {
         const returnedFromService = Object.assign(
           {
-            id: 0
+            id: 0,
           },
           elemDefault
         );
@@ -55,7 +55,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             pictureId: 'BBBBBB',
-            verified: true
+            verified: true,
           },
           elemDefault
         );
@@ -73,7 +73,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             pictureId: 'BBBBBB',
-            verified: true
+            verified: true,
           },
           elemDefault
         );

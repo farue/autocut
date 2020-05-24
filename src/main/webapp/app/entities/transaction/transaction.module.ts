@@ -11,6 +11,6 @@ import { transactionRoute } from './transaction.route';
 @NgModule({
   imports: [AutocutSharedModule, RouterModule.forChild(transactionRoute)],
   declarations: [TransactionComponent, TransactionDetailComponent, TransactionUpdateComponent, TransactionDeleteDialogComponent],
-  entryComponents: [TransactionDeleteDialogComponent]
+  entryComponents: [TransactionDeleteDialogComponent],
 })
 export class AutocutTransactionModule {}

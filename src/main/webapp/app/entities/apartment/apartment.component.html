@@ -18,17 +18,18 @@
         <span jhiTranslate="autocutApp.apartment.home.notFound">No apartments found</span>
     </div>
 
-    <div class="table-responsive" id="entities" *ngIf="apartments?.length > 0">
+    <div class="table-responsive" id="entities" *ngIf="apartments && apartments.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-                <tr>
-                    <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.apartment.nr">Nr</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.apartment.type">Type</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.apartment.maxNumberOfLeases">Max Number Of Leases</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.apartment.internetAccess">Internet Access</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.apartment.address">Address</span></th>
-                    <th scope="col"></th>
+            <tr>
+                <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.apartment.nr">Nr</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.apartment.type">Type</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.apartment.maxNumberOfLeases">Max Number Of Leases</span>
+                </th>
+                <th scope="col"><span jhiTranslate="autocutApp.apartment.internetAccess">Internet Access</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.apartment.address">Address</span></th>
+                <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>

@@ -17,7 +17,6 @@ describe('Component Tests', () => {
       TestBed.configureTestingModule({
         imports: [AutocutTestModule],
         declarations: [TenantCommunicationComponent],
-        providers: []
       })
         .overrideTemplate(TenantCommunicationComponent, '')
         .compileComponents();
@@ -34,7 +33,7 @@ describe('Component Tests', () => {
         of(
           new HttpResponse({
             body: [new TenantCommunication(123)],
-            headers
+            headers,
           })
         )
       );

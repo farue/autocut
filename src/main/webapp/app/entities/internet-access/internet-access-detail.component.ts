@@ -5,7 +5,7 @@ import { IInternetAccess } from 'app/shared/model/internet-access.model';
 
 @Component({
   selector: 'jhi-internet-access-detail',
-  templateUrl: './internet-access-detail.component.html'
+  templateUrl: './internet-access-detail.component.html',
 })
 export class InternetAccessDetailComponent implements OnInit {
   internetAccess: IInternetAccess | null = null;

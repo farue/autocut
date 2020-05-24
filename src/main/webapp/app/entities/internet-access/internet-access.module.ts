@@ -14,8 +14,8 @@ import { internetAccessRoute } from './internet-access.route';
     InternetAccessComponent,
     InternetAccessDetailComponent,
     InternetAccessUpdateComponent,
-    InternetAccessDeleteDialogComponent
+    InternetAccessDeleteDialogComponent,
   ],
-  entryComponents: [InternetAccessDeleteDialogComponent]
+  entryComponents: [InternetAccessDeleteDialogComponent],
 })
 export class AutocutInternetAccessModule {}

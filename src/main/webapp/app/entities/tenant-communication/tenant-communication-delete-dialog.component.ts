@@ -6,7 +6,7 @@ import { ITenantCommunication } from 'app/shared/model/tenant-communication.mode
 import { TenantCommunicationService } from './tenant-communication.service';
 
 @Component({
-  templateUrl: './tenant-communication-delete-dialog.component.html'
+  templateUrl: './tenant-communication-delete-dialog.component.html',
 })
 export class TenantCommunicationDeleteDialogComponent {
   tenantCommunication?: ITenantCommunication;
@@ -17,7 +17,7 @@ export class TenantCommunicationDeleteDialogComponent {
     protected eventManager: JhiEventManager
   ) {}
 
-  clear(): void {
+  cancel(): void {
     this.activeModal.dismiss();
   }
 

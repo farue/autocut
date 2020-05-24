@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
@@ -10,7 +10,7 @@ import { ApartmentDeleteDialogComponent } from './apartment-delete-dialog.compon
 
 @Component({
   selector: 'jhi-apartment',
-  templateUrl: './apartment.component.html'
+  templateUrl: './apartment.component.html',
 })
 export class ApartmentComponent implements OnInit, OnDestroy {
   apartments?: IApartment[];

@@ -6,7 +6,7 @@ import { ILease } from 'app/shared/model/lease.model';
 
 @Component({
   selector: 'jhi-lease-detail',
-  templateUrl: './lease-detail.component.html'
+  templateUrl: './lease-detail.component.html',
 })
 export class LeaseDetailComponent implements OnInit {
   lease: ILease | null = null;
@@ -21,7 +21,7 @@ export class LeaseDetailComponent implements OnInit {
     return this.dataUtils.byteSize(base64String);
   }
 
-  openFile(contentType: string, base64String: string): void {
+  openFile(contentType = '', base64String: string): void {
     this.dataUtils.openFile(contentType, base64String);
   }
 

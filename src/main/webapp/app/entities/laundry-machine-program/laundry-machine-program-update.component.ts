@@ -12,7 +12,7 @@ import { LaundryMachineService } from 'app/entities/laundry-machine/laundry-mach
 
 @Component({
   selector: 'jhi-laundry-machine-program-update',
-  templateUrl: './laundry-machine-program-update.component.html'
+  templateUrl: './laundry-machine-program-update.component.html',
 })
 export class LaundryMachineProgramUpdateComponent implements OnInit {
   isSaving = false;
@@ -26,7 +26,7 @@ export class LaundryMachineProgramUpdateComponent implements OnInit {
     spin: [],
     preWash: [],
     protect: [],
-    laundryMachine: []
+    laundryMachine: [],
   });
 
   constructor(
@@ -53,7 +53,7 @@ export class LaundryMachineProgramUpdateComponent implements OnInit {
       spin: laundryMachineProgram.spin,
       preWash: laundryMachineProgram.preWash,
       protect: laundryMachineProgram.protect,
-      laundryMachine: laundryMachineProgram.laundryMachine
+      laundryMachine: laundryMachineProgram.laundryMachine,
     });
   }
 
@@ -81,7 +81,7 @@ export class LaundryMachineProgramUpdateComponent implements OnInit {
       spin: this.editForm.get(['spin'])!.value,
       preWash: this.editForm.get(['preWash'])!.value,
       protect: this.editForm.get(['protect'])!.value,
-      laundryMachine: this.editForm.get(['laundryMachine'])!.value
+      laundryMachine: this.editForm.get(['laundryMachine'])!.value,
     };
   }
 

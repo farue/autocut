@@ -10,14 +10,14 @@ import { TeamService } from './team.service';
 
 @Component({
   selector: 'jhi-team-update',
-  templateUrl: './team-update.component.html'
+  templateUrl: './team-update.component.html',
 })
 export class TeamUpdateComponent implements OnInit {
   isSaving = false;
 
   editForm = this.fb.group({
     id: [],
-    name: [null, [Validators.required]]
+    name: [null, [Validators.required]],
   });
 
   constructor(protected teamService: TeamService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
@@ -31,7 +31,7 @@ export class TeamUpdateComponent implements OnInit {
   updateForm(team: ITeam): void {
     this.editForm.patchValue({
       id: team.id,
-      name: team.name
+      name: team.name,
     });
   }
 
@@ -53,7 +53,7 @@ export class TeamUpdateComponent implements OnInit {
     return {
       ...new Team(),
       id: this.editForm.get(['id'])!.value,
-      name: this.editForm.get(['name'])!.value
+      name: this.editForm.get(['name'])!.value,
     };
   }
 

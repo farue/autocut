@@ -11,8 +11,9 @@
                 <dt><span jhiTranslate="autocutApp.tenant.pictureId">Picture Id</span></dt>
                 <dd>
                     <div *ngIf="tenant.pictureId">
-                        <a (click)="openFile(tenant?.pictureIdContentType!, tenant?.pictureId)">
-                            <img [src]="'data:' + tenant.pictureIdContentType + ';base64,' + tenant.pictureId" style="max-width: 100%;" alt="tenant image"/>
+                        <a (click)="openFile(tenant.pictureIdContentType, tenant.pictureId)">
+                            <img [src]="'data:' + tenant.pictureIdContentType + ';base64,' + tenant.pictureId"
+                                 style="max-width: 100%;" alt="tenant image"/>
                         </a>
                         {{ tenant.pictureIdContentType }}, {{ byteSize(tenant.pictureId) }}
                     </div>

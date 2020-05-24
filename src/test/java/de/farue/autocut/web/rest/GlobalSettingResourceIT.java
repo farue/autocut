@@ -3,7 +3,6 @@ package de.farue.autocut.web.rest;
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.GlobalSetting;
 import de.farue.autocut.repository.GlobalSettingRepository;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,19 +12,24 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Integration tests for the {@link GlobalSettingResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class GlobalSettingResourceIT {
@@ -86,7 +90,6 @@ public class GlobalSettingResourceIT {
     @Transactional
     public void createGlobalSetting() throws Exception {
         int databaseSizeBeforeCreate = globalSettingRepository.findAll().size();
-
         // Create the GlobalSetting
         restGlobalSettingMockMvc.perform(post("/api/global-settings")
             .contentType(MediaType.APPLICATION_JSON)
@@ -137,7 +140,7 @@ public class GlobalSettingResourceIT {
             .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE)))
             .andExpect(jsonPath("$.[*].valueType").value(hasItem(DEFAULT_VALUE_TYPE)));
     }
-    
+
     @Test
     @Transactional
     public void getGlobalSetting() throws Exception {
@@ -153,7 +156,6 @@ public class GlobalSettingResourceIT {
             .andExpect(jsonPath("$.value").value(DEFAULT_VALUE))
             .andExpect(jsonPath("$.valueType").value(DEFAULT_VALUE_TYPE));
     }
-
     @Test
     @Transactional
     public void getNonExistingGlobalSetting() throws Exception {
@@ -197,8 +199,6 @@ public class GlobalSettingResourceIT {
     @Transactional
     public void updateNonExistingGlobalSetting() throws Exception {
         int databaseSizeBeforeUpdate = globalSettingRepository.findAll().size();
-
-        // Create the GlobalSetting
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restGlobalSettingMockMvc.perform(put("/api/global-settings")

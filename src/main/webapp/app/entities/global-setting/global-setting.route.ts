@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
-import { Observable, of, EMPTY } from 'rxjs';
+import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
+import { EMPTY, Observable, of } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
 import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { IGlobalSetting, GlobalSetting } from 'app/shared/model/global-setting.model';
+import { GlobalSetting, IGlobalSetting } from 'app/shared/model/global-setting.model';
 import { GlobalSettingService } from './global-setting.service';
 import { GlobalSettingComponent } from './global-setting.component';
 import { GlobalSettingDetailComponent } from './global-setting-detail.component';
@@ -40,44 +40,44 @@ export const globalSettingRoute: Routes = [
     component: GlobalSettingComponent,
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.globalSetting.home.title'
+      pageTitle: 'autocutApp.globalSetting.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
     component: GlobalSettingDetailComponent,
     resolve: {
-      globalSetting: GlobalSettingResolve
+      globalSetting: GlobalSettingResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.globalSetting.home.title'
+      pageTitle: 'autocutApp.globalSetting.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',
     component: GlobalSettingUpdateComponent,
     resolve: {
-      globalSetting: GlobalSettingResolve
+      globalSetting: GlobalSettingResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.globalSetting.home.title'
+      pageTitle: 'autocutApp.globalSetting.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/edit',
     component: GlobalSettingUpdateComponent,
     resolve: {
-      globalSetting: GlobalSettingResolve
+      globalSetting: GlobalSettingResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.globalSetting.home.title'
+      pageTitle: 'autocutApp.globalSetting.home.title',
     },
-    canActivate: [UserRouteAccessService]
-  }
+    canActivate: [UserRouteAccessService],
+  },
 ];

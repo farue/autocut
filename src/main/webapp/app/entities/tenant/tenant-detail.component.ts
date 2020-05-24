@@ -6,7 +6,7 @@ import { ITenant } from 'app/shared/model/tenant.model';
 
 @Component({
   selector: 'jhi-tenant-detail',
-  templateUrl: './tenant-detail.component.html'
+  templateUrl: './tenant-detail.component.html',
 })
 export class TenantDetailComponent implements OnInit {
   tenant: ITenant | null = null;
@@ -21,7 +21,7 @@ export class TenantDetailComponent implements OnInit {
     return this.dataUtils.byteSize(base64String);
   }
 
-  openFile(contentType: string, base64String: string): void {
+  openFile(contentType = '', base64String: string): void {
     this.dataUtils.openFile(contentType, base64String);
   }
 

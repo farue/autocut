@@ -1,10 +1,10 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
+import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
 import { ITenant, Tenant } from 'app/shared/model/tenant.model';
 import { TenantService } from './tenant.service';
@@ -18,7 +18,7 @@ type SelectableEntity = IUser | ILease;
 
 @Component({
   selector: 'jhi-tenant-update',
-  templateUrl: './tenant-update.component.html'
+  templateUrl: './tenant-update.component.html',
 })
 export class TenantUpdateComponent implements OnInit {
   isSaving = false;
@@ -31,7 +31,7 @@ export class TenantUpdateComponent implements OnInit {
     pictureIdContentType: [],
     verified: [],
     user: [],
-    lease: []
+    lease: [],
   });
 
   constructor(
@@ -62,7 +62,7 @@ export class TenantUpdateComponent implements OnInit {
       pictureIdContentType: tenant.pictureIdContentType,
       verified: tenant.verified,
       user: tenant.user,
-      lease: tenant.lease
+      lease: tenant.lease,
     });
   }
 
@@ -85,7 +85,7 @@ export class TenantUpdateComponent implements OnInit {
   clearInputImage(field: string, fieldContentType: string, idInput: string): void {
     this.editForm.patchValue({
       [field]: null,
-      [fieldContentType]: null
+      [fieldContentType]: null,
     });
     if (this.elementRef && idInput && this.elementRef.nativeElement.querySelector('#' + idInput)) {
       this.elementRef.nativeElement.querySelector('#' + idInput).value = null;
@@ -114,7 +114,7 @@ export class TenantUpdateComponent implements OnInit {
       pictureId: this.editForm.get(['pictureId'])!.value,
       verified: this.editForm.get(['verified'])!.value,
       user: this.editForm.get(['user'])!.value,
-      lease: this.editForm.get(['lease'])!.value
+      lease: this.editForm.get(['lease'])!.value,
     };
   }
 

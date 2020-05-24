@@ -11,6 +11,6 @@ import { apartmentRoute } from './apartment.route';
 @NgModule({
   imports: [AutocutSharedModule, RouterModule.forChild(apartmentRoute)],
   declarations: [ApartmentComponent, ApartmentDetailComponent, ApartmentUpdateComponent, ApartmentDeleteDialogComponent],
-  entryComponents: [ApartmentDeleteDialogComponent]
+  entryComponents: [ApartmentDeleteDialogComponent],
 })
 export class AutocutApartmentModule {}

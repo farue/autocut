@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
-                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
 
-        <property name="autoIncrement" value="true"/>
+    <property name="autoIncrement" value="true"/>
 
     <!--
         Added the entity LaundryMachineProgram.
@@ -29,17 +27,24 @@
                 <constraints nullable="true" />
             </column>
             <column name="pre_wash" type="boolean">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="protect" type="boolean">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="laundry_machine_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
-            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
+    </changeSet>
 
+    <changeSet id="20200326184246-1-relations" author="jhipster">
+
+    </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+
+    <changeSet id="20200326184246-1-data" author="brunecker">
         <loadData
             file="config/liquibase/data/laundry_machine_program.csv"
             separator=";"
@@ -51,13 +56,8 @@
             <column name="spin" type="numeric"/>
             <column name="pre_wash" type="boolean"/>
             <column name="protect" type="boolean"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
-
-    <changeSet id="20200326184246-1-relations" author="jhipster">
-
-    </changeSet>
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 
 </databaseChangeLog>

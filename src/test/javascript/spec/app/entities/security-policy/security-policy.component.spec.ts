@@ -16,7 +16,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [AutocutTestModule],
-        declarations: [SecurityPolicyComponent]
+        declarations: [SecurityPolicyComponent],
       })
         .overrideTemplate(SecurityPolicyComponent, '')
         .compileComponents();
@@ -33,7 +33,7 @@ describe('Component Tests', () => {
         of(
           new HttpResponse({
             body: [new SecurityPolicy(123)],
-            headers
+            headers,
           })
         )
       );

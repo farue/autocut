@@ -6,9 +6,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
-import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
+import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
-import { ICommunication, Communication } from 'app/shared/model/communication.model';
+import { Communication, ICommunication } from 'app/shared/model/communication.model';
 import { CommunicationService } from './communication.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { IUser } from 'app/core/user/user.model';
@@ -16,7 +16,7 @@ import { UserService } from 'app/core/user/user.service';
 
 @Component({
   selector: 'jhi-communication-update',
-  templateUrl: './communication-update.component.html'
+  templateUrl: './communication-update.component.html',
 })
 export class CommunicationUpdateComponent implements OnInit {
   isSaving = false;
@@ -28,7 +28,7 @@ export class CommunicationUpdateComponent implements OnInit {
     text: [null, [Validators.required]],
     note: [],
     date: [null, [Validators.required]],
-    tenant: []
+    tenant: [],
   });
 
   constructor(
@@ -60,7 +60,7 @@ export class CommunicationUpdateComponent implements OnInit {
       text: communication.text,
       note: communication.note,
       date: communication.date ? communication.date.format(DATE_TIME_FORMAT) : null,
-      tenant: communication.tenant
+      tenant: communication.tenant,
     });
   }
 
@@ -102,7 +102,7 @@ export class CommunicationUpdateComponent implements OnInit {
       text: this.editForm.get(['text'])!.value,
       note: this.editForm.get(['note'])!.value,
       date: this.editForm.get(['date'])!.value ? moment(this.editForm.get(['date'])!.value, DATE_TIME_FORMAT) : undefined,
-      tenant: this.editForm.get(['tenant'])!.value
+      tenant: this.editForm.get(['tenant'])!.value,
     };
   }
 

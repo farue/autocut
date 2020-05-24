@@ -18,17 +18,17 @@
         <span jhiTranslate="autocutApp.tenant.home.notFound">No tenants found</span>
     </div>
 
-    <div class="table-responsive" id="entities" *ngIf="tenants?.length > 0">
+    <div class="table-responsive" id="entities" *ngIf="tenants && tenants.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-                <tr>
-                    <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.tenant.pictureId">Picture Id</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.tenant.verified">Verified</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.tenant.user">User</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.tenant.lease">Lease</span></th>
-                    <th scope="col"></th>
-                </tr>
+            <tr>
+                <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.tenant.pictureId">Picture Id</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.tenant.verified">Verified</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.tenant.user">User</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.tenant.lease">Lease</span></th>
+                <th scope="col"></th>
+            </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let tenant of tenants ;trackBy: trackId">

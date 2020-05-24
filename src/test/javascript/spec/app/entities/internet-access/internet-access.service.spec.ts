@@ -1,4 +1,4 @@
-import { TestBed, getTestBed } from '@angular/core/testing';
+import { getTestBed, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { InternetAccessService } from 'app/entities/internet-access/internet-access.service';
 import { IInternetAccess, InternetAccess } from 'app/shared/model/internet-access.model';
@@ -13,7 +13,7 @@ describe('Service Tests', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
       });
       expectedResult = null;
       injector = getTestBed();
@@ -37,7 +37,7 @@ describe('Service Tests', () => {
       it('should create a InternetAccess', () => {
         const returnedFromService = Object.assign(
           {
-            id: 0
+            id: 0,
           },
           elemDefault
         );
@@ -58,7 +58,7 @@ describe('Service Tests', () => {
             ip1: 'BBBBBB',
             ip2: 'BBBBBB',
             switchInterface: 'BBBBBB',
-            port: 1
+            port: 1,
           },
           elemDefault
         );
@@ -79,7 +79,7 @@ describe('Service Tests', () => {
             ip1: 'BBBBBB',
             ip2: 'BBBBBB',
             switchInterface: 'BBBBBB',
-            port: 1
+            port: 1,
           },
           elemDefault
         );

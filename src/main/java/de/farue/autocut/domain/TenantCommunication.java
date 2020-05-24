@@ -1,11 +1,19 @@
 package de.farue.autocut.domain;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -14,7 +22,7 @@ import java.time.Instant;
  */
 @Entity
 @Table(name = "tenant_communication")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class TenantCommunication implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -28,7 +36,7 @@ public class TenantCommunication implements Serializable {
     @Column(name = "subject", length = 80, nullable = false)
     private String subject;
 
-    
+
     @Lob
     @Column(name = "text", nullable = false)
     private String text;
@@ -42,10 +50,10 @@ public class TenantCommunication implements Serializable {
     private Instant date;
 
     @ManyToOne
-    @JsonIgnoreProperties("messages")
+    @JsonIgnoreProperties(value = "messages", allowSetters = true)
     private Tenant tenant;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -118,7 +126,7 @@ public class TenantCommunication implements Serializable {
     public void setTenant(Tenant tenant) {
         this.tenant = tenant;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -136,6 +144,7 @@ public class TenantCommunication implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "TenantCommunication{" +

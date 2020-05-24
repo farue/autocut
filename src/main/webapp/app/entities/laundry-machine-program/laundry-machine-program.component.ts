@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
@@ -10,7 +10,7 @@ import { LaundryMachineProgramDeleteDialogComponent } from './laundry-machine-pr
 
 @Component({
   selector: 'jhi-laundry-machine-program',
-  templateUrl: './laundry-machine-program.component.html'
+  templateUrl: './laundry-machine-program.component.html',
 })
 export class LaundryMachineProgramComponent implements OnInit, OnDestroy {
   laundryMachinePrograms?: ILaundryMachineProgram[];

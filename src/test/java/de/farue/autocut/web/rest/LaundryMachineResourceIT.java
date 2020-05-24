@@ -2,8 +2,8 @@ package de.farue.autocut.web.rest;
 
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.LaundryMachine;
+import de.farue.autocut.domain.enumeration.LaundryMachineType;
 import de.farue.autocut.repository.LaundryMachineRepository;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,20 +13,23 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import de.farue.autocut.domain.enumeration.LaundryMachineType;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 /**
  * Integration tests for the {@link LaundryMachineResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class LaundryMachineResourceIT {
@@ -92,7 +95,6 @@ public class LaundryMachineResourceIT {
     @Transactional
     public void createLaundryMachine() throws Exception {
         int databaseSizeBeforeCreate = laundryMachineRepository.findAll().size();
-
         // Create the LaundryMachine
         restLaundryMachineMockMvc.perform(post("/api/laundry-machines")
             .contentType(MediaType.APPLICATION_JSON)
@@ -217,7 +219,7 @@ public class LaundryMachineResourceIT {
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].enabled").value(hasItem(DEFAULT_ENABLED.booleanValue())));
     }
-    
+
     @Test
     @Transactional
     public void getLaundryMachine() throws Exception {
@@ -234,7 +236,6 @@ public class LaundryMachineResourceIT {
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
             .andExpect(jsonPath("$.enabled").value(DEFAULT_ENABLED.booleanValue()));
     }
-
     @Test
     @Transactional
     public void getNonExistingLaundryMachine() throws Exception {
@@ -280,8 +281,6 @@ public class LaundryMachineResourceIT {
     @Transactional
     public void updateNonExistingLaundryMachine() throws Exception {
         int databaseSizeBeforeUpdate = laundryMachineRepository.findAll().size();
-
-        // Create the LaundryMachine
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restLaundryMachineMockMvc.perform(put("/api/laundry-machines")

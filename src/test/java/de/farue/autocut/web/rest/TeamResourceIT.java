@@ -3,7 +3,6 @@ package de.farue.autocut.web.rest;
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Team;
 import de.farue.autocut.repository.TeamRepository;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,19 +12,24 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Integration tests for the {@link TeamResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class TeamResourceIT {
@@ -76,7 +80,6 @@ public class TeamResourceIT {
     @Transactional
     public void createTeam() throws Exception {
         int databaseSizeBeforeCreate = teamRepository.findAll().size();
-
         // Create the Team
         restTeamMockMvc.perform(post("/api/teams")
             .contentType(MediaType.APPLICATION_JSON)
@@ -141,7 +144,7 @@ public class TeamResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(team.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
     }
-    
+
     @Test
     @Transactional
     public void getTeam() throws Exception {
@@ -155,7 +158,6 @@ public class TeamResourceIT {
             .andExpect(jsonPath("$.id").value(team.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME));
     }
-
     @Test
     @Transactional
     public void getNonExistingTeam() throws Exception {
@@ -195,8 +197,6 @@ public class TeamResourceIT {
     @Transactional
     public void updateNonExistingTeam() throws Exception {
         int databaseSizeBeforeUpdate = teamRepository.findAll().size();
-
-        // Create the Team
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restTeamMockMvc.perform(put("/api/teams")

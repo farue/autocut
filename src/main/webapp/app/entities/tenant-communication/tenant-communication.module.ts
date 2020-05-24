@@ -14,8 +14,8 @@ import { tenantCommunicationRoute } from './tenant-communication.route';
     TenantCommunicationComponent,
     TenantCommunicationDetailComponent,
     TenantCommunicationUpdateComponent,
-    TenantCommunicationDeleteDialogComponent
+    TenantCommunicationDeleteDialogComponent,
   ],
-  entryComponents: [TenantCommunicationDeleteDialogComponent]
+  entryComponents: [TenantCommunicationDeleteDialogComponent],
 })
 export class AutocutTenantCommunicationModule {}

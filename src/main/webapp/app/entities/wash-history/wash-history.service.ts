@@ -54,7 +54,7 @@ export class WashHistoryService {
       reservationDate:
         washHistory.reservationDate && washHistory.reservationDate.isValid() ? washHistory.reservationDate.toJSON() : undefined,
       lastModifiedDate:
-        washHistory.lastModifiedDate && washHistory.lastModifiedDate.isValid() ? washHistory.lastModifiedDate.toJSON() : undefined
+        washHistory.lastModifiedDate && washHistory.lastModifiedDate.isValid() ? washHistory.lastModifiedDate.toJSON() : undefined,
     });
     return copy;
   }

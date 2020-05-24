@@ -11,6 +11,6 @@ import { networkSwitchRoute } from './network-switch.route';
 @NgModule({
   imports: [AutocutSharedModule, RouterModule.forChild(networkSwitchRoute)],
   declarations: [NetworkSwitchComponent, NetworkSwitchDetailComponent, NetworkSwitchUpdateComponent, NetworkSwitchDeleteDialogComponent],
-  entryComponents: [NetworkSwitchDeleteDialogComponent]
+  entryComponents: [NetworkSwitchDeleteDialogComponent],
 })
 export class AutocutNetworkSwitchModule {}

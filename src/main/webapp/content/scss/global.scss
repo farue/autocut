@@ -64,10 +64,6 @@ Generic styles
   width: 60% !important;
 }
 
-.card-content {
-  max-width: 870px;
-}
-
 .break {
   white-space: normal;
   word-break: break-all;
@@ -105,7 +101,6 @@ Custom alerts for notification
       font-size: 10px;
     }
   }
-
   .jhi-toast {
     position: fixed;
     width: 100%;

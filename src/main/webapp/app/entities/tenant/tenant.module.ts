@@ -11,6 +11,6 @@ import { tenantRoute } from './tenant.route';
 @NgModule({
   imports: [AutocutSharedModule, RouterModule.forChild(tenantRoute)],
   declarations: [TenantComponent, TenantDetailComponent, TenantUpdateComponent, TenantDeleteDialogComponent],
-  entryComponents: [TenantDeleteDialogComponent]
+  entryComponents: [TenantDeleteDialogComponent],
 })
 export class AutocutTenantModule {}

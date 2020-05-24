@@ -1,4 +1,4 @@
-import { TestBed, getTestBed } from '@angular/core/testing';
+import { getTestBed, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TeamService } from 'app/entities/team/team.service';
 import { ITeam, Team } from 'app/shared/model/team.model';
@@ -13,7 +13,7 @@ describe('Service Tests', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
       });
       expectedResult = null;
       injector = getTestBed();
@@ -37,7 +37,7 @@ describe('Service Tests', () => {
       it('should create a Team', () => {
         const returnedFromService = Object.assign(
           {
-            id: 0
+            id: 0,
           },
           elemDefault
         );
@@ -54,7 +54,7 @@ describe('Service Tests', () => {
       it('should update a Team', () => {
         const returnedFromService = Object.assign(
           {
-            name: 'BBBBBB'
+            name: 'BBBBBB',
           },
           elemDefault
         );
@@ -71,7 +71,7 @@ describe('Service Tests', () => {
       it('should return a list of Team', () => {
         const returnedFromService = Object.assign(
           {
-            name: 'BBBBBB'
+            name: 'BBBBBB',
           },
           elemDefault
         );

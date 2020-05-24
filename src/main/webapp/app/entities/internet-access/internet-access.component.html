@@ -18,17 +18,18 @@
         <span jhiTranslate="autocutApp.internetAccess.home.notFound">No internetAccesses found</span>
     </div>
 
-    <div class="table-responsive" id="entities" *ngIf="internetAccesses?.length > 0">
+    <div class="table-responsive" id="entities" *ngIf="internetAccesses && internetAccesses.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-                <tr>
-                    <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.internetAccess.blocked">Blocked</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.internetAccess.ip1">Ip 1</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.internetAccess.ip2">Ip 2</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.internetAccess.switchInterface">Switch Interface</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.internetAccess.port">Port</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.internetAccess.networkSwitch">Network Switch</span></th>
+            <tr>
+                <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.internetAccess.blocked">Blocked</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.internetAccess.ip1">Ip 1</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.internetAccess.ip2">Ip 2</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.internetAccess.switchInterface">Switch Interface</span>
+                </th>
+                <th scope="col"><span jhiTranslate="autocutApp.internetAccess.port">Port</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.internetAccess.networkSwitch">Network Switch</span></th>
                     <th scope="col"></th>
                 </tr>
             </thead>

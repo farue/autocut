@@ -6,7 +6,7 @@ import { ICommunication } from 'app/shared/model/communication.model';
 import { CommunicationService } from './communication.service';
 
 @Component({
-  templateUrl: './communication-delete-dialog.component.html'
+  templateUrl: './communication-delete-dialog.component.html',
 })
 export class CommunicationDeleteDialogComponent {
   communication?: ICommunication;

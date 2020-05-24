@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
-import { Observable, of, EMPTY } from 'rxjs';
+import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
+import { EMPTY, Observable, of } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
 import { Authority } from 'app/shared/constants/authority.constants';
@@ -40,44 +40,44 @@ export const teamRoute: Routes = [
     component: TeamComponent,
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.team.home.title'
+      pageTitle: 'autocutApp.team.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
     component: TeamDetailComponent,
     resolve: {
-      team: TeamResolve
+      team: TeamResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.team.home.title'
+      pageTitle: 'autocutApp.team.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',
     component: TeamUpdateComponent,
     resolve: {
-      team: TeamResolve
+      team: TeamResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.team.home.title'
+      pageTitle: 'autocutApp.team.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/edit',
     component: TeamUpdateComponent,
     resolve: {
-      team: TeamResolve
+      team: TeamResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.team.home.title'
+      pageTitle: 'autocutApp.team.home.title',
     },
-    canActivate: [UserRouteAccessService]
-  }
+    canActivate: [UserRouteAccessService],
+  },
 ];

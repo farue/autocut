@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
@@ -10,7 +10,7 @@ import { GlobalSettingDeleteDialogComponent } from './global-setting-delete-dial
 
 @Component({
   selector: 'jhi-global-setting',
-  templateUrl: './global-setting.component.html'
+  templateUrl: './global-setting.component.html',
 })
 export class GlobalSettingComponent implements OnInit, OnDestroy {
   globalSettings?: IGlobalSetting[];

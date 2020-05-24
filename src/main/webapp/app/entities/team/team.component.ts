@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
@@ -10,7 +10,7 @@ import { TeamDeleteDialogComponent } from './team-delete-dialog.component';
 
 @Component({
   selector: 'jhi-team',
-  templateUrl: './team.component.html'
+  templateUrl: './team.component.html',
 })
 export class TeamComponent implements OnInit, OnDestroy {
   teams?: ITeam[];

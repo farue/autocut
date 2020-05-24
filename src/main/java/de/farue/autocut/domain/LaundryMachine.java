@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,7 +23,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "laundry_machine")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class LaundryMachine implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,11 +49,11 @@ public class LaundryMachine implements Serializable {
     @Column(name = "enabled", nullable = false)
     private Boolean enabled;
 
-    @OneToMany(mappedBy = "laundryMachine", fetch = FetchType.EAGER)
-//    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @OneToMany(mappedBy = "laundryMachine")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<LaundryMachineProgram> programs = new HashSet<>();
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -139,7 +138,7 @@ public class LaundryMachine implements Serializable {
     public void setPrograms(Set<LaundryMachineProgram> laundryMachinePrograms) {
         this.programs = laundryMachinePrograms;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -157,6 +156,7 @@ public class LaundryMachine implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "LaundryMachine{" +

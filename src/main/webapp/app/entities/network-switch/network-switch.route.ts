@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
-import { Observable, of, EMPTY } from 'rxjs';
+import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
+import { EMPTY, Observable, of } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
 import { Authority } from 'app/shared/constants/authority.constants';
@@ -40,44 +40,44 @@ export const networkSwitchRoute: Routes = [
     component: NetworkSwitchComponent,
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.networkSwitch.home.title'
+      pageTitle: 'autocutApp.networkSwitch.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
     component: NetworkSwitchDetailComponent,
     resolve: {
-      networkSwitch: NetworkSwitchResolve
+      networkSwitch: NetworkSwitchResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.networkSwitch.home.title'
+      pageTitle: 'autocutApp.networkSwitch.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',
     component: NetworkSwitchUpdateComponent,
     resolve: {
-      networkSwitch: NetworkSwitchResolve
+      networkSwitch: NetworkSwitchResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.networkSwitch.home.title'
+      pageTitle: 'autocutApp.networkSwitch.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/edit',
     component: NetworkSwitchUpdateComponent,
     resolve: {
-      networkSwitch: NetworkSwitchResolve
+      networkSwitch: NetworkSwitchResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'autocutApp.networkSwitch.home.title'
+      pageTitle: 'autocutApp.networkSwitch.home.title',
     },
-    canActivate: [UserRouteAccessService]
-  }
+    canActivate: [UserRouteAccessService],
+  },
 ];

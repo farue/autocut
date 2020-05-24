@@ -32,7 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link WashHistoryResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class WashHistoryResourceIT {
@@ -98,7 +97,6 @@ public class WashHistoryResourceIT {
     @Transactional
     public void createWashHistory() throws Exception {
         int databaseSizeBeforeCreate = washHistoryRepository.findAll().size();
-
         // Create the WashHistory
         restWashHistoryMockMvc.perform(post("/api/wash-histories")
             .contentType(MediaType.APPLICATION_JSON)
@@ -166,7 +164,6 @@ public class WashHistoryResourceIT {
             .andExpect(jsonPath("$.reservationDate").value(DEFAULT_RESERVATION_DATE.toString()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingWashHistory() throws Exception {
@@ -212,8 +209,6 @@ public class WashHistoryResourceIT {
     @Transactional
     public void updateNonExistingWashHistory() throws Exception {
         int databaseSizeBeforeUpdate = washHistoryRepository.findAll().size();
-
-        // Create the WashHistory
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restWashHistoryMockMvc.perform(put("/api/wash-histories")

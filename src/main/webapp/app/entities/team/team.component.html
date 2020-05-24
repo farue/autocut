@@ -18,17 +18,17 @@
         <span jhiTranslate="autocutApp.team.home.notFound">No teams found</span>
     </div>
 
-    <div class="table-responsive" id="entities" *ngIf="teams?.length > 0">
+    <div class="table-responsive" id="entities" *ngIf="teams && teams.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-                <tr>
-                    <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.team.name">Name</span></th>
-                    <th scope="col"></th>
-                </tr>
+            <tr>
+                <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.team.name">Name</span></th>
+                <th scope="col"></th>
+            </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let team of teams ;trackBy: trackId">
+            <tr *ngFor="let team of teams ;trackBy: trackId">
                     <td><a [routerLink]="['/team', team.id, 'view']">{{ team.id }}</a></td>
                     <td>{{ team.name }}</td>
                     <td class="text-right">

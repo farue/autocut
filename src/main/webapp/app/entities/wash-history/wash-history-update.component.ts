@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
@@ -20,7 +20,7 @@ type SelectableEntity = ITenant | ILaundryMachine | ILaundryMachineProgram;
 
 @Component({
   selector: 'jhi-wash-history-update',
-  templateUrl: './wash-history-update.component.html'
+  templateUrl: './wash-history-update.component.html',
 })
 export class WashHistoryUpdateComponent implements OnInit {
   isSaving = false;
@@ -37,7 +37,7 @@ export class WashHistoryUpdateComponent implements OnInit {
     reservationTenant: [],
     usingTenant: [],
     machine: [],
-    program: []
+    program: [],
   });
 
   constructor(
@@ -80,7 +80,7 @@ export class WashHistoryUpdateComponent implements OnInit {
       reservationTenant: washHistory.reservationTenant,
       usingTenant: washHistory.usingTenant,
       machine: washHistory.machine,
-      program: washHistory.program
+      program: washHistory.program,
     });
   }
 
@@ -113,7 +113,7 @@ export class WashHistoryUpdateComponent implements OnInit {
       reservationTenant: this.editForm.get(['reservationTenant'])!.value,
       usingTenant: this.editForm.get(['usingTenant'])!.value,
       machine: this.editForm.get(['machine'])!.value,
-      program: this.editForm.get(['program'])!.value
+      program: this.editForm.get(['program'])!.value,
     };
   }
 

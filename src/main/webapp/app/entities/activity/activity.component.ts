@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
@@ -10,7 +10,7 @@ import { ActivityDeleteDialogComponent } from './activity-delete-dialog.componen
 
 @Component({
   selector: 'jhi-activity',
-  templateUrl: './activity.component.html'
+  templateUrl: './activity.component.html',
 })
 export class ActivityComponent implements OnInit, OnDestroy {
   activities?: IActivity[];

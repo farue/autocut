@@ -1,66 +1,66 @@
 {
-    "name": "Activity",
-    "fields": [
-        {
-            "fieldName": "year",
-            "fieldType": "Integer",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "term",
-            "fieldType": "SemesterTerms",
-            "fieldValues": "SUMMER_TERM,WINTER_TERM",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "startDate",
-            "fieldType": "Instant"
-        },
-        {
-            "fieldName": "endDate",
-            "fieldType": "Instant"
-        },
-        {
-            "fieldName": "description",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "discount",
-            "fieldType": "Boolean"
-        },
-        {
-            "fieldName": "stwActivity",
-            "fieldType": "Boolean"
-        }
-    ],
-    "relationships": [
-        {
-            "relationshipType": "one-to-many",
-            "otherEntityName": "teamMember",
-            "otherEntityRelationshipName": "activity",
-            "relationshipName": "teamMember"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "tenant",
-            "otherEntityRelationshipName": "activity",
-            "relationshipName": "tenant",
-            "otherEntityField": "id"
-        }
-    ],
-    "changelogDate": "20200112182900",
-    "entityTableName": "activity",
-    "dto": "no",
-    "pagination": "no",
-    "service": "no",
-    "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "readOnly": false,
-    "clientRootFolder": "",
-    "applications": "*",
-    "embedded": false
+  "name": "Activity",
+  "fields": [
+    {
+      "fieldName": "year",
+      "fieldType": "Integer",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "term",
+      "fieldType": "SemesterTerms",
+      "fieldValues": "SUMMER_TERM,WINTER_TERM",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "startDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "endDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "discount",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "stwActivity",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "teamMember",
+      "otherEntityRelationshipName": "activity",
+      "relationshipName": "teamMember"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "tenant",
+      "otherEntityRelationshipName": "activity",
+      "relationshipName": "tenant",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20200112182900",
+  "entityTableName": "activity",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "clientRootFolder": "",
+  "applications": "*",
+  "embedded": false
 }

@@ -51,7 +51,7 @@ export class ActivityService {
   protected convertDateFromClient(activity: IActivity): IActivity {
     const copy: IActivity = Object.assign({}, activity, {
       startDate: activity.startDate && activity.startDate.isValid() ? activity.startDate.toJSON() : undefined,
-      endDate: activity.endDate && activity.endDate.isValid() ? activity.endDate.toJSON() : undefined
+      endDate: activity.endDate && activity.endDate.isValid() ? activity.endDate.toJSON() : undefined,
     });
     return copy;
   }

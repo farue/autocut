@@ -1,25 +1,30 @@
 package de.farue.autocut.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import de.farue.autocut.domain.enumeration.TransactionKind;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Objects;
 import java.math.BigDecimal;
 import java.time.Instant;
-
-import de.farue.autocut.domain.enumeration.TransactionKind;
 
 /**
  * A Transaction.
  */
 @Entity
 @Table(name = "transaction")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Transaction implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,10 +64,10 @@ public class Transaction implements Serializable {
     private String recipient;
 
     @ManyToOne
-    @JsonIgnoreProperties("transactions")
+    @JsonIgnoreProperties(value = "transactions", allowSetters = true)
     private Lease lease;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -187,7 +192,7 @@ public class Transaction implements Serializable {
     public void setLease(Lease lease) {
         this.lease = lease;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -205,6 +210,7 @@ public class Transaction implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "Transaction{" +

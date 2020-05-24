@@ -6,7 +6,7 @@ import { ILaundryMachine } from 'app/shared/model/laundry-machine.model';
 import { LaundryMachineService } from './laundry-machine.service';
 
 @Component({
-  templateUrl: './laundry-machine-delete-dialog.component.html'
+  templateUrl: './laundry-machine-delete-dialog.component.html',
 })
 export class LaundryMachineDeleteDialogComponent {
   laundryMachine?: ILaundryMachine;

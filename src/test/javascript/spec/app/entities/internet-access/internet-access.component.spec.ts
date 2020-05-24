@@ -16,7 +16,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [AutocutTestModule],
-        declarations: [InternetAccessComponent]
+        declarations: [InternetAccessComponent],
       })
         .overrideTemplate(InternetAccessComponent, '')
         .compileComponents();
@@ -33,7 +33,7 @@ describe('Component Tests', () => {
         of(
           new HttpResponse({
             body: [new InternetAccess(123)],
-            headers
+            headers,
           })
         )
       );

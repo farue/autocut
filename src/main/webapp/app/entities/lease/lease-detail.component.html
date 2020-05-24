@@ -27,8 +27,9 @@
                 <dt><span jhiTranslate="autocutApp.lease.pictureContract">Picture Contract</span></dt>
                 <dd>
                     <div *ngIf="lease.pictureContract">
-                        <a (click)="openFile(lease?.pictureContractContentType!, lease?.pictureContract)">
-                            <img [src]="'data:' + lease.pictureContractContentType + ';base64,' + lease.pictureContract" style="max-width: 100%;" alt="lease image"/>
+                        <a (click)="openFile(lease.pictureContractContentType, lease.pictureContract)">
+                            <img [src]="'data:' + lease.pictureContractContentType + ';base64,' + lease.pictureContract"
+                                 style="max-width: 100%;" alt="lease image"/>
                         </a>
                         {{ lease.pictureContractContentType }}, {{ byteSize(lease.pictureContract) }}
                     </div>

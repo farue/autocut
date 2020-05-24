@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
@@ -10,7 +10,7 @@ import { WashHistoryDeleteDialogComponent } from './wash-history-delete-dialog.c
 
 @Component({
   selector: 'jhi-wash-history',
-  templateUrl: './wash-history.component.html'
+  templateUrl: './wash-history.component.html',
 })
 export class WashHistoryComponent implements OnInit, OnDestroy {
   washHistories?: IWashHistory[];

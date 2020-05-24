@@ -10,7 +10,7 @@ import { LaundryMachineService } from './laundry-machine.service';
 
 @Component({
   selector: 'jhi-laundry-machine-update',
-  templateUrl: './laundry-machine-update.component.html'
+  templateUrl: './laundry-machine-update.component.html',
 })
 export class LaundryMachineUpdateComponent implements OnInit {
   isSaving = false;
@@ -20,7 +20,7 @@ export class LaundryMachineUpdateComponent implements OnInit {
     identifier: [null, [Validators.required]],
     name: [null, [Validators.required]],
     type: [null, [Validators.required]],
-    enabled: [null, [Validators.required]]
+    enabled: [null, [Validators.required]],
   });
 
   constructor(protected laundryMachineService: LaundryMachineService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
@@ -37,7 +37,7 @@ export class LaundryMachineUpdateComponent implements OnInit {
       identifier: laundryMachine.identifier,
       name: laundryMachine.name,
       type: laundryMachine.type,
-      enabled: laundryMachine.enabled
+      enabled: laundryMachine.enabled,
     });
   }
 
@@ -62,7 +62,7 @@ export class LaundryMachineUpdateComponent implements OnInit {
       identifier: this.editForm.get(['identifier'])!.value,
       name: this.editForm.get(['name'])!.value,
       type: this.editForm.get(['type'])!.value,
-      enabled: this.editForm.get(['enabled'])!.value
+      enabled: this.editForm.get(['enabled'])!.value,
     };
   }
 

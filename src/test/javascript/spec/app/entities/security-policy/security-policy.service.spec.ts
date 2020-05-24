@@ -1,4 +1,4 @@
-import { TestBed, getTestBed } from '@angular/core/testing';
+import { getTestBed, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { SecurityPolicyService } from 'app/entities/security-policy/security-policy.service';
 import { ISecurityPolicy, SecurityPolicy } from 'app/shared/model/security-policy.model';
@@ -15,7 +15,7 @@ describe('Service Tests', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
       });
       expectedResult = null;
       injector = getTestBed();
@@ -39,7 +39,7 @@ describe('Service Tests', () => {
       it('should create a SecurityPolicy', () => {
         const returnedFromService = Object.assign(
           {
-            id: 0
+            id: 0,
           },
           elemDefault
         );
@@ -57,7 +57,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             protectionUnit: 'BBBBBB',
-            access: 'BBBBBB'
+            access: 'BBBBBB',
           },
           elemDefault
         );
@@ -75,7 +75,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             protectionUnit: 'BBBBBB',
-            access: 'BBBBBB'
+            access: 'BBBBBB',
           },
           elemDefault
         );

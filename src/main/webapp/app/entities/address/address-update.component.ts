@@ -5,12 +5,12 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { IAddress, Address } from 'app/shared/model/address.model';
+import { Address, IAddress } from 'app/shared/model/address.model';
 import { AddressService } from './address.service';
 
 @Component({
   selector: 'jhi-address-update',
-  templateUrl: './address-update.component.html'
+  templateUrl: './address-update.component.html',
 })
 export class AddressUpdateComponent implements OnInit {
   isSaving = false;
@@ -21,7 +21,7 @@ export class AddressUpdateComponent implements OnInit {
     streetNumber: [null, [Validators.required]],
     zip: [null, [Validators.required, Validators.pattern('^\\d{5}$')]],
     city: [null, [Validators.required]],
-    country: [null, [Validators.required]]
+    country: [null, [Validators.required]],
   });
 
   constructor(protected addressService: AddressService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
@@ -39,7 +39,7 @@ export class AddressUpdateComponent implements OnInit {
       streetNumber: address.streetNumber,
       zip: address.zip,
       city: address.city,
-      country: address.country
+      country: address.country,
     });
   }
 
@@ -65,7 +65,7 @@ export class AddressUpdateComponent implements OnInit {
       streetNumber: this.editForm.get(['streetNumber'])!.value,
       zip: this.editForm.get(['zip'])!.value,
       city: this.editForm.get(['city'])!.value,
-      country: this.editForm.get(['country'])!.value
+      country: this.editForm.get(['country'])!.value,
     };
   }
 

@@ -6,7 +6,7 @@ import { ISecurityPolicy } from 'app/shared/model/security-policy.model';
 import { SecurityPolicyService } from './security-policy.service';
 
 @Component({
-  templateUrl: './security-policy-delete-dialog.component.html'
+  templateUrl: './security-policy-delete-dialog.component.html',
 })
 export class SecurityPolicyDeleteDialogComponent {
   securityPolicy?: ISecurityPolicy;

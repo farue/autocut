@@ -6,7 +6,7 @@ import { INetworkSwitch } from 'app/shared/model/network-switch.model';
 import { NetworkSwitchService } from './network-switch.service';
 
 @Component({
-  templateUrl: './network-switch-delete-dialog.component.html'
+  templateUrl: './network-switch-delete-dialog.component.html',
 })
 export class NetworkSwitchDeleteDialogComponent {
   networkSwitch?: INetworkSwitch;

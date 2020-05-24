@@ -5,7 +5,7 @@ import { ILaundryMachineProgram } from 'app/shared/model/laundry-machine-program
 
 @Component({
   selector: 'jhi-laundry-machine-program-detail',
-  templateUrl: './laundry-machine-program-detail.component.html'
+  templateUrl: './laundry-machine-program-detail.component.html',
 })
 export class LaundryMachineProgramDetailComponent implements OnInit {
   laundryMachineProgram: ILaundryMachineProgram | null = null;

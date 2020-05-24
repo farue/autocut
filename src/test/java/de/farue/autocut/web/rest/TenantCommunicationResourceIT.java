@@ -3,7 +3,6 @@ package de.farue.autocut.web.rest;
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.TenantCommunication;
 import de.farue.autocut.repository.TenantCommunicationRepository;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +20,18 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Integration tests for the {@link TenantCommunicationResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class TenantCommunicationResourceIT {
@@ -94,7 +97,6 @@ public class TenantCommunicationResourceIT {
     @Transactional
     public void createTenantCommunication() throws Exception {
         int databaseSizeBeforeCreate = tenantCommunicationRepository.findAll().size();
-
         // Create the TenantCommunication
         restTenantCommunicationMockMvc.perform(post("/api/tenant-communications")
             .contentType(MediaType.APPLICATION_JSON)
@@ -200,7 +202,6 @@ public class TenantCommunicationResourceIT {
             .andExpect(jsonPath("$.note").value(DEFAULT_NOTE.toString()))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingTenantCommunication() throws Exception {
@@ -246,8 +247,6 @@ public class TenantCommunicationResourceIT {
     @Transactional
     public void updateNonExistingTenantCommunication() throws Exception {
         int databaseSizeBeforeUpdate = tenantCommunicationRepository.findAll().size();
-
-        // Create the TenantCommunication
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restTenantCommunicationMockMvc.perform(put("/api/tenant-communications")

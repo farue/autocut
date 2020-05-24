@@ -18,17 +18,18 @@
         <span jhiTranslate="autocutApp.securityPolicy.home.notFound">No securityPolicies found</span>
     </div>
 
-    <div class="table-responsive" id="entities" *ngIf="securityPolicies?.length > 0">
+    <div class="table-responsive" id="entities" *ngIf="securityPolicies && securityPolicies.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-                <tr>
-                    <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.securityPolicy.protectionUnit">Protection Unit</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.securityPolicy.access">Access</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.securityPolicy.teamMember">Team Member</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.securityPolicy.tenant">Tenant</span></th>
-                    <th scope="col"></th>
-                </tr>
+            <tr>
+                <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.securityPolicy.protectionUnit">Protection Unit</span>
+                </th>
+                <th scope="col"><span jhiTranslate="autocutApp.securityPolicy.access">Access</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.securityPolicy.teamMember">Team Member</span></th>
+                <th scope="col"><span jhiTranslate="autocutApp.securityPolicy.tenant">Tenant</span></th>
+                <th scope="col"></th>
+            </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let securityPolicy of securityPolicies ;trackBy: trackId">

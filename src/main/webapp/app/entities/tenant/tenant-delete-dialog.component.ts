@@ -6,7 +6,7 @@ import { ITenant } from 'app/shared/model/tenant.model';
 import { TenantService } from './tenant.service';
 
 @Component({
-  templateUrl: './tenant-delete-dialog.component.html'
+  templateUrl: './tenant-delete-dialog.component.html',
 })
 export class TenantDeleteDialogComponent {
   tenant?: ITenant;

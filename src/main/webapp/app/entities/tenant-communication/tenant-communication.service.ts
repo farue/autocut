@@ -4,8 +4,6 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { DATE_FORMAT } from 'app/shared/constants/input.constants';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared/util/request-util';
 import { ITenantCommunication } from 'app/shared/model/tenant-communication.model';
@@ -52,7 +50,7 @@ export class TenantCommunicationService {
 
   protected convertDateFromClient(tenantCommunication: ITenantCommunication): ITenantCommunication {
     const copy: ITenantCommunication = Object.assign({}, tenantCommunication, {
-      date: tenantCommunication.date && tenantCommunication.date.isValid() ? tenantCommunication.date.toJSON() : undefined
+      date: tenantCommunication.date && tenantCommunication.date.isValid() ? tenantCommunication.date.toJSON() : undefined,
     });
     return copy;
   }
