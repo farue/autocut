@@ -9,12 +9,12 @@ import { LaundryMachineType } from 'app/shared/model/enumerations/laundry-machin
 @Component({
   selector: 'jhi-application',
   templateUrl: './washing.component.html',
-  styleUrls: ['washing.component.scss']
+  styleUrls: ['washing.component.scss'],
 })
 export class WashingComponent implements OnInit {
   message: string;
 
-  machines?: LaundryMachine[];
+  machines: LaundryMachine[] = [];
   programs: string[] = [];
   subprograms: string[] = [];
   spins: number[] = [];
@@ -103,10 +103,10 @@ export class WashingComponent implements OnInit {
     }
     return this.selectedMachine
       .programs!.filter(p => (p.name == null && program == null) || p.name === program)
-    .filter(p => (p.subprogram == null && subprogram == null) || p.subprogram === subprogram)
-    .filter(p => (p.spin == null && spin == null) || p.spin === spin)
-    .filter(p => (p.preWash == null && !preWash) || p.preWash === preWash)
-    .filter(p => (p.protect == null && !protect) || p.protect === protect);
+      .filter(p => (p.subprogram == null && subprogram == null) || p.subprogram === subprogram)
+      .filter(p => (p.spin == null && spin == null) || p.spin === spin)
+      .filter(p => (p.preWash == null && !preWash) || p.preWash === preWash)
+      .filter(p => (p.protect == null && !protect) || p.protect === protect);
   }
 
   isShowProgramSelect(): boolean {

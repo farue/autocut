@@ -76,7 +76,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @Size(max = 20)
     @Column(name = "reset_key", length = 20)
-
     @JsonIgnore
     private String resetKey;
 
@@ -92,6 +91,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
+
 
     public Long getId() {
         return id;
@@ -214,6 +214,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "User{" +

@@ -29,9 +29,9 @@ import { ErrorComponent } from './layouts/error/error.component';
     InfoRoutingModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     AutocutEntityModule,
-    AutocutAppRoutingModule
+    AutocutAppRoutingModule,
   ],
   declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
-  bootstrap: [MainComponent]
+  bootstrap: [MainComponent],
 })
 export class AutocutAppModule {}

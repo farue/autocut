@@ -50,7 +50,7 @@ import {
   faHammer,
   faWallet,
   faBalanceScaleLeft,
-  faQuestion
+  faQuestion,
   // jhipster-needle-add-icon-import
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -106,6 +106,6 @@ export const fontAwesomeIcons = [
   faHammer,
   faWallet,
   faBalanceScaleLeft,
-  faQuestion
+  faQuestion,
   // jhipster-needle-add-icon-import
 ];

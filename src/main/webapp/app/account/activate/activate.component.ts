@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {flatMap} from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { flatMap } from 'rxjs/operators';
 
-import {LoginModalService} from 'app/core/login/login-modal.service';
-import {ActivateService} from './activate.service';
+import { LoginModalService } from 'app/core/login/login-modal.service';
+import { ActivateService } from './activate.service';
 
 @Component({
   selector: 'jhi-activate',
-  templateUrl: './activate.component.html'
+  templateUrl: './activate.component.html',
 })
 export class ActivateComponent implements OnInit {
   error = false;

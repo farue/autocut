@@ -16,28 +16,28 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
         {
           path: 'admin',
           data: {
-            authorities: [Authority.ADMIN]
+            authorities: [Authority.ADMIN],
           },
           canActivate: [UserRouteAccessService],
-          loadChildren: () => import('./admin/admin-routing.module').then(m => m.AdminRoutingModule)
+          loadChildren: () => import('./admin/admin-routing.module').then(m => m.AdminRoutingModule),
         },
         {
           path: 'account',
-          loadChildren: () => import('./account/account.module').then(m => m.AccountModule)
+          loadChildren: () => import('./account/account.module').then(m => m.AccountModule),
         },
         {
           path: 'info',
-          loadChildren: () => import('./info/info-routing.module').then(m => m.InfoRoutingModule)
+          loadChildren: () => import('./info/info-routing.module').then(m => m.InfoRoutingModule),
         },
         {
           path: 'services',
-          loadChildren: () => import('./services/services-routing.module').then(m => m.ServicesRoutingModule)
+          loadChildren: () => import('./services/services-routing.module').then(m => m.ServicesRoutingModule),
         },
-        ...LAYOUT_ROUTES
+        ...LAYOUT_ROUTES,
       ],
       { enableTracing: DEBUG_INFO_ENABLED }
-    )
+    ),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AutocutAppRoutingModule {}

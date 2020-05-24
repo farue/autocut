@@ -1,12 +1,12 @@
-import {NgModule} from '@angular/core';
-import {RouterModule} from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
-import {AutocutSharedModule} from 'app/shared/shared.module';
-import {UserManagementComponent} from './user-management.component';
-import {UserManagementDetailComponent} from './user-management-detail.component';
-import {UserManagementUpdateComponent} from './user-management-update.component';
-import {UserManagementDeleteDialogComponent} from './user-management-delete-dialog.component';
-import {userManagementRoute} from './user-management.route';
+import { AutocutSharedModule } from 'app/shared/shared.module';
+import { UserManagementComponent } from './user-management.component';
+import { UserManagementDetailComponent } from './user-management-detail.component';
+import { UserManagementUpdateComponent } from './user-management-update.component';
+import { UserManagementDeleteDialogComponent } from './user-management-delete-dialog.component';
+import { userManagementRoute } from './user-management.route';
 
 @NgModule({
   imports: [AutocutSharedModule, RouterModule.forChild(userManagementRoute)],
@@ -14,9 +14,8 @@ import {userManagementRoute} from './user-management.route';
     UserManagementComponent,
     UserManagementDetailComponent,
     UserManagementUpdateComponent,
-    UserManagementDeleteDialogComponent
+    UserManagementDeleteDialogComponent,
   ],
-  entryComponents: [UserManagementDeleteDialogComponent]
+  entryComponents: [UserManagementDeleteDialogComponent],
 })
-export class UserManagementModule {
-}
+export class UserManagementModule {}

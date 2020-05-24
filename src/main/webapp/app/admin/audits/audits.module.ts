@@ -1,14 +1,13 @@
-import {NgModule} from '@angular/core';
-import {RouterModule} from '@angular/router';
-import {AutocutSharedModule} from 'app/shared/shared.module';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { AutocutSharedModule } from 'app/shared/shared.module';
 
-import {AuditsComponent} from './audits.component';
+import { AuditsComponent } from './audits.component';
 
-import {auditsRoute} from './audits.route';
+import { auditsRoute } from './audits.route';
 
 @NgModule({
   imports: [AutocutSharedModule, RouterModule.forChild([auditsRoute])],
-  declarations: [AuditsComponent]
+  declarations: [AuditsComponent],
 })
-export class AuditsModule {
-}
+export class AuditsModule {}
