@@ -19,7 +19,7 @@ We use npm scripts and [Webpack][] as our build system.
 Run the following commands in two separate terminals to create a blissful development experience where your browser
 auto-refreshes when files change on your hard drive.
 
-    ./mvnw
+    ./gradlew -x webpack
     npm start
 
 Npm is also used to manage CSS and JavaScript dependencies used in this application. You can upgrade dependencies by
@@ -93,12 +93,12 @@ will generate few files:
 
 To build the final jar and optimize the autocut application for production, run:
 
-    ./mvnw -Pprod clean verify
+    ./gradlew -Pprod clean bootJar
 
 This will concatenate and minify the client CSS and JavaScript files. It will also modify `index.html` so it references these new files.
 To ensure everything worked, run:
 
-    java -jar target/*.jar
+    java -jar build/libs/*.jar
 
 Then navigate to [http://localhost:8080](http://localhost:8080) in your browser.
 
@@ -108,13 +108,13 @@ Refer to [Using JHipster in production][] for more details.
 
 To package your application as a war in order to deploy it to an application server, run:
 
-    ./mvnw -Pprod,war clean verify
+    ./gradlew -Pprod -Pwar clean bootWar
 
 ## Testing
 
 To launch your application's tests, run:
 
-    ./mvnw verify
+    ./gradlew test integrationTest jacocoTestReport
 
 ### Client tests
 
@@ -132,21 +132,13 @@ Sonar is used to analyse code quality. You can start a local Sonar server (acces
 docker-compose -f src/main/docker/sonar.yml up -d
 ```
 
-You can run a Sonar analysis with using the [sonar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) or by using the maven plugin.
+You can run a Sonar analysis with using the [sonar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) or by using the gradle plugin.
 
 Then, run a Sonar analysis:
 
 ```
-./mvnw -Pprod clean verify sonar:sonar
+./gradlew -Pprod clean check jacocoTestReport sonarqube
 ```
-
-If you need to re-run the Sonar phase, please be sure to specify at least the `initialize` phase since Sonar properties are loaded from the sonar-project.properties file.
-
-```
-./mvnw initialize sonar:sonar
-```
-
-or
 
 For more information, refer to the [Code quality page][].
 
@@ -165,7 +157,7 @@ To stop it and remove the container, run:
 You can also fully dockerize your application and all the services that it depends on.
 To achieve this, first build a docker image of your app by running:
 
-    ./mvnw -Pprod verify jib:dockerBuild
+    ./gradlew bootJar -Pprod jibDockerBuild
 
 Then run:
 

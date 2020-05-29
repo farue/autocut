@@ -107,8 +107,8 @@
     "lint": "eslint . --ext .js,.ts",
     "lint:fix": "npm run lint -- --fix",
     "ngc": "ngc -p tsconfig.app.json",
-    "cleanup": "rimraf target/classes/static/ target/classes/aot",
-    "clean-www": "rimraf target/classes/static/app/{src,target/}",
+    "cleanup": "rimraf build/resources/main/static/ build/resources/main/aot",
+    "clean-www": "rimraf build/resources/main/static/app/{src,build/}",
     "start": "npm run webpack:dev",
     "start-tls": "npm run webpack:dev -- --env.tls",
     "serve": "npm run start",
@@ -126,7 +126,7 @@
     "webpack": "node --max_old_space_size=4096 node_modules/webpack/bin/webpack.js"
   },
   "jestSonar": {
-    "reportPath": "target/test-results/jest",
+    "reportPath": "build/test-results/jest",
     "reportFile": "TESTS-results-sonar.xml"
   }
 }

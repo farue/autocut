@@ -1,21 +1,9 @@
-variables:
-  M2_HOME: '$CI_PROJECT_DIR/.maven'
-  MVN_OPTS: '-ntp -Dmaven.repo.local=$MAVEN_USER_HOME'
-  MVN_DISABLE_WEBPACK: '-P !webpack'
-  SERVER_URL: '137.226.153.2'
-  SSH_OPTS: '-o StrictHostKeyChecking=no'
-  DOCKER_COMPOSE_APP: 'src/main/docker/app.yml'
-  DOCKER_COMPOSE_MYSQL: 'src/main/docker/mysql.yml'
-  REMOTE_DOCKER_COMPOSE_APP: '~/autocut/app.yml'
-  REMOTE_DOCKER_COMPOSE_MYSQL: '~/autocut/mysql.yml'
-
-image: maven:3.6-jdk-14
+image: gradle:6.4-jre14
 
 cache:
   key: '$CI_COMMIT_REF_NAME'
   paths:
-    - ${MAVEN_USER_HOME}
-
+    - .gradle/
 stages:
   - check
   - build
@@ -24,85 +12,92 @@ stages:
   - package
   - release
   - deploy
-
+before_script:
+  - export NG_CLI_ANALYTICS="false"
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+  - ./gradlew npm_install -PnodeInstall --no-daemon
 nohttp:
   stage: check
   script:
-    - mvn ${MVN_OPTS} ${MVN_DISABLE_WEBPACK} checkstyle:check
+    - ./gradlew checkstyleNohttp --no-daemon
 
-maven-compile:
+gradle-compile:
   stage: build
   script:
-    - mvn ${MVN_OPTS} ${MVN_DISABLE_WEBPACK} compile
+    - ./gradlew compileJava -x check -PnodeInstall --no-daemon
   artifacts:
     paths:
-      - target/classes/
-      - target/generated-sources/
+      - build/classes/
+      - build/generated/
     expire_in: 1 day
-  needs: []
 
-frontend-compile:
-  stage: build
-  before_script:
-    - export NG_CLI_ANALYTICS="false"
-    - mvn ${MVN_OPTS} com.github.eirslett:frontend-maven-plugin:install-node-and-npm -DnodeVersion=v12.13.1 -DnpmVersion=6.13.4
-  script:
-    - mvn ${MVN_OPTS} com.github.eirslett:frontend-maven-plugin:npm
-  needs: []
-
-maven-test:
+gradle-test:
   stage: test
   script:
-    - mvn ${MVN_OPTS} ${MVN_DISABLE_WEBPACK} verify
+    - ./gradlew test -PnodeInstall --no-daemon
   artifacts:
     reports:
-      junit: target/test-results/**/TEST-*.xml
+      junit: build/test-results/test/TEST-*.xml
     paths:
-      - target/test-results
-      - target/jacoco
+      - build/test-results/
+      - build/jacoco/
+    expire_in: 1 day
+
+gradle-integration-test:
+  # DinD service is required for Testcontainers
+  services:
+    - docker:dind
+
+  variables:
+    # Instruct Testcontainers to use the daemon of DinD.
+    DOCKER_HOST: 'tcp://docker:2375'
+    # Improve performance with overlayfs.
+    DOCKER_DRIVER: overlay2
+
+  stage: test
+  script:
+    - ./gradlew integrationTest -PnodeInstall --no-daemon -Ptestcontainers
+  artifacts:
+    reports:
+      junit: build/test-results/integrationTest/TEST-*.xml
+    paths:
+      - build/test-results/
+      - build/jacoco/
     expire_in: 1 day
 
 frontend-test:
   stage: test
-  before_script:
-    - export NG_CLI_ANALYTICS="false"
-    - mvn ${MVN_OPTS} com.github.eirslett:frontend-maven-plugin:install-node-and-npm -DnodeVersion=v12.13.1 -DnpmVersion=6.13.4
   script:
-    - mvn ${MVN_OPTS} com.github.eirslett:frontend-maven-plugin:npm
-    - mvn ${MVN_OPTS} com.github.eirslett:frontend-maven-plugin:npm -Dfrontend.npm.arguments='run test'
+    - ./gradlew npm_run_test -PnodeInstall --no-daemon
   artifacts:
     reports:
-      junit: target/test-results/TESTS-results-jest.xml
+      junit: build/test-results/TESTS-results-jest.xml
     paths:
-      - target/test-results
-      - target/jacoco
+      - build/test-results/
+      - build/jacoco/
     expire_in: 1 day
 
 sonar-analyze:
   stage: analyze
+  except:
+    - merge_requests
   dependencies:
-    - maven-test
+    - gradle-test
+    - gradle-integration-test
     - frontend-test
   script:
-    - mvn ${MVN_OPTS} compile
-    - mvn org.jacoco:jacoco-maven-plugin:prepare-agent initialize sonar:sonar -Dsonar.projectKey=autocut -Dsonar.host.url=https://www.farue.rwth-aachen.de/sonar -Dsonar.login=$SONAR_TOKEN
+    - ./gradlew sonarqube --no-daemon -Dsonar.projectKey=autocut -Dsonar.host.url=https://www.farue.rwth-aachen.de/sonar -Dsonar.login=$SONAR_TOKEN
   allow_failure: true
 
-maven-package:
+gradle-package:
   stage: package
   script:
-    - mvn ${MVN_OPTS} verify -Pprod -DskipTests
+    - ./gradlew bootJar -Pprod -x check --no-daemon
   artifacts:
     paths:
-      - target/*.jar
-      - target/classes
+      - build/libs/*.jar
+      - build/classes
     expire_in: 1 day
-  only:
-    refs:
-      - release
-  needs:
-    - maven-test
-    - frontend-test
 
 docker-push:
   stage: release
@@ -110,9 +105,9 @@ docker-push:
     REGISTRY_URL: registry.git.rwth-aachen.de
     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA
   dependencies:
-    - maven-package
+    - gradle-package
   script:
-    - mvn ${MVN_OPTS} compile jib:build -Pprod -Djib.to.image=$IMAGE_TAG -Djib.to.auth.username=gitlab-ci-token  -Djib.to.auth.password=$CI_BUILD_TOKEN
+    - ./gradlew jib -Pprod -Djib.to.image=$IMAGE_TAG -Djib.to.auth.username=gitlab-ci-token  -Djib.to.auth.password=$CI_BUILD_TOKEN
   only:
     refs:
       - release

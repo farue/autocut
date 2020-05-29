@@ -16,43 +16,43 @@ const ENV = 'development';
 module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
     devtool: 'eval-source-map',
     devServer: {
-        contentBase: './target/classes/static/',
+        contentBase: './build/resources/main/static/',
         proxy: [{
             context: [
-              '/api',
-              '/services',
-              '/management',
-              '/swagger-resources',
-              '/v2/api-docs',
-              '/h2-console',
-              '/auth'
+                '/api',
+                '/services',
+                '/management',
+                '/swagger-resources',
+                '/v2/api-docs',
+                '/h2-console',
+                '/auth'
             ],
-          target: `http${options.tls ? 's' : ''}://localhost:8080`,
-          secure: false,
-          changeOrigin: options.tls
+            target: `http${options.tls ? 's' : ''}://localhost:8080`,
+            secure: false,
+            changeOrigin: options.tls
         }],
-      stats: options.stats,
-      watchOptions: {
-        ignored: /node_modules/
-      },
-      https: options.tls,
-      historyApiFallback: true
+        stats: options.stats,
+        watchOptions: {
+            ignored: /node_modules/
+        },
+        https: options.tls,
+        historyApiFallback: true
     },
     entry: {
         global: './src/main/webapp/content/scss/global.scss',
         main: './src/main/webapp/app/app.main'
     },
     output: {
-        path: utils.root('target/classes/static/'),
+        path: utils.root('build/resources/main/static/'),
         filename: 'app/[name].bundle.js',
         chunkFilename: 'app/[id].chunk.js'
     },
     module: {
         rules: [{
-          test: /\.(j|t)s$/,
-          enforce: 'pre',
-          loader: 'eslint-loader',
-          exclude: /node_modules/
+            test: /\.(j|t)s$/,
+            enforce: 'pre',
+            loader: 'eslint-loader',
+            exclude: /node_modules/
         },
         {
             test: /\.scss$/,

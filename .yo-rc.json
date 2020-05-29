@@ -20,7 +20,7 @@
     "searchEngine": false,
     "messageBroker": false,
     "serviceDiscoveryType": false,
-    "buildTool": "maven",
+    "buildTool": "gradle",
     "enableSwaggerCodegen": false,
     "jwtSecretKey": "MzNkNDYyZDgyZWI0MTJiMGNlNmI1MzIxNThiMzkyNTQ3OTY4ZTA4ZDM3OThlNDE2ZGQzYzc4N2UwZmRhMDA3NGJjZmJlZjZjYjExYWQxZmU1M2NjN2QwZTM3MTYyOWRjYmM2MGM4NmFlYWZkODI3ODNhNjlhNGMyMDljZWJiMWU=",
     "clientFramework": "angularX",
