@@ -4,6 +4,11 @@ cache:
   key: '$CI_COMMIT_REF_NAME'
   paths:
     - .gradle/
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: '/certs'
+
 stages:
   - check
   - build
@@ -12,10 +17,10 @@ stages:
   - package
   - release
   - deploy
+
 before_script:
-  - export NG_CLI_ANALYTICS="false"
   - export GRADLE_USER_HOME=`pwd`/.gradle
-  - ./gradlew npm_install -PnodeInstall --no-daemon
+
 nohttp:
   stage: check
   script:
@@ -24,17 +29,27 @@ nohttp:
 gradle-compile:
   stage: build
   script:
-    - ./gradlew compileJava -x check -PnodeInstall --no-daemon
+    - ./gradlew compileJava --no-daemon
   artifacts:
     paths:
       - build/classes/
       - build/generated/
     expire_in: 1 day
+  needs: []
+
+frontend-compile:
+  stage: build
+  before_script:
+    - export NG_CLI_ANALYTICS="false"
+    - ./gradlew npm_install -PnodeInstall --no-daemon
+  script:
+    - ./gradlew webpack -PnodeInstall --no-daemon
+  needs: []
 
 gradle-test:
   stage: test
   script:
-    - ./gradlew test -PnodeInstall --no-daemon
+    - ./gradlew test --no-daemon
   artifacts:
     reports:
       junit: build/test-results/test/TEST-*.xml
@@ -47,16 +62,12 @@ gradle-integration-test:
   # DinD service is required for Testcontainers
   services:
     - docker:dind
-
   variables:
     # Instruct Testcontainers to use the daemon of DinD.
     DOCKER_HOST: 'tcp://docker:2375'
-    # Improve performance with overlayfs.
-    DOCKER_DRIVER: overlay2
-
   stage: test
   script:
-    - ./gradlew integrationTest -PnodeInstall --no-daemon -Ptestcontainers
+    - ./gradlew integrationTest --no-daemon -Ptestcontainers
   artifacts:
     reports:
       junit: build/test-results/integrationTest/TEST-*.xml
@@ -67,6 +78,9 @@ gradle-integration-test:
 
 frontend-test:
   stage: test
+  before_script:
+    - export NG_CLI_ANALYTICS="false"
+    - ./gradlew npm_install -PnodeInstall --no-daemon
   script:
     - ./gradlew npm_run_test -PnodeInstall --no-daemon
   artifacts:
@@ -85,12 +99,18 @@ sonar-analyze:
     - gradle-test
     - gradle-integration-test
     - frontend-test
+  before_script:
+    - export NG_CLI_ANALYTICS="false"
+    - ./gradlew npm_install -PnodeInstall --no-daemon
   script:
     - ./gradlew sonarqube --no-daemon -Dsonar.projectKey=autocut -Dsonar.host.url=https://www.farue.rwth-aachen.de/sonar -Dsonar.login=$SONAR_TOKEN
   allow_failure: true
 
 gradle-package:
   stage: package
+  before_script:
+    - export NG_CLI_ANALYTICS="false"
+    - ./gradlew npm_install -PnodeInstall --no-daemon
   script:
     - ./gradlew bootJar -Pprod -x check --no-daemon
   artifacts:
@@ -98,6 +118,9 @@ gradle-package:
       - build/libs/*.jar
       - build/classes
     expire_in: 1 day
+  only:
+    refs:
+      - release
 
 docker-push:
   stage: release
