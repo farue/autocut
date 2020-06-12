@@ -10,5 +10,6 @@ import { LightboxModule } from 'ngx-lightbox';
 @NgModule({
   imports: [AutocutSharedModule, GalleriaModule, LightboxModule, RouterModule.forChild([HOME_ROUTE])],
   declarations: [HomeComponent],
+  providers: [LightboxModule],
 })
 export class AutocutHomeModule {}

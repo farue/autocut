@@ -4,6 +4,7 @@ import { AutocutTestModule } from '../../test.module';
 import { HomeComponent } from 'app/home/home.component';
 import { AccountService } from 'app/core/auth/account.service';
 import { LoginModalService } from 'app/core/login/login-modal.service';
+import { Lightbox, LightboxModule } from 'ngx-lightbox';
 
 describe('Component Tests', () => {
   describe('Home Component', () => {
@@ -16,6 +17,7 @@ describe('Component Tests', () => {
       TestBed.configureTestingModule({
         imports: [AutocutTestModule],
         declarations: [HomeComponent],
+        providers: [{ provide: Lightbox, useValue: new LightboxModule() }],
       })
         .overrideTemplate(HomeComponent, '')
         .compileComponents();
