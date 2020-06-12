@@ -28,10 +28,10 @@ public class GlobalSetting implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "key")
+    @Column(name = "setting_key")
     private String key;
 
-    @Column(name = "value")
+    @Column(name = "setting_value")
     private String value;
 
     @Column(name = "value_type")
