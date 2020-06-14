@@ -1,7 +1,7 @@
 image: gradle:6.4-jre14
 
 cache:
-  key: '$CI_COMMIT_REF_NAME'
+  key: '$CI_COMMIT_REF_SLUG'
   paths:
     - .gradle/
 
@@ -26,12 +26,12 @@ before_script:
 nohttp:
   stage: check
   script:
-    - ./gradlew checkstyleNohttp --no-daemon
+    - gradle checkstyleNohttp
 
 gradle-compile:
   stage: build
   script:
-    - ./gradlew compileJava --no-daemon
+    - gradle compileJava
   artifacts:
     paths:
       - build/classes/
@@ -43,15 +43,24 @@ frontend-compile:
   stage: build
   before_script:
     - export NG_CLI_ANALYTICS="false"
-    - ./gradlew npm_install -PnodeInstall --no-daemon
+    - gradle npmSetup -PnodeInstall
   script:
-    - ./gradlew webpack -PnodeInstall --no-daemon
+    - gradle webpack -PnodeInstall
+  cache:
+    key: 'frontend-$CI_COMMIT_REF_SLUG'
+    paths:
+      - .gradle/
+      - node_modules/
+  artifacts:
+    paths:
+      - build/
+    expire_in: 1 day
   needs: []
 
 gradle-test:
   stage: test
   script:
-    - ./gradlew test --no-daemon
+    - gradle test
   artifacts:
     reports:
       junit: build/test-results/test/TEST-*.xml
@@ -59,6 +68,10 @@ gradle-test:
       - build/test-results/
       - build/jacoco/
     expire_in: 1 day
+  needs:
+    - gradle-compile
+  dependencies:
+    - gradle-compile
 
 gradle-integration-test:
   # DinD service is required for Testcontainers
@@ -69,7 +82,7 @@ gradle-integration-test:
     DOCKER_HOST: 'tcp://docker:2376'
   stage: test
   script:
-    - ./gradlew integrationTest --no-daemon -Ptestcontainers
+    - gradle integrationTest -Ptestcontainers
   artifacts:
     reports:
       junit: build/test-results/integrationTest/TEST-*.xml
@@ -77,14 +90,23 @@ gradle-integration-test:
       - build/test-results/
       - build/jacoco/
     expire_in: 1 day
+  needs:
+    - gradle-compile
+  dependencies:
+    - gradle-compile
 
 frontend-test:
   stage: test
   before_script:
     - export NG_CLI_ANALYTICS="false"
-    - ./gradlew npm_install -PnodeInstall --no-daemon
+    - gradle npmSetup -PnodeInstall
   script:
-    - ./gradlew npm_run_test -PnodeInstall --no-daemon
+    - gradle npm_run_test -PnodeInstall
+  cache:
+    key: 'frontend-$CI_COMMIT_REF_SLUG'
+    paths:
+      - .gradle/
+      - node_modules/
   artifacts:
     reports:
       junit: build/test-results/TESTS-results-jest.xml
@@ -92,6 +114,10 @@ frontend-test:
       - build/test-results/
       - build/jacoco/
     expire_in: 1 day
+  needs:
+    - frontend-compile
+  dependencies:
+    - frontend-compile
 
 sonar-analyze:
   stage: analyze
@@ -103,18 +129,18 @@ sonar-analyze:
     - frontend-test
   before_script:
     - export NG_CLI_ANALYTICS="false"
-    - ./gradlew npm_install -PnodeInstall --no-daemon
+    - gradle npm_install -PnodeInstall
   script:
-    - ./gradlew sonarqube --no-daemon -Dsonar.projectKey=autocut -Dsonar.host.url=https://www.farue.rwth-aachen.de/sonar -Dsonar.login=$SONAR_TOKEN
+    - gradle sonarqube -Dsonar.projectKey=autocut -Dsonar.host.url=https://www.farue.rwth-aachen.de/sonar -Dsonar.login=$SONAR_TOKEN
   allow_failure: true
 
 gradle-package:
   stage: package
   before_script:
     - export NG_CLI_ANALYTICS="false"
-    - ./gradlew npm_install -PnodeInstall --no-daemon
+    - gradle npm_install -PnodeInstall
   script:
-    - ./gradlew bootJar -Pprod -x check --no-daemon
+    - gradle bootJar -Pprod -x check
   artifacts:
     paths:
       - build/libs/*.jar
@@ -132,7 +158,7 @@ docker-push:
   dependencies:
     - gradle-package
   script:
-    - ./gradlew jib -Pprod -Djib.to.image=$IMAGE_TAG -Djib.to.auth.username=gitlab-ci-token  -Djib.to.auth.password=$CI_BUILD_TOKEN
+    - gradle jib -Pprod -Djib.to.image=$IMAGE_TAG -Djib.to.auth.username=gitlab-ci-token  -Djib.to.auth.password=$CI_BUILD_TOKEN
   only:
     refs:
       - release
