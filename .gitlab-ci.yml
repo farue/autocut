@@ -8,6 +8,8 @@ cache:
 variables:
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: '/certs'
+  DOCKER_TLS_VERIFY: '1'
+  DOCKER_CERT_PATH: '/certs/client'
 
 stages:
   - check
@@ -64,7 +66,7 @@ gradle-integration-test:
     - docker:dind
   variables:
     # Instruct Testcontainers to use the daemon of DinD.
-    DOCKER_HOST: 'tcp://docker:2375'
+    DOCKER_HOST: 'tcp://docker:2376'
   stage: test
   script:
     - ./gradlew integrationTest --no-daemon -Ptestcontainers
