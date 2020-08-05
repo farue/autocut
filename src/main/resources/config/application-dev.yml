@@ -54,8 +54,8 @@ spring:
   mail:
     host: mail.rwth-aachen.de
     port: 587
-    username: fkt_net@farue.rwth-aachen.de
-    password: q4a9Nxsw
+    username: fkt_noreply@farue.rwth-aachen.de
+    password: sTjYzVHWBeLgQZzI2TOU
     protocol: smtp
     tls: true
     properties.mail:

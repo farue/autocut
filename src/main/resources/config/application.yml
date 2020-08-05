@@ -144,7 +144,7 @@ jhipster:
   #     allow-credentials: true
   #     max-age: 1800
   mail:
-    from: net@farue.rwth-aachen.de
+    from: noreply@farue.rwth-aachen.de
   swagger:
     default-include-pattern: /api/.*
     title: autocut API
