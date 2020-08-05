@@ -1,22 +1,29 @@
 package de.farue.autocut.service;
 
-import de.farue.autocut.domain.User;
-import io.github.jhipster.config.JHipsterProperties;
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
+
+import javax.mail.Flags.Flag;
+import javax.mail.Folder;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Store;
+import javax.mail.internet.MimeMessage;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.MailException;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import java.nio.charset.StandardCharsets;
-import java.util.Locale;
+import de.farue.autocut.domain.User;
+import io.github.jhipster.config.JHipsterProperties;
 
 /**
  * Service for sending emails.
@@ -34,13 +41,13 @@ public class MailService {
 
     private final JHipsterProperties jHipsterProperties;
 
-    private final JavaMailSender javaMailSender;
+    private final JavaMailSenderImpl javaMailSender;
 
     private final MessageSource messageSource;
 
     private final SpringTemplateEngine templateEngine;
 
-    public MailService(JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender,
+    public MailService(JHipsterProperties jHipsterProperties, JavaMailSenderImpl javaMailSender,
             MessageSource messageSource, SpringTemplateEngine templateEngine) {
 
         this.jHipsterProperties = jHipsterProperties;
@@ -66,6 +73,30 @@ public class MailService {
             log.debug("Sent email to User '{}'", to);
         } catch (MailException | MessagingException e) {
             log.warn("Email could not be sent to user '{}'", to, e);
+        }
+
+        Store store = null;
+        try {
+            Session session = javaMailSender.getSession();
+            store = session.getStore();
+            if (!store.isConnected()) {
+                store.connect(javaMailSender.getHost(), javaMailSender.getUsername(), javaMailSender.getPassword());
+            }
+            Folder folder = store.getFolder("Sent Items");
+            folder.open(Folder.READ_WRITE);
+            mimeMessage.setFlag(Flag.SEEN, true);
+            folder.appendMessages(new Message[]{mimeMessage});
+            log.debug("Copied email to sent folder");
+        } catch (MessagingException e) {
+            log.warn("Email could not be copied to sent folder", e);
+        } finally {
+            try {
+                if (store != null) {
+                    store.close();
+                }
+            } catch (MessagingException e) {
+                log.warn("Failed to close store connection", e);
+            }
         }
     }
 

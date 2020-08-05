@@ -58,10 +58,14 @@ spring:
     password: q4a9Nxsw
     protocol: smtp
     tls: true
-    properties.mail.smtp:
-      auth: true
-      starttls.enable: true
-      ssl.trust: mail.rwth-aachen.de
+    properties.mail:
+      smtp:
+        auth: true
+        starttls.enable: true
+        ssl.trust: mail.rwth-aachen.de
+      imap:
+        ssl.enable: true
+      store.protocol: imap
   messages:
     cache-duration: PT1S # 1 second, see the ISO 8601 standard
   thymeleaf:
