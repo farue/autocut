@@ -7,12 +7,12 @@
         Added the constraints for entity InternetAccess.
     -->
     <changeSet id="20191117011748-2" author="jhipster">
-
+        
         <addForeignKeyConstraint baseColumnNames="network_switch_id"
-            baseTableName="internet_access"
-            constraintName="fk_internet_access_network_switch_id"
-            referencedColumnNames="id"
-            referencedTableName="network_switch"/>
+                                 baseTableName="internet_access"
+                                 constraintName="fk_internet_access_network_switch_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="network_switch"/>
 
     </changeSet>
 </databaseChangeLog>

@@ -7,12 +7,12 @@
         Added the constraints for entity TenantCommunication.
     -->
     <changeSet id="20191117011753-2" author="jhipster">
-
+        
         <addForeignKeyConstraint baseColumnNames="tenant_id"
-            baseTableName="tenant_communication"
-            constraintName="fk_tenant_communication_tenant_id"
-            referencedColumnNames="id"
-            referencedTableName="tenant"/>
+                                 baseTableName="tenant_communication"
+                                 constraintName="fk_tenant_communication_tenant_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tenant"/>
 
     </changeSet>
 </databaseChangeLog>

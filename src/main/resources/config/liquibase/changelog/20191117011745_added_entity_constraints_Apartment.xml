@@ -7,12 +7,12 @@
         Added the constraints for entity Apartment.
     -->
     <changeSet id="20191117011745-2" author="jhipster">
-
+        
         <addForeignKeyConstraint baseColumnNames="internet_access_id"
-            baseTableName="apartment"
-            constraintName="fk_apartment_internet_access_id"
-            referencedColumnNames="id"
-            referencedTableName="internet_access"/>
+                                 baseTableName="apartment"
+                                 constraintName="fk_apartment_internet_access_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="internet_access"/>
 
         <addForeignKeyConstraint baseColumnNames="address_id"
                                  baseTableName="apartment"

@@ -7,12 +7,12 @@
         Added the constraints for entity WashHistory.
     -->
     <changeSet id="20200326184247-2" author="jhipster">
-
+        
         <addForeignKeyConstraint baseColumnNames="reservation_tenant_id"
-            baseTableName="wash_history"
-            constraintName="fk_wash_history_reservation_tenant_id"
-            referencedColumnNames="id"
-            referencedTableName="tenant"/>
+                                 baseTableName="wash_history"
+                                 constraintName="fk_wash_history_reservation_tenant_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tenant"/>
 
         <addForeignKeyConstraint baseColumnNames="using_tenant_id"
                                  baseTableName="wash_history"

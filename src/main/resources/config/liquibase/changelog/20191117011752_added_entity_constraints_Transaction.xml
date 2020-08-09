@@ -7,12 +7,12 @@
         Added the constraints for entity Transaction.
     -->
     <changeSet id="20191117011752-2" author="jhipster">
-
+        
         <addForeignKeyConstraint baseColumnNames="lease_id"
-            baseTableName="transaction"
-            constraintName="fk_transaction_lease_id"
-            referencedColumnNames="id"
-            referencedTableName="lease"/>
+                                 baseTableName="transaction"
+                                 constraintName="fk_transaction_lease_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="lease"/>
 
     </changeSet>
 </databaseChangeLog>

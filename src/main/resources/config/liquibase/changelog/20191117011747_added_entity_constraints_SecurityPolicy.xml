@@ -7,12 +7,12 @@
         Added the constraints for entity SecurityPolicy.
     -->
     <changeSet id="20191117011747-2" author="jhipster">
-
+        
         <addForeignKeyConstraint baseColumnNames="team_member_id"
-            baseTableName="security_policy"
-            constraintName="fk_security_policy_team_member_id"
-            referencedColumnNames="id"
-            referencedTableName="team_member"/>
+                                 baseTableName="security_policy"
+                                 constraintName="fk_security_policy_team_member_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="team_member"/>
 
         <addForeignKeyConstraint baseColumnNames="tenant_id"
                                  baseTableName="security_policy"

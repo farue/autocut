@@ -9,10 +9,10 @@
     <changeSet id="20191117011741-2" author="jhipster">
 
         <addForeignKeyConstraint baseColumnNames="user_id"
-            baseTableName="tenant"
-            constraintName="fk_tenant_user_id"
-            referencedColumnNames="id"
-            referencedTableName="jhi_user"/>
+                                 baseTableName="tenant"
+                                 constraintName="fk_tenant_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
 
         <addForeignKeyConstraint baseColumnNames="lease_id"
                                  baseTableName="tenant"

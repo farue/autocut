@@ -4,25 +4,17 @@
     {
       "fieldName": "interfaceName",
       "fieldType": "String",
-      "fieldValidateRules": [
-        "required"
-      ]
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "sshHost",
       "fieldType": "String",
-      "fieldValidateRules": [
-        "required"
-      ]
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "sshPort",
       "fieldType": "Integer",
-      "fieldValidateRules": [
-        "required",
-        "min",
-        "max"
-      ],
+      "fieldValidateRules": ["required", "min", "max"],
       "fieldValidateRulesMin": "0",
       "fieldValidateRulesMax": "65535"
     },
@@ -30,9 +22,7 @@
       "fieldName": "sshKey",
       "fieldType": "byte[]",
       "fieldTypeBlobContent": "text",
-      "fieldValidateRules": [
-        "required"
-      ]
+      "fieldValidateRules": ["required"]
     }
   ],
   "relationships": [],

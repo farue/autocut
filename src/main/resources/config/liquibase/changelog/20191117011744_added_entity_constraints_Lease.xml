@@ -7,12 +7,12 @@
         Added the constraints for entity Lease.
     -->
     <changeSet id="20191117011744-2" author="jhipster">
-
+        
         <addForeignKeyConstraint baseColumnNames="apartment_id"
-            baseTableName="lease"
-            constraintName="fk_lease_apartment_id"
-            referencedColumnNames="id"
-            referencedTableName="apartment"/>
+                                 baseTableName="lease"
+                                 constraintName="fk_lease_apartment_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="apartment"/>
 
     </changeSet>
 </databaseChangeLog>
