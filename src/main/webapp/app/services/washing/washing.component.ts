@@ -169,6 +169,7 @@ export class WashingComponent implements OnInit {
   }
 
   update(): void {
+    this.success = false;
     if (!this.isShowProgramSelect()) {
       this.selectedProgram = undefined;
     }
