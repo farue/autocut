@@ -1,0 +1,38 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="globalSetting">
+            <h2><span jhiTranslate="autocutApp.globalSetting.detail.title">Global Setting</span> {{ globalSetting.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="autocutApp.globalSetting.key">Key</span></dt>
+                <dd>
+                    <span>{{ globalSetting.key }}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.globalSetting.value">Value</span></dt>
+                <dd>
+                    <span>{{ globalSetting.value }}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.globalSetting.valueType">Value Type</span></dt>
+                <dd>
+                    <span>{{ globalSetting.valueType }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/global-setting', globalSetting.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity InternetAccess.
+    -->
+    <changeSet id="20191117011748-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="network_switch_id"
+                                 baseTableName="internet_access"
+                                 constraintName="fk_internet_access_network_switch_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="network_switch"/>
+
+    </changeSet>
+</databaseChangeLog>

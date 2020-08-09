@@ -1,0 +1,30 @@
+{
+  "autocutApp": {
+    "activity": {
+      "home": {
+        "title": "Activities",
+        "createLabel": "Activity erstellen",
+        "createOrEditLabel": "Activity erstellen oder bearbeiten",
+        "notFound": "No Activities found"
+      },
+      "created": "Activity erstellt mit ID {{ param }}",
+      "updated": "Activity aktualisiert mit ID {{ param }}",
+      "deleted": "Activity gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Activity {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Activity"
+      },
+      "year": "Year",
+      "term": "Term",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "description": "Description",
+      "discount": "Discount",
+      "stwActivity": "Stw Activity",
+      "teamMember": "Team Member",
+      "tenant": "Tenant"
+    }
+  }
+}

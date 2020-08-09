@@ -1,0 +1,26 @@
+{
+  "autocutApp": {
+    "communication": {
+      "home": {
+        "title": "Communications",
+        "createLabel": "Create a new Communication",
+        "createOrEditLabel": "Create or edit a Communication",
+        "notFound": "No Communications found"
+      },
+      "created": "A new Communication is created with identifier {{ param }}",
+      "updated": "A Communication is updated with identifier {{ param }}",
+      "deleted": "A Communication is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Communication {{ id }}?"
+      },
+      "detail": {
+        "title": "Communication"
+      },
+      "subject": "Subject",
+      "text": "Text",
+      "note": "Note",
+      "date": "Date",
+      "tenant": "Tenant"
+    }
+  }
+}

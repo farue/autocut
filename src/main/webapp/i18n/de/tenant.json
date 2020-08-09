@@ -1,0 +1,26 @@
+{
+  "autocutApp": {
+    "tenant": {
+      "home": {
+        "title": "Tenants",
+        "createLabel": "Tenant erstellen",
+        "createOrEditLabel": "Tenant erstellen oder bearbeiten",
+        "notFound": "No Tenants found"
+      },
+      "created": "Tenant erstellt mit ID {{ param }}",
+      "updated": "Tenant aktualisiert mit ID {{ param }}",
+      "deleted": "Tenant gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Tenant {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Tenant"
+      },
+      "pictureId": "Picture Id",
+      "verified": "Verified",
+      "user": "User",
+      "securityPolicies": "Security Policies",
+      "lease": "Lease"
+    }
+  }
+}

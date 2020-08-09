@@ -1,0 +1,28 @@
+{
+  "autocutApp": {
+    "laundryMachineProgram": {
+      "home": {
+        "title": "Laundry Machine Programs",
+        "createLabel": "Laundry Machine Program erstellen",
+        "createOrEditLabel": "Laundry Machine Program erstellen oder bearbeiten",
+        "notFound": "No Laundry Machine Programs found"
+      },
+      "created": "Laundry Machine Program erstellt mit ID {{ param }}",
+      "updated": "Laundry Machine Program aktualisiert mit ID {{ param }}",
+      "deleted": "Laundry Machine Program gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Laundry Machine Program {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Laundry Machine Program"
+      },
+      "name": "Name",
+      "subprogram": "Subprogram",
+      "time": "Time",
+      "spin": "Spin",
+      "preWash": "Pre Wash",
+      "protect": "Protect",
+      "laundryMachine": "Laundry Machine"
+    }
+  }
+}

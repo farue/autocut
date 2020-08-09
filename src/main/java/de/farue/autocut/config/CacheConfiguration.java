@@ -48,6 +48,30 @@ public class CacheConfiguration {
             createCache(cm, de.farue.autocut.domain.User.class.getName());
             createCache(cm, de.farue.autocut.domain.Authority.class.getName());
             createCache(cm, de.farue.autocut.domain.User.class.getName() + ".authorities");
+            createCache(cm, de.farue.autocut.domain.Tenant.class.getName());
+            createCache(cm, de.farue.autocut.domain.Tenant.class.getName() + ".securityPolicies");
+            createCache(cm, de.farue.autocut.domain.Team.class.getName());
+            createCache(cm, de.farue.autocut.domain.Team.class.getName() + ".members");
+            createCache(cm, de.farue.autocut.domain.TeamMember.class.getName());
+            createCache(cm, de.farue.autocut.domain.TeamMember.class.getName() + ".securityPolicies");
+            createCache(cm, de.farue.autocut.domain.Lease.class.getName());
+            createCache(cm, de.farue.autocut.domain.Lease.class.getName() + ".tenants");
+            createCache(cm, de.farue.autocut.domain.Apartment.class.getName());
+            createCache(cm, de.farue.autocut.domain.Apartment.class.getName() + ".leases");
+            createCache(cm, de.farue.autocut.domain.Address.class.getName());
+            createCache(cm, de.farue.autocut.domain.SecurityPolicy.class.getName());
+            createCache(cm, de.farue.autocut.domain.InternetAccess.class.getName());
+            createCache(cm, de.farue.autocut.domain.Transaction.class.getName());
+            createCache(cm, de.farue.autocut.domain.TenantCommunication.class.getName());
+            createCache(cm, de.farue.autocut.domain.Activity.class.getName());
+            createCache(cm, de.farue.autocut.domain.Activity.class.getName() + ".teamMembers");
+            createCache(cm, de.farue.autocut.domain.Communication.class.getName());
+            createCache(cm, de.farue.autocut.domain.LaundryMachine.class.getName());
+            createCache(cm, de.farue.autocut.domain.LaundryMachine.class.getName() + ".programs");
+            createCache(cm, de.farue.autocut.domain.LaundryMachineProgram.class.getName());
+            createCache(cm, de.farue.autocut.domain.WashHistory.class.getName());
+            createCache(cm, de.farue.autocut.domain.GlobalSetting.class.getName());
+            createCache(cm, de.farue.autocut.domain.NetworkSwitch.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

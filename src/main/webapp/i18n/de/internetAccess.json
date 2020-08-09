@@ -1,0 +1,28 @@
+{
+  "autocutApp": {
+    "internetAccess": {
+      "home": {
+        "title": "Internet Accesses",
+        "createLabel": "Internet Access erstellen",
+        "createOrEditLabel": "Internet Access erstellen oder bearbeiten",
+        "notFound": "No Internet Accesses found"
+      },
+      "created": "Internet Access erstellt mit ID {{ param }}",
+      "updated": "Internet Access aktualisiert mit ID {{ param }}",
+      "deleted": "Internet Access gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Internet Access {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Internet Access"
+      },
+      "blocked": "Blocked",
+      "ip1": "Ip 1",
+      "ip2": "Ip 2",
+      "switchInterface": "Switch Interface",
+      "port": "Port",
+      "networkSwitch": "Network Switch",
+      "apartment": "Apartment"
+    }
+  }
+}

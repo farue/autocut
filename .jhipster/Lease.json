@@ -1,0 +1,54 @@
+{
+  "name": "Lease",
+  "fields": [
+    {
+      "fieldName": "nr",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "start",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "end",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "blocked",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "pictureContract",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "tenant",
+      "otherEntityRelationshipName": "lease",
+      "relationshipName": "tenants"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "apartment",
+      "otherEntityRelationshipName": "leases",
+      "relationshipName": "apartment",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20191117011744",
+  "entityTableName": "lease",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "clientRootFolder": "",
+  "applications": "*",
+  "embedded": false
+}

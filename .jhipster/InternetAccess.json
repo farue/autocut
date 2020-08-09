@@ -1,0 +1,58 @@
+{
+  "name": "InternetAccess",
+  "fields": [
+    {
+      "fieldName": "blocked",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "ip1",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "ip2",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "switchInterface",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "port",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min"],
+      "fieldValidateRulesMin": "1"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "networkSwitch",
+      "otherEntityRelationshipName": "internetAccess",
+      "relationshipName": "networkSwitch",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "apartment",
+      "otherEntityRelationshipName": "internetAccess",
+      "relationshipName": "apartment",
+      "ownerSide": false
+    }
+  ],
+  "changelogDate": "20191117011748",
+  "entityTableName": "internet_access",
+  "dto": "no",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "clientRootFolder": "",
+  "applications": "*",
+  "embedded": false
+}

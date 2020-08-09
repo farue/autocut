@@ -1,0 +1,28 @@
+{
+  "autocutApp": {
+    "lease": {
+      "home": {
+        "title": "Leases",
+        "createLabel": "Create a new Lease",
+        "createOrEditLabel": "Create or edit a Lease",
+        "notFound": "No Leases found"
+      },
+      "created": "A new Lease is created with identifier {{ param }}",
+      "updated": "A Lease is updated with identifier {{ param }}",
+      "deleted": "A Lease is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Lease {{ id }}?"
+      },
+      "detail": {
+        "title": "Lease"
+      },
+      "nr": "Nr",
+      "start": "Start",
+      "end": "End",
+      "blocked": "Blocked",
+      "pictureContract": "Picture Contract",
+      "tenants": "Tenants",
+      "apartment": "Apartment"
+    }
+  }
+}

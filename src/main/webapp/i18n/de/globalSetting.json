@@ -1,0 +1,24 @@
+{
+  "autocutApp": {
+    "globalSetting": {
+      "home": {
+        "title": "Global Settings",
+        "createLabel": "Global Setting erstellen",
+        "createOrEditLabel": "Global Setting erstellen oder bearbeiten",
+        "notFound": "No Global Settings found"
+      },
+      "created": "Global Setting erstellt mit ID {{ param }}",
+      "updated": "Global Setting aktualisiert mit ID {{ param }}",
+      "deleted": "Global Setting gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Global Setting {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Global Setting"
+      },
+      "key": "Key",
+      "value": "Value",
+      "valueType": "Value Type"
+    }
+  }
+}

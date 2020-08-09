@@ -1,0 +1,25 @@
+{
+  "autocutApp": {
+    "securityPolicy": {
+      "home": {
+        "title": "Security Policies",
+        "createLabel": "Security Policy erstellen",
+        "createOrEditLabel": "Security Policy erstellen oder bearbeiten",
+        "notFound": "No Security Policies found"
+      },
+      "created": "Security Policy erstellt mit ID {{ param }}",
+      "updated": "Security Policy aktualisiert mit ID {{ param }}",
+      "deleted": "Security Policy gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Security Policy {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Security Policy"
+      },
+      "protectionUnit": "Protection Unit",
+      "access": "Access",
+      "teamMember": "Team Member",
+      "tenant": "Tenant"
+    }
+  }
+}

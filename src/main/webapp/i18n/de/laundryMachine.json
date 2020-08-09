@@ -1,0 +1,26 @@
+{
+  "autocutApp": {
+    "laundryMachine": {
+      "home": {
+        "title": "Laundry Machines",
+        "createLabel": "Laundry Machine erstellen",
+        "createOrEditLabel": "Laundry Machine erstellen oder bearbeiten",
+        "notFound": "No Laundry Machines found"
+      },
+      "created": "Laundry Machine erstellt mit ID {{ param }}",
+      "updated": "Laundry Machine aktualisiert mit ID {{ param }}",
+      "deleted": "Laundry Machine gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Laundry Machine {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Laundry Machine"
+      },
+      "identifier": "Identifier",
+      "name": "Name",
+      "type": "Type",
+      "enabled": "Enabled",
+      "programs": "Programs"
+    }
+  }
+}

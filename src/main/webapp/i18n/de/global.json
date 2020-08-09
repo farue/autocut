@@ -7,6 +7,23 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entitäten",
+        "tenant": "Tenant",
+        "team": "Team",
+        "teamMember": "Team Member",
+        "lease": "Lease",
+        "apartment": "Apartment",
+        "address": "Address",
+        "securityPolicy": "Security Policy",
+        "internetAccess": "Internet Access",
+        "transaction": "Transaction",
+        "tenantCommunication": "Tenant Communication",
+        "activity": "Activity",
+        "communication": "Communication",
+        "laundryMachine": "Laundry Machine",
+        "laundryMachineProgram": "Laundry Machine Program",
+        "washHistory": "Wash History",
+        "globalSetting": "Global Setting",
+        "networkSwitch": "Network Switch",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
