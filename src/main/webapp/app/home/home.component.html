@@ -1,49 +1,25 @@
-<div class="row">
-    <div class="col-md-3">
-        <p-galleria (click)="onImageClicked($event)" [images]="images" [showCaption]="false" [panelHeight]="220"
-                    [panelWidth]="400">
-        </p-galleria>
+<div class="d-flex flex-column align-items-center">
+    <div class="row">
+        <h1 class="display-4 text-center" jhiTranslate="home.title">Welcome to Familienwohnheim Rütscher Straße!</h1>
     </div>
-
-    <div class="col-md-9">
-        <h1 class="display-4" jhiTranslate="home.title">Welcome to Familienwohnheim Rütscher Straße!</h1>
-
+    <div class="row">
         <div class="alert alert-warning">
             <p jhiTranslate="home.message.development">This website is under active development.</p>
             <span jhiTranslate="home.message.oldwebsite">Follow this link to the old website:</span> <a (click)="redirectToOldWebsite()">http://www.farue.rwth-aachen.de/old/index.html</a>
         </div>
-
-        <!--<div [ngSwitch]="isAuthenticated()">
-            <div class="alert alert-success" *ngSwitchCase="true">
-                <span id="home-logged-message" *ngIf="account" jhiTranslate="home.logged.message"
-                    [translateValues]="{ username: account.login }">You are logged in as user "{{ account.login }}".</span>
-            </div>
-
-            <div class="alert alert-warning" *ngSwitchCase="false">
-                <span jhiTranslate="global.messages.info.authenticated.prefix">If you want to </span>
-                <a class="alert-link" (click)="login()" jhiTranslate="global.messages.info.authenticated.link">sign in</a><span jhiTranslate="global.messages.info.authenticated.suffix">, you can try the default accounts:<br/>- Administrator (login="admin" and password="admin") <br/>- User (login="user" and password="user").</span>
-            </div>
-
-            <div class="alert alert-warning" *ngSwitchCase="false">
-                <span jhiTranslate="global.messages.info.register.noaccount">You don't have an account yet?</span>&nbsp;
-                <a class="alert-link" routerLink="account/register" jhiTranslate="global.messages.info.register.link">Register a new account</a>
-            </div>
-        </div>
-
-        <p jhiTranslate="home.question">
-            If you have any question on JHipster:
-        </p>
-
-        <ul>
-            <li><a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer" jhiTranslate="home.link.homepage">JHipster homepage</a></li>
-            <li><a href="http://stackoverflow.com/tags/jhipster/info" target="_blank" rel="noopener noreferrer" jhiTranslate="home.link.stackoverflow">JHipster on Stack Overflow</a></li>
-            <li><a href="https://github.com/jhipster/generator-jhipster/issues?state=open" target="_blank" rel="noopener noreferrer" jhiTranslate="home.link.bugtracker">JHipster bug tracker</a></li>
-            <li><a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer" jhiTranslate="home.link.chat">JHipster public chat room</a></li>
-            <li><a href="https://twitter.com/jhipster" target="_blank" rel="noopener noreferrer" jhiTranslate="home.link.follow">follow @jhipster on Twitter</a></li>
-        </ul>
-
-        <p>
-            <span jhiTranslate="home.like">If you like JHipster, don't forget to give us a star on</span> <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer" jhiTranslate="home.github">GitHub</a>!
-        </p>-->
+    </div>
+    <div class="row m-3">
+        <p-galleria [value]="images" [responsiveOptions]="responsiveOptions" [containerStyle]="{'max-width': '1024px'}" [numVisible]="7" [circular]="true" [autoPlay]="true"
+                    [transitionInterval]="2000">
+            <ng-template pTemplate="item" let-item>
+                <img [src]="item.previewImageSrc" style="width: 100%; display: block;"/>
+            </ng-template>
+            <ng-template pTemplate="thumbnail" let-item>
+                <div class="p-grid p-nogutter p-justify-center">
+                    <img [src]="item.thumbnailImageSrc" style="display: block; max-height: 60px; max-width: 80px"/>
+                </div>
+            </ng-template>
+        </p-galleria>
     </div>
 </div>
+

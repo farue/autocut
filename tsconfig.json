@@ -7,5 +7,8 @@
     {
       "path": "./tsconfig.e2e.json"
     }
-  ]
+  ],
+  "compilerOptions": {
+    "types": ["node"]
+  }
 }
