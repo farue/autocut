@@ -7,8 +7,8 @@ networks:
 services:
   autocut-mysql:
     image: mysql:8.0.20
-    # volumes:
-    #     - ~/volumes/jhipster/autocut/mysql/:/var/lib/mysql/
+    volumes:
+      - ~/volumes/autocut/mysql/:/var/lib/mysql/
     networks:
       - 'traefik'
     environment:
