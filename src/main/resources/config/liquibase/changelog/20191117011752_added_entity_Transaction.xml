@@ -43,6 +43,9 @@
             <column name="lease_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+            <column name="tenant_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="transaction" columnName="booking_date" columnDataType="datetime"/>

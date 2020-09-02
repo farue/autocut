@@ -151,6 +151,7 @@ enum TransactionKind {
 
 relationship ManyToOne {
 	Transaction{lease} to Lease
+	Transaction{tenant} to Tenant
 }
 
 // Activities

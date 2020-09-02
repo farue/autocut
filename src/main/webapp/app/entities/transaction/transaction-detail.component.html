@@ -46,6 +46,12 @@
                         <a [routerLink]="['/lease', transaction.lease?.id, 'view']">{{ transaction.lease?.id }}</a>
                     </div>
                 </dd>
+                <dt><span jhiTranslate="autocutApp.transaction.tenant">Tenant</span></dt>
+                <dd>
+                    <div *ngIf="transaction.tenant">
+                        <a [routerLink]="['/tenant', transaction.tenant?.id, 'view']">{{ transaction.tenant?.id }}</a>
+                    </div>
+                </dd>
             </dl>
 
             <button type="submit"

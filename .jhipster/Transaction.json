@@ -47,6 +47,13 @@
       "otherEntityRelationshipName": "transaction",
       "relationshipName": "lease",
       "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "tenant",
+      "otherEntityRelationshipName": "transaction",
+      "relationshipName": "tenant",
+      "otherEntityField": "id"
     }
   ],
   "changelogDate": "20191117011752",

@@ -116,6 +116,14 @@
                         <option [ngValue]="leaseOption.id === editForm.get('lease')!.value?.id ? editForm.get('lease')!.value : leaseOption" *ngFor="let leaseOption of leases; trackBy: trackById">{{ leaseOption.id }}</option>
                     </select>
                 </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="autocutApp.transaction.tenant" for="field_tenant">Tenant</label>
+                    <select class="form-control" id="field_tenant" name="tenant" formControlName="tenant">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="tenantOption.id === editForm.get('tenant')!.value?.id ? editForm.get('tenant')!.value : tenantOption" *ngFor="let tenantOption of tenants; trackBy: trackById">{{ tenantOption.id }}</option>
+                    </select>
+                </div>
             </div>
 
             <div>
