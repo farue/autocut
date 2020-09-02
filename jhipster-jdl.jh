@@ -1,0 +1,251 @@
+@service(serviceClass)
+entity Tenant {
+	pictureId ImageBlob
+	verified Boolean
+}
+
+entity Team {
+	name String required
+}
+
+entity TeamMember {
+	role TeamRole
+}
+
+enum TeamRole {
+	SPOKESPERSON,
+    DEPUTY,
+    MEMBER
+}
+
+entity Lease {
+	nr String required // number given by StW, e.g. 30-41
+	start Instant required
+    end Instant
+    blocked Boolean
+    pictureContract ImageBlob
+}
+
+entity Apartment {
+    // simple apartment nr, cannot be stw number because there are two different ones for shared apartments
+	nr String required
+    type ApartmentTypes required
+    maxNumberOfLeases Integer required min(0)
+}
+
+// We can get this from maxNumberOfLeases
+// -> does not need to be persisted
+enum ApartmentTypes {
+    SHARED,
+    SINGLE,
+    SHORT_TERM
+}
+
+entity Address {
+	street String required
+	streetNumber String required
+    zip String required pattern(/^\d{5}$/)
+    city String required
+    country String required
+}
+
+entity SecurityPolicy {
+	protectionUnit ProtectionUnits required
+    access Access required
+}
+
+enum Access {
+	READ_ALLOW,
+    READ_WRITE_ALLOW,
+    WRITE_DENY,
+    READ_WRITE_DENY
+}
+
+enum ProtectionUnits {
+	BANK_TRANSACTIONS,
+    TENANT_MANAGEMENT,
+    INTERNET_ACCESS_MANAGEMENT,
+    TOOLS_MANAGEMENT,
+    WASHING_SYSTEM_MANAGEMENT
+}
+
+relationship OneToOne {
+	// Each tenant should have a user profile
+    // Not every user belongs to a tenant, e.g. admin user
+	Tenant{user} to User
+}
+
+relationship OneToMany {
+	Team{members} to TeamMember{team required}
+    Lease{tenants} to Tenant{lease}
+    Apartment{leases} to Lease{apartment}
+}
+
+relationship ManyToOne {
+	Apartment{address} to Address
+    TeamMember{tenant} to Tenant
+}
+
+relationship OneToMany {
+	TeamMember{securityPolicies} to SecurityPolicy{teamMember}
+    Tenant{securityPolicies} to SecurityPolicy{tenant}
+}
+
+// Internet Access
+
+@service(serviceClass)
+entity InternetAccess {
+	blocked Boolean required
+    ip1 String required
+    ip2 String required
+    switchInterface String required
+    port Integer required min(1)
+}
+
+entity NetworkSwitch {
+    interfaceName String required
+    sshHost String required
+    sshPort Integer required min(0) max(65535)
+    sshKey TextBlob required
+}
+
+relationship OneToOne {
+	Apartment{internetAccess} to InternetAccess{apartment}
+}
+
+relationship ManyToOne {
+	InternetAccess{networkSwitch} to NetworkSwitch
+}
+
+// Transactions
+
+@service(serviceClass)
+entity Transaction {
+	kind TransactionKind required
+	bookingDate Instant required
+    valueDate Instant required
+    value BigDecimal required
+    balanceAfter BigDecimal
+    description String
+    issuer String required
+    recipient String
+}
+
+/**
+ * FEE: A transaction with negative amount. The difference between a fee and a purchase is that a
+ * fee is not paid in exchange for an immediate good.
+ * CREDIT: A transaction with a positive amount. The amount is credited to the account.
+ * DEBIT: A transaction with a negative amount. The amount is withdrawn from the account.
+ * TRANSFER: A transfer to a different account.
+ * CORRECTION: A corrective booking due to cancellation or system malfunctions.
+ * PURCHASE: A transaction with a negative amount. In exchange the payer receives a different good.
+ */
+enum TransactionKind {
+	FEE,
+    CREDIT,
+    DEBIT,
+    TRANSFER,
+    CORRECTION,
+    PURCHASE
+}
+
+relationship ManyToOne {
+	Transaction{lease} to Lease
+}
+
+// Activities
+
+entity Activity {
+	year Integer required
+    term SemesterTerms required
+    startDate Instant
+    endDate Instant
+    description String
+    // whether or not the tenant should get a discount next semester
+    discount Boolean
+    // whether or not this activity is sent to StW
+    stwActivity Boolean
+}
+
+enum SemesterTerms {
+	SUMMER_TERM,
+    WINTER_TERM
+}
+
+relationship ManyToOne {
+	 Activity{tenant} to Tenant
+}
+
+relationship OneToMany {
+	Activity to TeamMember
+}
+
+// Communication
+
+entity Communication {
+    subject String required maxlength(80)
+	text TextBlob required
+	note TextBlob
+    date Instant required
+}
+
+relationship ManyToOne {
+	Communication{tenant} to User
+}
+
+// Wash System
+
+entity LaundryMachine {
+    identifier String required
+	name String required
+    type LaundryMachineType required
+    enabled Boolean required
+}
+
+entity LaundryMachineProgram {
+	name String required
+    subprogram String
+    time Integer required
+    // washing machine
+    spin Integer
+    preWash Boolean
+    // dryer
+    protect Boolean
+}
+
+entity WashHistory {
+	usingDate Instant
+    reservationDate Instant
+    lastModifiedDate Instant
+    status WashHistoryStatus
+}
+
+enum WashHistoryStatus {
+	OPEN,
+    EXPIRED,
+    COMPLETED,
+	CANCELLED_BY_USER,
+    CANCELLED_BY_SYSTEM
+}
+
+enum LaundryMachineType {
+	WASHING_MACHINE,
+    DRYER
+}
+
+relationship OneToMany {
+	LaundryMachine{programs} to LaundryMachineProgram
+}
+
+relationship ManyToOne {
+	WashHistory{reservationTenant} to Tenant
+    WashHistory{usingTenant} to Tenant
+	WashHistory{machine} to LaundryMachine
+	WashHistory{program} to LaundryMachineProgram
+}
+
+entity GlobalSetting {
+	key String,
+    value String,
+    valueType String
+}
