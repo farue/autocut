@@ -32,6 +32,7 @@
                     <th scope="col" ><span jhiTranslate="autocutApp.transaction.issuer">Issuer</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.transaction.recipient">Recipient</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.transaction.lease">Lease</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.transaction.tenant">Tenant</span></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -49,6 +50,11 @@
                     <td>
                         <div *ngIf="transaction.lease">
                             <a [routerLink]="['/lease', transaction.lease?.id, 'view']" >{{ transaction.lease?.id }}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div *ngIf="transaction.tenant">
+                            <a [routerLink]="['/tenant', transaction.tenant?.id, 'view']" >{{ transaction.tenant?.id }}</a>
                         </div>
                     </td>
                     <td class="text-right">

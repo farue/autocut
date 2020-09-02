@@ -11,6 +11,10 @@ import { ITransaction, Transaction } from 'app/shared/model/transaction.model';
 import { TransactionService } from './transaction.service';
 import { ILease } from 'app/shared/model/lease.model';
 import { LeaseService } from 'app/entities/lease/lease.service';
+import { ITenant } from 'app/shared/model/tenant.model';
+import { TenantService } from 'app/entities/tenant/tenant.service';
+
+type SelectableEntity = ILease | ITenant;
 
 @Component({
   selector: 'jhi-transaction-update',
@@ -19,6 +23,7 @@ import { LeaseService } from 'app/entities/lease/lease.service';
 export class TransactionUpdateComponent implements OnInit {
   isSaving = false;
   leases: ILease[] = [];
+  tenants: ITenant[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -31,11 +36,13 @@ export class TransactionUpdateComponent implements OnInit {
     issuer: [null, [Validators.required]],
     recipient: [],
     lease: [],
+    tenant: [],
   });
 
   constructor(
     protected transactionService: TransactionService,
     protected leaseService: LeaseService,
+    protected tenantService: TenantService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -51,6 +58,8 @@ export class TransactionUpdateComponent implements OnInit {
       this.updateForm(transaction);
 
       this.leaseService.query().subscribe((res: HttpResponse<ILease[]>) => (this.leases = res.body || []));
+
+      this.tenantService.query().subscribe((res: HttpResponse<ITenant[]>) => (this.tenants = res.body || []));
     });
   }
 
@@ -66,6 +75,7 @@ export class TransactionUpdateComponent implements OnInit {
       issuer: transaction.issuer,
       recipient: transaction.recipient,
       lease: transaction.lease,
+      tenant: transaction.tenant,
     });
   }
 
@@ -98,6 +108,7 @@ export class TransactionUpdateComponent implements OnInit {
       issuer: this.editForm.get(['issuer'])!.value,
       recipient: this.editForm.get(['recipient'])!.value,
       lease: this.editForm.get(['lease'])!.value,
+      tenant: this.editForm.get(['tenant'])!.value,
     };
   }
 
@@ -117,7 +128,7 @@ export class TransactionUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  trackById(index: number, item: ILease): any {
+  trackById(index: number, item: SelectableEntity): any {
     return item.id;
   }
 }

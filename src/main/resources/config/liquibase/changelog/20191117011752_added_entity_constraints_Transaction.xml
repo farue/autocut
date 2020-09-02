@@ -14,5 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="lease"/>
 
+        <addForeignKeyConstraint baseColumnNames="tenant_id"
+                                 baseTableName="transaction"
+                                 constraintName="fk_transaction_tenant_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tenant"/>
+
     </changeSet>
 </databaseChangeLog>

@@ -61,6 +61,10 @@ public class Transaction implements Serializable {
     @JsonIgnoreProperties(value = "transactions", allowSetters = true)
     private Lease lease;
 
+    @ManyToOne
+    @JsonIgnoreProperties(value = "transactions", allowSetters = true)
+    private Tenant tenant;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
@@ -185,6 +189,19 @@ public class Transaction implements Serializable {
 
     public void setLease(Lease lease) {
         this.lease = lease;
+    }
+
+    public Tenant getTenant() {
+        return tenant;
+    }
+
+    public Transaction tenant(Tenant tenant) {
+        this.tenant = tenant;
+        return this;
+    }
+
+    public void setTenant(Tenant tenant) {
+        this.tenant = tenant;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
