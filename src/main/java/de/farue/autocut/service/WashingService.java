@@ -1,5 +1,18 @@
 package de.farue.autocut.service;
 
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nullable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import de.farue.autocut.domain.GlobalSetting;
 import de.farue.autocut.domain.LaundryMachine;
 import de.farue.autocut.domain.LaundryMachineProgram;
@@ -14,17 +27,6 @@ import de.farue.autocut.repository.UserRepository;
 import de.farue.autocut.security.SecurityUtils;
 import de.farue.autocut.utils.BigDecimalUtil;
 import de.farue.autocut.web.rest.errors.LaundryMachineDoesNotExistException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Nullable;
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class WashingService {
@@ -107,7 +109,7 @@ public class WashingService {
             .valueDate(timestamp)
             .issuer(WashingService.class.getSimpleName())
             .description(machine.getName());
-        transactionService.saveWithBalanceCheck(transaction);
+        transactionService.save(transaction);
         washHistoryService.saveAndFlush(washHistory);
         washItClient.activate(Integer.valueOf(machine.getIdentifier()));
         log.debug("{} activated with transaction {}", machine.getName(), transaction);
