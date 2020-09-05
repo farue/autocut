@@ -1,0 +1,16 @@
+{
+  "transaction": {
+    "title": "Transactions",
+    "balance": "Balance",
+    "table": {
+      "kind": "Kind",
+      "bookingDate": "Booking date",
+      "valueDate": "Value date",
+      "value": "Value",
+      "balanceAfter": "Balance",
+      "description": "Description",
+      "issuer": "Issuer",
+      "recipient": "Recipient"
+    }
+  }
+}

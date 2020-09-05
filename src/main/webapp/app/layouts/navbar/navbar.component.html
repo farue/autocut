@@ -310,6 +310,12 @@
                             <span jhiTranslate="global.menu.services.washing">API</span>
                         </a>
                     </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="services/transactions" routerLinkActive="active" (click)="collapseNavbar()">
+                            <fa-icon icon="money-bill-wave" [fixedWidth]="true"></fa-icon>
+                            <span jhiTranslate="global.menu.services.transactions">Transactions</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">

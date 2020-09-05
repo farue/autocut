@@ -64,7 +64,8 @@
       },
       "services": {
         "main": "Services",
-        "washing": "Washing"
+        "washing": "Washing",
+        "transactions": "Transactions"
       },
       "language": "Language"
     },

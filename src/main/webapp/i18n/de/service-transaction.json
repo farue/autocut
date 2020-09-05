@@ -1,0 +1,16 @@
+{
+  "transaction": {
+    "title": "Transaktionen",
+    "balance": "Kontostand",
+    "table": {
+      "kind": "Art",
+      "bookingDate": "Buchungsdatum",
+      "valueDate": "Wertstellung",
+      "value": "Betrag",
+      "balanceAfter": "Kontostand",
+      "description": "Beschreibung",
+      "issuer": "Sender",
+      "recipient": "Empfänger"
+    }
+  }
+}
