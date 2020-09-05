@@ -34,7 +34,7 @@ public class GlobalSetting implements Serializable {
     @Column(name = "setting_value")
     private String value;
 
-    @Column(name = "value_type")
+    @Column(name = "setting_type")
     private String valueType;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
