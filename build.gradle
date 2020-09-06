@@ -187,6 +187,7 @@ configurations {
             // Inherited version from Spring Boot can't be used because of regressions:
             // To be removed as soon as spring-boot use the same version
             force 'org.liquibase:liquibase-core:3.9.0'
+            force 'org.jboss.xnio:xnio-api:3.8.0.Final'
         }
     }
 }
