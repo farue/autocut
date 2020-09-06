@@ -74,22 +74,8 @@
         <addNotNullConstraint   columnName="password_hash"
                                 columnDataType="varchar(60)"
                                 tableName="jhi_user"/>
-        <!--<loadData
-                  file="config/liquibase/data/user.csv"
-                  separator=";"
-                  tableName="jhi_user"
-                  context="!faker">
-            <column name="activated" type="boolean"/>
-            <column name="created_date" type="timestamp"/>
-        </loadData>-->
-        <loadData
-            file="config/liquibase/fake-data/user.csv"
-            separator=";"
-            tableName="jhi_user"
-            context="faker">
-            <column name="activated" type="boolean"/>
-            <column name="created_date" type="timestamp"/>
-        </loadData>
+
+
         <dropDefaultValue tableName="jhi_user" columnName="created_date" columnDataType="datetime"/>
         <loadData
                   file="config/liquibase/data/authority.csv"
@@ -98,20 +84,8 @@
             <column name="name" type="string"/>
         </loadData>
 
-        <!--<loadData
-                  file="config/liquibase/data/user_authority.csv"
-                  separator=";"
-                  tableName="jhi_user_authority"
-                  context="!faker">
-            <column name="user_id" type="numeric"/>
-        </loadData>-->
-        <loadData
-            file="config/liquibase/fake-data/user_authority.csv"
-            separator=";"
-            tableName="jhi_user_authority"
-            context="faker">
-            <column name="user_id" type="numeric"/>
-        </loadData>
+
+
         <createTable tableName="jhi_persistent_audit_event">
             <column name="event_id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
@@ -167,5 +141,37 @@
             <column name="offset_time" type="time"/>
             <column name="local_date" type="date"/>
         </createTable>
+    </changeSet>
+
+    <changeSet author="brunecker" id="00000000000003" context="dev">
+        <loadData
+            file="config/liquibase/fake-data/user.csv"
+            separator=";"
+            tableName="jhi_user">
+            <column name="activated" type="boolean"/>
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData
+            file="config/liquibase/fake-data/user_authority.csv"
+            separator=";"
+            tableName="jhi_user_authority">
+            <column name="user_id" type="numeric"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet author="brunecker" id="00000000000004" context="prod">
+        <loadData
+            file="config/liquibase/data/user.csv"
+            separator=";"
+            tableName="jhi_user">
+            <column name="activated" type="boolean"/>
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData
+            file="config/liquibase/data/user_authority.csv"
+            separator=";"
+            tableName="jhi_user_authority">
+            <column name="user_id" type="numeric"/>
+        </loadData>
     </changeSet>
 </databaseChangeLog>
