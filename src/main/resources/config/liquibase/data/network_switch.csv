@@ -1,0 +1,4 @@
+id;interface_name;ssh_host;ssh_port;ssh_key
+1;Gi0;autocut@c3560-farue-1.farue.rwth-aachen.de;22;
+2;Gi1/0;autocut@c3560-farue-2.farue.rwth-aachen.de;22;
+3;Gi0;autocut@c3560-farue-3.farue.rwth-aachen.de;22;
