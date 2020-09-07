@@ -4,14 +4,19 @@
     {
       "fieldName": "subject",
       "fieldType": "String",
-      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRules": [
+        "required",
+        "maxlength"
+      ],
       "fieldValidateRulesMaxlength": "80"
     },
     {
       "fieldName": "text",
       "fieldType": "byte[]",
       "fieldTypeBlobContent": "text",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": [
+        "required"
+      ]
     },
     {
       "fieldName": "note",
@@ -21,7 +26,9 @@
     {
       "fieldName": "date",
       "fieldType": "Instant",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": [
+        "required"
+      ]
     }
   ],
   "relationships": [

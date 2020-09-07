@@ -5,22 +5,30 @@
       "fieldName": "kind",
       "fieldType": "TransactionKind",
       "fieldValues": "FEE,CREDIT,DEBIT,TRANSFER,CORRECTION,PURCHASE",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": [
+        "required"
+      ]
     },
     {
       "fieldName": "bookingDate",
       "fieldType": "Instant",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": [
+        "required"
+      ]
     },
     {
       "fieldName": "valueDate",
       "fieldType": "Instant",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": [
+        "required"
+      ]
     },
     {
       "fieldName": "value",
       "fieldType": "BigDecimal",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": [
+        "required"
+      ]
     },
     {
       "fieldName": "balanceAfter",
@@ -33,7 +41,9 @@
     {
       "fieldName": "issuer",
       "fieldType": "String",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": [
+        "required"
+      ]
     },
     {
       "fieldName": "recipient",

@@ -1,30 +1,36 @@
 package de.farue.autocut.web.rest;
 
-import de.farue.autocut.domain.Address;
-import de.farue.autocut.repository.AddressRepository;
-import de.farue.autocut.web.rest.errors.BadRequestAlertException;
-
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+
+import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import de.farue.autocut.domain.Address;
+import de.farue.autocut.service.AddressService;
+import de.farue.autocut.web.rest.errors.BadRequestAlertException;
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link de.farue.autocut.domain.Address}.
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class AddressResource {
 
     private final Logger log = LoggerFactory.getLogger(AddressResource.class);
@@ -34,10 +40,10 @@ public class AddressResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final AddressRepository addressRepository;
+    private final AddressService addressService;
 
-    public AddressResource(AddressRepository addressRepository) {
-        this.addressRepository = addressRepository;
+    public AddressResource(AddressService addressService) {
+        this.addressService = addressService;
     }
 
     /**
@@ -53,7 +59,7 @@ public class AddressResource {
         if (address.getId() != null) {
             throw new BadRequestAlertException("A new address cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Address result = addressRepository.save(address);
+        Address result = addressService.save(address);
         return ResponseEntity.created(new URI("/api/addresses/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -74,7 +80,7 @@ public class AddressResource {
         if (address.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Address result = addressRepository.save(address);
+        Address result = addressService.save(address);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, address.getId().toString()))
             .body(result);
@@ -88,7 +94,7 @@ public class AddressResource {
     @GetMapping("/addresses")
     public List<Address> getAllAddresses() {
         log.debug("REST request to get all Addresses");
-        return addressRepository.findAll();
+        return addressService.findAll();
     }
 
     /**
@@ -100,7 +106,7 @@ public class AddressResource {
     @GetMapping("/addresses/{id}")
     public ResponseEntity<Address> getAddress(@PathVariable Long id) {
         log.debug("REST request to get Address : {}", id);
-        Optional<Address> address = addressRepository.findById(id);
+        Optional<Address> address = addressService.findOne(id);
         return ResponseUtil.wrapOrNotFound(address);
     }
 
@@ -113,7 +119,7 @@ public class AddressResource {
     @DeleteMapping("/addresses/{id}")
     public ResponseEntity<Void> deleteAddress(@PathVariable Long id) {
         log.debug("REST request to delete Address : {}", id);
-        addressRepository.deleteById(id);
+        addressService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }
