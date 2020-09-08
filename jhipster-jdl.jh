@@ -22,7 +22,7 @@ enum TeamRole {
 entity Lease {
 	nr String required // number given by StW, e.g. 30-41
 	start Instant required
-    end Instant
+    end Instant required
     blocked Boolean
     pictureContract ImageBlob
 }

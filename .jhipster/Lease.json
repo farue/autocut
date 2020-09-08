@@ -17,7 +17,10 @@
     },
     {
       "fieldName": "end",
-      "fieldType": "Instant"
+      "fieldType": "Instant",
+      "fieldValidateRules": [
+        "required"
+      ]
     },
     {
       "fieldName": "blocked",

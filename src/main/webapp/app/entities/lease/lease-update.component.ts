@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
-import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
+import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
 import { ILease, Lease } from 'app/shared/model/lease.model';
 import { LeaseService } from './lease.service';
@@ -26,7 +26,7 @@ export class LeaseUpdateComponent implements OnInit {
     id: [],
     nr: [null, [Validators.required]],
     start: [null, [Validators.required]],
-    end: [],
+    end: [null, [Validators.required]],
     blocked: [],
     pictureContract: [],
     pictureContractContentType: [],

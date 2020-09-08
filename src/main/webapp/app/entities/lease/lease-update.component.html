@@ -45,6 +45,16 @@
                     <div class="d-flex">
                         <input id="field_end" type="datetime-local" class="form-control" name="end" formControlName="end" placeholder="YYYY-MM-DD HH:mm"/>
                     </div>
+                    <div *ngIf="editForm.get('end')!.invalid && (editForm.get('end')!.dirty || editForm.get('end')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('end')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('end')?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                            This field should be a date and time.
+                        </small>
+                    </div>
                 </div>
 
                 <div class="form-group">

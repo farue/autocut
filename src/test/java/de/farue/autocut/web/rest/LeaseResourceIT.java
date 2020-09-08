@@ -191,6 +191,25 @@ public class LeaseResourceIT {
 
     @Test
     @Transactional
+    public void checkEndIsRequired() throws Exception {
+        int databaseSizeBeforeTest = leaseRepository.findAll().size();
+        // set the field null
+        lease.setEnd(null);
+
+        // Create the Lease, which fails.
+
+
+        restLeaseMockMvc.perform(post("/api/leases")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(lease)))
+            .andExpect(status().isBadRequest());
+
+        List<Lease> leaseList = leaseRepository.findAll();
+        assertThat(leaseList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllLeases() throws Exception {
         // Initialize the database
         leaseRepository.saveAndFlush(lease);
