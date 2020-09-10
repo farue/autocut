@@ -1,9 +1,11 @@
-import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 
 import { LoginService } from 'app/core/login/login.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { USER_NOT_ACTIVATED_TYPE, USER_NOT_VERIFIED_TYPE } from 'app/shared/constants/error.constants';
 
 @Component({
   selector: 'jhi-login-modal',
@@ -14,6 +16,8 @@ export class LoginModalComponent implements AfterViewInit {
   username?: ElementRef;
 
   authenticationError = false;
+  errorUserNotActivated = false;
+  errorUserNotVerified = false;
 
   loginForm = this.fb.group({
     username: [''],
@@ -31,6 +35,8 @@ export class LoginModalComponent implements AfterViewInit {
 
   cancel(): void {
     this.authenticationError = false;
+    this.errorUserNotActivated = false;
+    this.errorUserNotVerified = false;
     this.loginForm.patchValue({
       username: '',
       password: '',
@@ -48,6 +54,8 @@ export class LoginModalComponent implements AfterViewInit {
       .subscribe(
         () => {
           this.authenticationError = false;
+          this.errorUserNotActivated = false;
+          this.errorUserNotVerified = false;
           this.activeModal.close();
           if (
             this.router.url === '/account/register' ||
@@ -57,7 +65,7 @@ export class LoginModalComponent implements AfterViewInit {
             this.router.navigate(['']);
           }
         },
-        () => (this.authenticationError = true)
+        response => this.processError(response)
       );
   }
 
@@ -69,5 +77,19 @@ export class LoginModalComponent implements AfterViewInit {
   requestResetPassword(): void {
     this.activeModal.dismiss('to state requestReset');
     this.router.navigate(['/account/reset', 'request']);
+  }
+
+  private processError(response: HttpErrorResponse): void {
+    this.authenticationError = false;
+    this.errorUserNotActivated = false;
+    this.errorUserNotVerified = false;
+
+    if (response.status === 401 && response.error.type === USER_NOT_ACTIVATED_TYPE) {
+      this.errorUserNotActivated = true;
+    } else if (response.status === 401 && response.error.type === USER_NOT_VERIFIED_TYPE) {
+      this.errorUserNotVerified = true;
+    } else {
+      this.authenticationError = true;
+    }
   }
 }

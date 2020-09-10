@@ -41,7 +41,8 @@ public class Lease implements Serializable {
     @Column(name = "start", nullable = false)
     private Instant start;
 
-    @Column(name = "end")
+    @NotNull
+    @Column(name = "end", nullable = false)
     private Instant end;
 
     @Column(name = "blocked")

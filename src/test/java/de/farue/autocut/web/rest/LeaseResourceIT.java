@@ -1,8 +1,21 @@
 package de.farue.autocut.web.rest;
 
-import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.Lease;
-import de.farue.autocut.repository.LeaseRepository;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,20 +27,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
 
-import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import de.farue.autocut.AutocutApp;
+import de.farue.autocut.domain.Lease;
+import de.farue.autocut.repository.LeaseRepository;
+import de.farue.autocut.service.LeaseService;
 
 /**
  * Integration tests for the {@link LeaseResource} REST controller.
@@ -56,6 +59,9 @@ public class LeaseResourceIT {
 
     @Autowired
     private LeaseRepository leaseRepository;
+
+    @Autowired
+    private LeaseService leaseService;
 
     @Autowired
     private EntityManager em;
@@ -183,6 +189,25 @@ public class LeaseResourceIT {
 
     @Test
     @Transactional
+    public void checkEndIsRequired() throws Exception {
+        int databaseSizeBeforeTest = leaseRepository.findAll().size();
+        // set the field null
+        lease.setEnd(null);
+
+        // Create the Lease, which fails.
+
+
+        restLeaseMockMvc.perform(post("/api/leases")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(lease)))
+            .andExpect(status().isBadRequest());
+
+        List<Lease> leaseList = leaseRepository.findAll();
+        assertThat(leaseList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllLeases() throws Exception {
         // Initialize the database
         leaseRepository.saveAndFlush(lease);
@@ -230,7 +255,7 @@ public class LeaseResourceIT {
     @Transactional
     public void updateLease() throws Exception {
         // Initialize the database
-        leaseRepository.saveAndFlush(lease);
+        leaseService.save(lease);
 
         int databaseSizeBeforeUpdate = leaseRepository.findAll().size();
 
@@ -283,7 +308,7 @@ public class LeaseResourceIT {
     @Transactional
     public void deleteLease() throws Exception {
         // Initialize the database
-        leaseRepository.saveAndFlush(lease);
+        leaseService.save(lease);
 
         int databaseSizeBeforeDelete = leaseRepository.findAll().size();
 

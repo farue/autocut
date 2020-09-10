@@ -1,8 +1,10 @@
 package de.farue.autocut.security;
 
-import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.User;
-import de.farue.autocut.repository.UserRepository;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+
+import java.util.Locale;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,10 +14,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Locale;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import de.farue.autocut.AutocutApp;
+import de.farue.autocut.domain.Tenant;
+import de.farue.autocut.domain.User;
+import de.farue.autocut.repository.TenantRepository;
+import de.farue.autocut.repository.UserRepository;
 
 /**
  * Integrations tests for {@link DomainUserDetailsService}.
@@ -30,9 +33,16 @@ public class DomainUserDetailsServiceIT {
     private static final String USER_TWO_EMAIL = "test-user-two@localhost";
     private static final String USER_THREE_LOGIN = "test-user-three";
     private static final String USER_THREE_EMAIL = "test-user-three@localhost";
+    private static final String USER_WITH_TENANT_NOT_VERIFIED_LOGIN = "test-user-four";
+    private static final String USER_WITH_TENANT_NOT_VERIFIED_EMAIL = "test-user-four@localhost";
+    private static final String USER_WITH_TENANT_VERIFIED_LOGIN = "test-user-five";
+    private static final String USER_WITH_TENANT_VERIFIED_EMAIL = "test-user-five@localhost";
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private TenantRepository tenantRepository;
 
     @Autowired
     private UserDetailsService domainUserDetailsService;
@@ -68,6 +78,36 @@ public class DomainUserDetailsServiceIT {
         userThree.setLastName("doe");
         userThree.setLangKey("en");
         userRepository.save(userThree);
+
+        User userFour = new User();
+        userFour.setLogin(USER_WITH_TENANT_NOT_VERIFIED_LOGIN);
+        userFour.setPassword(RandomStringUtils.random(60));
+        userFour.setActivated(true);
+        userFour.setEmail(USER_WITH_TENANT_NOT_VERIFIED_EMAIL);
+        userFour.setFirstName("userFour");
+        userFour.setLastName("doe");
+        userFour.setLangKey("en");
+        userRepository.save(userFour);
+
+        Tenant tenantNotVerified = new Tenant()
+            .user(userFour)
+            .verified(false);
+        tenantRepository.save(tenantNotVerified);
+
+        User userFive = new User();
+        userFive.setLogin(USER_WITH_TENANT_VERIFIED_LOGIN);
+        userFive.setPassword(RandomStringUtils.random(60));
+        userFive.setActivated(true);
+        userFive.setEmail(USER_WITH_TENANT_VERIFIED_EMAIL);
+        userFive.setFirstName("userFour");
+        userFive.setLastName("doe");
+        userFive.setLangKey("en");
+        userRepository.save(userFive);
+
+        Tenant tenantVerified = new Tenant()
+            .user(userFive)
+            .verified(true);
+        tenantRepository.save(tenantVerified);
     }
 
     @Test
@@ -111,4 +151,16 @@ public class DomainUserDetailsServiceIT {
             () -> domainUserDetailsService.loadUserByUsername(USER_THREE_LOGIN));
     }
 
+    @Test
+    public void assertThatUserNotVerifiedExceptionIsThrownForNotUsersWithNotVerifiedTenant() {
+        assertThatExceptionOfType(UserNotVerifiedException.class).isThrownBy(
+            () -> domainUserDetailsService.loadUserByUsername(USER_WITH_TENANT_NOT_VERIFIED_LOGIN));
+    }
+
+    @Test
+    public void assertThatUserCanBeFoundWhenTenantIsVerified() {
+        UserDetails userDetails = domainUserDetailsService.loadUserByUsername(USER_WITH_TENANT_VERIFIED_LOGIN);
+        assertThat(userDetails).isNotNull();
+        assertThat(userDetails.getUsername()).isEqualTo(USER_WITH_TENANT_VERIFIED_LOGIN);
+    }
 }

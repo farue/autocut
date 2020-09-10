@@ -45,7 +45,8 @@ public class TransactionServiceIT {
     void setUp() {
         lease = new Lease()
             .nr(ANY_LEASE_NR)
-            .start(todayPlusDays(-5));
+            .start(todayPlusDays(-5))
+            .end(todayPlusDays(5));
 
         leaseRepository.saveAndFlush(lease);
     }

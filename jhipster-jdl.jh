@@ -18,14 +18,16 @@ enum TeamRole {
     MEMBER
 }
 
+@service(serviceClass)
 entity Lease {
 	nr String required // number given by StW, e.g. 30-41
 	start Instant required
-    end Instant
+    end Instant required
     blocked Boolean
     pictureContract ImageBlob
 }
 
+@service(serviceClass)
 entity Apartment {
     // simple apartment nr, cannot be stw number because there are two different ones for shared apartments
 	nr String required
@@ -41,6 +43,7 @@ enum ApartmentTypes {
     SHORT_TERM
 }
 
+@service(serviceClass)
 entity Address {
 	street String required
 	streetNumber String required

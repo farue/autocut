@@ -75,8 +75,6 @@
                                 columnDataType="varchar(60)"
                                 tableName="jhi_user"/>
 
-
-        <dropDefaultValue tableName="jhi_user" columnName="created_date" columnDataType="datetime"/>
         <loadData
                   file="config/liquibase/data/authority.csv"
                   separator=";"
@@ -173,5 +171,9 @@
             tableName="jhi_user_authority">
             <column name="user_id" type="numeric"/>
         </loadData>
+    </changeSet>
+
+    <changeSet author="brunecker" id="00000000000005">
+        <dropDefaultValue tableName="jhi_user" columnName="created_date" columnDataType="datetime"/>
     </changeSet>
 </databaseChangeLog>

@@ -1,9 +1,16 @@
 package de.farue.autocut.web.rest.errors;
 
-import io.github.jhipster.web.util.HeaderUtil;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -17,11 +24,7 @@ import org.zalando.problem.spring.web.advice.ProblemHandling;
 import org.zalando.problem.spring.web.advice.security.SecurityAdviceTrait;
 import org.zalando.problem.violations.ConstraintViolationProblem;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.stream.Collectors;
+import io.github.jhipster.web.util.HeaderUtil;
 
 /**
  * Controller advice to translate the server side exceptions to client-friendly json structures.
@@ -90,6 +93,17 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         return create(ex, problem, request);
     }
 
+    @Override
+    public ResponseEntity<Problem> handleAuthentication(AuthenticationException e, NativeWebRequest request) {
+        if (e.getCause() instanceof de.farue.autocut.security.UserNotActivatedException) {
+            return handleUserNotActivatedException(request);
+        } else if (e.getCause() instanceof de.farue.autocut.security.UserNotVerifiedException) {
+            return handleUserNotVerifiedException(request);
+        } else {
+            return SecurityAdviceTrait.super.handleAuthentication(e, request);
+        }
+    }
+
     @ExceptionHandler
     public ResponseEntity<Problem> handleEmailAlreadyUsedException(de.farue.autocut.service.EmailAlreadyUsedException ex, NativeWebRequest request) {
         EmailAlreadyUsedException problem = new EmailAlreadyUsedException();
@@ -137,5 +151,17 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         return create(problem, request, HeaderUtil
             .createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(),
                 problem.getMessage()));
+    }
+
+    private ResponseEntity<Problem> handleUserNotActivatedException(NativeWebRequest request) {
+        UserNotActivatedException problem = new UserNotActivatedException();
+        return create(problem, request, HeaderUtil
+            .createAlert(applicationName, problem.getMessage(), "userManagement"));
+    }
+
+    private ResponseEntity<Problem> handleUserNotVerifiedException(NativeWebRequest request) {
+        UserNotVerifiedException problem = new UserNotVerifiedException();
+        return create(problem, request, HeaderUtil
+            .createAlert(applicationName, problem.getMessage(), "userManagement"));
     }
 }

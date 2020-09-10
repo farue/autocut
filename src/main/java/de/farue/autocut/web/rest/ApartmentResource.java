@@ -1,15 +1,16 @@
 package de.farue.autocut.web.rest;
 
-import de.farue.autocut.domain.Apartment;
-import de.farue.autocut.repository.ApartmentRepository;
-import de.farue.autocut.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,18 +20,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import de.farue.autocut.domain.Apartment;
+import de.farue.autocut.service.ApartmentService;
+import de.farue.autocut.web.rest.errors.BadRequestAlertException;
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link de.farue.autocut.domain.Apartment}.
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class ApartmentResource {
 
     private final Logger log = LoggerFactory.getLogger(ApartmentResource.class);
@@ -40,10 +40,10 @@ public class ApartmentResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final ApartmentRepository apartmentRepository;
+    private final ApartmentService apartmentService;
 
-    public ApartmentResource(ApartmentRepository apartmentRepository) {
-        this.apartmentRepository = apartmentRepository;
+    public ApartmentResource(ApartmentService apartmentService) {
+        this.apartmentService = apartmentService;
     }
 
     /**
@@ -59,7 +59,7 @@ public class ApartmentResource {
         if (apartment.getId() != null) {
             throw new BadRequestAlertException("A new apartment cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Apartment result = apartmentRepository.save(apartment);
+        Apartment result = apartmentService.save(apartment);
         return ResponseEntity.created(new URI("/api/apartments/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -80,7 +80,7 @@ public class ApartmentResource {
         if (apartment.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Apartment result = apartmentRepository.save(apartment);
+        Apartment result = apartmentService.save(apartment);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, apartment.getId().toString()))
             .body(result);
@@ -94,7 +94,7 @@ public class ApartmentResource {
     @GetMapping("/apartments")
     public List<Apartment> getAllApartments() {
         log.debug("REST request to get all Apartments");
-        return apartmentRepository.findAll();
+        return apartmentService.findAll();
     }
 
     /**
@@ -106,7 +106,7 @@ public class ApartmentResource {
     @GetMapping("/apartments/{id}")
     public ResponseEntity<Apartment> getApartment(@PathVariable Long id) {
         log.debug("REST request to get Apartment : {}", id);
-        Optional<Apartment> apartment = apartmentRepository.findById(id);
+        Optional<Apartment> apartment = apartmentService.findOne(id);
         return ResponseUtil.wrapOrNotFound(apartment);
     }
 
@@ -119,8 +119,7 @@ public class ApartmentResource {
     @DeleteMapping("/apartments/{id}")
     public ResponseEntity<Void> deleteApartment(@PathVariable Long id) {
         log.debug("REST request to delete Apartment : {}", id);
-
-        apartmentRepository.deleteById(id);
+        apartmentService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }

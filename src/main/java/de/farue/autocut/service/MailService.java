@@ -3,17 +3,13 @@ package de.farue.autocut.service;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
-import javax.mail.Flags.Flag;
-import javax.mail.Folder;
-import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Store;
 import javax.mail.internet.MimeMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.Profile;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -23,6 +19,9 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import de.farue.autocut.domain.User;
+import de.farue.autocut.email.ImapFolder;
+import de.farue.autocut.email.ImapFolderFactory;
+import io.github.jhipster.config.JHipsterConstants;
 import io.github.jhipster.config.JHipsterProperties;
 
 /**
@@ -31,6 +30,7 @@ import io.github.jhipster.config.JHipsterProperties;
  * We use the {@link Async} annotation to send emails asynchronously.
  */
 @Service
+@Profile(JHipsterConstants.SPRING_PROFILE_PRODUCTION)
 public class MailService {
 
     private final Logger log = LoggerFactory.getLogger(MailService.class);
@@ -47,13 +47,16 @@ public class MailService {
 
     private final SpringTemplateEngine templateEngine;
 
+    private final ImapFolderFactory imapFolderFactory;
+
     public MailService(JHipsterProperties jHipsterProperties, JavaMailSenderImpl javaMailSender,
-            MessageSource messageSource, SpringTemplateEngine templateEngine) {
+            MessageSource messageSource, SpringTemplateEngine templateEngine, ImapFolderFactory imapFolderFactory) {
 
         this.jHipsterProperties = jHipsterProperties;
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
         this.templateEngine = templateEngine;
+        this.imapFolderFactory = imapFolderFactory;
     }
 
     @Async
@@ -75,28 +78,11 @@ public class MailService {
             log.warn("Email could not be sent to user '{}'", to, e);
         }
 
-        Store store = null;
         try {
-            Session session = javaMailSender.getSession();
-            store = session.getStore();
-            if (!store.isConnected()) {
-                store.connect(javaMailSender.getHost(), javaMailSender.getUsername(), javaMailSender.getPassword());
-            }
-            Folder folder = store.getFolder("Sent Items");
-            folder.open(Folder.READ_WRITE);
-            mimeMessage.setFlag(Flag.SEEN, true);
-            folder.appendMessages(new Message[]{mimeMessage});
+            imapFolderFactory.getFolder(ImapFolder.SENT_ITEMS).appendMessages(mimeMessage);
             log.debug("Copied email to sent folder");
         } catch (MessagingException e) {
             log.warn("Email could not be copied to sent folder", e);
-        } finally {
-            try {
-                if (store != null) {
-                    store.close();
-                }
-            } catch (MessagingException e) {
-                log.warn("Failed to close store connection", e);
-            }
         }
     }
 
@@ -119,6 +105,12 @@ public class MailService {
     public void sendActivationEmail(User user) {
         log.debug("Sending activation email to '{}'", user.getEmail());
         sendEmailFromTemplate(user, "mail/activationEmail", "email.activation.title");
+    }
+
+    @Async
+    public void sendVerificationEmail(User user) {
+        log.debug("Sending activation email to '{}'", user.getEmail());
+        sendEmailFromTemplate(user, "mail/verificationEmail", "email.verification.title");
     }
 
     @Async

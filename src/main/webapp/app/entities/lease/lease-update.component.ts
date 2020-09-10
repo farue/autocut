@@ -26,7 +26,7 @@ export class LeaseUpdateComponent implements OnInit {
     id: [],
     nr: [null, [Validators.required]],
     start: [null, [Validators.required]],
-    end: [],
+    end: [null, [Validators.required]],
     blocked: [],
     pictureContract: [],
     pictureContractContentType: [],

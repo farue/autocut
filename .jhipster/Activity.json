@@ -4,13 +4,17 @@
     {
       "fieldName": "year",
       "fieldType": "Integer",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": [
+        "required"
+      ]
     },
     {
       "fieldName": "term",
       "fieldType": "SemesterTerms",
       "fieldValues": "SUMMER_TERM,WINTER_TERM",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": [
+        "required"
+      ]
     },
     {
       "fieldName": "startDate",

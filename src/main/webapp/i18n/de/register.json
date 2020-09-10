@@ -2,10 +2,30 @@
   "register": {
     "title": "Registrierung",
     "form": {
-      "button": "Registrieren"
+      "button": "Registrieren",
+      "start": "Mietbeginn laut Vertrag",
+      "end": "Mietende laut Vertrag",
+      "networkTerms": "Ich stimme den <a target=\"_blank\" href=\"/info/statutes/network\" [routerLink]=\"['/info', 'statutes', 'network']\">FaRueNet Nutzungsbedingungen</a> zu.",
+      "generalTerms": "Ich stimme den <a target=\"_blank\" href=\"/info/about/terms\" [routerLink]=\"['/info', 'about', 'terms']\">Nutzungsbedingungen</a>, der <a target=\"_blank\" href=\"/info/about/privacy\" [routerLink]=\"['/info', 'about', 'privacy']\">Datenschutzerklärung</a> und der <a target=\"_blank\" href=\"/info/about/cookies\" [routerLink]=\"['/info', 'about', 'cookies']\">Cookie Richtlinie</a> zu."
     },
     "messages": {
       "validate": {
+        "firstName": {
+          "required": "Ihr Vorname wird benötigt.",
+          "minlength": "min. 1 Zeichen",
+          "maxlength": "max. 50 Zeichen"
+        },
+        "lastName": {
+          "required": "Ihr Nachname wird benötigt.",
+          "minlength": "min. 1 Zeichen",
+          "maxlength": "max. 50 Zeichen"
+        },
+        "apartment": {
+          "required": "Ihre Wohnungsnr. wird benötigt.",
+          "minlength": "5 Zeichen (z.B. 30-41)",
+          "maxlength": "5 Zeichen (z.B. 30-41)",
+          "pattern": "Format xx-xx (s. Mietvertrag)"
+        },
         "login": {
           "required": "Ihr Benutzername wird benötigt.",
           "minlength": "Ihr Benutzername muss mindestens 1 Zeichen lang sein",
