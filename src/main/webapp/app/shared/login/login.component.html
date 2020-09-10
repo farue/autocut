@@ -12,6 +12,14 @@
             <div class="alert alert-danger" *ngIf="authenticationError" jhiTranslate="login.messages.error.authentication">
                 <strong>Failed to sign in!</strong> Please check your credentials and try again.
             </div>
+
+            <div class="alert alert-warning" *ngIf="errorUserNotActivated" jhiTranslate="login.messages.warning.userNotActivated">
+                User not activated!
+            </div>
+
+            <div class="alert alert-warning" *ngIf="errorUserNotVerified" jhiTranslate="login.messages.warning.userNotVerified">
+                User not verified!
+            </div>
         </div>
 
         <div class="col-md-8">
@@ -36,17 +44,15 @@
                     </label>
                 </div>
 
-                <button type="submit" class="btn btn-primary" jhiTranslate="login.form.button">Sign in</button>
+                <div class="form-group row mt-3">
+                    <div class="col-4 float-left">
+                        <button type="submit" class="btn btn-primary float-left" jhiTranslate="login.form.button">Sign in</button>
+                    </div>
+                    <div class="col-8 float-right">
+                        <button type="button" (click)="requestResetPassword()" class="btn btn-secondary float-right" jhiTranslate="login.password.forgot">Reset password</button>
+                    </div>
+                </div>
             </form>
-
-            <div class="mt-3 alert alert-warning">
-                <a class="alert-link" (click)="requestResetPassword()" jhiTranslate="login.password.forgot">Did you forget your password?</a>
-            </div>
-
-            <div class="alert alert-warning">
-                <span jhiTranslate="global.messages.info.register.noaccount">You don't have an account yet?</span>
-                <a class="alert-link" (click)="register()" jhiTranslate="global.messages.info.register.link">Register a new account</a>
-            </div>
         </div>
     </div>
 </div>

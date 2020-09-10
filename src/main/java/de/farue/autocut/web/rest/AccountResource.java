@@ -1,25 +1,38 @@
 package de.farue.autocut.web.rest;
 
-import de.farue.autocut.domain.User;
-import de.farue.autocut.repository.UserRepository;
-import de.farue.autocut.security.SecurityUtils;
-import de.farue.autocut.service.MailService;
-import de.farue.autocut.service.UserService;
-import de.farue.autocut.service.dto.PasswordChangeDTO;
-import de.farue.autocut.service.dto.UserDTO;
-import de.farue.autocut.web.rest.errors.*;
-import de.farue.autocut.web.rest.vm.KeyAndPasswordVM;
-import de.farue.autocut.web.rest.vm.ManagedUserVM;
+import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.util.*;
+import de.farue.autocut.domain.Lease;
+import de.farue.autocut.domain.User;
+import de.farue.autocut.repository.UserRepository;
+import de.farue.autocut.security.SecurityUtils;
+import de.farue.autocut.service.LeaseService;
+import de.farue.autocut.service.MailService;
+import de.farue.autocut.service.TenantService;
+import de.farue.autocut.service.UserService;
+import de.farue.autocut.service.dto.PasswordChangeDTO;
+import de.farue.autocut.service.dto.UserDTO;
+import de.farue.autocut.web.rest.errors.EmailAlreadyUsedException;
+import de.farue.autocut.web.rest.errors.InvalidPasswordException;
+import de.farue.autocut.web.rest.errors.LoginAlreadyUsedException;
+import de.farue.autocut.web.rest.vm.KeyAndPasswordVM;
+import de.farue.autocut.web.rest.vm.ManagedUserVM;
 
 /**
  * REST controller for managing the current user's account.
@@ -40,12 +53,18 @@ public class AccountResource {
 
     private final UserService userService;
 
+    private final LeaseService leaseService;
+
+    private final TenantService tenantService;
+
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
-
+    public AccountResource(UserRepository userRepository, UserService userService, LeaseService leaseService, TenantService tenantService,
+        MailService mailService) {
         this.userRepository = userRepository;
         this.userService = userService;
+        this.leaseService = leaseService;
+        this.tenantService = tenantService;
         this.mailService = mailService;
     }
 
@@ -59,11 +78,14 @@ public class AccountResource {
      */
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
+    @Transactional // so all create... methods run in single transaction
     public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
         if (!checkPasswordLength(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
+        Lease lease = leaseService.createLeaseIfNotExists(managedUserVM.getApartment(), managedUserVM.getStart(), managedUserVM.getEnd());
+        tenantService.createNewTenant(user, lease);
         mailService.sendActivationEmail(user);
     }
 

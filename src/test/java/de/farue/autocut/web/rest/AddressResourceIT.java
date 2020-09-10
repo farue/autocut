@@ -1,8 +1,19 @@
 package de.farue.autocut.web.rest;
 
-import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.Address;
-import de.farue.autocut.repository.AddressRepository;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,18 +24,10 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import de.farue.autocut.AutocutApp;
+import de.farue.autocut.domain.Address;
+import de.farue.autocut.repository.AddressRepository;
+import de.farue.autocut.service.AddressService;
 
 /**
  * Integration tests for the {@link AddressResource} REST controller.
@@ -51,6 +54,9 @@ public class AddressResourceIT {
 
     @Autowired
     private AddressRepository addressRepository;
+
+    @Autowired
+    private AddressService addressService;
 
     @Autowired
     private EntityManager em;
@@ -274,7 +280,7 @@ public class AddressResourceIT {
     @Transactional
     public void updateAddress() throws Exception {
         // Initialize the database
-        addressRepository.saveAndFlush(address);
+        addressService.save(address);
 
         int databaseSizeBeforeUpdate = addressRepository.findAll().size();
 
@@ -325,7 +331,7 @@ public class AddressResourceIT {
     @Transactional
     public void deleteAddress() throws Exception {
         // Initialize the database
-        addressRepository.saveAndFlush(address);
+        addressService.save(address);
 
         int databaseSizeBeforeDelete = addressRepository.findAll().size();
 

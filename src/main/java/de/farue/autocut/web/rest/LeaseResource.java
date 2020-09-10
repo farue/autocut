@@ -1,15 +1,16 @@
 package de.farue.autocut.web.rest;
 
-import de.farue.autocut.domain.Lease;
-import de.farue.autocut.repository.LeaseRepository;
-import de.farue.autocut.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,18 +20,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import de.farue.autocut.domain.Lease;
+import de.farue.autocut.service.LeaseService;
+import de.farue.autocut.web.rest.errors.BadRequestAlertException;
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link de.farue.autocut.domain.Lease}.
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class LeaseResource {
 
     private final Logger log = LoggerFactory.getLogger(LeaseResource.class);
@@ -40,10 +40,10 @@ public class LeaseResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final LeaseRepository leaseRepository;
+    private final LeaseService leaseService;
 
-    public LeaseResource(LeaseRepository leaseRepository) {
-        this.leaseRepository = leaseRepository;
+    public LeaseResource(LeaseService leaseService) {
+        this.leaseService = leaseService;
     }
 
     /**
@@ -59,7 +59,7 @@ public class LeaseResource {
         if (lease.getId() != null) {
             throw new BadRequestAlertException("A new lease cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Lease result = leaseRepository.save(lease);
+        Lease result = leaseService.save(lease);
         return ResponseEntity.created(new URI("/api/leases/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -80,7 +80,7 @@ public class LeaseResource {
         if (lease.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Lease result = leaseRepository.save(lease);
+        Lease result = leaseService.save(lease);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, lease.getId().toString()))
             .body(result);
@@ -94,7 +94,7 @@ public class LeaseResource {
     @GetMapping("/leases")
     public List<Lease> getAllLeases() {
         log.debug("REST request to get all Leases");
-        return leaseRepository.findAll();
+        return leaseService.findAll();
     }
 
     /**
@@ -106,7 +106,7 @@ public class LeaseResource {
     @GetMapping("/leases/{id}")
     public ResponseEntity<Lease> getLease(@PathVariable Long id) {
         log.debug("REST request to get Lease : {}", id);
-        Optional<Lease> lease = leaseRepository.findById(id);
+        Optional<Lease> lease = leaseService.findOne(id);
         return ResponseUtil.wrapOrNotFound(lease);
     }
 
@@ -119,8 +119,7 @@ public class LeaseResource {
     @DeleteMapping("/leases/{id}")
     public ResponseEntity<Void> deleteLease(@PathVariable Long id) {
         log.debug("REST request to delete Lease : {}", id);
-
-        leaseRepository.deleteById(id);
+        leaseService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }

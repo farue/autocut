@@ -29,9 +29,127 @@
         <div class="col-md-8">
             <form name="form" role="form" (ngSubmit)="register()" [formGroup]="registerForm" *ngIf="!success">
                 <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-control-label" for="firstName" jhiTranslate="global.form.firstname.label">First Name</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName" placeholder="{{ 'global.form.firstname.placeholder' | translate }}"
+                                   formControlName="firstName" #firstName>
+
+                            <div *ngIf="registerForm.get('firstName')!.invalid && (registerForm.get('firstName')!.dirty || registerForm.get('firstName')!.touched)">
+                                <small class="form-text text-danger"
+                                       *ngIf="registerForm.get('firstName')?.errors?.required"
+                                       jhiTranslate="register.messages.validate.firstName.required">
+                                    Your first name is required.
+                                </small>
+
+                                <small class="form-text text-danger"
+                                       *ngIf="registerForm.get('firstName')?.errors?.minlength"
+                                       jhiTranslate="register.messages.validate.firstName.minlength">
+                                    min. 1 character.
+                                </small>
+
+                                <small class="form-text text-danger"
+                                       *ngIf="registerForm.get('firstName')?.errors?.maxlength"
+                                       jhiTranslate="register.messages.validate.firstName.maxlength">
+                                    max. 50 characters.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-control-label" for="lastName" jhiTranslate="global.form.lastname.label">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" name="lastName" placeholder="{{ 'global.form.lastname.placeholder' | translate }}"
+                                   formControlName="lastName">
+
+                            <div *ngIf="registerForm.get('lastName')!.invalid && (registerForm.get('lastName')!.dirty || registerForm.get('lastName')!.touched)">
+                                <small class="form-text text-danger"
+                                       *ngIf="registerForm.get('lastName')?.errors?.required"
+                                       jhiTranslate="register.messages.validate.lastName.required">
+                                    Your last name is required.
+                                </small>
+
+                                <small class="form-text text-danger"
+                                       *ngIf="registerForm.get('lastName')?.errors?.minlength"
+                                       jhiTranslate="register.messages.validate.lastName.minlength">
+                                    min. 1 character.
+                                </small>
+
+                                <small class="form-text text-danger"
+                                       *ngIf="registerForm.get('lastName')?.errors?.maxlength"
+                                       jhiTranslate="register.messages.validate.lastName.maxlength">
+                                    max. 50 characters.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-control-label" for="apartment" jhiTranslate="global.form.apartment.label">Last Name</label>
+                            <input type="text" class="form-control" id="apartment" name="apartment" placeholder="{{ 'global.form.apartment.placeholder' | translate }}"
+                                   formControlName="apartment">
+
+                            <div *ngIf="registerForm.get('apartment')!.invalid && (registerForm.get('apartment')!.dirty || registerForm.get('apartment')!.touched)">
+                                <small class="form-text text-danger"
+                                       *ngIf="registerForm.get('apartment')?.errors?.required"
+                                       jhiTranslate="register.messages.validate.apartment.required">
+                                    Your apartment no is required.
+                                </small>
+
+                                <small class="form-text text-danger"
+                                       *ngIf="registerForm.get('apartment')?.errors?.minlength"
+                                       jhiTranslate="register.messages.validate.apartment.minlength">
+                                    min. 5 character.
+                                </small>
+
+                                <small class="form-text text-danger"
+                                       *ngIf="registerForm.get('apartment')?.errors?.maxlength"
+                                       jhiTranslate="register.messages.validate.apartment.maxlength">
+                                    max. 5 characters.
+                                </small>
+
+                                <small class="form-text text-danger"
+                                       *ngIf="registerForm.get('apartment')?.errors?.pattern"
+                                       jhiTranslate="register.messages.validate.apartment.pattern">
+                                    Required format: xx-xx (cf. rental agreement)
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-control-label" jhiTranslate="register.form.start" for="start">Start</label>
+                            <div class="d-flex">
+                                <input id="start" type="date" class="form-control" name="start" formControlName="start"
+                                       placeholder="YYYY-MM-DD" [max]="registerForm.get('end')!.valid ? registerForm.get('end')!.value : ''"/>
+                            </div>
+                            <div *ngIf="registerForm.get('start')!.invalid && (registerForm.get('start')!.dirty || registerForm.get('start')!.touched)">
+                                <small class="form-text text-danger"
+                                       *ngIf="registerForm.get('start')?.errors?.required" jhiTranslate="entity.validation.required">
+                                    This field is required.
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-control-label" jhiTranslate="register.form.end" for="end">End</label>
+                            <div class="d-flex">
+                                <input id="end" type="date" class="form-control" name="end" formControlName="end"
+                                       placeholder="YYYY-MM-DD" [min]="registerForm.get('start')!.valid ? registerForm.get('start')!.value : ''"/>
+                            </div>
+                            <div *ngIf="registerForm.get('end')!.invalid && (registerForm.get('end')!.dirty || registerForm.get('end')!.touched)">
+                                <small class="form-text text-danger"
+                                       *ngIf="registerForm.get('end')?.errors?.required" jhiTranslate="entity.validation.required">
+                                    This field is required.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label class="form-control-label" for="login" jhiTranslate="global.form.username.label">Username</label>
                     <input type="text" class="form-control" id="login" name="login" placeholder="{{ 'global.form.username.placeholder' | translate }}"
-                           formControlName="login" #login>
+                           formControlName="login">
 
                     <div *ngIf="registerForm.get('login')!.invalid && (registerForm.get('login')!.dirty || registerForm.get('login')!.touched)">
                         <small class="form-text text-danger"
@@ -146,13 +264,21 @@
                     </div>
                 </div>
 
-                <button type="submit" [disabled]="registerForm.invalid" class="btn btn-primary" jhiTranslate="register.form.button">Register</button>
-            </form>
+                <div class="form-group">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="networkTerms" name="networkTerms" formControlName="networkTerms">
+                        <label class="form-check-label" for="networkTerms" jhiTranslate="register.form.networkTerms">FaRueNet Terms</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="generalTerms" name="generalTerms" formControlName="generalTerms">
+                        <label class="form-check-label" for="generalTerms" jhiTranslate="register.form.generalTerms"></label>
+                    </div>
+                </div>
 
-            <div class="mt-3 alert alert-warning">
-                <span jhiTranslate="global.messages.info.authenticated.prefix">If you want to </span>
-                <a class="alert-link" (click)="openLogin()" jhiTranslate="global.messages.info.authenticated.link">sign in</a><span jhiTranslate="global.messages.info.authenticated.suffix">, you can try the default accounts:<br/>- Administrator (login="admin" and password="admin") <br/>- User (login="user" and password="user").</span>
-            </div>
+                <div class="form-group">
+                        <button type="submit" [disabled]="registerForm.invalid" class="btn btn-primary" jhiTranslate="register.form.button">Register</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

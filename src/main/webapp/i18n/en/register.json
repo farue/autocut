@@ -2,10 +2,30 @@
   "register": {
     "title": "Registration",
     "form": {
-      "button": "Register"
+      "button": "Register",
+      "start": "Rental start according to contract",
+      "end": "Rental end according to contract",
+      "networkTerms": "I agree to the <a target=\"_blank\" href=\"/info/statutes/network\" [routerLink]=\"['/info', 'statutes', 'network']\">FaRueNet Terms</a>.",
+      "generalTerms": "I agree to the <a target=\"_blank\" href=\"/info/about/terms\" [routerLink]=\"['/info', 'about', 'terms']\">Terms</a>, <a target=\"_blank\" href=\"/info/about/privacy\" [routerLink]=\"['/info', 'about', 'privacy']\">Privacy Policy</a>, and <a target=\"_blank\" href=\"/info/about/cookies\" [routerLink]=\"['/info', 'about', 'cookies']\">Cookie Policy</a>."
     },
     "messages": {
       "validate": {
+        "firstName": {
+          "required": "Your first name is required.",
+          "minlength": "min. 1 character",
+          "maxlength": "max. 50 characters"
+        },
+        "lastName": {
+          "required": "Your last name is required.",
+          "minlength": "min. 1 character",
+          "maxlength": "max. 50 characters"
+        },
+        "apartment": {
+          "required": "Your apartment no is required.",
+          "minlength": "5 characters (e.g. 30-41)",
+          "maxlength": "5 characters (e.g. 30-41)",
+          "pattern": "Format xx-xx (cf. rental agreement)"
+        },
         "login": {
           "required": "Your username is required.",
           "minlength": "Your username is required to be at least 1 character.",

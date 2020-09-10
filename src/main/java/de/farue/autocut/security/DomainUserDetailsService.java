@@ -1,7 +1,9 @@
 package de.farue.autocut.security;
 
-import de.farue.autocut.domain.User;
-import de.farue.autocut.repository.UserRepository;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
+
 import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +15,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
+import de.farue.autocut.domain.Tenant;
+import de.farue.autocut.domain.User;
+import de.farue.autocut.repository.UserRepository;
+import de.farue.autocut.service.TenantService;
 
 /**
  * Authenticate a user from the database.
@@ -27,8 +30,11 @@ public class DomainUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    public DomainUserDetailsService(UserRepository userRepository) {
+    private final TenantService tenantService;
+
+    public DomainUserDetailsService(UserRepository userRepository, TenantService tenantService) {
         this.userRepository = userRepository;
+        this.tenantService = tenantService;
     }
 
     @Override
@@ -53,6 +59,13 @@ public class DomainUserDetailsService implements UserDetailsService {
         if (!user.getActivated()) {
             throw new UserNotActivatedException("User " + lowercaseLogin + " was not activated");
         }
+
+        // If a tenant exists, they have to be verified to log in
+        // Admin account does not have tenant entity, so log in must be possible in this case
+        if (!tenantService.findOneByUser(user).map(Tenant::isVerified).orElse(true)) {
+            throw new UserNotVerifiedException("User " + lowercaseLogin + " was not verified");
+        }
+
         List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
             .map(authority -> new SimpleGrantedAuthority(authority.getName()))
             .collect(Collectors.toList());

@@ -1,5 +1,31 @@
 package de.farue.autocut.web.rest;
 
+import static de.farue.autocut.web.rest.AccountResourceIT.TEST_USER_LOGIN;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
+import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.config.Constants;
 import de.farue.autocut.domain.User;
@@ -11,26 +37,6 @@ import de.farue.autocut.service.dto.PasswordChangeDTO;
 import de.farue.autocut.service.dto.UserDTO;
 import de.farue.autocut.web.rest.vm.KeyAndPasswordVM;
 import de.farue.autocut.web.rest.vm.ManagedUserVM;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Instant;
-import java.util.*;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static de.farue.autocut.web.rest.AccountResourceIT.TEST_USER_LOGIN;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Integration tests for the {@link AccountResource} REST controller.
@@ -121,9 +127,12 @@ public class AccountResourceIT {
         validUser.setFirstName("Alice");
         validUser.setLastName("Test");
         validUser.setEmail("test-register-valid@example.com");
+        validUser.setApartment("30-28");
         validUser.setImageUrl("http://placehold.it/50x50");
         validUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         validUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
+        validUser.setStart(Instant.now().minus(1, ChronoUnit.DAYS));
+        validUser.setEnd(Instant.now().plus(10, ChronoUnit.DAYS));
         assertThat(userRepository.findOneByLogin("test-register-valid").isPresent()).isFalse();
 
         restAccountMockMvc.perform(
@@ -241,9 +250,12 @@ public class AccountResourceIT {
         firstUser.setFirstName("Alice");
         firstUser.setLastName("Something");
         firstUser.setEmail("alice@example.com");
+        firstUser.setApartment("30-01");
         firstUser.setImageUrl("http://placehold.it/50x50");
         firstUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         firstUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
+        firstUser.setStart(Instant.now().minus(1, ChronoUnit.DAYS));
+        firstUser.setEnd(Instant.now().plus(10, ChronoUnit.DAYS));
 
         // Duplicate login, different email
         ManagedUserVM secondUser = new ManagedUserVM();
@@ -252,6 +264,7 @@ public class AccountResourceIT {
         secondUser.setFirstName(firstUser.getFirstName());
         secondUser.setLastName(firstUser.getLastName());
         secondUser.setEmail("alice2@example.com");
+        secondUser.setApartment("30-41");
         secondUser.setImageUrl(firstUser.getImageUrl());
         secondUser.setLangKey(firstUser.getLangKey());
         secondUser.setCreatedBy(firstUser.getCreatedBy());
@@ -259,6 +272,8 @@ public class AccountResourceIT {
         secondUser.setLastModifiedBy(firstUser.getLastModifiedBy());
         secondUser.setLastModifiedDate(firstUser.getLastModifiedDate());
         secondUser.setAuthorities(new HashSet<>(firstUser.getAuthorities()));
+        secondUser.setStart(firstUser.getStart());
+        secondUser.setEnd(firstUser.getEnd());
 
         // First user
         restAccountMockMvc.perform(
@@ -272,10 +287,13 @@ public class AccountResourceIT {
             post("/api/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(TestUtil.convertObjectToJsonBytes(secondUser)))
-            .andExpect(status().isCreated());
+            .andExpect(status().is4xxClientError());
 
-        Optional<User> testUser = userRepository.findOneByEmailIgnoreCase("alice2@example.com");
+        Optional<User> testUser = userRepository.findOneByEmailIgnoreCase("alice@example.com");
+        Optional<User> testUser2 = userRepository.findOneByEmailIgnoreCase("alice2@example.com");
         assertThat(testUser.isPresent()).isTrue();
+        assertThat(testUser2.isPresent()).isFalse();
+
         testUser.get().setActivated(true);
         userRepository.save(testUser.get());
 
@@ -297,9 +315,12 @@ public class AccountResourceIT {
         firstUser.setFirstName("Alice");
         firstUser.setLastName("Test");
         firstUser.setEmail("test-register-duplicate-email@example.com");
+        firstUser.setApartment("30-28");
         firstUser.setImageUrl("http://placehold.it/50x50");
         firstUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         firstUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
+        firstUser.setStart(Instant.now().minus(1, ChronoUnit.DAYS));
+        firstUser.setEnd(Instant.now().plus(10, ChronoUnit.DAYS));
 
         // Register first user
         restAccountMockMvc.perform(
@@ -321,19 +342,21 @@ public class AccountResourceIT {
         secondUser.setImageUrl(firstUser.getImageUrl());
         secondUser.setLangKey(firstUser.getLangKey());
         secondUser.setAuthorities(new HashSet<>(firstUser.getAuthorities()));
+        secondUser.setStart(firstUser.getStart());
+        secondUser.setEnd(firstUser.getEnd());
 
-        // Register second (non activated) user
+        // Try registering second user
         restAccountMockMvc.perform(
             post("/api/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(TestUtil.convertObjectToJsonBytes(secondUser)))
-            .andExpect(status().isCreated());
+            .andExpect(status().is4xxClientError());
 
         Optional<User> testUser2 = userRepository.findOneByLogin("test-register-duplicate-email");
-        assertThat(testUser2.isPresent()).isFalse();
+        assertThat(testUser2.isPresent()).isTrue();
 
         Optional<User> testUser3 = userRepository.findOneByLogin("test-register-duplicate-email-2");
-        assertThat(testUser3.isPresent()).isTrue();
+        assertThat(testUser3.isPresent()).isFalse();
 
         // Duplicate email - with uppercase email address
         ManagedUserVM userWithUpperCaseEmail = new ManagedUserVM();
@@ -347,21 +370,21 @@ public class AccountResourceIT {
         userWithUpperCaseEmail.setLangKey(firstUser.getLangKey());
         userWithUpperCaseEmail.setAuthorities(new HashSet<>(firstUser.getAuthorities()));
 
-        // Register third (not activated) user
+        // Try registering third user
         restAccountMockMvc.perform(
             post("/api/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(TestUtil.convertObjectToJsonBytes(userWithUpperCaseEmail)))
-            .andExpect(status().isCreated());
+            .andExpect(status().is4xxClientError());
 
         Optional<User> testUser4 = userRepository.findOneByLogin("test-register-duplicate-email-3");
-        assertThat(testUser4.isPresent()).isTrue();
-        assertThat(testUser4.get().getEmail()).isEqualTo("test-register-duplicate-email@example.com");
+        assertThat(testUser4.isPresent()).isFalse();
 
-        testUser4.get().setActivated(true);
-        userService.updateUser((new UserDTO(testUser4.get())));
+        // Activate existing user
+        testUser2.get().setActivated(true);
+        userService.updateUser((new UserDTO(testUser2.get())));
 
-        // Register 4th (already activated) user
+        // Try registering second user again
         restAccountMockMvc.perform(
             post("/api/register")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -378,10 +401,13 @@ public class AccountResourceIT {
         validUser.setFirstName("Bad");
         validUser.setLastName("Guy");
         validUser.setEmail("badguy@example.com");
+        validUser.setApartment("30-28");
         validUser.setActivated(true);
         validUser.setImageUrl("http://placehold.it/50x50");
         validUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         validUser.setAuthorities(Collections.singleton(AuthoritiesConstants.ADMIN));
+        validUser.setStart(Instant.now().minus(1, ChronoUnit.DAYS));
+        validUser.setEnd(Instant.now().plus(10, ChronoUnit.DAYS));
 
         restAccountMockMvc.perform(
             post("/api/register")

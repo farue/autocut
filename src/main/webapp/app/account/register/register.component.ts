@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { JhiLanguageService } from 'ng-jhipster';
@@ -6,14 +6,15 @@ import { JhiLanguageService } from 'ng-jhipster';
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/shared/constants/error.constants';
 import { LoginModalService } from 'app/core/login/login-modal.service';
 import { RegisterService } from './register.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'jhi-register',
   templateUrl: './register.component.html',
 })
 export class RegisterComponent implements AfterViewInit {
-  @ViewChild('login', { static: false })
-  login?: ElementRef;
+  @ViewChild('firstName', { static: false })
+  firstName?: ElementRef;
 
   doNotMatch = false;
   error = false;
@@ -22,6 +23,11 @@ export class RegisterComponent implements AfterViewInit {
   success = false;
 
   registerForm = this.fb.group({
+    firstName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
+    lastName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
+    apartment: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(5), Validators.pattern('\\d{2}-\\d{2}')]],
+    start: ['', [Validators.required]],
+    end: ['', [Validators.required]],
     login: [
       '',
       [
@@ -34,6 +40,8 @@ export class RegisterComponent implements AfterViewInit {
     email: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email]],
     password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
     confirmPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+    networkTerms: [false, [Validators.requiredTrue]],
+    generalTerms: [false, [Validators.requiredTrue]],
   });
 
   constructor(
@@ -44,8 +52,8 @@ export class RegisterComponent implements AfterViewInit {
   ) {}
 
   ngAfterViewInit(): void {
-    if (this.login) {
-      this.login.nativeElement.focus();
+    if (this.firstName) {
+      this.firstName.nativeElement.focus();
     }
   }
 
@@ -59,12 +67,23 @@ export class RegisterComponent implements AfterViewInit {
     if (password !== this.registerForm.get(['confirmPassword'])!.value) {
       this.doNotMatch = true;
     } else {
+      const firstName = this.registerForm.get(['firstName'])!.value;
+      const lastName = this.registerForm.get(['lastName'])!.value;
+      const apartment = this.registerForm.get(['apartment'])!.value;
+      const start = this.registerForm.get(['start'])!.value ? moment(this.registerForm.get(['start'])!.value).startOf('day') : undefined;
+      const end = this.registerForm.get(['end'])!.value
+        ? moment(this.registerForm.get(['end'])!.value)
+            .startOf('day')
+            .add(1, 'day')
+        : undefined;
       const login = this.registerForm.get(['login'])!.value;
       const email = this.registerForm.get(['email'])!.value;
-      this.registerService.save({ login, email, password, langKey: this.languageService.getCurrentLanguage() }).subscribe(
-        () => (this.success = true),
-        response => this.processError(response)
-      );
+      this.registerService
+        .save({ login, firstName, lastName, apartment, start, end, email, password, langKey: this.languageService.getCurrentLanguage() })
+        .subscribe(
+          () => (this.success = true),
+          response => this.processError(response)
+        );
     }
   }
 

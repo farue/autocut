@@ -32,6 +32,8 @@ export class WashingComponent implements OnInit {
   errorInsufficientFunds = false;
   errorMachineUnavailable = false;
 
+  disabled = false;
+
   constructor(private washingService: WashingService) {
     this.message = 'Washing message';
   }
@@ -67,7 +69,13 @@ export class WashingComponent implements OnInit {
     this.errorMachineUnavailable = false;
 
     this.washingService.unlock(laundryMachine, laundryMachineProgram).subscribe(
-      () => (this.success = true),
+      () => {
+        this.success = true;
+
+        // Disable unlock button for 5 seconds to prevent multiple accidental clicks
+        this.disabled = true;
+        setTimeout(() => (this.disabled = false), 5000);
+      },
       response => this.processError(response)
     );
   }

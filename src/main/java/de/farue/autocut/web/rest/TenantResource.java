@@ -1,10 +1,10 @@
 package de.farue.autocut.web.rest;
 
-import de.farue.autocut.domain.Tenant;
-import de.farue.autocut.service.TenantService;
-import de.farue.autocut.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import de.farue.autocut.domain.Tenant;
+import de.farue.autocut.service.MailService;
+import de.farue.autocut.service.TenantService;
+import de.farue.autocut.web.rest.errors.BadRequestAlertException;
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link de.farue.autocut.domain.Tenant}.
@@ -39,8 +41,11 @@ public class TenantResource {
 
     private final TenantService tenantService;
 
-    public TenantResource(TenantService tenantService) {
+    private final MailService mailService;
+
+    public TenantResource(TenantService tenantService, MailService mailService) {
         this.tenantService = tenantService;
+        this.mailService = mailService;
     }
 
     /**
@@ -77,7 +82,16 @@ public class TenantResource {
         if (tenant.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+
+        // Send verification email if old tenant entity is not verified and new entity is
+        boolean sendVerificationMail = !tenantService.findOne(tenant.getId()).map(Tenant::isVerified).orElse(true) && tenant.isVerified();
+
         Tenant result = tenantService.save(tenant);
+
+        if (sendVerificationMail && result.getUser() != null) {
+            mailService.sendVerificationEmail(result.getUser());
+        }
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, tenant.getId().toString()))
             .body(result);

@@ -10,10 +10,14 @@
     "messages": {
       "error": {
         "authentication": "<strong>Anmeldung fehlgeschlagen!</strong> Überprüfen Sie bitte Ihre Angaben und versuchen Sie es erneut."
+      },
+      "warning": {
+        "userNotActivated": "Du musst deinen Account erst aktivieren. Prüfe deine Emails.",
+        "userNotVerified": "Bitte warte bis wir deinen Account verifiziert haben."
       }
     },
     "password": {
-      "forgot": "Sie haben Ihr Passwort vergessen?"
+      "forgot": "Passwort zurücksetzen"
     }
   }
 }

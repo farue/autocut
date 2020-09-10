@@ -70,6 +70,12 @@
       "language": "Sprache"
     },
     "form": {
+      "firstname.label": "Vorname",
+      "firstname.placeholder": "Ihr Vorname",
+      "lastname.label": "Nachname",
+      "lastname.placeholder": "Ihr Nachname",
+      "apartment.label": "Wohnungsnr.",
+      "apartment.placeholder": "xx-xx",
       "username.label": "Benutzername",
       "username.placeholder": "Ihr Benutzername",
       "currentpassword.label": "Aktuelles Passwort",

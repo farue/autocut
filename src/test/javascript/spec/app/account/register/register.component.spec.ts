@@ -53,6 +53,11 @@ describe('Component Tests', () => {
         tick();
 
         expect(service.save).toHaveBeenCalledWith({
+          firstName: '',
+          lastName: '',
+          apartment: '',
+          start: undefined,
+          end: undefined,
           email: '',
           password: 'password',
           login: '',

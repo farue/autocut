@@ -1,15 +1,13 @@
 package de.farue.autocut.service;
 
-import de.farue.autocut.config.Constants;
-import de.farue.autocut.domain.Authority;
-import de.farue.autocut.domain.User;
-import de.farue.autocut.repository.AuthorityRepository;
-import de.farue.autocut.repository.UserRepository;
-import de.farue.autocut.security.AuthoritiesConstants;
-import de.farue.autocut.security.SecurityUtils;
-import de.farue.autocut.service.dto.UserDTO;
-
-import io.github.jhipster.security.RandomUtil;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +19,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.stream.Collectors;
+import de.farue.autocut.config.Constants;
+import de.farue.autocut.domain.Authority;
+import de.farue.autocut.domain.User;
+import de.farue.autocut.repository.AuthorityRepository;
+import de.farue.autocut.repository.UserRepository;
+import de.farue.autocut.security.AuthoritiesConstants;
+import de.farue.autocut.security.SecurityUtils;
+import de.farue.autocut.service.dto.UserDTO;
+import io.github.jhipster.security.RandomUtil;
 
 /**
  * Service class for managing users.
@@ -43,7 +46,10 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+    public UserService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       AuthorityRepository authorityRepository,
+                       CacheManager cacheManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
@@ -87,18 +93,12 @@ public class UserService {
             });
     }
 
-    public User registerUser(UserDTO userDTO, String password) {
+    public User registerUser(UserDTO userDTO, String password)  {
         userRepository.findOneByLogin(userDTO.getLogin().toLowerCase()).ifPresent(existingUser -> {
-            boolean removed = removeNonActivatedUser(existingUser);
-            if (!removed) {
-                throw new UsernameAlreadyUsedException();
-            }
+            throw new UsernameAlreadyUsedException();
         });
         userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).ifPresent(existingUser -> {
-            boolean removed = removeNonActivatedUser(existingUser);
-            if (!removed) {
-                throw new EmailAlreadyUsedException();
-            }
+            throw new EmailAlreadyUsedException();
         });
         User newUser = new User();
         String encryptedPassword = passwordEncoder.encode(password);
@@ -120,19 +120,10 @@ public class UserService {
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
+
         this.clearUserCaches(newUser);
         log.debug("Created Information for User: {}", newUser);
         return newUser;
-    }
-
-    private boolean removeNonActivatedUser(User existingUser) {
-        if (existingUser.getActivated()) {
-             return false;
-        }
-        userRepository.delete(existingUser);
-        userRepository.flush();
-        this.clearUserCaches(existingUser);
-        return true;
     }
 
     public User createUser(UserDTO userDTO) {

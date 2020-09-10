@@ -74,7 +74,7 @@
             </div>
             <div class="row form-group">
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                    <button type="submit" [disabled]="invalid()" (click)="unlockAction()" class="btn btn-primary"
+                    <button type="submit" [disabled]="invalid() || disabled" (click)="unlockAction()" class="btn btn-primary"
                             jhiTranslate="washing.buyAndUnlock">Buy and Unlock
                     </button>
                 </div>

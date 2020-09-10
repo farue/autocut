@@ -1,8 +1,14 @@
 package de.farue.autocut.web.rest.vm;
 
-import de.farue.autocut.service.dto.UserDTO;
+import java.time.Instant;
 
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import de.farue.autocut.service.StwApartmentParser;
+import de.farue.autocut.service.dto.UserDTO;
 
 /**
  * View Model extending the UserDTO, which is meant to be used in the user management UI.
@@ -15,6 +21,12 @@ public class ManagedUserVM extends UserDTO {
 
     @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
     private String password;
+    @Pattern(regexp = StwApartmentParser.APARTMENT_REGEX)
+    private String apartment;
+    @PastOrPresent
+    private Instant start;
+    @FutureOrPresent
+    private Instant end;
 
     public ManagedUserVM() {
         // Empty constructor needed for Jackson.
@@ -26,6 +38,30 @@ public class ManagedUserVM extends UserDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getApartment() {
+        return apartment;
+    }
+
+    public void setApartment(String apartment) {
+        this.apartment = apartment;
+    }
+
+    public Instant getStart() {
+        return start;
+    }
+
+    public void setStart(Instant start) {
+        this.start = start;
+    }
+
+    public Instant getEnd() {
+        return end;
+    }
+
+    public void setEnd(Instant end) {
+        this.end = end;
     }
 
     // prettier-ignore
