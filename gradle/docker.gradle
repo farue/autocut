@@ -1,6 +1,7 @@
 jib {
     from {
-        image = "adoptopenjdk:14-jre-hotspot"
+        // TODO: Image not available yet
+        image = "adoptopenjdk:15-jre-hotspot"
     }
     to {
         image = "autocut:latest"
