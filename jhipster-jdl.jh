@@ -1,21 +1,11 @@
+// ****************************************************
+// * Tenant Manaagement
+// ****************************************************
+
 @service(serviceClass)
 entity Tenant {
 	pictureId ImageBlob
 	verified Boolean
-}
-
-entity Team {
-	name String required
-}
-
-entity TeamMember {
-	role TeamRole
-}
-
-enum TeamRole {
-	SPOKESPERSON,
-    DEPUTY,
-    MEMBER
 }
 
 @service(serviceClass)
@@ -25,31 +15,6 @@ entity Lease {
     end Instant required
     blocked Boolean
     pictureContract ImageBlob
-}
-
-@service(serviceClass)
-entity Apartment {
-    // simple apartment nr, cannot be stw number because there are two different ones for shared apartments
-	nr String required
-    type ApartmentTypes required
-    maxNumberOfLeases Integer required min(0)
-}
-
-// We can get this from maxNumberOfLeases
-// -> does not need to be persisted
-enum ApartmentTypes {
-    SHARED,
-    SINGLE,
-    SHORT_TERM
-}
-
-@service(serviceClass)
-entity Address {
-	street String required
-	streetNumber String required
-    zip String required pattern(/^\d{5}$/)
-    city String required
-    country String required
 }
 
 entity SecurityPolicy {
@@ -79,19 +44,42 @@ relationship OneToOne {
 }
 
 relationship OneToMany {
-	Team{members} to TeamMember{team required}
     Lease{tenants} to Tenant{lease}
     Apartment{leases} to Lease{apartment}
 }
 
-relationship ManyToOne {
-	Apartment{address} to Address
-    TeamMember{tenant} to Tenant
+
+// ****************************************************
+// * Apartment & Address
+// ****************************************************
+
+@service(serviceClass)
+entity Apartment {
+    // simple apartment nr, cannot be stw number because there are two different ones for shared apartments
+	nr String required
+    type ApartmentTypes required
+    maxNumberOfLeases Integer required min(0)
 }
 
-relationship OneToMany {
-	TeamMember{securityPolicies} to SecurityPolicy{teamMember}
-    Tenant{securityPolicies} to SecurityPolicy{tenant}
+// We can get this from maxNumberOfLeases
+// -> does not need to be persisted
+enum ApartmentTypes {
+    SHARED,
+    SINGLE,
+    SHORT_TERM
+}
+
+@service(serviceClass)
+entity Address {
+	street String required
+	streetNumber String required
+    zip String required pattern(/^\d{5}$/)
+    city String required
+    country String required
+}
+
+relationship ManyToOne {
+	Apartment{address} to Address
 }
 
 // Internet Access
@@ -120,7 +108,58 @@ relationship ManyToOne {
 	InternetAccess{networkSwitch} to NetworkSwitch
 }
 
-// Transactions
+
+// ****************************************************
+// * Teams
+// ****************************************************
+
+entity Team {
+	name String required
+}
+
+entity TeamMember {
+	role TeamRole
+}
+
+enum TeamRole {
+	SPOKESPERSON,
+    DEPUTY,
+    MEMBER
+}
+
+entity Activity {
+	year Integer required
+    term SemesterTerms required
+    startDate Instant
+    endDate Instant
+    description String
+    // whether or not the tenant should get a discount next semester
+    discount Boolean
+    // whether or not this activity is sent to StW
+    stwActivity Boolean
+}
+
+enum SemesterTerms {
+	SUMMER_TERM,
+    WINTER_TERM
+}
+
+relationship ManyToOne {
+    TeamMember{tenant} to Tenant
+    Activity{tenant} to Tenant
+}
+
+relationship OneToMany {
+    Team{members} to TeamMember{team required}
+	TeamMember{securityPolicies} to SecurityPolicy{teamMember}
+    Tenant{securityPolicies} to SecurityPolicy{tenant}
+    Activity to TeamMember
+}
+
+
+// ****************************************************
+// * Accounting
+// ****************************************************
 
 @service(serviceClass)
 entity Transaction {
@@ -157,34 +196,10 @@ relationship ManyToOne {
 	Transaction{tenant} to Tenant
 }
 
-// Activities
 
-entity Activity {
-	year Integer required
-    term SemesterTerms required
-    startDate Instant
-    endDate Instant
-    description String
-    // whether or not the tenant should get a discount next semester
-    discount Boolean
-    // whether or not this activity is sent to StW
-    stwActivity Boolean
-}
-
-enum SemesterTerms {
-	SUMMER_TERM,
-    WINTER_TERM
-}
-
-relationship ManyToOne {
-	 Activity{tenant} to Tenant
-}
-
-relationship OneToMany {
-	Activity to TeamMember
-}
-
-// Communication
+// ****************************************************
+// * Communication
+// ****************************************************
 
 entity Communication {
     subject String required maxlength(80)
@@ -197,7 +212,10 @@ relationship ManyToOne {
 	Communication{tenant} to User
 }
 
-// Wash System
+
+// ****************************************************
+// * Wash System
+// ****************************************************
 
 entity LaundryMachine {
     identifier String required
@@ -247,6 +265,11 @@ relationship ManyToOne {
 	WashHistory{machine} to LaundryMachine
 	WashHistory{program} to LaundryMachineProgram
 }
+
+
+// ****************************************************
+// * Global
+// ****************************************************
 
 entity GlobalSetting {
 	key String,
