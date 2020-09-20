@@ -47,7 +47,8 @@ public class Transaction implements Serializable {
     @Column(name = "value", precision = 21, scale = 2, nullable = false)
     private BigDecimal value;
 
-    @Column(name = "balance_after", precision = 21, scale = 2)
+    @NotNull
+    @Column(name = "balance_after", precision = 21, scale = 2, nullable = false)
     private BigDecimal balanceAfter;
 
     @Column(name = "description")
@@ -60,7 +61,8 @@ public class Transaction implements Serializable {
     @Column(name = "recipient")
     private String recipient;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = "transactions", allowSetters = true)
     private TransactionBook transactionBook;
 

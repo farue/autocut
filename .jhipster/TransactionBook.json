@@ -1,6 +1,19 @@
 {
   "name": "TransactionBook",
-  "fields": [],
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "TransactionBookType",
+      "fieldValues": "CASH,REVENUE,DEPOSIT",
+      "fieldValidateRules": [
+        "required"
+      ]
+    }
+  ],
   "relationships": [
     {
       "relationshipType": "many-to-many",

@@ -2,6 +2,7 @@ package de.farue.autocut.web.rest;
 
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Transaction;
+import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.repository.TransactionRepository;
 import de.farue.autocut.service.TransactionService;
 
@@ -102,6 +103,16 @@ public class TransactionResourceIT {
             .description(DEFAULT_DESCRIPTION)
             .issuer(DEFAULT_ISSUER)
             .recipient(DEFAULT_RECIPIENT);
+        // Add required entity
+        TransactionBook transactionBook;
+        if (TestUtil.findAll(em, TransactionBook.class).isEmpty()) {
+            transactionBook = TransactionBookResourceIT.createEntity(em);
+            em.persist(transactionBook);
+            em.flush();
+        } else {
+            transactionBook = TestUtil.findAll(em, TransactionBook.class).get(0);
+        }
+        transaction.setTransactionBook(transactionBook);
         return transaction;
     }
     /**
@@ -120,6 +131,16 @@ public class TransactionResourceIT {
             .description(UPDATED_DESCRIPTION)
             .issuer(UPDATED_ISSUER)
             .recipient(UPDATED_RECIPIENT);
+        // Add required entity
+        TransactionBook transactionBook;
+        if (TestUtil.findAll(em, TransactionBook.class).isEmpty()) {
+            transactionBook = TransactionBookResourceIT.createUpdatedEntity(em);
+            em.persist(transactionBook);
+            em.flush();
+        } else {
+            transactionBook = TestUtil.findAll(em, TransactionBook.class).get(0);
+        }
+        transaction.setTransactionBook(transactionBook);
         return transaction;
     }
 
@@ -235,6 +256,25 @@ public class TransactionResourceIT {
         int databaseSizeBeforeTest = transactionRepository.findAll().size();
         // set the field null
         transaction.setValue(null);
+
+        // Create the Transaction, which fails.
+
+
+        restTransactionMockMvc.perform(post("/api/transactions")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(transaction)))
+            .andExpect(status().isBadRequest());
+
+        List<Transaction> transactionList = transactionRepository.findAll();
+        assertThat(transactionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkBalanceAfterIsRequired() throws Exception {
+        int databaseSizeBeforeTest = transactionRepository.findAll().size();
+        // set the field null
+        transaction.setBalanceAfter(null);
 
         // Create the Transaction, which fails.
 

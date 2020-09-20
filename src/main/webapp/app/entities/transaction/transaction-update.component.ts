@@ -29,11 +29,11 @@ export class TransactionUpdateComponent implements OnInit {
     bookingDate: [null, [Validators.required]],
     valueDate: [null, [Validators.required]],
     value: [null, [Validators.required]],
-    balanceAfter: [],
+    balanceAfter: [null, [Validators.required]],
     description: [],
     issuer: [null, [Validators.required]],
     recipient: [],
-    transactionBook: [],
+    transactionBook: [null, Validators.required],
     lefts: [],
   });
 

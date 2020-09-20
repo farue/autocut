@@ -2,6 +2,7 @@ import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TransactionBookService } from 'app/entities/transaction-book/transaction-book.service';
 import { ITransactionBook, TransactionBook } from 'app/shared/model/transaction-book.model';
+import { TransactionBookType } from 'app/shared/model/enumerations/transaction-book-type.model';
 
 describe('Service Tests', () => {
   describe('TransactionBook Service', () => {
@@ -20,7 +21,7 @@ describe('Service Tests', () => {
       service = injector.get(TransactionBookService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new TransactionBook(0);
+      elemDefault = new TransactionBook(0, 'AAAAAAA', TransactionBookType.CASH);
     });
 
     describe('Service methods', () => {
@@ -52,7 +53,13 @@ describe('Service Tests', () => {
       });
 
       it('should update a TransactionBook', () => {
-        const returnedFromService = Object.assign({}, elemDefault);
+        const returnedFromService = Object.assign(
+          {
+            name: 'BBBBBB',
+            type: 'BBBBBB',
+          },
+          elemDefault
+        );
 
         const expected = Object.assign({}, returnedFromService);
 
@@ -64,7 +71,13 @@ describe('Service Tests', () => {
       });
 
       it('should return a list of TransactionBook', () => {
-        const returnedFromService = Object.assign({}, elemDefault);
+        const returnedFromService = Object.assign(
+          {
+            name: 'BBBBBB',
+            type: 'BBBBBB',
+          },
+          elemDefault
+        );
 
         const expected = Object.assign({}, returnedFromService);
 

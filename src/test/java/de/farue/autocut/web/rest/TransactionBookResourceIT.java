@@ -22,6 +22,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import de.farue.autocut.domain.enumeration.TransactionBookType;
 /**
  * Integration tests for the {@link TransactionBookResource} REST controller.
  */
@@ -29,6 +30,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @WithMockUser
 public class TransactionBookResourceIT {
+
+    private static final String DEFAULT_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_NAME = "BBBBBBBBBB";
+
+    private static final TransactionBookType DEFAULT_TYPE = TransactionBookType.CASH;
+    private static final TransactionBookType UPDATED_TYPE = TransactionBookType.REVENUE;
 
     @Autowired
     private TransactionBookRepository transactionBookRepository;
@@ -51,7 +58,9 @@ public class TransactionBookResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static TransactionBook createEntity(EntityManager em) {
-        TransactionBook transactionBook = new TransactionBook();
+        TransactionBook transactionBook = new TransactionBook()
+            .name(DEFAULT_NAME)
+            .type(DEFAULT_TYPE);
         return transactionBook;
     }
     /**
@@ -61,7 +70,9 @@ public class TransactionBookResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static TransactionBook createUpdatedEntity(EntityManager em) {
-        TransactionBook transactionBook = new TransactionBook();
+        TransactionBook transactionBook = new TransactionBook()
+            .name(UPDATED_NAME)
+            .type(UPDATED_TYPE);
         return transactionBook;
     }
 
@@ -84,6 +95,8 @@ public class TransactionBookResourceIT {
         List<TransactionBook> transactionBookList = transactionBookRepository.findAll();
         assertThat(transactionBookList).hasSize(databaseSizeBeforeCreate + 1);
         TransactionBook testTransactionBook = transactionBookList.get(transactionBookList.size() - 1);
+        assertThat(testTransactionBook.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testTransactionBook.getType()).isEqualTo(DEFAULT_TYPE);
     }
 
     @Test
@@ -108,6 +121,25 @@ public class TransactionBookResourceIT {
 
     @Test
     @Transactional
+    public void checkTypeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = transactionBookRepository.findAll().size();
+        // set the field null
+        transactionBook.setType(null);
+
+        // Create the TransactionBook, which fails.
+
+
+        restTransactionBookMockMvc.perform(post("/api/transaction-books")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(transactionBook)))
+            .andExpect(status().isBadRequest());
+
+        List<TransactionBook> transactionBookList = transactionBookRepository.findAll();
+        assertThat(transactionBookList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllTransactionBooks() throws Exception {
         // Initialize the database
         transactionBookRepository.saveAndFlush(transactionBook);
@@ -116,7 +148,9 @@ public class TransactionBookResourceIT {
         restTransactionBookMockMvc.perform(get("/api/transaction-books?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(transactionBook.getId().intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(transactionBook.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
     }
     
     @Test
@@ -129,7 +163,9 @@ public class TransactionBookResourceIT {
         restTransactionBookMockMvc.perform(get("/api/transaction-books/{id}", transactionBook.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.id").value(transactionBook.getId().intValue()));
+            .andExpect(jsonPath("$.id").value(transactionBook.getId().intValue()))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()));
     }
     @Test
     @Transactional
@@ -151,6 +187,9 @@ public class TransactionBookResourceIT {
         TransactionBook updatedTransactionBook = transactionBookRepository.findById(transactionBook.getId()).get();
         // Disconnect from session so that the updates on updatedTransactionBook are not directly saved in db
         em.detach(updatedTransactionBook);
+        updatedTransactionBook
+            .name(UPDATED_NAME)
+            .type(UPDATED_TYPE);
 
         restTransactionBookMockMvc.perform(put("/api/transaction-books")
             .contentType(MediaType.APPLICATION_JSON)
@@ -161,6 +200,8 @@ public class TransactionBookResourceIT {
         List<TransactionBook> transactionBookList = transactionBookRepository.findAll();
         assertThat(transactionBookList).hasSize(databaseSizeBeforeUpdate);
         TransactionBook testTransactionBook = transactionBookList.get(transactionBookList.size() - 1);
+        assertThat(testTransactionBook.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testTransactionBook.getType()).isEqualTo(UPDATED_TYPE);
     }
 
     @Test

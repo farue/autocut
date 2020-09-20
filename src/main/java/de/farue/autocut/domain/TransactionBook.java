@@ -5,10 +5,13 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
+import de.farue.autocut.domain.enumeration.TransactionBookType;
 
 /**
  * A TransactionBook.
@@ -24,6 +27,14 @@ public class TransactionBook implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name")
+    private String name;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    private TransactionBookType type;
+
     @ManyToMany(mappedBy = "transactionBooks")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnore
@@ -36,6 +47,32 @@ public class TransactionBook implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public TransactionBook name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public TransactionBookType getType() {
+        return type;
+    }
+
+    public TransactionBook type(TransactionBookType type) {
+        this.type = type;
+        return this;
+    }
+
+    public void setType(TransactionBookType type) {
+        this.type = type;
     }
 
     public Set<Lease> getLeases() {
@@ -85,6 +122,8 @@ public class TransactionBook implements Serializable {
     public String toString() {
         return "TransactionBook{" +
             "id=" + getId() +
+            ", name='" + getName() + "'" +
+            ", type='" + getType() + "'" +
             "}";
     }
 }

@@ -8,6 +8,14 @@
             <jhi-alert-error></jhi-alert-error>
 
             <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="autocutApp.transactionBook.name">Name</span></dt>
+                <dd>
+                    <span>{{ transactionBook.name }}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.transactionBook.type">Type</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'autocutApp.TransactionBookType.' + transactionBook.type }}">{{ transactionBook.type }}</span>
+                </dd>
             </dl>
 
             <button type="submit"

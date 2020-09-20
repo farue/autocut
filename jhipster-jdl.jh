@@ -167,6 +167,8 @@ relationship OneToMany {
 
 @service(serviceClass)
 entity TransactionBook {
+    name String,
+    type TransactionBookType required
 }
 
 @service(serviceClass)
@@ -175,7 +177,7 @@ entity Transaction {
 	bookingDate Instant required
     valueDate Instant required
     value BigDecimal required
-    balanceAfter BigDecimal
+    balanceAfter BigDecimal required
     description String
     issuer String required
     recipient String
@@ -199,8 +201,14 @@ enum TransactionKind {
     PURCHASE
 }
 
+enum TransactionBookType {
+    CASH,
+    REVENUE,
+    DEPOSIT
+}
+
 relationship ManyToOne {
-	Transaction{transactionBook} to TransactionBook
+	Transaction{transactionBook required} to TransactionBook
 }
 
 relationship ManyToMany {

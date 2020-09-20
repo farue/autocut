@@ -1,11 +1,11 @@
-id;kind;booking_date;value_date;value;balance_after;description;issuer;recipient
-1;CREDIT;2019-11-16T23:34:25;2019-11-16T23:01:10;25397;61420;Chips COM;Response B2B US Dollar;Buckinghamshire orchestrate grow
-2;CORRECTION;2019-11-16T16:05:39;2019-11-16T15:46:45;934;32169;scale Strategist;embrace;didactic Checking Account holistic
-3;TRANSFER;2019-11-16T10:08:01;2019-11-16T11:04:16;83747;52466;Executive back up Cambridgeshire;interface;invoice
-4;CORRECTION;2019-11-16T18:27:34;2019-11-16T14:12:40;10624;2755;synthesizing grey Gourde US Dollar;Tools;primary
-5;PURCHASE;2019-11-16T01:56:33;2019-11-16T05:06:07;89810;39480;withdrawal Ergonomic;innovate;Shirt
-6;TRANSFER;2019-11-16T20:57:34;2019-11-16T05:29:27;79154;84505;olive IB;Alabama;port models Dynamic
-7;CORRECTION;2019-11-16T13:35:31;2019-11-16T03:18:25;14899;86056;multi-byte Berkshire hard drive;SSL Avon mesh;Group JBOD Gardens
-8;TRANSFER;2019-11-16T18:58:14;2019-11-16T12:29:42;40767;85805;Lek Developer silver;deposit New Mexico Facilitator;Berkshire
-9;CREDIT;2019-11-16T19:08:01;2019-11-17T00:45:27;91176;54095;Towels;sky blue;CFA Franc BEAC ADP
-10;DEBIT;2019-11-16T20:37:06;2019-11-16T20:48:55;72701;31063;magnetic Industrial;Granite withdrawal;Automotive digital
+id;kind;booking_date;value_date;value;balance_after;description;issuer;recipient;transaction_book_id
+1;CREDIT;2019-11-16T23:34:25;2019-11-16T23:01:10;25397;61420;Chips COM;Response B2B US Dollar;Buckinghamshire orchestrate grow;1
+2;CORRECTION;2019-11-16T16:05:39;2019-11-16T15:46:45;934;32169;scale Strategist;embrace;didactic Checking Account holistic;2
+3;TRANSFER;2019-11-16T10:08:01;2019-11-16T11:04:16;83747;52466;Executive back up Cambridgeshire;interface;invoice;3
+4;CORRECTION;2019-11-16T18:27:34;2019-11-16T14:12:40;10624;2755;synthesizing grey Gourde US Dollar;Tools;primary;4
+5;PURCHASE;2019-11-16T01:56:33;2019-11-16T05:06:07;89810;39480;withdrawal Ergonomic;innovate;Shirt;5
+6;TRANSFER;2019-11-16T20:57:34;2019-11-16T05:29:27;79154;84505;olive IB;Alabama;port models Dynamic;6
+7;CORRECTION;2019-11-16T13:35:31;2019-11-16T03:18:25;14899;86056;multi-byte Berkshire hard drive;SSL Avon mesh;Group JBOD Gardens;7
+8;TRANSFER;2019-11-16T18:58:14;2019-11-16T12:29:42;40767;85805;Lek Developer silver;deposit New Mexico Facilitator;Berkshire;8
+9;CREDIT;2019-11-16T19:08:01;2019-11-17T00:45:27;91176;54095;Towels;sky blue;CFA Franc BEAC ADP;9
+10;DEBIT;2019-11-16T20:37:06;2019-11-16T20:48:55;72701;31063;magnetic Industrial;Granite withdrawal;Automotive digital;10

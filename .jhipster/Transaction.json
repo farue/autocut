@@ -32,7 +32,10 @@
     },
     {
       "fieldName": "balanceAfter",
-      "fieldType": "BigDecimal"
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": [
+        "required"
+      ]
     },
     {
       "fieldName": "description",
@@ -55,6 +58,7 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "transactionBook",
       "otherEntityRelationshipName": "transaction",
+      "relationshipValidateRules": "required",
       "relationshipName": "transactionBook",
       "otherEntityField": "id"
     },

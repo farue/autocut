@@ -1,0 +1,10 @@
+{
+  "autocutApp": {
+    "TransactionBookType": {
+      "null": "",
+      "CASH": "CASH",
+      "REVENUE": "REVENUE",
+      "DEPOSIT": "DEPOSIT"
+    }
+  }
+}

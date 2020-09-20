@@ -16,6 +16,8 @@
       "detail": {
         "title": "Transaction Book"
       },
+      "name": "Name",
+      "type": "Type",
       "lease": "Lease"
     }
   }

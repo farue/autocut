@@ -23,12 +23,16 @@
             <thead>
                 <tr>
                     <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.transactionBook.name">Name</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.transactionBook.type">Type</span></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let transactionBook of transactionBooks ;trackBy: trackId">
                     <td><a [routerLink]="['/transaction-book', transactionBook.id, 'view']">{{ transactionBook.id }}</a></td>
+                    <td>{{ transactionBook.name }}</td>
+                    <td jhiTranslate="{{ 'autocutApp.TransactionBookType.' + transactionBook.type }}">{{ transactionBook.type }}</td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"

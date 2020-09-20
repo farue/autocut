@@ -83,6 +83,16 @@
                     <label class="form-control-label" jhiTranslate="autocutApp.transaction.balanceAfter" for="field_balanceAfter">Balance After</label>
                     <input type="number" class="form-control" name="balanceAfter" id="field_balanceAfter"
                            formControlName="balanceAfter"/>
+                    <div *ngIf="editForm.get('balanceAfter')!.invalid && (editForm.get('balanceAfter')!.dirty || editForm.get('balanceAfter')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('balanceAfter')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('balanceAfter')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -112,9 +122,15 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.transaction.transactionBook" for="field_transactionBook">Transaction Book</label>
                     <select class="form-control" id="field_transactionBook" name="transactionBook" formControlName="transactionBook">
-                        <option [ngValue]="null"></option>
+                        <option *ngIf="!editForm.get('transactionBook')!.value" [ngValue]="null" selected></option>
                         <option [ngValue]="transactionBookOption.id === editForm.get('transactionBook')!.value?.id ? editForm.get('transactionBook')!.value : transactionBookOption" *ngFor="let transactionBookOption of transactionbooks; trackBy: trackById">{{ transactionBookOption.id }}</option>
                     </select>
+                </div>
+                <div *ngIf="editForm.get('transactionBook')!.invalid && (editForm.get('transactionBook')!.dirty || editForm.get('transactionBook')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('transactionBook')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
                 </div>
 
                 <div class="form-group">

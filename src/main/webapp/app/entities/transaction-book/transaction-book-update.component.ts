@@ -17,6 +17,8 @@ export class TransactionBookUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
+    name: [],
+    type: [null, [Validators.required]],
   });
 
   constructor(
@@ -34,6 +36,8 @@ export class TransactionBookUpdateComponent implements OnInit {
   updateForm(transactionBook: ITransactionBook): void {
     this.editForm.patchValue({
       id: transactionBook.id,
+      name: transactionBook.name,
+      type: transactionBook.type,
     });
   }
 
@@ -55,6 +59,8 @@ export class TransactionBookUpdateComponent implements OnInit {
     return {
       ...new TransactionBook(),
       id: this.editForm.get(['id'])!.value,
+      name: this.editForm.get(['name'])!.value,
+      type: this.editForm.get(['type'])!.value,
     };
   }
 

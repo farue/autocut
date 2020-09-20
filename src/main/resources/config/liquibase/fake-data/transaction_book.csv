@@ -1,11 +1,11 @@
-id
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
+id;name;type
+1;Vision-oriented Orchestrator bluetooth;CASH
+2;Bolivia Intranet;CASH
+3;Fish Forge Colorado;REVENUE
+4;PCI encompassing Producer;DEPOSIT
+5;transmit;DEPOSIT
+6;e-commerce Bolivar Fuerte;DEPOSIT
+7;Licensed Fresh Gloves;REVENUE
+8;Plains open-source;DEPOSIT
+9;cross-platform;DEPOSIT
+10;Integration;REVENUE

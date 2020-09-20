@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -45,7 +46,7 @@ public class TransactionBookResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/transaction-books")
-    public ResponseEntity<TransactionBook> createTransactionBook(@RequestBody TransactionBook transactionBook) throws URISyntaxException {
+    public ResponseEntity<TransactionBook> createTransactionBook(@Valid @RequestBody TransactionBook transactionBook) throws URISyntaxException {
         log.debug("REST request to save TransactionBook : {}", transactionBook);
         if (transactionBook.getId() != null) {
             throw new BadRequestAlertException("A new transactionBook cannot already have an ID", ENTITY_NAME, "idexists");
@@ -66,7 +67,7 @@ public class TransactionBookResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/transaction-books")
-    public ResponseEntity<TransactionBook> updateTransactionBook(@RequestBody TransactionBook transactionBook) throws URISyntaxException {
+    public ResponseEntity<TransactionBook> updateTransactionBook(@Valid @RequestBody TransactionBook transactionBook) throws URISyntaxException {
         log.debug("REST request to update TransactionBook : {}", transactionBook);
         if (transactionBook.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
