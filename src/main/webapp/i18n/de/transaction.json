@@ -24,7 +24,7 @@
       "description": "Description",
       "issuer": "Issuer",
       "recipient": "Recipient",
-      "account": "Account",
+      "transactionBook": "Transaction Book",
       "left": "Left",
       "right": "Right"
     }

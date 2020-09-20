@@ -31,7 +31,7 @@
                     <th scope="col" ><span jhiTranslate="autocutApp.transaction.description">Description</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.transaction.issuer">Issuer</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.transaction.recipient">Recipient</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.transaction.account">Account</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.transaction.transactionBook">Transaction Book</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.transaction.left">Left</span></th>
                     <th scope="col"></th>
                 </tr>
@@ -48,8 +48,8 @@
                     <td>{{ transaction.issuer }}</td>
                     <td>{{ transaction.recipient }}</td>
                     <td>
-                        <div *ngIf="transaction.account">
-                            <a [routerLink]="['/transaction-book', transaction.account?.id, 'view']" >{{ transaction.account?.id }}</a>
+                        <div *ngIf="transaction.transactionBook">
+                            <a [routerLink]="['/transaction-book', transaction.transactionBook?.id, 'view']" >{{ transaction.transactionBook?.id }}</a>
                         </div>
                     </td>
                     <td>

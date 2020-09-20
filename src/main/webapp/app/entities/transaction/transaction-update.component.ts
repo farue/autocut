@@ -33,7 +33,7 @@ export class TransactionUpdateComponent implements OnInit {
     description: [],
     issuer: [null, [Validators.required]],
     recipient: [],
-    account: [],
+    transactionBook: [],
     lefts: [],
   });
 
@@ -71,7 +71,7 @@ export class TransactionUpdateComponent implements OnInit {
       description: transaction.description,
       issuer: transaction.issuer,
       recipient: transaction.recipient,
-      account: transaction.account,
+      transactionBook: transaction.transactionBook,
       lefts: transaction.lefts,
     });
   }
@@ -104,7 +104,7 @@ export class TransactionUpdateComponent implements OnInit {
       description: this.editForm.get(['description'])!.value,
       issuer: this.editForm.get(['issuer'])!.value,
       recipient: this.editForm.get(['recipient'])!.value,
-      account: this.editForm.get(['account'])!.value,
+      transactionBook: this.editForm.get(['transactionBook'])!.value,
       lefts: this.editForm.get(['lefts'])!.value,
     };
   }

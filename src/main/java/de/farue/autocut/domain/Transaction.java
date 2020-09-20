@@ -62,7 +62,7 @@ public class Transaction implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties(value = "transactions", allowSetters = true)
-    private TransactionBook account;
+    private TransactionBook transactionBook;
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -189,17 +189,17 @@ public class Transaction implements Serializable {
         this.recipient = recipient;
     }
 
-    public TransactionBook getAccount() {
-        return account;
+    public TransactionBook getTransactionBook() {
+        return transactionBook;
     }
 
-    public Transaction account(TransactionBook transactionBook) {
-        this.account = transactionBook;
+    public Transaction transactionBook(TransactionBook transactionBook) {
+        this.transactionBook = transactionBook;
         return this;
     }
 
-    public void setAccount(TransactionBook transactionBook) {
-        this.account = transactionBook;
+    public void setTransactionBook(TransactionBook transactionBook) {
+        this.transactionBook = transactionBook;
     }
 
     public Set<Transaction> getLefts() {

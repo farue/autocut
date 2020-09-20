@@ -200,7 +200,7 @@ enum TransactionKind {
 }
 
 relationship ManyToOne {
-	Transaction{account} to TransactionBook
+	Transaction{transactionBook} to TransactionBook
 }
 
 relationship ManyToMany {

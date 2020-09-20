@@ -55,7 +55,7 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "transactionBook",
       "otherEntityRelationshipName": "transaction",
-      "relationshipName": "account",
+      "relationshipName": "transactionBook",
       "otherEntityField": "id"
     },
     {

@@ -40,7 +40,7 @@
             <column name="recipient" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="account_id" type="bigint">
+            <column name="transaction_book_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->

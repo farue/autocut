@@ -12,7 +12,7 @@ export interface ITransaction {
   description?: string;
   issuer?: string;
   recipient?: string;
-  account?: ITransactionBook;
+  transactionBook?: ITransactionBook;
   lefts?: ITransaction[];
   rights?: ITransaction[];
 }
@@ -28,7 +28,7 @@ export class Transaction implements ITransaction {
     public description?: string,
     public issuer?: string,
     public recipient?: string,
-    public account?: ITransactionBook,
+    public transactionBook?: ITransactionBook,
     public lefts?: ITransaction[],
     public rights?: ITransaction[]
   ) {}

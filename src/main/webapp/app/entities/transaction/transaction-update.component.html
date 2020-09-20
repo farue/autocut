@@ -110,10 +110,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.transaction.account" for="field_account">Account</label>
-                    <select class="form-control" id="field_account" name="account" formControlName="account">
+                    <label class="form-control-label" jhiTranslate="autocutApp.transaction.transactionBook" for="field_transactionBook">Transaction Book</label>
+                    <select class="form-control" id="field_transactionBook" name="transactionBook" formControlName="transactionBook">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="transactionBookOption.id === editForm.get('account')!.value?.id ? editForm.get('account')!.value : transactionBookOption" *ngFor="let transactionBookOption of transactionbooks; trackBy: trackById">{{ transactionBookOption.id }}</option>
+                        <option [ngValue]="transactionBookOption.id === editForm.get('transactionBook')!.value?.id ? editForm.get('transactionBook')!.value : transactionBookOption" *ngFor="let transactionBookOption of transactionbooks; trackBy: trackById">{{ transactionBookOption.id }}</option>
                     </select>
                 </div>
 
