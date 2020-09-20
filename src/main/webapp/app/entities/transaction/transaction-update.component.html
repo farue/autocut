@@ -110,18 +110,17 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.transaction.lease" for="field_lease">Lease</label>
-                    <select class="form-control" id="field_lease" name="lease" formControlName="lease">
+                    <label class="form-control-label" jhiTranslate="autocutApp.transaction.account" for="field_account">Account</label>
+                    <select class="form-control" id="field_account" name="account" formControlName="account">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="leaseOption.id === editForm.get('lease')!.value?.id ? editForm.get('lease')!.value : leaseOption" *ngFor="let leaseOption of leases; trackBy: trackById">{{ leaseOption.id }}</option>
+                        <option [ngValue]="transactionBookOption.id === editForm.get('account')!.value?.id ? editForm.get('account')!.value : transactionBookOption" *ngFor="let transactionBookOption of transactionbooks; trackBy: trackById">{{ transactionBookOption.id }}</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.transaction.tenant" for="field_tenant">Tenant</label>
-                    <select class="form-control" id="field_tenant" name="tenant" formControlName="tenant">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="tenantOption.id === editForm.get('tenant')!.value?.id ? editForm.get('tenant')!.value : tenantOption" *ngFor="let tenantOption of tenants; trackBy: trackById">{{ tenantOption.id }}</option>
+                    <label jhiTranslate="autocutApp.transaction.left" for="field_lefts">Left</label>
+                    <select class="form-control" id="field_lefts" multiple name="lefts" formControlName="lefts">
+                        <option [ngValue]="getSelected(editForm.get('lefts')!.value, transactionOption)" *ngFor="let transactionOption of transactions; trackBy: trackById">{{ transactionOption.id }}</option>
                     </select>
                 </div>
             </div>

@@ -1,15 +1,17 @@
 package de.farue.autocut.service;
 
-import java.util.List;
-import java.util.Optional;
-
+import de.farue.autocut.domain.Lease;
+import de.farue.autocut.repository.LeaseRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.farue.autocut.domain.Lease;
-import de.farue.autocut.repository.LeaseRepository;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Service Implementation for managing {@link Lease}.
@@ -45,9 +47,18 @@ public class LeaseService {
     @Transactional(readOnly = true)
     public List<Lease> findAll() {
         log.debug("Request to get all Leases");
-        return leaseRepository.findAll();
+        return leaseRepository.findAllWithEagerRelationships();
     }
 
+
+    /**
+     * Get all the leases with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    public Page<Lease> findAllWithEagerRelationships(Pageable pageable) {
+        return leaseRepository.findAllWithEagerRelationships(pageable);
+    }
 
     /**
      * Get one lease by id.
@@ -58,7 +69,7 @@ public class LeaseService {
     @Transactional(readOnly = true)
     public Optional<Lease> findOne(Long id) {
         log.debug("Request to get Lease : {}", id);
-        return leaseRepository.findById(id);
+        return leaseRepository.findOneWithEagerRelationships(id);
     }
 
     /**

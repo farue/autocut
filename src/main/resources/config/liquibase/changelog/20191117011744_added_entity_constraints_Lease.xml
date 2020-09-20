@@ -8,6 +8,18 @@
     -->
     <changeSet id="20191117011744-2" author="jhipster">
         
+        <addForeignKeyConstraint baseColumnNames="lease_id"
+                                 baseTableName="lease_transaction_book"
+                                 constraintName="fk_lease_transaction_book_lease_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="lease"/>
+
+        <addForeignKeyConstraint baseColumnNames="transaction_book_id"
+                                 baseTableName="lease_transaction_book"
+                                 constraintName="fk_lease_transaction_book_transaction_book_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transaction_book"/>
+        
         <addForeignKeyConstraint baseColumnNames="apartment_id"
                                  baseTableName="lease"
                                  constraintName="fk_lease_apartment_id"

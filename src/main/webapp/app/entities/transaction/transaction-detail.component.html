@@ -40,17 +40,17 @@
                 <dd>
                     <span>{{ transaction.recipient }}</span>
                 </dd>
-                <dt><span jhiTranslate="autocutApp.transaction.lease">Lease</span></dt>
+                <dt><span jhiTranslate="autocutApp.transaction.account">Account</span></dt>
                 <dd>
-                    <div *ngIf="transaction.lease">
-                        <a [routerLink]="['/lease', transaction.lease?.id, 'view']">{{ transaction.lease?.id }}</a>
+                    <div *ngIf="transaction.account">
+                        <a [routerLink]="['/transaction-book', transaction.account?.id, 'view']">{{ transaction.account?.id }}</a>
                     </div>
                 </dd>
-                <dt><span jhiTranslate="autocutApp.transaction.tenant">Tenant</span></dt>
+                <dt><span jhiTranslate="autocutApp.transaction.left">Left</span></dt>
                 <dd>
-                    <div *ngIf="transaction.tenant">
-                        <a [routerLink]="['/tenant', transaction.tenant?.id, 'view']">{{ transaction.tenant?.id }}</a>
-                    </div>
+                    <span *ngFor="let left of transaction.lefts; let last = last">
+                        <a [routerLink]="['/transaction', left?.id, 'view']">{{ left.id }}</a>{{ last ? '' : ', ' }}
+                    </span>
                 </dd>
             </dl>
 

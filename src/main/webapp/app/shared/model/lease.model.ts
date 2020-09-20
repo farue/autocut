@@ -1,5 +1,6 @@
 import { Moment } from 'moment';
 import { ITenant } from 'app/shared/model/tenant.model';
+import { ITransactionBook } from 'app/shared/model/transaction-book.model';
 import { IApartment } from 'app/shared/model/apartment.model';
 
 export interface ILease {
@@ -11,6 +12,7 @@ export interface ILease {
   pictureContractContentType?: string;
   pictureContract?: any;
   tenants?: ITenant[];
+  transactionBooks?: ITransactionBook[];
   apartment?: IApartment;
 }
 
@@ -24,6 +26,7 @@ export class Lease implements ILease {
     public pictureContractContentType?: string,
     public pictureContract?: any,
     public tenants?: ITenant[],
+    public transactionBooks?: ITransactionBook[],
     public apartment?: IApartment
   ) {
     this.blocked = this.blocked || false;

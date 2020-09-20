@@ -1,5 +1,6 @@
 package de.farue.autocut.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -10,6 +11,8 @@ import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 import de.farue.autocut.domain.enumeration.TransactionKind;
 
@@ -59,11 +62,19 @@ public class Transaction implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties(value = "transactions", allowSetters = true)
-    private Lease lease;
+    private TransactionBook account;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = "transactions", allowSetters = true)
-    private Tenant tenant;
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JoinTable(name = "transaction_left",
+               joinColumns = @JoinColumn(name = "transaction_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "left_id", referencedColumnName = "id"))
+    private Set<Transaction> lefts = new HashSet<>();
+
+    @ManyToMany(mappedBy = "lefts")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnore
+    private Set<Transaction> rights = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -178,30 +189,67 @@ public class Transaction implements Serializable {
         this.recipient = recipient;
     }
 
-    public Lease getLease() {
-        return lease;
+    public TransactionBook getAccount() {
+        return account;
     }
 
-    public Transaction lease(Lease lease) {
-        this.lease = lease;
+    public Transaction account(TransactionBook transactionBook) {
+        this.account = transactionBook;
         return this;
     }
 
-    public void setLease(Lease lease) {
-        this.lease = lease;
+    public void setAccount(TransactionBook transactionBook) {
+        this.account = transactionBook;
     }
 
-    public Tenant getTenant() {
-        return tenant;
+    public Set<Transaction> getLefts() {
+        return lefts;
     }
 
-    public Transaction tenant(Tenant tenant) {
-        this.tenant = tenant;
+    public Transaction lefts(Set<Transaction> transactions) {
+        this.lefts = transactions;
         return this;
     }
 
-    public void setTenant(Tenant tenant) {
-        this.tenant = tenant;
+    public Transaction addLeft(Transaction transaction) {
+        this.lefts.add(transaction);
+        transaction.getRights().add(this);
+        return this;
+    }
+
+    public Transaction removeLeft(Transaction transaction) {
+        this.lefts.remove(transaction);
+        transaction.getRights().remove(this);
+        return this;
+    }
+
+    public void setLefts(Set<Transaction> transactions) {
+        this.lefts = transactions;
+    }
+
+    public Set<Transaction> getRights() {
+        return rights;
+    }
+
+    public Transaction rights(Set<Transaction> transactions) {
+        this.rights = transactions;
+        return this;
+    }
+
+    public Transaction addRight(Transaction transaction) {
+        this.rights.add(transaction);
+        transaction.getLefts().add(this);
+        return this;
+    }
+
+    public Transaction removeRight(Transaction transaction) {
+        this.rights.remove(transaction);
+        transaction.getLefts().remove(this);
+        return this;
+    }
+
+    public void setRights(Set<Transaction> transactions) {
+        this.rights = transactions;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

@@ -24,8 +24,9 @@
       "description": "Description",
       "issuer": "Issuer",
       "recipient": "Recipient",
-      "lease": "Lease",
-      "tenant": "Tenant"
+      "account": "Account",
+      "left": "Left",
+      "right": "Right"
     }
   }
 }

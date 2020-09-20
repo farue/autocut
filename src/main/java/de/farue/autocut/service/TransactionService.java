@@ -5,6 +5,8 @@ import de.farue.autocut.repository.TransactionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,9 +47,18 @@ public class TransactionService {
     @Transactional(readOnly = true)
     public List<Transaction> findAll() {
         log.debug("Request to get all Transactions");
-        return transactionRepository.findAll();
+        return transactionRepository.findAllWithEagerRelationships();
     }
 
+
+    /**
+     * Get all the transactions with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    public Page<Transaction> findAllWithEagerRelationships(Pageable pageable) {
+        return transactionRepository.findAllWithEagerRelationships(pageable);
+    }
 
     /**
      * Get one transaction by id.
@@ -58,7 +69,7 @@ public class TransactionService {
     @Transactional(readOnly = true)
     public Optional<Transaction> findOne(Long id) {
         log.debug("Request to get Transaction : {}", id);
-        return transactionRepository.findById(id);
+        return transactionRepository.findOneWithEagerRelationships(id);
     }
 
     /**

@@ -24,6 +24,7 @@
         "washHistory": "Wash History",
         "globalSetting": "Global Setting",
         "networkSwitch": "Network Switch",
+        "transactionBook": "Transaction Book",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

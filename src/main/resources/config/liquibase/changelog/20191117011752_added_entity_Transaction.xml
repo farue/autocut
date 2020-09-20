@@ -40,10 +40,7 @@
             <column name="recipient" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="lease_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-            <column name="tenant_id" type="bigint">
+            <column name="account_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
@@ -54,6 +51,17 @@
 
     <changeSet id="20191117011752-1-relations" author="jhipster">
 
+        <createTable tableName="transaction_left">
+            <column name="left_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="transaction_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="transaction_id, left_id" tableName="transaction_left"/>
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 

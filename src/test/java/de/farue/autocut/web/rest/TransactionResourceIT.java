@@ -7,9 +7,14 @@ import de.farue.autocut.service.TransactionService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,10 +23,12 @@ import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -30,6 +37,7 @@ import de.farue.autocut.domain.enumeration.TransactionKind;
  * Integration tests for the {@link TransactionResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 public class TransactionResourceIT {
@@ -60,6 +68,12 @@ public class TransactionResourceIT {
 
     @Autowired
     private TransactionRepository transactionRepository;
+
+    @Mock
+    private TransactionRepository transactionRepositoryMock;
+
+    @Mock
+    private TransactionService transactionServiceMock;
 
     @Autowired
     private TransactionService transactionService;
@@ -274,6 +288,26 @@ public class TransactionResourceIT {
             .andExpect(jsonPath("$.[*].recipient").value(hasItem(DEFAULT_RECIPIENT)));
     }
     
+    @SuppressWarnings({"unchecked"})
+    public void getAllTransactionsWithEagerRelationshipsIsEnabled() throws Exception {
+        when(transactionServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restTransactionMockMvc.perform(get("/api/transactions?eagerload=true"))
+            .andExpect(status().isOk());
+
+        verify(transactionServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public void getAllTransactionsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(transactionServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restTransactionMockMvc.perform(get("/api/transactions?eagerload=true"))
+            .andExpect(status().isOk());
+
+        verify(transactionServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
     @Test
     @Transactional
     public void getTransaction() throws Exception {

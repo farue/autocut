@@ -40,6 +40,14 @@
       "relationshipName": "tenants"
     },
     {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "transactionBook",
+      "otherEntityRelationshipName": "lease",
+      "relationshipName": "transactionBook",
+      "otherEntityField": "id",
+      "ownerSide": true
+    },
+    {
       "relationshipType": "many-to-one",
       "otherEntityName": "apartment",
       "otherEntityRelationshipName": "leases",

@@ -53,17 +53,26 @@
   "relationships": [
     {
       "relationshipType": "many-to-one",
-      "otherEntityName": "lease",
+      "otherEntityName": "transactionBook",
       "otherEntityRelationshipName": "transaction",
-      "relationshipName": "lease",
+      "relationshipName": "account",
       "otherEntityField": "id"
     },
     {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "tenant",
-      "otherEntityRelationshipName": "transaction",
-      "relationshipName": "tenant",
-      "otherEntityField": "id"
+      "relationshipType": "many-to-many",
+      "otherEntityName": "transaction",
+      "otherEntityRelationshipName": "right",
+      "relationshipName": "left",
+      "otherEntityField": "id",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "transaction",
+      "otherEntityRelationshipName": "left",
+      "relationshipName": "right",
+      "otherEntityField": "id",
+      "ownerSide": false
     }
   ],
   "changelogDate": "20191117011752",

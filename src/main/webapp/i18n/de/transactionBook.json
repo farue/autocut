@@ -1,0 +1,22 @@
+{
+  "autocutApp": {
+    "transactionBook": {
+      "home": {
+        "title": "Transaction Books",
+        "createLabel": "Transaction Book erstellen",
+        "createOrEditLabel": "Transaction Book erstellen oder bearbeiten",
+        "notFound": "No Transaction Books found"
+      },
+      "created": "Transaction Book erstellt mit ID {{ param }}",
+      "updated": "Transaction Book aktualisiert mit ID {{ param }}",
+      "deleted": "Transaction Book gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Transaction Book {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Transaction Book"
+      },
+      "lease": "Lease"
+    }
+  }
+}

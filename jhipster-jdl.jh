@@ -48,6 +48,10 @@ relationship OneToMany {
     Apartment{leases} to Lease{apartment}
 }
 
+relationship ManyToMany {
+    Lease to TransactionBook
+}
+
 
 // ****************************************************
 // * Apartment & Address
@@ -162,6 +166,10 @@ relationship OneToMany {
 // ****************************************************
 
 @service(serviceClass)
+entity TransactionBook {
+}
+
+@service(serviceClass)
 entity Transaction {
 	kind TransactionKind required
 	bookingDate Instant required
@@ -192,8 +200,11 @@ enum TransactionKind {
 }
 
 relationship ManyToOne {
-	Transaction{lease} to Lease
-	Transaction{tenant} to Tenant
+	Transaction{account} to TransactionBook
+}
+
+relationship ManyToMany {
+    Transaction{left} to Transaction{right}
 }
 
 
