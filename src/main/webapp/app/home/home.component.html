@@ -8,8 +8,8 @@
             <span jhiTranslate="home.message.oldwebsite">Follow this link to the old website:</span> <a (click)="redirectToOldWebsite()">http://www.farue.rwth-aachen.de/old/index.html</a>
         </div>
     </div>
-    <div class="row m-3">
-        <p-galleria [value]="images" [responsiveOptions]="responsiveOptions" [containerStyle]="{'max-width': '1024px'}" [numVisible]="7" [circular]="true" [autoPlay]="true"
+    <div class="col-12 m-3">
+        <p-galleria [value]="images" [responsiveOptions]="responsiveOptions" [containerStyle]="{'max-width': '1000px'}" [numVisible]="7" [circular]="true" [autoPlay]="true"
                     [transitionInterval]="2000">
             <ng-template pTemplate="item" let-item>
                 <img [src]="item.previewImageSrc" style="width: 100%; display: block;"/>
