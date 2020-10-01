@@ -6,10 +6,18 @@ cache:
     - .gradle/
 
 variables:
+  # Docker
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: '/certs'
   DOCKER_TLS_VERIFY: '1'
   DOCKER_CERT_PATH: '/certs/client'
+  # Deployment
+  SERVER_URL: '137.226.153.2'
+  SSH_OPTS: '-o StrictHostKeyChecking=no'
+  DOCKER_COMPOSE_APP: 'src/main/docker/app.yml'
+  DOCKER_COMPOSE_MYSQL: 'src/main/docker/mysql.yml'
+  REMOTE_DOCKER_COMPOSE_APP: '~/autocut/app.yml'
+  REMOTE_DOCKER_COMPOSE_MYSQL: '~/autocut/mysql.yml'
 
 stages:
   - check
@@ -146,22 +154,17 @@ gradle-package:
       - build/libs/*.jar
       - build/classes
     expire_in: 1 day
-  only:
-    refs:
-      - release
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
 
 docker-push:
   stage: release
-  variables:
-    REGISTRY_URL: registry.git.rwth-aachen.de
-    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA
   dependencies:
     - gradle-package
   script:
-    - gradle jib -Pprod -Djib.to.image=$IMAGE_TAG -Djib.to.auth.username=gitlab-ci-token  -Djib.to.auth.password=$CI_BUILD_TOKEN
-  only:
-    refs:
-      - release
+    - gradle jib -Pprod -Djib.to.image=$CI_REGISTRY_IMAGE -Djib.to.tags=$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA -Djib.to.auth.username=gitlab-ci-token -Djib.to.auth.password=$CI_BUILD_TOKEN
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
 
 docker-deploy:
   image: alpine
@@ -178,6 +181,5 @@ docker-deploy:
       && cd ~/autocut
       && docker-compose -f app.yml pull
       && docker-compose -f app.yml up -d"
-  only:
-    refs:
-      - release
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
