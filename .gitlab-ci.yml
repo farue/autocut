@@ -14,10 +14,8 @@ variables:
   # Deployment
   SERVER_URL: '137.226.153.2'
   SSH_OPTS: '-o StrictHostKeyChecking=no'
-  DOCKER_COMPOSE_APP: 'src/main/docker/app.yml'
-  DOCKER_COMPOSE_MYSQL: 'src/main/docker/mysql.yml'
-  REMOTE_DOCKER_COMPOSE_APP: '~/autocut/app.yml'
-  REMOTE_DOCKER_COMPOSE_MYSQL: '~/autocut/mysql.yml'
+  DOCKER_COMPOSE_APP: 'src/main/docker/autocut.yml'
+  REMOTE_DOCKER_COMPOSE_APP: '~/autocut/autocut.yml'
 
 stages:
   - check
@@ -178,10 +176,9 @@ docker-deploy:
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - scp ${SSH_OPTS} ${DOCKER_COMPOSE_APP} gitlab@${SERVER_URL}:${REMOTE_DOCKER_COMPOSE_APP}
-    - scp ${SSH_OPTS} ${DOCKER_COMPOSE_MYSQL} gitlab@${SERVER_URL}:${REMOTE_DOCKER_COMPOSE_MYSQL}
     - ssh ${SSH_OPTS} gitlab@${SERVER_URL} "docker login -u ${CI_DEPLOY_USER} -p ${CI_DEPLOY_PASSWORD} ${CI_REGISTRY}
       && cd ~/autocut
-      && docker-compose -f app.yml pull
-      && docker-compose -f app.yml up -d"
+      && docker-compose -f autocut.yml pull
+      && docker-compose -f autocut.yml up -d"
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'

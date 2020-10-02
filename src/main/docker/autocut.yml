@@ -1,0 +1,70 @@
+version: '3.8'
+
+networks:
+  traefik:
+    external: true
+
+services:
+  autocut-app:
+    image: 'registry.git.rwth-aachen.de/farue/autocut'
+    container_name: 'autocut-app'
+    restart: always
+    networks:
+      - 'traefik'
+    environment:
+      - TZ=Europe/Berlin
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,swagger
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - SPRING_DATASOURCE_URL=jdbc:mysql://autocut-mysql:3306/autocut?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+    ports:
+      - 8080:8080
+    labels:
+      - 'traefik.enable=true'
+      # www redirect
+      - 'traefik.http.middlewares.www-redirect.redirectregex.regex=^(https?)://farue.rwth-aachen.de(.*)'
+      - 'traefik.http.middlewares.www-redirect.redirectregex.replacement=$${1}://www.farue.rwth-aachen.de$${2}'
+      - 'traefik.http.middlewares.www-redirect.redirectregex.permanent=true'
+      # http route
+      - 'traefik.http.routers.autocut-http.rule=Host(`farue.rwth-aachen.de`, `www.farue.rwth-aachen.de`)'
+      - 'traefik.http.routers.autocut-http.entrypoints=web'
+      - 'traefik.http.middlewares.https-redirect.redirectscheme.scheme=https'
+      - 'traefik.http.middlewares.https-redirect.redirectscheme.permanent=true'
+      - 'traefik.http.routers.autocut-http.middlewares=www-redirect@docker, https-redirect@docker'
+      - 'traefik.http.routers.autocut-http.service=autocut-service'
+      # https route
+      - 'traefik.http.routers.autocut-https.rule=Host(`farue.rwth-aachen.de`, `www.farue.rwth-aachen.de`)'
+      - 'traefik.http.routers.autocut-https.entrypoints=websecure'
+      - 'traefik.http.routers.autocut-https.tls=true'
+      - 'traefik.http.routers.autocut-https.middlewares=www-redirect@docker'
+      - 'traefik.http.routers.autocut-https.service=autocut-service'
+      # autocut service
+      - 'traefik.http.services.autocut-service.loadbalancer.server.port=8080'
+    healthcheck:
+      test: curl --fail -s localhost:8080/management/health 2>&1 | grep UP || exit 1
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+  autocut-mysql:
+    image: mysql:8.0.20
+    container_name: 'autocut-mysql'
+    restart: always
+    volumes:
+      - ~/volumes/autocut/mysql/:/var/lib/mysql/
+    networks:
+      - 'traefik'
+    environment:
+      - TZ=Europe/Berlin
+      - MYSQL_USER=root
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=autocut
+    ports:
+      - 127.0.0.1:3306:3306
+    command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
+    healthcheck:
+      test: mysqladmin ping -h localhost
+      timeout: 20s
+      retries: 10
