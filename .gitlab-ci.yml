@@ -39,11 +39,10 @@ nohttp:
 gradle-compile:
   stage: build
   script:
-    - gradle compileJava
+    - gradle compileJava -x webpack
   artifacts:
     paths:
-      - build/classes/
-      - build/generated/
+      - build/
     expire_in: 1 day
   needs: []
 
@@ -68,7 +67,7 @@ frontend-compile:
 gradle-test:
   stage: test
   script:
-    - gradle test
+    - gradle test -x webpack
   artifacts:
     reports:
       junit: build/test-results/test/TEST-*.xml
@@ -90,7 +89,7 @@ gradle-integration-test:
     DOCKER_HOST: 'tcp://docker:2376'
   stage: test
   script:
-    - gradle integrationTest -Ptestcontainers
+    - gradle integrationTest -Ptestcontainers -x webpack
   artifacts:
     reports:
       junit: build/test-results/integrationTest/TEST-*.xml
@@ -132,6 +131,8 @@ sonar-analyze:
   except:
     - merge_requests
   dependencies:
+    - gradle-compile
+    - frontend-compile
     - gradle-test
     - gradle-integration-test
     - frontend-test
@@ -139,7 +140,7 @@ sonar-analyze:
     - export NG_CLI_ANALYTICS="false"
     - gradle npm_install -PnodeInstall
   script:
-    - gradle sonarqube -Dsonar.projectKey=autocut -Dsonar.host.url=https://www.farue.rwth-aachen.de/sonar -Dsonar.login=$SONAR_TOKEN
+    - gradle sonarqube -x test -Dsonar.projectKey=autocut -Dsonar.host.url=https://www.farue.rwth-aachen.de/sonar -Dsonar.login=$SONAR_TOKEN
   allow_failure: true
 
 gradle-package:
@@ -148,11 +149,10 @@ gradle-package:
     - export NG_CLI_ANALYTICS="false"
     - gradle npm_install -PnodeInstall
   script:
-    - gradle bootJar -Pprod -x check
+    - gradle bootJar -PnodeInstall -Pprod -x check
   artifacts:
     paths:
-      - build/libs/*.jar
-      - build/classes
+      - build/
     expire_in: 1 day
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
@@ -162,7 +162,9 @@ docker-push:
   dependencies:
     - gradle-package
   script:
-    - gradle jib -Pprod -Djib.to.image=$CI_REGISTRY_IMAGE -Djib.to.tags=$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA -Djib.to.auth.username=gitlab-ci-token -Djib.to.auth.password=$CI_BUILD_TOKEN
+    # -x webpack relies on this job getting the build artifacts from gradle-package
+    # alternatively we could add -PnodeInstall
+    - gradle jib -Pprod -x webpack -Djib.to.image=$CI_REGISTRY_IMAGE -Djib.to.tags=$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA -Djib.to.auth.username=gitlab-ci-token -Djib.to.auth.password=$CI_BUILD_TOKEN
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
 
