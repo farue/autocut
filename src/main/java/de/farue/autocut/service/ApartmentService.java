@@ -1,15 +1,15 @@
 package de.farue.autocut.service;
 
-import java.util.List;
-import java.util.Optional;
-
+import de.farue.autocut.domain.Apartment;
+import de.farue.autocut.repository.ApartmentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.farue.autocut.domain.Apartment;
-import de.farue.autocut.repository.ApartmentRepository;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Service Implementation for managing {@link Apartment}.

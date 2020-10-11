@@ -56,12 +56,15 @@ public class CacheConfiguration {
             createCache(cm, de.farue.autocut.domain.TeamMember.class.getName() + ".securityPolicies");
             createCache(cm, de.farue.autocut.domain.Lease.class.getName());
             createCache(cm, de.farue.autocut.domain.Lease.class.getName() + ".tenants");
+            createCache(cm, de.farue.autocut.domain.Lease.class.getName() + ".transactionBooks");
             createCache(cm, de.farue.autocut.domain.Apartment.class.getName());
             createCache(cm, de.farue.autocut.domain.Apartment.class.getName() + ".leases");
             createCache(cm, de.farue.autocut.domain.Address.class.getName());
             createCache(cm, de.farue.autocut.domain.SecurityPolicy.class.getName());
             createCache(cm, de.farue.autocut.domain.InternetAccess.class.getName());
             createCache(cm, de.farue.autocut.domain.Transaction.class.getName());
+            createCache(cm, de.farue.autocut.domain.Transaction.class.getName() + ".lefts");
+            createCache(cm, de.farue.autocut.domain.Transaction.class.getName() + ".rights");
             createCache(cm, de.farue.autocut.domain.TenantCommunication.class.getName());
             createCache(cm, de.farue.autocut.domain.Activity.class.getName());
             createCache(cm, de.farue.autocut.domain.Activity.class.getName() + ".teamMembers");
@@ -72,11 +75,8 @@ public class CacheConfiguration {
             createCache(cm, de.farue.autocut.domain.WashHistory.class.getName());
             createCache(cm, de.farue.autocut.domain.GlobalSetting.class.getName());
             createCache(cm, de.farue.autocut.domain.NetworkSwitch.class.getName());
-            createCache(cm, de.farue.autocut.domain.Lease.class.getName() + ".transactionBooks");
             createCache(cm, de.farue.autocut.domain.TransactionBook.class.getName());
             createCache(cm, de.farue.autocut.domain.TransactionBook.class.getName() + ".leases");
-            createCache(cm, de.farue.autocut.domain.Transaction.class.getName() + ".lefts");
-            createCache(cm, de.farue.autocut.domain.Transaction.class.getName() + ".rights");
             // jhipster-needle-ehcache-add-entry
         };
     }
