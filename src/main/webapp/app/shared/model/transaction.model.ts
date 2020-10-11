@@ -1,6 +1,5 @@
 import { Moment } from 'moment';
-import { ILease } from 'app/shared/model/lease.model';
-import { ITenant } from 'app/shared/model/tenant.model';
+import { ITransactionBook } from 'app/shared/model/transaction-book.model';
 import { TransactionKind } from 'app/shared/model/enumerations/transaction-kind.model';
 
 export interface ITransaction {
@@ -13,8 +12,9 @@ export interface ITransaction {
   description?: string;
   issuer?: string;
   recipient?: string;
-  lease?: ILease;
-  tenant?: ITenant;
+  transactionBook?: ITransactionBook;
+  lefts?: ITransaction[];
+  rights?: ITransaction[];
 }
 
 export class Transaction implements ITransaction {
@@ -28,7 +28,8 @@ export class Transaction implements ITransaction {
     public description?: string,
     public issuer?: string,
     public recipient?: string,
-    public lease?: ILease,
-    public tenant?: ITenant
+    public transactionBook?: ITransactionBook,
+    public lefts?: ITransaction[],
+    public rights?: ITransaction[]
   ) {}
 }

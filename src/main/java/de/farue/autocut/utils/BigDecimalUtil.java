@@ -27,4 +27,8 @@ public class BigDecimalUtil {
     public static BigDecimal positive(BigDecimal d) {
         return isNegative(d) ? d.negate() : d;
     }
+
+    public static boolean isZero(BigDecimal d) {
+        return BigDecimal.ZERO.compareTo(d) == 0;
+    }
 }

@@ -1,0 +1,34 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="transactionBook">
+            <h2><span jhiTranslate="autocutApp.transactionBook.detail.title">Transaction Book</span> {{ transactionBook.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="autocutApp.transactionBook.name">Name</span></dt>
+                <dd>
+                    <span>{{ transactionBook.name }}</span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.transactionBook.type">Type</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'autocutApp.TransactionBookType.' + transactionBook.type }}">{{ transactionBook.type }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/transaction-book', transactionBook.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

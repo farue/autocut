@@ -7,13 +7,9 @@ import { ITransactionOverview } from './transaction-overview.model';
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
-  public resourceUrl = SERVER_API_URL + 'api/transactions';
+  public resourceUrl = SERVER_API_URL + 'api/transaction-books';
 
   constructor(private http: HttpClient) {}
-
-  // getBalance(): Observable<number> {
-  //   return this.http.get<number>(this.resourceUrl + '/balance');
-  // }
 
   query(req?: Pagination): Observable<HttpResponse<ITransactionOverview>> {
     const options = createRequestOption(req);

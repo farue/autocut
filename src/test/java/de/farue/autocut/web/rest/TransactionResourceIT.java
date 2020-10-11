@@ -2,6 +2,10 @@ package de.farue.autocut.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -13,15 +17,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,13 +38,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Transaction;
+import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.domain.enumeration.TransactionKind;
 import de.farue.autocut.repository.TransactionRepository;
 import de.farue.autocut.service.TransactionService;
+
 /**
  * Integration tests for the {@link TransactionResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 public class TransactionResourceIT {
@@ -67,6 +79,12 @@ public class TransactionResourceIT {
     @Autowired
     private TransactionRepository transactionRepository;
 
+    @Mock
+    private TransactionRepository transactionRepositoryMock;
+
+    @Mock
+    private TransactionService transactionServiceMock;
+
     @Autowired
     private TransactionService transactionService;
 
@@ -94,6 +112,16 @@ public class TransactionResourceIT {
             .description(DEFAULT_DESCRIPTION)
             .issuer(DEFAULT_ISSUER)
             .recipient(DEFAULT_RECIPIENT);
+        // Add required entity
+        TransactionBook transactionBook;
+        if (TestUtil.findAll(em, TransactionBook.class).isEmpty()) {
+            transactionBook = TransactionBookResourceIT.createEntity(em);
+            em.persist(transactionBook);
+            em.flush();
+        } else {
+            transactionBook = TestUtil.findAll(em, TransactionBook.class).get(0);
+        }
+        transaction.setTransactionBook(transactionBook);
         return transaction;
     }
     /**
@@ -112,6 +140,16 @@ public class TransactionResourceIT {
             .description(UPDATED_DESCRIPTION)
             .issuer(UPDATED_ISSUER)
             .recipient(UPDATED_RECIPIENT);
+        // Add required entity
+        TransactionBook transactionBook;
+        if (TestUtil.findAll(em, TransactionBook.class).isEmpty()) {
+            transactionBook = TransactionBookResourceIT.createUpdatedEntity(em);
+            em.persist(transactionBook);
+            em.flush();
+        } else {
+            transactionBook = TestUtil.findAll(em, TransactionBook.class).get(0);
+        }
+        transaction.setTransactionBook(transactionBook);
         return transaction;
     }
 
@@ -227,6 +265,25 @@ public class TransactionResourceIT {
 
         // Create the Transaction, which fails.
 
+
+        restTransactionMockMvc.perform(post("/api/transactions")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(transaction)))
+            .andExpect(status().isBadRequest());
+
+        List<Transaction> transactionList = transactionRepository.findAll();
+        assertThat(transactionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkBalanceAfterIsRequired() throws Exception {
+        int databaseSizeBeforeTest = transactionRepository.findAll().size();
+        // set the field null
+        transaction.setBalanceAfter(null);
+
+        // Create the Transaction, which fails.
+
         restTransactionMockMvc.perform(post("/api/transactions")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(transaction)))
@@ -273,6 +330,26 @@ public class TransactionResourceIT {
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].issuer").value(hasItem(DEFAULT_ISSUER)))
             .andExpect(jsonPath("$.[*].recipient").value(hasItem(DEFAULT_RECIPIENT)));
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public void getAllTransactionsWithEagerRelationshipsIsEnabled() throws Exception {
+        when(transactionServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restTransactionMockMvc.perform(get("/api/transactions?eagerload=true"))
+            .andExpect(status().isOk());
+
+        verify(transactionServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public void getAllTransactionsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(transactionServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restTransactionMockMvc.perform(get("/api/transactions?eagerload=true"))
+            .andExpect(status().isOk());
+
+        verify(transactionServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @Test

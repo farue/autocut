@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.farue.autocut.domain.Lease;
@@ -89,10 +90,11 @@ public class LeaseResource {
     /**
      * {@code GET  /leases} : get all the leases.
      *
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of leases in body.
      */
     @GetMapping("/leases")
-    public List<Lease> getAllLeases() {
+    public List<Lease> getAllLeases(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all Leases");
         return leaseService.findAll();
     }

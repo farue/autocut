@@ -1,5 +1,6 @@
 package de.farue.autocut.service;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -7,12 +8,17 @@ import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import de.farue.autocut.domain.Apartment;
 import de.farue.autocut.domain.Lease;
+import de.farue.autocut.domain.TransactionBook;
+import de.farue.autocut.domain.enumeration.TransactionBookType;
 import de.farue.autocut.repository.LeaseRepository;
+import de.farue.autocut.service.accounting.TransactionBookService;
 
 /**
  * Service Implementation for managing {@link Lease}.
@@ -27,9 +33,13 @@ public class LeaseService {
 
     private final ApartmentService apartmentService;
 
-    public LeaseService(LeaseRepository leaseRepository, ApartmentService apartmentService) {
+    private final TransactionBookService transactionBookService;
+
+    public LeaseService(LeaseRepository leaseRepository, ApartmentService apartmentService,
+        TransactionBookService transactionBookService) {
         this.leaseRepository = leaseRepository;
         this.apartmentService = apartmentService;
+        this.transactionBookService = transactionBookService;
     }
 
     /**
@@ -51,9 +61,18 @@ public class LeaseService {
     @Transactional(readOnly = true)
     public List<Lease> findAll() {
         log.debug("Request to get all Leases");
-        return leaseRepository.findAll();
+        return leaseRepository.findAllWithEagerRelationships();
     }
 
+
+    /**
+     * Get all the leases with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    public Page<Lease> findAllWithEagerRelationships(Pageable pageable) {
+        return leaseRepository.findAllWithEagerRelationships(pageable);
+    }
 
     /**
      * Get one lease by id.
@@ -64,7 +83,7 @@ public class LeaseService {
     @Transactional(readOnly = true)
     public Optional<Lease> findOne(Long id) {
         log.debug("Request to get Lease : {}", id);
-        return leaseRepository.findById(id);
+        return leaseRepository.findOneWithEagerRelationships(id);
     }
 
     /**
@@ -112,5 +131,29 @@ public class LeaseService {
 
     public List<Lease> findByApartment(Apartment apartment, Instant date) {
         return leaseRepository.findAllByApartmentAndDate(apartment, date);
+    }
+
+    public TransactionBook getCashTransactionBook(Lease lease) {
+        return lease.getTransactionBooks().stream()
+            .filter(book -> book.getType() == TransactionBookType.CASH)
+            .findFirst()
+            .orElseGet(() -> transactionBookService.save(new TransactionBook().type(TransactionBookType.CASH)));
+    }
+
+    public TransactionBook getDepositTransactionBook(Lease lease) {
+        return lease.getTransactionBooks().stream()
+            .filter(book -> book.getType() == TransactionBookType.DEPOSIT)
+            .findFirst()
+            .orElseGet(() -> transactionBookService.save(new TransactionBook().type(TransactionBookType.DEPOSIT)));
+    }
+
+    // NB: Not read-only as a new transaction book is created if none exists
+    public BigDecimal getCurrentCashBalance(Lease lease) {
+        return transactionBookService.getCurrentBalance(getCashTransactionBook(lease));
+    }
+
+    // NB: Not read-only as a new transaction book is created if none exists
+    public BigDecimal getCurrentDepositBalance(Lease lease) {
+        return transactionBookService.getCurrentBalance(getDepositTransactionBook(lease));
     }
 }

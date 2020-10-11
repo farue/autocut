@@ -11,6 +11,8 @@ public class TransactionsOverviewDTO {
 
     private BigDecimal balanceNow;
 
+    private BigDecimal deposit;
+
     private List<Transaction> transactions;
 
 }

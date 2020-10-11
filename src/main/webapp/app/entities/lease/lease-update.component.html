@@ -82,6 +82,13 @@
                 </div>
 
                 <div class="form-group">
+                    <label jhiTranslate="autocutApp.lease.transactionBook" for="field_transactionBooks">Transaction Book</label>
+                    <select class="form-control" id="field_transactionBooks" multiple name="transactionBooks" formControlName="transactionBooks">
+                        <option [ngValue]="getSelected(editForm.get('transactionBooks')!.value, transactionBookOption)" *ngFor="let transactionBookOption of transactionbooks; trackBy: trackById">{{ transactionBookOption.id }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.lease.apartment" for="field_apartment">Apartment</label>
                     <select class="form-control" id="field_apartment" name="apartment" formControlName="apartment">
                         <option [ngValue]="null"></option>

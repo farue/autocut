@@ -11,8 +11,12 @@ import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } 
 import { ILease, Lease } from 'app/shared/model/lease.model';
 import { LeaseService } from './lease.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
+import { ITransactionBook } from 'app/shared/model/transaction-book.model';
+import { TransactionBookService } from 'app/entities/transaction-book/transaction-book.service';
 import { IApartment } from 'app/shared/model/apartment.model';
 import { ApartmentService } from 'app/entities/apartment/apartment.service';
+
+type SelectableEntity = ITransactionBook | IApartment;
 
 @Component({
   selector: 'jhi-lease-update',
@@ -20,6 +24,7 @@ import { ApartmentService } from 'app/entities/apartment/apartment.service';
 })
 export class LeaseUpdateComponent implements OnInit {
   isSaving = false;
+  transactionbooks: ITransactionBook[] = [];
   apartments: IApartment[] = [];
 
   editForm = this.fb.group({
@@ -30,6 +35,7 @@ export class LeaseUpdateComponent implements OnInit {
     blocked: [],
     pictureContract: [],
     pictureContractContentType: [],
+    transactionBooks: [],
     apartment: [],
   });
 
@@ -37,6 +43,7 @@ export class LeaseUpdateComponent implements OnInit {
     protected dataUtils: JhiDataUtils,
     protected eventManager: JhiEventManager,
     protected leaseService: LeaseService,
+    protected transactionBookService: TransactionBookService,
     protected apartmentService: ApartmentService,
     protected elementRef: ElementRef,
     protected activatedRoute: ActivatedRoute,
@@ -53,6 +60,8 @@ export class LeaseUpdateComponent implements OnInit {
 
       this.updateForm(lease);
 
+      this.transactionBookService.query().subscribe((res: HttpResponse<ITransactionBook[]>) => (this.transactionbooks = res.body || []));
+
       this.apartmentService.query().subscribe((res: HttpResponse<IApartment[]>) => (this.apartments = res.body || []));
     });
   }
@@ -66,6 +75,7 @@ export class LeaseUpdateComponent implements OnInit {
       blocked: lease.blocked,
       pictureContract: lease.pictureContract,
       pictureContractContentType: lease.pictureContractContentType,
+      transactionBooks: lease.transactionBooks,
       apartment: lease.apartment,
     });
   }
@@ -120,6 +130,7 @@ export class LeaseUpdateComponent implements OnInit {
       blocked: this.editForm.get(['blocked'])!.value,
       pictureContractContentType: this.editForm.get(['pictureContractContentType'])!.value,
       pictureContract: this.editForm.get(['pictureContract'])!.value,
+      transactionBooks: this.editForm.get(['transactionBooks'])!.value,
       apartment: this.editForm.get(['apartment'])!.value,
     };
   }
@@ -140,7 +151,18 @@ export class LeaseUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  trackById(index: number, item: IApartment): any {
+  trackById(index: number, item: SelectableEntity): any {
     return item.id;
+  }
+
+  getSelected(selectedVals: ITransactionBook[], option: ITransactionBook): ITransactionBook {
+    if (selectedVals) {
+      for (let i = 0; i < selectedVals.length; i++) {
+        if (option.id === selectedVals[i].id) {
+          return selectedVals[i];
+        }
+      }
+    }
+    return option;
   }
 }

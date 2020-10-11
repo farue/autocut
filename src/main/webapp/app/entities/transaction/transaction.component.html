@@ -31,8 +31,8 @@
                 <th scope="col"><span jhiTranslate="autocutApp.transaction.description">Description</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.transaction.issuer">Issuer</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.transaction.recipient">Recipient</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.transaction.lease">Lease</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.transaction.tenant">Tenant</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.transaction.transactionBook">Transaction Book</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.transaction.left">Left</span></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -48,14 +48,14 @@
                     <td>{{ transaction.issuer }}</td>
                     <td>{{ transaction.recipient }}</td>
                     <td>
-                        <div *ngIf="transaction.lease">
-                            <a [routerLink]="['/lease', transaction.lease?.id, 'view']" >{{ transaction.lease?.id }}</a>
+                        <div *ngIf="transaction.transactionBook">
+                            <a [routerLink]="['/transaction-book', transaction.transactionBook?.id, 'view']" >{{ transaction.transactionBook?.id }}</a>
                         </div>
                     </td>
                     <td>
-                        <div *ngIf="transaction.tenant">
-                            <a [routerLink]="['/tenant', transaction.tenant?.id, 'view']" >{{ transaction.tenant?.id }}</a>
-                        </div>
+                        <span *ngFor="let left of transaction.lefts; let last = last">
+                            <a class="form-control-static" [routerLink]="['/transaction', left?.id, 'view']">{{ left.id }}</a>{{ last ? '' : ', ' }}
+                        </span>
                     </td>
                     <td class="text-right">
                         <div class="btn-group">

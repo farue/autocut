@@ -83,6 +83,16 @@
                     <label class="form-control-label" jhiTranslate="autocutApp.transaction.balanceAfter" for="field_balanceAfter">Balance After</label>
                     <input type="number" class="form-control" name="balanceAfter" id="field_balanceAfter"
                            formControlName="balanceAfter"/>
+                    <div *ngIf="editForm.get('balanceAfter')!.invalid && (editForm.get('balanceAfter')!.dirty || editForm.get('balanceAfter')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('balanceAfter')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('balanceAfter')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -110,18 +120,23 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.transaction.lease" for="field_lease">Lease</label>
-                    <select class="form-control" id="field_lease" name="lease" formControlName="lease">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="leaseOption.id === editForm.get('lease')!.value?.id ? editForm.get('lease')!.value : leaseOption" *ngFor="let leaseOption of leases; trackBy: trackById">{{ leaseOption.id }}</option>
+                    <label class="form-control-label" jhiTranslate="autocutApp.transaction.transactionBook" for="field_transactionBook">Transaction Book</label>
+                    <select class="form-control" id="field_transactionBook" name="transactionBook" formControlName="transactionBook">
+                        <option *ngIf="!editForm.get('transactionBook')!.value" [ngValue]="null" selected></option>
+                        <option [ngValue]="transactionBookOption.id === editForm.get('transactionBook')!.value?.id ? editForm.get('transactionBook')!.value : transactionBookOption" *ngFor="let transactionBookOption of transactionbooks; trackBy: trackById">{{ transactionBookOption.id }}</option>
                     </select>
+                </div>
+                <div *ngIf="editForm.get('transactionBook')!.invalid && (editForm.get('transactionBook')!.dirty || editForm.get('transactionBook')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('transactionBook')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.transaction.tenant" for="field_tenant">Tenant</label>
-                    <select class="form-control" id="field_tenant" name="tenant" formControlName="tenant">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="tenantOption.id === editForm.get('tenant')!.value?.id ? editForm.get('tenant')!.value : tenantOption" *ngFor="let tenantOption of tenants; trackBy: trackById">{{ tenantOption.id }}</option>
+                    <label jhiTranslate="autocutApp.transaction.left" for="field_lefts">Left</label>
+                    <select class="form-control" id="field_lefts" multiple name="lefts" formControlName="lefts">
+                        <option [ngValue]="getSelected(editForm.get('lefts')!.value, transactionOption)" *ngFor="let transactionOption of transactions; trackBy: trackById">{{ transactionOption.id }}</option>
                     </select>
                 </div>
             </div>

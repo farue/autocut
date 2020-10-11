@@ -9,12 +9,10 @@ import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 
 import { ITransaction, Transaction } from 'app/shared/model/transaction.model';
 import { TransactionService } from './transaction.service';
-import { ILease } from 'app/shared/model/lease.model';
-import { LeaseService } from 'app/entities/lease/lease.service';
-import { ITenant } from 'app/shared/model/tenant.model';
-import { TenantService } from 'app/entities/tenant/tenant.service';
+import { ITransactionBook } from 'app/shared/model/transaction-book.model';
+import { TransactionBookService } from 'app/entities/transaction-book/transaction-book.service';
 
-type SelectableEntity = ILease | ITenant;
+type SelectableEntity = ITransactionBook | ITransaction;
 
 @Component({
   selector: 'jhi-transaction-update',
@@ -22,8 +20,8 @@ type SelectableEntity = ILease | ITenant;
 })
 export class TransactionUpdateComponent implements OnInit {
   isSaving = false;
-  leases: ILease[] = [];
-  tenants: ITenant[] = [];
+  transactionbooks: ITransactionBook[] = [];
+  transactions: ITransaction[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -31,18 +29,17 @@ export class TransactionUpdateComponent implements OnInit {
     bookingDate: [null, [Validators.required]],
     valueDate: [null, [Validators.required]],
     value: [null, [Validators.required]],
-    balanceAfter: [],
+    balanceAfter: [null, [Validators.required]],
     description: [],
     issuer: [null, [Validators.required]],
     recipient: [],
-    lease: [],
-    tenant: [],
+    transactionBook: [null, Validators.required],
+    lefts: [],
   });
 
   constructor(
     protected transactionService: TransactionService,
-    protected leaseService: LeaseService,
-    protected tenantService: TenantService,
+    protected transactionBookService: TransactionBookService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -57,9 +54,9 @@ export class TransactionUpdateComponent implements OnInit {
 
       this.updateForm(transaction);
 
-      this.leaseService.query().subscribe((res: HttpResponse<ILease[]>) => (this.leases = res.body || []));
+      this.transactionBookService.query().subscribe((res: HttpResponse<ITransactionBook[]>) => (this.transactionbooks = res.body || []));
 
-      this.tenantService.query().subscribe((res: HttpResponse<ITenant[]>) => (this.tenants = res.body || []));
+      this.transactionService.query().subscribe((res: HttpResponse<ITransaction[]>) => (this.transactions = res.body || []));
     });
   }
 
@@ -74,8 +71,8 @@ export class TransactionUpdateComponent implements OnInit {
       description: transaction.description,
       issuer: transaction.issuer,
       recipient: transaction.recipient,
-      lease: transaction.lease,
-      tenant: transaction.tenant,
+      transactionBook: transaction.transactionBook,
+      lefts: transaction.lefts,
     });
   }
 
@@ -107,8 +104,8 @@ export class TransactionUpdateComponent implements OnInit {
       description: this.editForm.get(['description'])!.value,
       issuer: this.editForm.get(['issuer'])!.value,
       recipient: this.editForm.get(['recipient'])!.value,
-      lease: this.editForm.get(['lease'])!.value,
-      tenant: this.editForm.get(['tenant'])!.value,
+      transactionBook: this.editForm.get(['transactionBook'])!.value,
+      lefts: this.editForm.get(['lefts'])!.value,
     };
   }
 
@@ -130,5 +127,16 @@ export class TransactionUpdateComponent implements OnInit {
 
   trackById(index: number, item: SelectableEntity): any {
     return item.id;
+  }
+
+  getSelected(selectedVals: ITransaction[], option: ITransaction): ITransaction {
+    if (selectedVals) {
+      for (let i = 0; i < selectedVals.length; i++) {
+        if (option.id === selectedVals[i].id) {
+          return selectedVals[i];
+        }
+      }
+    }
+    return option;
   }
 }

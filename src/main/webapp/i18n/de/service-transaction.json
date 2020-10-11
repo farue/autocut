@@ -2,6 +2,7 @@
   "transaction": {
     "title": "Transaktionen",
     "balance": "Kontostand",
+    "deposit": "Kaution",
     "table": {
       "kind": "Art",
       "bookingDate": "Buchungsdatum",

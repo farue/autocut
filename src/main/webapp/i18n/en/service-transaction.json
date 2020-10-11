@@ -2,6 +2,7 @@
   "transaction": {
     "title": "Transactions",
     "balance": "Balance",
+    "deposit": "Deposit",
     "table": {
       "kind": "Kind",
       "bookingDate": "Booking date",

@@ -1,7 +1,13 @@
 <div>
-    <div>
-        <h2><span jhiTranslate="transaction.balance"></span><span>:</span>
+    <div class="row">
+        <div class="col">
+            <h2><span jhiTranslate="transaction.balance"></span><span>:</span>
             <span [className]="balance >= 0 ? 'col-green' : 'col-red'">{{ balance | money }}</span></h2>
+        </div>
+        <div class="col">
+            <h2><span jhiTranslate="transaction.deposit"></span><span>:</span>
+                <span [className]="balance >= 0 ? 'col-blue' : 'col-red'">{{ deposit | money }}</span></h2>
+        </div>
     </div>
 
     <div class="table-responsive">

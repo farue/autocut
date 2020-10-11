@@ -73,6 +73,11 @@ public class CacheConfiguration {
             createCache(cm, de.farue.autocut.domain.WashHistory.class.getName());
             createCache(cm, de.farue.autocut.domain.GlobalSetting.class.getName());
             createCache(cm, de.farue.autocut.domain.NetworkSwitch.class.getName());
+            createCache(cm, de.farue.autocut.domain.Lease.class.getName() + ".transactionBooks");
+            createCache(cm, de.farue.autocut.domain.TransactionBook.class.getName());
+            createCache(cm, de.farue.autocut.domain.TransactionBook.class.getName() + ".leases");
+            createCache(cm, de.farue.autocut.domain.Transaction.class.getName() + ".lefts");
+            createCache(cm, de.farue.autocut.domain.Transaction.class.getName() + ".rights");
             // jhipster-needle-ehcache-add-entry
         };
     }

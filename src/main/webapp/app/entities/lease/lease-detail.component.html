@@ -34,6 +34,12 @@
                         {{ lease.pictureContractContentType }}, {{ byteSize(lease.pictureContract) }}
                     </div>
                 </dd>
+                <dt><span jhiTranslate="autocutApp.lease.transactionBook">Transaction Book</span></dt>
+                <dd>
+                    <span *ngFor="let transactionBook of lease.transactionBooks; let last = last">
+                        <a [routerLink]="['/transaction-book', transactionBook?.id, 'view']">{{ transactionBook.id }}</a>{{ last ? '' : ', ' }}
+                    </span>
+                </dd>
                 <dt><span jhiTranslate="autocutApp.lease.apartment">Apartment</span></dt>
                 <dd>
                     <div *ngIf="lease.apartment">

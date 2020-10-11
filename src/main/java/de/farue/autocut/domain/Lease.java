@@ -1,23 +1,28 @@
 package de.farue.autocut.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import java.io.Serializable;
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * A Lease.
@@ -58,6 +63,13 @@ public class Lease implements Serializable {
     @OneToMany(mappedBy = "lease")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Tenant> tenants = new HashSet<>();
+
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JoinTable(name = "lease_transaction_book",
+               joinColumns = @JoinColumn(name = "lease_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "transaction_book_id", referencedColumnName = "id"))
+    private Set<TransactionBook> transactionBooks = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties(value = "leases", allowSetters = true)
@@ -173,6 +185,29 @@ public class Lease implements Serializable {
 
     public void setTenants(Set<Tenant> tenants) {
         this.tenants = tenants;
+    }
+
+    public Set<TransactionBook> getTransactionBooks() {
+        return transactionBooks;
+    }
+
+    public Lease transactionBooks(Set<TransactionBook> transactionBooks) {
+        this.transactionBooks = transactionBooks;
+        return this;
+    }
+
+    public Lease addTransactionBook(TransactionBook transactionBook) {
+        this.transactionBooks.add(transactionBook);
+        return this;
+    }
+
+    public Lease removeTransactionBook(TransactionBook transactionBook) {
+        this.transactionBooks.remove(transactionBook);
+        return this;
+    }
+
+    public void setTransactionBooks(Set<TransactionBook> transactionBooks) {
+        this.transactionBooks = transactionBooks;
     }
 
     public Apartment getApartment() {

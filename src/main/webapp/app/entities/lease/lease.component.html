@@ -21,14 +21,15 @@
     <div class="table-responsive" id="entities" *ngIf="leases && leases.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-            <tr>
-                <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-                <th scope="col"><span jhiTranslate="autocutApp.lease.nr">Nr</span></th>
-                <th scope="col"><span jhiTranslate="autocutApp.lease.start">Start</span></th>
-                <th scope="col"><span jhiTranslate="autocutApp.lease.end">End</span></th>
-                <th scope="col"><span jhiTranslate="autocutApp.lease.blocked">Blocked</span></th>
-                <th scope="col"><span jhiTranslate="autocutApp.lease.pictureContract">Picture Contract</span></th>
-                <th scope="col"><span jhiTranslate="autocutApp.lease.apartment">Apartment</span></th>
+                <tr>
+                    <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.lease.nr">Nr</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.lease.start">Start</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.lease.end">End</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.lease.blocked">Blocked</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.lease.pictureContract">Picture Contract</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.lease.transactionBook">Transaction Book</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.lease.apartment">Apartment</span></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -44,6 +45,11 @@
                             <img [src]="'data:' + lease.pictureContractContentType + ';base64,' + lease.pictureContract" style="max-height: 30px;" alt="lease image"/>
                         </a>
                         <span *ngIf="lease.pictureContract">{{ lease.pictureContractContentType }}, {{ byteSize(lease.pictureContract) }}</span>
+                    </td>
+                    <td>
+                        <span *ngFor="let transactionBook of lease.transactionBooks; let last = last">
+                            <a class="form-control-static" [routerLink]="['/transaction-book', transactionBook?.id, 'view']">{{ transactionBook.id }}</a>{{ last ? '' : ', ' }}
+                        </span>
                     </td>
                     <td>
                         <div *ngIf="lease.apartment">

@@ -17,7 +17,6 @@ import de.farue.autocut.domain.GlobalSetting;
 import de.farue.autocut.domain.LaundryMachine;
 import de.farue.autocut.domain.LaundryMachineProgram;
 import de.farue.autocut.domain.Tenant;
-import de.farue.autocut.domain.Transaction;
 import de.farue.autocut.domain.WashHistory;
 import de.farue.autocut.domain.enumeration.TransactionKind;
 import de.farue.autocut.domain.enumeration.WashHistoryStatus;
@@ -25,6 +24,9 @@ import de.farue.autocut.repository.LaundryMachineRepository;
 import de.farue.autocut.repository.TenantRepository;
 import de.farue.autocut.repository.UserRepository;
 import de.farue.autocut.security.SecurityUtils;
+import de.farue.autocut.service.accounting.BookingBuilder;
+import de.farue.autocut.service.accounting.BookingTemplate;
+import de.farue.autocut.service.accounting.TransactionBookService;
 import de.farue.autocut.utils.BigDecimalUtil;
 import de.farue.autocut.web.rest.errors.LaundryMachineDoesNotExistException;
 
@@ -35,8 +37,10 @@ public class WashingService {
 
     private final WashItClient washItClient;
 
+    private final LeaseService leaseService;
     private final WashHistoryService washHistoryService;
     private final TransactionService transactionService;
+    private final TransactionBookService transactionBookService;
     private final GlobalSettingService globalSettingService;
 
     private final UserRepository userRepository;
@@ -46,15 +50,17 @@ public class WashingService {
     @Autowired
     public WashingService(
         WashItClient washItClient,
-        WashHistoryService washHistoryService,
+        LeaseService leaseService, WashHistoryService washHistoryService,
         TransactionService transactionService,
-        GlobalSettingService globalSettingService,
+        TransactionBookService transactionBookService, GlobalSettingService globalSettingService,
         UserRepository userRepository,
         TenantRepository tenantRepository,
         LaundryMachineRepository laundryMachineRepository) {
         this.washItClient = washItClient;
+        this.leaseService = leaseService;
         this.washHistoryService = washHistoryService;
         this.transactionService = transactionService;
+        this.transactionBookService = transactionBookService;
         this.globalSettingService = globalSettingService;
         this.userRepository = userRepository;
         this.tenantRepository = tenantRepository;
@@ -100,19 +106,25 @@ public class WashingService {
             case DRYER -> globalSettingService
                 .getValue(GlobalSetting.WASHING_PRICE_DRYER);
         };
+
         BigDecimal value = BigDecimalUtil.negative(cost);
-        Transaction transaction = new Transaction()
-            .kind(TransactionKind.PURCHASE)
-            .value(value)
-            .lease(tenant.getLease())
+        BookingTemplate bookingTemplate = BookingBuilder.bookingTemplate()
             .bookingDate(timestamp)
             .valueDate(timestamp)
-            .issuer(WashingService.class.getSimpleName())
-            .description(machine.getName());
-        transactionService.save(transaction);
+            .transactionTemplate(BookingBuilder.transactionTemplate()
+                .kind(TransactionKind.PURCHASE)
+                .value(value)
+                .transactionBook(leaseService.getCashTransactionBook(tenant.getLease()))
+                .issuer(WashingService.class.getSimpleName())
+                .description(machine.getName())
+                .build())
+            .build();
+
+        transactionBookService.saveMemberBooking(bookingTemplate);
         washHistoryService.saveAndFlush(washHistory);
         washItClient.activate(Integer.valueOf(machine.getIdentifier()));
-        log.debug("{} activated with transaction {}", machine.getName(), transaction);
+
+        log.debug("{} unlocked by {}", machine.getName(), tenant);
     }
 
     private WashHistory findOrCreateWashHistory(Tenant tenant, Instant time,

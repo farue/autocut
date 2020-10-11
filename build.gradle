@@ -148,6 +148,11 @@ liquibase {
             defaultSchemaName ""
             logLevel "debug"
             classpath "src/main/resources/"
+            if (project.hasProperty("prod")) {
+                contexts "prod"
+            } else {
+                contexts "dev, faker"
+            }
         }
         diffLog {
             driver "org.h2.Driver"

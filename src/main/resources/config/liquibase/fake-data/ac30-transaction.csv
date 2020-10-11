@@ -1,0 +1,5 @@
+id;kind;booking_date;value_date;value;balance_after;description;issuer;recipient;transaction_book_id
+30;TRANSFER;2020-01-05T11:00:00;2020-01-05T11:00:00;-30;58.09;deposit;system;lease 1;1
+31;TRANSFER;2020-01-05T11:00:00;2020-01-05T11:00:00;30;30;deposit;system;lease 1;13
+# update future transaction
+17;PURCHASE;2099-01-01T11:00:00;2099-01-01T11:00:00;-1;57.09;future transaction;system;lease 1;1

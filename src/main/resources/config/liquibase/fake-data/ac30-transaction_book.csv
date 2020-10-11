@@ -1,0 +1,13 @@
+id;name;type
+# update user 1 transaction book
+1;user 1 cash;CASH
+# id 11 and 12 taken by FaRue books
+13;user 1 deposit;DEPOSIT
+14;Fish Forge Colorado;REVENUE
+15;PCI encompassing Producer;DEPOSIT
+16;transmit;DEPOSIT
+17;e-commerce Bolivar Fuerte;DEPOSIT
+18;Licensed Fresh Gloves;REVENUE
+19;Plains open-source;DEPOSIT
+20;cross-platform;DEPOSIT
+21;Integration;REVENUE

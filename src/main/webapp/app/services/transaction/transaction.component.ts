@@ -14,6 +14,7 @@ import { ITransactionOverview } from './transaction-overview.model';
 })
 export class TransactionComponent implements OnInit {
   balance = 0;
+  deposit = 0;
   transactions: ITransaction[] | null | undefined = null;
 
   totalItems = 0;
@@ -56,6 +57,7 @@ export class TransactionComponent implements OnInit {
   private onSuccess(transactionOverview: ITransactionOverview | null, headers: HttpHeaders): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.balance = transactionOverview?.balanceNow || 0;
+    this.deposit = transactionOverview?.deposit || 0;
     this.transactions = transactionOverview?.transactions;
   }
 }

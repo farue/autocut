@@ -2,6 +2,10 @@ package de.farue.autocut.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -12,15 +16,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -36,6 +45,7 @@ import de.farue.autocut.service.LeaseService;
  * Integration tests for the {@link LeaseResource} REST controller.
  */
 @SpringBootTest(classes = AutocutApp.class)
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 public class LeaseResourceIT {
@@ -59,6 +69,12 @@ public class LeaseResourceIT {
 
     @Autowired
     private LeaseRepository leaseRepository;
+
+    @Mock
+    private LeaseRepository leaseRepositoryMock;
+
+    @Mock
+    private LeaseService leaseServiceMock;
 
     @Autowired
     private LeaseService leaseService;
@@ -223,6 +239,26 @@ public class LeaseResourceIT {
             .andExpect(jsonPath("$.[*].blocked").value(hasItem(DEFAULT_BLOCKED.booleanValue())))
             .andExpect(jsonPath("$.[*].pictureContractContentType").value(hasItem(DEFAULT_PICTURE_CONTRACT_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].pictureContract").value(hasItem(Base64Utils.encodeToString(DEFAULT_PICTURE_CONTRACT))));
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public void getAllLeasesWithEagerRelationshipsIsEnabled() throws Exception {
+        when(leaseServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restLeaseMockMvc.perform(get("/api/leases?eagerload=true"))
+            .andExpect(status().isOk());
+
+        verify(leaseServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public void getAllLeasesWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(leaseServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restLeaseMockMvc.perform(get("/api/leases?eagerload=true"))
+            .andExpect(status().isOk());
+
+        verify(leaseServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @Test

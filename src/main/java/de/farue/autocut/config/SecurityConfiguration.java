@@ -1,8 +1,5 @@
 package de.farue.autocut.config;
 
-import de.farue.autocut.security.*;
-import de.farue.autocut.security.jwt.*;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
@@ -18,6 +15,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.web.filter.CorsFilter;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
+
+import de.farue.autocut.security.AuthoritiesConstants;
+import de.farue.autocut.security.jwt.JWTConfigurer;
+import de.farue.autocut.security.jwt.TokenProvider;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)

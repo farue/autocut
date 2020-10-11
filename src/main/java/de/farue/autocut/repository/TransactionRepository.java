@@ -2,6 +2,7 @@ package de.farue.autocut.repository;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.LockModeType;
 
@@ -10,12 +11,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import de.farue.autocut.domain.Lease;
-import de.farue.autocut.domain.Tenant;
 import de.farue.autocut.domain.Transaction;
-
+import de.farue.autocut.domain.TransactionBook;
 
 /**
  * Spring Data  repository for the Transaction entity.
@@ -24,20 +24,27 @@ import de.farue.autocut.domain.Transaction;
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
     @Lock(LockModeType.PESSIMISTIC_READ)
-    @Query("select t from Transaction t where t.lease = :lease and t.valueDate <= :date order by t.valueDate desc, t.id desc")
-    Page<Transaction> findFirstByLeaseBefore(Lease lease, Instant date, Pageable pageable);
+    @Query("select t from Transaction t where t.transactionBook = :transactionBook and t.valueDate <= :date order by t.valueDate desc, t.id desc")
+    Page<Transaction> findFirstByTransactionBookBefore(TransactionBook transactionBook, Instant date, Pageable pageable);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("select t from Transaction t where t.lease = :lease and t.valueDate <= :date order by t.valueDate desc, t.id desc")
-    Page<Transaction> findFirstByLeaseBeforeWithLock(Lease lease, Instant date, Pageable pageable);
+    @Query("select t from Transaction t where t.transactionBook = :transactionBook and t.valueDate <= :date order by t.valueDate desc, t.id desc")
+    Page<Transaction> findFirstByTransactionBookBeforeWithLock(TransactionBook transactionBook, Instant date, Pageable pageable);
 
     @Lock(LockModeType.PESSIMISTIC_READ)
-    Page<Transaction> findAllByLeaseOrderByValueDateDesc(Lease lease, Pageable pageable);
-
-    @Lock(LockModeType.PESSIMISTIC_READ)
-    Page<Transaction> findAllByTenantOrderByValueDateDesc(Tenant tenant, Pageable pageable);
+    Page<Transaction> findAllByTransactionBookOrderByValueDateDesc(TransactionBook transactionBook, Pageable pageable);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("select t from Transaction t where t.lease = :lease and t.valueDate > :date order by t.valueDate asc, t.id asc")
-    List<Transaction> findAllNewerThanWithLock(Lease lease, Instant date);
+    @Query("select t from Transaction t where t.transactionBook = :transactionBook and t.valueDate >= :date and (t.valueDate != :date or t.id > :id) order by t.valueDate asc, t.id desc")
+    List<Transaction> findAllNewerThanWithLock(TransactionBook transactionBook, Instant date, long id);
+
+    @Query(value = "select distinct transaction from Transaction transaction left join fetch transaction.lefts",
+        countQuery = "select count(distinct transaction) from Transaction transaction")
+    Page<Transaction> findAllWithEagerRelationships(Pageable pageable);
+
+    @Query("select distinct transaction from Transaction transaction left join fetch transaction.lefts")
+    List<Transaction> findAllWithEagerRelationships();
+
+    @Query("select transaction from Transaction transaction left join fetch transaction.lefts where transaction.id =:id")
+    Optional<Transaction> findOneWithEagerRelationships(@Param("id") Long id);
 }
