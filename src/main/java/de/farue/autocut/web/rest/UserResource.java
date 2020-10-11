@@ -1,23 +1,20 @@
 package de.farue.autocut.web.rest;
 
-import de.farue.autocut.config.Constants;
-import de.farue.autocut.domain.User;
-import de.farue.autocut.repository.UserRepository;
-import de.farue.autocut.security.AuthoritiesConstants;
-import de.farue.autocut.service.MailService;
-import de.farue.autocut.service.UserService;
-import de.farue.autocut.service.dto.UserDTO;
-import de.farue.autocut.web.rest.errors.BadRequestAlertException;
-import de.farue.autocut.web.rest.errors.EmailAlreadyUsedException;
-import de.farue.autocut.web.rest.errors.LoginAlreadyUsedException;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,11 +29,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import de.farue.autocut.config.Constants;
+import de.farue.autocut.domain.User;
+import de.farue.autocut.repository.UserRepository;
+import de.farue.autocut.security.AuthoritiesConstants;
+import de.farue.autocut.service.MailService;
+import de.farue.autocut.service.UserService;
+import de.farue.autocut.service.dto.UserDTO;
+import de.farue.autocut.web.rest.errors.BadRequestAlertException;
+import de.farue.autocut.web.rest.errors.EmailAlreadyUsedException;
+import de.farue.autocut.web.rest.errors.LoginAlreadyUsedException;
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing users.
@@ -65,6 +70,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class UserResource {
+    private static final List<String> ALLOWED_ORDERED_PROPERTIES = Collections.unmodifiableList(
+        Arrays.asList("id", "login", "firstName", "lastName", "email", "activated", "langKey"));
 
     private final Logger log = LoggerFactory.getLogger(UserResource.class);
 
@@ -150,9 +157,17 @@ public class UserResource {
      */
     @GetMapping("/users")
     public ResponseEntity<List<UserDTO>> getAllUsers(Pageable pageable) {
+        if (!onlyContainsAllowedProperties(pageable)) {
+            return ResponseEntity.badRequest().build();
+        }
+
         final Page<UserDTO> page = userService.getAllManagedUsers(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    private boolean onlyContainsAllowedProperties(Pageable pageable) {
+        return pageable.getSort().stream().map(Sort.Order::getProperty).allMatch(ALLOWED_ORDERED_PROPERTIES::contains);
     }
 
     /**

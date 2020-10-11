@@ -194,6 +194,7 @@ public class LeaseResourceIT {
 
         // Create the Lease, which fails.
 
+
         restLeaseMockMvc.perform(post("/api/leases")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(lease)))
@@ -211,7 +212,6 @@ public class LeaseResourceIT {
         lease.setEnd(null);
 
         // Create the Lease, which fails.
-
 
         restLeaseMockMvc.perform(post("/api/leases")
             .contentType(MediaType.APPLICATION_JSON)
