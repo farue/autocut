@@ -179,6 +179,7 @@ entity Transaction {
     value BigDecimal required
     balanceAfter BigDecimal required
     description String
+    service_qulifier String
     issuer String required
     recipient String
 }
