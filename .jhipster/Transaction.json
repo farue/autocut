@@ -32,6 +32,10 @@
       "fieldType": "String"
     },
     {
+      "fieldName": "serviceQulifier",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "issuer",
       "fieldType": "String",
       "fieldValidateRules": ["required"]

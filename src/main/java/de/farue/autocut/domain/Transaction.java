@@ -54,6 +54,9 @@ public class Transaction implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "service_qulifier")
+    private String serviceQulifier;
+
     @NotNull
     @Column(name = "issuer", nullable = false)
     private String issuer;
@@ -163,6 +166,19 @@ public class Transaction implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getServiceQulifier() {
+        return serviceQulifier;
+    }
+
+    public Transaction serviceQulifier(String serviceQulifier) {
+        this.serviceQulifier = serviceQulifier;
+        return this;
+    }
+
+    public void setServiceQulifier(String serviceQulifier) {
+        this.serviceQulifier = serviceQulifier;
     }
 
     public String getIssuer() {
@@ -282,6 +298,7 @@ public class Transaction implements Serializable {
             ", value=" + getValue() +
             ", balanceAfter=" + getBalanceAfter() +
             ", description='" + getDescription() + "'" +
+            ", serviceQulifier='" + getServiceQulifier() + "'" +
             ", issuer='" + getIssuer() + "'" +
             ", recipient='" + getRecipient() + "'" +
             "}";

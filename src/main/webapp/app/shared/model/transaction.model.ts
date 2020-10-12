@@ -10,6 +10,7 @@ export interface ITransaction {
   value?: number;
   balanceAfter?: number;
   description?: string;
+  serviceQulifier?: string;
   issuer?: string;
   recipient?: string;
   transactionBook?: ITransactionBook;
@@ -26,6 +27,7 @@ export class Transaction implements ITransaction {
     public value?: number,
     public balanceAfter?: number,
     public description?: string,
+    public serviceQulifier?: string,
     public issuer?: string,
     public recipient?: string,
     public transactionBook?: ITransactionBook,
