@@ -131,9 +131,16 @@ enum TeamRole {
     MEMBER
 }
 
+/**
+  * Activity always describes an entire semester since its main purpose is to capture who is
+  * eligible for a discount, and its secondary purpose is to store activity counted at StW.
+  * Both these things are in terms of full semesters.
+  */
+@service(serviceClass)
 entity Activity {
 	year Integer required
     term SemesterTerms required
+    // only use start and end date for short activities that do not last an entire semester
     startDate Instant
     endDate Instant
     description String

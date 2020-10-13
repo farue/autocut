@@ -3,6 +3,7 @@ package de.farue.autocut.web.rest;
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Activity;
 import de.farue.autocut.repository.ActivityRepository;
+import de.farue.autocut.service.ActivityService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,6 +56,9 @@ public class ActivityResourceIT {
 
     @Autowired
     private ActivityRepository activityRepository;
+
+    @Autowired
+    private ActivityService activityService;
 
     @Autowired
     private EntityManager em;
@@ -236,7 +240,7 @@ public class ActivityResourceIT {
     @Transactional
     public void updateActivity() throws Exception {
         // Initialize the database
-        activityRepository.saveAndFlush(activity);
+        activityService.save(activity);
 
         int databaseSizeBeforeUpdate = activityRepository.findAll().size();
 
@@ -291,7 +295,7 @@ public class ActivityResourceIT {
     @Transactional
     public void deleteActivity() throws Exception {
         // Initialize the database
-        activityRepository.saveAndFlush(activity);
+        activityService.save(activity);
 
         int databaseSizeBeforeDelete = activityRepository.findAll().size();
 

@@ -1,7 +1,7 @@
 package de.farue.autocut.web.rest;
 
 import de.farue.autocut.domain.Activity;
-import de.farue.autocut.repository.ActivityRepository;
+import de.farue.autocut.service.ActivityService;
 import de.farue.autocut.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,7 +23,6 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class ActivityResource {
 
     private final Logger log = LoggerFactory.getLogger(ActivityResource.class);
@@ -34,10 +32,10 @@ public class ActivityResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final ActivityRepository activityRepository;
+    private final ActivityService activityService;
 
-    public ActivityResource(ActivityRepository activityRepository) {
-        this.activityRepository = activityRepository;
+    public ActivityResource(ActivityService activityService) {
+        this.activityService = activityService;
     }
 
     /**
@@ -53,7 +51,7 @@ public class ActivityResource {
         if (activity.getId() != null) {
             throw new BadRequestAlertException("A new activity cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Activity result = activityRepository.save(activity);
+        Activity result = activityService.save(activity);
         return ResponseEntity.created(new URI("/api/activities/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -74,7 +72,7 @@ public class ActivityResource {
         if (activity.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Activity result = activityRepository.save(activity);
+        Activity result = activityService.save(activity);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, activity.getId().toString()))
             .body(result);
@@ -88,7 +86,7 @@ public class ActivityResource {
     @GetMapping("/activities")
     public List<Activity> getAllActivities() {
         log.debug("REST request to get all Activities");
-        return activityRepository.findAll();
+        return activityService.findAll();
     }
 
     /**
@@ -100,7 +98,7 @@ public class ActivityResource {
     @GetMapping("/activities/{id}")
     public ResponseEntity<Activity> getActivity(@PathVariable Long id) {
         log.debug("REST request to get Activity : {}", id);
-        Optional<Activity> activity = activityRepository.findById(id);
+        Optional<Activity> activity = activityService.findOne(id);
         return ResponseUtil.wrapOrNotFound(activity);
     }
 
@@ -113,7 +111,7 @@ public class ActivityResource {
     @DeleteMapping("/activities/{id}")
     public ResponseEntity<Void> deleteActivity(@PathVariable Long id) {
         log.debug("REST request to delete Activity : {}", id);
-        activityRepository.deleteById(id);
+        activityService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }

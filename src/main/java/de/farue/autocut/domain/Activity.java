@@ -1,6 +1,7 @@
 package de.farue.autocut.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModel;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -15,8 +16,11 @@ import java.util.Set;
 import de.farue.autocut.domain.enumeration.SemesterTerms;
 
 /**
- * A Activity.
+ * Activity always describes an entire semester since its main purpose is to capture who is
+ * eligible for a discount, and its secondary purpose is to store activity counted at StW.
+ * Both these things are in terms of full semesters.
  */
+@ApiModel(description = "Activity always describes an entire semester since its main purpose is to capture who is\neligible for a discount, and its secondary purpose is to store activity counted at StW.\nBoth these things are in terms of full semesters.")
 @Entity
 @Table(name = "activity")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
