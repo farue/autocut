@@ -35,6 +35,10 @@ public class TransactionBook implements Serializable {
     @Column(name = "type", nullable = false)
     private TransactionBookType type;
 
+    @OneToMany(mappedBy = "transactionBook")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<Transaction> transactions = new HashSet<>();
+
     @ManyToMany(mappedBy = "transactionBooks")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnore
@@ -73,6 +77,31 @@ public class TransactionBook implements Serializable {
 
     public void setType(TransactionBookType type) {
         this.type = type;
+    }
+
+    public Set<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public TransactionBook transactions(Set<Transaction> transactions) {
+        this.transactions = transactions;
+        return this;
+    }
+
+    public TransactionBook addTransaction(Transaction transaction) {
+        this.transactions.add(transaction);
+        transaction.setTransactionBook(this);
+        return this;
+    }
+
+    public TransactionBook removeTransaction(Transaction transaction) {
+        this.transactions.remove(transaction);
+        transaction.setTransactionBook(null);
+        return this;
+    }
+
+    public void setTransactions(Set<Transaction> transactions) {
+        this.transactions = transactions;
     }
 
     public Set<Lease> getLeases() {

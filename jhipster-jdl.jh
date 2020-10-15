@@ -215,8 +215,8 @@ enum TransactionBookType {
     DEPOSIT
 }
 
-relationship ManyToOne {
-	Transaction{transactionBook required} to TransactionBook
+relationship OneToMany {
+	TransactionBook{transaction} to Transaction{transactionBook required}
 }
 
 relationship ManyToMany {

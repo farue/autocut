@@ -8,12 +8,6 @@
     -->
     <changeSet id="20191117011752-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="transaction_book_id"
-                                 baseTableName="transaction"
-                                 constraintName="fk_transaction_transaction_book_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="transaction_book"/>
-
         <addForeignKeyConstraint baseColumnNames="transaction_id"
                                  baseTableName="transaction_left"
                                  constraintName="fk_transaction_left_transaction_id"
@@ -26,5 +20,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="transaction"/>
         
+        <addForeignKeyConstraint baseColumnNames="transaction_book_id"
+                                 baseTableName="transaction"
+                                 constraintName="fk_transaction_transaction_book_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transaction_book"/>
+
     </changeSet>
 </databaseChangeLog>

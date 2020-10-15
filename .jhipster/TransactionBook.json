@@ -9,10 +9,18 @@
       "fieldName": "type",
       "fieldType": "TransactionBookType",
       "fieldValues": "CASH,REVENUE,DEPOSIT",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": [
+        "required"
+      ]
     }
   ],
   "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "transaction",
+      "otherEntityRelationshipName": "transactionBook",
+      "relationshipName": "transaction"
+    },
     {
       "relationshipType": "many-to-many",
       "otherEntityName": "lease",
