@@ -137,14 +137,24 @@ public class LeaseService {
         return lease.getTransactionBooks().stream()
             .filter(book -> book.getType() == TransactionBookType.CASH)
             .findFirst()
-            .orElseGet(() -> transactionBookService.save(new TransactionBook().type(TransactionBookType.CASH)));
+            .orElseGet(() -> {
+                TransactionBook newTransactionBook = transactionBookService.save(new TransactionBook().type(TransactionBookType.CASH));
+                lease.addTransactionBook(newTransactionBook);
+                save(lease);
+                return newTransactionBook;
+            });
     }
 
     public TransactionBook getDepositTransactionBook(Lease lease) {
         return lease.getTransactionBooks().stream()
             .filter(book -> book.getType() == TransactionBookType.DEPOSIT)
             .findFirst()
-            .orElseGet(() -> transactionBookService.save(new TransactionBook().type(TransactionBookType.DEPOSIT)));
+            .orElseGet(() -> {
+                TransactionBook newTransactionBook = transactionBookService.save(new TransactionBook().type(TransactionBookType.DEPOSIT));
+                lease.addTransactionBook(newTransactionBook);
+                save(lease);
+                return newTransactionBook;
+            });
     }
 
     // NB: Not read-only as a new transaction book is created if none exists
