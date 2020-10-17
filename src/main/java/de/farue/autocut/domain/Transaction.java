@@ -3,6 +3,7 @@ package de.farue.autocut.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -118,7 +119,7 @@ public class Transaction implements Serializable {
     }
 
     public Transaction bookingDate(Instant bookingDate) {
-        this.bookingDate = bookingDate;
+        this.bookingDate = bookingDate.truncatedTo(ChronoUnit.MILLIS);
         return this;
     }
 
@@ -131,7 +132,7 @@ public class Transaction implements Serializable {
     }
 
     public Transaction valueDate(Instant valueDate) {
-        this.valueDate = valueDate;
+        this.valueDate = valueDate.truncatedTo(ChronoUnit.MILLIS);
         return this;
     }
 

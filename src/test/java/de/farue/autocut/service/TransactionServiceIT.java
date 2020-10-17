@@ -19,6 +19,7 @@ import de.farue.autocut.domain.Transaction;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.domain.enumeration.TransactionBookType;
 import de.farue.autocut.domain.enumeration.TransactionKind;
+import de.farue.autocut.repository.TransactionRepository;
 import de.farue.autocut.service.accounting.TransactionBookService;
 
 @SpringBootTest(classes = AutocutApp.class)
@@ -29,6 +30,9 @@ public class TransactionServiceIT {
 
     @Autowired
     private TransactionService transactionService;
+
+    @Autowired
+    private TransactionRepository transactionRepository;
 
     @Autowired
     private TransactionBookService transactionBookService;
@@ -88,6 +92,62 @@ public class TransactionServiceIT {
                 assertThat(transactionInPast.getBalanceAfter()).isEqualByComparingTo("100");
                 assertThat(transactionInBetween.getBalanceAfter()).isEqualByComparingTo("87.45");
                 assertThat(transactionInFuture.getBalanceAfter()).isEqualByComparingTo("79.25");
+            }
+        }
+    }
+
+    @Nested
+    class UpdateBalanceInLaterTransactions {
+
+        @Nested
+        @SpringBootTest(classes = AutocutApp.class)
+        class TransactionsWithSameValueDate {
+
+            @Test
+            @Transactional
+            void shouldNotUpdateBalance() {
+                TransactionBook transactionBook = new TransactionBook()
+                    .type(TransactionBookType.CASH);
+                transactionBookService.save(transactionBook);
+
+                // If db precision is milliseconds, rounding occurs: #47
+                Instant timestamp = Instant.parse("2020-01-01T00:00:00.567890000Z");
+
+                Transaction transaction1 = new Transaction()
+                    .transactionBook(transactionBook)
+                    .kind(TransactionKind.CREDIT)
+                    .bookingDate(timestamp)
+                    .valueDate(timestamp)
+                    .value(new BigDecimal("10"))
+                    .balanceAfter(new BigDecimal("10"))
+                    .issuer(ANY_ISSUER);
+                transaction1 = transactionRepository.save(transaction1);
+
+                Transaction transaction2 = new Transaction()
+                    .transactionBook(transactionBook)
+                    .kind(TransactionKind.FEE)
+                    .bookingDate(timestamp)
+                    .valueDate(timestamp)
+                    .value(new BigDecimal("-1"))
+                    .balanceAfter(new BigDecimal("9"))
+                    .issuer(ANY_ISSUER);
+                transaction2 = transactionRepository.save(transaction2);
+                transactionService.updateBalanceInLaterTransactions(transaction2);
+
+                Transaction transaction3 = new Transaction()
+                    .transactionBook(transactionBook)
+                    .kind(TransactionKind.CREDIT)
+                    .bookingDate(timestamp)
+                    .valueDate(timestamp)
+                    .value(new BigDecimal("3"))
+                    .balanceAfter(new BigDecimal("12"))
+                    .issuer(ANY_ISSUER);
+                transaction3 = transactionService.save(transaction3);
+                transactionService.updateBalanceInLaterTransactions(transaction2);
+
+                assertThat(transaction1.getBalanceAfter()).isEqualByComparingTo("10");
+                assertThat(transaction2.getBalanceAfter()).isEqualByComparingTo("9");
+                assertThat(transaction3.getBalanceAfter()).isEqualByComparingTo("12");
             }
         }
     }
