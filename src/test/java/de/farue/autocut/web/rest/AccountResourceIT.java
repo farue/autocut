@@ -9,6 +9,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.HashSet;
@@ -28,10 +30,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.config.Constants;
+import de.farue.autocut.domain.Lease;
+import de.farue.autocut.domain.Tenant;
 import de.farue.autocut.domain.User;
 import de.farue.autocut.repository.AuthorityRepository;
 import de.farue.autocut.repository.UserRepository;
 import de.farue.autocut.security.AuthoritiesConstants;
+import de.farue.autocut.service.LeaseService;
+import de.farue.autocut.service.TenantService;
 import de.farue.autocut.service.UserService;
 import de.farue.autocut.service.dto.PasswordChangeDTO;
 import de.farue.autocut.service.dto.UserDTO;
@@ -45,6 +51,12 @@ import de.farue.autocut.web.rest.vm.ManagedUserVM;
 @WithMockUser(value = TEST_USER_LOGIN)
 @SpringBootTest(classes = AutocutApp.class)
 public class AccountResourceIT {
+
+    private static final String APARTMENT_NUMBER = "30-41";
+    private static final Instant LEASE_START = LocalDate.of(2020, 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant();
+    private static final Instant LEASE_END = LocalDate.of(2020, 12, 31).atStartOfDay(ZoneId.systemDefault()).toInstant();
+    private static final String USER_LOGIN = "bob";
+    private static final String EMAIL = "test@abc.com";
     static final String TEST_USER_LOGIN = "test";
 
     @Autowired
@@ -61,6 +73,15 @@ public class AccountResourceIT {
 
     @Autowired
     private MockMvc restAccountMockMvc;
+
+    @Autowired
+    private AccountResource accountResource;
+
+    @Autowired
+    private LeaseService leaseService;
+
+    @Autowired
+    private TenantService tenantService;
 
     @Test
     @WithUnauthenticatedMockUser
@@ -799,5 +820,57 @@ public class AccountResourceIT {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(TestUtil.convertObjectToJsonBytes(keyAndPassword)))
             .andExpect(status().isInternalServerError());
+    }
+
+    @Test
+    @Transactional
+    void testRegisterNewTenant() {
+        ManagedUserVM managedUserVM = new ManagedUserVM();
+        managedUserVM.setFirstName("First Name");
+        managedUserVM.setLastName("Last Name");
+        managedUserVM.setEmail(EMAIL);
+        managedUserVM.setLogin(USER_LOGIN);
+        managedUserVM.setPassword("password");
+        managedUserVM.setApartment(APARTMENT_NUMBER);
+        managedUserVM.setStart(LEASE_START);
+        managedUserVM.setEnd(LEASE_END);
+
+        accountResource.registerAccount(managedUserVM);
+
+        User user = userRepository.findOneByLogin(USER_LOGIN).get();
+
+        Optional<Tenant> tenantOptional = tenantService.findOneByUser(user);
+        assertThat(tenantOptional).isPresent();
+        Tenant tenant = tenantOptional.get();
+
+        Lease lease = tenant.getLease();
+        assertThat(lease.getNr()).isEqualTo(APARTMENT_NUMBER);
+        assertThat(lease.getStart()).isEqualTo(LEASE_START);
+        assertThat(lease.getEnd()).isEqualTo(LEASE_END);
+    }
+
+    @Test
+    @Transactional
+    void testRegisterTenantWithExistingLease() {
+        Lease existingLease = leaseService.createNewLease(APARTMENT_NUMBER, LEASE_START, LEASE_END);
+        leaseService.save(existingLease);
+
+        ManagedUserVM managedUserVM = new ManagedUserVM();
+        managedUserVM.setFirstName("First Name");
+        managedUserVM.setLastName("Last Name");
+        managedUserVM.setEmail(EMAIL);
+        managedUserVM.setLogin(USER_LOGIN);
+        managedUserVM.setPassword("password");
+        managedUserVM.setApartment(APARTMENT_NUMBER);
+        managedUserVM.setStart(LEASE_START);
+        managedUserVM.setEnd(LEASE_END);
+
+        accountResource.registerAccount(managedUserVM);
+
+        User user = userRepository.findOneByLogin(USER_LOGIN).get();
+
+        Tenant tenant = tenantService.findOneByUser(user).get();
+        Lease lease = tenant.getLease();
+        assertThat(lease).isNotEqualTo(existingLease);
     }
 }

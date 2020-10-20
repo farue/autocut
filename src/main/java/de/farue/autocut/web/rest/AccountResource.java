@@ -84,7 +84,7 @@ public class AccountResource {
             throw new InvalidPasswordException();
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        Lease lease = leaseService.createLeaseIfNotExists(managedUserVM.getApartment(), managedUserVM.getStart(), managedUserVM.getEnd());
+        Lease lease = leaseService.createNewLease(managedUserVM.getApartment(), managedUserVM.getStart(), managedUserVM.getEnd());
         tenantService.createNewTenant(user, lease);
         mailService.sendActivationEmail(user);
     }

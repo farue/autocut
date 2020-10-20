@@ -96,20 +96,17 @@ public class LeaseService {
         leaseRepository.deleteById(id);
     }
 
-    public Lease createLeaseIfNotExists(String apartmentValue, Instant leaseStart, Instant leaseEnd) {
-        return findByStudierendenwerkNumber(apartmentValue)
-            .orElseGet(() -> {
-                Apartment apartment = apartmentService.findByStudierendenwerkNumber(apartmentValue)
-                    .orElseThrow(() -> new ApartmentNotFoundException(apartmentValue));
+    public Lease createNewLease(String apartmentValue, Instant leaseStart, Instant leaseEnd) {
+        Apartment apartment = apartmentService.findByStudierendenwerkNumber(apartmentValue)
+            .orElseThrow(() -> new ApartmentNotFoundException(apartmentValue));
 
-                Lease newLease = new Lease()
-                    .start(leaseStart)
-                    .end(leaseEnd)
-                    .apartment(apartment)
-                    .nr(apartmentValue);
-                log.debug("Created new lease: {}", newLease);
-                return newLease;
-            });
+        Lease newLease = new Lease()
+            .start(leaseStart)
+            .end(leaseEnd)
+            .apartment(apartment)
+            .nr(apartmentValue);
+        log.debug("Created new lease: {}", newLease);
+        return newLease;
     }
 
     public Optional<Lease> findByStudierendenwerkNumber(String apartmentString) {
