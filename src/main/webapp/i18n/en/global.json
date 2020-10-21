@@ -66,7 +66,8 @@
       "services": {
         "main": "Services",
         "washing": "Washing",
-        "transactions": "Transactions"
+        "transactions": "Transactions",
+        "internet": "Internet"
       },
       "language": "Language"
     },

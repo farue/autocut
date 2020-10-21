@@ -1,0 +1,27 @@
+{
+  "internet": {
+    "description": {
+      "title": "Wir verwenden statische IPs",
+      "text": "Du bist vermutlich gewohnt, einfach den Router mit einem Ethernet Kabel mit dem Internetanschluss zu verbinden und ohne weiteres kannst du das Internet nutzen. Dies beruht auf einem Protokoll namens DHCP, das deinem Router automatisch eine IP Adresse und weitere Zugangsdaten liefert. Wir haben diesen Service (noch) nicht bei uns eingebaut, sodass du diese Daten manuell konfigurieren musst. Die meisten Router bieten diese Konfiguration unter einem Menüpunkt \"WAN\" oder \"Internet\" an. Schau bitte im Handbuch nach, falls das bei deinem Routermodell nicht der Fall sein sollte."
+    },
+    "ipData": {
+      "title": "Deine IP",
+      "ip": "IP",
+      "subnetMask": "Subnetzmaske",
+      "gateway": "Gateway",
+      "dns1": "DNS 1",
+      "dns2": "DNS 2",
+      "dns3": "DNS 3"
+    },
+    "troubleshooting": {
+      "title": "Fehlerbehebung",
+      "p1": "Wenn dein Internet vorher funktioniert hat und auf einmal nicht mehr funktionierte, versuche den Fehler mit folgenden Schritten zu beheben:",
+      "step1": "Stelle sicher, dass dein Kontostand nicht negativ ist",
+      "step2": "Starte den Router neu",
+      "step3": "Stelle sicher, dass die statische IP korrekt konfiguriert ist",
+      "step4": "Stelle sicher, dass das Kabel in Ordnung ist (teste mit einem anderen Kabel falls vorhanden)",
+      "step5": "Setze den Router auf Werkseinstellungen zurück und konfiguriere die statische IP neu",
+      "step6": "Versuche, einen PC ohne Router direkt zu verbinden (hierfür muss die statische IP im PC konfiguriert werden)"
+    }
+  }
+}

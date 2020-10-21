@@ -322,6 +322,12 @@
                             <span jhiTranslate="global.menu.services.transactions">Transactions</span>
                         </a>
                     </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="services/internet" routerLinkActive="active" (click)="collapseNavbar()">
+                            <fa-icon icon="network-wired" [fixedWidth]="true"></fa-icon>
+                            <span jhiTranslate="global.menu.services.internet">Internet</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">

@@ -1,0 +1,27 @@
+{
+  "internet": {
+    "description": {
+      "title": "We use static IPs",
+      "text": "You are probably used to simply connecting your router to the ethernet jack with an ethernet cable and just like that you can browse the internet. This relies on a protocol called DHCP that automatically provides an IP address and other access data to your router. We have not (yet) implemented this service so you need to manually configure this data. Most routers allow this configuration under a menu entry called \"WAN\" or \"Internet\". If this is not the case for your router model, please consult the manual."
+    },
+    "ipData": {
+      "title": "Your IP",
+      "ip": "IP",
+      "subnetMask": "Subnet Mask",
+      "gateway": "Gateway",
+      "dns1": "DNS 1",
+      "dns2": "DNS 2",
+      "dns3": "DNS 3"
+    },
+    "troubleshooting": {
+      "title": "Troubleshooting",
+      "p1": "If your internet was working before and suddenly stopped working, troubleshoot the problem with the following steps:",
+      "step1": "Make sure your account balance is not negative",
+      "step2": "Restart the router",
+      "step3": "Check if the static IP configuration is correct",
+      "step4": "Verify the cable is okay (try a different one if available)",
+      "step5": "Reset the router and enter the static IP configuration again",
+      "step6": "Try connecting a computer directly (make sure to configure the static IP on the computer)"
+    }
+  }
+}
