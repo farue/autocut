@@ -1,4 +1,31 @@
 <div>
+    <div class="col-md-6">
+        <p jhiTranslate="transaction.paymentInstructions">Payment instructions:</p>
+        <div class="table-responsive">
+            <table class="table table-striped" aria-describedby="page-heading">
+                <tr>
+                    <td jhiTranslate="transaction.payment.recipient">Recipient</td>
+                    <td>Fam. Wohnheim Rütscher Str.</td>
+                </tr>
+                <tr>
+                    <td jhiTranslate="transaction.payment.iban">IBAN</td>
+                    <td>DE14 5001 0060 0224 7886 02</td>
+                </tr>
+                <tr>
+                    <td jhiTranslate="transaction.payment.bic">BIC</td>
+                    <td>PBNKDEFF</td>
+                </tr>
+                <tr>
+                    <td jhiTranslate="transaction.payment.bank">Bank</td>
+                    <td>Postbank AG</td>
+                </tr>
+                <tr>
+                    <td jhiTranslate="transaction.payment.purpose">Zweck</td>
+                    <td>{{ purpose$ | async }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
     <div class="row">
         <div class="col">
             <h2><span jhiTranslate="transaction.balance"></span><span>:</span>

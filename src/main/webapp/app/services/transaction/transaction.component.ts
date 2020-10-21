@@ -4,7 +4,7 @@ import { ITEMS_PER_PAGE } from '../../shared/constants/pagination.constants';
 import { TransactionService } from './transaction.service';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { ITransactionOverview } from './transaction-overview.model';
 
 @Component({
@@ -20,6 +20,8 @@ export class TransactionComponent implements OnInit {
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
   page!: number;
+
+  purpose$: Observable<string> = this.transactionService.loadPurpose();
 
   constructor(private transactionService: TransactionService, private activatedRoute: ActivatedRoute, private router: Router) {}
 

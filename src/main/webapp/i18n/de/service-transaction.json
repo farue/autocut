@@ -1,6 +1,14 @@
 {
   "transaction": {
     "title": "Transaktionen",
+    "paymentInstructions": "Bankverbindung, um dein Konto aufzuladen:",
+    "payment": {
+      "recipient": "Empfänger",
+      "iban": "IBAN",
+      "bic": "BIC",
+      "bank": "Bank",
+      "purpose": "Zweck"
+    },
     "balance": "Kontostand",
     "deposit": "Kaution",
     "table": {

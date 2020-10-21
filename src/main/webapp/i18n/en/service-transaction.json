@@ -1,6 +1,14 @@
 {
   "transaction": {
     "title": "Transactions",
+    "paymentInstructions": "Bank information to transfer money to your account:",
+    "payment": {
+      "recipient": "Recipient",
+      "iban": "IBAN",
+      "bic": "BIC",
+      "bank": "Bank",
+      "purpose": "Purpose"
+    },
     "balance": "Balance",
     "deposit": "Deposit",
     "table": {

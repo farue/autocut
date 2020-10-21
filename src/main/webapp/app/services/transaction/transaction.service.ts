@@ -15,4 +15,8 @@ export class TransactionService {
     const options = createRequestOption(req);
     return this.http.get<ITransactionOverview>(`${this.resourceUrl}/overview`, { params: options, observe: 'response' });
   }
+
+  loadPurpose(): Observable<string> {
+    return this.http.get(`${this.resourceUrl}/purpose`, { responseType: 'text' });
+  }
 }
