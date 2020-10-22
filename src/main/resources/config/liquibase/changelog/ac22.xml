@@ -1,0 +1,38 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet id="add-column-service_qualifier" author="brunecker">
+        <addColumn tableName="transaction">
+            <column name="service_qulifier" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="insert-tenant-fee-value" author="brunecker">
+        <loadData
+            file="config/liquibase/data/ac22-global_setting.csv"
+            separator=";"
+            tableName="global_setting">
+            <column name="setting_key" type="string"/>
+            <column name="setting_value" type="string"/>
+            <column name="setting_type" type="string"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="init-spring-batch-schema-mysql" author="brunecker" dbms="mysql">
+        <sqlFile
+            path="classpath:/org/springframework/batch/core/schema-mysql.sql"
+            relativeToChangelogFile="false"
+            splitStatements="true"
+            stripComments="true" />
+    </changeSet>
+
+    <changeSet id="init-spring-batch-schema-h2" author="brunecker" dbms="h2">
+        <sqlFile
+            path="classpath:/org/springframework/batch/core/schema-h2.sql"
+            relativeToChangelogFile="false"
+            splitStatements="true"
+            stripComments="true" />
+    </changeSet>
+</databaseChangeLog>

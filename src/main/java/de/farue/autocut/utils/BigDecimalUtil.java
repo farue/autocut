@@ -4,31 +4,79 @@ import java.math.BigDecimal;
 
 public class BigDecimalUtil {
 
-    public static boolean isPositive(BigDecimal d) {
-        return d != null && d.compareTo(BigDecimal.ZERO) > 0;
+    public static Compare compare(BigDecimal d) {
+        return new Compare(d);
     }
 
-    public static boolean isNotNegative(BigDecimal d) {
-        return d != null && !isNegative(d);
+    public static Modify modify(BigDecimal d) {
+        return new Modify(d);
     }
 
-    public static boolean isNegative(BigDecimal d) {
-        return d != null && d.compareTo(BigDecimal.ZERO) < 0;
+    public static class Compare {
+
+        private final BigDecimal d;
+
+        public Compare(BigDecimal d) {
+            this.d = d;
+        }
+
+        public boolean isPositive() {
+            return d != null && d.compareTo(BigDecimal.ZERO) > 0;
+        }
+
+        public boolean isNotNegative() {
+            return d != null && !isNegative();
+        }
+
+        public boolean isNegative() {
+            return d != null && d.compareTo(BigDecimal.ZERO) < 0;
+        }
+
+        public boolean isNotPositive() {
+            return d != null && !isPositive();
+        }
+
+        public boolean isZero() {
+            return BigDecimal.ZERO.compareTo(d) == 0;
+        }
+
+        public boolean isEqualTo(BigDecimal other) {
+            if (d == null || other == null) {
+                return d == other;
+            }
+            return d.compareTo(other) == 0;
+        }
+
+        public boolean isGreaterThan(BigDecimal other) {
+            if (d == null || other == null) {
+                return false;
+            }
+            return d.compareTo(other) > 0;
+        }
+
+        public boolean isSmallerThan(BigDecimal other) {
+            if (d == null || other == null) {
+                return false;
+            }
+            return d.compareTo(other) < 0;
+        }
     }
 
-    public static boolean isNotPositive(BigDecimal d) {
-        return d != null && !isPositive(d);
-    }
+    public static class Modify {
 
-    public static BigDecimal negative(BigDecimal d) {
-        return isPositive(d) ? d.negate() : d;
-    }
+        private final BigDecimal d;
 
-    public static BigDecimal positive(BigDecimal d) {
-        return isNegative(d) ? d.negate() : d;
-    }
+        public Modify(BigDecimal d) {
+            this.d = d;
+        }
 
-    public static boolean isZero(BigDecimal d) {
-        return BigDecimal.ZERO.compareTo(d) == 0;
+        public BigDecimal negative() {
+            return new Compare(d).isPositive() ? d.negate() : d;
+        }
+
+        public BigDecimal positive() {
+            return new Compare(d).isNegative() ? d.negate() : d;
+        }
+
     }
 }

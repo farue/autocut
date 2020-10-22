@@ -287,6 +287,8 @@ dependencies {
     testRuntimeOnly "com.tngtech.archunit:archunit-junit5-engine:${archunit_junit5_version}"
     testImplementation "com.h2database:h2"
     liquibaseRuntime "com.h2database:h2"
+    implementation "org.springframework.boot:spring-boot-starter-batch"
+    liquibaseRuntime "org.springframework.boot:spring-boot-starter-batch" // so liquibase finds the setup schemas
     //jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
 }
 

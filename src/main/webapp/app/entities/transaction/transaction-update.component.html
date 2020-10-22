@@ -102,6 +102,12 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="autocutApp.transaction.serviceQulifier" for="field_serviceQulifier">Service Qulifier</label>
+                    <input type="text" class="form-control" name="serviceQulifier" id="field_serviceQulifier"
+                           formControlName="serviceQulifier"/>
+                </div>
+
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.transaction.issuer" for="field_issuer">Issuer</label>
                     <input type="text" class="form-control" name="issuer" id="field_issuer"
                            formControlName="issuer"/>
@@ -120,6 +126,13 @@
                 </div>
 
                 <div class="form-group">
+                    <label jhiTranslate="autocutApp.transaction.left" for="field_lefts">Left</label>
+                    <select class="form-control" id="field_lefts" multiple name="lefts" formControlName="lefts">
+                        <option [ngValue]="getSelected(editForm.get('lefts')!.value, transactionOption)" *ngFor="let transactionOption of transactions; trackBy: trackById">{{ transactionOption.id }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.transaction.transactionBook" for="field_transactionBook">Transaction Book</label>
                     <select class="form-control" id="field_transactionBook" name="transactionBook" formControlName="transactionBook">
                         <option *ngIf="!editForm.get('transactionBook')!.value" [ngValue]="null" selected></option>
@@ -131,13 +144,6 @@
                            *ngIf="editForm.get('transactionBook')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                     </small>
-                </div>
-
-                <div class="form-group">
-                    <label jhiTranslate="autocutApp.transaction.left" for="field_lefts">Left</label>
-                    <select class="form-control" id="field_lefts" multiple name="lefts" formControlName="lefts">
-                        <option [ngValue]="getSelected(editForm.get('lefts')!.value, transactionOption)" *ngFor="let transactionOption of transactions; trackBy: trackById">{{ transactionOption.id }}</option>
-                    </select>
                 </div>
             </div>
 

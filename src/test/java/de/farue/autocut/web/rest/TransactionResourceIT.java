@@ -70,6 +70,9 @@ public class TransactionResourceIT {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
+    private static final String DEFAULT_SERVICE_QULIFIER = "AAAAAAAAAA";
+    private static final String UPDATED_SERVICE_QULIFIER = "BBBBBBBBBB";
+
     private static final String DEFAULT_ISSUER = "AAAAAAAAAA";
     private static final String UPDATED_ISSUER = "BBBBBBBBBB";
 
@@ -110,6 +113,7 @@ public class TransactionResourceIT {
             .value(DEFAULT_VALUE)
             .balanceAfter(DEFAULT_BALANCE_AFTER)
             .description(DEFAULT_DESCRIPTION)
+            .serviceQulifier(DEFAULT_SERVICE_QULIFIER)
             .issuer(DEFAULT_ISSUER)
             .recipient(DEFAULT_RECIPIENT);
         // Add required entity
@@ -138,6 +142,7 @@ public class TransactionResourceIT {
             .value(UPDATED_VALUE)
             .balanceAfter(UPDATED_BALANCE_AFTER)
             .description(UPDATED_DESCRIPTION)
+            .serviceQulifier(UPDATED_SERVICE_QULIFIER)
             .issuer(UPDATED_ISSUER)
             .recipient(UPDATED_RECIPIENT);
         // Add required entity
@@ -178,6 +183,7 @@ public class TransactionResourceIT {
         assertThat(testTransaction.getValue()).isEqualTo(DEFAULT_VALUE);
         assertThat(testTransaction.getBalanceAfter()).isEqualTo(DEFAULT_BALANCE_AFTER);
         assertThat(testTransaction.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testTransaction.getServiceQulifier()).isEqualTo(DEFAULT_SERVICE_QULIFIER);
         assertThat(testTransaction.getIssuer()).isEqualTo(DEFAULT_ISSUER);
         assertThat(testTransaction.getRecipient()).isEqualTo(DEFAULT_RECIPIENT);
     }
@@ -328,6 +334,7 @@ public class TransactionResourceIT {
             .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.intValue())))
             .andExpect(jsonPath("$.[*].balanceAfter").value(hasItem(DEFAULT_BALANCE_AFTER.intValue())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].serviceQulifier").value(hasItem(DEFAULT_SERVICE_QULIFIER)))
             .andExpect(jsonPath("$.[*].issuer").value(hasItem(DEFAULT_ISSUER)))
             .andExpect(jsonPath("$.[*].recipient").value(hasItem(DEFAULT_RECIPIENT)));
     }
@@ -369,6 +376,7 @@ public class TransactionResourceIT {
             .andExpect(jsonPath("$.value").value(DEFAULT_VALUE.intValue()))
             .andExpect(jsonPath("$.balanceAfter").value(DEFAULT_BALANCE_AFTER.intValue()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
+            .andExpect(jsonPath("$.serviceQulifier").value(DEFAULT_SERVICE_QULIFIER))
             .andExpect(jsonPath("$.issuer").value(DEFAULT_ISSUER))
             .andExpect(jsonPath("$.recipient").value(DEFAULT_RECIPIENT));
     }
@@ -399,6 +407,7 @@ public class TransactionResourceIT {
             .value(UPDATED_VALUE)
             .balanceAfter(UPDATED_BALANCE_AFTER)
             .description(UPDATED_DESCRIPTION)
+            .serviceQulifier(UPDATED_SERVICE_QULIFIER)
             .issuer(UPDATED_ISSUER)
             .recipient(UPDATED_RECIPIENT);
 
@@ -417,6 +426,7 @@ public class TransactionResourceIT {
         assertThat(testTransaction.getValue()).isEqualTo(UPDATED_VALUE);
         assertThat(testTransaction.getBalanceAfter()).isEqualTo(UPDATED_BALANCE_AFTER);
         assertThat(testTransaction.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testTransaction.getServiceQulifier()).isEqualTo(UPDATED_SERVICE_QULIFIER);
         assertThat(testTransaction.getIssuer()).isEqualTo(UPDATED_ISSUER);
         assertThat(testTransaction.getRecipient()).isEqualTo(UPDATED_RECIPIENT);
     }

@@ -1,0 +1,3 @@
+setting_key;setting_value;setting_type
+member-fee;5;java.math.BigDecimal
+member-fee-discounted;2.5;java.math.BigDecimal

@@ -11,12 +11,15 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.transaction.annotation.Transactional;
 
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Transaction;
 import de.farue.autocut.domain.TransactionBook;
+import de.farue.autocut.domain.Transaction_;
 import de.farue.autocut.domain.enumeration.TransactionBookType;
 import de.farue.autocut.domain.enumeration.TransactionKind;
 import de.farue.autocut.repository.TransactionRepository;
@@ -85,7 +88,9 @@ public class TransactionServiceIT {
                 transactionService.save(transactionInBetween);
 
                 // Transactions in reverse chronological order
-                List<Transaction> transactions = transactionService.findAllForTransactionBook(transactionBook, Pageable.unpaged()).getContent();
+                List<Transaction> transactions = transactionService
+                    .findAllForTransactionBook(transactionBook, PageRequest.of(0, 3, Sort.by(Order.desc(Transaction_.VALUE_DATE), Order.desc(Transaction_.ID))))
+                    .getContent();
                 transactionInFuture = transactions.get(0);
                 transactionInBetween = transactions.get(1);
                 transactionInPast = transactions.get(2);

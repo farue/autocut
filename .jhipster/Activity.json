@@ -56,11 +56,12 @@
   "entityTableName": "activity",
   "dto": "no",
   "pagination": "no",
-  "service": "no",
+  "service": "serviceClass",
   "jpaMetamodelFiltering": false,
   "fluentMethods": true,
   "readOnly": false,
   "clientRootFolder": "",
   "applications": "*",
-  "embedded": false
+  "embedded": false,
+  "javadoc": "Activity always describes an entire semester since its main purpose is to capture who is\\neligible for a discount, and its secondary purpose is to store activity counted at StW.\\nBoth these things are in terms of full semesters."
 }

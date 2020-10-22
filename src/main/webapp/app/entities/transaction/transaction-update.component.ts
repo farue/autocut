@@ -12,7 +12,7 @@ import { TransactionService } from './transaction.service';
 import { ITransactionBook } from 'app/shared/model/transaction-book.model';
 import { TransactionBookService } from 'app/entities/transaction-book/transaction-book.service';
 
-type SelectableEntity = ITransactionBook | ITransaction;
+type SelectableEntity = ITransaction | ITransactionBook;
 
 @Component({
   selector: 'jhi-transaction-update',
@@ -20,8 +20,8 @@ type SelectableEntity = ITransactionBook | ITransaction;
 })
 export class TransactionUpdateComponent implements OnInit {
   isSaving = false;
-  transactionbooks: ITransactionBook[] = [];
   transactions: ITransaction[] = [];
+  transactionbooks: ITransactionBook[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -31,10 +31,11 @@ export class TransactionUpdateComponent implements OnInit {
     value: [null, [Validators.required]],
     balanceAfter: [null, [Validators.required]],
     description: [],
+    serviceQulifier: [],
     issuer: [null, [Validators.required]],
     recipient: [],
-    transactionBook: [null, Validators.required],
     lefts: [],
+    transactionBook: [null, Validators.required],
   });
 
   constructor(
@@ -54,9 +55,9 @@ export class TransactionUpdateComponent implements OnInit {
 
       this.updateForm(transaction);
 
-      this.transactionBookService.query().subscribe((res: HttpResponse<ITransactionBook[]>) => (this.transactionbooks = res.body || []));
-
       this.transactionService.query().subscribe((res: HttpResponse<ITransaction[]>) => (this.transactions = res.body || []));
+
+      this.transactionBookService.query().subscribe((res: HttpResponse<ITransactionBook[]>) => (this.transactionbooks = res.body || []));
     });
   }
 
@@ -69,10 +70,11 @@ export class TransactionUpdateComponent implements OnInit {
       value: transaction.value,
       balanceAfter: transaction.balanceAfter,
       description: transaction.description,
+      serviceQulifier: transaction.serviceQulifier,
       issuer: transaction.issuer,
       recipient: transaction.recipient,
-      transactionBook: transaction.transactionBook,
       lefts: transaction.lefts,
+      transactionBook: transaction.transactionBook,
     });
   }
 
@@ -102,10 +104,11 @@ export class TransactionUpdateComponent implements OnInit {
       value: this.editForm.get(['value'])!.value,
       balanceAfter: this.editForm.get(['balanceAfter'])!.value,
       description: this.editForm.get(['description'])!.value,
+      serviceQulifier: this.editForm.get(['serviceQulifier'])!.value,
       issuer: this.editForm.get(['issuer'])!.value,
       recipient: this.editForm.get(['recipient'])!.value,
-      transactionBook: this.editForm.get(['transactionBook'])!.value,
       lefts: this.editForm.get(['lefts'])!.value,
+      transactionBook: this.editForm.get(['transactionBook'])!.value,
     };
   }
 

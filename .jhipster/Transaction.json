@@ -42,6 +42,10 @@
       "fieldType": "String"
     },
     {
+      "fieldName": "serviceQulifier",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "issuer",
       "fieldType": "String",
       "fieldValidateRules": [
@@ -55,20 +59,20 @@
   ],
   "relationships": [
     {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "transactionBook",
-      "otherEntityRelationshipName": "transaction",
-      "relationshipValidateRules": "required",
-      "relationshipName": "transactionBook",
-      "otherEntityField": "id"
-    },
-    {
       "relationshipType": "many-to-many",
       "otherEntityName": "transaction",
       "otherEntityRelationshipName": "right",
       "relationshipName": "left",
       "otherEntityField": "id",
       "ownerSide": true
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "transactionBook",
+      "otherEntityRelationshipName": "transaction",
+      "relationshipValidateRules": "required",
+      "relationshipName": "transactionBook",
+      "otherEntityField": "id"
     },
     {
       "relationshipType": "many-to-many",

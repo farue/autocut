@@ -21,6 +21,8 @@ public class TransactionTemplate {
 
     private String issuer;
 
+    private String serviceQualifier;
+
     private String recipient;
 
     private TransactionBook transactionBook;

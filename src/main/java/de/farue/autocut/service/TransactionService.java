@@ -89,12 +89,12 @@ public class TransactionService {
 
     @Transactional(readOnly = true)
     public Page<Transaction> findAllForTransactionBook(TransactionBook transactionBook, Pageable pageable) {
-        return transactionRepository.findAllByTransactionBookOrderByValueDateDesc(transactionBook, pageable);
+        return transactionRepository.findAllByTransactionBook(transactionBook, pageable);
     }
 
     public void updateBalanceInLaterTransactions(Transaction transaction) {
         List<Transaction> laterTransactions = transactionRepository
-            .findAllNewerThanWithLock(transaction.getTransactionBook(), transaction.getValueDate(), transaction.getId() != null ? transaction.getId() : 0);
+            .findAllNewerThanWithLock(transaction.getTransactionBook(), transaction.getValueDate(), transaction.getId() != null ? transaction.getId() : Long.MAX_VALUE);
         BigDecimal balance = transaction.getBalanceAfter();
         for (Transaction t : laterTransactions) {
             balance = balance.add(t.getValue());

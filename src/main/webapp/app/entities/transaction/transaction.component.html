@@ -21,18 +21,19 @@
     <div class="table-responsive" id="entities" *ngIf="transactions && transactions.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-            <tr>
-                <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-                <th scope="col"><span jhiTranslate="autocutApp.transaction.kind">Kind</span></th>
-                <th scope="col"><span jhiTranslate="autocutApp.transaction.bookingDate">Booking Date</span></th>
-                <th scope="col"><span jhiTranslate="autocutApp.transaction.valueDate">Value Date</span></th>
-                <th scope="col"><span jhiTranslate="autocutApp.transaction.value">Value</span></th>
-                <th scope="col"><span jhiTranslate="autocutApp.transaction.balanceAfter">Balance After</span></th>
-                <th scope="col"><span jhiTranslate="autocutApp.transaction.description">Description</span></th>
+                <tr>
+                    <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.transaction.kind">Kind</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.transaction.bookingDate">Booking Date</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.transaction.valueDate">Value Date</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.transaction.value">Value</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.transaction.balanceAfter">Balance After</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.transaction.description">Description</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.transaction.serviceQulifier">Service Qulifier</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.transaction.issuer">Issuer</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.transaction.recipient">Recipient</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.transaction.transactionBook">Transaction Book</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.transaction.left">Left</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.transaction.transactionBook">Transaction Book</span></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -45,17 +46,18 @@
                     <td>{{ transaction.value }}</td>
                     <td>{{ transaction.balanceAfter }}</td>
                     <td>{{ transaction.description }}</td>
+                    <td>{{ transaction.serviceQulifier }}</td>
                     <td>{{ transaction.issuer }}</td>
                     <td>{{ transaction.recipient }}</td>
-                    <td>
-                        <div *ngIf="transaction.transactionBook">
-                            <a [routerLink]="['/transaction-book', transaction.transactionBook?.id, 'view']" >{{ transaction.transactionBook?.id }}</a>
-                        </div>
-                    </td>
                     <td>
                         <span *ngFor="let left of transaction.lefts; let last = last">
                             <a class="form-control-static" [routerLink]="['/transaction', left?.id, 'view']">{{ left.id }}</a>{{ last ? '' : ', ' }}
                         </span>
+                    </td>
+                    <td>
+                        <div *ngIf="transaction.transactionBook">
+                            <a [routerLink]="['/transaction-book', transaction.transactionBook?.id, 'view']" >{{ transaction.transactionBook?.id }}</a>
+                        </div>
                     </td>
                     <td class="text-right">
                         <div class="btn-group">

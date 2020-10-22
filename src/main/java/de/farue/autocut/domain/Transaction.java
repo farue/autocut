@@ -67,17 +67,15 @@ public class Transaction implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "service_qulifier")
+    private String serviceQulifier;
+
     @NotNull
     @Column(name = "issuer", nullable = false)
     private String issuer;
 
     @Column(name = "recipient")
     private String recipient;
-
-    @ManyToOne(optional = false)
-    @NotNull
-    @JsonIgnoreProperties(value = "transactions", allowSetters = true)
-    private TransactionBook transactionBook;
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -86,6 +84,11 @@ public class Transaction implements Serializable {
                inverseJoinColumns = @JoinColumn(name = "left_id", referencedColumnName = "id"))
     @JsonIgnoreProperties({"lefts"})
     private Set<Transaction> lefts = new HashSet<>();
+
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties(value = "transactions", allowSetters = true)
+    private TransactionBook transactionBook;
 
     @ManyToMany(mappedBy = "lefts")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -179,6 +182,19 @@ public class Transaction implements Serializable {
         this.description = description;
     }
 
+    public String getServiceQulifier() {
+        return serviceQulifier;
+    }
+
+    public Transaction serviceQulifier(String serviceQulifier) {
+        this.serviceQulifier = serviceQulifier;
+        return this;
+    }
+
+    public void setServiceQulifier(String serviceQulifier) {
+        this.serviceQulifier = serviceQulifier;
+    }
+
     public String getIssuer() {
         return issuer;
     }
@@ -205,19 +221,6 @@ public class Transaction implements Serializable {
         this.recipient = recipient;
     }
 
-    public TransactionBook getTransactionBook() {
-        return transactionBook;
-    }
-
-    public Transaction transactionBook(TransactionBook transactionBook) {
-        this.transactionBook = transactionBook;
-        return this;
-    }
-
-    public void setTransactionBook(TransactionBook transactionBook) {
-        this.transactionBook = transactionBook;
-    }
-
     public Set<Transaction> getLefts() {
         return lefts;
     }
@@ -241,6 +244,19 @@ public class Transaction implements Serializable {
 
     public void setLefts(Set<Transaction> transactions) {
         this.lefts = transactions;
+    }
+
+    public TransactionBook getTransactionBook() {
+        return transactionBook;
+    }
+
+    public Transaction transactionBook(TransactionBook transactionBook) {
+        this.transactionBook = transactionBook;
+        return this;
+    }
+
+    public void setTransactionBook(TransactionBook transactionBook) {
+        this.transactionBook = transactionBook;
     }
 
     public Set<Transaction> getRights() {
@@ -301,6 +317,7 @@ public class Transaction implements Serializable {
             ", value=" + getValue() +
             ", balanceAfter=" + getBalanceAfter() +
             ", description='" + getDescription() + "'" +
+            ", serviceQulifier='" + getServiceQulifier() + "'" +
             ", issuer='" + getIssuer() + "'" +
             ", recipient='" + getRecipient() + "'" +
             "}";

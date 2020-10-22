@@ -1,5 +1,7 @@
 package de.farue.autocut.service.accounting;
 
+import static de.farue.autocut.utils.BigDecimalUtil.compare;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -11,7 +13,6 @@ import java.util.stream.Collectors;
 import de.farue.autocut.domain.Transaction;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.domain.enumeration.TransactionKind;
-import de.farue.autocut.utils.BigDecimalUtil;
 
 public class MemberBookingContraTransactionProvider implements ContraTransactionsProvider {
 
@@ -32,7 +33,7 @@ public class MemberBookingContraTransactionProvider implements ContraTransaction
         for (Entry<TransactionKind, BigDecimal> entry : summedValueByTransactionKind.entrySet()) {
             TransactionKind transactionKind = entry.getKey();
             BigDecimal summedValue = entry.getValue();
-            if (!BigDecimalUtil.isZero(summedValue)) {
+            if (!compare(summedValue).isZero()) {
                 Transaction contraTransaction = createPartialContraTransaction(summedValue, transactionKind)
                     .bookingDate(bookingDate)
                     .valueDate(valueDate);

@@ -1,5 +1,7 @@
 package de.farue.autocut.service.accounting;
 
+import static de.farue.autocut.utils.BigDecimalUtil.compare;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -11,7 +13,9 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +26,6 @@ import de.farue.autocut.domain.enumeration.TransactionKind;
 import de.farue.autocut.repository.TransactionBookRepository;
 import de.farue.autocut.repository.TransactionRepository;
 import de.farue.autocut.service.TransactionService;
-import de.farue.autocut.utils.BigDecimalUtil;
 
 /**
  * Service Implementation for managing {@link TransactionBook}.
@@ -125,6 +128,10 @@ public class TransactionBookService {
             .orElse(BigDecimal.ZERO);
     }
 
+    public Page<Transaction> findAllTransactionsForTransactionBook(TransactionBook transactionBook, Pageable pageable) {
+        return transactionService.findAllForTransactionBook(transactionBook, pageable);
+    }
+
     public void saveBankAccountActivity(BookingTemplate bookingTemplate) {
         // TODO #7:
         //  - require booking template to only create bookings for own cash account
@@ -180,6 +187,7 @@ public class TransactionBookService {
                 .transactionBook(transactionTemplate.getTransactionBook())
                 .description(transactionTemplate.getDescription())
                 .issuer(transactionTemplate.getIssuer())
+                .serviceQulifier(transactionTemplate.getServiceQualifier())
                 .recipient(transactionTemplate.getRecipient()))
             .collect(Collectors.toList());
     }
@@ -197,7 +205,7 @@ public class TransactionBookService {
         // assert transaction kind and value match
         for (TransactionTemplate transactionTemplate : bookingTemplate.getTransactionTemplates()) {
             if (transactionTemplate.getKind() == TransactionKind.CREDIT) {
-                if (BigDecimalUtil.isNegative(transactionTemplate.getValue())) {
+                if (compare(transactionTemplate.getValue()).isNegative()) {
                     throw new IllegalArgumentException(
                         String.format("Transaction kind %s requires the value not to be negative, but was %s", transactionTemplate.getKind(),
                             transactionTemplate.getValue()));
@@ -205,7 +213,7 @@ public class TransactionBookService {
             } else if (transactionTemplate.getKind() == TransactionKind.DEBIT
                 || transactionTemplate.getKind() == TransactionKind.FEE
                 || transactionTemplate.getKind() == TransactionKind.PURCHASE) {
-                if (BigDecimalUtil.isPositive(transactionTemplate.getValue())) {
+                if (compare(transactionTemplate.getValue()).isPositive()) {
                     throw new IllegalArgumentException(
                         String.format("Transaction kind %s requires the value not to be positive, but was %s", transactionTemplate.getKind(),
                             transactionTemplate.getValue()));

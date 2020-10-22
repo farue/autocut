@@ -1,5 +1,7 @@
 package de.farue.autocut.service;
 
+import static de.farue.autocut.utils.BigDecimalUtil.modify;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
@@ -27,7 +29,6 @@ import de.farue.autocut.security.SecurityUtils;
 import de.farue.autocut.service.accounting.BookingBuilder;
 import de.farue.autocut.service.accounting.BookingTemplate;
 import de.farue.autocut.service.accounting.TransactionBookService;
-import de.farue.autocut.utils.BigDecimalUtil;
 import de.farue.autocut.web.rest.errors.LaundryMachineDoesNotExistException;
 
 @Service
@@ -107,7 +108,7 @@ public class WashingService {
                 .getValue(GlobalSetting.WASHING_PRICE_DRYER);
         };
 
-        BigDecimal value = BigDecimalUtil.negative(cost);
+        BigDecimal value = modify(cost).negative();
         BookingTemplate bookingTemplate = BookingBuilder.bookingTemplate()
             .bookingDate(timestamp)
             .valueDate(timestamp)

@@ -32,6 +32,10 @@
                 <dd>
                     <span>{{ transaction.description }}</span>
                 </dd>
+                <dt><span jhiTranslate="autocutApp.transaction.serviceQulifier">Service Qulifier</span></dt>
+                <dd>
+                    <span>{{ transaction.serviceQulifier }}</span>
+                </dd>
                 <dt><span jhiTranslate="autocutApp.transaction.issuer">Issuer</span></dt>
                 <dd>
                     <span>{{ transaction.issuer }}</span>
@@ -40,17 +44,17 @@
                 <dd>
                     <span>{{ transaction.recipient }}</span>
                 </dd>
-                <dt><span jhiTranslate="autocutApp.transaction.transactionBook">Transaction Book</span></dt>
-                <dd>
-                    <div *ngIf="transaction.transactionBook">
-                        <a [routerLink]="['/transaction-book', transaction.transactionBook?.id, 'view']">{{ transaction.transactionBook?.id }}</a>
-                    </div>
-                </dd>
                 <dt><span jhiTranslate="autocutApp.transaction.left">Left</span></dt>
                 <dd>
                     <span *ngFor="let left of transaction.lefts; let last = last">
                         <a [routerLink]="['/transaction', left?.id, 'view']">{{ left.id }}</a>{{ last ? '' : ', ' }}
                     </span>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.transaction.transactionBook">Transaction Book</span></dt>
+                <dd>
+                    <div *ngIf="transaction.transactionBook">
+                        <a [routerLink]="['/transaction-book', transaction.transactionBook?.id, 'view']">{{ transaction.transactionBook?.id }}</a>
+                    </div>
                 </dd>
             </dl>
 

@@ -35,7 +35,7 @@ export class TransactionComponent implements OnInit {
       .query({
         page: this.page - 1,
         size: this.itemsPerPage,
-        sort: [],
+        sort: ['valueDate,desc', 'id,desc'],
       })
       .subscribe((res: HttpResponse<ITransactionOverview>) => this.onSuccess(res.body, res.headers));
   }

@@ -15,12 +15,16 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.transaction.annotation.Transactional;
 
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Transaction;
 import de.farue.autocut.domain.TransactionBook;
+import de.farue.autocut.domain.Transaction_;
 import de.farue.autocut.domain.enumeration.TransactionBookType;
 import de.farue.autocut.domain.enumeration.TransactionKind;
 import de.farue.autocut.service.TransactionService;
@@ -138,7 +142,9 @@ class TransactionBookServiceIT {
                 assertThat(transactionBookService.getCurrentBalance(transactionBook)).isEqualByComparingTo("87.45");
 
                 // Transactions in reverse chronological order
-                List<Transaction> allTransactions = transactionService.findAllForTransactionBook(transactionBook, Pageable.unpaged()).getContent();
+                List<Transaction> allTransactions = transactionService
+                    .findAllForTransactionBook(transactionBook, PageRequest.of(0, 3, Sort.by(Order.desc(Transaction_.VALUE_DATE), Order.desc(Transaction_.ID))))
+                    .getContent();
                 assertThat(allTransactions).hasSize(3);
                 Transaction transactionInPast = allTransactions.get(2);
                 Transaction transactionInBetween = allTransactions.get(1);

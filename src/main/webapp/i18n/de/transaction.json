@@ -22,10 +22,11 @@
       "value": "Value",
       "balanceAfter": "Balance After",
       "description": "Description",
+      "serviceQulifier": "Service Qulifier",
       "issuer": "Issuer",
       "recipient": "Recipient",
-      "transactionBook": "Transaction Book",
       "left": "Left",
+      "transactionBook": "Transaction Book",
       "right": "Right"
     }
   }

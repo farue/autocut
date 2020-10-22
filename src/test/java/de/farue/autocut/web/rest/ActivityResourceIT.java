@@ -1,9 +1,21 @@
 package de.farue.autocut.web.rest;
 
-import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.Activity;
-import de.farue.autocut.domain.enumeration.SemesterTerms;
-import de.farue.autocut.repository.ActivityRepository;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,20 +26,11 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import de.farue.autocut.AutocutApp;
+import de.farue.autocut.domain.Activity;
+import de.farue.autocut.domain.enumeration.SemesterTerms;
+import de.farue.autocut.repository.ActivityRepository;
+import de.farue.autocut.service.ActivityService;
 /**
  * Integration tests for the {@link ActivityResource} REST controller.
  */
@@ -59,6 +62,9 @@ public class ActivityResourceIT {
 
     @Autowired
     private ActivityRepository activityRepository;
+
+    @Autowired
+    private ActivityService activityService;
 
     @Autowired
     private EntityManager em;
@@ -238,7 +244,7 @@ public class ActivityResourceIT {
     @Transactional
     public void updateActivity() throws Exception {
         // Initialize the database
-        activityRepository.saveAndFlush(activity);
+        activityService.save(activity);
 
         int databaseSizeBeforeUpdate = activityRepository.findAll().size();
 
@@ -293,7 +299,7 @@ public class ActivityResourceIT {
     @Transactional
     public void deleteActivity() throws Exception {
         // Initialize the database
-        activityRepository.saveAndFlush(activity);
+        activityService.save(activity);
 
         int databaseSizeBeforeDelete = activityRepository.findAll().size();
 
