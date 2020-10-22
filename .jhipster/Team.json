@@ -4,15 +4,17 @@
     {
       "fieldName": "name",
       "fieldType": "String",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": [
+        "required"
+      ]
     }
   ],
   "relationships": [
     {
       "relationshipType": "one-to-many",
-      "otherEntityName": "teamMember",
+      "otherEntityName": "teamMembership",
       "otherEntityRelationshipName": "team",
-      "relationshipName": "members"
+      "relationshipName": "teamMembership"
     }
   ],
   "changelogDate": "20191117011742",

@@ -7,12 +7,12 @@ import { Observable } from 'rxjs';
 
 import { ISecurityPolicy, SecurityPolicy } from 'app/shared/model/security-policy.model';
 import { SecurityPolicyService } from './security-policy.service';
-import { ITeamMember } from 'app/shared/model/team-member.model';
-import { TeamMemberService } from 'app/entities/team-member/team-member.service';
+import { ITeamMembership } from 'app/shared/model/team-membership.model';
+import { TeamMembershipService } from 'app/entities/team-membership/team-membership.service';
 import { ITenant } from 'app/shared/model/tenant.model';
 import { TenantService } from 'app/entities/tenant/tenant.service';
 
-type SelectableEntity = ITeamMember | ITenant;
+type SelectableEntity = ITeamMembership | ITenant;
 
 @Component({
   selector: 'jhi-security-policy-update',
@@ -20,7 +20,7 @@ type SelectableEntity = ITeamMember | ITenant;
 })
 export class SecurityPolicyUpdateComponent implements OnInit {
   isSaving = false;
-  teammembers: ITeamMember[] = [];
+  teammemberships: ITeamMembership[] = [];
   tenants: ITenant[] = [];
 
   editForm = this.fb.group({
@@ -33,7 +33,7 @@ export class SecurityPolicyUpdateComponent implements OnInit {
 
   constructor(
     protected securityPolicyService: SecurityPolicyService,
-    protected teamMemberService: TeamMemberService,
+    protected teamMembershipService: TeamMembershipService,
     protected tenantService: TenantService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
@@ -43,7 +43,7 @@ export class SecurityPolicyUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ securityPolicy }) => {
       this.updateForm(securityPolicy);
 
-      this.teamMemberService.query().subscribe((res: HttpResponse<ITeamMember[]>) => (this.teammembers = res.body || []));
+      this.teamMembershipService.query().subscribe((res: HttpResponse<ITeamMembership[]>) => (this.teammemberships = res.body || []));
 
       this.tenantService.query().subscribe((res: HttpResponse<ITenant[]>) => (this.tenants = res.body || []));
     });

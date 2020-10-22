@@ -4,13 +4,15 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import * as moment from 'moment';
-import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 
 import { IActivity, Activity } from 'app/shared/model/activity.model';
 import { ActivityService } from './activity.service';
 import { ITenant } from 'app/shared/model/tenant.model';
 import { TenantService } from 'app/entities/tenant/tenant.service';
+import { ITeamMembership } from 'app/shared/model/team-membership.model';
+import { TeamMembershipService } from 'app/entities/team-membership/team-membership.service';
+
+type SelectableEntity = ITenant | ITeamMembership;
 
 @Component({
   selector: 'jhi-activity-update',
@@ -19,37 +21,38 @@ import { TenantService } from 'app/entities/tenant/tenant.service';
 export class ActivityUpdateComponent implements OnInit {
   isSaving = false;
   tenants: ITenant[] = [];
+  teammemberships: ITeamMembership[] = [];
+  startDp: any;
+  endDp: any;
 
   editForm = this.fb.group({
     id: [],
     year: [null, [Validators.required]],
     term: [null, [Validators.required]],
-    startDate: [],
-    endDate: [],
+    start: [],
+    end: [],
     description: [],
     discount: [],
     stwActivity: [],
     tenant: [],
+    teamMembership: [],
   });
 
   constructor(
     protected activityService: ActivityService,
     protected tenantService: TenantService,
+    protected teamMembershipService: TeamMembershipService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ activity }) => {
-      if (!activity.id) {
-        const today = moment().startOf('day');
-        activity.startDate = today;
-        activity.endDate = today;
-      }
-
       this.updateForm(activity);
 
       this.tenantService.query().subscribe((res: HttpResponse<ITenant[]>) => (this.tenants = res.body || []));
+
+      this.teamMembershipService.query().subscribe((res: HttpResponse<ITeamMembership[]>) => (this.teammemberships = res.body || []));
     });
   }
 
@@ -58,12 +61,13 @@ export class ActivityUpdateComponent implements OnInit {
       id: activity.id,
       year: activity.year,
       term: activity.term,
-      startDate: activity.startDate ? activity.startDate.format(DATE_TIME_FORMAT) : null,
-      endDate: activity.endDate ? activity.endDate.format(DATE_TIME_FORMAT) : null,
+      start: activity.start,
+      end: activity.end,
       description: activity.description,
       discount: activity.discount,
       stwActivity: activity.stwActivity,
       tenant: activity.tenant,
+      teamMembership: activity.teamMembership,
     });
   }
 
@@ -87,12 +91,13 @@ export class ActivityUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       year: this.editForm.get(['year'])!.value,
       term: this.editForm.get(['term'])!.value,
-      startDate: this.editForm.get(['startDate'])!.value ? moment(this.editForm.get(['startDate'])!.value, DATE_TIME_FORMAT) : undefined,
-      endDate: this.editForm.get(['endDate'])!.value ? moment(this.editForm.get(['endDate'])!.value, DATE_TIME_FORMAT) : undefined,
+      start: this.editForm.get(['start'])!.value,
+      end: this.editForm.get(['end'])!.value,
       description: this.editForm.get(['description'])!.value,
       discount: this.editForm.get(['discount'])!.value,
       stwActivity: this.editForm.get(['stwActivity'])!.value,
       tenant: this.editForm.get(['tenant'])!.value,
+      teamMembership: this.editForm.get(['teamMembership'])!.value,
     };
   }
 
@@ -112,7 +117,7 @@ export class ActivityUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  trackById(index: number, item: ITenant): any {
+  trackById(index: number, item: SelectableEntity): any {
     return item.id;
   }
 }

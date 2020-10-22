@@ -37,8 +37,8 @@
                 <tr *ngFor="let lease of leases ;trackBy: trackId">
                     <td><a [routerLink]="['/lease', lease.id, 'view']">{{ lease.id }}</a></td>
                     <td>{{ lease.nr }}</td>
-                    <td>{{ lease.start | date:'medium' }}</td>
-                    <td>{{ lease.end | date:'medium' }}</td>
+                    <td>{{ lease.start | date:'mediumDate' }}</td>
+                    <td>{{ lease.end | date:'mediumDate' }}</td>
                     <td>{{ lease.blocked }}</td>
                     <td>
                         <a *ngIf="lease.pictureContract" (click)="openFile(lease.pictureContractContentType, lease.pictureContract)">

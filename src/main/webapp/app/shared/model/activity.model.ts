@@ -1,19 +1,19 @@
 import { Moment } from 'moment';
-import { ITeamMember } from 'app/shared/model/team-member.model';
 import { ITenant } from 'app/shared/model/tenant.model';
+import { ITeamMembership } from 'app/shared/model/team-membership.model';
 import { SemesterTerms } from 'app/shared/model/enumerations/semester-terms.model';
 
 export interface IActivity {
   id?: number;
   year?: number;
   term?: SemesterTerms;
-  startDate?: Moment;
-  endDate?: Moment;
+  start?: Moment;
+  end?: Moment;
   description?: string;
   discount?: boolean;
   stwActivity?: boolean;
-  teamMembers?: ITeamMember[];
   tenant?: ITenant;
+  teamMembership?: ITeamMembership;
 }
 
 export class Activity implements IActivity {
@@ -21,13 +21,13 @@ export class Activity implements IActivity {
     public id?: number,
     public year?: number,
     public term?: SemesterTerms,
-    public startDate?: Moment,
-    public endDate?: Moment,
+    public start?: Moment,
+    public end?: Moment,
     public description?: string,
     public discount?: boolean,
     public stwActivity?: boolean,
-    public teamMembers?: ITeamMember[],
-    public tenant?: ITenant
+    public tenant?: ITenant,
+    public teamMembership?: ITeamMembership
   ) {
     this.discount = this.discount || false;
     this.stwActivity = this.stwActivity || false;

@@ -77,6 +77,10 @@ import { RouterModule } from '@angular/router';
         path: 'transaction-book',
         loadChildren: () => import('./transaction-book/transaction-book.module').then(m => m.AutocutTransactionBookModule),
       },
+      {
+        path: 'team-membership',
+        loadChildren: () => import('./team-membership/team-membership.module').then(m => m.AutocutTeamMembershipModule),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

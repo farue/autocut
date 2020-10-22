@@ -15,8 +15,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,11 +39,11 @@ public class ActivityResourceIT {
     private static final SemesterTerms DEFAULT_TERM = SemesterTerms.SUMMER_TERM;
     private static final SemesterTerms UPDATED_TERM = SemesterTerms.WINTER_TERM;
 
-    private static final Instant DEFAULT_START_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_START_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final LocalDate DEFAULT_START = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_START = LocalDate.now(ZoneId.systemDefault());
 
-    private static final Instant DEFAULT_END_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_END_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final LocalDate DEFAULT_END = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_END = LocalDate.now(ZoneId.systemDefault());
 
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
@@ -78,8 +78,8 @@ public class ActivityResourceIT {
         Activity activity = new Activity()
             .year(DEFAULT_YEAR)
             .term(DEFAULT_TERM)
-            .startDate(DEFAULT_START_DATE)
-            .endDate(DEFAULT_END_DATE)
+            .start(DEFAULT_START)
+            .end(DEFAULT_END)
             .description(DEFAULT_DESCRIPTION)
             .discount(DEFAULT_DISCOUNT)
             .stwActivity(DEFAULT_STW_ACTIVITY);
@@ -95,8 +95,8 @@ public class ActivityResourceIT {
         Activity activity = new Activity()
             .year(UPDATED_YEAR)
             .term(UPDATED_TERM)
-            .startDate(UPDATED_START_DATE)
-            .endDate(UPDATED_END_DATE)
+            .start(UPDATED_START)
+            .end(UPDATED_END)
             .description(UPDATED_DESCRIPTION)
             .discount(UPDATED_DISCOUNT)
             .stwActivity(UPDATED_STW_ACTIVITY);
@@ -124,8 +124,8 @@ public class ActivityResourceIT {
         Activity testActivity = activityList.get(activityList.size() - 1);
         assertThat(testActivity.getYear()).isEqualTo(DEFAULT_YEAR);
         assertThat(testActivity.getTerm()).isEqualTo(DEFAULT_TERM);
-        assertThat(testActivity.getStartDate()).isEqualTo(DEFAULT_START_DATE);
-        assertThat(testActivity.getEndDate()).isEqualTo(DEFAULT_END_DATE);
+        assertThat(testActivity.getStart()).isEqualTo(DEFAULT_START);
+        assertThat(testActivity.getEnd()).isEqualTo(DEFAULT_END);
         assertThat(testActivity.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testActivity.isDiscount()).isEqualTo(DEFAULT_DISCOUNT);
         assertThat(testActivity.isStwActivity()).isEqualTo(DEFAULT_STW_ACTIVITY);
@@ -202,8 +202,8 @@ public class ActivityResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(activity.getId().intValue())))
             .andExpect(jsonPath("$.[*].year").value(hasItem(DEFAULT_YEAR)))
             .andExpect(jsonPath("$.[*].term").value(hasItem(DEFAULT_TERM.toString())))
-            .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
-            .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
+            .andExpect(jsonPath("$.[*].start").value(hasItem(DEFAULT_START.toString())))
+            .andExpect(jsonPath("$.[*].end").value(hasItem(DEFAULT_END.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].discount").value(hasItem(DEFAULT_DISCOUNT.booleanValue())))
             .andExpect(jsonPath("$.[*].stwActivity").value(hasItem(DEFAULT_STW_ACTIVITY.booleanValue())));
@@ -222,8 +222,8 @@ public class ActivityResourceIT {
             .andExpect(jsonPath("$.id").value(activity.getId().intValue()))
             .andExpect(jsonPath("$.year").value(DEFAULT_YEAR))
             .andExpect(jsonPath("$.term").value(DEFAULT_TERM.toString()))
-            .andExpect(jsonPath("$.startDate").value(DEFAULT_START_DATE.toString()))
-            .andExpect(jsonPath("$.endDate").value(DEFAULT_END_DATE.toString()))
+            .andExpect(jsonPath("$.start").value(DEFAULT_START.toString()))
+            .andExpect(jsonPath("$.end").value(DEFAULT_END.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.discount").value(DEFAULT_DISCOUNT.booleanValue()))
             .andExpect(jsonPath("$.stwActivity").value(DEFAULT_STW_ACTIVITY.booleanValue()));
@@ -251,8 +251,8 @@ public class ActivityResourceIT {
         updatedActivity
             .year(UPDATED_YEAR)
             .term(UPDATED_TERM)
-            .startDate(UPDATED_START_DATE)
-            .endDate(UPDATED_END_DATE)
+            .start(UPDATED_START)
+            .end(UPDATED_END)
             .description(UPDATED_DESCRIPTION)
             .discount(UPDATED_DISCOUNT)
             .stwActivity(UPDATED_STW_ACTIVITY);
@@ -268,8 +268,8 @@ public class ActivityResourceIT {
         Activity testActivity = activityList.get(activityList.size() - 1);
         assertThat(testActivity.getYear()).isEqualTo(UPDATED_YEAR);
         assertThat(testActivity.getTerm()).isEqualTo(UPDATED_TERM);
-        assertThat(testActivity.getStartDate()).isEqualTo(UPDATED_START_DATE);
-        assertThat(testActivity.getEndDate()).isEqualTo(UPDATED_END_DATE);
+        assertThat(testActivity.getStart()).isEqualTo(UPDATED_START);
+        assertThat(testActivity.getEnd()).isEqualTo(UPDATED_END);
         assertThat(testActivity.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testActivity.isDiscount()).isEqualTo(UPDATED_DISCOUNT);
         assertThat(testActivity.isStwActivity()).isEqualTo(UPDATED_STW_ACTIVITY);

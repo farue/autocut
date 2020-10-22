@@ -37,7 +37,7 @@
                     <td jhiTranslate="{{ 'autocutApp.Access.' + securityPolicy.access }}">{{ securityPolicy.access }}</td>
                     <td>
                         <div *ngIf="securityPolicy.teamMember">
-                            <a [routerLink]="['/team-member', securityPolicy.teamMember?.id, 'view']" >{{ securityPolicy.teamMember?.id }}</a>
+                            <a [routerLink]="['/team-membership', securityPolicy.teamMember?.id, 'view']" >{{ securityPolicy.teamMember?.id }}</a>
                         </div>
                     </td>
                     <td>

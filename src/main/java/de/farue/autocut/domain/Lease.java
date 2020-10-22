@@ -8,7 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,11 +32,11 @@ public class Lease implements Serializable {
 
     @NotNull
     @Column(name = "start", nullable = false)
-    private Instant start;
+    private LocalDate start;
 
     @NotNull
     @Column(name = "end", nullable = false)
-    private Instant end;
+    private LocalDate end;
 
     @Column(name = "blocked")
     private Boolean blocked;
@@ -85,29 +85,29 @@ public class Lease implements Serializable {
         this.nr = nr;
     }
 
-    public Instant getStart() {
+    public LocalDate getStart() {
         return start;
     }
 
-    public Lease start(Instant start) {
+    public Lease start(LocalDate start) {
         this.start = start;
         return this;
     }
 
-    public void setStart(Instant start) {
+    public void setStart(LocalDate start) {
         this.start = start;
     }
 
-    public Instant getEnd() {
+    public LocalDate getEnd() {
         return end;
     }
 
-    public Lease end(Instant end) {
+    public Lease end(LocalDate end) {
         this.end = end;
         return this;
     }
 
-    public void setEnd(Instant end) {
+    public void setEnd(LocalDate end) {
         this.end = end;
     }
 

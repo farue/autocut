@@ -42,16 +42,22 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.activity.startDate" for="field_startDate">Start Date</label>
-                    <div class="d-flex">
-                        <input id="field_startDate" type="datetime-local" class="form-control" name="startDate" formControlName="startDate" placeholder="YYYY-MM-DD HH:mm"/>
+                    <label class="form-control-label" jhiTranslate="autocutApp.activity.start" for="field_start">Start</label>
+                    <div class="input-group">
+                        <input id="field_start" type="text" class="form-control" name="start" ngbDatepicker #startDp="ngbDatepicker" formControlName="start"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="startDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+                        </span>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.activity.endDate" for="field_endDate">End Date</label>
-                    <div class="d-flex">
-                        <input id="field_endDate" type="datetime-local" class="form-control" name="endDate" formControlName="endDate" placeholder="YYYY-MM-DD HH:mm"/>
+                    <label class="form-control-label" jhiTranslate="autocutApp.activity.end" for="field_end">End</label>
+                    <div class="input-group">
+                        <input id="field_end" type="text" class="form-control" name="end" ngbDatepicker #endDp="ngbDatepicker" formControlName="end"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="endDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+                        </span>
                     </div>
                 </div>
 
@@ -78,6 +84,14 @@
                     <select class="form-control" id="field_tenant" name="tenant" formControlName="tenant">
                         <option [ngValue]="null"></option>
                         <option [ngValue]="tenantOption.id === editForm.get('tenant')!.value?.id ? editForm.get('tenant')!.value : tenantOption" *ngFor="let tenantOption of tenants; trackBy: trackById">{{ tenantOption.id }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="autocutApp.activity.teamMembership" for="field_teamMembership">Team Membership</label>
+                    <select class="form-control" id="field_teamMembership" name="teamMembership" formControlName="teamMembership">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="teamMembershipOption.id === editForm.get('teamMembership')!.value?.id ? editForm.get('teamMembership')!.value : teamMembershipOption" *ngFor="let teamMembershipOption of teammemberships; trackBy: trackById">{{ teamMembershipOption.id }}</option>
                     </select>
                 </div>
             </div>

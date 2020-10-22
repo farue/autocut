@@ -9,16 +9,12 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDate;
 
 import de.farue.autocut.domain.enumeration.SemesterTerms;
 
 /**
- * Activity always describes an entire semester since its main purpose is to capture who is
- * eligible for a discount, and its secondary purpose is to store activity counted at StW.
- * Both these things are in terms of full semesters.
+ * Activity always describes an entire semester since its main purpose is to capture who is\neligible for a discount, and its secondary purpose is to store activity counted at StW.\nBoth these things are in terms of full semesters.
  */
 @ApiModel(description = "Activity always describes an entire semester since its main purpose is to capture who is\neligible for a discount, and its secondary purpose is to store activity counted at StW.\nBoth these things are in terms of full semesters.")
 @Entity
@@ -41,11 +37,11 @@ public class Activity implements Serializable {
     @Column(name = "term", nullable = false)
     private SemesterTerms term;
 
-    @Column(name = "start_date")
-    private Instant startDate;
+    @Column(name = "start")
+    private LocalDate start;
 
-    @Column(name = "end_date")
-    private Instant endDate;
+    @Column(name = "end")
+    private LocalDate end;
 
     @Column(name = "description")
     private String description;
@@ -56,13 +52,13 @@ public class Activity implements Serializable {
     @Column(name = "stw_activity")
     private Boolean stwActivity;
 
-    @OneToMany(mappedBy = "activity")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<TeamMember> teamMembers = new HashSet<>();
-
     @ManyToOne
     @JsonIgnoreProperties(value = "activities", allowSetters = true)
     private Tenant tenant;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "activities", allowSetters = true)
+    private TeamMembership teamMembership;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -99,30 +95,30 @@ public class Activity implements Serializable {
         this.term = term;
     }
 
-    public Instant getStartDate() {
-        return startDate;
+    public LocalDate getStart() {
+        return start;
     }
 
-    public Activity startDate(Instant startDate) {
-        this.startDate = startDate;
+    public Activity start(LocalDate start) {
+        this.start = start;
         return this;
     }
 
-    public void setStartDate(Instant startDate) {
-        this.startDate = startDate;
+    public void setStart(LocalDate start) {
+        this.start = start;
     }
 
-    public Instant getEndDate() {
-        return endDate;
+    public LocalDate getEnd() {
+        return end;
     }
 
-    public Activity endDate(Instant endDate) {
-        this.endDate = endDate;
+    public Activity end(LocalDate end) {
+        this.end = end;
         return this;
     }
 
-    public void setEndDate(Instant endDate) {
-        this.endDate = endDate;
+    public void setEnd(LocalDate end) {
+        this.end = end;
     }
 
     public String getDescription() {
@@ -164,31 +160,6 @@ public class Activity implements Serializable {
         this.stwActivity = stwActivity;
     }
 
-    public Set<TeamMember> getTeamMembers() {
-        return teamMembers;
-    }
-
-    public Activity teamMembers(Set<TeamMember> teamMembers) {
-        this.teamMembers = teamMembers;
-        return this;
-    }
-
-    public Activity addTeamMember(TeamMember teamMember) {
-        this.teamMembers.add(teamMember);
-        teamMember.setActivity(this);
-        return this;
-    }
-
-    public Activity removeTeamMember(TeamMember teamMember) {
-        this.teamMembers.remove(teamMember);
-        teamMember.setActivity(null);
-        return this;
-    }
-
-    public void setTeamMembers(Set<TeamMember> teamMembers) {
-        this.teamMembers = teamMembers;
-    }
-
     public Tenant getTenant() {
         return tenant;
     }
@@ -200,6 +171,19 @@ public class Activity implements Serializable {
 
     public void setTenant(Tenant tenant) {
         this.tenant = tenant;
+    }
+
+    public TeamMembership getTeamMembership() {
+        return teamMembership;
+    }
+
+    public Activity teamMembership(TeamMembership teamMembership) {
+        this.teamMembership = teamMembership;
+        return this;
+    }
+
+    public void setTeamMembership(TeamMembership teamMembership) {
+        this.teamMembership = teamMembership;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -226,8 +210,8 @@ public class Activity implements Serializable {
             "id=" + getId() +
             ", year=" + getYear() +
             ", term='" + getTerm() + "'" +
-            ", startDate='" + getStartDate() + "'" +
-            ", endDate='" + getEndDate() + "'" +
+            ", start='" + getStart() + "'" +
+            ", end='" + getEnd() + "'" +
             ", description='" + getDescription() + "'" +
             ", discount='" + isDiscount() + "'" +
             ", stwActivity='" + isStwActivity() + "'" +

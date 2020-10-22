@@ -12,7 +12,7 @@
                                  baseTableName="security_policy"
                                  constraintName="fk_security_policy_team_member_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="team_member"/>
+                                 referencedTableName="team_membership"/>
 
         <addForeignKeyConstraint baseColumnNames="tenant_id"
                                  baseTableName="security_policy"

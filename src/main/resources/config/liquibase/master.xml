@@ -32,6 +32,7 @@
     <include file="config/liquibase/changelog/20200410002948_added_entity_GlobalSetting.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200429190800_added_entity_NetworkSwitch.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200920172639_added_entity_TransactionBook.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201022221139_added_entity_TeamMembership.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20191117011741_added_entity_constraints_Tenant.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191117011743_added_entity_constraints_TeamMember.xml" relativeToChangelogFile="false"/>
@@ -45,6 +46,7 @@
     <include file="config/liquibase/changelog/20200326184242_added_entity_constraints_Communication.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200326184246_added_entity_constraints_LaundryMachineProgram.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200326184247_added_entity_constraints_WashHistory.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201022221139_added_entity_constraints_TeamMembership.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

@@ -19,7 +19,7 @@
                 <dt><span jhiTranslate="autocutApp.securityPolicy.teamMember">Team Member</span></dt>
                 <dd>
                     <div *ngIf="securityPolicy.teamMember">
-                        <a [routerLink]="['/team-member', securityPolicy.teamMember?.id, 'view']">{{ securityPolicy.teamMember?.id }}</a>
+                        <a [routerLink]="['/team-membership', securityPolicy.teamMember?.id, 'view']">{{ securityPolicy.teamMember?.id }}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.securityPolicy.tenant">Tenant</span></dt>

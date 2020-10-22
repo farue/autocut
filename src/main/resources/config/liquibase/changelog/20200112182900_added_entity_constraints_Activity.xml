@@ -14,5 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="tenant"/>
 
+        <addForeignKeyConstraint baseColumnNames="team_membership_id"
+                                 baseTableName="activity"
+                                 constraintName="fk_activity_team_membership_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="team_membership"/>
+
     </changeSet>
 </databaseChangeLog>

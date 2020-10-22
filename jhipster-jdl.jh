@@ -11,8 +11,8 @@ entity Tenant {
 @service(serviceClass)
 entity Lease {
 	nr String required // number given by StW, e.g. 30-41
-	start Instant required
-    end Instant required
+	start LocalDate required
+    end LocalDate required
     blocked Boolean
     pictureContract ImageBlob
 }
@@ -121,8 +121,10 @@ entity Team {
 	name String required
 }
 
-entity TeamMember {
+entity TeamMembership {
 	role TeamRole
+	start LocalDate
+	end LocalDate
 }
 
 enum TeamRole {
@@ -141,8 +143,8 @@ entity Activity {
 	year Integer required
     term SemesterTerms required
     // only use start and end date for short activities that do not last an entire semester
-    startDate Instant
-    endDate Instant
+    start LocalDate
+    end LocalDate
     description String
     // whether or not the tenant should get a discount next semester
     discount Boolean
@@ -156,15 +158,15 @@ enum SemesterTerms {
 }
 
 relationship ManyToOne {
-    TeamMember{tenant} to Tenant
+    TeamMembership{tenant} to Tenant
     Activity{tenant} to Tenant
+    Activity{teamMembership} to TeamMembership
 }
 
 relationship OneToMany {
-    Team{members} to TeamMember{team required}
-	TeamMember{securityPolicies} to SecurityPolicy{teamMember}
+    Team to TeamMembership{team required}
+	TeamMembership{securityPolicies} to SecurityPolicy{teamMember}
     Tenant{securityPolicies} to SecurityPolicy{tenant}
-    Activity to TeamMember
 }
 
 

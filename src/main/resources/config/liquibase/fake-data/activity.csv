@@ -1,11 +1,11 @@
-id;year;term;start_date;end_date;description;discount;stw_activity
-1;77366;WINTER_TERM;2020-01-12T09:56:14;2020-01-12T13:31:04;scale enterprise solid state;false;false
-2;74947;SUMMER_TERM;2020-01-12T03:40:19;2020-01-11T23:55:42;Tasty Cotton Soap;true;true
-3;55746;WINTER_TERM;2020-01-12T12:08:27;2020-01-12T08:28:00;Malawi;false;true
-4;72582;SUMMER_TERM;2020-01-12T18:00:33;2020-01-12T18:20:36;orchestration;false;true
-5;2604;WINTER_TERM;2020-01-12T17:54:53;2020-01-12T08:20:38;Sleek Extended;false;false
-6;9526;SUMMER_TERM;2020-01-12T15:20:48;2020-01-11T19:12:13;Handcrafted Rubber Towels Sleek Cotton Chicken;false;false
-7;35247;SUMMER_TERM;2020-01-11T18:38:22;2020-01-12T13:23:46;navigate;true;false
-8;31220;WINTER_TERM;2020-01-11T19:13:27;2020-01-12T02:23:35;Small;true;false
-9;73502;SUMMER_TERM;2020-01-12T10:41:05;2020-01-12T08:26:35;content-based override;false;true
-10;98959;SUMMER_TERM;2020-01-12T12:51:06;2020-01-12T13:11:54;Home Loan Account silver Security;true;false
+id;year;term;start;end;description;discount;stw_activity
+1;77366;WINTER_TERM;2020-01-12;2020-01-12;scale enterprise solid state;false;false
+2;74947;SUMMER_TERM;2020-01-12;2020-01-11;Tasty Cotton Soap;true;true
+3;55746;WINTER_TERM;2020-01-12;2020-01-12;Malawi;false;true
+4;72582;SUMMER_TERM;2020-01-12;2020-01-12;orchestration;false;true
+5;2604;WINTER_TERM;2020-01-12;2020-01-12;Sleek Extended;false;false
+6;9526;SUMMER_TERM;2020-01-12;2020-01-11;Handcrafted Rubber Towels Sleek Cotton Chicken;false;false
+7;35247;SUMMER_TERM;2020-01-11;2020-01-12;navigate;true;false
+8;31220;WINTER_TERM;2020-01-11;2020-01-12;Small;true;false
+9;73502;SUMMER_TERM;2020-01-12;2020-01-12;content-based override;false;true
+10;98959;SUMMER_TERM;2020-01-12;2020-01-12;Home Loan Account silver Security;true;false

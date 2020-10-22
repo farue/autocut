@@ -48,7 +48,7 @@
                     <label class="form-control-label" jhiTranslate="autocutApp.securityPolicy.teamMember" for="field_teamMember">Team Member</label>
                     <select class="form-control" id="field_teamMember" name="teamMember" formControlName="teamMember">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="teamMemberOption.id === editForm.get('teamMember')!.value?.id ? editForm.get('teamMember')!.value : teamMemberOption" *ngFor="let teamMemberOption of teammembers; trackBy: trackById">{{ teamMemberOption.id }}</option>
+                        <option [ngValue]="teamMembershipOption.id === editForm.get('teamMember')!.value?.id ? editForm.get('teamMember')!.value : teamMembershipOption" *ngFor="let teamMembershipOption of teammemberships; trackBy: trackById">{{ teamMembershipOption.id }}</option>
                     </select>
                 </div>
 

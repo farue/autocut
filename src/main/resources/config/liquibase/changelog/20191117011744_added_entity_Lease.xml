@@ -19,10 +19,10 @@
             <column name="nr" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="start" type="datetime">
+            <column name="start" type="date">
                 <constraints nullable="false" />
             </column>
-            <column name="end" type="datetime">
+            <column name="end" type="date">
                 <constraints nullable="false" />
             </column>
             <column name="blocked" type="boolean">
@@ -39,8 +39,6 @@
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
-        <dropDefaultValue tableName="lease" columnName="start" columnDataType="datetime"/>
-        <dropDefaultValue tableName="lease" columnName="end" columnDataType="datetime"/>
     </changeSet>
 
     <changeSet id="20191117011744-1-relations" author="jhipster">
@@ -74,8 +72,8 @@
                   tableName="lease">
             <column name="id" type="numeric"/>
             <column name="nr" type="string"/>
-            <column name="start" type="datetime"/>
-            <column name="end" type="datetime"/>
+            <column name="start" type="date"/>
+            <column name="end" type="date"/>
             <column name="blocked" type="boolean"/>
             <column name="picture_contract" type="blob"/>
             <column name="picture_contract_content_type" type="string"/>

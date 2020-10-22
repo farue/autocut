@@ -4,8 +4,6 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import * as moment from 'moment';
-import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 
 import { ILease, Lease } from 'app/shared/model/lease.model';
@@ -26,6 +24,8 @@ export class LeaseUpdateComponent implements OnInit {
   isSaving = false;
   transactionbooks: ITransactionBook[] = [];
   apartments: IApartment[] = [];
+  startDp: any;
+  endDp: any;
 
   editForm = this.fb.group({
     id: [],
@@ -52,12 +52,6 @@ export class LeaseUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ lease }) => {
-      if (!lease.id) {
-        const today = moment().startOf('day');
-        lease.start = today;
-        lease.end = today;
-      }
-
       this.updateForm(lease);
 
       this.transactionBookService.query().subscribe((res: HttpResponse<ITransactionBook[]>) => (this.transactionbooks = res.body || []));
@@ -70,8 +64,8 @@ export class LeaseUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: lease.id,
       nr: lease.nr,
-      start: lease.start ? lease.start.format(DATE_TIME_FORMAT) : null,
-      end: lease.end ? lease.end.format(DATE_TIME_FORMAT) : null,
+      start: lease.start,
+      end: lease.end,
       blocked: lease.blocked,
       pictureContract: lease.pictureContract,
       pictureContractContentType: lease.pictureContractContentType,
@@ -125,8 +119,8 @@ export class LeaseUpdateComponent implements OnInit {
       ...new Lease(),
       id: this.editForm.get(['id'])!.value,
       nr: this.editForm.get(['nr'])!.value,
-      start: this.editForm.get(['start'])!.value ? moment(this.editForm.get(['start'])!.value, DATE_TIME_FORMAT) : undefined,
-      end: this.editForm.get(['end'])!.value ? moment(this.editForm.get(['end'])!.value, DATE_TIME_FORMAT) : undefined,
+      start: this.editForm.get(['start'])!.value,
+      end: this.editForm.get(['end'])!.value,
       blocked: this.editForm.get(['blocked'])!.value,
       pictureContractContentType: this.editForm.get(['pictureContractContentType'])!.value,
       pictureContract: this.editForm.get(['pictureContract'])!.value,

@@ -5,19 +5,23 @@
       "fieldName": "protectionUnit",
       "fieldType": "ProtectionUnits",
       "fieldValues": "BANK_TRANSACTIONS,TENANT_MANAGEMENT,INTERNET_ACCESS_MANAGEMENT,TOOLS_MANAGEMENT,WASHING_SYSTEM_MANAGEMENT",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": [
+        "required"
+      ]
     },
     {
       "fieldName": "access",
       "fieldType": "Access",
       "fieldValues": "READ_ALLOW,READ_WRITE_ALLOW,WRITE_DENY,READ_WRITE_DENY",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": [
+        "required"
+      ]
     }
   ],
   "relationships": [
     {
       "relationshipType": "many-to-one",
-      "otherEntityName": "teamMember",
+      "otherEntityName": "teamMembership",
       "otherEntityRelationshipName": "securityPolicies",
       "relationshipName": "teamMember",
       "otherEntityField": "id"
