@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -45,7 +46,7 @@ public class TenantResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/tenants")
-    public ResponseEntity<Tenant> createTenant(@RequestBody Tenant tenant) throws URISyntaxException {
+    public ResponseEntity<Tenant> createTenant(@Valid @RequestBody Tenant tenant) throws URISyntaxException {
         log.debug("REST request to save Tenant : {}", tenant);
         if (tenant.getId() != null) {
             throw new BadRequestAlertException("A new tenant cannot already have an ID", ENTITY_NAME, "idexists");
@@ -66,7 +67,7 @@ public class TenantResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/tenants")
-    public ResponseEntity<Tenant> updateTenant(@RequestBody Tenant tenant) throws URISyntaxException {
+    public ResponseEntity<Tenant> updateTenant(@Valid @RequestBody Tenant tenant) throws URISyntaxException {
         log.debug("REST request to update Tenant : {}", tenant);
         if (tenant.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

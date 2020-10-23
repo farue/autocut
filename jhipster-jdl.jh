@@ -4,6 +4,8 @@
 
 @service(serviceClass)
 entity Tenant {
+    firstName String required
+    lastName String required
 	pictureId ImageBlob
 	verified Boolean
 }

@@ -5,6 +5,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -23,6 +24,14 @@ public class Tenant implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @NotNull
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
     @Lob
     @Column(name = "picture_id")
@@ -53,6 +62,32 @@ public class Tenant implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public Tenant firstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public Tenant lastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public byte[] getPictureId() {
@@ -167,6 +202,8 @@ public class Tenant implements Serializable {
     public String toString() {
         return "Tenant{" +
             "id=" + getId() +
+            ", firstName='" + getFirstName() + "'" +
+            ", lastName='" + getLastName() + "'" +
             ", pictureId='" + getPictureId() + "'" +
             ", pictureIdContentType='" + getPictureIdContentType() + "'" +
             ", verified='" + isVerified() + "'" +

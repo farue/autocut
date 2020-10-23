@@ -16,6 +16,8 @@
       "detail": {
         "title": "Tenant"
       },
+      "firstName": "First Name",
+      "lastName": "Last Name",
       "pictureId": "Picture Id",
       "verified": "Verified",
       "user": "User",

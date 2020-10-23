@@ -4,6 +4,8 @@ import { ILease } from 'app/shared/model/lease.model';
 
 export interface ITenant {
   id?: number;
+  firstName?: string;
+  lastName?: string;
   pictureIdContentType?: string;
   pictureId?: any;
   verified?: boolean;
@@ -15,6 +17,8 @@ export interface ITenant {
 export class Tenant implements ITenant {
   constructor(
     public id?: number,
+    public firstName?: string,
+    public lastName?: string,
     public pictureIdContentType?: string,
     public pictureId?: any,
     public verified?: boolean,

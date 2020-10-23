@@ -27,6 +27,8 @@ export class TenantUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
+    firstName: [null, [Validators.required]],
+    lastName: [null, [Validators.required]],
     pictureId: [],
     pictureIdContentType: [],
     verified: [],
@@ -58,6 +60,8 @@ export class TenantUpdateComponent implements OnInit {
   updateForm(tenant: ITenant): void {
     this.editForm.patchValue({
       id: tenant.id,
+      firstName: tenant.firstName,
+      lastName: tenant.lastName,
       pictureId: tenant.pictureId,
       pictureIdContentType: tenant.pictureIdContentType,
       verified: tenant.verified,
@@ -110,6 +114,8 @@ export class TenantUpdateComponent implements OnInit {
     return {
       ...new Tenant(),
       id: this.editForm.get(['id'])!.value,
+      firstName: this.editForm.get(['firstName'])!.value,
+      lastName: this.editForm.get(['lastName'])!.value,
       pictureIdContentType: this.editForm.get(['pictureIdContentType'])!.value,
       pictureId: this.editForm.get(['pictureId'])!.value,
       verified: this.editForm.get(['verified'])!.value,
