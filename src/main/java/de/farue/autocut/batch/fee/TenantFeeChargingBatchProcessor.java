@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.YearMonth;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -78,13 +77,13 @@ public class TenantFeeChargingBatchProcessor extends AbstractTenantFeeBatchProce
     protected List<BookingTemplate> doProcess(Lease lease, TransactionBook transactionBook) {
         LocalDate firstDateToCharge = findFirstDateToCharge(transactionBook)
             .orElseGet(() -> {
-                LocalDate leaseStart = LocalDate.ofInstant(lease.getStart(), ZoneId.systemDefault());
+                LocalDate leaseStart = lease.getStart();
                 LocalDate systemStart = LocalDate.of(2020, 4, 1);
                 return DateUtil.max(leaseStart, systemStart);
             });
 
         LocalDate currentDateToCharge = chargePeriod.atDay(firstDateToCharge.getDayOfMonth());
-        LocalDate leaseEnd = LocalDate.ofInstant(lease.getEnd(), ZoneId.systemDefault());
+        LocalDate leaseEnd = lease.getEnd();
         LocalDate lastDateToCharge = DateUtil.min(currentDateToCharge, leaseEnd);
 
         if (firstDateToCharge.isAfter(lastDateToCharge)) {

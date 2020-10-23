@@ -17,12 +17,12 @@
       ]
     },
     {
-      "fieldName": "startDate",
-      "fieldType": "Instant"
+      "fieldName": "start",
+      "fieldType": "LocalDate"
     },
     {
-      "fieldName": "endDate",
-      "fieldType": "Instant"
+      "fieldName": "end",
+      "fieldType": "LocalDate"
     },
     {
       "fieldName": "description",
@@ -39,16 +39,17 @@
   ],
   "relationships": [
     {
-      "relationshipType": "one-to-many",
-      "otherEntityName": "teamMember",
-      "otherEntityRelationshipName": "activity",
-      "relationshipName": "teamMember"
-    },
-    {
       "relationshipType": "many-to-one",
       "otherEntityName": "tenant",
       "otherEntityRelationshipName": "activity",
       "relationshipName": "tenant",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "teamMembership",
+      "otherEntityRelationshipName": "activity",
+      "relationshipName": "teamMembership",
       "otherEntityField": "id"
     }
   ],

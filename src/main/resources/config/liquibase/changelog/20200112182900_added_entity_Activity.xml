@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-        <property name="autoIncrement" value="true"/>
+    <property name="autoIncrement" value="true"/>
 
     <!--
         Added the entity Activity.
@@ -61,9 +61,9 @@
     -->
     <changeSet id="20200112182900-1-data" author="jhipster" context="faker">
         <loadData
-                  file="config/liquibase/fake-data/activity.csv"
-                  separator=";"
-                  tableName="activity">
+            file="config/liquibase/fake-data/activity.csv"
+            separator=";"
+            tableName="activity">
             <column name="id" type="numeric"/>
             <column name="year" type="numeric"/>
             <column name="term" type="string"/>

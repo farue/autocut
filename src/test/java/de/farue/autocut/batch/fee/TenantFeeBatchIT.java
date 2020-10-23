@@ -80,8 +80,8 @@ class TenantFeeBatchIT {
     @BeforeEach
     void setUp() {
         Lease lease = new Lease()
-            .start(LocalDate.of(2020, 4, 10).atStartOfDay(ZoneId.systemDefault()).toInstant())
-            .end(LocalDate.of(2020, 9, 30).atStartOfDay(ZoneId.systemDefault()).toInstant())
+            .start(LocalDate.of(2020, 4, 10))
+            .end(LocalDate.of(2020, 9, 30))
             .nr("nr");
         this.lease = leaseService.save(lease);
 
@@ -380,7 +380,7 @@ class TenantFeeBatchIT {
         @Test
         void testLeaseStartAfterChargePeriod() throws Exception {
             Lease lease = leaseService.findOne(TenantFeeBatchIT.this.lease.getId()).get();
-            lease.setStart(LocalDate.of(2020, 7, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+            lease.setStart(LocalDate.of(2020, 7, 1));
             leaseService.save(lease);
 
             batchScheduler.setChargePeriod(CHARGE_PERIOD);
@@ -416,7 +416,7 @@ class TenantFeeBatchIT {
             transactionService.save(chargeMay1);
 
             Lease lease = leaseService.findOne(TenantFeeBatchIT.this.lease.getId()).get();
-            lease.setEnd(LocalDate.of(2020, 6, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+            lease.setEnd(LocalDate.of(2020, 6, 1));
             leaseService.save(lease);
 
             batchScheduler.setChargePeriod(CHARGE_PERIOD);

@@ -21,7 +21,7 @@
   "relationships": [
     {
       "relationshipType": "many-to-one",
-      "otherEntityName": "teamMember",
+      "otherEntityName": "teamMembership",
       "otherEntityRelationshipName": "securityPolicies",
       "relationshipName": "teamMember",
       "otherEntityField": "id"

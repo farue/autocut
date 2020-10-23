@@ -16,13 +16,13 @@
                 <dd>
                     <span jhiTranslate="{{ 'autocutApp.SemesterTerms.' + activity.term }}">{{ activity.term }}</span>
                 </dd>
-                <dt><span jhiTranslate="autocutApp.activity.startDate">Start Date</span></dt>
+                <dt><span jhiTranslate="autocutApp.activity.start">Start</span></dt>
                 <dd>
-                    <span>{{ activity.startDate }}</span>
+                    <span>{{ activity.start }}</span>
                 </dd>
-                <dt><span jhiTranslate="autocutApp.activity.endDate">End Date</span></dt>
+                <dt><span jhiTranslate="autocutApp.activity.end">End</span></dt>
                 <dd>
-                    <span>{{ activity.endDate }}</span>
+                    <span>{{ activity.end }}</span>
                 </dd>
                 <dt><span jhiTranslate="autocutApp.activity.description">Description</span></dt>
                 <dd>
@@ -40,6 +40,12 @@
                 <dd>
                     <div *ngIf="activity.tenant">
                         <a [routerLink]="['/tenant', activity.tenant?.id, 'view']">{{ activity.tenant?.id }}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="autocutApp.activity.teamMembership">Team Membership</span></dt>
+                <dd>
+                    <div *ngIf="activity.teamMembership">
+                        <a [routerLink]="['/team-membership', activity.teamMembership?.id, 'view']">{{ activity.teamMembership?.id }}</a>
                     </div>
                 </dd>
             </dl>

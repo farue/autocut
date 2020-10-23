@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 
+import { DATE_FORMAT } from 'app/shared/constants/input.constants';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared/util/request-util';
 import { ILease } from 'app/shared/model/lease.model';
@@ -50,8 +51,8 @@ export class LeaseService {
 
   protected convertDateFromClient(lease: ILease): ILease {
     const copy: ILease = Object.assign({}, lease, {
-      start: lease.start && lease.start.isValid() ? lease.start.toJSON() : undefined,
-      end: lease.end && lease.end.isValid() ? lease.end.toJSON() : undefined,
+      start: lease.start && lease.start.isValid() ? lease.start.format(DATE_FORMAT) : undefined,
+      end: lease.end && lease.end.isValid() ? lease.end.format(DATE_FORMAT) : undefined,
     });
     return copy;
   }

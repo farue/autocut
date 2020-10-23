@@ -1,32 +1,26 @@
 package de.farue.autocut.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import de.farue.autocut.domain.enumeration.TeamRole;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.farue.autocut.domain.enumeration.TeamRole;
+
 /**
- * A TeamMember.
+ * A TeamMembership.
  */
 @Entity
-@Table(name = "team_member")
+@Table(name = "team_membership")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class TeamMember implements Serializable {
+public class TeamMembership implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -38,22 +32,24 @@ public class TeamMember implements Serializable {
     @Column(name = "role")
     private TeamRole role;
 
+    @Column(name = "start")
+    private LocalDate start;
+
+    @Column(name = "end")
+    private LocalDate end;
+
     @OneToMany(mappedBy = "teamMember")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<SecurityPolicy> securityPolicies = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "teamMembers", allowSetters = true)
+    @JsonIgnoreProperties(value = "teamMemberships", allowSetters = true)
     private Tenant tenant;
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = "members", allowSetters = true)
+    @JsonIgnoreProperties(value = "teamMemberships", allowSetters = true)
     private Team team;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = "teamMembers", allowSetters = true)
-    private Activity activity;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -68,7 +64,7 @@ public class TeamMember implements Serializable {
         return role;
     }
 
-    public TeamMember role(TeamRole role) {
+    public TeamMembership role(TeamRole role) {
         this.role = role;
         return this;
     }
@@ -77,22 +73,48 @@ public class TeamMember implements Serializable {
         this.role = role;
     }
 
+    public LocalDate getStart() {
+        return start;
+    }
+
+    public TeamMembership start(LocalDate start) {
+        this.start = start;
+        return this;
+    }
+
+    public void setStart(LocalDate start) {
+        this.start = start;
+    }
+
+    public LocalDate getEnd() {
+        return end;
+    }
+
+    public TeamMembership end(LocalDate end) {
+        this.end = end;
+        return this;
+    }
+
+    public void setEnd(LocalDate end) {
+        this.end = end;
+    }
+
     public Set<SecurityPolicy> getSecurityPolicies() {
         return securityPolicies;
     }
 
-    public TeamMember securityPolicies(Set<SecurityPolicy> securityPolicies) {
+    public TeamMembership securityPolicies(Set<SecurityPolicy> securityPolicies) {
         this.securityPolicies = securityPolicies;
         return this;
     }
 
-    public TeamMember addSecurityPolicies(SecurityPolicy securityPolicy) {
+    public TeamMembership addSecurityPolicies(SecurityPolicy securityPolicy) {
         this.securityPolicies.add(securityPolicy);
         securityPolicy.setTeamMember(this);
         return this;
     }
 
-    public TeamMember removeSecurityPolicies(SecurityPolicy securityPolicy) {
+    public TeamMembership removeSecurityPolicies(SecurityPolicy securityPolicy) {
         this.securityPolicies.remove(securityPolicy);
         securityPolicy.setTeamMember(null);
         return this;
@@ -106,7 +128,7 @@ public class TeamMember implements Serializable {
         return tenant;
     }
 
-    public TeamMember tenant(Tenant tenant) {
+    public TeamMembership tenant(Tenant tenant) {
         this.tenant = tenant;
         return this;
     }
@@ -119,26 +141,13 @@ public class TeamMember implements Serializable {
         return team;
     }
 
-    public TeamMember team(Team team) {
+    public TeamMembership team(Team team) {
         this.team = team;
         return this;
     }
 
     public void setTeam(Team team) {
         this.team = team;
-    }
-
-    public Activity getActivity() {
-        return activity;
-    }
-
-    public TeamMember activity(Activity activity) {
-        this.activity = activity;
-        return this;
-    }
-
-    public void setActivity(Activity activity) {
-        this.activity = activity;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -147,10 +156,10 @@ public class TeamMember implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof TeamMember)) {
+        if (!(o instanceof TeamMembership)) {
             return false;
         }
-        return id != null && id.equals(((TeamMember) o).id);
+        return id != null && id.equals(((TeamMembership) o).id);
     }
 
     @Override
@@ -161,9 +170,11 @@ public class TeamMember implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "TeamMember{" +
+        return "TeamMembership{" +
             "id=" + getId() +
             ", role='" + getRole() + "'" +
+            ", start='" + getStart() + "'" +
+            ", end='" + getEnd() + "'" +
             "}";
     }
 }

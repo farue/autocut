@@ -4,7 +4,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
 
-        <property name="autoIncrement" value="true"/>
+    <property name="autoIncrement" value="true"/>
 
     <!--
         Added the entity Lease.
@@ -56,9 +56,9 @@
     -->
     <changeSet id="20191117011744-1-data" author="jhipster" context="faker">
         <loadData
-                  file="config/liquibase/fake-data/lease.csv"
-                  separator=";"
-                  tableName="lease">
+            file="config/liquibase/fake-data/lease.csv"
+            separator=";"
+            tableName="lease">
             <column name="id" type="numeric"/>
             <column name="nr" type="string"/>
             <column name="start" type="datetime"/>

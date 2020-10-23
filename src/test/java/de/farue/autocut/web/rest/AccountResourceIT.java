@@ -10,7 +10,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.HashSet;
@@ -53,8 +52,8 @@ import de.farue.autocut.web.rest.vm.ManagedUserVM;
 public class AccountResourceIT {
 
     private static final String APARTMENT_NUMBER = "30-41";
-    private static final Instant LEASE_START = LocalDate.of(2020, 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant();
-    private static final Instant LEASE_END = LocalDate.of(2020, 12, 31).atStartOfDay(ZoneId.systemDefault()).toInstant();
+    private static final LocalDate LEASE_START = LocalDate.of(2020, 1, 1);
+    private static final LocalDate LEASE_END = LocalDate.of(2020, 12, 31);
     private static final String USER_LOGIN = "bob";
     private static final String EMAIL = "test@abc.com";
     static final String TEST_USER_LOGIN = "test";
@@ -152,8 +151,8 @@ public class AccountResourceIT {
         validUser.setImageUrl("http://placehold.it/50x50");
         validUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         validUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
-        validUser.setStart(Instant.now().minus(1, ChronoUnit.DAYS));
-        validUser.setEnd(Instant.now().plus(10, ChronoUnit.DAYS));
+        validUser.setStart(LocalDate.now().minus(1, ChronoUnit.DAYS));
+        validUser.setEnd(LocalDate.now().plus(10, ChronoUnit.DAYS));
         assertThat(userRepository.findOneByLogin("test-register-valid").isPresent()).isFalse();
 
         restAccountMockMvc.perform(
@@ -275,8 +274,8 @@ public class AccountResourceIT {
         firstUser.setImageUrl("http://placehold.it/50x50");
         firstUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         firstUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
-        firstUser.setStart(Instant.now().minus(1, ChronoUnit.DAYS));
-        firstUser.setEnd(Instant.now().plus(10, ChronoUnit.DAYS));
+        firstUser.setStart(LocalDate.now().minus(1, ChronoUnit.DAYS));
+        firstUser.setEnd(LocalDate.now().plus(10, ChronoUnit.DAYS));
 
         // Duplicate login, different email
         ManagedUserVM secondUser = new ManagedUserVM();
@@ -340,8 +339,8 @@ public class AccountResourceIT {
         firstUser.setImageUrl("http://placehold.it/50x50");
         firstUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         firstUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
-        firstUser.setStart(Instant.now().minus(1, ChronoUnit.DAYS));
-        firstUser.setEnd(Instant.now().plus(10, ChronoUnit.DAYS));
+        firstUser.setStart(LocalDate.now().minus(1, ChronoUnit.DAYS));
+        firstUser.setEnd(LocalDate.now().plus(10, ChronoUnit.DAYS));
 
         // Register first user
         restAccountMockMvc.perform(
@@ -427,8 +426,8 @@ public class AccountResourceIT {
         validUser.setImageUrl("http://placehold.it/50x50");
         validUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         validUser.setAuthorities(Collections.singleton(AuthoritiesConstants.ADMIN));
-        validUser.setStart(Instant.now().minus(1, ChronoUnit.DAYS));
-        validUser.setEnd(Instant.now().plus(10, ChronoUnit.DAYS));
+        validUser.setStart(LocalDate.now().minus(1, ChronoUnit.DAYS));
+        validUser.setEnd(LocalDate.now().plus(10, ChronoUnit.DAYS));
 
         restAccountMockMvc.perform(
             post("/api/register")
@@ -846,7 +845,7 @@ public class AccountResourceIT {
         Lease lease = tenant.getLease();
         assertThat(lease.getNr()).isEqualTo(APARTMENT_NUMBER);
         assertThat(lease.getStart()).isEqualTo(LEASE_START);
-        assertThat(lease.getEnd()).isEqualTo(LEASE_END);
+        assertThat(lease.getEnd()).isEqualTo(LEASE_END.plus(1, ChronoUnit.DAYS));
     }
 
     @Test

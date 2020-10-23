@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 
+import { DATE_FORMAT } from 'app/shared/constants/input.constants';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared/util/request-util';
 import { IActivity } from 'app/shared/model/activity.model';
@@ -50,16 +51,16 @@ export class ActivityService {
 
   protected convertDateFromClient(activity: IActivity): IActivity {
     const copy: IActivity = Object.assign({}, activity, {
-      startDate: activity.startDate && activity.startDate.isValid() ? activity.startDate.toJSON() : undefined,
-      endDate: activity.endDate && activity.endDate.isValid() ? activity.endDate.toJSON() : undefined,
+      start: activity.start && activity.start.isValid() ? activity.start.format(DATE_FORMAT) : undefined,
+      end: activity.end && activity.end.isValid() ? activity.end.format(DATE_FORMAT) : undefined,
     });
     return copy;
   }
 
   protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
     if (res.body) {
-      res.body.startDate = res.body.startDate ? moment(res.body.startDate) : undefined;
-      res.body.endDate = res.body.endDate ? moment(res.body.endDate) : undefined;
+      res.body.start = res.body.start ? moment(res.body.start) : undefined;
+      res.body.end = res.body.end ? moment(res.body.end) : undefined;
     }
     return res;
   }
@@ -67,8 +68,8 @@ export class ActivityService {
   protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
     if (res.body) {
       res.body.forEach((activity: IActivity) => {
-        activity.startDate = activity.startDate ? moment(activity.startDate) : undefined;
-        activity.endDate = activity.endDate ? moment(activity.endDate) : undefined;
+        activity.start = activity.start ? moment(activity.start) : undefined;
+        activity.end = activity.end ? moment(activity.end) : undefined;
       });
     }
     return res;

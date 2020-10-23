@@ -18,13 +18,13 @@
       },
       "year": "Year",
       "term": "Term",
-      "startDate": "Start Date",
-      "endDate": "End Date",
+      "start": "Start",
+      "end": "End",
       "description": "Description",
       "discount": "Discount",
       "stwActivity": "Stw Activity",
-      "teamMember": "Team Member",
-      "tenant": "Tenant"
+      "tenant": "Tenant",
+      "teamMembership": "Team Membership"
     }
   }
 }

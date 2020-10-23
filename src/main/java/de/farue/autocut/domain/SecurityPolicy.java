@@ -44,7 +44,7 @@ public class SecurityPolicy implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties(value = "securityPolicies", allowSetters = true)
-    private TeamMember teamMember;
+    private TeamMembership teamMember;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "securityPolicies", allowSetters = true)
@@ -85,17 +85,17 @@ public class SecurityPolicy implements Serializable {
         this.access = access;
     }
 
-    public TeamMember getTeamMember() {
+    public TeamMembership getTeamMember() {
         return teamMember;
     }
 
-    public SecurityPolicy teamMember(TeamMember teamMember) {
-        this.teamMember = teamMember;
+    public SecurityPolicy teamMember(TeamMembership teamMembership) {
+        this.teamMember = teamMembership;
         return this;
     }
 
-    public void setTeamMember(TeamMember teamMember) {
-        this.teamMember = teamMember;
+    public void setTeamMember(TeamMembership teamMembership) {
+        this.teamMember = teamMembership;
     }
 
     public Tenant getTenant() {

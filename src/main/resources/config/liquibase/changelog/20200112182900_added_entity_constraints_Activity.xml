@@ -7,7 +7,7 @@
         Added the constraints for entity Activity.
     -->
     <changeSet id="20200112182900-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="tenant_id"
                                  baseTableName="activity"
                                  constraintName="fk_activity_tenant_id"

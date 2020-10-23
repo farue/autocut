@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async, inject, tick, fakeAsync } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { of, throwError } from 'rxjs';
 import { JhiLanguageService } from 'ng-jhipster';
@@ -56,8 +56,8 @@ describe('Component Tests', () => {
           firstName: '',
           lastName: '',
           apartment: '',
-          start: undefined,
-          end: undefined,
+          start: '',
+          end: '',
           email: '',
           password: 'password',
           login: '',

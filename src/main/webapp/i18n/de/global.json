@@ -39,6 +39,7 @@
         "globalSetting": "Global Setting",
         "networkSwitch": "Switch",
         "transactionBook": "Transaction Book",
+        "teamMembership": "Team Membership",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

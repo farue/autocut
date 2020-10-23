@@ -1,7 +1,7 @@
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import * as moment from 'moment';
-import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
+import { DATE_FORMAT } from 'app/shared/constants/input.constants';
 import { LeaseService } from 'app/entities/lease/lease.service';
 import { ILease, Lease } from 'app/shared/model/lease.model';
 
@@ -31,8 +31,8 @@ describe('Service Tests', () => {
       it('should find an element', () => {
         const returnedFromService = Object.assign(
           {
-            start: currentDate.format(DATE_TIME_FORMAT),
-            end: currentDate.format(DATE_TIME_FORMAT),
+            start: currentDate.format(DATE_FORMAT),
+            end: currentDate.format(DATE_FORMAT),
           },
           elemDefault
         );
@@ -48,8 +48,8 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 0,
-            start: currentDate.format(DATE_TIME_FORMAT),
-            end: currentDate.format(DATE_TIME_FORMAT),
+            start: currentDate.format(DATE_FORMAT),
+            end: currentDate.format(DATE_FORMAT),
           },
           elemDefault
         );
@@ -73,8 +73,8 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             nr: 'BBBBBB',
-            start: currentDate.format(DATE_TIME_FORMAT),
-            end: currentDate.format(DATE_TIME_FORMAT),
+            start: currentDate.format(DATE_FORMAT),
+            end: currentDate.format(DATE_FORMAT),
             blocked: true,
             pictureContract: 'BBBBBB',
           },
@@ -100,8 +100,8 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             nr: 'BBBBBB',
-            start: currentDate.format(DATE_TIME_FORMAT),
-            end: currentDate.format(DATE_TIME_FORMAT),
+            start: currentDate.format(DATE_FORMAT),
+            end: currentDate.format(DATE_FORMAT),
             blocked: true,
             pictureContract: 'BBBBBB',
           },

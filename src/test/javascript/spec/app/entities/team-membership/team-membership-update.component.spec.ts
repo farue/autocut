@@ -1,37 +1,37 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { of } from 'rxjs';
 
 import { AutocutTestModule } from '../../../test.module';
-import { TeamMemberUpdateComponent } from 'app/entities/team-member/team-member-update.component';
-import { TeamMemberService } from 'app/entities/team-member/team-member.service';
-import { TeamMember } from 'app/shared/model/team-member.model';
+import { TeamMembershipUpdateComponent } from 'app/entities/team-membership/team-membership-update.component';
+import { TeamMembershipService } from 'app/entities/team-membership/team-membership.service';
+import { TeamMembership } from 'app/shared/model/team-membership.model';
 
 describe('Component Tests', () => {
-  describe('TeamMember Management Update Component', () => {
-    let comp: TeamMemberUpdateComponent;
-    let fixture: ComponentFixture<TeamMemberUpdateComponent>;
-    let service: TeamMemberService;
+  describe('TeamMembership Management Update Component', () => {
+    let comp: TeamMembershipUpdateComponent;
+    let fixture: ComponentFixture<TeamMembershipUpdateComponent>;
+    let service: TeamMembershipService;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [AutocutTestModule],
-        declarations: [TeamMemberUpdateComponent],
+        declarations: [TeamMembershipUpdateComponent],
         providers: [FormBuilder],
       })
-        .overrideTemplate(TeamMemberUpdateComponent, '')
+        .overrideTemplate(TeamMembershipUpdateComponent, '')
         .compileComponents();
 
-      fixture = TestBed.createComponent(TeamMemberUpdateComponent);
+      fixture = TestBed.createComponent(TeamMembershipUpdateComponent);
       comp = fixture.componentInstance;
-      service = fixture.debugElement.injector.get(TeamMemberService);
+      service = fixture.debugElement.injector.get(TeamMembershipService);
     });
 
     describe('save', () => {
       it('Should call update service on save for existing entity', fakeAsync(() => {
         // GIVEN
-        const entity = new TeamMember(123);
+        const entity = new TeamMembership(123);
         spyOn(service, 'update').and.returnValue(of(new HttpResponse({ body: entity })));
         comp.updateForm(entity);
         // WHEN
@@ -45,7 +45,7 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', fakeAsync(() => {
         // GIVEN
-        const entity = new TeamMember();
+        const entity = new TeamMembership();
         spyOn(service, 'create').and.returnValue(of(new HttpResponse({ body: entity })));
         comp.updateForm(entity);
         // WHEN

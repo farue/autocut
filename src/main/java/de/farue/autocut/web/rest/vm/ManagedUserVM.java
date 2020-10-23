@@ -1,6 +1,6 @@
 package de.farue.autocut.web.rest.vm;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.PastOrPresent;
@@ -24,9 +24,9 @@ public class ManagedUserVM extends UserDTO {
     @Pattern(regexp = StwApartmentParser.APARTMENT_REGEX)
     private String apartment;
     @PastOrPresent
-    private Instant start;
+    private LocalDate start;
     @FutureOrPresent
-    private Instant end;
+    private LocalDate end;
 
     public ManagedUserVM() {
         // Empty constructor needed for Jackson.
@@ -48,19 +48,19 @@ public class ManagedUserVM extends UserDTO {
         this.apartment = apartment;
     }
 
-    public Instant getStart() {
+    public LocalDate getStart() {
         return start;
     }
 
-    public void setStart(Instant start) {
+    public void setStart(LocalDate start) {
         this.start = start;
     }
 
-    public Instant getEnd() {
+    public LocalDate getEnd() {
         return end;
     }
 
-    public void setEnd(Instant end) {
+    public void setEnd(LocalDate end) {
         this.end = end;
     }
 

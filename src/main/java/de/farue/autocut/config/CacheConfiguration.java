@@ -54,8 +54,6 @@ public class CacheConfiguration {
             createCache(cm, de.farue.autocut.domain.Tenant.class.getName() + ".securityPolicies");
             createCache(cm, de.farue.autocut.domain.Team.class.getName());
             createCache(cm, de.farue.autocut.domain.Team.class.getName() + ".members");
-            createCache(cm, de.farue.autocut.domain.TeamMember.class.getName());
-            createCache(cm, de.farue.autocut.domain.TeamMember.class.getName() + ".securityPolicies");
             createCache(cm, de.farue.autocut.domain.Lease.class.getName());
             createCache(cm, de.farue.autocut.domain.Lease.class.getName() + ".tenants");
             createCache(cm, de.farue.autocut.domain.Lease.class.getName() + ".transactionBooks");
@@ -80,6 +78,10 @@ public class CacheConfiguration {
             createCache(cm, de.farue.autocut.domain.TransactionBook.class.getName());
             createCache(cm, de.farue.autocut.domain.TransactionBook.class.getName() + ".leases");
             createCache(cm, de.farue.autocut.domain.TransactionBook.class.getName() + ".transactions");
+            createCache(cm, de.farue.autocut.domain.TransactionBook.class.getName() + ".transactions");
+            createCache(cm, de.farue.autocut.domain.Team.class.getName() + ".teamMemberships");
+            createCache(cm, de.farue.autocut.domain.TeamMembership.class.getName());
+            createCache(cm, de.farue.autocut.domain.TeamMembership.class.getName() + ".securityPolicies");
             // jhipster-needle-ehcache-add-entry
         };
     }

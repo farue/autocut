@@ -10,14 +10,14 @@
     },
     {
       "fieldName": "start",
-      "fieldType": "Instant",
+      "fieldType": "LocalDate",
       "fieldValidateRules": [
         "required"
       ]
     },
     {
       "fieldName": "end",
-      "fieldType": "Instant",
+      "fieldType": "LocalDate",
       "fieldValidateRules": [
         "required"
       ]

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+
+    <changeSet id="table-team_membership" author="brunecker">
+        <renameTable oldTableName="team_member" newTableName="team_membership" />
+        <addColumn tableName="team_membership" oldColumnName="start_date" newColumnName="start">
+            <column name="start" type="date" />
+            <column name="end" type="date" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="constraints-team_membership" author="brunecker">
+        <dropForeignKeyConstraint baseTableName="team_membership" constraintName="fk_team_member_tenant_id" />
+        <addForeignKeyConstraint baseColumnNames="tenant_id"
+                                 baseTableName="team_membership"
+                                 constraintName="fk_team_membership_tenant_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tenant"/>
+
+        <dropForeignKeyConstraint baseTableName="team_membership" constraintName="fk_team_member_team_id" />
+        <addForeignKeyConstraint baseColumnNames="team_id"
+                                 baseTableName="team_membership"
+                                 constraintName="fk_team_membership_team_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="team"/>
+    </changeSet>
+
+    <changeSet id="table-activity" author="brunecker">
+        <addColumn tableName="activity">
+            <column name="team_membership_id" type="bigint" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="constraints-activity" author="brunecker">
+        <addForeignKeyConstraint baseColumnNames="team_membership_id"
+                                 baseTableName="activity"
+                                 constraintName="fk_activity_team_membership_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="team_membership"/>
+    </changeSet>
+
+    <!-- migrate activity datetime fields to date -->
+
+    <changeSet id="pre-migrate-activity" author="brunecker">
+        <addColumn tableName="activity">
+            <column name="start" type="date" />
+            <column name="end" type="date" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="migrate-activity" author="brunecker" dbms="mysql">
+        <sql>
+            UPDATE activity SET start = DATE_ADD(CAST(start_date as DATE), INTERVAL 1 DAY);
+            UPDATE activity SET end = DATE_ADD(CAST(end_date as DATE), INTERVAL 1 DAY);
+        </sql>
+    </changeSet>
+
+    <changeSet id="migrate-activity" author="brunecker" dbms="h2">
+        <sql>
+            UPDATE activity SET start = DATEADD(DAY, 1, CAST(start_date as DATE));
+            UPDATE activity SET end = DATEADD(DAY, 1, CAST(end_date as DATE));
+        </sql>
+    </changeSet>
+
+    <changeSet id="post-migrate-activity" author="brunecker">
+        <dropColumn tableName="activity" columnName="start_date" />
+        <dropColumn tableName="activity" columnName="end_date" />
+    </changeSet>
+
+    <!-- migrate lease datetime fields to date -->
+
+    <changeSet id="pre-migrate-lease" author="brunecker">
+        <renameColumn tableName="lease" oldColumnName="start" newColumnName="start_old" columnDataType="datetime" />
+        <renameColumn tableName="lease" oldColumnName="end" newColumnName="end_old" columnDataType="datetime" />
+        <addColumn tableName="lease">
+            <column name="start" type="date" />
+            <column name="end" type="date" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="migrate-lease" author="brunecker" dbms="mysql">
+        <sql>
+            UPDATE lease SET start = DATE_ADD(CAST(start_old as DATE), INTERVAL 1 DAY);
+            UPDATE lease SET end = DATE_ADD(CAST(end_old as DATE), INTERVAL 1 DAY);
+        </sql>
+    </changeSet>
+
+    <changeSet id="migrate-lease" author="brunecker" dbms="h2">
+        <sql>
+            UPDATE lease SET start = DATEADD(DAY, 1, CAST(start_old as DATE));
+            UPDATE lease SET end = DATEADD(DAY, 1, CAST(end_old as DATE));
+        </sql>
+    </changeSet>
+
+    <changeSet id="post-migrate-lease" author="brunecker">
+        <dropColumn tableName="lease" columnName="start_old" />
+        <dropColumn tableName="lease" columnName="end_old" />
+    </changeSet>
+
+</databaseChangeLog>

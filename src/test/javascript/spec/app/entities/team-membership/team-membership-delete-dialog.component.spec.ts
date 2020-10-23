@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
@@ -6,27 +6,27 @@ import { JhiEventManager } from 'ng-jhipster';
 import { AutocutTestModule } from '../../../test.module';
 import { MockEventManager } from '../../../helpers/mock-event-manager.service';
 import { MockActiveModal } from '../../../helpers/mock-active-modal.service';
-import { TeamMemberDeleteDialogComponent } from 'app/entities/team-member/team-member-delete-dialog.component';
-import { TeamMemberService } from 'app/entities/team-member/team-member.service';
+import { TeamMembershipDeleteDialogComponent } from 'app/entities/team-membership/team-membership-delete-dialog.component';
+import { TeamMembershipService } from 'app/entities/team-membership/team-membership.service';
 
 describe('Component Tests', () => {
-  describe('TeamMember Management Delete Component', () => {
-    let comp: TeamMemberDeleteDialogComponent;
-    let fixture: ComponentFixture<TeamMemberDeleteDialogComponent>;
-    let service: TeamMemberService;
+  describe('TeamMembership Management Delete Component', () => {
+    let comp: TeamMembershipDeleteDialogComponent;
+    let fixture: ComponentFixture<TeamMembershipDeleteDialogComponent>;
+    let service: TeamMembershipService;
     let mockEventManager: MockEventManager;
     let mockActiveModal: MockActiveModal;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [AutocutTestModule],
-        declarations: [TeamMemberDeleteDialogComponent],
+        declarations: [TeamMembershipDeleteDialogComponent],
       })
-        .overrideTemplate(TeamMemberDeleteDialogComponent, '')
+        .overrideTemplate(TeamMembershipDeleteDialogComponent, '')
         .compileComponents();
-      fixture = TestBed.createComponent(TeamMemberDeleteDialogComponent);
+      fixture = TestBed.createComponent(TeamMembershipDeleteDialogComponent);
       comp = fixture.componentInstance;
-      service = fixture.debugElement.injector.get(TeamMemberService);
+      service = fixture.debugElement.injector.get(TeamMembershipService);
       mockEventManager = TestBed.get(JhiEventManager);
       mockActiveModal = TestBed.get(NgbActiveModal);
     });

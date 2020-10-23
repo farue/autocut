@@ -2,9 +2,7 @@ package de.farue.autocut.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -23,8 +21,8 @@ import de.farue.autocut.domain.enumeration.SemesterTerms;
 public class ActivityServiceIT {
 
     private static final String ANY_NR = "nr";
-    private static final Instant ANY_START_DATE = LocalDate.of(2010, 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant();
-    private static final Instant ANY_END_DATE = LocalDate.of(2020, 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant();
+    private static final LocalDate ANY_START_DATE = LocalDate.of(2010, 1, 1);
+    private static final LocalDate ANY_END_DATE = LocalDate.of(2020, 1, 1);
     private static final LocalDate DATE_DURING_ACTIVITY = LocalDate.of(2019, 3, 10);
     private static final LocalDate DATE_BEFORE_ACTIVITY = LocalDate.of(2015, 12, 12);
     private static final LocalDate DATE_AFTER_ACTIVITY = LocalDate.of(2019, 4, 1);

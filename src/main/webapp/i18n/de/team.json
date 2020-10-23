@@ -17,7 +17,7 @@
         "title": "AG"
       },
       "name": "Name",
-      "members": "Mitglieder"
+      "teamMembership": "Mitgliedschaft"
     }
   }
 }

@@ -35,7 +35,7 @@ public class Team implements Serializable {
 
     @OneToMany(mappedBy = "team")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<TeamMember> members = new HashSet<>();
+    private Set<TeamMembership> teamMemberships = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -59,29 +59,29 @@ public class Team implements Serializable {
         this.name = name;
     }
 
-    public Set<TeamMember> getMembers() {
-        return members;
+    public Set<TeamMembership> getTeamMemberships() {
+        return teamMemberships;
     }
 
-    public Team members(Set<TeamMember> teamMembers) {
-        this.members = teamMembers;
+    public Team teamMemberships(Set<TeamMembership> teamMemberships) {
+        this.teamMemberships = teamMemberships;
         return this;
     }
 
-    public Team addMembers(TeamMember teamMember) {
-        this.members.add(teamMember);
-        teamMember.setTeam(this);
+    public Team addTeamMembership(TeamMembership teamMembership) {
+        this.teamMemberships.add(teamMembership);
+        teamMembership.setTeam(this);
         return this;
     }
 
-    public Team removeMembers(TeamMember teamMember) {
-        this.members.remove(teamMember);
-        teamMember.setTeam(null);
+    public Team removeTeamMembership(TeamMembership teamMembership) {
+        this.teamMemberships.remove(teamMembership);
+        teamMembership.setTeam(null);
         return this;
     }
 
-    public void setMembers(Set<TeamMember> teamMembers) {
-        this.members = teamMembers;
+    public void setTeamMemberships(Set<TeamMembership> teamMemberships) {
+        this.teamMemberships = teamMemberships;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

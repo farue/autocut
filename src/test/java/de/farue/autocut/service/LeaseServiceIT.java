@@ -3,7 +3,6 @@ package de.farue.autocut.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 
 import javax.persistence.EntityManager;
 
@@ -37,8 +36,8 @@ class LeaseServiceIT {
     @BeforeEach
     void setUp() {
         Lease lease = new Lease()
-            .start(LocalDate.of(2015, 10, 10).atStartOfDay(ZoneId.systemDefault()).toInstant())
-            .end(LocalDate.of(2020, 9, 30).atStartOfDay(ZoneId.systemDefault()).toInstant())
+            .start(LocalDate.of(2015, 10, 10))
+            .end(LocalDate.of(2020, 9, 30))
             .nr("nr");
         this.lease = leaseService.save(lease);
     }

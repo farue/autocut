@@ -6,7 +6,6 @@ import { JhiLanguageService } from 'ng-jhipster';
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/shared/constants/error.constants';
 import { LoginModalService } from 'app/core/login/login-modal.service';
 import { RegisterService } from './register.service';
-import * as moment from 'moment';
 
 @Component({
   selector: 'jhi-register',
@@ -70,12 +69,8 @@ export class RegisterComponent implements AfterViewInit {
       const firstName = this.registerForm.get(['firstName'])!.value;
       const lastName = this.registerForm.get(['lastName'])!.value;
       const apartment = this.registerForm.get(['apartment'])!.value;
-      const start = this.registerForm.get(['start'])!.value ? moment(this.registerForm.get(['start'])!.value).startOf('day') : undefined;
-      const end = this.registerForm.get(['end'])!.value
-        ? moment(this.registerForm.get(['end'])!.value)
-            .startOf('day')
-            .add(1, 'day')
-        : undefined;
+      const start = this.registerForm.get(['start'])!.value;
+      const end = this.registerForm.get(['end'])!.value;
       const login = this.registerForm.get(['login'])!.value;
       const email = this.registerForm.get(['email'])!.value;
       this.registerService

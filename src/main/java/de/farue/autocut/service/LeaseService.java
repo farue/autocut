@@ -2,6 +2,8 @@ package de.farue.autocut.service;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -96,13 +98,13 @@ public class LeaseService {
         leaseRepository.deleteById(id);
     }
 
-    public Lease createNewLease(String apartmentValue, Instant leaseStart, Instant leaseEnd) {
+    public Lease createNewLease(String apartmentValue, LocalDate leaseStart, LocalDate leaseEnd) {
         Apartment apartment = apartmentService.findByStudierendenwerkNumber(apartmentValue)
             .orElseThrow(() -> new ApartmentNotFoundException(apartmentValue));
 
         Lease newLease = new Lease()
             .start(leaseStart)
-            .end(leaseEnd)
+            .end(leaseEnd.plus(1, ChronoUnit.DAYS))
             .apartment(apartment)
             .nr(apartmentValue);
         log.debug("Created new lease: {}", newLease);

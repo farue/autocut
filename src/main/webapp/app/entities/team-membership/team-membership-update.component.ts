@@ -5,63 +5,61 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { ITeamMember, TeamMember } from 'app/shared/model/team-member.model';
-import { TeamMemberService } from './team-member.service';
+import { ITeamMembership, TeamMembership } from 'app/shared/model/team-membership.model';
+import { TeamMembershipService } from './team-membership.service';
 import { ITenant } from 'app/shared/model/tenant.model';
 import { TenantService } from 'app/entities/tenant/tenant.service';
 import { ITeam } from 'app/shared/model/team.model';
 import { TeamService } from 'app/entities/team/team.service';
-import { IActivity } from 'app/shared/model/activity.model';
-import { ActivityService } from 'app/entities/activity/activity.service';
 
-type SelectableEntity = ITenant | ITeam | IActivity;
+type SelectableEntity = ITenant | ITeam;
 
 @Component({
-  selector: 'jhi-team-member-update',
-  templateUrl: './team-member-update.component.html',
+  selector: 'jhi-team-membership-update',
+  templateUrl: './team-membership-update.component.html',
 })
-export class TeamMemberUpdateComponent implements OnInit {
+export class TeamMembershipUpdateComponent implements OnInit {
   isSaving = false;
   tenants: ITenant[] = [];
   teams: ITeam[] = [];
-  activities: IActivity[] = [];
+  startDp: any;
+  endDp: any;
 
   editForm = this.fb.group({
     id: [],
     role: [],
+    start: [],
+    end: [],
     tenant: [],
     team: [null, Validators.required],
-    activity: [],
   });
 
   constructor(
-    protected teamMemberService: TeamMemberService,
+    protected teamMembershipService: TeamMembershipService,
     protected tenantService: TenantService,
     protected teamService: TeamService,
-    protected activityService: ActivityService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ teamMember }) => {
-      this.updateForm(teamMember);
+    this.activatedRoute.data.subscribe(({ teamMembership }) => {
+      this.updateForm(teamMembership);
 
       this.tenantService.query().subscribe((res: HttpResponse<ITenant[]>) => (this.tenants = res.body || []));
 
       this.teamService.query().subscribe((res: HttpResponse<ITeam[]>) => (this.teams = res.body || []));
-
-      this.activityService.query().subscribe((res: HttpResponse<IActivity[]>) => (this.activities = res.body || []));
     });
   }
 
-  updateForm(teamMember: ITeamMember): void {
+  updateForm(teamMembership: ITeamMembership): void {
     this.editForm.patchValue({
-      id: teamMember.id,
-      role: teamMember.role,
-      tenant: teamMember.tenant,
-      team: teamMember.team,
-      activity: teamMember.activity,
+      id: teamMembership.id,
+      role: teamMembership.role,
+      start: teamMembership.start,
+      end: teamMembership.end,
+      tenant: teamMembership.tenant,
+      team: teamMembership.team,
     });
   }
 
@@ -71,26 +69,27 @@ export class TeamMemberUpdateComponent implements OnInit {
 
   save(): void {
     this.isSaving = true;
-    const teamMember = this.createFromForm();
-    if (teamMember.id !== undefined) {
-      this.subscribeToSaveResponse(this.teamMemberService.update(teamMember));
+    const teamMembership = this.createFromForm();
+    if (teamMembership.id !== undefined) {
+      this.subscribeToSaveResponse(this.teamMembershipService.update(teamMembership));
     } else {
-      this.subscribeToSaveResponse(this.teamMemberService.create(teamMember));
+      this.subscribeToSaveResponse(this.teamMembershipService.create(teamMembership));
     }
   }
 
-  private createFromForm(): ITeamMember {
+  private createFromForm(): ITeamMembership {
     return {
-      ...new TeamMember(),
+      ...new TeamMembership(),
       id: this.editForm.get(['id'])!.value,
       role: this.editForm.get(['role'])!.value,
+      start: this.editForm.get(['start'])!.value,
+      end: this.editForm.get(['end'])!.value,
       tenant: this.editForm.get(['tenant'])!.value,
       team: this.editForm.get(['team'])!.value,
-      activity: this.editForm.get(['activity'])!.value,
     };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<ITeamMember>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<ITeamMembership>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
       () => this.onSaveError()
