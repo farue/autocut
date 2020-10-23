@@ -16,6 +16,8 @@
       "detail": {
         "title": "Tenant"
       },
+      "firstName": "Vorname",
+      "lastName": "Nachname",
       "pictureId": "Ausweis Foto",
       "verified": "Verifiziert",
       "user": "User",

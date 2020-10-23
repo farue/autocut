@@ -45,6 +45,8 @@ import de.farue.autocut.service.accounting.TransactionBookService;
 class TenantFeeBatchIT {
 
     private static final YearMonth CHARGE_PERIOD = YearMonth.of(2020, 6);
+    private static final String TENANT_FIRST_NAME = "bob";
+    private static final String TENANT_LAST_NAME = "miller";
 
     @Autowired
     private LeaseService leaseService;
@@ -86,6 +88,8 @@ class TenantFeeBatchIT {
         this.lease = leaseService.save(lease);
 
         Tenant tenant = new Tenant()
+            .firstName(TENANT_FIRST_NAME)
+            .lastName(TENANT_LAST_NAME)
             .lease(lease);
         this.tenant = tenantService.save(tenant);
 

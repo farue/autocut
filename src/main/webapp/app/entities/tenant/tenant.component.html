@@ -21,18 +21,22 @@
     <div class="table-responsive" id="entities" *ngIf="tenants && tenants.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-            <tr>
-                <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-                <th scope="col"><span jhiTranslate="autocutApp.tenant.pictureId">Picture Id</span></th>
-                <th scope="col"><span jhiTranslate="autocutApp.tenant.verified">Verified</span></th>
-                <th scope="col"><span jhiTranslate="autocutApp.tenant.user">User</span></th>
-                <th scope="col"><span jhiTranslate="autocutApp.tenant.lease">Lease</span></th>
-                <th scope="col"></th>
-            </tr>
+                <tr>
+                    <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.tenant.firstName">First Name</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.tenant.lastName">Last Name</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.tenant.pictureId">Picture Id</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.tenant.verified">Verified</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.tenant.user">User</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.tenant.lease">Lease</span></th>
+                    <th scope="col"></th>
+                </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let tenant of tenants ;trackBy: trackId">
                     <td><a [routerLink]="['/tenant', tenant.id, 'view']">{{ tenant.id }}</a></td>
+                    <td>{{ tenant.firstName }}</td>
+                    <td>{{ tenant.lastName }}</td>
                     <td>
                         <a *ngIf="tenant.pictureId" (click)="openFile(tenant.pictureIdContentType, tenant.pictureId)">
                             <img [src]="'data:' + tenant.pictureIdContentType + ';base64,' + tenant.pictureId" style="max-height: 30px;" alt="tenant image"/>

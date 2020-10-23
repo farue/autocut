@@ -2,6 +2,20 @@
   "name": "Tenant",
   "fields": [
     {
+      "fieldName": "firstName",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "lastName",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
       "fieldName": "pictureId",
       "fieldType": "byte[]",
       "fieldTypeBlobContent": "image"

@@ -81,11 +81,13 @@ public class TenantService {
         tenantRepository.deleteById(id);
     }
 
-    public Tenant createNewTenant(User user, Lease lease) {
-        Tenant tenant = new Tenant();
-        tenant.setUser(user);
-        tenant.setVerified(false);
-        tenant.setLease(lease);
+    public Tenant createNewTenant(String firstName, String lastName, User user, Lease lease) {
+        Tenant tenant = new Tenant()
+            .firstName(firstName)
+            .lastName(lastName)
+            .user(user)
+            .verified(false)
+            .lease(lease);
 
         leaseService.save(lease);
         save(tenant);

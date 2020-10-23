@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+
+    <changeSet id="table-tenant" author="brunecker">
+        <addColumn tableName="tenant">
+            <column name="first_name" type="varchar(50)" />
+            <column name="last_name" type="varchar(50)" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="migrate-names" author="brunecker">
+        <sql>
+            UPDATE tenant t SET t.first_name = (SELECT u.first_name FROM jhi_user u WHERE t.user_id = u.id),
+                                t.last_name = (SELECT u.last_name FROM jhi_user u WHERE t.user_id = u.id);
+            UPDATE tenant t SET t.first_name = 'empty'
+                WHERE t.first_name IS NULL;
+            UPDATE tenant t SET t.last_name = 'empty'
+                WHERE t.last_name IS NULL;
+        </sql>
+    </changeSet>
+
+    <changeSet id="tenant-names-not-null" author="brunecker">
+        <addNotNullConstraint tableName="tenant" columnName="first_name" columnDataType="varchar(50)" />
+        <addNotNullConstraint tableName="tenant" columnName="last_name" columnDataType="varchar(50)" />
+    </changeSet>
+
+    <!-- leave first name and last name in jhi_user for now -->
+
+</databaseChangeLog>

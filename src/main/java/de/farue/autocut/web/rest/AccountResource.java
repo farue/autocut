@@ -85,7 +85,7 @@ public class AccountResource {
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
         Lease lease = leaseService.createNewLease(managedUserVM.getApartment(), managedUserVM.getStart(), managedUserVM.getEnd());
-        tenantService.createNewTenant(user, lease);
+        tenantService.createNewTenant(managedUserVM.getFirstName(), managedUserVM.getLastName(), user, lease);
         mailService.sendActivationEmail(user);
     }
 

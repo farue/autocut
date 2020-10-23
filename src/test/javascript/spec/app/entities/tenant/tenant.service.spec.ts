@@ -20,7 +20,7 @@ describe('Service Tests', () => {
       service = injector.get(TenantService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new Tenant(0, 'image/png', 'AAAAAAA', false);
+      elemDefault = new Tenant(0, 'AAAAAAA', 'AAAAAAA', 'image/png', 'AAAAAAA', false);
     });
 
     describe('Service methods', () => {
@@ -54,6 +54,8 @@ describe('Service Tests', () => {
       it('should update a Tenant', () => {
         const returnedFromService = Object.assign(
           {
+            firstName: 'BBBBBB',
+            lastName: 'BBBBBB',
             pictureId: 'BBBBBB',
             verified: true,
           },
@@ -72,6 +74,8 @@ describe('Service Tests', () => {
       it('should return a list of Tenant', () => {
         const returnedFromService = Object.assign(
           {
+            firstName: 'BBBBBB',
+            lastName: 'BBBBBB',
             pictureId: 'BBBBBB',
             verified: true,
           },

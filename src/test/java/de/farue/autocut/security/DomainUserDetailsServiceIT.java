@@ -90,6 +90,8 @@ public class DomainUserDetailsServiceIT {
         userRepository.save(userFour);
 
         Tenant tenantNotVerified = new Tenant()
+            .firstName("tenantOne")
+            .lastName("notVerified")
             .user(userFour)
             .verified(false);
         tenantRepository.save(tenantNotVerified);
@@ -105,6 +107,8 @@ public class DomainUserDetailsServiceIT {
         userRepository.save(userFive);
 
         Tenant tenantVerified = new Tenant()
+            .firstName("tenantTwo")
+            .lastName("verified")
             .user(userFive)
             .verified(true);
         tenantRepository.save(tenantVerified);

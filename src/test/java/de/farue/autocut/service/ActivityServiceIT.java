@@ -26,6 +26,10 @@ public class ActivityServiceIT {
     private static final LocalDate DATE_DURING_ACTIVITY = LocalDate.of(2019, 3, 10);
     private static final LocalDate DATE_BEFORE_ACTIVITY = LocalDate.of(2015, 12, 12);
     private static final LocalDate DATE_AFTER_ACTIVITY = LocalDate.of(2019, 4, 1);
+    private static final String TENANT1_FIRST_NAME = "bob";
+    private static final String TENANT1_LAST_NAME = "miller";
+    private static final String TENANT2_FIRST_NAME = "celine";
+    private static final String TENANT2_LAST_NAME = "doe";
 
     @Autowired
     private LeaseService leaseService;
@@ -45,9 +49,13 @@ public class ActivityServiceIT {
 
         @BeforeEach
         void setUp() {
-            Tenant tenant1 = new Tenant();
+            Tenant tenant1 = new Tenant()
+                .firstName(TENANT1_FIRST_NAME)
+                .lastName(TENANT1_LAST_NAME);
 
-            Tenant tenant2 = new Tenant();
+            Tenant tenant2 = new Tenant()
+                .firstName(TENANT2_FIRST_NAME)
+                .lastName(TENANT2_LAST_NAME);
 
             Lease lease = new Lease()
                 .nr(ANY_NR)
@@ -98,7 +106,9 @@ public class ActivityServiceIT {
             @Test
             @Transactional
             void activityOfUnrelatedTenants() {
-                Tenant unrelatedTenant = new Tenant();
+                Tenant unrelatedTenant = new Tenant()
+                    .firstName(TENANT1_FIRST_NAME)
+                    .lastName(TENANT1_LAST_NAME);
                 Lease unrelatedLease = new Lease()
                     .nr("other nr")
                     .start(ANY_START_DATE)
