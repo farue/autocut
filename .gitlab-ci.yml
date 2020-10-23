@@ -124,7 +124,7 @@ frontend-test:
   dependencies:
     - frontend-compile
 
-sonar-analyze:
+.sonar-analyze:
   stage: analyze
   except:
     - merge_requests
