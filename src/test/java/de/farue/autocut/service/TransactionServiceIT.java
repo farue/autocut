@@ -62,21 +62,40 @@ public class TransactionServiceIT {
                     .value(new BigDecimal("100"))
                     .balanceAfter(new BigDecimal("100"))
                     .issuer(ANY_ISSUER);
-
                 transactionService.save(transactionInPast);
 
-                Transaction transactionInFuture = new Transaction()
+                Transaction transactionInThreeDays = new Transaction()
+                    .transactionBook(transactionBook)
+                    .kind(TransactionKind.FEE)
+                    .bookingDate(todayPlusDays(3))
+                    .valueDate(todayPlusDays(3))
+                    .value(new BigDecimal("-8.20"))
+                    .balanceAfter(new BigDecimal("91.8"))
+                    .issuer(ANY_ISSUER);
+                transactionService.save(transactionInThreeDays);
+
+                Transaction transactionInTwoDays1 = new Transaction()
                     .transactionBook(transactionBook)
                     .kind(TransactionKind.FEE)
                     .bookingDate(todayPlusDays(2))
                     .valueDate(todayPlusDays(2))
-                    .value(new BigDecimal("-8.20"))
-                    .balanceAfter(new BigDecimal("91.8"))
+                    .value(new BigDecimal("-1"))
+                    .balanceAfter(new BigDecimal("99"))
                     .issuer(ANY_ISSUER);
+                transactionService.save(transactionInTwoDays1);
 
-                transactionService.save(transactionInFuture);
+                // Transaction with exactly the same booking and value date
+                Transaction transactionInTwoDays2 = new Transaction()
+                    .transactionBook(transactionBook)
+                    .kind(TransactionKind.CREDIT)
+                    .bookingDate(transactionInTwoDays1.getBookingDate())
+                    .valueDate(transactionInTwoDays1.getValueDate())
+                    .value(new BigDecimal("2.50"))
+                    .balanceAfter(new BigDecimal("101.5"))
+                    .issuer(ANY_ISSUER);
+                transactionService.save(transactionInTwoDays2);
 
-                Transaction transactionInBetween = new Transaction()
+                Transaction transactionToday = new Transaction()
                     .transactionBook(transactionBook)
                     .kind(TransactionKind.FEE)
                     .bookingDate(todayPlusDays(0))
@@ -84,19 +103,22 @@ public class TransactionServiceIT {
                     .value(new BigDecimal("-12.55"))
                     .balanceAfter(new BigDecimal("87.45"))
                     .issuer(ANY_ISSUER);
-
-                transactionService.save(transactionInBetween);
+                transactionService.save(transactionToday);
 
                 // Transactions in reverse chronological order
                 List<Transaction> transactions = transactionService
-                    .findAllForTransactionBook(transactionBook, PageRequest.of(0, 3, Sort.by(Order.desc(Transaction_.VALUE_DATE), Order.desc(Transaction_.ID))))
+                    .findAllForTransactionBook(transactionBook, PageRequest.of(0, 5, Sort.by(Order.desc(Transaction_.VALUE_DATE), Order.desc(Transaction_.ID))))
                     .getContent();
-                transactionInFuture = transactions.get(0);
-                transactionInBetween = transactions.get(1);
-                transactionInPast = transactions.get(2);
+                transactionInThreeDays = transactions.get(0);
+                transactionInTwoDays2 = transactions.get(1);
+                transactionInTwoDays1 = transactions.get(2);
+                transactionToday = transactions.get(3);
+                transactionInPast = transactions.get(4);
                 assertThat(transactionInPast.getBalanceAfter()).isEqualByComparingTo("100");
-                assertThat(transactionInBetween.getBalanceAfter()).isEqualByComparingTo("87.45");
-                assertThat(transactionInFuture.getBalanceAfter()).isEqualByComparingTo("79.25");
+                assertThat(transactionToday.getBalanceAfter()).isEqualByComparingTo("87.45");
+                assertThat(transactionInTwoDays1.getBalanceAfter()).isEqualByComparingTo("86.45");
+                assertThat(transactionInTwoDays2.getBalanceAfter()).isEqualByComparingTo("88.95");
+                assertThat(transactionInThreeDays.getBalanceAfter()).isEqualByComparingTo("80.75");
             }
         }
     }

@@ -36,7 +36,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     Page<Transaction> findAllByTransactionBook(TransactionBook transactionBook, Pageable pageable);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("select t from Transaction t where t.transactionBook = :transactionBook and (t.valueDate > :date or (t.valueDate = :date and t.id > :id)) order by t.valueDate asc, t.id desc")
+    @Query("select t from Transaction t where t.transactionBook = :transactionBook and (t.valueDate > :date or (t.valueDate = :date and t.id > :id)) order by t.valueDate asc, t.id asc")
     List<Transaction> findAllNewerThanWithLock(TransactionBook transactionBook, Instant date, long id);
 
     @Lock(LockModeType.PESSIMISTIC_READ)
