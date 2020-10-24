@@ -14,6 +14,7 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.RepositoryItemReader;
+import org.springframework.batch.item.support.CompositeItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +25,7 @@ import de.farue.autocut.batch.fee.TenantFeeBatchWriter;
 import de.farue.autocut.batch.fee.TenantFeeChargingBatchProcessor;
 import de.farue.autocut.batch.fee.TenantFeeCorrectingBatchProcessor;
 import de.farue.autocut.batch.fee.TenantFeeServiceQualifierDataMapper;
+import de.farue.autocut.batch.fee.TenantFeeUnverifiedTenantSkippingProcessor;
 import de.farue.autocut.domain.Lease;
 import de.farue.autocut.domain.Lease_;
 import de.farue.autocut.repository.LeaseRepository;
@@ -63,11 +65,12 @@ public class TenantFeeBatchConfiguration {
     }
 
     @Bean
-    public Step chargingFeeStep(ItemReader<Lease> reader, ItemProcessor<Lease, List<BookingTemplate>> chargingProcessor, ItemWriter<List<BookingTemplate>> writer) {
+    public Step chargingFeeStep(ItemReader<Lease> reader, ItemProcessor<Lease, List<BookingTemplate>> compositeChargingProcessor,
+        ItemWriter<List<BookingTemplate>> writer) {
         return stepBuilderFactory.get("chargingFeeStep")
             .<Lease, List<BookingTemplate>>chunk(10)
             .reader(reader)
-            .processor(chargingProcessor)
+            .processor(compositeChargingProcessor)
             .writer(writer)
             .build();
     }
@@ -87,6 +90,21 @@ public class TenantFeeBatchConfiguration {
     public ItemProcessor<Lease, List<BookingTemplate>> correctingProcessor(TransactionRepository transactionRepository, LeaseService leaseService,
         ActivityService activityService, TenantFeeServiceQualifierDataMapper serviceQualifierDataMapper) {
         return new TenantFeeCorrectingBatchProcessor(leaseService, serviceQualifierDataMapper, transactionRepository, activityService);
+    }
+
+    @Bean
+    @StepScope
+    public ItemProcessor<Lease, List<BookingTemplate>> compositeChargingProcessor(ItemProcessor<Lease, Lease> unverifiedTenantSkippingProcessor,
+        ItemProcessor<Lease, List<BookingTemplate>> chargingProcessor) {
+        CompositeItemProcessor<Lease, List<BookingTemplate>> compositeProcessor = new CompositeItemProcessor<>();
+        compositeProcessor.setDelegates(List.of(unverifiedTenantSkippingProcessor, chargingProcessor));
+        return compositeProcessor;
+    }
+
+    @Bean
+    @StepScope
+    public ItemProcessor<Lease, Lease> unverifiedTenantSkippingProcessor() {
+        return new TenantFeeUnverifiedTenantSkippingProcessor();
     }
 
     @Bean

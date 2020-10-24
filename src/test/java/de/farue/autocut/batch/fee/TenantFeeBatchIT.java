@@ -90,7 +90,8 @@ class TenantFeeBatchIT {
         Tenant tenant = new Tenant()
             .firstName(TENANT_FIRST_NAME)
             .lastName(TENANT_LAST_NAME)
-            .lease(lease);
+            .lease(lease)
+            .verified(true);
         this.tenant = tenantService.save(tenant);
 
         this.transactionBook = leaseService.getCashTransactionBook(lease);
@@ -462,6 +463,18 @@ class TenantFeeBatchIT {
             Transaction transactionAfterCharges = transactions.get(5);
             assertThat(transactionAfterCharges.getValue()).isEqualByComparingTo("-7.5");
             assertThat(transactionAfterCharges.getBalanceAfter()).isEqualByComparingTo("32.5");
+        }
+
+        @Test
+        void testTenantNotVerified() throws Exception {
+            Tenant tenant = tenantService.findOne(TenantFeeBatchIT.this.tenant.getId()).get();
+            tenant.setVerified(false);
+            tenantService.save(tenant);
+
+            batchScheduler.setChargePeriod(CHARGE_PERIOD);
+            batchScheduler.launchJob();
+
+            assertThat(transactionBookService.findAllTransactionsForTransactionBook(transactionBook, Pageable.unpaged())).hasSize(2);
         }
     }
 }
