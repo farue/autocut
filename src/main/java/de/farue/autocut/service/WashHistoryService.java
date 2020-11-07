@@ -1,24 +1,29 @@
 package de.farue.autocut.service;
 
-import de.farue.autocut.domain.LaundryMachine;
-import de.farue.autocut.domain.LaundryMachineProgram;
-import de.farue.autocut.domain.Tenant;
-import de.farue.autocut.domain.WashHistory;
-import de.farue.autocut.domain.enumeration.WashHistoryStatus;
-import de.farue.autocut.repository.WashHistoryRepository;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import de.farue.autocut.domain.LaundryMachine;
+import de.farue.autocut.domain.LaundryMachineProgram;
+import de.farue.autocut.domain.Lease;
+import de.farue.autocut.domain.Tenant;
+import de.farue.autocut.domain.WashHistory;
+import de.farue.autocut.domain.enumeration.WashHistoryStatus;
+import de.farue.autocut.repository.WashHistoryRepository;
 
 @Service
+@Transactional
 public class WashHistoryService {
 
     private static final int RESERVATION_TIMESPAN = 15;
@@ -26,14 +31,16 @@ public class WashHistoryService {
     private final Logger log = LoggerFactory.getLogger(WashHistoryService.class);
 
     private final WashHistoryRepository washHistoryRepository;
+    private final LeaseService leaseService;
 
     @Autowired
-    public WashHistoryService(WashHistoryRepository washHistoryRepository) {
+    public WashHistoryService(WashHistoryRepository washHistoryRepository, LeaseService leaseService) {
         this.washHistoryRepository = washHistoryRepository;
+        this.leaseService = leaseService;
     }
 
-    public WashHistory saveAndFlush(WashHistory washHistory) {
-        return washHistoryRepository.saveAndFlush(washHistory);
+    public WashHistory save(WashHistory washHistory) {
+        return washHistoryRepository.save(washHistory);
     }
 
     public Optional<WashHistory> getFirstOpenReservation(Tenant tenant, Instant time) {
@@ -75,7 +82,8 @@ public class WashHistoryService {
     }
 
     private Set<Tenant> getAllTenantsInLease(Tenant tenant) {
-        return tenant.getLease().getTenants();
+        // Load lease again since the supplied tenant might contain a lease without fetched tenants
+        return leaseService.findOne(tenant.getLease().getId()).map(Lease::getTenants).orElse(new HashSet<>());
     }
 
     public void cancelReservationsForMachine(LaundryMachine machine) {

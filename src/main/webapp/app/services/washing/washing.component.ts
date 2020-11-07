@@ -163,7 +163,7 @@ export class WashingComponent implements OnInit {
     if (this.selectedProgram == null) {
       return [];
     }
-    return this.getSubprogramsForProgram(this.selectedProgram);
+    return this.getSubprogramsForProgram(this.selectedProgram).sort();
   }
 
   getSpins(): number[] {
@@ -173,7 +173,9 @@ export class WashingComponent implements OnInit {
     return this.getProgramsFilteredByProgramNameAndSubprogram(this.selectedProgram!, this.selectedSubprogram)
       .map(p => p.spin)
       .filter(WashingComponent.notEmpty)
-      .filter(WashingComponent.onlyUnique);
+      .filter(WashingComponent.onlyUnique)
+      .sort((a, b) => Number(a) - Number(b))
+      .reverse();
   }
 
   update(): void {

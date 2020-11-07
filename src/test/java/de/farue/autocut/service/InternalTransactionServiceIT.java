@@ -187,6 +187,18 @@ public class InternalTransactionServiceIT {
                     .type(TransactionBookType.CASH);
                 transactionBookService.save(transactionBook);
 
+                InternalTransaction initialTransaction = new InternalTransaction()
+                    .bookingDate(todayPlusDays(0))
+                    .valueDate(todayPlusDays(0))
+                    .transactionBook(transactionBook)
+                    .description("Initial transaction")
+                    .issuer("test")
+                    .transactionType(TransactionType.CREDIT)
+                    .recipient("test transaction book")
+                    .value(new BigDecimal("100"))
+                    .balanceAfter(new BigDecimal("100"));
+                transactionService.save(initialTransaction);
+
                 BookingTemplate booking = BookingBuilder.bookingTemplate()
                     .bookingDate(todayPlusDays(0))
                     .valueDate(todayPlusDays(0))
@@ -234,6 +246,18 @@ public class InternalTransactionServiceIT {
                     .type(TransactionBookType.CASH);
                 transactionBookService.save(transactionBook);
 
+                InternalTransaction initialTransaction = new InternalTransaction()
+                    .bookingDate(todayPlusDays(0))
+                    .valueDate(todayPlusDays(0))
+                    .transactionBook(transactionBook)
+                    .description("Initial transaction")
+                    .issuer("test")
+                    .transactionType(TransactionType.CREDIT)
+                    .recipient("test transaction book")
+                    .value(new BigDecimal("100"))
+                    .balanceAfter(new BigDecimal("100"));
+                transactionService.save(initialTransaction);
+
                 BookingTemplate booking = BookingBuilder.bookingTemplate()
                     .bookingDate(todayPlusDays(0))
                     .valueDate(todayPlusDays(0))
@@ -280,6 +304,18 @@ public class InternalTransactionServiceIT {
                 TransactionBook transactionBook = new TransactionBook()
                     .type(TransactionBookType.CASH);
                 transactionBookService.save(transactionBook);
+
+                InternalTransaction initialTransaction = new InternalTransaction()
+                    .bookingDate(todayPlusDays(0))
+                    .valueDate(todayPlusDays(0))
+                    .transactionBook(transactionBook)
+                    .description("Initial transaction")
+                    .issuer("test")
+                    .transactionType(TransactionType.CREDIT)
+                    .recipient("test transaction book")
+                    .value(new BigDecimal("100"))
+                    .balanceAfter(new BigDecimal("100"));
+                transactionService.save(initialTransaction);
 
                 BookingTemplate booking = BookingBuilder.bookingTemplate()
                     .bookingDate(todayPlusDays(0))
@@ -335,9 +371,9 @@ public class InternalTransactionServiceIT {
                         .transactionBook(transactionBook)
                         .description("Test transaction 1")
                         .issuer("test")
-                        .type(TransactionType.FEE)
+                        .type(TransactionType.CORRECTION)
                         .recipient("test transaction book")
-                        .value(new BigDecimal("-10"))
+                        .value(new BigDecimal("10"))
                         .build())
                     .build();
 
@@ -358,9 +394,9 @@ public class InternalTransactionServiceIT {
                 InternalTransaction revenueTransaction = revenueTransactions.get(revenueTransactions.size() - 1);
                 assertThat(revenueTransaction.getDescription()).isNull();
                 assertThat(revenueTransaction.getIssuer()).isEqualTo("TransactionBookService");
-                assertThat(revenueTransaction.getTransactionType()).isEqualTo(TransactionType.CREDIT);
+                assertThat(revenueTransaction.getTransactionType()).isEqualTo(TransactionType.CORRECTION);
                 assertThat(revenueTransaction.getRecipient()).isNull();
-                assertThat(revenueTransaction.getValue()).isEqualByComparingTo("10");
+                assertThat(revenueTransaction.getValue()).isEqualByComparingTo("-10");
 
                 List<InternalTransaction> memberTransactions = transactionService.findAllForTransactionBook(transactionBook, Pageable.unpaged()).getContent();
                 Transaction transaction = memberTransactions.get(memberTransactions.size() - 1);
@@ -378,6 +414,18 @@ public class InternalTransactionServiceIT {
                 TransactionBook transactionBookTarget = new TransactionBook()
                     .type(TransactionBookType.CASH);
                 transactionBookService.save(transactionBookTarget);
+
+                InternalTransaction initialTransaction = new InternalTransaction()
+                    .bookingDate(todayPlusDays(0))
+                    .valueDate(todayPlusDays(0))
+                    .transactionBook(transactionBookOrigin)
+                    .description("Initial transaction")
+                    .issuer("test")
+                    .transactionType(TransactionType.CREDIT)
+                    .recipient("test transaction book")
+                    .value(new BigDecimal("100"))
+                    .balanceAfter(new BigDecimal("100"));
+                transactionService.save(initialTransaction);
 
                 BookingTemplate booking = BookingBuilder.bookingTemplate()
                     .bookingDate(todayPlusDays(0))

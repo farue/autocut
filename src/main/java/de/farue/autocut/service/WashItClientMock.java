@@ -9,9 +9,9 @@ import io.github.jhipster.config.JHipsterConstants;
 
 @Service
 @Profile("!" + JHipsterConstants.SPRING_PROFILE_PRODUCTION)
-public class WashiItClientMock implements WashItClient {
+public class WashItClientMock implements WashItClient {
 
-    private final Logger log = LoggerFactory.getLogger(WashiItClientMock.class);
+    private final Logger log = LoggerFactory.getLogger(WashItClientMock.class);
 
     @Override
     public void activate(Integer id) {

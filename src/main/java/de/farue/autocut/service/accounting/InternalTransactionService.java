@@ -16,6 +16,7 @@ import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.domain.enumeration.TransactionType;
 import de.farue.autocut.repository.InternalTransactionRepository;
 import de.farue.autocut.repository.TransactionRepository;
+import de.farue.autocut.service.InsufficientFundsException;
 import de.farue.autocut.service.TransactionService;
 
 @Service
@@ -67,9 +68,20 @@ public class InternalTransactionService extends TransactionService<InternalTrans
         }
 
         transactions.forEach(this::setBalanceAfter);
+        bookingTransactions.forEach(this::checkBalances);
         transactions.forEach(this::updateBalanceInLaterTransactions);
 
         transactionRepository.saveAll(transactions);
+    }
+
+    private void checkBalances(InternalTransaction transaction) {
+        boolean illegalBalance = switch (transaction.getTransactionType()) {
+            case FEE, DEBIT, PURCHASE, TRANSFER -> compare(transaction.getValue()).isNegative() && compare(transaction.getBalanceAfter()).isNegative();
+            default -> false;
+        };
+        if (illegalBalance) {
+            throw new InsufficientFundsException();
+        }
     }
 
     private void setBalanceAfter(InternalTransaction transaction) {

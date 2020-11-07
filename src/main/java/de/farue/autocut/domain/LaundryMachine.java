@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -52,7 +51,7 @@ public class LaundryMachine implements Serializable {
     @Column(name = "enabled", nullable = false)
     private Boolean enabled;
 
-    @OneToMany(mappedBy = "laundryMachine", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "laundryMachine")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<LaundryMachineProgram> programs = new HashSet<>();
 

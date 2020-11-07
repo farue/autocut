@@ -1,9 +1,19 @@
 package de.farue.autocut.web.rest;
 
-import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.LaundryMachine;
-import de.farue.autocut.domain.enumeration.LaundryMachineType;
-import de.farue.autocut.repository.LaundryMachineRepository;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,18 +24,10 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import de.farue.autocut.AutocutApp;
+import de.farue.autocut.domain.LaundryMachine;
+import de.farue.autocut.domain.enumeration.LaundryMachineType;
+import de.farue.autocut.repository.LaundryMachineRepository;
 /**
  * Integration tests for the {@link LaundryMachineResource} REST controller.
  */
@@ -210,7 +212,7 @@ public class LaundryMachineResourceIT {
         laundryMachineRepository.saveAndFlush(laundryMachine);
 
         // Get all the laundryMachineList
-        restLaundryMachineMockMvc.perform(get("/api/laundry-machines?sort=id,desc"))
+        restLaundryMachineMockMvc.perform(get("/api/laundry-machines?sort=id,desc&enabled=false"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(laundryMachine.getId().intValue())))

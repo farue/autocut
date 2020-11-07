@@ -133,25 +133,39 @@ public class LeaseService {
     }
 
     public TransactionBook getCashTransactionBook(Lease lease) {
-        return lease.getTransactionBooks().stream()
+        if (lease.getId() == null) {
+            throw new IllegalStateException("Lease must be persisted first");
+        }
+
+        Lease loadedLease = leaseRepository.findOneWithEagerRelationships(lease.getId())
+            .orElseThrow(() -> new IllegalArgumentException("Supplied lease does not exist"));
+
+        return loadedLease.getTransactionBooks().stream()
             .filter(book -> book.getType() == TransactionBookType.CASH)
             .findFirst()
             .orElseGet(() -> {
                 TransactionBook newTransactionBook = transactionBookService.save(new TransactionBook().type(TransactionBookType.CASH));
-                lease.addTransactionBook(newTransactionBook);
-                save(lease);
+                loadedLease.addTransactionBook(newTransactionBook);
+                save(loadedLease);
                 return newTransactionBook;
             });
     }
 
     public TransactionBook getDepositTransactionBook(Lease lease) {
-        return lease.getTransactionBooks().stream()
+        if (lease.getId() == null) {
+            throw new IllegalStateException("Lease must be persisted first");
+        }
+
+        Lease loadedLease = leaseRepository.findOneWithEagerRelationships(lease.getId())
+            .orElseThrow(() -> new IllegalArgumentException("Supplied lease does not exist"));
+
+        return loadedLease.getTransactionBooks().stream()
             .filter(book -> book.getType() == TransactionBookType.DEPOSIT)
             .findFirst()
             .orElseGet(() -> {
                 TransactionBook newTransactionBook = transactionBookService.save(new TransactionBook().type(TransactionBookType.DEPOSIT));
-                lease.addTransactionBook(newTransactionBook);
-                save(lease);
+                loadedLease.addTransactionBook(newTransactionBook);
+                save(loadedLease);
                 return newTransactionBook;
             });
     }

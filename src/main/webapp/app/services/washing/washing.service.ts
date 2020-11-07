@@ -7,18 +7,18 @@ import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class WashingService {
-  public resourceUrl = SERVER_API_URL + 'api/washing';
+  public resourceUrl = SERVER_API_URL + 'api/laundry-machines';
 
   constructor(private http: HttpClient) {}
 
   getAllLaundryMachines(): Observable<LaundryMachine[]> {
-    return this.http.get<LaundryMachine[]>(this.resourceUrl + '/laundry-machines');
+    return this.http.get<LaundryMachine[]>(this.resourceUrl);
   }
 
   unlock(laundryMachine: LaundryMachine, laundryMachineProgram: LaundryMachineProgram): Observable<{}> {
     const machineId = laundryMachine.id!;
     const programId = laundryMachineProgram.id!;
     const params = { programId: String(programId) };
-    return this.http.post(`${this.resourceUrl}/laundry-machines/${machineId}/unlock`, {}, { params });
+    return this.http.post(`${this.resourceUrl}/${machineId}/unlock`, {}, { params });
   }
 }
