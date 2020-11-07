@@ -176,7 +176,9 @@ docker-deploy:
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - scp ${SSH_OPTS} ${DOCKER_COMPOSE_APP} gitlab@${SERVER_URL}:${REMOTE_DOCKER_COMPOSE_APP}
-    - ssh ${SSH_OPTS} gitlab@${SERVER_URL} "docker login -u ${CI_DEPLOY_USER} -p ${CI_DEPLOY_PASSWORD} ${CI_REGISTRY}
+    - ssh ${SSH_OPTS} gitlab@${SERVER_URL} "
+      export APPLICATION_BANKING_PASSPORTPASSWORD=${APPLICATION_BANKING_PASSPORTPASSWORD} APPLICATION_BANKING_PIN=${APPLICATION_BANKING_PIN} APPLICATION_BANKING_USER=${APPLICATION_BANKING_USER}
+      && docker login -u ${CI_DEPLOY_USER} -p ${CI_DEPLOY_PASSWORD} ${CI_REGISTRY}
       && cd ~/autocut
       && docker-compose -f autocut.yml pull
       && docker-compose -f autocut.yml up -d"

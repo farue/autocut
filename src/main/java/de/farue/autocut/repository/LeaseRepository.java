@@ -21,14 +21,14 @@ import de.farue.autocut.domain.Tenant;
 @Repository
 public interface LeaseRepository extends JpaRepository<Lease, Long> {
 
-    @Query(value = "select distinct lease from Lease lease left join fetch lease.transactionBooks",
+    @Query(value = "select distinct lease from Lease lease left join fetch lease.transactionBooks left join fetch lease.tenants",
         countQuery = "select count(distinct lease) from Lease lease")
     Page<Lease> findAllWithEagerRelationships(Pageable pageable);
 
-    @Query("select distinct lease from Lease lease left join fetch lease.transactionBooks")
+    @Query("select distinct lease from Lease lease left join fetch lease.transactionBooks left join fetch lease.tenants")
     List<Lease> findAllWithEagerRelationships();
 
-    @Query("select lease from Lease lease left join fetch lease.transactionBooks where lease.id =:id")
+    @Query("select lease from Lease lease left join fetch lease.transactionBooks left join fetch lease.tenants where lease.id =:id")
     Optional<Lease> findOneWithEagerRelationships(@Param("id") Long id);
 
     Optional<Lease> findOneByTenants(Tenant tenant);

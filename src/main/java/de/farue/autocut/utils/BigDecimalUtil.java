@@ -47,6 +47,10 @@ public class BigDecimalUtil {
             return d.compareTo(other) == 0;
         }
 
+        public boolean isNotEqualTo(BigDecimal other) {
+            return !isEqualTo(other);
+        }
+
         public boolean isGreaterThan(BigDecimal other) {
             if (d == null || other == null) {
                 return false;

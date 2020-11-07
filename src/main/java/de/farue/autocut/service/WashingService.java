@@ -20,7 +20,7 @@ import de.farue.autocut.domain.LaundryMachine;
 import de.farue.autocut.domain.LaundryMachineProgram;
 import de.farue.autocut.domain.Tenant;
 import de.farue.autocut.domain.WashHistory;
-import de.farue.autocut.domain.enumeration.TransactionKind;
+import de.farue.autocut.domain.enumeration.TransactionType;
 import de.farue.autocut.domain.enumeration.WashHistoryStatus;
 import de.farue.autocut.repository.LaundryMachineRepository;
 import de.farue.autocut.repository.TenantRepository;
@@ -28,7 +28,7 @@ import de.farue.autocut.repository.UserRepository;
 import de.farue.autocut.security.SecurityUtils;
 import de.farue.autocut.service.accounting.BookingBuilder;
 import de.farue.autocut.service.accounting.BookingTemplate;
-import de.farue.autocut.service.accounting.TransactionBookService;
+import de.farue.autocut.service.accounting.InternalTransactionService;
 import de.farue.autocut.web.rest.errors.LaundryMachineDoesNotExistException;
 
 @Service
@@ -40,8 +40,7 @@ public class WashingService {
 
     private final LeaseService leaseService;
     private final WashHistoryService washHistoryService;
-    private final TransactionService transactionService;
-    private final TransactionBookService transactionBookService;
+    private final InternalTransactionService transactionService;
     private final GlobalSettingService globalSettingService;
 
     private final UserRepository userRepository;
@@ -52,8 +51,8 @@ public class WashingService {
     public WashingService(
         WashItClient washItClient,
         LeaseService leaseService, WashHistoryService washHistoryService,
-        TransactionService transactionService,
-        TransactionBookService transactionBookService, GlobalSettingService globalSettingService,
+        InternalTransactionService transactionService,
+        GlobalSettingService globalSettingService,
         UserRepository userRepository,
         TenantRepository tenantRepository,
         LaundryMachineRepository laundryMachineRepository) {
@@ -61,7 +60,6 @@ public class WashingService {
         this.leaseService = leaseService;
         this.washHistoryService = washHistoryService;
         this.transactionService = transactionService;
-        this.transactionBookService = transactionBookService;
         this.globalSettingService = globalSettingService;
         this.userRepository = userRepository;
         this.tenantRepository = tenantRepository;
@@ -113,7 +111,7 @@ public class WashingService {
             .bookingDate(timestamp)
             .valueDate(timestamp)
             .transactionTemplate(BookingBuilder.transactionTemplate()
-                .kind(TransactionKind.PURCHASE)
+                .type(TransactionType.PURCHASE)
                 .value(value)
                 .transactionBook(leaseService.getCashTransactionBook(tenant.getLease()))
                 .issuer(WashingService.class.getSimpleName())
@@ -121,7 +119,7 @@ public class WashingService {
                 .build())
             .build();
 
-        transactionBookService.saveMemberBooking(bookingTemplate);
+        transactionService.saveWithContraTransaction(bookingTemplate);
         washHistoryService.saveAndFlush(washHistory);
         washItClient.activate(Integer.valueOf(machine.getIdentifier()));
 

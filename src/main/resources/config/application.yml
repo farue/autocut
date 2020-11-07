@@ -65,6 +65,9 @@ spring:
     # Otherwise, it will be filled in by gradle when building the JAR file
     # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
     active: #spring.profiles.active#
+  batch:
+    job:
+      enabled: false
   jmx:
     enabled: false
   data:
@@ -165,3 +168,13 @@ jhipster:
 application:
   washit:
     url: http://137.226.153.3:8080
+  banking:
+    name: Familienwohnheim Rütscher Str.
+    iban: DE14500100600224788602
+    bic: PBNKDEFF
+    blz: 50010060
+    user: # environment variable
+    pin: # environment variable
+    passportPassword: # environment variable
+    tanCode: 920 # TAN code: 911:smsTAN | 920:chipTAN optisch, BestSign | 955:photoTAN
+    tanMedium: SO:Galaxy S10

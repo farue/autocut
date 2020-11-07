@@ -33,10 +33,6 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./internet-access/internet-access.module').then(m => m.AutocutInternetAccessModule),
       },
       {
-        path: 'transaction',
-        loadChildren: () => import('./transaction/transaction.module').then(m => m.AutocutTransactionModule),
-      },
-      {
         path: 'tenant-communication',
         loadChildren: () => import('./tenant-communication/tenant-communication.module').then(m => m.AutocutTenantCommunicationModule),
       },
@@ -76,6 +72,18 @@ import { RouterModule } from '@angular/router';
       {
         path: 'team-membership',
         loadChildren: () => import('./team-membership/team-membership.module').then(m => m.AutocutTeamMembershipModule),
+      },
+      {
+        path: 'bank-account',
+        loadChildren: () => import('./bank-account/bank-account.module').then(m => m.AutocutBankAccountModule),
+      },
+      {
+        path: 'bank-transaction',
+        loadChildren: () => import('./bank-transaction/bank-transaction.module').then(m => m.AutocutBankTransactionModule),
+      },
+      {
+        path: 'internal-transaction',
+        loadChildren: () => import('./internal-transaction/internal-transaction.module').then(m => m.AutocutInternalTransactionModule),
       },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),

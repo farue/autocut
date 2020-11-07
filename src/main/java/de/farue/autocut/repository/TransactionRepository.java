@@ -21,42 +21,43 @@ import de.farue.autocut.domain.TransactionBook;
  * Spring Data  repository for the Transaction entity.
  */
 @Repository
-public interface TransactionRepository extends JpaRepository<Transaction, Long> {
+public interface TransactionRepository<T extends Transaction> extends JpaRepository<T, Long> {
 
     @Lock(LockModeType.PESSIMISTIC_READ)
-    @Query("select t from Transaction t where t.transactionBook = :transactionBook and t.valueDate <= :date order by t.valueDate desc, t.id desc")
-    Page<Transaction> findFirstByTransactionBookBefore(TransactionBook transactionBook, Instant date, Pageable pageable);
+    @Query("select t from #{#entityName} t where t.transactionBook = :transactionBook and t.valueDate <= :date order by t.valueDate desc, t.id desc")
+    Page<T> findFirstByTransactionBookBefore(TransactionBook transactionBook, Instant date, Pageable pageable);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("select t from Transaction t where t.transactionBook = :transactionBook and t.valueDate <= :date order by t.valueDate desc, t.id desc")
-    Page<Transaction> findFirstByTransactionBookBeforeWithLock(TransactionBook transactionBook, Instant date, Pageable pageable);
+    @Query("select t from #{#entityName} t where t.transactionBook = :transactionBook and t.valueDate <= :date order by t.valueDate desc, t.id desc")
+    Page<T> findFirstByTransactionBookBeforeWithLock(TransactionBook transactionBook, Instant date, Pageable pageable);
 
     @Lock(LockModeType.PESSIMISTIC_READ)
-    @Query("select t from Transaction t where t.transactionBook = :transactionBook")
-    Page<Transaction> findAllByTransactionBook(TransactionBook transactionBook, Pageable pageable);
+    @Query("select t from #{#entityName} t where t.transactionBook = :transactionBook")
+    Page<T> findAllByTransactionBook(TransactionBook transactionBook, Pageable pageable);
+
+    @Lock(LockModeType.PESSIMISTIC_READ)
+    @Query(value = "select t from #{#entityName} t left join fetch t.lefts where t.transactionBook = :transactionBook",
+        countQuery = "select count(distinct t) from #{#entityName} t where t.transactionBook = :transactionBook")
+    List<T> findAllByTransactionBookWithEagerRelationships(TransactionBook transactionBook);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("select t from Transaction t where t.transactionBook = :transactionBook and (t.valueDate > :date or (t.valueDate = :date and t.id > :id)) order by t.valueDate asc, t.id asc")
-    List<Transaction> findAllNewerThanWithLock(TransactionBook transactionBook, Instant date, long id);
+    @Query("select t from #{#entityName} t where t.transactionBook = :transactionBook and (t.valueDate > :date or (t.valueDate = :date and t.id > :id))")
+    List<T> findAllNewerThanWithLock(TransactionBook transactionBook, Instant date, long id, Pageable pageable);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("select t from #{#entityName} t where t.transactionBook = :transactionBook and (t.valueDate < :date or (t.valueDate = :date and t.id < :id))")
+    Page<T> findAllOlderThanWithLock(TransactionBook transactionBook, Instant date, long id, Pageable pageable);
 
     @Lock(LockModeType.PESSIMISTIC_READ)
-    @Query(value = "select transaction from Transaction transaction left join fetch transaction.lefts",
-        countQuery = "select count(distinct transaction) from Transaction transaction")
-    Page<Transaction> findAllWithEagerRelationships(Pageable pageable);
+    @Query(value = "select transaction from #{#entityName} transaction left join fetch transaction.lefts",
+        countQuery = "select count(distinct transaction) from #{#entityName} transaction")
+    Page<T> findAllWithEagerRelationships(Pageable pageable);
 
     @Lock(LockModeType.PESSIMISTIC_READ)
-    @Query("select transaction from Transaction transaction left join fetch transaction.lefts")
-    List<Transaction> findAllWithEagerRelationships();
+    @Query("select transaction from #{#entityName} transaction left join fetch transaction.lefts")
+    List<T> findAllWithEagerRelationships();
 
     @Lock(LockModeType.PESSIMISTIC_READ)
-    @Query("select transaction from Transaction transaction left join fetch transaction.lefts where transaction.id =:id")
-    Optional<Transaction> findOneWithEagerRelationships(@Param("id") Long id);
-
-    @Lock(LockModeType.PESSIMISTIC_READ)
-    @Query("select t from Transaction t where t.transactionBook = :transactionBook and t.issuer = :issuer")
-    Page<Transaction> findAllByTransactionBookAndIssuer(TransactionBook transactionBook, String issuer, Pageable pageable);
-
-    @Lock(LockModeType.PESSIMISTIC_READ)
-    @Query("select t from Transaction t where t.transactionBook = :transactionBook and t.issuer = :issuer and t.serviceQulifier = :serviceQualifier")
-    List<Transaction> findAllByTransactionBookAndIssuerAndServiceQulifier(TransactionBook transactionBook, String issuer, String serviceQualifier);
+    @Query("select transaction from #{#entityName} transaction left join fetch transaction.lefts where transaction.id =:id")
+    Optional<T> findOneWithEagerRelationships(@Param("id") Long id);
 }

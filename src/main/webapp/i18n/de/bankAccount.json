@@ -1,0 +1,24 @@
+{
+  "autocutApp": {
+    "bankAccount": {
+      "home": {
+        "title": "Bank Accounts",
+        "createLabel": "Bank Account erstellen",
+        "createOrEditLabel": "Bank Account erstellen oder bearbeiten",
+        "notFound": "No Bank Accounts found"
+      },
+      "created": "Bank Account erstellt mit ID {{ param }}",
+      "updated": "Bank Account aktualisiert mit ID {{ param }}",
+      "deleted": "Bank Account gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Bank Account {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Bank Account"
+      },
+      "name": "Name",
+      "bic": "Bic",
+      "iban": "Iban"
+    }
+  }
+}

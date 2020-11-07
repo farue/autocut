@@ -14,12 +14,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 
+import de.farue.autocut.domain.InternalTransaction;
 import de.farue.autocut.domain.Lease;
-import de.farue.autocut.domain.Transaction;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.domain.Transaction_;
-import de.farue.autocut.domain.enumeration.TransactionKind;
-import de.farue.autocut.repository.TransactionRepository;
+import de.farue.autocut.domain.enumeration.TransactionType;
+import de.farue.autocut.repository.InternalTransactionRepository;
 import de.farue.autocut.service.ActivityService;
 import de.farue.autocut.service.LeaseService;
 import de.farue.autocut.service.accounting.BookingBuilder;
@@ -28,10 +28,10 @@ import de.farue.autocut.utils.DateUtil;
 
 public class TenantFeeChargingBatchProcessor extends AbstractTenantFeeBatchProcessor {
 
-    private TransactionRepository transactionRepository;
+    private InternalTransactionRepository transactionRepository;
     private ActivityService activityService;
 
-    public TenantFeeChargingBatchProcessor(TransactionRepository transactionRepository, LeaseService leaseService, ActivityService activityService,
+    public TenantFeeChargingBatchProcessor(InternalTransactionRepository transactionRepository, LeaseService leaseService, ActivityService activityService,
         TenantFeeServiceQualifierDataMapper serviceQualifierDataMapper) {
         super(leaseService, serviceQualifierDataMapper);
         this.transactionRepository = transactionRepository;
@@ -97,7 +97,7 @@ public class TenantFeeChargingBatchProcessor extends AbstractTenantFeeBatchProce
                     .bookingDate(bookingDate)
                     .valueDate(valueDate)
                     .transactionTemplate(BookingBuilder.transactionTemplate()
-                        .kind(TransactionKind.FEE)
+                        .type(TransactionType.FEE)
                         .transactionBook(transactionBook)
                         .description(createDescription(chargeDate))
                         .issuer(ISSUER)
@@ -115,7 +115,7 @@ public class TenantFeeChargingBatchProcessor extends AbstractTenantFeeBatchProce
             .map(yearMonth -> yearMonth.plusMonths(1));
     }
 
-    private Optional<Transaction> findLastFeeCharge(TransactionBook transactionBook) {
+    private Optional<InternalTransaction> findLastFeeCharge(TransactionBook transactionBook) {
         return transactionRepository
             .findAllByTransactionBookAndIssuer(transactionBook, ISSUER, PageRequest.of(0, 1, Sort.by(Order.desc(Transaction_.SERVICE_QULIFIER)))).stream()
             .findFirst();

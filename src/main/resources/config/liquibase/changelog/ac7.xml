@@ -1,0 +1,228 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+
+    <changeSet id="table-transaction" author="brunecker">
+        <renameColumn tableName="transaction" oldColumnName="kind" newColumnName="type" columnDataType="varchar(255)" />
+    </changeSet>
+
+    <changeSet id="table-bank_account" author="brunecker">
+        <createTable tableName="bank_account">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="bic" type="varchar(11)">
+                <constraints nullable="false" />
+            </column>
+            <column name="iban" type="varchar(34)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_bank_account_iban" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="table-bank_transaction" author="brunecker">
+        <createTable tableName="bank_transaction">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="customer_ref" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="gv_code" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="end_to_end" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="primanota" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="creditor" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="mandate" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="bank_account_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="contra_bank_account_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="bank_transaction"
+                                 baseColumnNames="id"
+                                 constraintName="fk_bank_transaction_id"
+                                 referencedTableName="transaction"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE" />
+
+        <addForeignKeyConstraint baseColumnNames="bank_account_id"
+                                 baseTableName="bank_transaction"
+                                 constraintName="fk_bank_transaction_bank_account_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="bank_account" />
+
+        <addForeignKeyConstraint baseColumnNames="contra_bank_account_id"
+                                 baseTableName="bank_transaction"
+                                 constraintName="fk_bank_transaction_contra_bank_account_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="bank_account" />
+    </changeSet>
+
+    <changeSet id="table-internal_transaction" author="brunecker">
+        <createTable tableName="internal_transaction">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="issuer" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="recipient" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="migrate-transaction-internal_transaction" author="brunecker">
+        <sql>
+            INSERT INTO internal_transaction(id, issuer, recipient) SELECT id, issuer, recipient FROM transaction;
+        </sql>
+        <dropColumn tableName="transaction" columnName="issuer" />
+        <dropColumn tableName="transaction" columnName="recipient" />
+    </changeSet>
+
+    <changeSet id="constraints-internal_transaction" author="brunecker">
+        <addForeignKeyConstraint baseTableName="internal_transaction"
+                                 baseColumnNames="id"
+                                 constraintName="fk_internal_transaction_id"
+                                 referencedTableName="transaction"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE" />
+    </changeSet>
+
+    <changeSet id="rename-transaction_left" author="brunecker">
+        <renameTable oldTableName="transaction_left" newTableName="transaction_link" />
+        <renameColumn tableName="transaction_link" oldColumnName="transaction_id" newColumnName="right_id" columnDataType="bigint" />
+        <dropForeignKeyConstraint baseTableName="transaction_link" constraintName="fk_transaction_left_left_id" />
+        <dropForeignKeyConstraint baseTableName="transaction_link" constraintName="fk_transaction_left_transaction_id" />
+        <addForeignKeyConstraint baseColumnNames="left_id"
+                                 baseTableName="transaction_link"
+                                 constraintName="fk_transaction_link_left_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transaction"/>
+
+        <addForeignKeyConstraint baseColumnNames="right_id"
+                                 baseTableName="transaction_link"
+                                 constraintName="fk_transaction_link_right_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transaction"/>
+    </changeSet>
+
+    <changeSet id="fake-data" author="brunecker" context="faker">
+        <delete tableName="lease_transaction_book" />
+
+        <loadUpdateData
+            file="config/liquibase/fake-data/ac7-user.csv"
+            separator=";"
+            tableName="jhi_user"
+            primaryKey="id">
+            <column name="activated" type="boolean" />
+            <column name="created_date" type="timestamp" />
+        </loadUpdateData>
+
+        <loadData
+            file="config/liquibase/fake-data/ac7-user_authority.csv"
+            separator=";"
+            tableName="jhi_user_authority"
+            primaryKey="id">
+            <column name="activated" type="boolean" />
+            <column name="created_date" type="timestamp" />
+        </loadData>
+
+        <loadUpdateData
+            file="config/liquibase/fake-data/ac7-tenant.csv"
+            separator=";"
+            tableName="tenant"
+            primaryKey="id">
+            <column name="id" type="numeric"/>
+            <column name="user_id" type="numeric"/>
+            <column name="first_name" type="string"/>
+            <column name="last_name" type="string"/>
+        </loadUpdateData>
+
+        <loadUpdateData
+            file="config/liquibase/fake-data/ac7-transaction_book.csv"
+            separator=";"
+            tableName="transaction_book"
+            primaryKey="id">
+            <column name="id" type="numeric" />
+            <column name="name" type="string" />
+            <column name="type" type="string" />
+        </loadUpdateData>
+
+        <loadData
+            file="config/liquibase/fake-data/ac7-lease_transaction_book.csv"
+            separator=";"
+            tableName="lease_transaction_book">
+            <column name="lease_id" type="numeric" />
+            <column name="transaction_book_id" type="numeric" />
+        </loadData>
+
+        <loadUpdateData
+            file="config/liquibase/fake-data/ac7-bank_account.csv"
+            separator=";"
+            tableName="bank_account"
+            primaryKey="id">
+            <column name="id" type="numeric" />
+            <column name="name" type="string" />
+            <column name="bic" type="string" />
+            <column name="iban" type="string" />
+        </loadUpdateData>
+
+        <loadData
+            file="config/liquibase/fake-data/ac7-transaction.csv"
+            separator=";"
+            tableName="transaction">
+            <column name="id" type="numeric" />
+            <column name="type" type="string" />
+            <column name="booking_date" type="datetime" />
+            <column name="value_date" type="datetime" />
+            <column name="value" type="numeric" />
+            <column name="balance_after" type="numeric" />
+            <column name="description" type="string" />
+            <column name="transaction_book_id" type="numeric" />
+        </loadData>
+
+        <loadData
+            file="config/liquibase/fake-data/ac7-bank_transaction.csv"
+            separator=";"
+            tableName="bank_transaction">
+            <column name="id" type="numeric" />
+            <column name="customer_ref" type="string" />
+        </loadData>
+
+        <loadData
+            file="config/liquibase/fake-data/ac7-internal_transaction.csv"
+            separator=";"
+            tableName="internal_transaction">
+            <column name="id" type="numeric" />
+            <column name="issuer" type="string" />
+        </loadData>
+
+        <loadData
+            file="config/liquibase/fake-data/ac7-transaction_link.csv"
+            separator=";"
+            tableName="transaction_link">
+            <column name="right_id" type="numeric" />
+            <column name="left_id" type="numeric" />
+        </loadData>
+    </changeSet>
+
+</databaseChangeLog>

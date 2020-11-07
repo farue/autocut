@@ -52,7 +52,7 @@
             </thead>
             <tbody *ngIf="transactions">
             <tr *ngFor="let transaction of transactions">
-                <td jhiTranslate="{{ 'autocutApp.TransactionKind.' + transaction.kind }}">{{ transaction.kind }}</td>
+                <td jhiTranslate="{{ 'autocutApp.TransactionKind.' + transaction.type }}">{{ transaction.type }}</td>
                 <td>{{ transaction.bookingDate | localizedDate:'short' }}</td>
                 <td>{{ transaction.valueDate | localizedDate:'short' }}</td>
                 <td>{{ transaction.value | money }}</td>

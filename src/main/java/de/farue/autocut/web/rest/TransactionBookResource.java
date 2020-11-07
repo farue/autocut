@@ -26,15 +26,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import de.farue.autocut.domain.InternalTransaction;
 import de.farue.autocut.domain.Lease;
 import de.farue.autocut.domain.Tenant;
-import de.farue.autocut.domain.Transaction;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.repository.UserRepository;
 import de.farue.autocut.security.SecurityUtils;
 import de.farue.autocut.service.LeaseService;
 import de.farue.autocut.service.TenantService;
-import de.farue.autocut.service.TransactionService;
+import de.farue.autocut.service.accounting.InternalTransactionService;
 import de.farue.autocut.service.accounting.TransactionBookService;
 import de.farue.autocut.service.dto.TransactionsOverviewDTO;
 import de.farue.autocut.web.rest.errors.BadRequestAlertException;
@@ -57,14 +57,14 @@ public class TransactionBookResource {
     private String applicationName;
 
     private final TransactionBookService transactionBookService;
-    private final TransactionService transactionService;
+    private final InternalTransactionService transactionService;
 
     private final LeaseService leaseService;
     private final TenantService tenantService;
     private final UserRepository userRepository;
 
 
-    public TransactionBookResource(TransactionBookService transactionBookService, TransactionService transactionService,
+    public TransactionBookResource(TransactionBookService transactionBookService, InternalTransactionService transactionService,
         LeaseService leaseService, TenantService tenantService, UserRepository userRepository) {
         this.transactionBookService = transactionBookService;
         this.transactionService = transactionService;
@@ -160,7 +160,7 @@ public class TransactionBookResource {
             .map(lease -> {
                 TransactionBook cashTransactionBook = leaseService.getCashTransactionBook(lease);
                 TransactionBook depositTransactionBook = leaseService.getDepositTransactionBook(lease);
-                Page<Transaction> page = transactionService.findAllForTransactionBook(cashTransactionBook, pageable);
+                Page<InternalTransaction> page = transactionService.findAllForTransactionBook(cashTransactionBook, pageable);
 
                 TransactionsOverviewDTO dto = new TransactionsOverviewDTO();
                 dto.setTransactions(page.getContent());

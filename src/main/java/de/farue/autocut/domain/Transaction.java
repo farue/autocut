@@ -9,15 +9,16 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -27,15 +28,14 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import de.farue.autocut.domain.enumeration.TransactionKind;
-
 /**
  * A Transaction.
  */
 @Entity
 @Table(name = "transaction")
+@Inheritance(strategy = InheritanceType.JOINED)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Transaction implements Serializable {
+public abstract class Transaction implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -44,9 +44,8 @@ public class Transaction implements Serializable {
     private Long id;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "kind", nullable = false)
-    private TransactionKind kind;
+    @Column(name = "type", nullable = false)
+    private String type;
 
     @NotNull
     @Column(name = "booking_date", nullable = false)
@@ -70,17 +69,10 @@ public class Transaction implements Serializable {
     @Column(name = "service_qulifier")
     private String serviceQulifier;
 
-    @NotNull
-    @Column(name = "issuer", nullable = false)
-    private String issuer;
-
-    @Column(name = "recipient")
-    private String recipient;
-
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JoinTable(name = "transaction_left",
-               joinColumns = @JoinColumn(name = "transaction_id", referencedColumnName = "id"),
+    @JoinTable(name = "transaction_link",
+               joinColumns = @JoinColumn(name = "right_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "left_id", referencedColumnName = "id"))
     @JsonIgnoreProperties({"lefts"})
     private Set<Transaction> lefts = new HashSet<>();
@@ -95,6 +87,18 @@ public class Transaction implements Serializable {
     @JsonIgnore
     private Set<Transaction> rights = new HashSet<>();
 
+    @PreRemove
+    private void removeLinks() {
+        for (Transaction linkedTransaction : lefts) {
+            linkedTransaction.removeLeft(this);
+        }
+        for (Transaction linkedTransaction : rights) {
+            linkedTransaction.removeRight(this);
+        }
+        lefts.clear();
+        rights.clear();
+    }
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
@@ -104,17 +108,17 @@ public class Transaction implements Serializable {
         this.id = id;
     }
 
-    public TransactionKind getKind() {
-        return kind;
+    public String getType() {
+        return type;
     }
 
-    public Transaction kind(TransactionKind kind) {
-        this.kind = kind;
+    public Transaction type(String type) {
+        this.type = type;
         return this;
     }
 
-    public void setKind(TransactionKind kind) {
-        this.kind = kind;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Instant getBookingDate() {
@@ -193,32 +197,6 @@ public class Transaction implements Serializable {
 
     public void setServiceQulifier(String serviceQulifier) {
         this.serviceQulifier = serviceQulifier;
-    }
-
-    public String getIssuer() {
-        return issuer;
-    }
-
-    public Transaction issuer(String issuer) {
-        this.issuer = issuer;
-        return this;
-    }
-
-    public void setIssuer(String issuer) {
-        this.issuer = issuer;
-    }
-
-    public String getRecipient() {
-        return recipient;
-    }
-
-    public Transaction recipient(String recipient) {
-        this.recipient = recipient;
-        return this;
-    }
-
-    public void setRecipient(String recipient) {
-        this.recipient = recipient;
     }
 
     public Set<Transaction> getLefts() {
@@ -311,15 +289,13 @@ public class Transaction implements Serializable {
     public String toString() {
         return "Transaction{" +
             "id=" + getId() +
-            ", kind='" + getKind() + "'" +
+            ", type='" + getType() + "'" +
             ", bookingDate='" + getBookingDate() + "'" +
             ", valueDate='" + getValueDate() + "'" +
             ", value=" + getValue() +
             ", balanceAfter=" + getBalanceAfter() +
             ", description='" + getDescription() + "'" +
             ", serviceQulifier='" + getServiceQulifier() + "'" +
-            ", issuer='" + getIssuer() + "'" +
-            ", recipient='" + getRecipient() + "'" +
             "}";
     }
 }

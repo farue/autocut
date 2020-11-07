@@ -1,0 +1,22 @@
+id;name;type
+1;lease 1;CASH
+2;lease 2;CASH
+3;lease 3;CASH
+4;lease 4;CASH
+5;lease 5;CASH
+6;lease 6;CASH
+7;lease 7;CASH
+8;lease 8;CASH
+9;lease 9;CASH
+10;lease 10;CASH
+# id 11 and 12 taken by FaRue books
+13;lease 1;DEPOSIT
+14;lease 2;DEPOSIT
+15;lease 3;DEPOSIT
+16;lease 4;DEPOSIT
+17;lease 5;DEPOSIT
+18;lease 6;DEPOSIT
+19;lease 7;DEPOSIT
+20;lease 8;DEPOSIT
+21;lease 9;DEPOSIT
+22;lease 10;DEPOSIT

@@ -20,12 +20,13 @@ import org.springframework.data.domain.Sort.Order;
 
 import com.google.common.base.Preconditions;
 
+import de.farue.autocut.domain.InternalTransaction;
 import de.farue.autocut.domain.Lease;
 import de.farue.autocut.domain.Transaction;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.domain.Transaction_;
-import de.farue.autocut.domain.enumeration.TransactionKind;
-import de.farue.autocut.repository.TransactionRepository;
+import de.farue.autocut.domain.enumeration.TransactionType;
+import de.farue.autocut.repository.InternalTransactionRepository;
 import de.farue.autocut.service.ActivityService;
 import de.farue.autocut.service.LeaseService;
 import de.farue.autocut.service.accounting.BookingBuilder;
@@ -33,7 +34,7 @@ import de.farue.autocut.service.accounting.BookingTemplate;
 
 public class TenantFeeCorrectingBatchProcessor extends AbstractTenantFeeBatchProcessor {
 
-    private final TransactionRepository transactionRepository;
+    private final InternalTransactionRepository transactionRepository;
     private final ActivityService activityService;
 
     private Instant bookingDate = Instant.now();
@@ -41,7 +42,7 @@ public class TenantFeeCorrectingBatchProcessor extends AbstractTenantFeeBatchPro
     private Instant valueDateCharge = Instant.now().plus(10, ChronoUnit.DAYS);
 
     public TenantFeeCorrectingBatchProcessor(LeaseService leaseService, TenantFeeServiceQualifierDataMapper serviceQualifierDataMapper,
-        TransactionRepository transactionRepository, ActivityService activityService) {
+        InternalTransactionRepository transactionRepository, ActivityService activityService) {
         super(leaseService, serviceQualifierDataMapper);
         this.transactionRepository = transactionRepository;
         this.activityService = activityService;
@@ -74,14 +75,15 @@ public class TenantFeeCorrectingBatchProcessor extends AbstractTenantFeeBatchPro
     @Override
     protected List<BookingTemplate> doProcess(Lease lease, TransactionBook transactionBook) {
         // TODO: Restrict to current semester
-        Page<Transaction> feeTransactions = transactionRepository.findAllByTransactionBookAndIssuer(transactionBook, TenantFeeChargingBatchProcessor.ISSUER,
-            PageRequest.of(0, Integer.MAX_VALUE, Sort.by(Order.desc(Transaction_.SERVICE_QULIFIER))));
-        Map<LocalDate, List<Transaction>> transactionsByChargePeriod = groupByChargePeriod(feeTransactions);
+        Page<InternalTransaction> feeTransactions = transactionRepository
+            .findAllByTransactionBookAndIssuer(transactionBook, TenantFeeChargingBatchProcessor.ISSUER,
+                PageRequest.of(0, Integer.MAX_VALUE, Sort.by(Order.desc(Transaction_.SERVICE_QULIFIER))));
+        Map<LocalDate, List<InternalTransaction>> transactionsByChargePeriod = groupByChargePeriod(feeTransactions);
 
         List<BookingTemplate> bookingTemplates = new ArrayList<>();
-        for (Entry<LocalDate, List<Transaction>> entry : transactionsByChargePeriod.entrySet()) {
+        for (Entry<LocalDate, List<InternalTransaction>> entry : transactionsByChargePeriod.entrySet()) {
             LocalDate chargeDate = entry.getKey();
-            List<Transaction> chargePeriodTransactions = entry.getValue();
+            List<InternalTransaction> chargePeriodTransactions = entry.getValue();
 
             boolean isEligibleForDiscount = activityService.isEligibleForDiscount(lease, chargeDate);
             BigDecimal chargedFee = sumValues(chargePeriodTransactions);
@@ -95,7 +97,7 @@ public class TenantFeeCorrectingBatchProcessor extends AbstractTenantFeeBatchPro
                     .bookingDate(bookingDate)
                     .valueDate(compare(value).isPositive() ? valueDateCredit : valueDateCharge)
                     .transactionTemplate(BookingBuilder.transactionTemplate()
-                        .kind(TransactionKind.CORRECTION)
+                        .type(TransactionType.CORRECTION)
                         .transactionBook(transactionBook)
                         .description(createDescription(chargeDate))
                         .issuer(TenantFeeChargingBatchProcessor.ISSUER)
@@ -110,12 +112,12 @@ public class TenantFeeCorrectingBatchProcessor extends AbstractTenantFeeBatchPro
         return bookingTemplates.isEmpty() ? null : bookingTemplates;
     }
 
-    private Map<LocalDate, List<Transaction>> groupByChargePeriod(Page<Transaction> transactions) {
+    private Map<LocalDate, List<InternalTransaction>> groupByChargePeriod(Page<InternalTransaction> transactions) {
         return transactions.stream()
             .collect(Collectors.groupingBy(transaction -> serviceQualifierDataMapper.map(transaction.getServiceQulifier()).getChargeDate()));
     }
 
-    private BigDecimal sumValues(Collection<Transaction> transactions) {
+    private BigDecimal sumValues(Collection<InternalTransaction> transactions) {
         return transactions.stream().map(Transaction::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

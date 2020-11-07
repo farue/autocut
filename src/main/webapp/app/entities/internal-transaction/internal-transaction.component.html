@@ -1,0 +1,89 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="autocutApp.internalTransaction.home.title">Internal Transactions</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-internal-transaction" [routerLink]="['/internal-transaction/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span  jhiTranslate="autocutApp.internalTransaction.home.createLabel">
+            Create a new Internal Transaction
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="internalTransactions?.length === 0">
+        <span jhiTranslate="autocutApp.internalTransaction.home.notFound">No internalTransactions found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="internalTransactions && internalTransactions.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr>
+                    <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.internalTransaction.type">Type</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.internalTransaction.bookingDate">Booking Date</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.internalTransaction.valueDate">Value Date</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.internalTransaction.value">Value</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.internalTransaction.balanceAfter">Balance After</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.internalTransaction.description">Description</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.internalTransaction.serviceQulifier">Service Qulifier</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.internalTransaction.issuer">Issuer</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.internalTransaction.recipient">Recipient</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.internalTransaction.left">Left</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.internalTransaction.transactionBook">Transaction Book</span></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let internalTransaction of internalTransactions ;trackBy: trackId">
+                    <td><a [routerLink]="['/internal-transaction', internalTransaction.id, 'view']">{{ internalTransaction.id }}</a></td>
+                    <td>{{ internalTransaction.type }}</td>
+                    <td>{{ internalTransaction.bookingDate | date:'medium' }}</td>
+                    <td>{{ internalTransaction.valueDate | date:'medium' }}</td>
+                    <td>{{ internalTransaction.value }}</td>
+                    <td>{{ internalTransaction.balanceAfter }}</td>
+                    <td>{{ internalTransaction.description }}</td>
+                    <td>{{ internalTransaction.serviceQulifier }}</td>
+                    <td>{{ internalTransaction.issuer }}</td>
+                    <td>{{ internalTransaction.recipient }}</td>
+                    <td>
+                        <span *ngFor="let left of internalTransaction.lefts; let last = last">
+                            <a class="form-control-static" [routerLink]="['/internal-transaction', left?.id, 'view']">{{ left.id }}</a>{{ last ? '' : ', ' }}
+                        </span>
+                    </td>
+                    <td>
+                        <div *ngIf="internalTransaction.transactionBook">
+                            <a [routerLink]="['/transaction-book', internalTransaction.transactionBook?.id, 'view']" >{{ internalTransaction.transactionBook?.id }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/internal-transaction', internalTransaction.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/internal-transaction', internalTransaction.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(internalTransaction)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

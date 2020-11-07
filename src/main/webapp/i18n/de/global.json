@@ -29,7 +29,6 @@
         "address": "Adresse",
         "securityPolicy": "Sicherheitsrichtlinien",
         "internetAccess": "Internetzugang",
-        "transaction": "Überweisung",
         "tenantCommunication": "Mieter Kommunikation",
         "activity": "Aktivität",
         "communication": "Kommunikation",
@@ -40,6 +39,10 @@
         "networkSwitch": "Switch",
         "transactionBook": "Transaction Book",
         "teamMembership": "Team Membership",
+        "transaction": "Transaction",
+        "bankAccount": "Bank Account",
+        "bankTransaction": "Bank Transaction",
+        "internalTransaction": "Internal Transaction",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

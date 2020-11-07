@@ -3,7 +3,7 @@ package de.farue.autocut.service.accounting;
 import java.math.BigDecimal;
 
 import de.farue.autocut.domain.TransactionBook;
-import de.farue.autocut.domain.enumeration.TransactionKind;
+import de.farue.autocut.domain.enumeration.TransactionType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +13,7 @@ import lombok.Setter;
 @Builder
 public class TransactionTemplate {
 
-    private TransactionKind kind;
+    private TransactionType type;
 
     private BigDecimal value;
 

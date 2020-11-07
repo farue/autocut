@@ -1,18 +1,25 @@
 package de.farue.autocut.service;
 
+import static de.farue.autocut.utils.BigDecimalUtil.compare;
+
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import de.farue.autocut.domain.Transaction;
 import de.farue.autocut.domain.TransactionBook;
+import de.farue.autocut.domain.Transaction_;
 import de.farue.autocut.repository.TransactionRepository;
 
 /**
@@ -20,26 +27,35 @@ import de.farue.autocut.repository.TransactionRepository;
  */
 @Service
 @Transactional
-public class TransactionService {
+public abstract class TransactionService<T extends Transaction> {
 
     private final Logger log = LoggerFactory.getLogger(TransactionService.class);
 
-    private final TransactionRepository transactionRepository;
-
-    public TransactionService(TransactionRepository transactionRepository) {
-        this.transactionRepository = transactionRepository;
-    }
-
+    protected abstract TransactionRepository<T> getRepository();
     /**
      * Save a transaction.
      *
      * @param transaction the entity to save.
      * @return the persisted entity.
      */
-    public Transaction save(Transaction transaction) {
+    public T save(T transaction) {
         log.debug("Request to save Transaction : {}", transaction);
-        Transaction savedTransaction = transactionRepository.save(transaction);
-        updateBalanceInLaterTransactions(savedTransaction);
+
+        // set/update balanceAfter
+        BigDecimal previousBalanceAfter = findTransactionImmediatelyBefore(transaction).map(Transaction::getBalanceAfter).orElse(BigDecimal.ZERO);
+        BigDecimal calculatedBalanceAfter = previousBalanceAfter.add(transaction.getValue());
+        if (transaction.getBalanceAfter() != null && compare(transaction.getBalanceAfter()).isNotEqualTo(calculatedBalanceAfter)) {
+            log.debug("Overwriting balanceAfter in transaction. Old value was {}, new calculated value is {}", transaction.getBalanceAfter(), calculatedBalanceAfter);
+        }
+        transaction.setBalanceAfter(calculatedBalanceAfter);
+
+        boolean update = transaction.getId() != null;
+        T savedTransaction = getRepository().save(transaction);
+
+//        BigDecimal initialBalance = update ? findTransactionImmediatelyBefore(transaction).map(Transaction::getBalanceAfter).orElse(BigDecimal.ZERO)
+//            : savedTransaction.getBalanceAfter();
+        BigDecimal initialBalance = savedTransaction.getBalanceAfter();
+        updateBalanceInLaterTransactions(savedTransaction.getTransactionBook(), savedTransaction.getValueDate(), savedTransaction.getId(), initialBalance);
         return savedTransaction;
     }
 
@@ -49,9 +65,9 @@ public class TransactionService {
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public List<Transaction> findAll() {
+    public List<T> findAll() {
         log.debug("Request to get all Transactions");
-        return transactionRepository.findAllWithEagerRelationships();
+        return getRepository().findAllWithEagerRelationships();
     }
 
 
@@ -60,8 +76,8 @@ public class TransactionService {
      *
      * @return the list of entities.
      */
-    public Page<Transaction> findAllWithEagerRelationships(Pageable pageable) {
-        return transactionRepository.findAllWithEagerRelationships(pageable);
+    public Page<T> findAllWithEagerRelationships(Pageable pageable) {
+        return getRepository().findAllWithEagerRelationships(pageable);
     }
 
     /**
@@ -71,9 +87,9 @@ public class TransactionService {
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public Optional<Transaction> findOne(Long id) {
+    public Optional<T> findOne(Long id) {
         log.debug("Request to get Transaction : {}", id);
-        return transactionRepository.findOneWithEagerRelationships(id);
+        return getRepository().findOneWithEagerRelationships(id);
     }
 
     /**
@@ -82,24 +98,57 @@ public class TransactionService {
      * @param id the id of the entity.
      */
     public void delete(Long id) {
-        log.debug("Request to delete Transaction : {}", id);
+        T transaction = findOne(id).orElseThrow(() -> new IllegalArgumentException("Transaction does not exist: " + id));
+        delete(transaction);
+    }
 
-        transactionRepository.deleteById(id);
+    public void delete(T transaction) {
+        log.debug("Request to delete Transaction : {}", transaction);
+
+        Optional<T> firstTransactionBefore = findTransactionImmediatelyBefore(transaction);
+        getRepository().flush();
+        getRepository().delete(transaction);
+        getRepository().flush();
+        updateBalanceInLaterTransactions(transaction.getTransactionBook(), transaction.getValueDate(), transaction.getId(),
+            firstTransactionBefore.isPresent() ? firstTransactionBefore.get().getBalanceAfter() : BigDecimal.ZERO);
     }
 
     @Transactional(readOnly = true)
-    public Page<Transaction> findAllForTransactionBook(TransactionBook transactionBook, Pageable pageable) {
-        return transactionRepository.findAllByTransactionBook(transactionBook, pageable);
+    public Page<T> findAllForTransactionBook(TransactionBook transactionBook, Pageable pageable) {
+        return getRepository().findAllByTransactionBook(transactionBook, pageable);
     }
 
-    public void updateBalanceInLaterTransactions(Transaction transaction) {
-        List<Transaction> laterTransactions = transactionRepository
-            .findAllNewerThanWithLock(transaction.getTransactionBook(), transaction.getValueDate(), transaction.getId() != null ? transaction.getId() : Long.MAX_VALUE);
-        BigDecimal balance = transaction.getBalanceAfter();
-        for (Transaction t : laterTransactions) {
+    public List<T> findAllForTransactionBookWithLinks(TransactionBook transactionBook) {
+        return getRepository().findAllByTransactionBookWithEagerRelationships(transactionBook);
+    }
+
+    protected Optional<T> findTransactionImmediatelyBefore(T transaction) {
+        return getRepository().findAllOlderThanWithLock(transaction.getTransactionBook(), transaction.getValueDate(),
+            transaction.getId() != null ? transaction.getId() : Long.MAX_VALUE,
+            PageRequest.of(0, 1, Sort.by(Order.desc(Transaction_.VALUE_DATE), Order.desc(Transaction_.ID)))).stream().findFirst();
+    }
+
+    protected List<T> findAllAfter(T transaction) {
+        return findAllAfter(transaction.getTransactionBook(), transaction.getValueDate(), transaction.getId() != null ? transaction.getId() : Long.MAX_VALUE);
+    }
+
+    protected List<T> findAllAfter(TransactionBook transactionBook, Instant valueDate, long id) {
+        return getRepository().findAllNewerThanWithLock(transactionBook, valueDate, id,
+            PageRequest.of(0, Integer.MAX_VALUE, Sort.by(Order.asc(Transaction_.VALUE_DATE), Order.asc(Transaction_.ID))));
+    }
+
+    protected void updateBalanceInLaterTransactions(T transaction) {
+        updateBalanceInLaterTransactions(transaction.getTransactionBook(), transaction.getValueDate(),
+            transaction.getId() != null ? transaction.getId() : Long.MAX_VALUE, transaction.getBalanceAfter());
+    }
+
+    protected void updateBalanceInLaterTransactions(TransactionBook transactionBook, Instant valueDate, long id, BigDecimal initialBalance) {
+        List<T> laterTransactions = findAllAfter(transactionBook, valueDate, id);
+        BigDecimal balance = initialBalance;
+        for (T t : laterTransactions) {
             balance = balance.add(t.getValue());
             t.setBalanceAfter(balance);
         }
-        transactionRepository.saveAll(laterTransactions);
+        getRepository().saveAll(laterTransactions);
     }
 }

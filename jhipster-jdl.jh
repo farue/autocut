@@ -183,8 +183,8 @@ entity TransactionBook {
 }
 
 @service(serviceClass)
-entity Transaction {
-	kind TransactionKind required
+entity InternalTransaction {
+	type String required
 	bookingDate Instant required
     valueDate Instant required
     value BigDecimal required
@@ -204,7 +204,7 @@ entity Transaction {
  * CORRECTION: A corrective booking due to cancellation or system malfunctions.
  * PURCHASE: A transaction with a negative amount. In exchange the payer receives a different good.
  */
-enum TransactionKind {
+enum TransactionType {
 	FEE,
     CREDIT,
     DEBIT,
@@ -220,13 +220,41 @@ enum TransactionBookType {
 }
 
 relationship OneToMany {
-	TransactionBook{transaction} to Transaction{transactionBook required}
+    // A transaction book can only ever have one type of transactions
+	TransactionBook{iTransaction} to InternalTransaction{transactionBook required}
+	TransactionBook{bTransaction} to BankTransaction{transactionBook required}
 }
 
 relationship ManyToMany {
-    Transaction{left} to Transaction{right}
+    InternalTransaction{left} to InternalTransaction{right}
+    BankTransaction{left} to BankTransaction{right}
 }
 
+entity BankAccount {
+    name String required
+    bic String maxlength(11) required
+    iban String maxlength(34) required unique
+}
+
+entity BankTransaction {
+    bookingDate Instant required
+    valueDate Instant required
+    value BigDecimal required
+    balanceAfter BigDecimal required
+    type String
+    description String
+    customerRef String
+    gvCode String
+    endToEnd String
+    primanota String
+    creditor String
+    mandate String
+}
+
+relationship ManyToOne {
+    BankTransaction{bankAccount required} to BankAccount
+    BankTransaction{contraBankAccount} to BankAccount
+}
 
 // ****************************************************
 // * Communication
@@ -242,7 +270,6 @@ entity Communication {
 relationship ManyToOne {
 	Communication{tenant} to User
 }
-
 
 // ****************************************************
 // * Wash System

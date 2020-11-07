@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ITransaction } from '../../shared/model/transaction.model';
 import { ITEMS_PER_PAGE } from '../../shared/constants/pagination.constants';
 import { TransactionService } from './transaction.service';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
 import { ITransactionOverview } from './transaction-overview.model';
+import { IInternalTransaction } from '../../shared/model/internal-transaction.model';
 
 @Component({
   selector: 'jhi-service-transaction',
@@ -15,7 +15,7 @@ import { ITransactionOverview } from './transaction-overview.model';
 export class TransactionComponent implements OnInit {
   balance = 0;
   deposit = 0;
-  transactions: ITransaction[] | null | undefined = null;
+  transactions: IInternalTransaction[] | null | undefined = null;
 
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
