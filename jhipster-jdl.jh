@@ -72,7 +72,8 @@ entity Apartment {
 enum ApartmentTypes {
     SHARED,
     SINGLE,
-    SHORT_TERM
+    SHORT_TERM,
+    BACKUP
 }
 
 @service(serviceClass)

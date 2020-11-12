@@ -2,9 +2,10 @@
   "autocutApp": {
     "ApartmentTypes": {
       "null": "",
-      "SHARED": "WG",
-      "SINGLE": "Einzel",
-      "SHORT_TERM": "Kurzzeit"
+      "SHARED": "SHARED",
+      "SINGLE": "SINGLE",
+      "SHORT_TERM": "SHORT_TERM",
+      "BACKUP": "BACKUP"
     }
   }
 }

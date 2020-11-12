@@ -11,7 +11,7 @@
     {
       "fieldName": "type",
       "fieldType": "ApartmentTypes",
-      "fieldValues": "SHARED,SINGLE,SHORT_TERM",
+      "fieldValues": "SHARED,SINGLE,SHORT_TERM,BACKUP",
       "fieldValidateRules": [
         "required"
       ]

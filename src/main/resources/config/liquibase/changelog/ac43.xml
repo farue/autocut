@@ -1,0 +1,21 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+
+    <changeSet id="apartment-backup" author="brunecker">
+        <update tableName="apartment">
+            <column name="type" value="BACKUP" />
+            <where>id=:value</where>
+            <whereParams>
+                <param value="17" />
+            </whereParams>
+        </update>
+        <update tableName="apartment">
+            <column name="type" value="BACKUP" />
+            <where>id=:value</where>
+            <whereParams>
+                <param value="55" />
+            </whereParams>
+        </update>
+    </changeSet>
+</databaseChangeLog>
