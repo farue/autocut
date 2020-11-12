@@ -26,8 +26,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import de.farue.autocut.domain.Apartment;
 import de.farue.autocut.domain.InternalTransaction;
-import de.farue.autocut.domain.Lease;
 import de.farue.autocut.domain.Tenant;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.repository.UserRepository;
@@ -179,10 +179,11 @@ public class TransactionBookResource {
     public String getPurpose() {
         return SecurityUtils.getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
-            .flatMap(user -> tenantService.findOneByUser(user)
-                .map(Tenant::getLease)
-                .map(Lease::getApartment)
-                .map(apartment -> apartment.getAddress().getStreetNumber() + "/" + apartment.getNr() + " " + user.getFirstName() + " " + user.getLastName()))
+            .flatMap(tenantService::findOneByUser)
+            .map(tenant -> {
+                Apartment apartment = tenant.getLease().getApartment();
+                return apartment.getAddress().getStreetNumber() + "/" + apartment.getNr() + " " + tenant.getFirstName() + " " + tenant.getLastName();
+            })
             .orElse("");
     }
 }
