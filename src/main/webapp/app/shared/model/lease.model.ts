@@ -9,8 +9,6 @@ export interface ILease {
   start?: Moment;
   end?: Moment;
   blocked?: boolean;
-  pictureContractContentType?: string;
-  pictureContract?: any;
   tenants?: ITenant[];
   transactionBooks?: ITransactionBook[];
   apartment?: IApartment;
@@ -23,8 +21,6 @@ export class Lease implements ILease {
     public start?: Moment,
     public end?: Moment,
     public blocked?: boolean,
-    public pictureContractContentType?: string,
-    public pictureContract?: any,
     public tenants?: ITenant[],
     public transactionBooks?: ITransactionBook[],
     public apartment?: IApartment

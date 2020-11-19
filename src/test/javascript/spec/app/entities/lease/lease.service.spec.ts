@@ -24,7 +24,7 @@ describe('Service Tests', () => {
       httpMock = injector.get(HttpTestingController);
       currentDate = moment();
 
-      elemDefault = new Lease(0, 'AAAAAAA', currentDate, currentDate, false, 'image/png', 'AAAAAAA');
+      elemDefault = new Lease(0, 'AAAAAAA', currentDate, currentDate, false);
     });
 
     describe('Service methods', () => {
@@ -76,7 +76,6 @@ describe('Service Tests', () => {
             start: currentDate.format(DATE_FORMAT),
             end: currentDate.format(DATE_FORMAT),
             blocked: true,
-            pictureContract: 'BBBBBB',
           },
           elemDefault
         );
@@ -103,7 +102,6 @@ describe('Service Tests', () => {
             start: currentDate.format(DATE_FORMAT),
             end: currentDate.format(DATE_FORMAT),
             blocked: true,
-            pictureContract: 'BBBBBB',
           },
           elemDefault
         );

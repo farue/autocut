@@ -18,7 +18,6 @@
       },
       "firstName": "First Name",
       "lastName": "Last Name",
-      "pictureId": "Picture ID",
       "verified": "Verified",
       "user": "User",
       "securityPolicies": "Security Policies",

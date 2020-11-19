@@ -43,6 +43,7 @@
         "bankAccount": "Bank Account",
         "bankTransaction": "Bank Transaction",
         "internalTransaction": "Internal Transaction",
+        "registrationItem": "Registration Item",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

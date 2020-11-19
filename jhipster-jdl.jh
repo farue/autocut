@@ -6,7 +6,6 @@
 entity Tenant {
     firstName String required
     lastName String required
-	pictureId ImageBlob
 	verified Boolean
 }
 
@@ -16,7 +15,6 @@ entity Lease {
 	start LocalDate required
     end LocalDate required
     blocked Boolean
-    pictureContract ImageBlob
 }
 
 entity SecurityPolicy {
@@ -52,6 +50,17 @@ relationship OneToMany {
 
 relationship ManyToMany {
     Lease to TransactionBook
+}
+
+@service(serviceClass)
+entity RegistrationItem {
+    item String required
+    contentType String required
+    content String required maxlength(4000)
+}
+
+relationship ManyToOne {
+    RegistrationItem{tenant} to Tenant
 }
 
 

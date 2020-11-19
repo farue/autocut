@@ -12,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -52,13 +51,6 @@ public class Lease implements Serializable {
 
     @Column(name = "blocked")
     private Boolean blocked;
-
-    @Lob
-    @Column(name = "picture_contract")
-    private byte[] pictureContract;
-
-    @Column(name = "picture_contract_content_type")
-    private String pictureContractContentType;
 
     @OneToMany(mappedBy = "lease")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -134,32 +126,6 @@ public class Lease implements Serializable {
 
     public void setBlocked(Boolean blocked) {
         this.blocked = blocked;
-    }
-
-    public byte[] getPictureContract() {
-        return pictureContract;
-    }
-
-    public Lease pictureContract(byte[] pictureContract) {
-        this.pictureContract = pictureContract;
-        return this;
-    }
-
-    public void setPictureContract(byte[] pictureContract) {
-        this.pictureContract = pictureContract;
-    }
-
-    public String getPictureContractContentType() {
-        return pictureContractContentType;
-    }
-
-    public Lease pictureContractContentType(String pictureContractContentType) {
-        this.pictureContractContentType = pictureContractContentType;
-        return this;
-    }
-
-    public void setPictureContractContentType(String pictureContractContentType) {
-        this.pictureContractContentType = pictureContractContentType;
     }
 
     public Set<Tenant> getTenants() {
@@ -249,8 +215,6 @@ public class Lease implements Serializable {
             ", start='" + getStart() + "'" +
             ", end='" + getEnd() + "'" +
             ", blocked='" + isBlocked() + "'" +
-            ", pictureContract='" + getPictureContract() + "'" +
-            ", pictureContractContentType='" + getPictureContractContentType() + "'" +
             "}";
     }
 }

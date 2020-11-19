@@ -1,0 +1,59 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+
+    <changeSet id="lease-remove-picture_contract" author="brunecker">
+        <dropColumn tableName="lease">
+            <column name="picture_contract" />
+            <column name="picture_contract_content_type" />
+        </dropColumn>
+    </changeSet>
+
+    <changeSet id="tenant-remove-picture_id" author="brunecker">
+        <dropColumn tableName="tenant">
+            <column name="picture_id" />
+            <column name="picture_id_content_type" />
+        </dropColumn>
+    </changeSet>
+
+    <changeSet id="table-registration_item" author="brunecker">
+        <createTable tableName="registration_item">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="item" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="content_type" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="content" type="varchar(4000)">
+                <constraints nullable="false" />
+            </column>
+            <column name="tenant_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="constraints-registration_item" author="brunecker">
+        <addForeignKeyConstraint baseColumnNames="tenant_id"
+                                 baseTableName="registration_item"
+                                 constraintName="fk_registration_item_tenant_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tenant"/>
+
+    </changeSet>
+
+    <changeSet id="fake-data-registration_item" author="brunecker" context="faker">
+        <loadData
+            file="config/liquibase/fake-data/registration_item.csv"
+            separator=";"
+            tableName="registration_item">
+            <column name="id" type="numeric"/>
+            <column name="item" type="string"/>
+            <column name="content_type" type="string"/>
+            <column name="content" type="string"/>
+        </loadData>
+    </changeSet>
+</databaseChangeLog>

@@ -20,7 +20,7 @@ describe('Service Tests', () => {
       service = injector.get(TenantService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new Tenant(0, 'AAAAAAA', 'AAAAAAA', 'image/png', 'AAAAAAA', false);
+      elemDefault = new Tenant(0, 'AAAAAAA', 'AAAAAAA', false);
     });
 
     describe('Service methods', () => {
@@ -56,7 +56,6 @@ describe('Service Tests', () => {
           {
             firstName: 'BBBBBB',
             lastName: 'BBBBBB',
-            pictureId: 'BBBBBB',
             verified: true,
           },
           elemDefault
@@ -76,7 +75,6 @@ describe('Service Tests', () => {
           {
             firstName: 'BBBBBB',
             lastName: 'BBBBBB',
-            pictureId: 'BBBBBB',
             verified: true,
           },
           elemDefault

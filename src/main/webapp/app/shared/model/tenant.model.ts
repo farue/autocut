@@ -6,8 +6,6 @@ export interface ITenant {
   id?: number;
   firstName?: string;
   lastName?: string;
-  pictureIdContentType?: string;
-  pictureId?: any;
   verified?: boolean;
   user?: IUser;
   securityPolicies?: ISecurityPolicy[];
@@ -19,8 +17,6 @@ export class Tenant implements ITenant {
     public id?: number,
     public firstName?: string,
     public lastName?: string,
-    public pictureIdContentType?: string,
-    public pictureId?: any,
     public verified?: boolean,
     public user?: IUser,
     public securityPolicies?: ISecurityPolicy[],

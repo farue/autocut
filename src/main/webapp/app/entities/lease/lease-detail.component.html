@@ -24,16 +24,6 @@
                 <dd>
                     <span>{{ lease.blocked }}</span>
                 </dd>
-                <dt><span jhiTranslate="autocutApp.lease.pictureContract">Picture Contract</span></dt>
-                <dd>
-                    <div *ngIf="lease.pictureContract">
-                        <a (click)="openFile(lease.pictureContractContentType, lease.pictureContract)">
-                            <img [src]="'data:' + lease.pictureContractContentType + ';base64,' + lease.pictureContract"
-                                 style="max-width: 100%;" alt="lease image"/>
-                        </a>
-                        {{ lease.pictureContractContentType }}, {{ byteSize(lease.pictureContract) }}
-                    </div>
-                </dd>
                 <dt><span jhiTranslate="autocutApp.lease.transactionBook">Transaction Book</span></dt>
                 <dd>
                     <span *ngFor="let transactionBook of lease.transactionBooks; let last = last">

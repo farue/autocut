@@ -1,0 +1,25 @@
+{
+  "autocutApp": {
+    "registrationItem": {
+      "home": {
+        "title": "Registration Items",
+        "createLabel": "Create a new Registration Item",
+        "createOrEditLabel": "Create or edit a Registration Item",
+        "notFound": "No Registration Items found"
+      },
+      "created": "A new Registration Item is created with identifier {{ param }}",
+      "updated": "A Registration Item is updated with identifier {{ param }}",
+      "deleted": "A Registration Item is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Registration Item {{ id }}?"
+      },
+      "detail": {
+        "title": "Registration Item"
+      },
+      "item": "Item",
+      "contentType": "Content Type",
+      "content": "Content",
+      "tenant": "Tenant"
+    }
+  }
+}

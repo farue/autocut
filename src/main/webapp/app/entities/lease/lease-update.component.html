@@ -62,24 +62,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.lease.pictureContract" for="field_pictureContract">Picture Contract</label>
-                    <div>
-                        <img [src]="'data:' + editForm.get('pictureContractContentType')!.value + ';base64,' + editForm.get('pictureContract')!.value" style="max-height: 100px;" *ngIf="editForm.get('pictureContract')!.value" alt="lease image"/>
-                        <div *ngIf="editForm.get('pictureContract')!.value" class="form-text text-danger clearfix">
-                            <span class="pull-left">{{ editForm.get('pictureContractContentType')!.value }}, {{ byteSize(editForm.get('pictureContract')!.value) }}</span>
-                            <button type="button" (click)="clearInputImage('pictureContract', 'pictureContractContentType', 'file_pictureContract')" class="btn btn-secondary btn-xs pull-right">
-                                <fa-icon icon="times"></fa-icon>
-                            </button>
-                        </div>
-                        <input type="file" id="file_pictureContract" (change)="setFileData($event, 'pictureContract', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
-                    </div>
-                    <input type="hidden" class="form-control" name="pictureContract" id="field_pictureContract"
-                           formControlName="pictureContract"/>
-                    <input type="hidden" class="form-control" name="pictureContractContentType" id="field_pictureContractContentType"
-                           formControlName="pictureContractContentType" />
-                </div>
-
-                <div class="form-group">
                     <label jhiTranslate="autocutApp.lease.transactionBook" for="field_transactionBooks">Transaction Book</label>
                     <select class="form-control" id="field_transactionBooks" multiple name="transactionBooks" formControlName="transactionBooks">
                         <option [ngValue]="getSelected(editForm.get('transactionBooks')!.value, transactionBookOption)" *ngFor="let transactionBookOption of transactionbooks; trackBy: trackById">{{ transactionBookOption.id }}</option>

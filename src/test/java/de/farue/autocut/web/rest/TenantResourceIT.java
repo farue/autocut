@@ -1,23 +1,5 @@
 package de.farue.autocut.web.rest;
 
-import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.Tenant;
-import de.farue.autocut.repository.TenantRepository;
-import de.farue.autocut.service.TenantService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
-
-import javax.persistence.EntityManager;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -27,6 +9,25 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
+import de.farue.autocut.AutocutApp;
+import de.farue.autocut.domain.Tenant;
+import de.farue.autocut.repository.TenantRepository;
+import de.farue.autocut.service.TenantService;
 
 /**
  * Integration tests for the {@link TenantResource} REST controller.
@@ -41,11 +42,6 @@ public class TenantResourceIT {
 
     private static final String DEFAULT_LAST_NAME = "AAAAAAAAAA";
     private static final String UPDATED_LAST_NAME = "BBBBBBBBBB";
-
-    private static final byte[] DEFAULT_PICTURE_ID = TestUtil.createByteArray(1, "0");
-    private static final byte[] UPDATED_PICTURE_ID = TestUtil.createByteArray(1, "1");
-    private static final String DEFAULT_PICTURE_ID_CONTENT_TYPE = "image/jpg";
-    private static final String UPDATED_PICTURE_ID_CONTENT_TYPE = "image/png";
 
     private static final Boolean DEFAULT_VERIFIED = false;
     private static final Boolean UPDATED_VERIFIED = true;
@@ -74,8 +70,6 @@ public class TenantResourceIT {
         Tenant tenant = new Tenant()
             .firstName(DEFAULT_FIRST_NAME)
             .lastName(DEFAULT_LAST_NAME)
-            .pictureId(DEFAULT_PICTURE_ID)
-            .pictureIdContentType(DEFAULT_PICTURE_ID_CONTENT_TYPE)
             .verified(DEFAULT_VERIFIED);
         return tenant;
     }
@@ -89,8 +83,6 @@ public class TenantResourceIT {
         Tenant tenant = new Tenant()
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
-            .pictureId(UPDATED_PICTURE_ID)
-            .pictureIdContentType(UPDATED_PICTURE_ID_CONTENT_TYPE)
             .verified(UPDATED_VERIFIED);
         return tenant;
     }
@@ -116,8 +108,6 @@ public class TenantResourceIT {
         Tenant testTenant = tenantList.get(tenantList.size() - 1);
         assertThat(testTenant.getFirstName()).isEqualTo(DEFAULT_FIRST_NAME);
         assertThat(testTenant.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
-        assertThat(testTenant.getPictureId()).isEqualTo(DEFAULT_PICTURE_ID);
-        assertThat(testTenant.getPictureIdContentType()).isEqualTo(DEFAULT_PICTURE_ID_CONTENT_TYPE);
         assertThat(testTenant.isVerified()).isEqualTo(DEFAULT_VERIFIED);
     }
 
@@ -192,8 +182,6 @@ public class TenantResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(tenant.getId().intValue())))
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
             .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
-            .andExpect(jsonPath("$.[*].pictureIdContentType").value(hasItem(DEFAULT_PICTURE_ID_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].pictureId").value(hasItem(Base64Utils.encodeToString(DEFAULT_PICTURE_ID))))
             .andExpect(jsonPath("$.[*].verified").value(hasItem(DEFAULT_VERIFIED.booleanValue())));
     }
 
@@ -210,8 +198,6 @@ public class TenantResourceIT {
             .andExpect(jsonPath("$.id").value(tenant.getId().intValue()))
             .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRST_NAME))
             .andExpect(jsonPath("$.lastName").value(DEFAULT_LAST_NAME))
-            .andExpect(jsonPath("$.pictureIdContentType").value(DEFAULT_PICTURE_ID_CONTENT_TYPE))
-            .andExpect(jsonPath("$.pictureId").value(Base64Utils.encodeToString(DEFAULT_PICTURE_ID)))
             .andExpect(jsonPath("$.verified").value(DEFAULT_VERIFIED.booleanValue()));
     }
     @Test
@@ -237,8 +223,6 @@ public class TenantResourceIT {
         updatedTenant
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
-            .pictureId(UPDATED_PICTURE_ID)
-            .pictureIdContentType(UPDATED_PICTURE_ID_CONTENT_TYPE)
             .verified(UPDATED_VERIFIED);
 
         restTenantMockMvc.perform(put("/api/tenants")
@@ -252,8 +236,6 @@ public class TenantResourceIT {
         Tenant testTenant = tenantList.get(tenantList.size() - 1);
         assertThat(testTenant.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
         assertThat(testTenant.getLastName()).isEqualTo(UPDATED_LAST_NAME);
-        assertThat(testTenant.getPictureId()).isEqualTo(UPDATED_PICTURE_ID);
-        assertThat(testTenant.getPictureIdContentType()).isEqualTo(UPDATED_PICTURE_ID_CONTENT_TYPE);
         assertThat(testTenant.isVerified()).isEqualTo(UPDATED_VERIFIED);
     }
 

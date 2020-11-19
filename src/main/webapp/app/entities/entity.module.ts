@@ -85,6 +85,10 @@ import { RouterModule } from '@angular/router';
         path: 'internal-transaction',
         loadChildren: () => import('./internal-transaction/internal-transaction.module').then(m => m.AutocutInternalTransactionModule),
       },
+      {
+        path: 'registration-item',
+        loadChildren: () => import('./registration-item/registration-item.module').then(m => m.AutocutRegistrationItemModule),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

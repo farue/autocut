@@ -36,24 +36,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.tenant.pictureId" for="field_pictureId">Picture Id</label>
-                    <div>
-                        <img [src]="'data:' + editForm.get('pictureIdContentType')!.value + ';base64,' + editForm.get('pictureId')!.value" style="max-height: 100px;" *ngIf="editForm.get('pictureId')!.value" alt="tenant image"/>
-                        <div *ngIf="editForm.get('pictureId')!.value" class="form-text text-danger clearfix">
-                            <span class="pull-left">{{ editForm.get('pictureIdContentType')!.value }}, {{ byteSize(editForm.get('pictureId')!.value) }}</span>
-                            <button type="button" (click)="clearInputImage('pictureId', 'pictureIdContentType', 'file_pictureId')" class="btn btn-secondary btn-xs pull-right">
-                                <fa-icon icon="times"></fa-icon>
-                            </button>
-                        </div>
-                        <input type="file" id="file_pictureId" (change)="setFileData($event, 'pictureId', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
-                    </div>
-                    <input type="hidden" class="form-control" name="pictureId" id="field_pictureId"
-                           formControlName="pictureId"/>
-                    <input type="hidden" class="form-control" name="pictureIdContentType" id="field_pictureIdContentType"
-                           formControlName="pictureIdContentType" />
-                </div>
-
-                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.tenant.verified" for="field_verified">Verified</label>
                     <input type="checkbox" class="form-control" name="verified" id="field_verified"
                            formControlName="verified"/>

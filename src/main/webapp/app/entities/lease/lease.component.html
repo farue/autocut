@@ -27,7 +27,6 @@
                     <th scope="col" ><span jhiTranslate="autocutApp.lease.start">Start</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.lease.end">End</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.lease.blocked">Blocked</span></th>
-                    <th scope="col" ><span jhiTranslate="autocutApp.lease.pictureContract">Picture Contract</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.lease.transactionBook">Transaction Book</span></th>
                     <th scope="col" ><span jhiTranslate="autocutApp.lease.apartment">Apartment</span></th>
                     <th scope="col"></th>
@@ -40,12 +39,6 @@
                     <td>{{ lease.start | date:'mediumDate' }}</td>
                     <td>{{ lease.end | date:'mediumDate' }}</td>
                     <td>{{ lease.blocked }}</td>
-                    <td>
-                        <a *ngIf="lease.pictureContract" (click)="openFile(lease.pictureContractContentType, lease.pictureContract)">
-                            <img [src]="'data:' + lease.pictureContractContentType + ';base64,' + lease.pictureContract" style="max-height: 30px;" alt="lease image"/>
-                        </a>
-                        <span *ngIf="lease.pictureContract">{{ lease.pictureContractContentType }}, {{ byteSize(lease.pictureContract) }}</span>
-                    </td>
                     <td>
                         <span *ngFor="let transactionBook of lease.transactionBooks; let last = last">
                             <a class="form-control-static" [routerLink]="['/transaction-book', transactionBook?.id, 'view']">{{ transactionBook.id }}</a>{{ last ? '' : ', ' }}

@@ -16,11 +16,6 @@
       ]
     },
     {
-      "fieldName": "pictureId",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "image"
-    },
-    {
       "fieldName": "verified",
       "fieldType": "Boolean"
     }

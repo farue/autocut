@@ -10,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -43,13 +42,6 @@ public class Tenant implements Serializable {
     @NotNull
     @Column(name = "last_name", nullable = false)
     private String lastName;
-
-    @Lob
-    @Column(name = "picture_id")
-    private byte[] pictureId;
-
-    @Column(name = "picture_id_content_type")
-    private String pictureIdContentType;
 
     @Column(name = "verified")
     private Boolean verified;
@@ -99,32 +91,6 @@ public class Tenant implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public byte[] getPictureId() {
-        return pictureId;
-    }
-
-    public Tenant pictureId(byte[] pictureId) {
-        this.pictureId = pictureId;
-        return this;
-    }
-
-    public void setPictureId(byte[] pictureId) {
-        this.pictureId = pictureId;
-    }
-
-    public String getPictureIdContentType() {
-        return pictureIdContentType;
-    }
-
-    public Tenant pictureIdContentType(String pictureIdContentType) {
-        this.pictureIdContentType = pictureIdContentType;
-        return this;
-    }
-
-    public void setPictureIdContentType(String pictureIdContentType) {
-        this.pictureIdContentType = pictureIdContentType;
     }
 
     public Boolean isVerified() {
@@ -215,8 +181,6 @@ public class Tenant implements Serializable {
             "id=" + getId() +
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
-            ", pictureId='" + getPictureId() + "'" +
-            ", pictureIdContentType='" + getPictureIdContentType() + "'" +
             ", verified='" + isVerified() + "'" +
             "}";
     }

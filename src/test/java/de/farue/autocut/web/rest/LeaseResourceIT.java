@@ -2,7 +2,7 @@ package de.farue.autocut.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,7 +34,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
 
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Lease;
@@ -61,11 +60,6 @@ public class LeaseResourceIT {
 
     private static final Boolean DEFAULT_BLOCKED = false;
     private static final Boolean UPDATED_BLOCKED = true;
-
-    private static final byte[] DEFAULT_PICTURE_CONTRACT = TestUtil.createByteArray(1, "0");
-    private static final byte[] UPDATED_PICTURE_CONTRACT = TestUtil.createByteArray(1, "1");
-    private static final String DEFAULT_PICTURE_CONTRACT_CONTENT_TYPE = "image/jpg";
-    private static final String UPDATED_PICTURE_CONTRACT_CONTENT_TYPE = "image/png";
 
     @Autowired
     private LeaseRepository leaseRepository;
@@ -98,9 +92,7 @@ public class LeaseResourceIT {
             .nr(DEFAULT_NR)
             .start(DEFAULT_START)
             .end(DEFAULT_END)
-            .blocked(DEFAULT_BLOCKED)
-            .pictureContract(DEFAULT_PICTURE_CONTRACT)
-            .pictureContractContentType(DEFAULT_PICTURE_CONTRACT_CONTENT_TYPE);
+            .blocked(DEFAULT_BLOCKED);
         return lease;
     }
     /**
@@ -114,9 +106,7 @@ public class LeaseResourceIT {
             .nr(UPDATED_NR)
             .start(UPDATED_START)
             .end(UPDATED_END)
-            .blocked(UPDATED_BLOCKED)
-            .pictureContract(UPDATED_PICTURE_CONTRACT)
-            .pictureContractContentType(UPDATED_PICTURE_CONTRACT_CONTENT_TYPE);
+            .blocked(UPDATED_BLOCKED);
         return lease;
     }
 
@@ -143,8 +133,6 @@ public class LeaseResourceIT {
         assertThat(testLease.getStart()).isEqualTo(DEFAULT_START);
         assertThat(testLease.getEnd()).isEqualTo(DEFAULT_END);
         assertThat(testLease.isBlocked()).isEqualTo(DEFAULT_BLOCKED);
-        assertThat(testLease.getPictureContract()).isEqualTo(DEFAULT_PICTURE_CONTRACT);
-        assertThat(testLease.getPictureContractContentType()).isEqualTo(DEFAULT_PICTURE_CONTRACT_CONTENT_TYPE);
     }
 
     @Test
@@ -175,6 +163,7 @@ public class LeaseResourceIT {
         lease.setNr(null);
 
         // Create the Lease, which fails.
+
 
         restLeaseMockMvc.perform(post("/api/leases")
             .contentType(MediaType.APPLICATION_JSON)
@@ -213,6 +202,7 @@ public class LeaseResourceIT {
 
         // Create the Lease, which fails.
 
+
         restLeaseMockMvc.perform(post("/api/leases")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(lease)))
@@ -236,9 +226,7 @@ public class LeaseResourceIT {
             .andExpect(jsonPath("$.[*].nr").value(hasItem(DEFAULT_NR)))
             .andExpect(jsonPath("$.[*].start").value(hasItem(DEFAULT_START.toString())))
             .andExpect(jsonPath("$.[*].end").value(hasItem(DEFAULT_END.toString())))
-            .andExpect(jsonPath("$.[*].blocked").value(hasItem(DEFAULT_BLOCKED.booleanValue())))
-            .andExpect(jsonPath("$.[*].pictureContractContentType").value(hasItem(DEFAULT_PICTURE_CONTRACT_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].pictureContract").value(hasItem(Base64Utils.encodeToString(DEFAULT_PICTURE_CONTRACT))));
+            .andExpect(jsonPath("$.[*].blocked").value(hasItem(DEFAULT_BLOCKED.booleanValue())));
     }
 
     @SuppressWarnings({"unchecked"})
@@ -275,9 +263,7 @@ public class LeaseResourceIT {
             .andExpect(jsonPath("$.nr").value(DEFAULT_NR))
             .andExpect(jsonPath("$.start").value(DEFAULT_START.toString()))
             .andExpect(jsonPath("$.end").value(DEFAULT_END.toString()))
-            .andExpect(jsonPath("$.blocked").value(DEFAULT_BLOCKED.booleanValue()))
-            .andExpect(jsonPath("$.pictureContractContentType").value(DEFAULT_PICTURE_CONTRACT_CONTENT_TYPE))
-            .andExpect(jsonPath("$.pictureContract").value(Base64Utils.encodeToString(DEFAULT_PICTURE_CONTRACT)));
+            .andExpect(jsonPath("$.blocked").value(DEFAULT_BLOCKED.booleanValue()));
     }
     @Test
     @Transactional
@@ -303,9 +289,7 @@ public class LeaseResourceIT {
             .nr(UPDATED_NR)
             .start(UPDATED_START)
             .end(UPDATED_END)
-            .blocked(UPDATED_BLOCKED)
-            .pictureContract(UPDATED_PICTURE_CONTRACT)
-            .pictureContractContentType(UPDATED_PICTURE_CONTRACT_CONTENT_TYPE);
+            .blocked(UPDATED_BLOCKED);
 
         restLeaseMockMvc.perform(put("/api/leases")
             .contentType(MediaType.APPLICATION_JSON)
@@ -320,8 +304,6 @@ public class LeaseResourceIT {
         assertThat(testLease.getStart()).isEqualTo(UPDATED_START);
         assertThat(testLease.getEnd()).isEqualTo(UPDATED_END);
         assertThat(testLease.isBlocked()).isEqualTo(UPDATED_BLOCKED);
-        assertThat(testLease.getPictureContract()).isEqualTo(UPDATED_PICTURE_CONTRACT);
-        assertThat(testLease.getPictureContractContentType()).isEqualTo(UPDATED_PICTURE_CONTRACT_CONTENT_TYPE);
     }
 
     @Test
