@@ -178,6 +178,59 @@ class TenantFeeBatchIT {
                 assertThat(transactionAfterCharges.getValue()).isEqualByComparingTo("-7.5");
                 assertThat(transactionAfterCharges.getBalanceAfter()).isEqualByComparingTo("27.5");
             }
+
+            @Test
+            void testNegativeBalance() throws Exception {
+                InternalTransaction transactionNegativeBalance = new InternalTransaction()
+                    .bookingDate(LocalDate.of(2020, 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant())
+                    .valueDate(LocalDate.of(2020, 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant())
+                    .transactionBook(transactionBook)
+                    .transactionType(TransactionType.PURCHASE)
+                    .issuer("test")
+                    .value(new BigDecimal("-70"))
+                    .balanceAfter(new BigDecimal("-20"));
+                transactionService.save(transactionNegativeBalance);
+
+                batchScheduler.setChargePeriod(CHARGE_PERIOD);
+                batchScheduler.launchJob();
+
+                List<InternalTransaction> transactions = transactionService.findAllForTransactionBook(transactionBook, PageRequest
+                    .of(0, Integer.MAX_VALUE, Sort.by(Order.asc(Transaction_.VALUE_DATE), Order.asc(Transaction_.ID))))
+                    .getContent();
+
+                Transaction transactionBeforeCharges = transactions.get(0);
+                assertThat(transactionBeforeCharges.getValue()).isEqualByComparingTo("50");
+                assertThat(transactionBeforeCharges.getBalanceAfter()).isEqualByComparingTo("50");
+
+                Transaction transactionNegativeBalanceLoaded = transactions.get(1);
+                assertThat(transactionNegativeBalanceLoaded.getValue()).isEqualByComparingTo("-70");
+                assertThat(transactionNegativeBalanceLoaded.getBalanceAfter()).isEqualByComparingTo("-20");
+
+                Transaction chargeApr = transactions.get(2);
+                assertThat(chargeApr.getValue()).isEqualByComparingTo("-5");
+                assertThat(chargeApr.getBalanceAfter()).isEqualByComparingTo("-25");
+                assertThat(chargeApr.getDescription()).isEqualTo("4/2020");
+                assertThat(chargeApr.getBookingDate()).isBefore(chargeApr.getValueDate());
+                assertThat(chargeApr.getServiceQulifier()).isEqualTo("2020-04-10;false");
+
+                Transaction chargeMay = transactions.get(3);
+                assertThat(chargeMay.getValue()).isEqualByComparingTo("-5");
+                assertThat(chargeMay.getBalanceAfter()).isEqualByComparingTo("-30");
+                assertThat(chargeMay.getDescription()).isEqualTo("5/2020");
+                assertThat(chargeMay.getBookingDate()).isBefore(chargeApr.getValueDate());
+                assertThat(chargeMay.getServiceQulifier()).isEqualTo("2020-05-10;false");
+
+                Transaction chargeJun = transactions.get(4);
+                assertThat(chargeJun.getValue()).isEqualByComparingTo("-5");
+                assertThat(chargeJun.getBalanceAfter()).isEqualByComparingTo("-35");
+                assertThat(chargeJun.getDescription()).isEqualTo("6/2020");
+                assertThat(chargeJun.getBookingDate()).isBefore(chargeApr.getValueDate());
+                assertThat(chargeJun.getServiceQulifier()).isEqualTo("2020-06-10;false");
+
+                Transaction transactionAfterCharges = transactions.get(5);
+                assertThat(transactionAfterCharges.getValue()).isEqualByComparingTo("-7.5");
+                assertThat(transactionAfterCharges.getBalanceAfter()).isEqualByComparingTo("-42.5");
+            }
         }
 
         @Nested

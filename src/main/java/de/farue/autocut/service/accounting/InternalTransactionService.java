@@ -76,7 +76,7 @@ public class InternalTransactionService extends TransactionService<InternalTrans
 
     private void checkBalances(InternalTransaction transaction) {
         boolean illegalBalance = switch (transaction.getTransactionType()) {
-            case FEE, DEBIT, PURCHASE, TRANSFER -> compare(transaction.getValue()).isNegative() && compare(transaction.getBalanceAfter()).isNegative();
+            case DEBIT, PURCHASE, TRANSFER -> compare(transaction.getValue()).isNegative() && compare(transaction.getBalanceAfter()).isNegative();
             default -> false;
         };
         if (illegalBalance) {

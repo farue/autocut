@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort.Direction;
 
 import de.farue.autocut.batch.ItemListWriter;
-import de.farue.autocut.batch.common.TenantFeeBatchWriter;
+import de.farue.autocut.batch.fee.TenantFeeBatchWriter;
 import de.farue.autocut.batch.fee.TenantFeeChargingBatchProcessor;
 import de.farue.autocut.batch.fee.TenantFeeCorrectingBatchProcessor;
 import de.farue.autocut.batch.fee.TenantFeeServiceQualifierDataMapper;

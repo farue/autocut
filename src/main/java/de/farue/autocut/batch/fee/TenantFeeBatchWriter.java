@@ -1,4 +1,4 @@
-package de.farue.autocut.batch.common;
+package de.farue.autocut.batch.fee;
 
 import java.util.List;
 
@@ -9,14 +9,14 @@ import de.farue.autocut.service.accounting.InternalTransactionService;
 
 public class TenantFeeBatchWriter implements ItemWriter<BookingTemplate> {
 
-    private InternalTransactionService transactionService;
+    private final InternalTransactionService transactionService;
 
     public TenantFeeBatchWriter(InternalTransactionService transactionService) {
         this.transactionService = transactionService;
     }
 
     @Override
-    public void write(List<? extends BookingTemplate> bookingTemplates) throws Exception {
+    public void write(List<? extends BookingTemplate> bookingTemplates) {
         for (BookingTemplate bookingTemplate : bookingTemplates) {
             transactionService.saveWithContraTransaction(bookingTemplate);
         }
