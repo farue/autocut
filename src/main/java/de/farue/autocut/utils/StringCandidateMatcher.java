@@ -13,7 +13,7 @@ import lombok.AllArgsConstructor;
 public class StringCandidateMatcher {
 
     // 22 tokens took about 25 seconds. Every single additional token would double the computation time.
-    private static final int MAX_NUMBER_TOKENS = 22;
+    private static final int MAX_NUMBER_TOKENS = 20;
 
     /**
      * This function finds the parts of the sentence and a single candidate that match best
