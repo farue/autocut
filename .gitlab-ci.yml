@@ -157,6 +157,7 @@ gradle-package:
 
 docker-push:
   stage: release
+  resource_group: deploy
   dependencies:
     - gradle-package
   script:
@@ -169,6 +170,11 @@ docker-push:
 docker-deploy:
   image: alpine
   stage: deploy
+  resource_group: deploy
+  dependencies: []
+  environment:
+    name: production
+    url: https://www.farue.rwth-aachen.de
   script:
     - apk add openssh
     - eval $(ssh-agent -s)
