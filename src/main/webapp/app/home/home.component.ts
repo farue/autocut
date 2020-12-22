@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { LoginModalService } from 'app/core/login/login-modal.service';
@@ -55,7 +55,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  redirectToOldWebsite(): void {
-    window.location.href = 'http://www.farue.rwth-aachen.de/old/index.html';
+  redirectToWpWebsite(): void {
+    window.location.href = 'https://www.wp.farue.rwth-aachen.de';
   }
 }
