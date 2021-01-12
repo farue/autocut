@@ -4,15 +4,11 @@
     "subtitle": "The Washing Team maintains 3 washing machines and 2 dryers located in the middle basement. Every tenant may wash and dry there as long as they enter into the list. Further information is available on site.",
     "spokesperson": {
       "title-m": "Washing Team Spokesperson:",
-      "title-f": "Washing Team Spokesperson:",
-      "name": "<a href=\"mailto:waschag@farue.rwth-aachen.de\">Friederike Kimmich</a>",
-      "apartment": "(123/23)"
+      "title-f": "Washing Team Spokesperson:"
     },
     "deputy": {
       "title-m": "Washing Team Deputy:",
-      "title-f": "Washing Team Deputy:",
-      "name": "Haytin Acer",
-      "apartment": "(123/14)"
+      "title-f": "Washing Team Deputy:"
     },
     "content": {
       "text1": "Washing Team members selling coins:",
