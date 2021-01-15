@@ -91,9 +91,9 @@ public class ApartmentService {
     }
 
     private void verifyApartmentType(Apartment apartment, StwApartment stwApartment) {
-        boolean ok = (apartment.getType() == ApartmentTypes.SINGLE && stwApartment.getApartmentTypeIdentifier() == 0)
-            || ((apartment.getType() == ApartmentTypes.SHARED || apartment.getType() == ApartmentTypes.SHORT_TERM) &&
-            (stwApartment.getApartmentTypeIdentifier() == 1 || stwApartment.getApartmentTypeIdentifier() == 2));
+        boolean ok = (apartment.getType() == ApartmentTypes.SINGLE && stwApartment.getApartmentTypeIdentifier() == 0) || (
+            (apartment.getType() == ApartmentTypes.SHARED || apartment.getType() == ApartmentTypes.SHORT_TERM || apartment.getType() == ApartmentTypes.BACKUP)
+                && (stwApartment.getApartmentTypeIdentifier() == 1 || stwApartment.getApartmentTypeIdentifier() == 2));
         if (!ok) {
             throw new IllegalArgumentException(
                 "Apartment type is not correct. Expected " + apartment.getType() + ", but was " + stwApartment.getApartmentTypeIdentifier());
