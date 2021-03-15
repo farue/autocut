@@ -1,4 +1,4 @@
-image: gradle:6.6-jre14
+image: gradle:6.8-jre15
 
 cache:
   key: '$CI_COMMIT_REF_SLUG'
