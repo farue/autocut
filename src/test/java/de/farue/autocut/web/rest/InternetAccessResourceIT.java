@@ -1,22 +1,5 @@
 package de.farue.autocut.web.rest;
 
-import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.InternetAccess;
-import de.farue.autocut.repository.InternetAccessRepository;
-import de.farue.autocut.service.InternetAccessService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -27,6 +10,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.List;
+
+import javax.persistence.EntityManager;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
+import de.farue.autocut.AutocutApp;
+import de.farue.autocut.domain.InternetAccess;
+import de.farue.autocut.repository.InternetAccessRepository;
+import de.farue.autocut.service.InternetAccessService;
+
 /**
  * Integration tests for the {@link InternetAccessResource} REST controller.
  */
@@ -34,9 +36,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @WithMockUser
 public class InternetAccessResourceIT {
-
-    private static final Boolean DEFAULT_BLOCKED = false;
-    private static final Boolean UPDATED_BLOCKED = true;
 
     private static final String DEFAULT_IP_1 = "AAAAAAAAAA";
     private static final String UPDATED_IP_1 = "BBBBBBBBBB";
@@ -72,7 +71,6 @@ public class InternetAccessResourceIT {
      */
     public static InternetAccess createEntity(EntityManager em) {
         InternetAccess internetAccess = new InternetAccess()
-            .blocked(DEFAULT_BLOCKED)
             .ip1(DEFAULT_IP_1)
             .ip2(DEFAULT_IP_2)
             .switchInterface(DEFAULT_SWITCH_INTERFACE)
@@ -87,7 +85,6 @@ public class InternetAccessResourceIT {
      */
     public static InternetAccess createUpdatedEntity(EntityManager em) {
         InternetAccess internetAccess = new InternetAccess()
-            .blocked(UPDATED_BLOCKED)
             .ip1(UPDATED_IP_1)
             .ip2(UPDATED_IP_2)
             .switchInterface(UPDATED_SWITCH_INTERFACE)
@@ -114,7 +111,6 @@ public class InternetAccessResourceIT {
         List<InternetAccess> internetAccessList = internetAccessRepository.findAll();
         assertThat(internetAccessList).hasSize(databaseSizeBeforeCreate + 1);
         InternetAccess testInternetAccess = internetAccessList.get(internetAccessList.size() - 1);
-        assertThat(testInternetAccess.isBlocked()).isEqualTo(DEFAULT_BLOCKED);
         assertThat(testInternetAccess.getIp1()).isEqualTo(DEFAULT_IP_1);
         assertThat(testInternetAccess.getIp2()).isEqualTo(DEFAULT_IP_2);
         assertThat(testInternetAccess.getSwitchInterface()).isEqualTo(DEFAULT_SWITCH_INTERFACE);
@@ -143,30 +139,13 @@ public class InternetAccessResourceIT {
 
     @Test
     @Transactional
-    public void checkBlockedIsRequired() throws Exception {
-        int databaseSizeBeforeTest = internetAccessRepository.findAll().size();
-        // set the field null
-        internetAccess.setBlocked(null);
-
-        // Create the InternetAccess, which fails.
-
-        restInternetAccessMockMvc.perform(post("/api/internet-accesses")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(internetAccess)))
-            .andExpect(status().isBadRequest());
-
-        List<InternetAccess> internetAccessList = internetAccessRepository.findAll();
-        assertThat(internetAccessList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void checkIp1IsRequired() throws Exception {
         int databaseSizeBeforeTest = internetAccessRepository.findAll().size();
         // set the field null
         internetAccess.setIp1(null);
 
         // Create the InternetAccess, which fails.
+
 
         restInternetAccessMockMvc.perform(post("/api/internet-accesses")
             .contentType(MediaType.APPLICATION_JSON)
@@ -186,6 +165,7 @@ public class InternetAccessResourceIT {
 
         // Create the InternetAccess, which fails.
 
+
         restInternetAccessMockMvc.perform(post("/api/internet-accesses")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(internetAccess)))
@@ -204,6 +184,7 @@ public class InternetAccessResourceIT {
 
         // Create the InternetAccess, which fails.
 
+
         restInternetAccessMockMvc.perform(post("/api/internet-accesses")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(internetAccess)))
@@ -221,6 +202,7 @@ public class InternetAccessResourceIT {
         internetAccess.setPort(null);
 
         // Create the InternetAccess, which fails.
+
 
         restInternetAccessMockMvc.perform(post("/api/internet-accesses")
             .contentType(MediaType.APPLICATION_JSON)
@@ -242,7 +224,6 @@ public class InternetAccessResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(internetAccess.getId().intValue())))
-            .andExpect(jsonPath("$.[*].blocked").value(hasItem(DEFAULT_BLOCKED.booleanValue())))
             .andExpect(jsonPath("$.[*].ip1").value(hasItem(DEFAULT_IP_1)))
             .andExpect(jsonPath("$.[*].ip2").value(hasItem(DEFAULT_IP_2)))
             .andExpect(jsonPath("$.[*].switchInterface").value(hasItem(DEFAULT_SWITCH_INTERFACE)))
@@ -260,7 +241,6 @@ public class InternetAccessResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(internetAccess.getId().intValue()))
-            .andExpect(jsonPath("$.blocked").value(DEFAULT_BLOCKED.booleanValue()))
             .andExpect(jsonPath("$.ip1").value(DEFAULT_IP_1))
             .andExpect(jsonPath("$.ip2").value(DEFAULT_IP_2))
             .andExpect(jsonPath("$.switchInterface").value(DEFAULT_SWITCH_INTERFACE))
@@ -287,7 +267,6 @@ public class InternetAccessResourceIT {
         // Disconnect from session so that the updates on updatedInternetAccess are not directly saved in db
         em.detach(updatedInternetAccess);
         updatedInternetAccess
-            .blocked(UPDATED_BLOCKED)
             .ip1(UPDATED_IP_1)
             .ip2(UPDATED_IP_2)
             .switchInterface(UPDATED_SWITCH_INTERFACE)
@@ -302,7 +281,6 @@ public class InternetAccessResourceIT {
         List<InternetAccess> internetAccessList = internetAccessRepository.findAll();
         assertThat(internetAccessList).hasSize(databaseSizeBeforeUpdate);
         InternetAccess testInternetAccess = internetAccessList.get(internetAccessList.size() - 1);
-        assertThat(testInternetAccess.isBlocked()).isEqualTo(UPDATED_BLOCKED);
         assertThat(testInternetAccess.getIp1()).isEqualTo(UPDATED_IP_1);
         assertThat(testInternetAccess.getIp2()).isEqualTo(UPDATED_IP_2);
         assertThat(testInternetAccess.getSwitchInterface()).isEqualTo(UPDATED_SWITCH_INTERFACE);

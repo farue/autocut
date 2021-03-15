@@ -38,6 +38,7 @@
     "languages": ["en", "de"],
     "embeddableLaunchScript": false,
     "blueprints": [],
-    "creationTimestamp": 1578829876752
+    "creationTimestamp": 1578829876752,
+    "lastLiquibaseTimestamp": 1610886789000
   }
 }

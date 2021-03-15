@@ -21,22 +21,18 @@
     <div class="table-responsive" id="entities" *ngIf="networkSwitches && networkSwitches.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-            <tr>
-                <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-                <th scope="col"><span jhiTranslate="autocutApp.networkSwitch.interfaceName">Interface Name</span></th>
-                <th scope="col"><span jhiTranslate="autocutApp.networkSwitch.sshHost">Ssh Host</span></th>
-                <th scope="col"><span jhiTranslate="autocutApp.networkSwitch.sshPort">Ssh Port</span></th>
-                <th scope="col"><span jhiTranslate="autocutApp.networkSwitch.sshKey">Ssh Key</span></th>
-                <th scope="col"></th>
-            </tr>
+                <tr>
+                    <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.networkSwitch.interfaceName">Interface Name</span></th>
+                    <th scope="col" ><span jhiTranslate="autocutApp.networkSwitch.sshHost">Ssh Host</span></th>
+                    <th scope="col"></th>
+                </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let networkSwitch of networkSwitches ;trackBy: trackId">
                     <td><a [routerLink]="['/network-switch', networkSwitch.id, 'view']">{{ networkSwitch.id }}</a></td>
                     <td>{{ networkSwitch.interfaceName }}</td>
                     <td>{{ networkSwitch.sshHost }}</td>
-                    <td>{{ networkSwitch.sshPort }}</td>
-                    <td>{{ networkSwitch.sshKey }}</td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"

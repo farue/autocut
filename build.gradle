@@ -198,7 +198,6 @@ configurations {
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
     jcenter()
     //jhipster-needle-gradle-repositories - JHipster will add additional repositories
@@ -258,6 +257,7 @@ dependencies {
     implementation "org.springframework.security:spring-security-config"
     implementation "org.springframework.security:spring-security-data"
     implementation "org.springframework.security:spring-security-web"
+    implementation "com.github.ulisesbocchio:jasypt-spring-boot-starter:${jasypt_spring_boot_starter_version}"
     implementation "io.jsonwebtoken:jjwt-api"
     if (!project.hasProperty("gae")) {
         runtimeOnly "io.jsonwebtoken:jjwt-impl"
@@ -275,6 +275,9 @@ dependencies {
     implementation "org.mapstruct:mapstruct:${mapstruct_version}"
     implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:${p6spy_spring_boot_starter_version}")
     implementation("com.github.hbci4j:hbci4j-core:+")
+    implementation "com.hierynomus:sshj:${sshj_version}"
+    implementation "net.sf.expectit:expectit-core:${expectit_core_version}"
+    implementation "org.springframework.data:spring-data-envers"
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstruct_version}"
     annotationProcessor "org.hibernate:hibernate-jpamodelgen:${hibernate_version}"
     annotationProcessor "org.glassfish.jaxb:jaxb-runtime:${jaxb_runtime_version}"
@@ -310,7 +313,7 @@ task cleanResources(type: Delete) {
 }
 
 wrapper {
-    gradleVersion = "6.5"
+    gradleVersion = "6.8"
 }
 
 

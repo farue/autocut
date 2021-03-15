@@ -17,9 +17,7 @@
         "title": "Network Switch"
       },
       "interfaceName": "Interface Name",
-      "sshHost": "Ssh Host",
-      "sshPort": "Ssh Port",
-      "sshKey": "Ssh Key"
+      "sshHost": "Ssh Host"
     }
   }
 }

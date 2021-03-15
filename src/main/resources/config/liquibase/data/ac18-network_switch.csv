@@ -1,0 +1,4 @@
+id;interface_name;ssh_host
+1;Gi0;c3560-farue-1.farue.rwth-aachen.de
+2;Gi1/0;c3560-farue-2.farue.rwth-aachen.de
+3;Gi0;c3560-farue-3.farue.rwth-aachen.de

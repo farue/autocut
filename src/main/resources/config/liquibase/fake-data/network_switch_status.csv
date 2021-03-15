@@ -1,0 +1,8 @@
+id;network_switch_id;port;name;status;vlan;speed;type;timestamp
+1;1;Gi0/1;123-1;disabled;264;auto;10/100/1000BaseTX;2020-01-01T10:00:00
+2;1;Gi0/2;123-2;connected;264;a-100;10/100/1000BaseTX;2020-01-01T10:00:00
+3;1;Gi0/24;ap-epw-keller1;connected;12;a-1000;10/100/1000BaseTX;2020-01-01T10:00:00
+4;1;Gi0/25;;disabled;1;auto;Not Present;2020-01-01T10:00:00
+5;2;Gi1/0/1;;notconnect;264;auto;10/100/1000BaseTX;2020-01-02T12:00:00
+6;2;Gi1/0/2;;connected;264;a-100;10/100/1000BaseTX;2020-01-02T13:00:00
+7;2;Te1/1/1;n3k-tuerme A;connected;trunk;10G;SFP-10GBase-LR;2020-01-03T10:00:00

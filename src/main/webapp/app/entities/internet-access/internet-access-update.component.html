@@ -12,18 +12,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="autocutApp.internetAccess.blocked" for="field_blocked">Blocked</label>
-                    <input type="checkbox" class="form-control" name="blocked" id="field_blocked"
-                           formControlName="blocked"/>
-                    <div *ngIf="editForm.get('blocked')!.invalid && (editForm.get('blocked')!.dirty || editForm.get('blocked')!.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('blocked')?.errors?.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                    </div>
-                </div>
-
-                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="autocutApp.internetAccess.ip1" for="field_ip1">Ip 1</label>
                     <input type="text" class="form-control" name="ip1" id="field_ip1"
                            formControlName="ip1"/>

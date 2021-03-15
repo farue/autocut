@@ -1,6 +1,11 @@
 package de.farue.autocut.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import de.farue.autocut.service.internetaccess.SshConnection;
 
 /**
  * Properties specific to Autocut.
@@ -13,6 +18,7 @@ public class ApplicationProperties {
 
     private final Washit washit = new Washit();
     private final Banking banking = new Banking();
+    private final List<SshConnection> switchConnections = new ArrayList<>();
 
     public Washit getWashit() {
         return washit;
@@ -20,6 +26,10 @@ public class ApplicationProperties {
 
     public Banking getBanking() {
         return banking;
+    }
+
+    public List<SshConnection> getSwitchConnections() {
+        return switchConnections;
     }
 
     public static class Washit {

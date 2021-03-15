@@ -20,7 +20,7 @@ describe('Service Tests', () => {
       service = injector.get(InternetAccessService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new InternetAccess(0, false, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 0);
+      elemDefault = new InternetAccess(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 0);
     });
 
     describe('Service methods', () => {
@@ -54,7 +54,6 @@ describe('Service Tests', () => {
       it('should update a InternetAccess', () => {
         const returnedFromService = Object.assign(
           {
-            blocked: true,
             ip1: 'BBBBBB',
             ip2: 'BBBBBB',
             switchInterface: 'BBBBBB',
@@ -75,7 +74,6 @@ describe('Service Tests', () => {
       it('should return a list of InternetAccess', () => {
         const returnedFromService = Object.assign(
           {
-            blocked: true,
             ip1: 'BBBBBB',
             ip2: 'BBBBBB',
             switchInterface: 'BBBBBB',

@@ -256,6 +256,12 @@
                             <span jhiTranslate="global.menu.entities.internalTransaction">Internal Transaction</span>
                         </a>
                     </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="network-switch-status" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.networkSwitchStatus">Network Switch Status</span>
+                        </a>
+                    </li>
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>

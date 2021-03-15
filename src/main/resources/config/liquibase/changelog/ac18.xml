@@ -1,0 +1,78 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet id="remove-internet_access-blocked" author="brunecker">
+        <dropColumn tableName="internet_access" columnName="blocked" />
+    </changeSet>
+
+    <changeSet id="table-network_switch" author="brunecker">
+        <dropColumn tableName="network_switch" columnName="ssh_port" />
+        <dropColumn tableName="network_switch" columnName="ssh_key" />
+    </changeSet>
+
+    <changeSet id="update-network_switch" author="brunecker">
+        <loadUpdateData
+            file="config/liquibase/data/ac18-network_switch.csv"
+            separator=";"
+            tableName="network_switch"
+            primaryKey="id" />
+    </changeSet>
+
+    <changeSet id="table-network_switch_status" author="brunecker">
+        <createTable tableName="network_switch_status">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="port" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="status" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="vlan" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="speed" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="timestamp" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="network_switch_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+
+        <addUniqueConstraint tableName="network_switch_status"
+                             columnNames="network_switch_id, port" />
+
+        <addForeignKeyConstraint baseColumnNames="network_switch_id"
+                                 baseTableName="network_switch_status"
+                                 constraintName="fk_network_switch_status_network_switch_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="network_switch"/>
+    </changeSet>
+
+    <changeSet id="fake-data-network_switch_status" author="brunecker" context="faker">
+        <loadData
+            file="config/liquibase/fake-data/network_switch_status.csv"
+            separator=";"
+            tableName="network_switch_status">
+            <column name="id" type="numeric"/>
+            <column name="network_switch_id" type="numeric"/>
+            <column name="port" type="string"/>
+            <column name="name" type="string"/>
+            <column name="status" type="string"/>
+            <column name="vlan" type="string"/>
+            <column name="speed" type="string"/>
+            <column name="type" type="string"/>
+        </loadData>
+    </changeSet>
+
+</databaseChangeLog>

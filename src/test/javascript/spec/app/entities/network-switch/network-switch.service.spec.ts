@@ -20,7 +20,7 @@ describe('Service Tests', () => {
       service = injector.get(NetworkSwitchService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new NetworkSwitch(0, 'AAAAAAA', 'AAAAAAA', 0, 'AAAAAAA');
+      elemDefault = new NetworkSwitch(0, 'AAAAAAA', 'AAAAAAA');
     });
 
     describe('Service methods', () => {
@@ -56,8 +56,6 @@ describe('Service Tests', () => {
           {
             interfaceName: 'BBBBBB',
             sshHost: 'BBBBBB',
-            sshPort: 1,
-            sshKey: 'BBBBBB',
           },
           elemDefault
         );
@@ -76,8 +74,6 @@ describe('Service Tests', () => {
           {
             interfaceName: 'BBBBBB',
             sshHost: 'BBBBBB',
-            sshPort: 1,
-            sshKey: 'BBBBBB',
           },
           elemDefault
         );

@@ -4,11 +4,9 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
 import { INetworkSwitch, NetworkSwitch } from 'app/shared/model/network-switch.model';
 import { NetworkSwitchService } from './network-switch.service';
-import { AlertError } from 'app/shared/alert/alert-error.model';
 
 @Component({
   selector: 'jhi-network-switch-update',
@@ -21,17 +19,9 @@ export class NetworkSwitchUpdateComponent implements OnInit {
     id: [],
     interfaceName: [null, [Validators.required]],
     sshHost: [null, [Validators.required]],
-    sshPort: [null, [Validators.required, Validators.min(0), Validators.max(65535)]],
-    sshKey: [null, [Validators.required]],
   });
 
-  constructor(
-    protected dataUtils: JhiDataUtils,
-    protected eventManager: JhiEventManager,
-    protected networkSwitchService: NetworkSwitchService,
-    protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
-  ) {}
+  constructor(protected networkSwitchService: NetworkSwitchService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ networkSwitch }) => {
@@ -44,24 +34,6 @@ export class NetworkSwitchUpdateComponent implements OnInit {
       id: networkSwitch.id,
       interfaceName: networkSwitch.interfaceName,
       sshHost: networkSwitch.sshHost,
-      sshPort: networkSwitch.sshPort,
-      sshKey: networkSwitch.sshKey,
-    });
-  }
-
-  byteSize(base64String: string): string {
-    return this.dataUtils.byteSize(base64String);
-  }
-
-  openFile(contentType: string, base64String: string): void {
-    this.dataUtils.openFile(contentType, base64String);
-  }
-
-  setFileData(event: any, field: string, isImage: boolean): void {
-    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
-      this.eventManager.broadcast(
-        new JhiEventWithContent<AlertError>('autocutApp.error', { ...err, key: 'error.file.' + err.key })
-      );
     });
   }
 
@@ -85,8 +57,6 @@ export class NetworkSwitchUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       interfaceName: this.editForm.get(['interfaceName'])!.value,
       sshHost: this.editForm.get(['sshHost'])!.value,
-      sshPort: this.editForm.get(['sshPort'])!.value,
-      sshKey: this.editForm.get(['sshKey'])!.value,
     };
   }
 

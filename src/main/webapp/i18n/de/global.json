@@ -43,6 +43,9 @@
         "bankAccount": "Bank Account",
         "bankTransaction": "Bank Transaction",
         "internalTransaction": "Internal Transaction",
+        "internetAccess": "Internet Access",
+        "networkSwitchStatus": "Network Switch Status",
+        "networkSwitch": "Network Switch",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

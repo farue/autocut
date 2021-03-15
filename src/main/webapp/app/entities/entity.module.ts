@@ -85,6 +85,10 @@ import { RouterModule } from '@angular/router';
         path: 'internal-transaction',
         loadChildren: () => import('./internal-transaction/internal-transaction.module').then(m => m.AutocutInternalTransactionModule),
       },
+      {
+        path: 'network-switch-status',
+        loadChildren: () => import('./network-switch-status/network-switch-status.module').then(m => m.AutocutNetworkSwitchStatusModule),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

@@ -1,8 +1,19 @@
 package de.farue.autocut.web.rest;
 
-import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.NetworkSwitch;
-import de.farue.autocut.repository.NetworkSwitchRepository;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,18 +24,10 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import de.farue.autocut.AutocutApp;
+import de.farue.autocut.domain.NetworkSwitch;
+import de.farue.autocut.repository.NetworkSwitchRepository;
+import de.farue.autocut.service.NetworkSwitchService;
 
 /**
  * Integration tests for the {@link NetworkSwitchResource} REST controller.
@@ -40,14 +43,11 @@ public class NetworkSwitchResourceIT {
     private static final String DEFAULT_SSH_HOST = "AAAAAAAAAA";
     private static final String UPDATED_SSH_HOST = "BBBBBBBBBB";
 
-    private static final Integer DEFAULT_SSH_PORT = 0;
-    private static final Integer UPDATED_SSH_PORT = 1;
-
-    private static final String DEFAULT_SSH_KEY = "AAAAAAAAAA";
-    private static final String UPDATED_SSH_KEY = "BBBBBBBBBB";
-
     @Autowired
     private NetworkSwitchRepository networkSwitchRepository;
+
+    @Autowired
+    private NetworkSwitchService networkSwitchService;
 
     @Autowired
     private EntityManager em;
@@ -66,9 +66,7 @@ public class NetworkSwitchResourceIT {
     public static NetworkSwitch createEntity(EntityManager em) {
         NetworkSwitch networkSwitch = new NetworkSwitch()
             .interfaceName(DEFAULT_INTERFACE_NAME)
-            .sshHost(DEFAULT_SSH_HOST)
-            .sshPort(DEFAULT_SSH_PORT)
-            .sshKey(DEFAULT_SSH_KEY);
+            .sshHost(DEFAULT_SSH_HOST);
         return networkSwitch;
     }
     /**
@@ -80,9 +78,7 @@ public class NetworkSwitchResourceIT {
     public static NetworkSwitch createUpdatedEntity(EntityManager em) {
         NetworkSwitch networkSwitch = new NetworkSwitch()
             .interfaceName(UPDATED_INTERFACE_NAME)
-            .sshHost(UPDATED_SSH_HOST)
-            .sshPort(UPDATED_SSH_PORT)
-            .sshKey(UPDATED_SSH_KEY);
+            .sshHost(UPDATED_SSH_HOST);
         return networkSwitch;
     }
 
@@ -107,8 +103,6 @@ public class NetworkSwitchResourceIT {
         NetworkSwitch testNetworkSwitch = networkSwitchList.get(networkSwitchList.size() - 1);
         assertThat(testNetworkSwitch.getInterfaceName()).isEqualTo(DEFAULT_INTERFACE_NAME);
         assertThat(testNetworkSwitch.getSshHost()).isEqualTo(DEFAULT_SSH_HOST);
-        assertThat(testNetworkSwitch.getSshPort()).isEqualTo(DEFAULT_SSH_PORT);
-        assertThat(testNetworkSwitch.getSshKey()).isEqualTo(DEFAULT_SSH_KEY);
     }
 
     @Test
@@ -140,6 +134,7 @@ public class NetworkSwitchResourceIT {
 
         // Create the NetworkSwitch, which fails.
 
+
         restNetworkSwitchMockMvc.perform(post("/api/network-switches")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(networkSwitch)))
@@ -158,23 +153,6 @@ public class NetworkSwitchResourceIT {
 
         // Create the NetworkSwitch, which fails.
 
-        restNetworkSwitchMockMvc.perform(post("/api/network-switches")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(networkSwitch)))
-            .andExpect(status().isBadRequest());
-
-        List<NetworkSwitch> networkSwitchList = networkSwitchRepository.findAll();
-        assertThat(networkSwitchList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkSshPortIsRequired() throws Exception {
-        int databaseSizeBeforeTest = networkSwitchRepository.findAll().size();
-        // set the field null
-        networkSwitch.setSshPort(null);
-
-        // Create the NetworkSwitch, which fails.
 
         restNetworkSwitchMockMvc.perform(post("/api/network-switches")
             .contentType(MediaType.APPLICATION_JSON)
@@ -197,9 +175,7 @@ public class NetworkSwitchResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(networkSwitch.getId().intValue())))
             .andExpect(jsonPath("$.[*].interfaceName").value(hasItem(DEFAULT_INTERFACE_NAME)))
-            .andExpect(jsonPath("$.[*].sshHost").value(hasItem(DEFAULT_SSH_HOST)))
-            .andExpect(jsonPath("$.[*].sshPort").value(hasItem(DEFAULT_SSH_PORT)))
-            .andExpect(jsonPath("$.[*].sshKey").value(hasItem(DEFAULT_SSH_KEY.toString())));
+            .andExpect(jsonPath("$.[*].sshHost").value(hasItem(DEFAULT_SSH_HOST)));
     }
 
     @Test
@@ -214,9 +190,7 @@ public class NetworkSwitchResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(networkSwitch.getId().intValue()))
             .andExpect(jsonPath("$.interfaceName").value(DEFAULT_INTERFACE_NAME))
-            .andExpect(jsonPath("$.sshHost").value(DEFAULT_SSH_HOST))
-            .andExpect(jsonPath("$.sshPort").value(DEFAULT_SSH_PORT))
-            .andExpect(jsonPath("$.sshKey").value(DEFAULT_SSH_KEY.toString()));
+            .andExpect(jsonPath("$.sshHost").value(DEFAULT_SSH_HOST));
     }
     @Test
     @Transactional
@@ -230,7 +204,7 @@ public class NetworkSwitchResourceIT {
     @Transactional
     public void updateNetworkSwitch() throws Exception {
         // Initialize the database
-        networkSwitchRepository.saveAndFlush(networkSwitch);
+        networkSwitchService.save(networkSwitch);
 
         int databaseSizeBeforeUpdate = networkSwitchRepository.findAll().size();
 
@@ -240,9 +214,7 @@ public class NetworkSwitchResourceIT {
         em.detach(updatedNetworkSwitch);
         updatedNetworkSwitch
             .interfaceName(UPDATED_INTERFACE_NAME)
-            .sshHost(UPDATED_SSH_HOST)
-            .sshPort(UPDATED_SSH_PORT)
-            .sshKey(UPDATED_SSH_KEY);
+            .sshHost(UPDATED_SSH_HOST);
 
         restNetworkSwitchMockMvc.perform(put("/api/network-switches")
             .contentType(MediaType.APPLICATION_JSON)
@@ -255,8 +227,6 @@ public class NetworkSwitchResourceIT {
         NetworkSwitch testNetworkSwitch = networkSwitchList.get(networkSwitchList.size() - 1);
         assertThat(testNetworkSwitch.getInterfaceName()).isEqualTo(UPDATED_INTERFACE_NAME);
         assertThat(testNetworkSwitch.getSshHost()).isEqualTo(UPDATED_SSH_HOST);
-        assertThat(testNetworkSwitch.getSshPort()).isEqualTo(UPDATED_SSH_PORT);
-        assertThat(testNetworkSwitch.getSshKey()).isEqualTo(UPDATED_SSH_KEY);
     }
 
     @Test
@@ -279,7 +249,7 @@ public class NetworkSwitchResourceIT {
     @Transactional
     public void deleteNetworkSwitch() throws Exception {
         // Initialize the database
-        networkSwitchRepository.saveAndFlush(networkSwitch);
+        networkSwitchService.save(networkSwitch);
 
         int databaseSizeBeforeDelete = networkSwitchRepository.findAll().size();
 

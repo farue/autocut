@@ -1,15 +1,16 @@
 package de.farue.autocut.web.rest;
 
-import de.farue.autocut.domain.NetworkSwitch;
-import de.farue.autocut.repository.NetworkSwitchRepository;
-import de.farue.autocut.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,18 +20,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import de.farue.autocut.domain.NetworkSwitch;
+import de.farue.autocut.service.NetworkSwitchService;
+import de.farue.autocut.web.rest.errors.BadRequestAlertException;
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link de.farue.autocut.domain.NetworkSwitch}.
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class NetworkSwitchResource {
 
     private final Logger log = LoggerFactory.getLogger(NetworkSwitchResource.class);
@@ -40,10 +40,10 @@ public class NetworkSwitchResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final NetworkSwitchRepository networkSwitchRepository;
+    private final NetworkSwitchService networkSwitchService;
 
-    public NetworkSwitchResource(NetworkSwitchRepository networkSwitchRepository) {
-        this.networkSwitchRepository = networkSwitchRepository;
+    public NetworkSwitchResource(NetworkSwitchService networkSwitchService) {
+        this.networkSwitchService = networkSwitchService;
     }
 
     /**
@@ -59,7 +59,7 @@ public class NetworkSwitchResource {
         if (networkSwitch.getId() != null) {
             throw new BadRequestAlertException("A new networkSwitch cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        NetworkSwitch result = networkSwitchRepository.save(networkSwitch);
+        NetworkSwitch result = networkSwitchService.save(networkSwitch);
         return ResponseEntity.created(new URI("/api/network-switches/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -80,7 +80,7 @@ public class NetworkSwitchResource {
         if (networkSwitch.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        NetworkSwitch result = networkSwitchRepository.save(networkSwitch);
+        NetworkSwitch result = networkSwitchService.save(networkSwitch);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, networkSwitch.getId().toString()))
             .body(result);
@@ -94,7 +94,7 @@ public class NetworkSwitchResource {
     @GetMapping("/network-switches")
     public List<NetworkSwitch> getAllNetworkSwitches() {
         log.debug("REST request to get all NetworkSwitches");
-        return networkSwitchRepository.findAll();
+        return networkSwitchService.findAll();
     }
 
     /**
@@ -106,7 +106,7 @@ public class NetworkSwitchResource {
     @GetMapping("/network-switches/{id}")
     public ResponseEntity<NetworkSwitch> getNetworkSwitch(@PathVariable Long id) {
         log.debug("REST request to get NetworkSwitch : {}", id);
-        Optional<NetworkSwitch> networkSwitch = networkSwitchRepository.findById(id);
+        Optional<NetworkSwitch> networkSwitch = networkSwitchService.findOne(id);
         return ResponseUtil.wrapOrNotFound(networkSwitch);
     }
 
@@ -119,8 +119,7 @@ public class NetworkSwitchResource {
     @DeleteMapping("/network-switches/{id}")
     public ResponseEntity<Void> deleteNetworkSwitch(@PathVariable Long id) {
         log.debug("REST request to delete NetworkSwitch : {}", id);
-
-        networkSwitchRepository.deleteById(id);
+        networkSwitchService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }

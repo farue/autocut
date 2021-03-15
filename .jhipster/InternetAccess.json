@@ -2,13 +2,6 @@
   "name": "InternetAccess",
   "fields": [
     {
-      "fieldName": "blocked",
-      "fieldType": "Boolean",
-      "fieldValidateRules": [
-        "required"
-      ]
-    },
-    {
       "fieldName": "ip1",
       "fieldType": "String",
       "fieldValidateRules": [

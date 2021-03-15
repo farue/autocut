@@ -93,18 +93,27 @@ relationship ManyToOne {
 
 @service(serviceClass)
 entity InternetAccess {
-	blocked Boolean required
     ip1 String required
     ip2 String required
     switchInterface String required
     port Integer required min(1)
 }
 
+// only holds the most recent status (cache for current switch status)
+@service(serviceClass)
+entity NetworkSwitchStatus {
+    port String
+    name String
+    status String
+    vlan String
+    speed String
+    type String
+}
+
+@service(serviceClass)
 entity NetworkSwitch {
     interfaceName String required
     sshHost String required
-    sshPort Integer required min(0) max(65535)
-    sshKey TextBlob required
 }
 
 relationship OneToOne {
@@ -113,6 +122,7 @@ relationship OneToOne {
 
 relationship ManyToOne {
 	InternetAccess{networkSwitch} to NetworkSwitch
+	NetworkSwitchStatus{networkSwitch} to NetworkSwitch
 }
 
 

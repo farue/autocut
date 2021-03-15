@@ -1,16 +1,17 @@
 package de.farue.autocut.service;
 
-import de.farue.autocut.domain.InternetAccess;
-import de.farue.autocut.repository.InternetAccessRepository;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import de.farue.autocut.domain.InternetAccess;
+import de.farue.autocut.repository.InternetAccessRepository;
 
 /**
  * Service Implementation for managing {@link InternetAccess}.
@@ -83,7 +84,6 @@ public class InternetAccessService {
      */
     public void delete(Long id) {
         log.debug("Request to delete InternetAccess : {}", id);
-
         internetAccessRepository.deleteById(id);
     }
 }

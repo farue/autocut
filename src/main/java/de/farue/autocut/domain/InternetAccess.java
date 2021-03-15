@@ -1,9 +1,6 @@
 package de.farue.autocut.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +12,12 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * A InternetAccess.
@@ -30,10 +32,6 @@ public class InternetAccess implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotNull
-    @Column(name = "blocked", nullable = false)
-    private Boolean blocked;
 
     @NotNull
     @Column(name = "ip_1", nullable = false)
@@ -67,19 +65,6 @@ public class InternetAccess implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Boolean isBlocked() {
-        return blocked;
-    }
-
-    public InternetAccess blocked(Boolean blocked) {
-        this.blocked = blocked;
-        return this;
-    }
-
-    public void setBlocked(Boolean blocked) {
-        this.blocked = blocked;
     }
 
     public String getIp1() {
@@ -161,6 +146,13 @@ public class InternetAccess implements Serializable {
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
+    public String getSwitchPortName() {
+        if (networkSwitch == null) {
+            return null;
+        }
+        return networkSwitch.getInterfaceName() + "/" + port;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -182,7 +174,6 @@ public class InternetAccess implements Serializable {
     public String toString() {
         return "InternetAccess{" +
             "id=" + getId() +
-            ", blocked='" + isBlocked() + "'" +
             ", ip1='" + getIp1() + "'" +
             ", ip2='" + getIp2() + "'" +
             ", switchInterface='" + getSwitchInterface() + "'" +

@@ -20,7 +20,6 @@ export class InternetAccessUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    blocked: [null, [Validators.required]],
     ip1: [null, [Validators.required]],
     ip2: [null, [Validators.required]],
     switchInterface: [null, [Validators.required]],
@@ -46,7 +45,6 @@ export class InternetAccessUpdateComponent implements OnInit {
   updateForm(internetAccess: IInternetAccess): void {
     this.editForm.patchValue({
       id: internetAccess.id,
-      blocked: internetAccess.blocked,
       ip1: internetAccess.ip1,
       ip2: internetAccess.ip2,
       switchInterface: internetAccess.switchInterface,
@@ -73,7 +71,6 @@ export class InternetAccessUpdateComponent implements OnInit {
     return {
       ...new InternetAccess(),
       id: this.editForm.get(['id'])!.value,
-      blocked: this.editForm.get(['blocked'])!.value,
       ip1: this.editForm.get(['ip1'])!.value,
       ip2: this.editForm.get(['ip2'])!.value,
       switchInterface: this.editForm.get(['switchInterface'])!.value,

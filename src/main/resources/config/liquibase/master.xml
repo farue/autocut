@@ -53,4 +53,5 @@
     <include file="config/liquibase/changelog/ac55.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/ac7.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/ac43.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/ac18.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

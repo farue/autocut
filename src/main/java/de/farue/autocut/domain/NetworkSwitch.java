@@ -1,19 +1,17 @@
 package de.farue.autocut.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A NetworkSwitch.
@@ -36,17 +34,6 @@ public class NetworkSwitch implements Serializable {
     @NotNull
     @Column(name = "ssh_host", nullable = false)
     private String sshHost;
-
-    @NotNull
-    @Min(value = 0)
-    @Max(value = 65535)
-    @Column(name = "ssh_port", nullable = false)
-    private Integer sshPort;
-
-
-    @Lob
-    @Column(name = "ssh_key", nullable = false)
-    private String sshKey;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -82,32 +69,6 @@ public class NetworkSwitch implements Serializable {
     public void setSshHost(String sshHost) {
         this.sshHost = sshHost;
     }
-
-    public Integer getSshPort() {
-        return sshPort;
-    }
-
-    public NetworkSwitch sshPort(Integer sshPort) {
-        this.sshPort = sshPort;
-        return this;
-    }
-
-    public void setSshPort(Integer sshPort) {
-        this.sshPort = sshPort;
-    }
-
-    public String getSshKey() {
-        return sshKey;
-    }
-
-    public NetworkSwitch sshKey(String sshKey) {
-        this.sshKey = sshKey;
-        return this;
-    }
-
-    public void setSshKey(String sshKey) {
-        this.sshKey = sshKey;
-    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -133,8 +94,6 @@ public class NetworkSwitch implements Serializable {
             "id=" + getId() +
             ", interfaceName='" + getInterfaceName() + "'" +
             ", sshHost='" + getSshHost() + "'" +
-            ", sshPort=" + getSshPort() +
-            ", sshKey='" + getSshKey() + "'" +
             "}";
     }
 }
