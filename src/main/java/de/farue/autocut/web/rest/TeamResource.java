@@ -3,21 +3,21 @@ package de.farue.autocut.web.rest;
 import de.farue.autocut.domain.Team;
 import de.farue.autocut.repository.TeamRepository;
 import de.farue.autocut.web.rest.errors.BadRequestAlertException;
-
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link de.farue.autocut.domain.Team}.
@@ -54,30 +54,89 @@ public class TeamResource {
             throw new BadRequestAlertException("A new team cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Team result = teamRepository.save(team);
-        return ResponseEntity.created(new URI("/api/teams/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/teams/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /teams} : Updates an existing team.
+     * {@code PUT  /teams/:id} : Updates an existing team.
      *
+     * @param id the id of the team to save.
      * @param team the team to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated team,
      * or with status {@code 400 (Bad Request)} if the team is not valid,
      * or with status {@code 500 (Internal Server Error)} if the team couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/teams")
-    public ResponseEntity<Team> updateTeam(@Valid @RequestBody Team team) throws URISyntaxException {
-        log.debug("REST request to update Team : {}", team);
+    @PutMapping("/teams/{id}")
+    public ResponseEntity<Team> updateTeam(@PathVariable(value = "id", required = false) final Long id, @Valid @RequestBody Team team)
+        throws URISyntaxException {
+        log.debug("REST request to update Team : {}, {}", id, team);
         if (team.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        if (!Objects.equals(id, team.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!teamRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
         Team result = teamRepository.save(team);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, team.getId().toString()))
             .body(result);
+    }
+
+    /**
+     * {@code PATCH  /teams/:id} : Partial updates given fields of an existing team, field will ignore if it is null
+     *
+     * @param id the id of the team to save.
+     * @param team the team to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated team,
+     * or with status {@code 400 (Bad Request)} if the team is not valid,
+     * or with status {@code 404 (Not Found)} if the team is not found,
+     * or with status {@code 500 (Internal Server Error)} if the team couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PatchMapping(value = "/teams/{id}", consumes = "application/merge-patch+json")
+    public ResponseEntity<Team> partialUpdateTeam(
+        @PathVariable(value = "id", required = false) final Long id,
+        @NotNull @RequestBody Team team
+    ) throws URISyntaxException {
+        log.debug("REST request to partial update Team partially : {}, {}", id, team);
+        if (team.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, team.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!teamRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
+        Optional<Team> result = teamRepository
+            .findById(team.getId())
+            .map(
+                existingTeam -> {
+                    if (team.getName() != null) {
+                        existingTeam.setName(team.getName());
+                    }
+
+                    return existingTeam;
+                }
+            )
+            .map(teamRepository::save);
+
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, team.getId().toString())
+        );
     }
 
     /**
@@ -114,6 +173,9 @@ public class TeamResource {
     public ResponseEntity<Void> deleteTeam(@PathVariable Long id) {
         log.debug("REST request to delete Team : {}", id);
         teamRepository.deleteById(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

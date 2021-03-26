@@ -3,9 +3,10 @@
     "teamMembership": {
       "home": {
         "title": "Team Memberships",
+        "refreshListLabel": "Liste aktualisieren",
         "createLabel": "Team Membership erstellen",
         "createOrEditLabel": "Team Membership erstellen oder bearbeiten",
-        "notFound": "No Team Memberships found"
+        "notFound": "Keine Team Memberships gefunden"
       },
       "created": "Team Membership erstellt mit ID {{ param }}",
       "updated": "Team Membership aktualisiert mit ID {{ param }}",
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Team Membership"
       },
+      "id": "ID",
       "role": "Role",
       "start": "Start",
       "end": "End",

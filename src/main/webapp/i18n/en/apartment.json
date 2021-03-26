@@ -3,6 +3,7 @@
     "apartment": {
       "home": {
         "title": "Apartments",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Apartment",
         "createOrEditLabel": "Create or edit a Apartment",
         "notFound": "No Apartments found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Apartment"
       },
+      "id": "ID",
       "nr": "Nr",
       "type": "Type",
       "maxNumberOfLeases": "Max Number Of Leases",

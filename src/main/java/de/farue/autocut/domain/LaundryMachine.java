@@ -1,16 +1,14 @@
 package de.farue.autocut.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import de.farue.autocut.domain.enumeration.LaundryMachineType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
-import de.farue.autocut.domain.enumeration.LaundryMachineType;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A LaundryMachine.
@@ -45,6 +43,7 @@ public class LaundryMachine implements Serializable {
 
     @OneToMany(mappedBy = "laundryMachine")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "laundryMachine" }, allowSetters = true)
     private Set<LaundryMachineProgram> programs = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -56,8 +55,13 @@ public class LaundryMachine implements Serializable {
         this.id = id;
     }
 
+    public LaundryMachine id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getIdentifier() {
-        return identifier;
+        return this.identifier;
     }
 
     public LaundryMachine identifier(String identifier) {
@@ -70,7 +74,7 @@ public class LaundryMachine implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public LaundryMachine name(String name) {
@@ -83,7 +87,7 @@ public class LaundryMachine implements Serializable {
     }
 
     public LaundryMachineType getType() {
-        return type;
+        return this.type;
     }
 
     public LaundryMachine type(LaundryMachineType type) {
@@ -95,8 +99,8 @@ public class LaundryMachine implements Serializable {
         this.type = type;
     }
 
-    public Boolean isEnabled() {
-        return enabled;
+    public Boolean getEnabled() {
+        return this.enabled;
     }
 
     public LaundryMachine enabled(Boolean enabled) {
@@ -109,11 +113,11 @@ public class LaundryMachine implements Serializable {
     }
 
     public Set<LaundryMachineProgram> getPrograms() {
-        return programs;
+        return this.programs;
     }
 
     public LaundryMachine programs(Set<LaundryMachineProgram> laundryMachinePrograms) {
-        this.programs = laundryMachinePrograms;
+        this.setPrograms(laundryMachinePrograms);
         return this;
     }
 
@@ -130,8 +134,15 @@ public class LaundryMachine implements Serializable {
     }
 
     public void setPrograms(Set<LaundryMachineProgram> laundryMachinePrograms) {
+        if (this.programs != null) {
+            this.programs.forEach(i -> i.setLaundryMachine(null));
+        }
+        if (laundryMachinePrograms != null) {
+            laundryMachinePrograms.forEach(i -> i.setLaundryMachine(this));
+        }
         this.programs = laundryMachinePrograms;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -147,7 +158,8 @@ public class LaundryMachine implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore
@@ -158,7 +170,7 @@ public class LaundryMachine implements Serializable {
             ", identifier='" + getIdentifier() + "'" +
             ", name='" + getName() + "'" +
             ", type='" + getType() + "'" +
-            ", enabled='" + isEnabled() + "'" +
+            ", enabled='" + getEnabled() + "'" +
             "}";
     }
 }

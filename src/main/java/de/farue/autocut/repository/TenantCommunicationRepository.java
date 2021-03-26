@@ -1,14 +1,12 @@
 package de.farue.autocut.repository;
 
 import de.farue.autocut.domain.TenantCommunication;
-
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
 /**
- * Spring Data  repository for the TenantCommunication entity.
+ * Spring Data SQL repository for the TenantCommunication entity.
  */
 @SuppressWarnings("unused")
 @Repository
-public interface TenantCommunicationRepository extends JpaRepository<TenantCommunication, Long> {
-}
+public interface TenantCommunicationRepository extends JpaRepository<TenantCommunication, Long> {}

@@ -3,6 +3,7 @@
     "activity": {
       "home": {
         "title": "Activities",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Activity",
         "createOrEditLabel": "Create or edit a Activity",
         "notFound": "No Activities found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Activity"
       },
+      "id": "ID",
       "year": "Year",
       "term": "Term",
       "start": "Start",

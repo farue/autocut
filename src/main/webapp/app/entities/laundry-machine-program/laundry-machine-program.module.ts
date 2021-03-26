@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
-import { AutocutSharedModule } from 'app/shared/shared.module';
-import { LaundryMachineProgramComponent } from './laundry-machine-program.component';
-import { LaundryMachineProgramDetailComponent } from './laundry-machine-program-detail.component';
-import { LaundryMachineProgramUpdateComponent } from './laundry-machine-program-update.component';
-import { LaundryMachineProgramDeleteDialogComponent } from './laundry-machine-program-delete-dialog.component';
-import { laundryMachineProgramRoute } from './laundry-machine-program.route';
+import { SharedModule } from 'app/shared/shared.module';
+import { LaundryMachineProgramComponent } from './list/laundry-machine-program.component';
+import { LaundryMachineProgramDetailComponent } from './detail/laundry-machine-program-detail.component';
+import { LaundryMachineProgramUpdateComponent } from './update/laundry-machine-program-update.component';
+import { LaundryMachineProgramDeleteDialogComponent } from './delete/laundry-machine-program-delete-dialog.component';
+import { LaundryMachineProgramRoutingModule } from './route/laundry-machine-program-routing.module';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(laundryMachineProgramRoute)],
+  imports: [SharedModule, LaundryMachineProgramRoutingModule],
   declarations: [
     LaundryMachineProgramComponent,
     LaundryMachineProgramDetailComponent,
@@ -18,4 +17,4 @@ import { laundryMachineProgramRoute } from './laundry-machine-program.route';
   ],
   entryComponents: [LaundryMachineProgramDeleteDialogComponent],
 })
-export class AutocutLaundryMachineProgramModule {}
+export class LaundryMachineProgramModule {}

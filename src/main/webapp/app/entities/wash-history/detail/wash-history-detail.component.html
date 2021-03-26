@@ -1,0 +1,68 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="washHistory">
+      <h2 data-cy="washHistoryDetailsHeading"><span jhiTranslate="autocutApp.washHistory.detail.title">Wash History</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ washHistory.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.washHistory.usingDate">Using Date</span></dt>
+        <dd>
+          <span>{{ washHistory.usingDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.washHistory.reservationDate">Reservation Date</span></dt>
+        <dd>
+          <span>{{ washHistory.reservationDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.washHistory.lastModifiedDate">Last Modified Date</span></dt>
+        <dd>
+          <span>{{ washHistory.lastModifiedDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.washHistory.status">Status</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'autocutApp.WashHistoryStatus.' + washHistory.status }}">{{ washHistory.status }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.washHistory.reservationTenant">Reservation Tenant</span></dt>
+        <dd>
+          <div *ngIf="washHistory.reservationTenant">
+            <a [routerLink]="['/tenant', washHistory.reservationTenant?.id, 'view']">{{ washHistory.reservationTenant?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.washHistory.usingTenant">Using Tenant</span></dt>
+        <dd>
+          <div *ngIf="washHistory.usingTenant">
+            <a [routerLink]="['/tenant', washHistory.usingTenant?.id, 'view']">{{ washHistory.usingTenant?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.washHistory.machine">Machine</span></dt>
+        <dd>
+          <div *ngIf="washHistory.machine">
+            <a [routerLink]="['/laundry-machine', washHistory.machine?.id, 'view']">{{ washHistory.machine?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.washHistory.program">Program</span></dt>
+        <dd>
+          <div *ngIf="washHistory.program">
+            <a [routerLink]="['/laundry-machine-program', washHistory.program?.id, 'view']">{{ washHistory.program?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/wash-history', washHistory.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

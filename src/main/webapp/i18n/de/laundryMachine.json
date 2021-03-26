@@ -3,9 +3,10 @@
     "laundryMachine": {
       "home": {
         "title": "Laundry Machines",
+        "refreshListLabel": "Liste aktualisieren",
         "createLabel": "Laundry Machine erstellen",
         "createOrEditLabel": "Laundry Machine erstellen oder bearbeiten",
-        "notFound": "No Laundry Machines found"
+        "notFound": "Keine Laundry Machines gefunden"
       },
       "created": "Laundry Machine erstellt mit ID {{ param }}",
       "updated": "Laundry Machine aktualisiert mit ID {{ param }}",
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Laundry Machine"
       },
+      "id": "ID",
       "identifier": "Identifier",
       "name": "Name",
       "type": "Type",

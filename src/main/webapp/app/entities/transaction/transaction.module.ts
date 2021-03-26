@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
-import { AutocutSharedModule } from 'app/shared/shared.module';
-import { TransactionComponent } from './transaction.component';
-import { TransactionDetailComponent } from './transaction-detail.component';
-import { TransactionUpdateComponent } from './transaction-update.component';
-import { TransactionDeleteDialogComponent } from './transaction-delete-dialog.component';
-import { transactionRoute } from './transaction.route';
+import { SharedModule } from 'app/shared/shared.module';
+import { TransactionComponent } from './list/transaction.component';
+import { TransactionDetailComponent } from './detail/transaction-detail.component';
+import { TransactionUpdateComponent } from './update/transaction-update.component';
+import { TransactionDeleteDialogComponent } from './delete/transaction-delete-dialog.component';
+import { TransactionRoutingModule } from './route/transaction-routing.module';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(transactionRoute)],
+  imports: [SharedModule, TransactionRoutingModule],
   declarations: [TransactionComponent, TransactionDetailComponent, TransactionUpdateComponent, TransactionDeleteDialogComponent],
   entryComponents: [TransactionDeleteDialogComponent],
 })
-export class AutocutTransactionModule {}
+export class TransactionModule {}

@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
-import { AutocutSharedModule } from 'app/shared/shared.module';
-import { AddressComponent } from './address.component';
-import { AddressDetailComponent } from './address-detail.component';
-import { AddressUpdateComponent } from './address-update.component';
-import { AddressDeleteDialogComponent } from './address-delete-dialog.component';
-import { addressRoute } from './address.route';
+import { SharedModule } from 'app/shared/shared.module';
+import { AddressComponent } from './list/address.component';
+import { AddressDetailComponent } from './detail/address-detail.component';
+import { AddressUpdateComponent } from './update/address-update.component';
+import { AddressDeleteDialogComponent } from './delete/address-delete-dialog.component';
+import { AddressRoutingModule } from './route/address-routing.module';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(addressRoute)],
+  imports: [SharedModule, AddressRoutingModule],
   declarations: [AddressComponent, AddressDetailComponent, AddressUpdateComponent, AddressDeleteDialogComponent],
   entryComponents: [AddressDeleteDialogComponent],
 })
-export class AutocutAddressModule {}
+export class AddressModule {}

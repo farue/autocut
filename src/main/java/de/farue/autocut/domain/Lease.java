@@ -1,16 +1,14 @@
 package de.farue.autocut.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Lease.
@@ -50,17 +48,21 @@ public class Lease implements Serializable {
 
     @OneToMany(mappedBy = "lease")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "user", "securityPolicies", "lease" }, allowSetters = true)
     private Set<Tenant> tenants = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JoinTable(name = "lease_transaction_book",
-               joinColumns = @JoinColumn(name = "lease_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "transaction_book_id", referencedColumnName = "id"))
+    @JoinTable(
+        name = "rel_lease__transaction_book",
+        joinColumns = @JoinColumn(name = "lease_id"),
+        inverseJoinColumns = @JoinColumn(name = "transaction_book_id")
+    )
+    @JsonIgnoreProperties(value = { "transactions", "leases" }, allowSetters = true)
     private Set<TransactionBook> transactionBooks = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "leases", allowSetters = true)
+    @JsonIgnoreProperties(value = { "internetAccess", "leases", "address" }, allowSetters = true)
     private Apartment apartment;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -72,8 +74,13 @@ public class Lease implements Serializable {
         this.id = id;
     }
 
+    public Lease id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getNr() {
-        return nr;
+        return this.nr;
     }
 
     public Lease nr(String nr) {
@@ -86,7 +93,7 @@ public class Lease implements Serializable {
     }
 
     public LocalDate getStart() {
-        return start;
+        return this.start;
     }
 
     public Lease start(LocalDate start) {
@@ -99,7 +106,7 @@ public class Lease implements Serializable {
     }
 
     public LocalDate getEnd() {
-        return end;
+        return this.end;
     }
 
     public Lease end(LocalDate end) {
@@ -111,8 +118,8 @@ public class Lease implements Serializable {
         this.end = end;
     }
 
-    public Boolean isBlocked() {
-        return blocked;
+    public Boolean getBlocked() {
+        return this.blocked;
     }
 
     public Lease blocked(Boolean blocked) {
@@ -125,7 +132,7 @@ public class Lease implements Serializable {
     }
 
     public byte[] getPictureContract() {
-        return pictureContract;
+        return this.pictureContract;
     }
 
     public Lease pictureContract(byte[] pictureContract) {
@@ -138,7 +145,7 @@ public class Lease implements Serializable {
     }
 
     public String getPictureContractContentType() {
-        return pictureContractContentType;
+        return this.pictureContractContentType;
     }
 
     public Lease pictureContractContentType(String pictureContractContentType) {
@@ -151,11 +158,11 @@ public class Lease implements Serializable {
     }
 
     public Set<Tenant> getTenants() {
-        return tenants;
+        return this.tenants;
     }
 
     public Lease tenants(Set<Tenant> tenants) {
-        this.tenants = tenants;
+        this.setTenants(tenants);
         return this;
     }
 
@@ -172,15 +179,21 @@ public class Lease implements Serializable {
     }
 
     public void setTenants(Set<Tenant> tenants) {
+        if (this.tenants != null) {
+            this.tenants.forEach(i -> i.setLease(null));
+        }
+        if (tenants != null) {
+            tenants.forEach(i -> i.setLease(this));
+        }
         this.tenants = tenants;
     }
 
     public Set<TransactionBook> getTransactionBooks() {
-        return transactionBooks;
+        return this.transactionBooks;
     }
 
     public Lease transactionBooks(Set<TransactionBook> transactionBooks) {
-        this.transactionBooks = transactionBooks;
+        this.setTransactionBooks(transactionBooks);
         return this;
     }
 
@@ -201,17 +214,18 @@ public class Lease implements Serializable {
     }
 
     public Apartment getApartment() {
-        return apartment;
+        return this.apartment;
     }
 
     public Lease apartment(Apartment apartment) {
-        this.apartment = apartment;
+        this.setApartment(apartment);
         return this;
     }
 
     public void setApartment(Apartment apartment) {
         this.apartment = apartment;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -227,7 +241,8 @@ public class Lease implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore
@@ -238,7 +253,7 @@ public class Lease implements Serializable {
             ", nr='" + getNr() + "'" +
             ", start='" + getStart() + "'" +
             ", end='" + getEnd() + "'" +
-            ", blocked='" + isBlocked() + "'" +
+            ", blocked='" + getBlocked() + "'" +
             ", pictureContract='" + getPictureContract() + "'" +
             ", pictureContractContentType='" + getPictureContractContentType() + "'" +
             "}";

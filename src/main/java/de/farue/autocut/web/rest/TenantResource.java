@@ -1,22 +1,23 @@
 package de.farue.autocut.web.rest;
 
 import de.farue.autocut.domain.Tenant;
+import de.farue.autocut.repository.TenantRepository;
 import de.farue.autocut.service.TenantService;
 import de.farue.autocut.web.rest.errors.BadRequestAlertException;
-
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link de.farue.autocut.domain.Tenant}.
@@ -34,8 +35,11 @@ public class TenantResource {
 
     private final TenantService tenantService;
 
-    public TenantResource(TenantService tenantService) {
+    private final TenantRepository tenantRepository;
+
+    public TenantResource(TenantService tenantService, TenantRepository tenantRepository) {
         this.tenantService = tenantService;
+        this.tenantRepository = tenantRepository;
     }
 
     /**
@@ -52,30 +56,80 @@ public class TenantResource {
             throw new BadRequestAlertException("A new tenant cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Tenant result = tenantService.save(tenant);
-        return ResponseEntity.created(new URI("/api/tenants/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/tenants/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /tenants} : Updates an existing tenant.
+     * {@code PUT  /tenants/:id} : Updates an existing tenant.
      *
+     * @param id the id of the tenant to save.
      * @param tenant the tenant to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated tenant,
      * or with status {@code 400 (Bad Request)} if the tenant is not valid,
      * or with status {@code 500 (Internal Server Error)} if the tenant couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/tenants")
-    public ResponseEntity<Tenant> updateTenant(@Valid @RequestBody Tenant tenant) throws URISyntaxException {
-        log.debug("REST request to update Tenant : {}", tenant);
+    @PutMapping("/tenants/{id}")
+    public ResponseEntity<Tenant> updateTenant(
+        @PathVariable(value = "id", required = false) final Long id,
+        @Valid @RequestBody Tenant tenant
+    ) throws URISyntaxException {
+        log.debug("REST request to update Tenant : {}, {}", id, tenant);
         if (tenant.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        if (!Objects.equals(id, tenant.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!tenantRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
         Tenant result = tenantService.save(tenant);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, tenant.getId().toString()))
             .body(result);
+    }
+
+    /**
+     * {@code PATCH  /tenants/:id} : Partial updates given fields of an existing tenant, field will ignore if it is null
+     *
+     * @param id the id of the tenant to save.
+     * @param tenant the tenant to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated tenant,
+     * or with status {@code 400 (Bad Request)} if the tenant is not valid,
+     * or with status {@code 404 (Not Found)} if the tenant is not found,
+     * or with status {@code 500 (Internal Server Error)} if the tenant couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PatchMapping(value = "/tenants/{id}", consumes = "application/merge-patch+json")
+    public ResponseEntity<Tenant> partialUpdateTenant(
+        @PathVariable(value = "id", required = false) final Long id,
+        @NotNull @RequestBody Tenant tenant
+    ) throws URISyntaxException {
+        log.debug("REST request to partial update Tenant partially : {}, {}", id, tenant);
+        if (tenant.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, tenant.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!tenantRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
+        Optional<Tenant> result = tenantService.partialUpdate(tenant);
+
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, tenant.getId().toString())
+        );
     }
 
     /**
@@ -112,6 +166,9 @@ public class TenantResource {
     public ResponseEntity<Void> deleteTenant(@PathVariable Long id) {
         log.debug("REST request to delete Tenant : {}", id);
         tenantService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

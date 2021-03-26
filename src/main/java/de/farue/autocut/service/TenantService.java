@@ -2,14 +2,12 @@ package de.farue.autocut.service;
 
 import de.farue.autocut.domain.Tenant;
 import de.farue.autocut.repository.TenantRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service Implementation for managing {@link Tenant}.
@@ -38,6 +36,41 @@ public class TenantService {
     }
 
     /**
+     * Partially update a tenant.
+     *
+     * @param tenant the entity to update partially.
+     * @return the persisted entity.
+     */
+    public Optional<Tenant> partialUpdate(Tenant tenant) {
+        log.debug("Request to partially update Tenant : {}", tenant);
+
+        return tenantRepository
+            .findById(tenant.getId())
+            .map(
+                existingTenant -> {
+                    if (tenant.getFirstName() != null) {
+                        existingTenant.setFirstName(tenant.getFirstName());
+                    }
+                    if (tenant.getLastName() != null) {
+                        existingTenant.setLastName(tenant.getLastName());
+                    }
+                    if (tenant.getPictureId() != null) {
+                        existingTenant.setPictureId(tenant.getPictureId());
+                    }
+                    if (tenant.getPictureIdContentType() != null) {
+                        existingTenant.setPictureIdContentType(tenant.getPictureIdContentType());
+                    }
+                    if (tenant.getVerified() != null) {
+                        existingTenant.setVerified(tenant.getVerified());
+                    }
+
+                    return existingTenant;
+                }
+            )
+            .map(tenantRepository::save);
+    }
+
+    /**
      * Get all the tenants.
      *
      * @return the list of entities.
@@ -47,7 +80,6 @@ public class TenantService {
         log.debug("Request to get all Tenants");
         return tenantRepository.findAll();
     }
-
 
     /**
      * Get one tenant by id.

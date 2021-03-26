@@ -1,14 +1,11 @@
 package de.farue.autocut.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.time.Instant;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Communication.
@@ -29,7 +26,6 @@ public class Communication implements Serializable {
     @Column(name = "subject", length = 80, nullable = false)
     private String subject;
 
-    
     @Lob
     @Column(name = "text", nullable = false)
     private String text;
@@ -43,7 +39,6 @@ public class Communication implements Serializable {
     private Instant date;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "communications", allowSetters = true)
     private User tenant;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -55,8 +50,13 @@ public class Communication implements Serializable {
         this.id = id;
     }
 
+    public Communication id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getSubject() {
-        return subject;
+        return this.subject;
     }
 
     public Communication subject(String subject) {
@@ -69,7 +69,7 @@ public class Communication implements Serializable {
     }
 
     public String getText() {
-        return text;
+        return this.text;
     }
 
     public Communication text(String text) {
@@ -82,7 +82,7 @@ public class Communication implements Serializable {
     }
 
     public String getNote() {
-        return note;
+        return this.note;
     }
 
     public Communication note(String note) {
@@ -95,7 +95,7 @@ public class Communication implements Serializable {
     }
 
     public Instant getDate() {
-        return date;
+        return this.date;
     }
 
     public Communication date(Instant date) {
@@ -108,17 +108,18 @@ public class Communication implements Serializable {
     }
 
     public User getTenant() {
-        return tenant;
+        return this.tenant;
     }
 
     public Communication tenant(User user) {
-        this.tenant = user;
+        this.setTenant(user);
         return this;
     }
 
     public void setTenant(User user) {
         this.tenant = user;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -134,7 +135,8 @@ public class Communication implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

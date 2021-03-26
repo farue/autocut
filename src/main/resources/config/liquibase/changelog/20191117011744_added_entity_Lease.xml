@@ -3,17 +3,15 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-
-        <property name="autoIncrement" value="true"/>
 
     <!--
         Added the entity Lease.
     -->
     <changeSet id="20191117011744-1" author="jhipster">
         <createTable tableName="lease">
-            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="nr" type="varchar(255)">
@@ -43,7 +41,7 @@
 
     <changeSet id="20191117011744-1-relations" author="jhipster">
 
-        <createTable tableName="lease_transaction_book">
+        <createTable tableName="rel_lease__transaction_book">
             <column name="transaction_book_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
@@ -52,9 +50,9 @@
             </column>
         </createTable>
 
-        <addPrimaryKey columnNames="lease_id, transaction_book_id" tableName="lease_transaction_book"/>
-        
+        <addPrimaryKey columnNames="lease_id, transaction_book_id" tableName="rel_lease__transaction_book"/>
     </changeSet>
+
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
     <!--
@@ -80,5 +78,4 @@
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
-
 </databaseChangeLog>

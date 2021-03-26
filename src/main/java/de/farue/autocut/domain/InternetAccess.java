@@ -1,14 +1,11 @@
 package de.farue.autocut.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
+import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.*;
-
-import java.io.Serializable;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A InternetAccess.
@@ -46,11 +43,10 @@ public class InternetAccess implements Serializable {
     private Integer port;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "internetAccesses", allowSetters = true)
     private NetworkSwitch networkSwitch;
 
+    @JsonIgnoreProperties(value = { "internetAccess", "leases", "address" }, allowSetters = true)
     @OneToOne(mappedBy = "internetAccess")
-    @JsonIgnore
     private Apartment apartment;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -62,8 +58,13 @@ public class InternetAccess implements Serializable {
         this.id = id;
     }
 
-    public Boolean isBlocked() {
-        return blocked;
+    public InternetAccess id(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public Boolean getBlocked() {
+        return this.blocked;
     }
 
     public InternetAccess blocked(Boolean blocked) {
@@ -76,7 +77,7 @@ public class InternetAccess implements Serializable {
     }
 
     public String getIp1() {
-        return ip1;
+        return this.ip1;
     }
 
     public InternetAccess ip1(String ip1) {
@@ -89,7 +90,7 @@ public class InternetAccess implements Serializable {
     }
 
     public String getIp2() {
-        return ip2;
+        return this.ip2;
     }
 
     public InternetAccess ip2(String ip2) {
@@ -102,7 +103,7 @@ public class InternetAccess implements Serializable {
     }
 
     public String getSwitchInterface() {
-        return switchInterface;
+        return this.switchInterface;
     }
 
     public InternetAccess switchInterface(String switchInterface) {
@@ -115,7 +116,7 @@ public class InternetAccess implements Serializable {
     }
 
     public Integer getPort() {
-        return port;
+        return this.port;
     }
 
     public InternetAccess port(Integer port) {
@@ -128,11 +129,11 @@ public class InternetAccess implements Serializable {
     }
 
     public NetworkSwitch getNetworkSwitch() {
-        return networkSwitch;
+        return this.networkSwitch;
     }
 
     public InternetAccess networkSwitch(NetworkSwitch networkSwitch) {
-        this.networkSwitch = networkSwitch;
+        this.setNetworkSwitch(networkSwitch);
         return this;
     }
 
@@ -141,17 +142,24 @@ public class InternetAccess implements Serializable {
     }
 
     public Apartment getApartment() {
-        return apartment;
+        return this.apartment;
     }
 
     public InternetAccess apartment(Apartment apartment) {
-        this.apartment = apartment;
+        this.setApartment(apartment);
         return this;
     }
 
     public void setApartment(Apartment apartment) {
+        if (this.apartment != null) {
+            this.apartment.setInternetAccess(null);
+        }
+        if (apartment != null) {
+            apartment.setInternetAccess(this);
+        }
         this.apartment = apartment;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -167,7 +175,8 @@ public class InternetAccess implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore
@@ -175,7 +184,7 @@ public class InternetAccess implements Serializable {
     public String toString() {
         return "InternetAccess{" +
             "id=" + getId() +
-            ", blocked='" + isBlocked() + "'" +
+            ", blocked='" + getBlocked() + "'" +
             ", ip1='" + getIp1() + "'" +
             ", ip2='" + getIp2() + "'" +
             ", switchInterface='" + getSwitchInterface() + "'" +

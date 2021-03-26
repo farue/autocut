@@ -3,9 +3,10 @@
     "transaction": {
       "home": {
         "title": "Transactions",
+        "refreshListLabel": "Liste aktualisieren",
         "createLabel": "Transaction erstellen",
         "createOrEditLabel": "Transaction erstellen oder bearbeiten",
-        "notFound": "No Transactions found"
+        "notFound": "Keine Transactions gefunden"
       },
       "created": "Transaction erstellt mit ID {{ param }}",
       "updated": "Transaction aktualisiert mit ID {{ param }}",
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Transaction"
       },
+      "id": "ID",
       "kind": "Kind",
       "bookingDate": "Booking Date",
       "valueDate": "Value Date",

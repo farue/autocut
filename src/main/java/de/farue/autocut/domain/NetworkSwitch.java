@@ -1,12 +1,10 @@
 package de.farue.autocut.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
+import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.*;
-
-import java.io.Serializable;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A NetworkSwitch.
@@ -36,7 +34,6 @@ public class NetworkSwitch implements Serializable {
     @Column(name = "ssh_port", nullable = false)
     private Integer sshPort;
 
-    
     @Lob
     @Column(name = "ssh_key", nullable = false)
     private String sshKey;
@@ -50,8 +47,13 @@ public class NetworkSwitch implements Serializable {
         this.id = id;
     }
 
+    public NetworkSwitch id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getInterfaceName() {
-        return interfaceName;
+        return this.interfaceName;
     }
 
     public NetworkSwitch interfaceName(String interfaceName) {
@@ -64,7 +66,7 @@ public class NetworkSwitch implements Serializable {
     }
 
     public String getSshHost() {
-        return sshHost;
+        return this.sshHost;
     }
 
     public NetworkSwitch sshHost(String sshHost) {
@@ -77,7 +79,7 @@ public class NetworkSwitch implements Serializable {
     }
 
     public Integer getSshPort() {
-        return sshPort;
+        return this.sshPort;
     }
 
     public NetworkSwitch sshPort(Integer sshPort) {
@@ -90,7 +92,7 @@ public class NetworkSwitch implements Serializable {
     }
 
     public String getSshKey() {
-        return sshKey;
+        return this.sshKey;
     }
 
     public NetworkSwitch sshKey(String sshKey) {
@@ -101,6 +103,7 @@ public class NetworkSwitch implements Serializable {
     public void setSshKey(String sshKey) {
         this.sshKey = sshKey;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -116,7 +119,8 @@ public class NetworkSwitch implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

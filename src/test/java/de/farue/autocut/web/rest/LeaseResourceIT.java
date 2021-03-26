@@ -1,18 +1,29 @@
 package de.farue.autocut.web.rest;
 
-import de.farue.autocut.AutocutApp;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import de.farue.autocut.IntegrationTest;
 import de.farue.autocut.domain.Lease;
 import de.farue.autocut.repository.LeaseRepository;
 import de.farue.autocut.service.LeaseService;
-
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
@@ -20,26 +31,15 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
-import javax.persistence.EntityManager;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Integration tests for the {@link LeaseResource} REST controller.
  */
-@SpringBootTest(classes = AutocutApp.class)
+@IntegrationTest
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
-public class LeaseResourceIT {
+class LeaseResourceIT {
 
     private static final String DEFAULT_NR = "AAAAAAAAAA";
     private static final String UPDATED_NR = "BBBBBBBBBB";
@@ -58,6 +58,12 @@ public class LeaseResourceIT {
     private static final String DEFAULT_PICTURE_CONTRACT_CONTENT_TYPE = "image/jpg";
     private static final String UPDATED_PICTURE_CONTRACT_CONTENT_TYPE = "image/png";
 
+    private static final String ENTITY_API_URL = "/api/leases";
+    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
+
+    private static Random random = new Random();
+    private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
+
     @Autowired
     private LeaseRepository leaseRepository;
 
@@ -66,9 +72,6 @@ public class LeaseResourceIT {
 
     @Mock
     private LeaseService leaseServiceMock;
-
-    @Autowired
-    private LeaseService leaseService;
 
     @Autowired
     private EntityManager em;
@@ -94,6 +97,7 @@ public class LeaseResourceIT {
             .pictureContractContentType(DEFAULT_PICTURE_CONTRACT_CONTENT_TYPE);
         return lease;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -118,12 +122,11 @@ public class LeaseResourceIT {
 
     @Test
     @Transactional
-    public void createLease() throws Exception {
+    void createLease() throws Exception {
         int databaseSizeBeforeCreate = leaseRepository.findAll().size();
         // Create the Lease
-        restLeaseMockMvc.perform(post("/api/leases")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(lease)))
+        restLeaseMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(lease)))
             .andExpect(status().isCreated());
 
         // Validate the Lease in the database
@@ -133,23 +136,22 @@ public class LeaseResourceIT {
         assertThat(testLease.getNr()).isEqualTo(DEFAULT_NR);
         assertThat(testLease.getStart()).isEqualTo(DEFAULT_START);
         assertThat(testLease.getEnd()).isEqualTo(DEFAULT_END);
-        assertThat(testLease.isBlocked()).isEqualTo(DEFAULT_BLOCKED);
+        assertThat(testLease.getBlocked()).isEqualTo(DEFAULT_BLOCKED);
         assertThat(testLease.getPictureContract()).isEqualTo(DEFAULT_PICTURE_CONTRACT);
         assertThat(testLease.getPictureContractContentType()).isEqualTo(DEFAULT_PICTURE_CONTRACT_CONTENT_TYPE);
     }
 
     @Test
     @Transactional
-    public void createLeaseWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = leaseRepository.findAll().size();
-
+    void createLeaseWithExistingId() throws Exception {
         // Create the Lease with an existing ID
         lease.setId(1L);
 
+        int databaseSizeBeforeCreate = leaseRepository.findAll().size();
+
         // An entity with an existing ID cannot be created, so this API call must fail
-        restLeaseMockMvc.perform(post("/api/leases")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(lease)))
+        restLeaseMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(lease)))
             .andExpect(status().isBadRequest());
 
         // Validate the Lease in the database
@@ -157,20 +159,17 @@ public class LeaseResourceIT {
         assertThat(leaseList).hasSize(databaseSizeBeforeCreate);
     }
 
-
     @Test
     @Transactional
-    public void checkNrIsRequired() throws Exception {
+    void checkNrIsRequired() throws Exception {
         int databaseSizeBeforeTest = leaseRepository.findAll().size();
         // set the field null
         lease.setNr(null);
 
         // Create the Lease, which fails.
 
-
-        restLeaseMockMvc.perform(post("/api/leases")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(lease)))
+        restLeaseMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(lease)))
             .andExpect(status().isBadRequest());
 
         List<Lease> leaseList = leaseRepository.findAll();
@@ -179,17 +178,15 @@ public class LeaseResourceIT {
 
     @Test
     @Transactional
-    public void checkStartIsRequired() throws Exception {
+    void checkStartIsRequired() throws Exception {
         int databaseSizeBeforeTest = leaseRepository.findAll().size();
         // set the field null
         lease.setStart(null);
 
         // Create the Lease, which fails.
 
-
-        restLeaseMockMvc.perform(post("/api/leases")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(lease)))
+        restLeaseMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(lease)))
             .andExpect(status().isBadRequest());
 
         List<Lease> leaseList = leaseRepository.findAll();
@@ -198,17 +195,15 @@ public class LeaseResourceIT {
 
     @Test
     @Transactional
-    public void checkEndIsRequired() throws Exception {
+    void checkEndIsRequired() throws Exception {
         int databaseSizeBeforeTest = leaseRepository.findAll().size();
         // set the field null
         lease.setEnd(null);
 
         // Create the Lease, which fails.
 
-
-        restLeaseMockMvc.perform(post("/api/leases")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(lease)))
+        restLeaseMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(lease)))
             .andExpect(status().isBadRequest());
 
         List<Lease> leaseList = leaseRepository.findAll();
@@ -217,12 +212,13 @@ public class LeaseResourceIT {
 
     @Test
     @Transactional
-    public void getAllLeases() throws Exception {
+    void getAllLeases() throws Exception {
         // Initialize the database
         leaseRepository.saveAndFlush(lease);
 
         // Get all the leaseList
-        restLeaseMockMvc.perform(get("/api/leases?sort=id,desc"))
+        restLeaseMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(lease.getId().intValue())))
@@ -233,35 +229,34 @@ public class LeaseResourceIT {
             .andExpect(jsonPath("$.[*].pictureContractContentType").value(hasItem(DEFAULT_PICTURE_CONTRACT_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].pictureContract").value(hasItem(Base64Utils.encodeToString(DEFAULT_PICTURE_CONTRACT))));
     }
-    
-    @SuppressWarnings({"unchecked"})
-    public void getAllLeasesWithEagerRelationshipsIsEnabled() throws Exception {
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllLeasesWithEagerRelationshipsIsEnabled() throws Exception {
         when(leaseServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
-        restLeaseMockMvc.perform(get("/api/leases?eagerload=true"))
-            .andExpect(status().isOk());
+        restLeaseMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
 
         verify(leaseServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
-    @SuppressWarnings({"unchecked"})
-    public void getAllLeasesWithEagerRelationshipsIsNotEnabled() throws Exception {
+    @SuppressWarnings({ "unchecked" })
+    void getAllLeasesWithEagerRelationshipsIsNotEnabled() throws Exception {
         when(leaseServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
-        restLeaseMockMvc.perform(get("/api/leases?eagerload=true"))
-            .andExpect(status().isOk());
+        restLeaseMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
 
         verify(leaseServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @Test
     @Transactional
-    public void getLease() throws Exception {
+    void getLease() throws Exception {
         // Initialize the database
         leaseRepository.saveAndFlush(lease);
 
         // Get the lease
-        restLeaseMockMvc.perform(get("/api/leases/{id}", lease.getId()))
+        restLeaseMockMvc
+            .perform(get(ENTITY_API_URL_ID, lease.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(lease.getId().intValue()))
@@ -272,19 +267,19 @@ public class LeaseResourceIT {
             .andExpect(jsonPath("$.pictureContractContentType").value(DEFAULT_PICTURE_CONTRACT_CONTENT_TYPE))
             .andExpect(jsonPath("$.pictureContract").value(Base64Utils.encodeToString(DEFAULT_PICTURE_CONTRACT)));
     }
+
     @Test
     @Transactional
-    public void getNonExistingLease() throws Exception {
+    void getNonExistingLease() throws Exception {
         // Get the lease
-        restLeaseMockMvc.perform(get("/api/leases/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restLeaseMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    public void updateLease() throws Exception {
+    void putNewLease() throws Exception {
         // Initialize the database
-        leaseService.save(lease);
+        leaseRepository.saveAndFlush(lease);
 
         int databaseSizeBeforeUpdate = leaseRepository.findAll().size();
 
@@ -300,9 +295,12 @@ public class LeaseResourceIT {
             .pictureContract(UPDATED_PICTURE_CONTRACT)
             .pictureContractContentType(UPDATED_PICTURE_CONTRACT_CONTENT_TYPE);
 
-        restLeaseMockMvc.perform(put("/api/leases")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(updatedLease)))
+        restLeaseMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, updatedLease.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedLease))
+            )
             .andExpect(status().isOk());
 
         // Validate the Lease in the database
@@ -312,20 +310,24 @@ public class LeaseResourceIT {
         assertThat(testLease.getNr()).isEqualTo(UPDATED_NR);
         assertThat(testLease.getStart()).isEqualTo(UPDATED_START);
         assertThat(testLease.getEnd()).isEqualTo(UPDATED_END);
-        assertThat(testLease.isBlocked()).isEqualTo(UPDATED_BLOCKED);
+        assertThat(testLease.getBlocked()).isEqualTo(UPDATED_BLOCKED);
         assertThat(testLease.getPictureContract()).isEqualTo(UPDATED_PICTURE_CONTRACT);
         assertThat(testLease.getPictureContractContentType()).isEqualTo(UPDATED_PICTURE_CONTRACT_CONTENT_TYPE);
     }
 
     @Test
     @Transactional
-    public void updateNonExistingLease() throws Exception {
+    void putNonExistingLease() throws Exception {
         int databaseSizeBeforeUpdate = leaseRepository.findAll().size();
+        lease.setId(count.incrementAndGet());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restLeaseMockMvc.perform(put("/api/leases")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(lease)))
+        restLeaseMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, lease.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(lease))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the Lease in the database
@@ -335,15 +337,185 @@ public class LeaseResourceIT {
 
     @Test
     @Transactional
-    public void deleteLease() throws Exception {
+    void putWithIdMismatchLease() throws Exception {
+        int databaseSizeBeforeUpdate = leaseRepository.findAll().size();
+        lease.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restLeaseMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(lease))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the Lease in the database
+        List<Lease> leaseList = leaseRepository.findAll();
+        assertThat(leaseList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void putWithMissingIdPathParamLease() throws Exception {
+        int databaseSizeBeforeUpdate = leaseRepository.findAll().size();
+        lease.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restLeaseMockMvc
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(lease)))
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the Lease in the database
+        List<Lease> leaseList = leaseRepository.findAll();
+        assertThat(leaseList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void partialUpdateLeaseWithPatch() throws Exception {
         // Initialize the database
-        leaseService.save(lease);
+        leaseRepository.saveAndFlush(lease);
+
+        int databaseSizeBeforeUpdate = leaseRepository.findAll().size();
+
+        // Update the lease using partial update
+        Lease partialUpdatedLease = new Lease();
+        partialUpdatedLease.setId(lease.getId());
+
+        partialUpdatedLease
+            .nr(UPDATED_NR)
+            .start(UPDATED_START)
+            .pictureContract(UPDATED_PICTURE_CONTRACT)
+            .pictureContractContentType(UPDATED_PICTURE_CONTRACT_CONTENT_TYPE);
+
+        restLeaseMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedLease.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedLease))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the Lease in the database
+        List<Lease> leaseList = leaseRepository.findAll();
+        assertThat(leaseList).hasSize(databaseSizeBeforeUpdate);
+        Lease testLease = leaseList.get(leaseList.size() - 1);
+        assertThat(testLease.getNr()).isEqualTo(UPDATED_NR);
+        assertThat(testLease.getStart()).isEqualTo(UPDATED_START);
+        assertThat(testLease.getEnd()).isEqualTo(DEFAULT_END);
+        assertThat(testLease.getBlocked()).isEqualTo(DEFAULT_BLOCKED);
+        assertThat(testLease.getPictureContract()).isEqualTo(UPDATED_PICTURE_CONTRACT);
+        assertThat(testLease.getPictureContractContentType()).isEqualTo(UPDATED_PICTURE_CONTRACT_CONTENT_TYPE);
+    }
+
+    @Test
+    @Transactional
+    void fullUpdateLeaseWithPatch() throws Exception {
+        // Initialize the database
+        leaseRepository.saveAndFlush(lease);
+
+        int databaseSizeBeforeUpdate = leaseRepository.findAll().size();
+
+        // Update the lease using partial update
+        Lease partialUpdatedLease = new Lease();
+        partialUpdatedLease.setId(lease.getId());
+
+        partialUpdatedLease
+            .nr(UPDATED_NR)
+            .start(UPDATED_START)
+            .end(UPDATED_END)
+            .blocked(UPDATED_BLOCKED)
+            .pictureContract(UPDATED_PICTURE_CONTRACT)
+            .pictureContractContentType(UPDATED_PICTURE_CONTRACT_CONTENT_TYPE);
+
+        restLeaseMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedLease.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedLease))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the Lease in the database
+        List<Lease> leaseList = leaseRepository.findAll();
+        assertThat(leaseList).hasSize(databaseSizeBeforeUpdate);
+        Lease testLease = leaseList.get(leaseList.size() - 1);
+        assertThat(testLease.getNr()).isEqualTo(UPDATED_NR);
+        assertThat(testLease.getStart()).isEqualTo(UPDATED_START);
+        assertThat(testLease.getEnd()).isEqualTo(UPDATED_END);
+        assertThat(testLease.getBlocked()).isEqualTo(UPDATED_BLOCKED);
+        assertThat(testLease.getPictureContract()).isEqualTo(UPDATED_PICTURE_CONTRACT);
+        assertThat(testLease.getPictureContractContentType()).isEqualTo(UPDATED_PICTURE_CONTRACT_CONTENT_TYPE);
+    }
+
+    @Test
+    @Transactional
+    void patchNonExistingLease() throws Exception {
+        int databaseSizeBeforeUpdate = leaseRepository.findAll().size();
+        lease.setId(count.incrementAndGet());
+
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        restLeaseMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, lease.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(lease))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the Lease in the database
+        List<Lease> leaseList = leaseRepository.findAll();
+        assertThat(leaseList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithIdMismatchLease() throws Exception {
+        int databaseSizeBeforeUpdate = leaseRepository.findAll().size();
+        lease.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restLeaseMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(lease))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the Lease in the database
+        List<Lease> leaseList = leaseRepository.findAll();
+        assertThat(leaseList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithMissingIdPathParamLease() throws Exception {
+        int databaseSizeBeforeUpdate = leaseRepository.findAll().size();
+        lease.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restLeaseMockMvc
+            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(lease)))
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the Lease in the database
+        List<Lease> leaseList = leaseRepository.findAll();
+        assertThat(leaseList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void deleteLease() throws Exception {
+        // Initialize the database
+        leaseRepository.saveAndFlush(lease);
 
         int databaseSizeBeforeDelete = leaseRepository.findAll().size();
 
         // Delete the lease
-        restLeaseMockMvc.perform(delete("/api/leases/{id}", lease.getId())
-            .accept(MediaType.APPLICATION_JSON))
+        restLeaseMockMvc
+            .perform(delete(ENTITY_API_URL_ID, lease.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

@@ -1,36 +1,36 @@
 package de.farue.autocut.web.rest;
 
-import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.Communication;
-import de.farue.autocut.repository.CommunicationRepository;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
-import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import de.farue.autocut.IntegrationTest;
+import de.farue.autocut.domain.Communication;
+import de.farue.autocut.repository.CommunicationRepository;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
+import javax.persistence.EntityManager;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
+
 /**
  * Integration tests for the {@link CommunicationResource} REST controller.
  */
-@SpringBootTest(classes = AutocutApp.class)
+@IntegrationTest
 @AutoConfigureMockMvc
 @WithMockUser
-public class CommunicationResourceIT {
+class CommunicationResourceIT {
 
     private static final String DEFAULT_SUBJECT = "AAAAAAAAAA";
     private static final String UPDATED_SUBJECT = "BBBBBBBBBB";
@@ -43,6 +43,12 @@ public class CommunicationResourceIT {
 
     private static final Instant DEFAULT_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final String ENTITY_API_URL = "/api/communications";
+    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
+
+    private static Random random = new Random();
+    private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     @Autowired
     private CommunicationRepository communicationRepository;
@@ -62,13 +68,10 @@ public class CommunicationResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Communication createEntity(EntityManager em) {
-        Communication communication = new Communication()
-            .subject(DEFAULT_SUBJECT)
-            .text(DEFAULT_TEXT)
-            .note(DEFAULT_NOTE)
-            .date(DEFAULT_DATE);
+        Communication communication = new Communication().subject(DEFAULT_SUBJECT).text(DEFAULT_TEXT).note(DEFAULT_NOTE).date(DEFAULT_DATE);
         return communication;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -76,11 +79,7 @@ public class CommunicationResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Communication createUpdatedEntity(EntityManager em) {
-        Communication communication = new Communication()
-            .subject(UPDATED_SUBJECT)
-            .text(UPDATED_TEXT)
-            .note(UPDATED_NOTE)
-            .date(UPDATED_DATE);
+        Communication communication = new Communication().subject(UPDATED_SUBJECT).text(UPDATED_TEXT).note(UPDATED_NOTE).date(UPDATED_DATE);
         return communication;
     }
 
@@ -91,12 +90,11 @@ public class CommunicationResourceIT {
 
     @Test
     @Transactional
-    public void createCommunication() throws Exception {
+    void createCommunication() throws Exception {
         int databaseSizeBeforeCreate = communicationRepository.findAll().size();
         // Create the Communication
-        restCommunicationMockMvc.perform(post("/api/communications")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(communication)))
+        restCommunicationMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(communication)))
             .andExpect(status().isCreated());
 
         // Validate the Communication in the database
@@ -111,16 +109,15 @@ public class CommunicationResourceIT {
 
     @Test
     @Transactional
-    public void createCommunicationWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = communicationRepository.findAll().size();
-
+    void createCommunicationWithExistingId() throws Exception {
         // Create the Communication with an existing ID
         communication.setId(1L);
 
+        int databaseSizeBeforeCreate = communicationRepository.findAll().size();
+
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCommunicationMockMvc.perform(post("/api/communications")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(communication)))
+        restCommunicationMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(communication)))
             .andExpect(status().isBadRequest());
 
         // Validate the Communication in the database
@@ -128,20 +125,17 @@ public class CommunicationResourceIT {
         assertThat(communicationList).hasSize(databaseSizeBeforeCreate);
     }
 
-
     @Test
     @Transactional
-    public void checkSubjectIsRequired() throws Exception {
+    void checkSubjectIsRequired() throws Exception {
         int databaseSizeBeforeTest = communicationRepository.findAll().size();
         // set the field null
         communication.setSubject(null);
 
         // Create the Communication, which fails.
 
-
-        restCommunicationMockMvc.perform(post("/api/communications")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(communication)))
+        restCommunicationMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(communication)))
             .andExpect(status().isBadRequest());
 
         List<Communication> communicationList = communicationRepository.findAll();
@@ -150,17 +144,15 @@ public class CommunicationResourceIT {
 
     @Test
     @Transactional
-    public void checkDateIsRequired() throws Exception {
+    void checkDateIsRequired() throws Exception {
         int databaseSizeBeforeTest = communicationRepository.findAll().size();
         // set the field null
         communication.setDate(null);
 
         // Create the Communication, which fails.
 
-
-        restCommunicationMockMvc.perform(post("/api/communications")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(communication)))
+        restCommunicationMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(communication)))
             .andExpect(status().isBadRequest());
 
         List<Communication> communicationList = communicationRepository.findAll();
@@ -169,12 +161,13 @@ public class CommunicationResourceIT {
 
     @Test
     @Transactional
-    public void getAllCommunications() throws Exception {
+    void getAllCommunications() throws Exception {
         // Initialize the database
         communicationRepository.saveAndFlush(communication);
 
         // Get all the communicationList
-        restCommunicationMockMvc.perform(get("/api/communications?sort=id,desc"))
+        restCommunicationMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(communication.getId().intValue())))
@@ -183,15 +176,16 @@ public class CommunicationResourceIT {
             .andExpect(jsonPath("$.[*].note").value(hasItem(DEFAULT_NOTE.toString())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
     }
-    
+
     @Test
     @Transactional
-    public void getCommunication() throws Exception {
+    void getCommunication() throws Exception {
         // Initialize the database
         communicationRepository.saveAndFlush(communication);
 
         // Get the communication
-        restCommunicationMockMvc.perform(get("/api/communications/{id}", communication.getId()))
+        restCommunicationMockMvc
+            .perform(get(ENTITY_API_URL_ID, communication.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(communication.getId().intValue()))
@@ -200,17 +194,17 @@ public class CommunicationResourceIT {
             .andExpect(jsonPath("$.note").value(DEFAULT_NOTE.toString()))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
     }
+
     @Test
     @Transactional
-    public void getNonExistingCommunication() throws Exception {
+    void getNonExistingCommunication() throws Exception {
         // Get the communication
-        restCommunicationMockMvc.perform(get("/api/communications/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restCommunicationMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    public void updateCommunication() throws Exception {
+    void putNewCommunication() throws Exception {
         // Initialize the database
         communicationRepository.saveAndFlush(communication);
 
@@ -220,15 +214,14 @@ public class CommunicationResourceIT {
         Communication updatedCommunication = communicationRepository.findById(communication.getId()).get();
         // Disconnect from session so that the updates on updatedCommunication are not directly saved in db
         em.detach(updatedCommunication);
-        updatedCommunication
-            .subject(UPDATED_SUBJECT)
-            .text(UPDATED_TEXT)
-            .note(UPDATED_NOTE)
-            .date(UPDATED_DATE);
+        updatedCommunication.subject(UPDATED_SUBJECT).text(UPDATED_TEXT).note(UPDATED_NOTE).date(UPDATED_DATE);
 
-        restCommunicationMockMvc.perform(put("/api/communications")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(updatedCommunication)))
+        restCommunicationMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, updatedCommunication.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedCommunication))
+            )
             .andExpect(status().isOk());
 
         // Validate the Communication in the database
@@ -243,13 +236,17 @@ public class CommunicationResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingCommunication() throws Exception {
+    void putNonExistingCommunication() throws Exception {
         int databaseSizeBeforeUpdate = communicationRepository.findAll().size();
+        communication.setId(count.incrementAndGet());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restCommunicationMockMvc.perform(put("/api/communications")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(communication)))
+        restCommunicationMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, communication.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(communication))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the Communication in the database
@@ -259,15 +256,173 @@ public class CommunicationResourceIT {
 
     @Test
     @Transactional
-    public void deleteCommunication() throws Exception {
+    void putWithIdMismatchCommunication() throws Exception {
+        int databaseSizeBeforeUpdate = communicationRepository.findAll().size();
+        communication.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restCommunicationMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(communication))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the Communication in the database
+        List<Communication> communicationList = communicationRepository.findAll();
+        assertThat(communicationList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void putWithMissingIdPathParamCommunication() throws Exception {
+        int databaseSizeBeforeUpdate = communicationRepository.findAll().size();
+        communication.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restCommunicationMockMvc
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(communication)))
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the Communication in the database
+        List<Communication> communicationList = communicationRepository.findAll();
+        assertThat(communicationList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void partialUpdateCommunicationWithPatch() throws Exception {
+        // Initialize the database
+        communicationRepository.saveAndFlush(communication);
+
+        int databaseSizeBeforeUpdate = communicationRepository.findAll().size();
+
+        // Update the communication using partial update
+        Communication partialUpdatedCommunication = new Communication();
+        partialUpdatedCommunication.setId(communication.getId());
+
+        partialUpdatedCommunication.subject(UPDATED_SUBJECT).text(UPDATED_TEXT).note(UPDATED_NOTE).date(UPDATED_DATE);
+
+        restCommunicationMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedCommunication.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedCommunication))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the Communication in the database
+        List<Communication> communicationList = communicationRepository.findAll();
+        assertThat(communicationList).hasSize(databaseSizeBeforeUpdate);
+        Communication testCommunication = communicationList.get(communicationList.size() - 1);
+        assertThat(testCommunication.getSubject()).isEqualTo(UPDATED_SUBJECT);
+        assertThat(testCommunication.getText()).isEqualTo(UPDATED_TEXT);
+        assertThat(testCommunication.getNote()).isEqualTo(UPDATED_NOTE);
+        assertThat(testCommunication.getDate()).isEqualTo(UPDATED_DATE);
+    }
+
+    @Test
+    @Transactional
+    void fullUpdateCommunicationWithPatch() throws Exception {
+        // Initialize the database
+        communicationRepository.saveAndFlush(communication);
+
+        int databaseSizeBeforeUpdate = communicationRepository.findAll().size();
+
+        // Update the communication using partial update
+        Communication partialUpdatedCommunication = new Communication();
+        partialUpdatedCommunication.setId(communication.getId());
+
+        partialUpdatedCommunication.subject(UPDATED_SUBJECT).text(UPDATED_TEXT).note(UPDATED_NOTE).date(UPDATED_DATE);
+
+        restCommunicationMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedCommunication.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedCommunication))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the Communication in the database
+        List<Communication> communicationList = communicationRepository.findAll();
+        assertThat(communicationList).hasSize(databaseSizeBeforeUpdate);
+        Communication testCommunication = communicationList.get(communicationList.size() - 1);
+        assertThat(testCommunication.getSubject()).isEqualTo(UPDATED_SUBJECT);
+        assertThat(testCommunication.getText()).isEqualTo(UPDATED_TEXT);
+        assertThat(testCommunication.getNote()).isEqualTo(UPDATED_NOTE);
+        assertThat(testCommunication.getDate()).isEqualTo(UPDATED_DATE);
+    }
+
+    @Test
+    @Transactional
+    void patchNonExistingCommunication() throws Exception {
+        int databaseSizeBeforeUpdate = communicationRepository.findAll().size();
+        communication.setId(count.incrementAndGet());
+
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        restCommunicationMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, communication.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(communication))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the Communication in the database
+        List<Communication> communicationList = communicationRepository.findAll();
+        assertThat(communicationList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithIdMismatchCommunication() throws Exception {
+        int databaseSizeBeforeUpdate = communicationRepository.findAll().size();
+        communication.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restCommunicationMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(communication))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the Communication in the database
+        List<Communication> communicationList = communicationRepository.findAll();
+        assertThat(communicationList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithMissingIdPathParamCommunication() throws Exception {
+        int databaseSizeBeforeUpdate = communicationRepository.findAll().size();
+        communication.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restCommunicationMockMvc
+            .perform(
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(communication))
+            )
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the Communication in the database
+        List<Communication> communicationList = communicationRepository.findAll();
+        assertThat(communicationList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void deleteCommunication() throws Exception {
         // Initialize the database
         communicationRepository.saveAndFlush(communication);
 
         int databaseSizeBeforeDelete = communicationRepository.findAll().size();
 
         // Delete the communication
-        restCommunicationMockMvc.perform(delete("/api/communications/{id}", communication.getId())
-            .accept(MediaType.APPLICATION_JSON))
+        restCommunicationMockMvc
+            .perform(delete(ENTITY_API_URL_ID, communication.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

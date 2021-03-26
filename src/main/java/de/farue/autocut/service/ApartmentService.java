@@ -2,14 +2,12 @@ package de.farue.autocut.service;
 
 import de.farue.autocut.domain.Apartment;
 import de.farue.autocut.repository.ApartmentRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service Implementation for managing {@link Apartment}.
@@ -38,6 +36,35 @@ public class ApartmentService {
     }
 
     /**
+     * Partially update a apartment.
+     *
+     * @param apartment the entity to update partially.
+     * @return the persisted entity.
+     */
+    public Optional<Apartment> partialUpdate(Apartment apartment) {
+        log.debug("Request to partially update Apartment : {}", apartment);
+
+        return apartmentRepository
+            .findById(apartment.getId())
+            .map(
+                existingApartment -> {
+                    if (apartment.getNr() != null) {
+                        existingApartment.setNr(apartment.getNr());
+                    }
+                    if (apartment.getType() != null) {
+                        existingApartment.setType(apartment.getType());
+                    }
+                    if (apartment.getMaxNumberOfLeases() != null) {
+                        existingApartment.setMaxNumberOfLeases(apartment.getMaxNumberOfLeases());
+                    }
+
+                    return existingApartment;
+                }
+            )
+            .map(apartmentRepository::save);
+    }
+
+    /**
      * Get all the apartments.
      *
      * @return the list of entities.
@@ -47,7 +74,6 @@ public class ApartmentService {
         log.debug("Request to get all Apartments");
         return apartmentRepository.findAll();
     }
-
 
     /**
      * Get one apartment by id.

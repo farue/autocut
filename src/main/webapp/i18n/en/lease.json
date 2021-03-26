@@ -3,6 +3,7 @@
     "lease": {
       "home": {
         "title": "Leases",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Lease",
         "createOrEditLabel": "Create or edit a Lease",
         "notFound": "No Leases found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Lease"
       },
+      "id": "ID",
       "nr": "Nr",
       "start": "Start",
       "end": "End",

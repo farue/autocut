@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
-import { AutocutSharedModule } from 'app/shared/shared.module';
-import { SecurityPolicyComponent } from './security-policy.component';
-import { SecurityPolicyDetailComponent } from './security-policy-detail.component';
-import { SecurityPolicyUpdateComponent } from './security-policy-update.component';
-import { SecurityPolicyDeleteDialogComponent } from './security-policy-delete-dialog.component';
-import { securityPolicyRoute } from './security-policy.route';
+import { SharedModule } from 'app/shared/shared.module';
+import { SecurityPolicyComponent } from './list/security-policy.component';
+import { SecurityPolicyDetailComponent } from './detail/security-policy-detail.component';
+import { SecurityPolicyUpdateComponent } from './update/security-policy-update.component';
+import { SecurityPolicyDeleteDialogComponent } from './delete/security-policy-delete-dialog.component';
+import { SecurityPolicyRoutingModule } from './route/security-policy-routing.module';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(securityPolicyRoute)],
+  imports: [SharedModule, SecurityPolicyRoutingModule],
   declarations: [
     SecurityPolicyComponent,
     SecurityPolicyDetailComponent,
@@ -18,4 +17,4 @@ import { securityPolicyRoute } from './security-policy.route';
   ],
   entryComponents: [SecurityPolicyDeleteDialogComponent],
 })
-export class AutocutSecurityPolicyModule {}
+export class SecurityPolicyModule {}

@@ -2,27 +2,27 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
     <!--
         Added the constraints for entity Lease.
     -->
     <changeSet id="20191117011744-2" author="jhipster">
         
         <addForeignKeyConstraint baseColumnNames="lease_id"
-                                 baseTableName="lease_transaction_book"
-                                 constraintName="fk_lease_transaction_book_lease_id"
+                                 baseTableName="rel_lease__transaction_book"
+                                 constraintName="fk_rel_lease__transaction_book__lease_id"
                                  referencedColumnNames="id"
                                  referencedTableName="lease"/>
 
         <addForeignKeyConstraint baseColumnNames="transaction_book_id"
-                                 baseTableName="lease_transaction_book"
-                                 constraintName="fk_lease_transaction_book_transaction_book_id"
+                                 baseTableName="rel_lease__transaction_book"
+                                 constraintName="fk_rel_lease__transaction_book__transaction_book_id"
                                  referencedColumnNames="id"
                                  referencedTableName="transaction_book"/>
         
         <addForeignKeyConstraint baseColumnNames="apartment_id"
                                  baseTableName="lease"
-                                 constraintName="fk_lease_apartment_id"
+                                 constraintName="fk_lease__apartment_id"
                                  referencedColumnNames="id"
                                  referencedTableName="apartment"/>
 

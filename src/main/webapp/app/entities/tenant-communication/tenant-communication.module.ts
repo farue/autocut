@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
-import { AutocutSharedModule } from 'app/shared/shared.module';
-import { TenantCommunicationComponent } from './tenant-communication.component';
-import { TenantCommunicationDetailComponent } from './tenant-communication-detail.component';
-import { TenantCommunicationUpdateComponent } from './tenant-communication-update.component';
-import { TenantCommunicationDeleteDialogComponent } from './tenant-communication-delete-dialog.component';
-import { tenantCommunicationRoute } from './tenant-communication.route';
+import { SharedModule } from 'app/shared/shared.module';
+import { TenantCommunicationComponent } from './list/tenant-communication.component';
+import { TenantCommunicationDetailComponent } from './detail/tenant-communication-detail.component';
+import { TenantCommunicationUpdateComponent } from './update/tenant-communication-update.component';
+import { TenantCommunicationDeleteDialogComponent } from './delete/tenant-communication-delete-dialog.component';
+import { TenantCommunicationRoutingModule } from './route/tenant-communication-routing.module';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(tenantCommunicationRoute)],
+  imports: [SharedModule, TenantCommunicationRoutingModule],
   declarations: [
     TenantCommunicationComponent,
     TenantCommunicationDetailComponent,
@@ -18,4 +17,4 @@ import { tenantCommunicationRoute } from './tenant-communication.route';
   ],
   entryComponents: [TenantCommunicationDeleteDialogComponent],
 })
-export class AutocutTenantCommunicationModule {}
+export class TenantCommunicationModule {}

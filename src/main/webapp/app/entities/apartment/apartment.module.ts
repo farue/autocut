@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
-import { AutocutSharedModule } from 'app/shared/shared.module';
-import { ApartmentComponent } from './apartment.component';
-import { ApartmentDetailComponent } from './apartment-detail.component';
-import { ApartmentUpdateComponent } from './apartment-update.component';
-import { ApartmentDeleteDialogComponent } from './apartment-delete-dialog.component';
-import { apartmentRoute } from './apartment.route';
+import { SharedModule } from 'app/shared/shared.module';
+import { ApartmentComponent } from './list/apartment.component';
+import { ApartmentDetailComponent } from './detail/apartment-detail.component';
+import { ApartmentUpdateComponent } from './update/apartment-update.component';
+import { ApartmentDeleteDialogComponent } from './delete/apartment-delete-dialog.component';
+import { ApartmentRoutingModule } from './route/apartment-routing.module';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(apartmentRoute)],
+  imports: [SharedModule, ApartmentRoutingModule],
   declarations: [ApartmentComponent, ApartmentDetailComponent, ApartmentUpdateComponent, ApartmentDeleteDialogComponent],
   entryComponents: [ApartmentDeleteDialogComponent],
 })
-export class AutocutApartmentModule {}
+export class ApartmentModule {}

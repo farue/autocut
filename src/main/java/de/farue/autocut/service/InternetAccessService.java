@@ -2,16 +2,14 @@ package de.farue.autocut.service;
 
 import de.farue.autocut.domain.InternetAccess;
 import de.farue.autocut.repository.InternetAccessRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service Implementation for managing {@link InternetAccess}.
@@ -40,6 +38,41 @@ public class InternetAccessService {
     }
 
     /**
+     * Partially update a internetAccess.
+     *
+     * @param internetAccess the entity to update partially.
+     * @return the persisted entity.
+     */
+    public Optional<InternetAccess> partialUpdate(InternetAccess internetAccess) {
+        log.debug("Request to partially update InternetAccess : {}", internetAccess);
+
+        return internetAccessRepository
+            .findById(internetAccess.getId())
+            .map(
+                existingInternetAccess -> {
+                    if (internetAccess.getBlocked() != null) {
+                        existingInternetAccess.setBlocked(internetAccess.getBlocked());
+                    }
+                    if (internetAccess.getIp1() != null) {
+                        existingInternetAccess.setIp1(internetAccess.getIp1());
+                    }
+                    if (internetAccess.getIp2() != null) {
+                        existingInternetAccess.setIp2(internetAccess.getIp2());
+                    }
+                    if (internetAccess.getSwitchInterface() != null) {
+                        existingInternetAccess.setSwitchInterface(internetAccess.getSwitchInterface());
+                    }
+                    if (internetAccess.getPort() != null) {
+                        existingInternetAccess.setPort(internetAccess.getPort());
+                    }
+
+                    return existingInternetAccess;
+                }
+            )
+            .map(internetAccessRepository::save);
+    }
+
+    /**
      * Get all the internetAccesses.
      *
      * @return the list of entities.
@@ -50,13 +83,11 @@ public class InternetAccessService {
         return internetAccessRepository.findAll();
     }
 
-
-
     /**
      *  Get all the internetAccesses where Apartment is {@code null}.
      *  @return the list of entities.
      */
-    @Transactional(readOnly = true) 
+    @Transactional(readOnly = true)
     public List<InternetAccess> findAllWhereApartmentIsNull() {
         log.debug("Request to get all internetAccesses where Apartment is null");
         return StreamSupport

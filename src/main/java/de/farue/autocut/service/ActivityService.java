@@ -2,14 +2,12 @@ package de.farue.autocut.service;
 
 import de.farue.autocut.domain.Activity;
 import de.farue.autocut.repository.ActivityRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service Implementation for managing {@link Activity}.
@@ -38,6 +36,47 @@ public class ActivityService {
     }
 
     /**
+     * Partially update a activity.
+     *
+     * @param activity the entity to update partially.
+     * @return the persisted entity.
+     */
+    public Optional<Activity> partialUpdate(Activity activity) {
+        log.debug("Request to partially update Activity : {}", activity);
+
+        return activityRepository
+            .findById(activity.getId())
+            .map(
+                existingActivity -> {
+                    if (activity.getYear() != null) {
+                        existingActivity.setYear(activity.getYear());
+                    }
+                    if (activity.getTerm() != null) {
+                        existingActivity.setTerm(activity.getTerm());
+                    }
+                    if (activity.getStart() != null) {
+                        existingActivity.setStart(activity.getStart());
+                    }
+                    if (activity.getEnd() != null) {
+                        existingActivity.setEnd(activity.getEnd());
+                    }
+                    if (activity.getDescription() != null) {
+                        existingActivity.setDescription(activity.getDescription());
+                    }
+                    if (activity.getDiscount() != null) {
+                        existingActivity.setDiscount(activity.getDiscount());
+                    }
+                    if (activity.getStwActivity() != null) {
+                        existingActivity.setStwActivity(activity.getStwActivity());
+                    }
+
+                    return existingActivity;
+                }
+            )
+            .map(activityRepository::save);
+    }
+
+    /**
      * Get all the activities.
      *
      * @return the list of entities.
@@ -47,7 +86,6 @@ public class ActivityService {
         log.debug("Request to get all Activities");
         return activityRepository.findAll();
     }
-
 
     /**
      * Get one activity by id.

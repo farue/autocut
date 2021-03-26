@@ -3,9 +3,10 @@
     "securityPolicy": {
       "home": {
         "title": "Security Policies",
+        "refreshListLabel": "Liste aktualisieren",
         "createLabel": "Security Policy erstellen",
         "createOrEditLabel": "Security Policy erstellen oder bearbeiten",
-        "notFound": "No Security Policies found"
+        "notFound": "Keine Security Policies gefunden"
       },
       "created": "Security Policy erstellt mit ID {{ param }}",
       "updated": "Security Policy aktualisiert mit ID {{ param }}",
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Security Policy"
       },
+      "id": "ID",
       "protectionUnit": "Protection Unit",
       "access": "Access",
       "teamMember": "Team Member",

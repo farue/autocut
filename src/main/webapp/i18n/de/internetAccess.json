@@ -3,9 +3,10 @@
     "internetAccess": {
       "home": {
         "title": "Internet Accesses",
+        "refreshListLabel": "Liste aktualisieren",
         "createLabel": "Internet Access erstellen",
         "createOrEditLabel": "Internet Access erstellen oder bearbeiten",
-        "notFound": "No Internet Accesses found"
+        "notFound": "Keine Internet Accesses gefunden"
       },
       "created": "Internet Access erstellt mit ID {{ param }}",
       "updated": "Internet Access aktualisiert mit ID {{ param }}",
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Internet Access"
       },
+      "id": "ID",
       "blocked": "Blocked",
       "ip1": "Ip 1",
       "ip2": "Ip 2",

@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
-import { AutocutSharedModule } from 'app/shared/shared.module';
-import { TeamMembershipComponent } from './team-membership.component';
-import { TeamMembershipDetailComponent } from './team-membership-detail.component';
-import { TeamMembershipUpdateComponent } from './team-membership-update.component';
-import { TeamMembershipDeleteDialogComponent } from './team-membership-delete-dialog.component';
-import { teamMembershipRoute } from './team-membership.route';
+import { SharedModule } from 'app/shared/shared.module';
+import { TeamMembershipComponent } from './list/team-membership.component';
+import { TeamMembershipDetailComponent } from './detail/team-membership-detail.component';
+import { TeamMembershipUpdateComponent } from './update/team-membership-update.component';
+import { TeamMembershipDeleteDialogComponent } from './delete/team-membership-delete-dialog.component';
+import { TeamMembershipRoutingModule } from './route/team-membership-routing.module';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(teamMembershipRoute)],
+  imports: [SharedModule, TeamMembershipRoutingModule],
   declarations: [
     TeamMembershipComponent,
     TeamMembershipDetailComponent,
@@ -18,4 +17,4 @@ import { teamMembershipRoute } from './team-membership.route';
   ],
   entryComponents: [TeamMembershipDeleteDialogComponent],
 })
-export class AutocutTeamMembershipModule {}
+export class TeamMembershipModule {}

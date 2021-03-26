@@ -2,14 +2,12 @@ package de.farue.autocut.service;
 
 import de.farue.autocut.domain.Address;
 import de.farue.autocut.repository.AddressRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service Implementation for managing {@link Address}.
@@ -38,6 +36,41 @@ public class AddressService {
     }
 
     /**
+     * Partially update a address.
+     *
+     * @param address the entity to update partially.
+     * @return the persisted entity.
+     */
+    public Optional<Address> partialUpdate(Address address) {
+        log.debug("Request to partially update Address : {}", address);
+
+        return addressRepository
+            .findById(address.getId())
+            .map(
+                existingAddress -> {
+                    if (address.getStreet() != null) {
+                        existingAddress.setStreet(address.getStreet());
+                    }
+                    if (address.getStreetNumber() != null) {
+                        existingAddress.setStreetNumber(address.getStreetNumber());
+                    }
+                    if (address.getZip() != null) {
+                        existingAddress.setZip(address.getZip());
+                    }
+                    if (address.getCity() != null) {
+                        existingAddress.setCity(address.getCity());
+                    }
+                    if (address.getCountry() != null) {
+                        existingAddress.setCountry(address.getCountry());
+                    }
+
+                    return existingAddress;
+                }
+            )
+            .map(addressRepository::save);
+    }
+
+    /**
      * Get all the addresses.
      *
      * @return the list of entities.
@@ -47,7 +80,6 @@ public class AddressService {
         log.debug("Request to get all Addresses");
         return addressRepository.findAll();
     }
-
 
     /**
      * Get one address by id.

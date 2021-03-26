@@ -1,20 +1,16 @@
 package de.farue.autocut.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import de.farue.autocut.domain.enumeration.TransactionKind;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
-
-import de.farue.autocut.domain.enumeration.TransactionKind;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Transaction.
@@ -66,19 +62,22 @@ public class Transaction implements Serializable {
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JoinTable(name = "transaction_left",
-               joinColumns = @JoinColumn(name = "transaction_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "left_id", referencedColumnName = "id"))
+    @JoinTable(
+        name = "rel_transaction__left",
+        joinColumns = @JoinColumn(name = "transaction_id"),
+        inverseJoinColumns = @JoinColumn(name = "left_id")
+    )
+    @JsonIgnoreProperties(value = { "lefts", "transactionBook", "rights" }, allowSetters = true)
     private Set<Transaction> lefts = new HashSet<>();
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = "transactions", allowSetters = true)
+    @JsonIgnoreProperties(value = { "transactions", "leases" }, allowSetters = true)
     private TransactionBook transactionBook;
 
     @ManyToMany(mappedBy = "lefts")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnore
+    @JsonIgnoreProperties(value = { "lefts", "transactionBook", "rights" }, allowSetters = true)
     private Set<Transaction> rights = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -90,8 +89,13 @@ public class Transaction implements Serializable {
         this.id = id;
     }
 
+    public Transaction id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public TransactionKind getKind() {
-        return kind;
+        return this.kind;
     }
 
     public Transaction kind(TransactionKind kind) {
@@ -104,7 +108,7 @@ public class Transaction implements Serializable {
     }
 
     public Instant getBookingDate() {
-        return bookingDate;
+        return this.bookingDate;
     }
 
     public Transaction bookingDate(Instant bookingDate) {
@@ -117,7 +121,7 @@ public class Transaction implements Serializable {
     }
 
     public Instant getValueDate() {
-        return valueDate;
+        return this.valueDate;
     }
 
     public Transaction valueDate(Instant valueDate) {
@@ -130,7 +134,7 @@ public class Transaction implements Serializable {
     }
 
     public BigDecimal getValue() {
-        return value;
+        return this.value;
     }
 
     public Transaction value(BigDecimal value) {
@@ -143,7 +147,7 @@ public class Transaction implements Serializable {
     }
 
     public BigDecimal getBalanceAfter() {
-        return balanceAfter;
+        return this.balanceAfter;
     }
 
     public Transaction balanceAfter(BigDecimal balanceAfter) {
@@ -156,7 +160,7 @@ public class Transaction implements Serializable {
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public Transaction description(String description) {
@@ -169,7 +173,7 @@ public class Transaction implements Serializable {
     }
 
     public String getServiceQulifier() {
-        return serviceQulifier;
+        return this.serviceQulifier;
     }
 
     public Transaction serviceQulifier(String serviceQulifier) {
@@ -182,7 +186,7 @@ public class Transaction implements Serializable {
     }
 
     public String getIssuer() {
-        return issuer;
+        return this.issuer;
     }
 
     public Transaction issuer(String issuer) {
@@ -195,7 +199,7 @@ public class Transaction implements Serializable {
     }
 
     public String getRecipient() {
-        return recipient;
+        return this.recipient;
     }
 
     public Transaction recipient(String recipient) {
@@ -208,11 +212,11 @@ public class Transaction implements Serializable {
     }
 
     public Set<Transaction> getLefts() {
-        return lefts;
+        return this.lefts;
     }
 
     public Transaction lefts(Set<Transaction> transactions) {
-        this.lefts = transactions;
+        this.setLefts(transactions);
         return this;
     }
 
@@ -233,11 +237,11 @@ public class Transaction implements Serializable {
     }
 
     public TransactionBook getTransactionBook() {
-        return transactionBook;
+        return this.transactionBook;
     }
 
     public Transaction transactionBook(TransactionBook transactionBook) {
-        this.transactionBook = transactionBook;
+        this.setTransactionBook(transactionBook);
         return this;
     }
 
@@ -246,11 +250,11 @@ public class Transaction implements Serializable {
     }
 
     public Set<Transaction> getRights() {
-        return rights;
+        return this.rights;
     }
 
     public Transaction rights(Set<Transaction> transactions) {
-        this.rights = transactions;
+        this.setRights(transactions);
         return this;
     }
 
@@ -267,8 +271,15 @@ public class Transaction implements Serializable {
     }
 
     public void setRights(Set<Transaction> transactions) {
+        if (this.rights != null) {
+            this.rights.forEach(i -> i.removeLeft(this));
+        }
+        if (transactions != null) {
+            transactions.forEach(i -> i.addLeft(this));
+        }
         this.rights = transactions;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -284,7 +295,8 @@ public class Transaction implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

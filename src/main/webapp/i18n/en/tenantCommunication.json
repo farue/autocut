@@ -3,6 +3,7 @@
     "tenantCommunication": {
       "home": {
         "title": "Tenant Communications",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Tenant Communication",
         "createOrEditLabel": "Create or edit a Tenant Communication",
         "notFound": "No Tenant Communications found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Tenant Communication"
       },
+      "id": "ID",
       "subject": "Subject",
       "text": "Text",
       "note": "Note",

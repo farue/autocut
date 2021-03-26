@@ -9,7 +9,6 @@
         "main": "Entitäten",
         "tenant": "Tenant",
         "team": "Team",
-        "teamMember": "Team Member",
         "lease": "Lease",
         "apartment": "Apartment",
         "address": "Address",
@@ -45,7 +44,6 @@
         "health": "Status",
         "configuration": "Konfiguration",
         "logs": "Protokoll",
-        "audits": "Audits",
         "apidocs": "API",
         "database": "Datenbank",
         "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
@@ -103,7 +101,7 @@
       "id": "ID"
     },
     "ribbon": {
-      "dev": "Development"
+      "dev": "Entwicklung"
     },
     "item-count": "Ergebnis {{first}} - {{second}} von {{total}} Elemente."
   },
@@ -149,9 +147,11 @@
     "emailexists": "Email wird bereits verwendet!",
     "idexists": "Ein neuer {{entityName}} kann noch keine ID haben",
     "idnull": "Ungültige ID",
+    "idinvalid": "Invalid Id",
+    "idnotfound": "ID cannot be found",
     "file": {
-      "could.not.extract": "Could not extract file",
-      "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
+      "could.not.extract": "Datei konnte nicht extrahiert werden",
+      "not.image": "Es wird erwartet, dass die Datei ein Bild ist. Die Datei ist jedoch vom Typ \"{{ fileType }}\""
     }
   },
   "footer": "Dies ist Ihre Fußzeile"

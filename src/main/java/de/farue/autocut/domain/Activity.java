@@ -1,22 +1,21 @@
 package de.farue.autocut.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import de.farue.autocut.domain.enumeration.SemesterTerms;
 import io.swagger.annotations.ApiModel;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.time.LocalDate;
-
-import de.farue.autocut.domain.enumeration.SemesterTerms;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * Activity always describes an entire semester since its main purpose is to capture who is\neligible for a discount, and its secondary purpose is to store activity counted at StW.\nBoth these things are in terms of full semesters.
  */
-@ApiModel(description = "Activity always describes an entire semester since its main purpose is to capture who is\neligible for a discount, and its secondary purpose is to store activity counted at StW.\nBoth these things are in terms of full semesters.")
+@ApiModel(
+    description = "Activity always describes an entire semester since its main purpose is to capture who is\neligible for a discount, and its secondary purpose is to store activity counted at StW.\nBoth these things are in terms of full semesters."
+)
 @Entity
 @Table(name = "activity")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -53,11 +52,11 @@ public class Activity implements Serializable {
     private Boolean stwActivity;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "activities", allowSetters = true)
+    @JsonIgnoreProperties(value = { "user", "securityPolicies", "lease" }, allowSetters = true)
     private Tenant tenant;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "activities", allowSetters = true)
+    @JsonIgnoreProperties(value = { "securityPolicies", "tenant", "team" }, allowSetters = true)
     private TeamMembership teamMembership;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -69,8 +68,13 @@ public class Activity implements Serializable {
         this.id = id;
     }
 
+    public Activity id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public Integer getYear() {
-        return year;
+        return this.year;
     }
 
     public Activity year(Integer year) {
@@ -83,7 +87,7 @@ public class Activity implements Serializable {
     }
 
     public SemesterTerms getTerm() {
-        return term;
+        return this.term;
     }
 
     public Activity term(SemesterTerms term) {
@@ -96,7 +100,7 @@ public class Activity implements Serializable {
     }
 
     public LocalDate getStart() {
-        return start;
+        return this.start;
     }
 
     public Activity start(LocalDate start) {
@@ -109,7 +113,7 @@ public class Activity implements Serializable {
     }
 
     public LocalDate getEnd() {
-        return end;
+        return this.end;
     }
 
     public Activity end(LocalDate end) {
@@ -122,7 +126,7 @@ public class Activity implements Serializable {
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public Activity description(String description) {
@@ -134,8 +138,8 @@ public class Activity implements Serializable {
         this.description = description;
     }
 
-    public Boolean isDiscount() {
-        return discount;
+    public Boolean getDiscount() {
+        return this.discount;
     }
 
     public Activity discount(Boolean discount) {
@@ -147,8 +151,8 @@ public class Activity implements Serializable {
         this.discount = discount;
     }
 
-    public Boolean isStwActivity() {
-        return stwActivity;
+    public Boolean getStwActivity() {
+        return this.stwActivity;
     }
 
     public Activity stwActivity(Boolean stwActivity) {
@@ -161,11 +165,11 @@ public class Activity implements Serializable {
     }
 
     public Tenant getTenant() {
-        return tenant;
+        return this.tenant;
     }
 
     public Activity tenant(Tenant tenant) {
-        this.tenant = tenant;
+        this.setTenant(tenant);
         return this;
     }
 
@@ -174,17 +178,18 @@ public class Activity implements Serializable {
     }
 
     public TeamMembership getTeamMembership() {
-        return teamMembership;
+        return this.teamMembership;
     }
 
     public Activity teamMembership(TeamMembership teamMembership) {
-        this.teamMembership = teamMembership;
+        this.setTeamMembership(teamMembership);
         return this;
     }
 
     public void setTeamMembership(TeamMembership teamMembership) {
         this.teamMembership = teamMembership;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -200,7 +205,8 @@ public class Activity implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore
@@ -213,8 +219,8 @@ public class Activity implements Serializable {
             ", start='" + getStart() + "'" +
             ", end='" + getEnd() + "'" +
             ", description='" + getDescription() + "'" +
-            ", discount='" + isDiscount() + "'" +
-            ", stwActivity='" + isStwActivity() + "'" +
+            ", discount='" + getDiscount() + "'" +
+            ", stwActivity='" + getStwActivity() + "'" +
             "}";
     }
 }

@@ -1,11 +1,11 @@
 id;kind;booking_date;value_date;value;balance_after;description;service_qulifier;issuer;recipient;transaction_book_id
-1;CREDIT;2019-11-16T23:34:25;2019-11-16T23:01:10;25397;61420;Chips COM;Response B2B US Dollar;Buckinghamshire orchestrate grow;Kids;1
-2;CORRECTION;2019-11-16T01:23:08;2019-11-16T01:23:49;25283;38698;SQL;Checking Account;Executive Automotive;payment connecting;2
-3;CREDIT;2019-11-16T07:47:30;2019-11-16T15:21:12;29343;65952;withdrawal navigating scalable;Course;Assistant;grey Gourde US Dollar 4th generation;3
-4;TRANSFER;2019-11-16T13:19:42;2019-11-16T20:56:44;84427;88371;programming deliver withdrawal;Cloned;port Shirt;transmit;4
-5;TRANSFER;2019-11-16T20:19:32;2019-11-16T09:12:57;87708;83844;Alabama;port models Dynamic;5th generation Maryland Personal Loan Account;Cambridgeshire Pizza Forward;5
-6;CORRECTION;2019-11-16T04:50:09;2019-11-16T19:42:45;49356;704;Svalbard & Jan Mayen Islands Group;Architect even-keeled Planner;Denar;Indonesia;6
-7;PURCHASE;2019-11-16T07:28:49;2019-11-16T09:39:25;10459;55739;Facilitator Sleek Cotton Salad;Hryvnia calculate Intelligent Concrete Chair;Belgium Towels Electronics;Pakistan SCSI;7
-8;CREDIT;2019-11-16T20:48:55;2019-11-16T07:50:57;31063;65230;synergies Operations;Borders;synergies Forward;Pitcairn Islands;8
-9;PURCHASE;2019-11-16T13:05:51;2019-11-16T13:49:10;16831;33586;overriding solid state Cambridgeshire;Delaware Western Sahara parsing;system;Central African Republic;9
-10;TRANSFER;2019-11-16T21:04:39;2019-11-16T17:45:51;81959;53862;B2C Consultant;value-added AI Peso Uruguayo Uruguay Peso en Unidades Indexadas;parse initiatives Concrete;Health Division;10
+1;FEE;2019-11-16T11:05:15;2019-11-16T17:13:23;29741;7182;Polarised;Facilitator;Response needs-based Operations;Shirt red;1
+2;CORRECTION;2019-11-16T16:05:39;2019-11-16T15:46:45;934;32169;scale Engineer;SQL;Cotton Small;payment Zimbabwe;2
+3;FEE;2019-11-16T06:54:34;2019-11-17T00:22:26;51084;84238;interface;Technician navigating;high-level Industrial digital;end-to-end optimize Awesome;3
+4;DEBIT;2019-11-16T20:56:44;2019-11-16T05:02:06;88371;97312;Regional withdrawal Cloned;clear-thinking Fish Island;connecting BEAC plum;port capacitor compressing;4
+5;TRANSFER;2019-11-16T15:54:28;2019-11-16T10:46:14;88660;75828;Corporate Forward;mindshare optical;Tools parsing;Architect holistic magenta;5
+6;CREDIT;2019-11-16T12:29:42;2019-11-16T15:30:48;85805;87303;Industrial silver deposit;Facilitator Berkshire;Shilling deposit Ameliorated;Rustic Electronics;6
+7;TRANSFER;2019-11-16T09:06:22;2019-11-16T04:15:18;87982;42234;Chair;lime;magnetic Operations;withdrawal Automotive;7
+8;CREDIT;2019-11-16T12:45:03;2019-11-16T08:18:48;92539;68975;Mexico;connecting;integrated;state;8
+9;PURCHASE;2019-11-16T07:51:44;2019-11-16T11:54:56;15781;53143;parsing system African;maroon Bedfordshire connecting;utilisation PCI;visualize application initiatives;9
+10;CREDIT;2019-11-16T11:06:49;2019-11-17T00:41:19;45528;94720;Shirt cross-platform;Planner Israel Kids;back-end;payment;10

@@ -3,6 +3,7 @@
     "transaction": {
       "home": {
         "title": "Transactions",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Transaction",
         "createOrEditLabel": "Create or edit a Transaction",
         "notFound": "No Transactions found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Transaction"
       },
+      "id": "ID",
       "kind": "Kind",
       "bookingDate": "Booking Date",
       "valueDate": "Value Date",

@@ -3,9 +3,10 @@
     "lease": {
       "home": {
         "title": "Leases",
+        "refreshListLabel": "Liste aktualisieren",
         "createLabel": "Lease erstellen",
         "createOrEditLabel": "Lease erstellen oder bearbeiten",
-        "notFound": "No Leases found"
+        "notFound": "Keine Leases gefunden"
       },
       "created": "Lease erstellt mit ID {{ param }}",
       "updated": "Lease aktualisiert mit ID {{ param }}",
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Lease"
       },
+      "id": "ID",
       "nr": "Nr",
       "start": "Start",
       "end": "End",

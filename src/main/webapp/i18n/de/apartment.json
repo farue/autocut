@@ -3,9 +3,10 @@
     "apartment": {
       "home": {
         "title": "Apartments",
+        "refreshListLabel": "Liste aktualisieren",
         "createLabel": "Apartment erstellen",
         "createOrEditLabel": "Apartment erstellen oder bearbeiten",
-        "notFound": "No Apartments found"
+        "notFound": "Keine Apartments gefunden"
       },
       "created": "Apartment erstellt mit ID {{ param }}",
       "updated": "Apartment aktualisiert mit ID {{ param }}",
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Apartment"
       },
+      "id": "ID",
       "nr": "Nr",
       "type": "Type",
       "maxNumberOfLeases": "Max Number Of Leases",

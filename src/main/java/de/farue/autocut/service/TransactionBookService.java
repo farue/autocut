@@ -2,14 +2,12 @@ package de.farue.autocut.service;
 
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.repository.TransactionBookRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service Implementation for managing {@link TransactionBook}.
@@ -38,6 +36,32 @@ public class TransactionBookService {
     }
 
     /**
+     * Partially update a transactionBook.
+     *
+     * @param transactionBook the entity to update partially.
+     * @return the persisted entity.
+     */
+    public Optional<TransactionBook> partialUpdate(TransactionBook transactionBook) {
+        log.debug("Request to partially update TransactionBook : {}", transactionBook);
+
+        return transactionBookRepository
+            .findById(transactionBook.getId())
+            .map(
+                existingTransactionBook -> {
+                    if (transactionBook.getName() != null) {
+                        existingTransactionBook.setName(transactionBook.getName());
+                    }
+                    if (transactionBook.getType() != null) {
+                        existingTransactionBook.setType(transactionBook.getType());
+                    }
+
+                    return existingTransactionBook;
+                }
+            )
+            .map(transactionBookRepository::save);
+    }
+
+    /**
      * Get all the transactionBooks.
      *
      * @return the list of entities.
@@ -47,7 +71,6 @@ public class TransactionBookService {
         log.debug("Request to get all TransactionBooks");
         return transactionBookRepository.findAll();
     }
-
 
     /**
      * Get one transactionBook by id.

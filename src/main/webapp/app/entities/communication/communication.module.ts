@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
-import { AutocutSharedModule } from 'app/shared/shared.module';
-import { CommunicationComponent } from './communication.component';
-import { CommunicationDetailComponent } from './communication-detail.component';
-import { CommunicationUpdateComponent } from './communication-update.component';
-import { CommunicationDeleteDialogComponent } from './communication-delete-dialog.component';
-import { communicationRoute } from './communication.route';
+import { SharedModule } from 'app/shared/shared.module';
+import { CommunicationComponent } from './list/communication.component';
+import { CommunicationDetailComponent } from './detail/communication-detail.component';
+import { CommunicationUpdateComponent } from './update/communication-update.component';
+import { CommunicationDeleteDialogComponent } from './delete/communication-delete-dialog.component';
+import { CommunicationRoutingModule } from './route/communication-routing.module';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(communicationRoute)],
+  imports: [SharedModule, CommunicationRoutingModule],
   declarations: [CommunicationComponent, CommunicationDetailComponent, CommunicationUpdateComponent, CommunicationDeleteDialogComponent],
   entryComponents: [CommunicationDeleteDialogComponent],
 })
-export class AutocutCommunicationModule {}
+export class CommunicationModule {}

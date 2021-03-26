@@ -4,7 +4,7 @@
       "packageName": "de.farue.autocut",
       "nativeLanguage": "en"
     },
-    "jhipsterVersion": "6.10.3",
+    "jhipsterVersion": "7.0.0",
     "applicationType": "monolith",
     "baseName": "autocut",
     "packageName": "de.farue.autocut",
@@ -40,6 +40,34 @@
     "herokuDeployType": "git",
     "embeddableLaunchScript": false,
     "blueprints": [],
-    "creationTimestamp": 1578829876752
+    "creationTimestamp": 1578829876752,
+    "skipClient": false,
+    "skipServer": false,
+    "skipUserManagement": false,
+    "skipCheckLengthOfIdentifier": false,
+    "skipFakeData": false,
+    "pages": [],
+    "withAdminUi": true,
+    "reactive": false,
+    "entities": [
+      "Tenant",
+      "Team",
+      "Lease",
+      "Apartment",
+      "Address",
+      "SecurityPolicy",
+      "InternetAccess",
+      "Transaction",
+      "TenantCommunication",
+      "Activity",
+      "Communication",
+      "LaundryMachine",
+      "LaundryMachineProgram",
+      "WashHistory",
+      "GlobalSetting",
+      "NetworkSwitch",
+      "TransactionBook",
+      "TeamMembership"
+    ]
   }
 }

@@ -3,9 +3,10 @@
     "transactionBook": {
       "home": {
         "title": "Transaction Books",
+        "refreshListLabel": "Liste aktualisieren",
         "createLabel": "Transaction Book erstellen",
         "createOrEditLabel": "Transaction Book erstellen oder bearbeiten",
-        "notFound": "No Transaction Books found"
+        "notFound": "Keine Transaction Books gefunden"
       },
       "created": "Transaction Book erstellt mit ID {{ param }}",
       "updated": "Transaction Book aktualisiert mit ID {{ param }}",
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Transaction Book"
       },
+      "id": "ID",
       "name": "Name",
       "type": "Type",
       "transaction": "Transaction",

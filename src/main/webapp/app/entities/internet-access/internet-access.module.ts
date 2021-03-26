@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
-import { AutocutSharedModule } from 'app/shared/shared.module';
-import { InternetAccessComponent } from './internet-access.component';
-import { InternetAccessDetailComponent } from './internet-access-detail.component';
-import { InternetAccessUpdateComponent } from './internet-access-update.component';
-import { InternetAccessDeleteDialogComponent } from './internet-access-delete-dialog.component';
-import { internetAccessRoute } from './internet-access.route';
+import { SharedModule } from 'app/shared/shared.module';
+import { InternetAccessComponent } from './list/internet-access.component';
+import { InternetAccessDetailComponent } from './detail/internet-access-detail.component';
+import { InternetAccessUpdateComponent } from './update/internet-access-update.component';
+import { InternetAccessDeleteDialogComponent } from './delete/internet-access-delete-dialog.component';
+import { InternetAccessRoutingModule } from './route/internet-access-routing.module';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(internetAccessRoute)],
+  imports: [SharedModule, InternetAccessRoutingModule],
   declarations: [
     InternetAccessComponent,
     InternetAccessDetailComponent,
@@ -18,4 +17,4 @@ import { internetAccessRoute } from './internet-access.route';
   ],
   entryComponents: [InternetAccessDeleteDialogComponent],
 })
-export class AutocutInternetAccessModule {}
+export class InternetAccessModule {}

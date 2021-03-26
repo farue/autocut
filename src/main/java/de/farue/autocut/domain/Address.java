@@ -1,12 +1,10 @@
 package de.farue.autocut.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
+import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.*;
-
-import java.io.Serializable;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Address.
@@ -52,8 +50,13 @@ public class Address implements Serializable {
         this.id = id;
     }
 
+    public Address id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getStreet() {
-        return street;
+        return this.street;
     }
 
     public Address street(String street) {
@@ -66,7 +69,7 @@ public class Address implements Serializable {
     }
 
     public String getStreetNumber() {
-        return streetNumber;
+        return this.streetNumber;
     }
 
     public Address streetNumber(String streetNumber) {
@@ -79,7 +82,7 @@ public class Address implements Serializable {
     }
 
     public String getZip() {
-        return zip;
+        return this.zip;
     }
 
     public Address zip(String zip) {
@@ -92,7 +95,7 @@ public class Address implements Serializable {
     }
 
     public String getCity() {
-        return city;
+        return this.city;
     }
 
     public Address city(String city) {
@@ -105,7 +108,7 @@ public class Address implements Serializable {
     }
 
     public String getCountry() {
-        return country;
+        return this.country;
     }
 
     public Address country(String country) {
@@ -116,6 +119,7 @@ public class Address implements Serializable {
     public void setCountry(String country) {
         this.country = country;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -131,7 +135,8 @@ public class Address implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

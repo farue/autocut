@@ -3,9 +3,10 @@
     "globalSetting": {
       "home": {
         "title": "Global Settings",
+        "refreshListLabel": "Liste aktualisieren",
         "createLabel": "Global Setting erstellen",
         "createOrEditLabel": "Global Setting erstellen oder bearbeiten",
-        "notFound": "No Global Settings found"
+        "notFound": "Keine Global Settings gefunden"
       },
       "created": "Global Setting erstellt mit ID {{ param }}",
       "updated": "Global Setting aktualisiert mit ID {{ param }}",
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Global Setting"
       },
+      "id": "ID",
       "key": "Key",
       "value": "Value",
       "valueType": "Value Type"

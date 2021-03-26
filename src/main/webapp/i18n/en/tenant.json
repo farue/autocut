@@ -3,6 +3,7 @@
     "tenant": {
       "home": {
         "title": "Tenants",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Tenant",
         "createOrEditLabel": "Create or edit a Tenant",
         "notFound": "No Tenants found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Tenant"
       },
+      "id": "ID",
       "firstName": "First Name",
       "lastName": "Last Name",
       "pictureId": "Picture Id",

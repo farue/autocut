@@ -1,17 +1,14 @@
 package de.farue.autocut.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import de.farue.autocut.domain.enumeration.TransactionBookType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
-import de.farue.autocut.domain.enumeration.TransactionBookType;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A TransactionBook.
@@ -37,11 +34,12 @@ public class TransactionBook implements Serializable {
 
     @OneToMany(mappedBy = "transactionBook")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "lefts", "transactionBook", "rights" }, allowSetters = true)
     private Set<Transaction> transactions = new HashSet<>();
 
     @ManyToMany(mappedBy = "transactionBooks")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnore
+    @JsonIgnoreProperties(value = { "tenants", "transactionBooks", "apartment" }, allowSetters = true)
     private Set<Lease> leases = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -53,8 +51,13 @@ public class TransactionBook implements Serializable {
         this.id = id;
     }
 
+    public TransactionBook id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public TransactionBook name(String name) {
@@ -67,7 +70,7 @@ public class TransactionBook implements Serializable {
     }
 
     public TransactionBookType getType() {
-        return type;
+        return this.type;
     }
 
     public TransactionBook type(TransactionBookType type) {
@@ -80,11 +83,11 @@ public class TransactionBook implements Serializable {
     }
 
     public Set<Transaction> getTransactions() {
-        return transactions;
+        return this.transactions;
     }
 
     public TransactionBook transactions(Set<Transaction> transactions) {
-        this.transactions = transactions;
+        this.setTransactions(transactions);
         return this;
     }
 
@@ -101,15 +104,21 @@ public class TransactionBook implements Serializable {
     }
 
     public void setTransactions(Set<Transaction> transactions) {
+        if (this.transactions != null) {
+            this.transactions.forEach(i -> i.setTransactionBook(null));
+        }
+        if (transactions != null) {
+            transactions.forEach(i -> i.setTransactionBook(this));
+        }
         this.transactions = transactions;
     }
 
     public Set<Lease> getLeases() {
-        return leases;
+        return this.leases;
     }
 
     public TransactionBook leases(Set<Lease> leases) {
-        this.leases = leases;
+        this.setLeases(leases);
         return this;
     }
 
@@ -126,8 +135,15 @@ public class TransactionBook implements Serializable {
     }
 
     public void setLeases(Set<Lease> leases) {
+        if (this.leases != null) {
+            this.leases.forEach(i -> i.removeTransactionBook(this));
+        }
+        if (leases != null) {
+            leases.forEach(i -> i.addTransactionBook(this));
+        }
         this.leases = leases;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -143,7 +159,8 @@ public class TransactionBook implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

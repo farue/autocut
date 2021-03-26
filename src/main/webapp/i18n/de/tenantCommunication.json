@@ -3,9 +3,10 @@
     "tenantCommunication": {
       "home": {
         "title": "Tenant Communications",
+        "refreshListLabel": "Liste aktualisieren",
         "createLabel": "Tenant Communication erstellen",
         "createOrEditLabel": "Tenant Communication erstellen oder bearbeiten",
-        "notFound": "No Tenant Communications found"
+        "notFound": "Keine Tenant Communications gefunden"
       },
       "created": "Tenant Communication erstellt mit ID {{ param }}",
       "updated": "Tenant Communication aktualisiert mit ID {{ param }}",
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Tenant Communication"
       },
+      "id": "ID",
       "subject": "Subject",
       "text": "Text",
       "note": "Note",

@@ -3,6 +3,7 @@
     "networkSwitch": {
       "home": {
         "title": "Network Switches",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Network Switch",
         "createOrEditLabel": "Create or edit a Network Switch",
         "notFound": "No Network Switches found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Network Switch"
       },
+      "id": "ID",
       "interfaceName": "Interface Name",
       "sshHost": "Ssh Host",
       "sshPort": "Ssh Port",

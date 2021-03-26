@@ -3,9 +3,10 @@
     "tenant": {
       "home": {
         "title": "Tenants",
+        "refreshListLabel": "Liste aktualisieren",
         "createLabel": "Tenant erstellen",
         "createOrEditLabel": "Tenant erstellen oder bearbeiten",
-        "notFound": "No Tenants found"
+        "notFound": "Keine Tenants gefunden"
       },
       "created": "Tenant erstellt mit ID {{ param }}",
       "updated": "Tenant aktualisiert mit ID {{ param }}",
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Tenant"
       },
+      "id": "ID",
       "firstName": "First Name",
       "lastName": "Last Name",
       "pictureId": "Picture Id",

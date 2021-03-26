@@ -3,9 +3,10 @@
     "laundryMachineProgram": {
       "home": {
         "title": "Laundry Machine Programs",
+        "refreshListLabel": "Liste aktualisieren",
         "createLabel": "Laundry Machine Program erstellen",
         "createOrEditLabel": "Laundry Machine Program erstellen oder bearbeiten",
-        "notFound": "No Laundry Machine Programs found"
+        "notFound": "Keine Laundry Machine Programs gefunden"
       },
       "created": "Laundry Machine Program erstellt mit ID {{ param }}",
       "updated": "Laundry Machine Program aktualisiert mit ID {{ param }}",
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Laundry Machine Program"
       },
+      "id": "ID",
       "name": "Name",
       "subprogram": "Subprogram",
       "time": "Time",

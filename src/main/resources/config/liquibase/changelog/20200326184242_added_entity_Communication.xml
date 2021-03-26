@@ -3,17 +3,15 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-
-        <property name="autoIncrement" value="true"/>
 
     <!--
         Added the entity Communication.
     -->
     <changeSet id="20200326184242-1" author="jhipster">
         <createTable tableName="communication">
-            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="subject" type="varchar(80)">
@@ -25,7 +23,7 @@
             <column name="note" type="${clobType}">
                 <constraints nullable="true" />
             </column>
-            <column name="date" type="datetime">
+            <column name="date" type="${datetimeType}">
                 <constraints nullable="false" />
             </column>
             <column name="tenant_id" type="bigint">
@@ -33,12 +31,9 @@
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
-        <dropDefaultValue tableName="communication" columnName="date" columnDataType="datetime"/>
+        <dropDefaultValue tableName="communication" columnName="date" columnDataType="${datetimeType}"/>
     </changeSet>
 
-    <changeSet id="20200326184242-1-relations" author="jhipster">
-
-    </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
     <!--
@@ -58,9 +53,8 @@
             <column name="subject" type="string"/>
             <column name="text" type="clob"/>
             <column name="note" type="clob"/>
-            <column name="date" type="datetime"/>
+            <column name="date" type="${datetimeType}"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
-
 </databaseChangeLog>
