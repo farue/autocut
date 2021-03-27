@@ -18,7 +18,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -32,10 +31,10 @@ import de.farue.autocut.service.accounting.TransactionBookService;
 /**
  * Integration tests for the {@link TransactionBookResource} REST controller.
  */
-@SpringBootTest(classes = AutocutApp.class)
+@IntegrationTest
 @AutoConfigureMockMvc
 @WithMockUser
-public class TransactionBookResourceIT {
+class TransactionBookResourceIT {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
@@ -43,11 +42,14 @@ public class TransactionBookResourceIT {
     private static final TransactionBookType DEFAULT_TYPE = TransactionBookType.CASH;
     private static final TransactionBookType UPDATED_TYPE = TransactionBookType.REVENUE;
 
-    @Autowired
-    private TransactionBookRepository transactionBookRepository;
+    private static final String ENTITY_API_URL = "/api/transaction-books";
+    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
+
+    private static Random random = new Random();
+    private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     @Autowired
-    private TransactionBookService transactionBookService;
+    private TransactionBookRepository transactionBookRepository;
 
     @Autowired
     private EntityManager em;
@@ -64,11 +66,10 @@ public class TransactionBookResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static TransactionBook createEntity(EntityManager em) {
-        TransactionBook transactionBook = new TransactionBook()
-            .name(DEFAULT_NAME)
-            .type(DEFAULT_TYPE);
+        TransactionBook transactionBook = new TransactionBook().name(DEFAULT_NAME).type(DEFAULT_TYPE);
         return transactionBook;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -76,9 +77,7 @@ public class TransactionBookResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static TransactionBook createUpdatedEntity(EntityManager em) {
-        TransactionBook transactionBook = new TransactionBook()
-            .name(UPDATED_NAME)
-            .type(UPDATED_TYPE);
+        TransactionBook transactionBook = new TransactionBook().name(UPDATED_NAME).type(UPDATED_TYPE);
         return transactionBook;
     }
 
@@ -89,12 +88,13 @@ public class TransactionBookResourceIT {
 
     @Test
     @Transactional
-    public void createTransactionBook() throws Exception {
+    void createTransactionBook() throws Exception {
         int databaseSizeBeforeCreate = transactionBookRepository.findAll().size();
         // Create the TransactionBook
-        restTransactionBookMockMvc.perform(post("/api/transaction-books")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(transactionBook)))
+        restTransactionBookMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(transactionBook))
+            )
             .andExpect(status().isCreated());
 
         // Validate the TransactionBook in the database
@@ -107,16 +107,17 @@ public class TransactionBookResourceIT {
 
     @Test
     @Transactional
-    public void createTransactionBookWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = transactionBookRepository.findAll().size();
-
+    void createTransactionBookWithExistingId() throws Exception {
         // Create the TransactionBook with an existing ID
         transactionBook.setId(1L);
 
+        int databaseSizeBeforeCreate = transactionBookRepository.findAll().size();
+
         // An entity with an existing ID cannot be created, so this API call must fail
-        restTransactionBookMockMvc.perform(post("/api/transaction-books")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(transactionBook)))
+        restTransactionBookMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(transactionBook))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the TransactionBook in the database
@@ -124,20 +125,19 @@ public class TransactionBookResourceIT {
         assertThat(transactionBookList).hasSize(databaseSizeBeforeCreate);
     }
 
-
     @Test
     @Transactional
-    public void checkTypeIsRequired() throws Exception {
+    void checkTypeIsRequired() throws Exception {
         int databaseSizeBeforeTest = transactionBookRepository.findAll().size();
         // set the field null
         transactionBook.setType(null);
 
         // Create the TransactionBook, which fails.
 
-
-        restTransactionBookMockMvc.perform(post("/api/transaction-books")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(transactionBook)))
+        restTransactionBookMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(transactionBook))
+            )
             .andExpect(status().isBadRequest());
 
         List<TransactionBook> transactionBookList = transactionBookRepository.findAll();
@@ -146,12 +146,13 @@ public class TransactionBookResourceIT {
 
     @Test
     @Transactional
-    public void getAllTransactionBooks() throws Exception {
+    void getAllTransactionBooks() throws Exception {
         // Initialize the database
         transactionBookRepository.saveAndFlush(transactionBook);
 
         // Get all the transactionBookList
-        restTransactionBookMockMvc.perform(get("/api/transaction-books?sort=id,desc"))
+        restTransactionBookMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(transactionBook.getId().intValue())))
@@ -161,31 +162,32 @@ public class TransactionBookResourceIT {
 
     @Test
     @Transactional
-    public void getTransactionBook() throws Exception {
+    void getTransactionBook() throws Exception {
         // Initialize the database
         transactionBookRepository.saveAndFlush(transactionBook);
 
         // Get the transactionBook
-        restTransactionBookMockMvc.perform(get("/api/transaction-books/{id}", transactionBook.getId()))
+        restTransactionBookMockMvc
+            .perform(get(ENTITY_API_URL_ID, transactionBook.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(transactionBook.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()));
     }
+
     @Test
     @Transactional
-    public void getNonExistingTransactionBook() throws Exception {
+    void getNonExistingTransactionBook() throws Exception {
         // Get the transactionBook
-        restTransactionBookMockMvc.perform(get("/api/transaction-books/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restTransactionBookMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    public void updateTransactionBook() throws Exception {
+    void putNewTransactionBook() throws Exception {
         // Initialize the database
-        transactionBookService.save(transactionBook);
+        transactionBookRepository.saveAndFlush(transactionBook);
 
         int databaseSizeBeforeUpdate = transactionBookRepository.findAll().size();
 
@@ -193,13 +195,14 @@ public class TransactionBookResourceIT {
         TransactionBook updatedTransactionBook = transactionBookRepository.findById(transactionBook.getId()).get();
         // Disconnect from session so that the updates on updatedTransactionBook are not directly saved in db
         em.detach(updatedTransactionBook);
-        updatedTransactionBook
-            .name(UPDATED_NAME)
-            .type(UPDATED_TYPE);
+        updatedTransactionBook.name(UPDATED_NAME).type(UPDATED_TYPE);
 
-        restTransactionBookMockMvc.perform(put("/api/transaction-books")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(updatedTransactionBook)))
+        restTransactionBookMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, updatedTransactionBook.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedTransactionBook))
+            )
             .andExpect(status().isOk());
 
         // Validate the TransactionBook in the database
@@ -212,13 +215,17 @@ public class TransactionBookResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingTransactionBook() throws Exception {
+    void putNonExistingTransactionBook() throws Exception {
         int databaseSizeBeforeUpdate = transactionBookRepository.findAll().size();
+        transactionBook.setId(count.incrementAndGet());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restTransactionBookMockMvc.perform(put("/api/transaction-books")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(transactionBook)))
+        restTransactionBookMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, transactionBook.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(transactionBook))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the TransactionBook in the database
@@ -228,15 +235,173 @@ public class TransactionBookResourceIT {
 
     @Test
     @Transactional
-    public void deleteTransactionBook() throws Exception {
+    void putWithIdMismatchTransactionBook() throws Exception {
+        int databaseSizeBeforeUpdate = transactionBookRepository.findAll().size();
+        transactionBook.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restTransactionBookMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(transactionBook))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the TransactionBook in the database
+        List<TransactionBook> transactionBookList = transactionBookRepository.findAll();
+        assertThat(transactionBookList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void putWithMissingIdPathParamTransactionBook() throws Exception {
+        int databaseSizeBeforeUpdate = transactionBookRepository.findAll().size();
+        transactionBook.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restTransactionBookMockMvc
+            .perform(
+                put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(transactionBook))
+            )
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the TransactionBook in the database
+        List<TransactionBook> transactionBookList = transactionBookRepository.findAll();
+        assertThat(transactionBookList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void partialUpdateTransactionBookWithPatch() throws Exception {
         // Initialize the database
-        transactionBookService.save(transactionBook);
+        transactionBookRepository.saveAndFlush(transactionBook);
+
+        int databaseSizeBeforeUpdate = transactionBookRepository.findAll().size();
+
+        // Update the transactionBook using partial update
+        TransactionBook partialUpdatedTransactionBook = new TransactionBook();
+        partialUpdatedTransactionBook.setId(transactionBook.getId());
+
+        partialUpdatedTransactionBook.name(UPDATED_NAME);
+
+        restTransactionBookMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedTransactionBook.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedTransactionBook))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the TransactionBook in the database
+        List<TransactionBook> transactionBookList = transactionBookRepository.findAll();
+        assertThat(transactionBookList).hasSize(databaseSizeBeforeUpdate);
+        TransactionBook testTransactionBook = transactionBookList.get(transactionBookList.size() - 1);
+        assertThat(testTransactionBook.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testTransactionBook.getType()).isEqualTo(DEFAULT_TYPE);
+    }
+
+    @Test
+    @Transactional
+    void fullUpdateTransactionBookWithPatch() throws Exception {
+        // Initialize the database
+        transactionBookRepository.saveAndFlush(transactionBook);
+
+        int databaseSizeBeforeUpdate = transactionBookRepository.findAll().size();
+
+        // Update the transactionBook using partial update
+        TransactionBook partialUpdatedTransactionBook = new TransactionBook();
+        partialUpdatedTransactionBook.setId(transactionBook.getId());
+
+        partialUpdatedTransactionBook.name(UPDATED_NAME).type(UPDATED_TYPE);
+
+        restTransactionBookMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedTransactionBook.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedTransactionBook))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the TransactionBook in the database
+        List<TransactionBook> transactionBookList = transactionBookRepository.findAll();
+        assertThat(transactionBookList).hasSize(databaseSizeBeforeUpdate);
+        TransactionBook testTransactionBook = transactionBookList.get(transactionBookList.size() - 1);
+        assertThat(testTransactionBook.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testTransactionBook.getType()).isEqualTo(UPDATED_TYPE);
+    }
+
+    @Test
+    @Transactional
+    void patchNonExistingTransactionBook() throws Exception {
+        int databaseSizeBeforeUpdate = transactionBookRepository.findAll().size();
+        transactionBook.setId(count.incrementAndGet());
+
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        restTransactionBookMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, transactionBook.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(transactionBook))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the TransactionBook in the database
+        List<TransactionBook> transactionBookList = transactionBookRepository.findAll();
+        assertThat(transactionBookList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithIdMismatchTransactionBook() throws Exception {
+        int databaseSizeBeforeUpdate = transactionBookRepository.findAll().size();
+        transactionBook.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restTransactionBookMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(transactionBook))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the TransactionBook in the database
+        List<TransactionBook> transactionBookList = transactionBookRepository.findAll();
+        assertThat(transactionBookList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithMissingIdPathParamTransactionBook() throws Exception {
+        int databaseSizeBeforeUpdate = transactionBookRepository.findAll().size();
+        transactionBook.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restTransactionBookMockMvc
+            .perform(
+                patch(ENTITY_API_URL)
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(transactionBook))
+            )
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the TransactionBook in the database
+        List<TransactionBook> transactionBookList = transactionBookRepository.findAll();
+        assertThat(transactionBookList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void deleteTransactionBook() throws Exception {
+        // Initialize the database
+        transactionBookRepository.saveAndFlush(transactionBook);
 
         int databaseSizeBeforeDelete = transactionBookRepository.findAll().size();
 
         // Delete the transactionBook
-        restTransactionBookMockMvc.perform(delete("/api/transaction-books/{id}", transactionBook.getId())
-            .accept(MediaType.APPLICATION_JSON))
+        restTransactionBookMockMvc
+            .perform(delete(ENTITY_API_URL_ID, transactionBook.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

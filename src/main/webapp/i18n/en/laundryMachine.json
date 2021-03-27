@@ -3,6 +3,7 @@
     "laundryMachine": {
       "home": {
         "title": "Laundry Machines",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Laundry Machine",
         "createOrEditLabel": "Create or edit a Laundry Machine",
         "notFound": "No Laundry Machines found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Laundry Machine"
       },
+      "id": "ID",
       "identifier": "Identifier",
       "name": "Name",
       "type": "Type",

@@ -40,6 +40,41 @@ public class InternetAccessService {
     }
 
     /**
+     * Partially update a internetAccess.
+     *
+     * @param internetAccess the entity to update partially.
+     * @return the persisted entity.
+     */
+    public Optional<InternetAccess> partialUpdate(InternetAccess internetAccess) {
+        log.debug("Request to partially update InternetAccess : {}", internetAccess);
+
+        return internetAccessRepository
+            .findById(internetAccess.getId())
+            .map(
+                existingInternetAccess -> {
+                    if (internetAccess.getBlocked() != null) {
+                        existingInternetAccess.setBlocked(internetAccess.getBlocked());
+                    }
+                    if (internetAccess.getIp1() != null) {
+                        existingInternetAccess.setIp1(internetAccess.getIp1());
+                    }
+                    if (internetAccess.getIp2() != null) {
+                        existingInternetAccess.setIp2(internetAccess.getIp2());
+                    }
+                    if (internetAccess.getSwitchInterface() != null) {
+                        existingInternetAccess.setSwitchInterface(internetAccess.getSwitchInterface());
+                    }
+                    if (internetAccess.getPort() != null) {
+                        existingInternetAccess.setPort(internetAccess.getPort());
+                    }
+
+                    return existingInternetAccess;
+                }
+            )
+            .map(internetAccessRepository::save);
+    }
+
+    /**
      * Get all the internetAccesses.
      *
      * @return the list of entities.
@@ -49,8 +84,6 @@ public class InternetAccessService {
         log.debug("Request to get all InternetAccesses");
         return internetAccessRepository.findAll();
     }
-
-
 
     /**
      *  Get all the internetAccesses where Apartment is {@code null}.

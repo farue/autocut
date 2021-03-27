@@ -10,7 +10,7 @@ import de.farue.autocut.domain.Address;
 import de.farue.autocut.domain.Apartment;
 
 /**
- * Spring Data  repository for the Apartment entity.
+ * Spring Data SQL repository for the Apartment entity.
  */
 @Repository
 public interface ApartmentRepository extends JpaRepository<Apartment, Long> {

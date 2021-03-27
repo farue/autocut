@@ -3,6 +3,7 @@
     "address": {
       "home": {
         "title": "Adressen",
+        "refreshListLabel": "Liste aktualisieren",
         "createLabel": "Adresse erstellen",
         "createOrEditLabel": "Adresse erstellen oder bearbeiten",
         "notFound": "Keine Adressen gefunden"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Adresse"
       },
+      "id": "ID",
       "street": "Straße",
       "streetNumber": "Hausnummer",
       "zip": "PLZ",

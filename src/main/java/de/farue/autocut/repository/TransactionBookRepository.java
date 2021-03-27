@@ -9,7 +9,7 @@ import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.domain.enumeration.TransactionBookType;
 
 /**
- * Spring Data  repository for the TransactionBook entity.
+ * Spring Data SQL repository for the TransactionBook entity.
  */
 @Repository
 public interface TransactionBookRepository extends JpaRepository<TransactionBook, Long> {

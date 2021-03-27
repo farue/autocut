@@ -3,6 +3,7 @@
     "team": {
       "home": {
         "title": "Teams",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Team",
         "createOrEditLabel": "Create or edit a Team",
         "notFound": "No Teams found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Team"
       },
+      "id": "ID",
       "name": "Name",
       "teamMembership": "Team Membership"
     }

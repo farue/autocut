@@ -2,40 +2,33 @@ package de.farue.autocut.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import de.farue.autocut.IntegrationTest;
+import de.farue.autocut.domain.NetworkSwitch;
+import de.farue.autocut.repository.NetworkSwitchRepository;
 import java.util.List;
-
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-
-import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.NetworkSwitch;
-import de.farue.autocut.repository.NetworkSwitchRepository;
-import de.farue.autocut.service.NetworkSwitchService;
+import org.springframework.util.Base64Utils;
 
 /**
  * Integration tests for the {@link NetworkSwitchResource} REST controller.
  */
-@SpringBootTest(classes = AutocutApp.class)
+@IntegrationTest
 @AutoConfigureMockMvc
 @WithMockUser
-public class NetworkSwitchResourceIT {
+class NetworkSwitchResourceIT {
 
     private static final String DEFAULT_INTERFACE_NAME = "AAAAAAAAAA";
     private static final String UPDATED_INTERFACE_NAME = "BBBBBBBBBB";
@@ -69,6 +62,7 @@ public class NetworkSwitchResourceIT {
             .sshHost(DEFAULT_SSH_HOST);
         return networkSwitch;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -89,12 +83,11 @@ public class NetworkSwitchResourceIT {
 
     @Test
     @Transactional
-    public void createNetworkSwitch() throws Exception {
+    void createNetworkSwitch() throws Exception {
         int databaseSizeBeforeCreate = networkSwitchRepository.findAll().size();
         // Create the NetworkSwitch
-        restNetworkSwitchMockMvc.perform(post("/api/network-switches")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(networkSwitch)))
+        restNetworkSwitchMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(networkSwitch)))
             .andExpect(status().isCreated());
 
         // Validate the NetworkSwitch in the database
@@ -107,16 +100,15 @@ public class NetworkSwitchResourceIT {
 
     @Test
     @Transactional
-    public void createNetworkSwitchWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = networkSwitchRepository.findAll().size();
-
+    void createNetworkSwitchWithExistingId() throws Exception {
         // Create the NetworkSwitch with an existing ID
         networkSwitch.setId(1L);
 
+        int databaseSizeBeforeCreate = networkSwitchRepository.findAll().size();
+
         // An entity with an existing ID cannot be created, so this API call must fail
-        restNetworkSwitchMockMvc.perform(post("/api/network-switches")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(networkSwitch)))
+        restNetworkSwitchMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(networkSwitch)))
             .andExpect(status().isBadRequest());
 
         // Validate the NetworkSwitch in the database
@@ -124,20 +116,17 @@ public class NetworkSwitchResourceIT {
         assertThat(networkSwitchList).hasSize(databaseSizeBeforeCreate);
     }
 
-
     @Test
     @Transactional
-    public void checkInterfaceNameIsRequired() throws Exception {
+    void checkInterfaceNameIsRequired() throws Exception {
         int databaseSizeBeforeTest = networkSwitchRepository.findAll().size();
         // set the field null
         networkSwitch.setInterfaceName(null);
 
         // Create the NetworkSwitch, which fails.
 
-
-        restNetworkSwitchMockMvc.perform(post("/api/network-switches")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(networkSwitch)))
+        restNetworkSwitchMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(networkSwitch)))
             .andExpect(status().isBadRequest());
 
         List<NetworkSwitch> networkSwitchList = networkSwitchRepository.findAll();
@@ -146,17 +135,15 @@ public class NetworkSwitchResourceIT {
 
     @Test
     @Transactional
-    public void checkSshHostIsRequired() throws Exception {
+    void checkSshHostIsRequired() throws Exception {
         int databaseSizeBeforeTest = networkSwitchRepository.findAll().size();
         // set the field null
         networkSwitch.setSshHost(null);
 
         // Create the NetworkSwitch, which fails.
 
-
-        restNetworkSwitchMockMvc.perform(post("/api/network-switches")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(networkSwitch)))
+        restNetworkSwitchMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(networkSwitch)))
             .andExpect(status().isBadRequest());
 
         List<NetworkSwitch> networkSwitchList = networkSwitchRepository.findAll();
@@ -165,12 +152,30 @@ public class NetworkSwitchResourceIT {
 
     @Test
     @Transactional
-    public void getAllNetworkSwitches() throws Exception {
+    void checkSshPortIsRequired() throws Exception {
+        int databaseSizeBeforeTest = networkSwitchRepository.findAll().size();
+        // set the field null
+        networkSwitch.setSshPort(null);
+
+        // Create the NetworkSwitch, which fails.
+
+        restNetworkSwitchMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(networkSwitch)))
+            .andExpect(status().isBadRequest());
+
+        List<NetworkSwitch> networkSwitchList = networkSwitchRepository.findAll();
+        assertThat(networkSwitchList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void getAllNetworkSwitches() throws Exception {
         // Initialize the database
         networkSwitchRepository.saveAndFlush(networkSwitch);
 
         // Get all the networkSwitchList
-        restNetworkSwitchMockMvc.perform(get("/api/network-switches?sort=id,desc"))
+        restNetworkSwitchMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(networkSwitch.getId().intValue())))
@@ -180,29 +185,30 @@ public class NetworkSwitchResourceIT {
 
     @Test
     @Transactional
-    public void getNetworkSwitch() throws Exception {
+    void getNetworkSwitch() throws Exception {
         // Initialize the database
         networkSwitchRepository.saveAndFlush(networkSwitch);
 
         // Get the networkSwitch
-        restNetworkSwitchMockMvc.perform(get("/api/network-switches/{id}", networkSwitch.getId()))
+        restNetworkSwitchMockMvc
+            .perform(get(ENTITY_API_URL_ID, networkSwitch.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(networkSwitch.getId().intValue()))
             .andExpect(jsonPath("$.interfaceName").value(DEFAULT_INTERFACE_NAME))
             .andExpect(jsonPath("$.sshHost").value(DEFAULT_SSH_HOST));
     }
+
     @Test
     @Transactional
-    public void getNonExistingNetworkSwitch() throws Exception {
+    void getNonExistingNetworkSwitch() throws Exception {
         // Get the networkSwitch
-        restNetworkSwitchMockMvc.perform(get("/api/network-switches/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restNetworkSwitchMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    public void updateNetworkSwitch() throws Exception {
+    void putNewNetworkSwitch() throws Exception {
         // Initialize the database
         networkSwitchService.save(networkSwitch);
 
@@ -216,9 +222,12 @@ public class NetworkSwitchResourceIT {
             .interfaceName(UPDATED_INTERFACE_NAME)
             .sshHost(UPDATED_SSH_HOST);
 
-        restNetworkSwitchMockMvc.perform(put("/api/network-switches")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(updatedNetworkSwitch)))
+        restNetworkSwitchMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, updatedNetworkSwitch.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedNetworkSwitch))
+            )
             .andExpect(status().isOk());
 
         // Validate the NetworkSwitch in the database
@@ -231,13 +240,17 @@ public class NetworkSwitchResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingNetworkSwitch() throws Exception {
+    void putNonExistingNetworkSwitch() throws Exception {
         int databaseSizeBeforeUpdate = networkSwitchRepository.findAll().size();
+        networkSwitch.setId(count.incrementAndGet());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restNetworkSwitchMockMvc.perform(put("/api/network-switches")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(networkSwitch)))
+        restNetworkSwitchMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, networkSwitch.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(networkSwitch))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the NetworkSwitch in the database
@@ -247,15 +260,177 @@ public class NetworkSwitchResourceIT {
 
     @Test
     @Transactional
-    public void deleteNetworkSwitch() throws Exception {
+    void putWithIdMismatchNetworkSwitch() throws Exception {
+        int databaseSizeBeforeUpdate = networkSwitchRepository.findAll().size();
+        networkSwitch.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restNetworkSwitchMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(networkSwitch))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the NetworkSwitch in the database
+        List<NetworkSwitch> networkSwitchList = networkSwitchRepository.findAll();
+        assertThat(networkSwitchList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void putWithMissingIdPathParamNetworkSwitch() throws Exception {
+        int databaseSizeBeforeUpdate = networkSwitchRepository.findAll().size();
+        networkSwitch.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restNetworkSwitchMockMvc
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(networkSwitch)))
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the NetworkSwitch in the database
+        List<NetworkSwitch> networkSwitchList = networkSwitchRepository.findAll();
+        assertThat(networkSwitchList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void partialUpdateNetworkSwitchWithPatch() throws Exception {
+        // Initialize the database
+        networkSwitchRepository.saveAndFlush(networkSwitch);
+
+        int databaseSizeBeforeUpdate = networkSwitchRepository.findAll().size();
+
+        // Update the networkSwitch using partial update
+        NetworkSwitch partialUpdatedNetworkSwitch = new NetworkSwitch();
+        partialUpdatedNetworkSwitch.setId(networkSwitch.getId());
+
+        partialUpdatedNetworkSwitch.sshHost(UPDATED_SSH_HOST).sshPort(UPDATED_SSH_PORT).sshKey(UPDATED_SSH_KEY);
+
+        restNetworkSwitchMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedNetworkSwitch.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedNetworkSwitch))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the NetworkSwitch in the database
+        List<NetworkSwitch> networkSwitchList = networkSwitchRepository.findAll();
+        assertThat(networkSwitchList).hasSize(databaseSizeBeforeUpdate);
+        NetworkSwitch testNetworkSwitch = networkSwitchList.get(networkSwitchList.size() - 1);
+        assertThat(testNetworkSwitch.getInterfaceName()).isEqualTo(DEFAULT_INTERFACE_NAME);
+        assertThat(testNetworkSwitch.getSshHost()).isEqualTo(UPDATED_SSH_HOST);
+        assertThat(testNetworkSwitch.getSshPort()).isEqualTo(UPDATED_SSH_PORT);
+        assertThat(testNetworkSwitch.getSshKey()).isEqualTo(UPDATED_SSH_KEY);
+    }
+
+    @Test
+    @Transactional
+    void fullUpdateNetworkSwitchWithPatch() throws Exception {
+        // Initialize the database
+        networkSwitchRepository.saveAndFlush(networkSwitch);
+
+        int databaseSizeBeforeUpdate = networkSwitchRepository.findAll().size();
+
+        // Update the networkSwitch using partial update
+        NetworkSwitch partialUpdatedNetworkSwitch = new NetworkSwitch();
+        partialUpdatedNetworkSwitch.setId(networkSwitch.getId());
+
+        partialUpdatedNetworkSwitch
+            .interfaceName(UPDATED_INTERFACE_NAME)
+            .sshHost(UPDATED_SSH_HOST)
+            .sshPort(UPDATED_SSH_PORT)
+            .sshKey(UPDATED_SSH_KEY);
+
+        restNetworkSwitchMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedNetworkSwitch.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedNetworkSwitch))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the NetworkSwitch in the database
+        List<NetworkSwitch> networkSwitchList = networkSwitchRepository.findAll();
+        assertThat(networkSwitchList).hasSize(databaseSizeBeforeUpdate);
+        NetworkSwitch testNetworkSwitch = networkSwitchList.get(networkSwitchList.size() - 1);
+        assertThat(testNetworkSwitch.getInterfaceName()).isEqualTo(UPDATED_INTERFACE_NAME);
+        assertThat(testNetworkSwitch.getSshHost()).isEqualTo(UPDATED_SSH_HOST);
+        assertThat(testNetworkSwitch.getSshPort()).isEqualTo(UPDATED_SSH_PORT);
+        assertThat(testNetworkSwitch.getSshKey()).isEqualTo(UPDATED_SSH_KEY);
+    }
+
+    @Test
+    @Transactional
+    void patchNonExistingNetworkSwitch() throws Exception {
+        int databaseSizeBeforeUpdate = networkSwitchRepository.findAll().size();
+        networkSwitch.setId(count.incrementAndGet());
+
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        restNetworkSwitchMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, networkSwitch.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(networkSwitch))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the NetworkSwitch in the database
+        List<NetworkSwitch> networkSwitchList = networkSwitchRepository.findAll();
+        assertThat(networkSwitchList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithIdMismatchNetworkSwitch() throws Exception {
+        int databaseSizeBeforeUpdate = networkSwitchRepository.findAll().size();
+        networkSwitch.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restNetworkSwitchMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(networkSwitch))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the NetworkSwitch in the database
+        List<NetworkSwitch> networkSwitchList = networkSwitchRepository.findAll();
+        assertThat(networkSwitchList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithMissingIdPathParamNetworkSwitch() throws Exception {
+        int databaseSizeBeforeUpdate = networkSwitchRepository.findAll().size();
+        networkSwitch.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restNetworkSwitchMockMvc
+            .perform(
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(networkSwitch))
+            )
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the NetworkSwitch in the database
+        List<NetworkSwitch> networkSwitchList = networkSwitchRepository.findAll();
+        assertThat(networkSwitchList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void deleteNetworkSwitch() throws Exception {
         // Initialize the database
         networkSwitchService.save(networkSwitch);
 
         int databaseSizeBeforeDelete = networkSwitchRepository.findAll().size();
 
         // Delete the networkSwitch
-        restNetworkSwitchMockMvc.perform(delete("/api/network-switches/{id}", networkSwitch.getId())
-            .accept(MediaType.APPLICATION_JSON))
+        restNetworkSwitchMockMvc
+            .perform(delete(ENTITY_API_URL_ID, networkSwitch.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

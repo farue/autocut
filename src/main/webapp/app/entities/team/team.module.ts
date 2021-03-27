@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
-import { AutocutSharedModule } from 'app/shared/shared.module';
-import { TeamComponent } from './team.component';
-import { TeamDetailComponent } from './team-detail.component';
-import { TeamUpdateComponent } from './team-update.component';
-import { TeamDeleteDialogComponent } from './team-delete-dialog.component';
-import { teamRoute } from './team.route';
+import { SharedModule } from 'app/shared/shared.module';
+import { TeamComponent } from './list/team.component';
+import { TeamDetailComponent } from './detail/team-detail.component';
+import { TeamUpdateComponent } from './update/team-update.component';
+import { TeamDeleteDialogComponent } from './delete/team-delete-dialog.component';
+import { TeamRoutingModule } from './route/team-routing.module';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(teamRoute)],
+  imports: [SharedModule, TeamRoutingModule],
   declarations: [TeamComponent, TeamDetailComponent, TeamUpdateComponent, TeamDeleteDialogComponent],
   entryComponents: [TeamDeleteDialogComponent],
 })
-export class AutocutTeamModule {}
+export class TeamModule {}

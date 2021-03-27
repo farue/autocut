@@ -1,8 +1,13 @@
 package de.farue.autocut.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -60,10 +65,11 @@ public class Tenant implements Serializable {
 
     @OneToMany(mappedBy = "tenant")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "teamMember", "tenant" }, allowSetters = true)
     private Set<SecurityPolicy> securityPolicies = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "tenants", allowSetters = true)
+    @JsonIgnoreProperties(value = { "tenants", "transactionBooks", "apartment" }, allowSetters = true)
     private Lease lease;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -75,8 +81,13 @@ public class Tenant implements Serializable {
         this.id = id;
     }
 
+    public Tenant id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
 
     public Tenant firstName(String firstName) {
@@ -89,7 +100,7 @@ public class Tenant implements Serializable {
     }
 
     public String getLastName() {
-        return lastName;
+        return this.lastName;
     }
 
     public Tenant lastName(String lastName) {
@@ -102,7 +113,7 @@ public class Tenant implements Serializable {
     }
 
     public byte[] getPictureId() {
-        return pictureId;
+        return this.pictureId;
     }
 
     public Tenant pictureId(byte[] pictureId) {
@@ -115,7 +126,7 @@ public class Tenant implements Serializable {
     }
 
     public String getPictureIdContentType() {
-        return pictureIdContentType;
+        return this.pictureIdContentType;
     }
 
     public Tenant pictureIdContentType(String pictureIdContentType) {
@@ -127,8 +138,8 @@ public class Tenant implements Serializable {
         this.pictureIdContentType = pictureIdContentType;
     }
 
-    public Boolean isVerified() {
-        return verified;
+    public Boolean getVerified() {
+        return this.verified;
     }
 
     public Tenant verified(Boolean verified) {
@@ -141,11 +152,11 @@ public class Tenant implements Serializable {
     }
 
     public User getUser() {
-        return user;
+        return this.user;
     }
 
     public Tenant user(User user) {
-        this.user = user;
+        this.setUser(user);
         return this;
     }
 
@@ -154,11 +165,11 @@ public class Tenant implements Serializable {
     }
 
     public Set<SecurityPolicy> getSecurityPolicies() {
-        return securityPolicies;
+        return this.securityPolicies;
     }
 
     public Tenant securityPolicies(Set<SecurityPolicy> securityPolicies) {
-        this.securityPolicies = securityPolicies;
+        this.setSecurityPolicies(securityPolicies);
         return this;
     }
 
@@ -175,21 +186,28 @@ public class Tenant implements Serializable {
     }
 
     public void setSecurityPolicies(Set<SecurityPolicy> securityPolicies) {
+        if (this.securityPolicies != null) {
+            this.securityPolicies.forEach(i -> i.setTenant(null));
+        }
+        if (securityPolicies != null) {
+            securityPolicies.forEach(i -> i.setTenant(this));
+        }
         this.securityPolicies = securityPolicies;
     }
 
     public Lease getLease() {
-        return lease;
+        return this.lease;
     }
 
     public Tenant lease(Lease lease) {
-        this.lease = lease;
+        this.setLease(lease);
         return this;
     }
 
     public void setLease(Lease lease) {
         this.lease = lease;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -205,7 +223,8 @@ public class Tenant implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore
@@ -217,7 +236,7 @@ public class Tenant implements Serializable {
             ", lastName='" + getLastName() + "'" +
             ", pictureId='" + getPictureId() + "'" +
             ", pictureIdContentType='" + getPictureIdContentType() + "'" +
-            ", verified='" + isVerified() + "'" +
+            ", verified='" + getVerified() + "'" +
             "}";
     }
 }

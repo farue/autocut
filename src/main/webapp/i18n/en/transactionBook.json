@@ -3,6 +3,7 @@
     "transactionBook": {
       "home": {
         "title": "Transaction Books",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Transaction Book",
         "createOrEditLabel": "Create or edit a Transaction Book",
         "notFound": "No Transaction Books found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Transaction Book"
       },
+      "id": "ID",
       "name": "Name",
       "type": "Type",
       "transaction": "Transaction",

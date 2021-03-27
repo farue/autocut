@@ -13,7 +13,7 @@ import de.farue.autocut.domain.Tenant;
 import de.farue.autocut.domain.enumeration.SemesterTerms;
 
 /**
- * Spring Data  repository for the Activity entity.
+ * Spring Data SQL repository for the Activity entity.
  */
 @Repository
 public interface ActivityRepository extends JpaRepository<Activity, Long> {

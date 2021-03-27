@@ -3,20 +3,11 @@ package de.farue.autocut.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import de.farue.autocut.domain.enumeration.Access;
 import de.farue.autocut.domain.enumeration.ProtectionUnits;
+import java.io.Serializable;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
 /**
  * A SecurityPolicy.
@@ -43,11 +34,11 @@ public class SecurityPolicy implements Serializable {
     private Access access;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "securityPolicies", allowSetters = true)
+    @JsonIgnoreProperties(value = { "securityPolicies", "tenant", "team" }, allowSetters = true)
     private TeamMembership teamMember;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "securityPolicies", allowSetters = true)
+    @JsonIgnoreProperties(value = { "user", "securityPolicies", "lease" }, allowSetters = true)
     private Tenant tenant;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -59,8 +50,13 @@ public class SecurityPolicy implements Serializable {
         this.id = id;
     }
 
+    public SecurityPolicy id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public ProtectionUnits getProtectionUnit() {
-        return protectionUnit;
+        return this.protectionUnit;
     }
 
     public SecurityPolicy protectionUnit(ProtectionUnits protectionUnit) {
@@ -73,7 +69,7 @@ public class SecurityPolicy implements Serializable {
     }
 
     public Access getAccess() {
-        return access;
+        return this.access;
     }
 
     public SecurityPolicy access(Access access) {
@@ -86,11 +82,11 @@ public class SecurityPolicy implements Serializable {
     }
 
     public TeamMembership getTeamMember() {
-        return teamMember;
+        return this.teamMember;
     }
 
     public SecurityPolicy teamMember(TeamMembership teamMembership) {
-        this.teamMember = teamMembership;
+        this.setTeamMember(teamMembership);
         return this;
     }
 
@@ -99,17 +95,18 @@ public class SecurityPolicy implements Serializable {
     }
 
     public Tenant getTenant() {
-        return tenant;
+        return this.tenant;
     }
 
     public SecurityPolicy tenant(Tenant tenant) {
-        this.tenant = tenant;
+        this.setTenant(tenant);
         return this;
     }
 
     public void setTenant(Tenant tenant) {
         this.tenant = tenant;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -125,7 +122,8 @@ public class SecurityPolicy implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

@@ -42,6 +42,41 @@ public class TenantService {
     }
 
     /**
+     * Partially update a tenant.
+     *
+     * @param tenant the entity to update partially.
+     * @return the persisted entity.
+     */
+    public Optional<Tenant> partialUpdate(Tenant tenant) {
+        log.debug("Request to partially update Tenant : {}", tenant);
+
+        return tenantRepository
+            .findById(tenant.getId())
+            .map(
+                existingTenant -> {
+                    if (tenant.getFirstName() != null) {
+                        existingTenant.setFirstName(tenant.getFirstName());
+                    }
+                    if (tenant.getLastName() != null) {
+                        existingTenant.setLastName(tenant.getLastName());
+                    }
+                    if (tenant.getPictureId() != null) {
+                        existingTenant.setPictureId(tenant.getPictureId());
+                    }
+                    if (tenant.getPictureIdContentType() != null) {
+                        existingTenant.setPictureIdContentType(tenant.getPictureIdContentType());
+                    }
+                    if (tenant.getVerified() != null) {
+                        existingTenant.setVerified(tenant.getVerified());
+                    }
+
+                    return existingTenant;
+                }
+            )
+            .map(tenantRepository::save);
+    }
+
+    /**
      * Get all the tenants.
      *
      * @return the list of entities.

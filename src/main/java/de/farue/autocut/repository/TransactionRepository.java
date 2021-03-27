@@ -18,7 +18,7 @@ import de.farue.autocut.domain.Transaction;
 import de.farue.autocut.domain.TransactionBook;
 
 /**
- * Spring Data  repository for the Transaction entity.
+ * Spring Data SQL repository for the Transaction entity.
  */
 @Repository
 public interface TransactionRepository<T extends Transaction> extends JpaRepository<T, Long> {

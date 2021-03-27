@@ -1,18 +1,11 @@
 package de.farue.autocut.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.io.Serializable;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
 /**
  * A LaundryMachineProgram.
@@ -49,7 +42,7 @@ public class LaundryMachineProgram implements Serializable {
     private Boolean protect;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "programs", allowSetters = true)
+    @JsonIgnoreProperties(value = { "programs" }, allowSetters = true)
     private LaundryMachine laundryMachine;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -61,8 +54,13 @@ public class LaundryMachineProgram implements Serializable {
         this.id = id;
     }
 
+    public LaundryMachineProgram id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public LaundryMachineProgram name(String name) {
@@ -75,7 +73,7 @@ public class LaundryMachineProgram implements Serializable {
     }
 
     public String getSubprogram() {
-        return subprogram;
+        return this.subprogram;
     }
 
     public LaundryMachineProgram subprogram(String subprogram) {
@@ -88,7 +86,7 @@ public class LaundryMachineProgram implements Serializable {
     }
 
     public Integer getTime() {
-        return time;
+        return this.time;
     }
 
     public LaundryMachineProgram time(Integer time) {
@@ -101,7 +99,7 @@ public class LaundryMachineProgram implements Serializable {
     }
 
     public Integer getSpin() {
-        return spin;
+        return this.spin;
     }
 
     public LaundryMachineProgram spin(Integer spin) {
@@ -113,8 +111,8 @@ public class LaundryMachineProgram implements Serializable {
         this.spin = spin;
     }
 
-    public Boolean isPreWash() {
-        return preWash;
+    public Boolean getPreWash() {
+        return this.preWash;
     }
 
     public LaundryMachineProgram preWash(Boolean preWash) {
@@ -126,8 +124,8 @@ public class LaundryMachineProgram implements Serializable {
         this.preWash = preWash;
     }
 
-    public Boolean isProtect() {
-        return protect;
+    public Boolean getProtect() {
+        return this.protect;
     }
 
     public LaundryMachineProgram protect(Boolean protect) {
@@ -140,17 +138,18 @@ public class LaundryMachineProgram implements Serializable {
     }
 
     public LaundryMachine getLaundryMachine() {
-        return laundryMachine;
+        return this.laundryMachine;
     }
 
     public LaundryMachineProgram laundryMachine(LaundryMachine laundryMachine) {
-        this.laundryMachine = laundryMachine;
+        this.setLaundryMachine(laundryMachine);
         return this;
     }
 
     public void setLaundryMachine(LaundryMachine laundryMachine) {
         this.laundryMachine = laundryMachine;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -166,7 +165,8 @@ public class LaundryMachineProgram implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore
@@ -178,8 +178,8 @@ public class LaundryMachineProgram implements Serializable {
             ", subprogram='" + getSubprogram() + "'" +
             ", time=" + getTime() +
             ", spin=" + getSpin() +
-            ", preWash='" + isPreWash() + "'" +
-            ", protect='" + isProtect() + "'" +
+            ", preWash='" + getPreWash() + "'" +
+            ", protect='" + getProtect() + "'" +
             "}";
     }
 }

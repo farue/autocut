@@ -1,27 +1,17 @@
 package de.farue.autocut.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import de.farue.autocut.domain.enumeration.ApartmentTypes;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
+import de.farue.autocut.domain.enumeration.ApartmentTypes;
 
 /**
  * A Apartment.
@@ -51,16 +41,17 @@ public class Apartment implements Serializable {
     @Column(name = "max_number_of_leases", nullable = false)
     private Integer maxNumberOfLeases;
 
+    @JsonIgnoreProperties(value = { "networkSwitch", "apartment" }, allowSetters = true)
     @OneToOne
     @JoinColumn(unique = true)
     private InternetAccess internetAccess;
 
     @OneToMany(mappedBy = "apartment")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "tenants", "transactionBooks", "apartment" }, allowSetters = true)
     private Set<Lease> leases = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "apartments", allowSetters = true)
     private Address address;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -72,8 +63,13 @@ public class Apartment implements Serializable {
         this.id = id;
     }
 
+    public Apartment id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getNr() {
-        return nr;
+        return this.nr;
     }
 
     public Apartment nr(String nr) {
@@ -86,7 +82,7 @@ public class Apartment implements Serializable {
     }
 
     public ApartmentTypes getType() {
-        return type;
+        return this.type;
     }
 
     public Apartment type(ApartmentTypes type) {
@@ -99,7 +95,7 @@ public class Apartment implements Serializable {
     }
 
     public Integer getMaxNumberOfLeases() {
-        return maxNumberOfLeases;
+        return this.maxNumberOfLeases;
     }
 
     public Apartment maxNumberOfLeases(Integer maxNumberOfLeases) {
@@ -112,11 +108,11 @@ public class Apartment implements Serializable {
     }
 
     public InternetAccess getInternetAccess() {
-        return internetAccess;
+        return this.internetAccess;
     }
 
     public Apartment internetAccess(InternetAccess internetAccess) {
-        this.internetAccess = internetAccess;
+        this.setInternetAccess(internetAccess);
         return this;
     }
 
@@ -125,11 +121,11 @@ public class Apartment implements Serializable {
     }
 
     public Set<Lease> getLeases() {
-        return leases;
+        return this.leases;
     }
 
     public Apartment leases(Set<Lease> leases) {
-        this.leases = leases;
+        this.setLeases(leases);
         return this;
     }
 
@@ -146,21 +142,28 @@ public class Apartment implements Serializable {
     }
 
     public void setLeases(Set<Lease> leases) {
+        if (this.leases != null) {
+            this.leases.forEach(i -> i.setApartment(null));
+        }
+        if (leases != null) {
+            leases.forEach(i -> i.setApartment(this));
+        }
         this.leases = leases;
     }
 
     public Address getAddress() {
-        return address;
+        return this.address;
     }
 
     public Apartment address(Address address) {
-        this.address = address;
+        this.setAddress(address);
         return this;
     }
 
     public void setAddress(Address address) {
         this.address = address;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -176,7 +179,8 @@ public class Apartment implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

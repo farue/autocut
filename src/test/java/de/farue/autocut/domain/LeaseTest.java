@@ -1,13 +1,14 @@
 package de.farue.autocut.domain;
 
-import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
-import de.farue.autocut.web.rest.TestUtil;
 
-public class LeaseTest {
+import de.farue.autocut.web.rest.TestUtil;
+import org.junit.jupiter.api.Test;
+
+class LeaseTest {
 
     @Test
-    public void equalsVerifier() throws Exception {
+    void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Lease.class);
         Lease lease1 = new Lease();
         lease1.setId(1L);

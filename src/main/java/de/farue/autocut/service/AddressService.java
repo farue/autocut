@@ -38,6 +38,41 @@ public class AddressService {
     }
 
     /**
+     * Partially update a address.
+     *
+     * @param address the entity to update partially.
+     * @return the persisted entity.
+     */
+    public Optional<Address> partialUpdate(Address address) {
+        log.debug("Request to partially update Address : {}", address);
+
+        return addressRepository
+            .findById(address.getId())
+            .map(
+                existingAddress -> {
+                    if (address.getStreet() != null) {
+                        existingAddress.setStreet(address.getStreet());
+                    }
+                    if (address.getStreetNumber() != null) {
+                        existingAddress.setStreetNumber(address.getStreetNumber());
+                    }
+                    if (address.getZip() != null) {
+                        existingAddress.setZip(address.getZip());
+                    }
+                    if (address.getCity() != null) {
+                        existingAddress.setCity(address.getCity());
+                    }
+                    if (address.getCountry() != null) {
+                        existingAddress.setCountry(address.getCountry());
+                    }
+
+                    return existingAddress;
+                }
+            )
+            .map(addressRepository::save);
+    }
+
+    /**
      * Get all the addresses.
      *
      * @return the list of entities.
@@ -47,7 +82,6 @@ public class AddressService {
         log.debug("Request to get all Addresses");
         return addressRepository.findAll();
     }
-
 
     /**
      * Get one address by id.

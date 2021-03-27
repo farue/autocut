@@ -1,13 +1,14 @@
 package de.farue.autocut.domain;
 
-import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
-import de.farue.autocut.web.rest.TestUtil;
 
-public class InternetAccessTest {
+import de.farue.autocut.web.rest.TestUtil;
+import org.junit.jupiter.api.Test;
+
+class InternetAccessTest {
 
     @Test
-    public void equalsVerifier() throws Exception {
+    void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(InternetAccess.class);
         InternetAccess internetAccess1 = new InternetAccess();
         internetAccess1.setId(1L);

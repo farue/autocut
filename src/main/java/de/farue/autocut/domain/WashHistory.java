@@ -3,21 +3,11 @@ package de.farue.autocut.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import de.farue.autocut.domain.enumeration.WashHistoryStatus;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.Instant;
+import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A WashHistory.
@@ -49,19 +39,19 @@ public class WashHistory implements Serializable {
     private WashHistoryStatus status;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "washHistories", allowSetters = true)
+    @JsonIgnoreProperties(value = { "user", "securityPolicies", "lease" }, allowSetters = true)
     private Tenant reservationTenant;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "washHistories", allowSetters = true)
+    @JsonIgnoreProperties(value = { "user", "securityPolicies", "lease" }, allowSetters = true)
     private Tenant usingTenant;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "washHistories", allowSetters = true)
+    @JsonIgnoreProperties(value = { "programs" }, allowSetters = true)
     private LaundryMachine machine;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "washHistories", allowSetters = true)
+    @JsonIgnoreProperties(value = { "laundryMachine" }, allowSetters = true)
     private LaundryMachineProgram program;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -73,8 +63,13 @@ public class WashHistory implements Serializable {
         this.id = id;
     }
 
+    public WashHistory id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public Instant getUsingDate() {
-        return usingDate;
+        return this.usingDate;
     }
 
     public WashHistory usingDate(Instant usingDate) {
@@ -87,7 +82,7 @@ public class WashHistory implements Serializable {
     }
 
     public Instant getReservationDate() {
-        return reservationDate;
+        return this.reservationDate;
     }
 
     public WashHistory reservationDate(Instant reservationDate) {
@@ -100,7 +95,7 @@ public class WashHistory implements Serializable {
     }
 
     public Instant getLastModifiedDate() {
-        return lastModifiedDate;
+        return this.lastModifiedDate;
     }
 
     public WashHistory lastModifiedDate(Instant lastModifiedDate) {
@@ -113,7 +108,7 @@ public class WashHistory implements Serializable {
     }
 
     public WashHistoryStatus getStatus() {
-        return status;
+        return this.status;
     }
 
     public WashHistory status(WashHistoryStatus status) {
@@ -126,11 +121,11 @@ public class WashHistory implements Serializable {
     }
 
     public Tenant getReservationTenant() {
-        return reservationTenant;
+        return this.reservationTenant;
     }
 
     public WashHistory reservationTenant(Tenant tenant) {
-        this.reservationTenant = tenant;
+        this.setReservationTenant(tenant);
         return this;
     }
 
@@ -139,11 +134,11 @@ public class WashHistory implements Serializable {
     }
 
     public Tenant getUsingTenant() {
-        return usingTenant;
+        return this.usingTenant;
     }
 
     public WashHistory usingTenant(Tenant tenant) {
-        this.usingTenant = tenant;
+        this.setUsingTenant(tenant);
         return this;
     }
 
@@ -152,11 +147,11 @@ public class WashHistory implements Serializable {
     }
 
     public LaundryMachine getMachine() {
-        return machine;
+        return this.machine;
     }
 
     public WashHistory machine(LaundryMachine laundryMachine) {
-        this.machine = laundryMachine;
+        this.setMachine(laundryMachine);
         return this;
     }
 
@@ -165,17 +160,18 @@ public class WashHistory implements Serializable {
     }
 
     public LaundryMachineProgram getProgram() {
-        return program;
+        return this.program;
     }
 
     public WashHistory program(LaundryMachineProgram laundryMachineProgram) {
-        this.program = laundryMachineProgram;
+        this.setProgram(laundryMachineProgram);
         return this;
     }
 
     public void setProgram(LaundryMachineProgram laundryMachineProgram) {
         this.program = laundryMachineProgram;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -191,7 +187,8 @@ public class WashHistory implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

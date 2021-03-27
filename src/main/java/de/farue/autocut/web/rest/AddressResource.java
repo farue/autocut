@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.farue.autocut.domain.Address;
+import de.farue.autocut.repository.AddressRepository;
 import de.farue.autocut.service.AddressService;
 import de.farue.autocut.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
@@ -42,8 +43,11 @@ public class AddressResource {
 
     private final AddressService addressService;
 
-    public AddressResource(AddressService addressService) {
+    private final AddressRepository addressRepository;
+
+    public AddressResource(AddressService addressService, AddressRepository addressRepository) {
         this.addressService = addressService;
+        this.addressRepository = addressRepository;
     }
 
     /**
@@ -60,30 +64,80 @@ public class AddressResource {
             throw new BadRequestAlertException("A new address cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Address result = addressService.save(address);
-        return ResponseEntity.created(new URI("/api/addresses/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/addresses/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /addresses} : Updates an existing address.
+     * {@code PUT  /addresses/:id} : Updates an existing address.
      *
+     * @param id the id of the address to save.
      * @param address the address to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated address,
      * or with status {@code 400 (Bad Request)} if the address is not valid,
      * or with status {@code 500 (Internal Server Error)} if the address couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/addresses")
-    public ResponseEntity<Address> updateAddress(@Valid @RequestBody Address address) throws URISyntaxException {
-        log.debug("REST request to update Address : {}", address);
+    @PutMapping("/addresses/{id}")
+    public ResponseEntity<Address> updateAddress(
+        @PathVariable(value = "id", required = false) final Long id,
+        @Valid @RequestBody Address address
+    ) throws URISyntaxException {
+        log.debug("REST request to update Address : {}, {}", id, address);
         if (address.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        if (!Objects.equals(id, address.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!addressRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
         Address result = addressService.save(address);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, address.getId().toString()))
             .body(result);
+    }
+
+    /**
+     * {@code PATCH  /addresses/:id} : Partial updates given fields of an existing address, field will ignore if it is null
+     *
+     * @param id the id of the address to save.
+     * @param address the address to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated address,
+     * or with status {@code 400 (Bad Request)} if the address is not valid,
+     * or with status {@code 404 (Not Found)} if the address is not found,
+     * or with status {@code 500 (Internal Server Error)} if the address couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PatchMapping(value = "/addresses/{id}", consumes = "application/merge-patch+json")
+    public ResponseEntity<Address> partialUpdateAddress(
+        @PathVariable(value = "id", required = false) final Long id,
+        @NotNull @RequestBody Address address
+    ) throws URISyntaxException {
+        log.debug("REST request to partial update Address partially : {}, {}", id, address);
+        if (address.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, address.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!addressRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
+        Optional<Address> result = addressService.partialUpdate(address);
+
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, address.getId().toString())
+        );
     }
 
     /**
@@ -120,6 +174,9 @@ public class AddressResource {
     public ResponseEntity<Void> deleteAddress(@PathVariable Long id) {
         log.debug("REST request to delete Address : {}", id);
         addressService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

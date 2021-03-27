@@ -8,7 +8,7 @@ import java.util.Optional;
 
 
 /**
- * Spring Data  repository for the GlobalSetting entity.
+ * Spring Data SQL repository for the GlobalSetting entity.
  */
 @SuppressWarnings("unused")
 @Repository

@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
-import { AutocutSharedModule } from 'app/shared/shared.module';
-import { LeaseComponent } from './lease.component';
-import { LeaseDetailComponent } from './lease-detail.component';
-import { LeaseUpdateComponent } from './lease-update.component';
-import { LeaseDeleteDialogComponent } from './lease-delete-dialog.component';
-import { leaseRoute } from './lease.route';
+import { SharedModule } from 'app/shared/shared.module';
+import { LeaseComponent } from './list/lease.component';
+import { LeaseDetailComponent } from './detail/lease-detail.component';
+import { LeaseUpdateComponent } from './update/lease-update.component';
+import { LeaseDeleteDialogComponent } from './delete/lease-delete-dialog.component';
+import { LeaseRoutingModule } from './route/lease-routing.module';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(leaseRoute)],
+  imports: [SharedModule, LeaseRoutingModule],
   declarations: [LeaseComponent, LeaseDetailComponent, LeaseUpdateComponent, LeaseDeleteDialogComponent],
   entryComponents: [LeaseDeleteDialogComponent],
 })
-export class AutocutLeaseModule {}
+export class LeaseModule {}

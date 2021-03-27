@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import de.farue.autocut.domain.LaundryMachineProgram;
 
 /**
- * Spring Data  repository for the LaundryMachineProgram entity.
+ * Spring Data SQL repository for the LaundryMachineProgram entity.
  */
 @Repository
 public interface LaundryMachineProgramRepository extends JpaRepository<LaundryMachineProgram, Long> {

@@ -1,32 +1,17 @@
 package de.farue.autocut.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import de.farue.autocut.domain.enumeration.TransactionKind;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.PreRemove;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * A Transaction.
@@ -74,17 +59,17 @@ public abstract class Transaction implements Serializable {
     @JoinTable(name = "transaction_link",
                joinColumns = @JoinColumn(name = "right_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "left_id", referencedColumnName = "id"))
-    @JsonIgnoreProperties({"lefts"})
+    @JsonIgnoreProperties({ "lefts", "transactionBook", "rights" })
     private Set<Transaction> lefts = new HashSet<>();
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = "transactions", allowSetters = true)
+    @JsonIgnoreProperties(value = { "transactions", "leases" }, allowSetters = true)
     private TransactionBook transactionBook;
 
     @ManyToMany(mappedBy = "lefts")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnore
+    @JsonIgnoreProperties(value = { "lefts", "transactionBook", "rights" }, allowSetters = true)
     private Set<Transaction> rights = new HashSet<>();
 
     @PreRemove
@@ -108,8 +93,13 @@ public abstract class Transaction implements Serializable {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public Transaction id(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public TransactionKind getType() {
+        return this.type;
     }
 
     public Transaction type(String type) {
@@ -122,7 +112,7 @@ public abstract class Transaction implements Serializable {
     }
 
     public Instant getBookingDate() {
-        return bookingDate;
+        return this.bookingDate;
     }
 
     public Transaction bookingDate(Instant bookingDate) {
@@ -135,7 +125,7 @@ public abstract class Transaction implements Serializable {
     }
 
     public Instant getValueDate() {
-        return valueDate;
+        return this.valueDate;
     }
 
     public Transaction valueDate(Instant valueDate) {
@@ -148,7 +138,7 @@ public abstract class Transaction implements Serializable {
     }
 
     public BigDecimal getValue() {
-        return value;
+        return this.value;
     }
 
     public Transaction value(BigDecimal value) {
@@ -161,7 +151,7 @@ public abstract class Transaction implements Serializable {
     }
 
     public BigDecimal getBalanceAfter() {
-        return balanceAfter;
+        return this.balanceAfter;
     }
 
     public Transaction balanceAfter(BigDecimal balanceAfter) {
@@ -174,7 +164,7 @@ public abstract class Transaction implements Serializable {
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public Transaction description(String description) {
@@ -187,7 +177,7 @@ public abstract class Transaction implements Serializable {
     }
 
     public String getServiceQulifier() {
-        return serviceQulifier;
+        return this.serviceQulifier;
     }
 
     public Transaction serviceQulifier(String serviceQulifier) {
@@ -200,11 +190,11 @@ public abstract class Transaction implements Serializable {
     }
 
     public Set<Transaction> getLefts() {
-        return lefts;
+        return this.lefts;
     }
 
     public Transaction lefts(Set<Transaction> transactions) {
-        this.lefts = transactions;
+        this.setLefts(transactions);
         return this;
     }
 
@@ -225,11 +215,11 @@ public abstract class Transaction implements Serializable {
     }
 
     public TransactionBook getTransactionBook() {
-        return transactionBook;
+        return this.transactionBook;
     }
 
     public Transaction transactionBook(TransactionBook transactionBook) {
-        this.transactionBook = transactionBook;
+        this.setTransactionBook(transactionBook);
         return this;
     }
 
@@ -238,11 +228,11 @@ public abstract class Transaction implements Serializable {
     }
 
     public Set<Transaction> getRights() {
-        return rights;
+        return this.rights;
     }
 
     public Transaction rights(Set<Transaction> transactions) {
-        this.rights = transactions;
+        this.setRights(transactions);
         return this;
     }
 
@@ -259,8 +249,15 @@ public abstract class Transaction implements Serializable {
     }
 
     public void setRights(Set<Transaction> transactions) {
+        if (this.rights != null) {
+            this.rights.forEach(i -> i.removeLeft(this));
+        }
+        if (transactions != null) {
+            transactions.forEach(i -> i.addLeft(this));
+        }
         this.rights = transactions;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     public void link(Transaction transaction) {
@@ -281,7 +278,8 @@ public abstract class Transaction implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

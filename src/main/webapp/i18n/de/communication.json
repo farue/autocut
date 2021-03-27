@@ -3,9 +3,10 @@
     "communication": {
       "home": {
         "title": "Communications",
+        "refreshListLabel": "Liste aktualisieren",
         "createLabel": "Communication erstellen",
         "createOrEditLabel": "Communication erstellen oder bearbeiten",
-        "notFound": "No Communications found"
+        "notFound": "Keine Communications gefunden"
       },
       "created": "Communication erstellt mit ID {{ param }}",
       "updated": "Communication aktualisiert mit ID {{ param }}",
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Communication"
       },
+      "id": "ID",
       "subject": "Subject",
       "text": "Text",
       "note": "Note",

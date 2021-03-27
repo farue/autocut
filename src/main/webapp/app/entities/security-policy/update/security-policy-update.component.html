@@ -1,0 +1,115 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-security-policy-heading"
+        data-cy="SecurityPolicyCreateUpdateHeading"
+        jhiTranslate="autocutApp.securityPolicy.home.createOrEditLabel"
+      >
+        Create or edit a Security Policy
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autocutApp.securityPolicy.protectionUnit" for="field_protectionUnit"
+            >Protection Unit</label
+          >
+          <select
+            class="form-control"
+            name="protectionUnit"
+            formControlName="protectionUnit"
+            id="field_protectionUnit"
+            data-cy="protectionUnit"
+          >
+            <option [ngValue]="null">{{ 'autocutApp.ProtectionUnits.null' | translate }}</option>
+            <option value="BANK_TRANSACTIONS">{{ 'autocutApp.ProtectionUnits.BANK_TRANSACTIONS' | translate }}</option>
+            <option value="TENANT_MANAGEMENT">{{ 'autocutApp.ProtectionUnits.TENANT_MANAGEMENT' | translate }}</option>
+            <option value="INTERNET_ACCESS_MANAGEMENT">{{ 'autocutApp.ProtectionUnits.INTERNET_ACCESS_MANAGEMENT' | translate }}</option>
+            <option value="TOOLS_MANAGEMENT">{{ 'autocutApp.ProtectionUnits.TOOLS_MANAGEMENT' | translate }}</option>
+            <option value="WASHING_SYSTEM_MANAGEMENT">{{ 'autocutApp.ProtectionUnits.WASHING_SYSTEM_MANAGEMENT' | translate }}</option>
+          </select>
+          <div
+            *ngIf="
+              editForm.get('protectionUnit')!.invalid && (editForm.get('protectionUnit')!.dirty || editForm.get('protectionUnit')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('protectionUnit')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autocutApp.securityPolicy.access" for="field_access">Access</label>
+          <select class="form-control" name="access" formControlName="access" id="field_access" data-cy="access">
+            <option [ngValue]="null">{{ 'autocutApp.Access.null' | translate }}</option>
+            <option value="READ_ALLOW">{{ 'autocutApp.Access.READ_ALLOW' | translate }}</option>
+            <option value="READ_WRITE_ALLOW">{{ 'autocutApp.Access.READ_WRITE_ALLOW' | translate }}</option>
+            <option value="WRITE_DENY">{{ 'autocutApp.Access.WRITE_DENY' | translate }}</option>
+            <option value="READ_WRITE_DENY">{{ 'autocutApp.Access.READ_WRITE_DENY' | translate }}</option>
+          </select>
+          <div *ngIf="editForm.get('access')!.invalid && (editForm.get('access')!.dirty || editForm.get('access')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('access')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autocutApp.securityPolicy.teamMember" for="field_teamMember">Team Member</label>
+          <select class="form-control" id="field_teamMember" data-cy="teamMember" name="teamMember" formControlName="teamMember">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                teamMembershipOption.id === editForm.get('teamMember')!.value?.id ? editForm.get('teamMember')!.value : teamMembershipOption
+              "
+              *ngFor="let teamMembershipOption of teamMembershipsSharedCollection; trackBy: trackTeamMembershipById"
+            >
+              {{ teamMembershipOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autocutApp.securityPolicy.tenant" for="field_tenant">Tenant</label>
+          <select class="form-control" id="field_tenant" data-cy="tenant" name="tenant" formControlName="tenant">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="tenantOption.id === editForm.get('tenant')!.value?.id ? editForm.get('tenant')!.value : tenantOption"
+              *ngFor="let tenantOption of tenantsSharedCollection; trackBy: trackTenantById"
+            >
+              {{ tenantOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

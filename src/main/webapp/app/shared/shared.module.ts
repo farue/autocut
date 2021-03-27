@@ -1,34 +1,45 @@
 import { NgModule } from '@angular/core';
-import { AutocutSharedLibsModule } from './shared-libs.module';
+import { SharedLibsModule } from './shared-libs.module';
 import { FindLanguageFromKeyPipe } from './language/find-language-from-key.pipe';
+import { TranslateDirective } from './language/translate.directive';
 import { AlertComponent } from './alert/alert.component';
 import { AlertErrorComponent } from './alert/alert-error.component';
-import { LoginModalComponent } from './login/login.component';
 import { HasAnyAuthorityDirective } from './auth/has-any-authority.directive';
-import { LocalizedDatePipe } from 'app/shared/pipes/localized-date.pipe';
-import { MoneyPipe } from 'app/shared/pipes/money.pipe';
+import { DurationPipe } from './date/duration.pipe';
+import { FormatMediumDatetimePipe } from './date/format-medium-datetime.pipe';
+import { FormatMediumDatePipe } from './date/format-medium-date.pipe';
+import { SortByDirective } from './sort/sort-by.directive';
+import { SortDirective } from './sort/sort.directive';
+import { ItemCountComponent } from './pagination/item-count.component';
 
 @NgModule({
-  imports: [AutocutSharedLibsModule],
+  imports: [SharedLibsModule],
   declarations: [
     FindLanguageFromKeyPipe,
+    TranslateDirective,
     AlertComponent,
     AlertErrorComponent,
-    LoginModalComponent,
     HasAnyAuthorityDirective,
-    LocalizedDatePipe,
-    MoneyPipe,
+    DurationPipe,
+    FormatMediumDatetimePipe,
+    FormatMediumDatePipe,
+    SortByDirective,
+    SortDirective,
+    ItemCountComponent,
   ],
-  entryComponents: [LoginModalComponent],
   exports: [
-    AutocutSharedLibsModule,
+    SharedLibsModule,
     FindLanguageFromKeyPipe,
+    TranslateDirective,
     AlertComponent,
     AlertErrorComponent,
-    LoginModalComponent,
     HasAnyAuthorityDirective,
-    LocalizedDatePipe,
-    MoneyPipe,
+    DurationPipe,
+    FormatMediumDatetimePipe,
+    FormatMediumDatePipe,
+    SortByDirective,
+    SortDirective,
+    ItemCountComponent,
   ],
 })
-export class AutocutSharedModule {}
+export class SharedModule {}

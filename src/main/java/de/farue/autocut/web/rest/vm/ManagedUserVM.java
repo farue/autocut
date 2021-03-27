@@ -1,19 +1,15 @@
 package de.farue.autocut.web.rest.vm;
 
-import java.time.LocalDate;
-
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Pattern;
+import de.farue.autocut.service.dto.AdminUserDTO;
 import javax.validation.constraints.Size;
 
 import de.farue.autocut.service.StwApartmentParser;
 import de.farue.autocut.service.dto.UserDTO;
 
 /**
- * View Model extending the UserDTO, which is meant to be used in the user management UI.
+ * View Model extending the AdminUserDTO, which is meant to be used in the user management UI.
  */
-public class ManagedUserVM extends UserDTO {
+public class ManagedUserVM extends AdminUserDTO {
 
     public static final int PASSWORD_MIN_LENGTH = 4;
 

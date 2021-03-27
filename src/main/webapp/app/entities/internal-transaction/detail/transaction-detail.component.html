@@ -1,0 +1,77 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="transaction">
+      <h2 data-cy="transactionDetailsHeading"><span jhiTranslate="autocutApp.transaction.detail.title">Transaction</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ transaction.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.transaction.kind">Kind</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'autocutApp.TransactionKind.' + transaction.kind }}">{{ transaction.kind }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.transaction.bookingDate">Booking Date</span></dt>
+        <dd>
+          <span>{{ transaction.bookingDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.transaction.valueDate">Value Date</span></dt>
+        <dd>
+          <span>{{ transaction.valueDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.transaction.value">Value</span></dt>
+        <dd>
+          <span>{{ transaction.value }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.transaction.balanceAfter">Balance After</span></dt>
+        <dd>
+          <span>{{ transaction.balanceAfter }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.transaction.description">Description</span></dt>
+        <dd>
+          <span>{{ transaction.description }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.transaction.serviceQulifier">Service Qulifier</span></dt>
+        <dd>
+          <span>{{ transaction.serviceQulifier }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.transaction.issuer">Issuer</span></dt>
+        <dd>
+          <span>{{ transaction.issuer }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.transaction.recipient">Recipient</span></dt>
+        <dd>
+          <span>{{ transaction.recipient }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.transaction.left">Left</span></dt>
+        <dd>
+          <span *ngFor="let left of transaction.lefts; let last = last">
+            <a [routerLink]="['/transaction', left?.id, 'view']">{{ left.id }}</a
+            >{{ last ? '' : ', ' }}
+          </span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.transaction.transactionBook">Transaction Book</span></dt>
+        <dd>
+          <div *ngIf="transaction.transactionBook">
+            <a [routerLink]="['/transaction-book', transaction.transactionBook?.id, 'view']">{{ transaction.transactionBook?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/transaction', transaction.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

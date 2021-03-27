@@ -1,21 +1,12 @@
 package de.farue.autocut.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A TenantCommunication.
@@ -36,7 +27,6 @@ public class TenantCommunication implements Serializable {
     @Column(name = "subject", length = 80, nullable = false)
     private String subject;
 
-
     @Lob
     @Column(name = "text", nullable = false)
     private String text;
@@ -50,7 +40,7 @@ public class TenantCommunication implements Serializable {
     private Instant date;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "messages", allowSetters = true)
+    @JsonIgnoreProperties(value = { "user", "securityPolicies", "lease" }, allowSetters = true)
     private Tenant tenant;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -62,8 +52,13 @@ public class TenantCommunication implements Serializable {
         this.id = id;
     }
 
+    public TenantCommunication id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getSubject() {
-        return subject;
+        return this.subject;
     }
 
     public TenantCommunication subject(String subject) {
@@ -76,7 +71,7 @@ public class TenantCommunication implements Serializable {
     }
 
     public String getText() {
-        return text;
+        return this.text;
     }
 
     public TenantCommunication text(String text) {
@@ -89,7 +84,7 @@ public class TenantCommunication implements Serializable {
     }
 
     public String getNote() {
-        return note;
+        return this.note;
     }
 
     public TenantCommunication note(String note) {
@@ -102,7 +97,7 @@ public class TenantCommunication implements Serializable {
     }
 
     public Instant getDate() {
-        return date;
+        return this.date;
     }
 
     public TenantCommunication date(Instant date) {
@@ -115,17 +110,18 @@ public class TenantCommunication implements Serializable {
     }
 
     public Tenant getTenant() {
-        return tenant;
+        return this.tenant;
     }
 
     public TenantCommunication tenant(Tenant tenant) {
-        this.tenant = tenant;
+        this.setTenant(tenant);
         return this;
     }
 
     public void setTenant(Tenant tenant) {
         this.tenant = tenant;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -141,7 +137,8 @@ public class TenantCommunication implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

@@ -3,6 +3,7 @@
     "securityPolicy": {
       "home": {
         "title": "Sicherheitsrichtlinien",
+        "refreshListLabel": "Liste aktualisieren",
         "createLabel": "Sicherheitsrichtlinie erstellen",
         "createOrEditLabel": "Sicherheitsrichtlinie erstellen oder bearbeiten",
         "notFound": "Keine Sicherheitsrichtlinien gefunden"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Sicherheitsrichtlinie"
       },
+      "id": "ID",
       "protectionUnit": "Geschützter Bereich",
       "access": "Zugang",
       "teamMember": "AG Mitglied",

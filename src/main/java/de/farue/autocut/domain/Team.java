@@ -1,19 +1,13 @@
 package de.farue.autocut.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Team.
@@ -35,6 +29,7 @@ public class Team implements Serializable {
 
     @OneToMany(mappedBy = "team")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "securityPolicies", "tenant", "team" }, allowSetters = true)
     private Set<TeamMembership> teamMemberships = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -46,8 +41,13 @@ public class Team implements Serializable {
         this.id = id;
     }
 
+    public Team id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public Team name(String name) {
@@ -60,11 +60,11 @@ public class Team implements Serializable {
     }
 
     public Set<TeamMembership> getTeamMemberships() {
-        return teamMemberships;
+        return this.teamMemberships;
     }
 
     public Team teamMemberships(Set<TeamMembership> teamMemberships) {
-        this.teamMemberships = teamMemberships;
+        this.setTeamMemberships(teamMemberships);
         return this;
     }
 
@@ -81,8 +81,15 @@ public class Team implements Serializable {
     }
 
     public void setTeamMemberships(Set<TeamMembership> teamMemberships) {
+        if (this.teamMemberships != null) {
+            this.teamMemberships.forEach(i -> i.setTeam(null));
+        }
+        if (teamMemberships != null) {
+            teamMemberships.forEach(i -> i.setTeam(this));
+        }
         this.teamMemberships = teamMemberships;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -98,7 +105,8 @@ public class Team implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

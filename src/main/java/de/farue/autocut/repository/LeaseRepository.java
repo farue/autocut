@@ -16,13 +16,15 @@ import de.farue.autocut.domain.Lease;
 import de.farue.autocut.domain.Tenant;
 
 /**
- * Spring Data  repository for the Lease entity.
+ * Spring Data SQL repository for the Lease entity.
  */
 @Repository
 public interface LeaseRepository extends JpaRepository<Lease, Long> {
 
-    @Query(value = "select distinct lease from Lease lease left join fetch lease.transactionBooks left join fetch lease.tenants",
-        countQuery = "select count(distinct lease) from Lease lease")
+    @Query(
+        value = "select distinct lease from Lease lease left join fetch lease.transactionBooks left join fetch lease.tenants",
+        countQuery = "select count(distinct lease) from Lease lease"
+    )
     Page<Lease> findAllWithEagerRelationships(Pageable pageable);
 
     @Query("select distinct lease from Lease lease left join fetch lease.transactionBooks left join fetch lease.tenants")

@@ -1,13 +1,14 @@
 package de.farue.autocut.domain;
 
-import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
-import de.farue.autocut.web.rest.TestUtil;
 
-public class TransactionBookTest {
+import de.farue.autocut.web.rest.TestUtil;
+import org.junit.jupiter.api.Test;
+
+class TransactionBookTest {
 
     @Test
-    public void equalsVerifier() throws Exception {
+    void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(TransactionBook.class);
         TransactionBook transactionBook1 = new TransactionBook();
         transactionBook1.setId(1L);

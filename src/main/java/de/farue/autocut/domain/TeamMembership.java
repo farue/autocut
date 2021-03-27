@@ -1,18 +1,15 @@
 package de.farue.autocut.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import de.farue.autocut.domain.enumeration.TeamRole;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-
-import de.farue.autocut.domain.enumeration.TeamRole;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A TeamMembership.
@@ -40,15 +37,16 @@ public class TeamMembership implements Serializable {
 
     @OneToMany(mappedBy = "teamMember")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "teamMember", "tenant" }, allowSetters = true)
     private Set<SecurityPolicy> securityPolicies = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "teamMemberships", allowSetters = true)
+    @JsonIgnoreProperties(value = { "user", "securityPolicies", "lease" }, allowSetters = true)
     private Tenant tenant;
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = "teamMemberships", allowSetters = true)
+    @JsonIgnoreProperties(value = { "teamMemberships" }, allowSetters = true)
     private Team team;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -60,8 +58,13 @@ public class TeamMembership implements Serializable {
         this.id = id;
     }
 
+    public TeamMembership id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public TeamRole getRole() {
-        return role;
+        return this.role;
     }
 
     public TeamMembership role(TeamRole role) {
@@ -74,7 +77,7 @@ public class TeamMembership implements Serializable {
     }
 
     public LocalDate getStart() {
-        return start;
+        return this.start;
     }
 
     public TeamMembership start(LocalDate start) {
@@ -87,7 +90,7 @@ public class TeamMembership implements Serializable {
     }
 
     public LocalDate getEnd() {
-        return end;
+        return this.end;
     }
 
     public TeamMembership end(LocalDate end) {
@@ -100,11 +103,11 @@ public class TeamMembership implements Serializable {
     }
 
     public Set<SecurityPolicy> getSecurityPolicies() {
-        return securityPolicies;
+        return this.securityPolicies;
     }
 
     public TeamMembership securityPolicies(Set<SecurityPolicy> securityPolicies) {
-        this.securityPolicies = securityPolicies;
+        this.setSecurityPolicies(securityPolicies);
         return this;
     }
 
@@ -121,15 +124,21 @@ public class TeamMembership implements Serializable {
     }
 
     public void setSecurityPolicies(Set<SecurityPolicy> securityPolicies) {
+        if (this.securityPolicies != null) {
+            this.securityPolicies.forEach(i -> i.setTeamMember(null));
+        }
+        if (securityPolicies != null) {
+            securityPolicies.forEach(i -> i.setTeamMember(this));
+        }
         this.securityPolicies = securityPolicies;
     }
 
     public Tenant getTenant() {
-        return tenant;
+        return this.tenant;
     }
 
     public TeamMembership tenant(Tenant tenant) {
-        this.tenant = tenant;
+        this.setTenant(tenant);
         return this;
     }
 
@@ -138,17 +147,18 @@ public class TeamMembership implements Serializable {
     }
 
     public Team getTeam() {
-        return team;
+        return this.team;
     }
 
     public TeamMembership team(Team team) {
-        this.team = team;
+        this.setTeam(team);
         return this;
     }
 
     public void setTeam(Team team) {
         this.team = team;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -164,7 +174,8 @@ public class TeamMembership implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

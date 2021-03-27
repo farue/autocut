@@ -3,6 +3,7 @@
     "teamMembership": {
       "home": {
         "title": "Team Memberships",
+        "refreshListLabel": "Liste aktualisieren",
         "createLabel": "Team Membership erstellen",
         "createOrEditLabel": "Team Membership erstellen oder bearbeiten",
         "notFound": "No Team Memberships found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Team Membership"
       },
+      "id": "ID",
       "role": "Role",
       "start": "Start",
       "end": "End",

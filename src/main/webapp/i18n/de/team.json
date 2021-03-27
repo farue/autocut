@@ -3,6 +3,7 @@
     "team": {
       "home": {
         "title": "AGs",
+        "refreshListLabel": "Liste aktualisieren",
         "createLabel": "AG erstellen",
         "createOrEditLabel": "AG erstellen oder bearbeiten",
         "notFound": "Keine AGs gefunden"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "AG"
       },
+      "id": "ID",
       "name": "Name",
       "teamMembership": "Mitgliedschaft"
     }

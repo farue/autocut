@@ -5,7 +5,6 @@ import java.util.Locale;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -17,6 +16,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
+import tech.jhipster.config.JHipsterProperties;
 
 import de.farue.autocut.domain.User;
 import de.farue.autocut.email.ImapFolder;
@@ -49,9 +49,13 @@ public class MailService {
 
     private final ImapFolderFactory imapFolderFactory;
 
-    public MailService(JHipsterProperties jHipsterProperties, JavaMailSenderImpl javaMailSender,
-            MessageSource messageSource, SpringTemplateEngine templateEngine, ImapFolderFactory imapFolderFactory) {
-
+    public MailService(
+        JHipsterProperties jHipsterProperties,
+        JavaMailSenderImpl javaMailSender,
+        MessageSource messageSource,
+        SpringTemplateEngine templateEngine,
+        ImapFolderFactory imapFolderFactory
+    ) {
         this.jHipsterProperties = jHipsterProperties;
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
@@ -61,8 +65,14 @@ public class MailService {
 
     @Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
-        log.debug("Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
-            isMultipart, isHtml, to, subject, content);
+        log.debug(
+            "Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
+            isMultipart,
+            isHtml,
+            to,
+            subject,
+            content
+        );
 
         // Prepare message using a Spring helper
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();

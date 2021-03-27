@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
-import { AutocutSharedModule } from 'app/shared/shared.module';
-import { TransactionBookComponent } from './transaction-book.component';
-import { TransactionBookDetailComponent } from './transaction-book-detail.component';
-import { TransactionBookUpdateComponent } from './transaction-book-update.component';
-import { TransactionBookDeleteDialogComponent } from './transaction-book-delete-dialog.component';
-import { transactionBookRoute } from './transaction-book.route';
+import { SharedModule } from 'app/shared/shared.module';
+import { TransactionBookComponent } from './list/transaction-book.component';
+import { TransactionBookDetailComponent } from './detail/transaction-book-detail.component';
+import { TransactionBookUpdateComponent } from './update/transaction-book-update.component';
+import { TransactionBookDeleteDialogComponent } from './delete/transaction-book-delete-dialog.component';
+import { TransactionBookRoutingModule } from './route/transaction-book-routing.module';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(transactionBookRoute)],
+  imports: [SharedModule, TransactionBookRoutingModule],
   declarations: [
     TransactionBookComponent,
     TransactionBookDetailComponent,
@@ -18,4 +17,4 @@ import { transactionBookRoute } from './transaction-book.route';
   ],
   entryComponents: [TransactionBookDeleteDialogComponent],
 })
-export class AutocutTransactionBookModule {}
+export class TransactionBookModule {}

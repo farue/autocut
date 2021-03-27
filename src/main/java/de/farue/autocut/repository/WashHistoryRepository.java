@@ -15,7 +15,7 @@ import java.util.Set;
 
 
 /**
- * Spring Data  repository for the WashHistory entity.
+ * Spring Data SQL repository for the WashHistory entity.
  */
 @SuppressWarnings("unused")
 @Repository

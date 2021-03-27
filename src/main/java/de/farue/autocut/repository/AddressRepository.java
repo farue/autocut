@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import de.farue.autocut.domain.Address;
 
 /**
- * Spring Data  repository for the Address entity.
+ * Spring Data SQL repository for the Address entity.
  */
 @Repository
 public interface AddressRepository extends JpaRepository<Address, Long> {

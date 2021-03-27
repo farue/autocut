@@ -3,6 +3,7 @@
     "communication": {
       "home": {
         "title": "Communications",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Communication",
         "createOrEditLabel": "Create or edit a Communication",
         "notFound": "No Communications found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Communication"
       },
+      "id": "ID",
       "subject": "Subject",
       "text": "Text",
       "note": "Note",

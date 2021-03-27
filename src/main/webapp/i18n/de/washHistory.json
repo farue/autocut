@@ -3,9 +3,10 @@
     "washHistory": {
       "home": {
         "title": "Wash Histories",
+        "refreshListLabel": "Liste aktualisieren",
         "createLabel": "Wash History erstellen",
         "createOrEditLabel": "Wash History erstellen oder bearbeiten",
-        "notFound": "No Wash Histories found"
+        "notFound": "Keine Wash Histories gefunden"
       },
       "created": "Wash History erstellt mit ID {{ param }}",
       "updated": "Wash History aktualisiert mit ID {{ param }}",
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Wash History"
       },
+      "id": "ID",
       "usingDate": "Using Date",
       "reservationDate": "Reservation Date",
       "lastModifiedDate": "Last Modified Date",

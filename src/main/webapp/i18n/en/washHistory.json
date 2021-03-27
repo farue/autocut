@@ -3,6 +3,7 @@
     "washHistory": {
       "home": {
         "title": "Wash Histories",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Wash History",
         "createOrEditLabel": "Create or edit a Wash History",
         "notFound": "No Wash Histories found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Wash History"
       },
+      "id": "ID",
       "usingDate": "Using Date",
       "reservationDate": "Reservation Date",
       "lastModifiedDate": "Last Modified Date",

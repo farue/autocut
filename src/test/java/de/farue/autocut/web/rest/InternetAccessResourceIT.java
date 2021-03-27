@@ -2,40 +2,32 @@ package de.farue.autocut.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import de.farue.autocut.IntegrationTest;
+import de.farue.autocut.domain.InternetAccess;
+import de.farue.autocut.repository.InternetAccessRepository;
 import java.util.List;
-
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.InternetAccess;
-import de.farue.autocut.repository.InternetAccessRepository;
-import de.farue.autocut.service.InternetAccessService;
-
 /**
  * Integration tests for the {@link InternetAccessResource} REST controller.
  */
-@SpringBootTest(classes = AutocutApp.class)
+@IntegrationTest
 @AutoConfigureMockMvc
 @WithMockUser
-public class InternetAccessResourceIT {
+class InternetAccessResourceIT {
 
     private static final String DEFAULT_IP_1 = "AAAAAAAAAA";
     private static final String UPDATED_IP_1 = "BBBBBBBBBB";
@@ -49,11 +41,14 @@ public class InternetAccessResourceIT {
     private static final Integer DEFAULT_PORT = 1;
     private static final Integer UPDATED_PORT = 2;
 
-    @Autowired
-    private InternetAccessRepository internetAccessRepository;
+    private static final String ENTITY_API_URL = "/api/internet-accesses";
+    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
+
+    private static Random random = new Random();
+    private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     @Autowired
-    private InternetAccessService internetAccessService;
+    private InternetAccessRepository internetAccessRepository;
 
     @Autowired
     private EntityManager em;
@@ -77,6 +72,7 @@ public class InternetAccessResourceIT {
             .port(DEFAULT_PORT);
         return internetAccess;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -99,18 +95,20 @@ public class InternetAccessResourceIT {
 
     @Test
     @Transactional
-    public void createInternetAccess() throws Exception {
+    void createInternetAccess() throws Exception {
         int databaseSizeBeforeCreate = internetAccessRepository.findAll().size();
         // Create the InternetAccess
-        restInternetAccessMockMvc.perform(post("/api/internet-accesses")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(internetAccess)))
+        restInternetAccessMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(internetAccess))
+            )
             .andExpect(status().isCreated());
 
         // Validate the InternetAccess in the database
         List<InternetAccess> internetAccessList = internetAccessRepository.findAll();
         assertThat(internetAccessList).hasSize(databaseSizeBeforeCreate + 1);
         InternetAccess testInternetAccess = internetAccessList.get(internetAccessList.size() - 1);
+        assertThat(testInternetAccess.getBlocked()).isEqualTo(DEFAULT_BLOCKED);
         assertThat(testInternetAccess.getIp1()).isEqualTo(DEFAULT_IP_1);
         assertThat(testInternetAccess.getIp2()).isEqualTo(DEFAULT_IP_2);
         assertThat(testInternetAccess.getSwitchInterface()).isEqualTo(DEFAULT_SWITCH_INTERFACE);
@@ -119,16 +117,17 @@ public class InternetAccessResourceIT {
 
     @Test
     @Transactional
-    public void createInternetAccessWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = internetAccessRepository.findAll().size();
-
+    void createInternetAccessWithExistingId() throws Exception {
         // Create the InternetAccess with an existing ID
         internetAccess.setId(1L);
 
+        int databaseSizeBeforeCreate = internetAccessRepository.findAll().size();
+
         // An entity with an existing ID cannot be created, so this API call must fail
-        restInternetAccessMockMvc.perform(post("/api/internet-accesses")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(internetAccess)))
+        restInternetAccessMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(internetAccess))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the InternetAccess in the database
@@ -139,17 +138,17 @@ public class InternetAccessResourceIT {
 
     @Test
     @Transactional
-    public void checkIp1IsRequired() throws Exception {
+    void checkIp1IsRequired() throws Exception {
         int databaseSizeBeforeTest = internetAccessRepository.findAll().size();
         // set the field null
         internetAccess.setIp1(null);
 
         // Create the InternetAccess, which fails.
 
-
-        restInternetAccessMockMvc.perform(post("/api/internet-accesses")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(internetAccess)))
+        restInternetAccessMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(internetAccess))
+            )
             .andExpect(status().isBadRequest());
 
         List<InternetAccess> internetAccessList = internetAccessRepository.findAll();
@@ -158,17 +157,17 @@ public class InternetAccessResourceIT {
 
     @Test
     @Transactional
-    public void checkIp2IsRequired() throws Exception {
+    void checkIp2IsRequired() throws Exception {
         int databaseSizeBeforeTest = internetAccessRepository.findAll().size();
         // set the field null
         internetAccess.setIp2(null);
 
         // Create the InternetAccess, which fails.
 
-
-        restInternetAccessMockMvc.perform(post("/api/internet-accesses")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(internetAccess)))
+        restInternetAccessMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(internetAccess))
+            )
             .andExpect(status().isBadRequest());
 
         List<InternetAccess> internetAccessList = internetAccessRepository.findAll();
@@ -177,17 +176,17 @@ public class InternetAccessResourceIT {
 
     @Test
     @Transactional
-    public void checkSwitchInterfaceIsRequired() throws Exception {
+    void checkSwitchInterfaceIsRequired() throws Exception {
         int databaseSizeBeforeTest = internetAccessRepository.findAll().size();
         // set the field null
         internetAccess.setSwitchInterface(null);
 
         // Create the InternetAccess, which fails.
 
-
-        restInternetAccessMockMvc.perform(post("/api/internet-accesses")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(internetAccess)))
+        restInternetAccessMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(internetAccess))
+            )
             .andExpect(status().isBadRequest());
 
         List<InternetAccess> internetAccessList = internetAccessRepository.findAll();
@@ -196,17 +195,17 @@ public class InternetAccessResourceIT {
 
     @Test
     @Transactional
-    public void checkPortIsRequired() throws Exception {
+    void checkPortIsRequired() throws Exception {
         int databaseSizeBeforeTest = internetAccessRepository.findAll().size();
         // set the field null
         internetAccess.setPort(null);
 
         // Create the InternetAccess, which fails.
 
-
-        restInternetAccessMockMvc.perform(post("/api/internet-accesses")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(internetAccess)))
+        restInternetAccessMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(internetAccess))
+            )
             .andExpect(status().isBadRequest());
 
         List<InternetAccess> internetAccessList = internetAccessRepository.findAll();
@@ -215,12 +214,13 @@ public class InternetAccessResourceIT {
 
     @Test
     @Transactional
-    public void getAllInternetAccesses() throws Exception {
+    void getAllInternetAccesses() throws Exception {
         // Initialize the database
         internetAccessRepository.saveAndFlush(internetAccess);
 
         // Get all the internetAccessList
-        restInternetAccessMockMvc.perform(get("/api/internet-accesses?sort=id,desc"))
+        restInternetAccessMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(internetAccess.getId().intValue())))
@@ -232,12 +232,13 @@ public class InternetAccessResourceIT {
 
     @Test
     @Transactional
-    public void getInternetAccess() throws Exception {
+    void getInternetAccess() throws Exception {
         // Initialize the database
         internetAccessRepository.saveAndFlush(internetAccess);
 
         // Get the internetAccess
-        restInternetAccessMockMvc.perform(get("/api/internet-accesses/{id}", internetAccess.getId()))
+        restInternetAccessMockMvc
+            .perform(get(ENTITY_API_URL_ID, internetAccess.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(internetAccess.getId().intValue()))
@@ -246,19 +247,19 @@ public class InternetAccessResourceIT {
             .andExpect(jsonPath("$.switchInterface").value(DEFAULT_SWITCH_INTERFACE))
             .andExpect(jsonPath("$.port").value(DEFAULT_PORT));
     }
+
     @Test
     @Transactional
-    public void getNonExistingInternetAccess() throws Exception {
+    void getNonExistingInternetAccess() throws Exception {
         // Get the internetAccess
-        restInternetAccessMockMvc.perform(get("/api/internet-accesses/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restInternetAccessMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    public void updateInternetAccess() throws Exception {
+    void putNewInternetAccess() throws Exception {
         // Initialize the database
-        internetAccessService.save(internetAccess);
+        internetAccessRepository.saveAndFlush(internetAccess);
 
         int databaseSizeBeforeUpdate = internetAccessRepository.findAll().size();
 
@@ -272,9 +273,12 @@ public class InternetAccessResourceIT {
             .switchInterface(UPDATED_SWITCH_INTERFACE)
             .port(UPDATED_PORT);
 
-        restInternetAccessMockMvc.perform(put("/api/internet-accesses")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(updatedInternetAccess)))
+        restInternetAccessMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, updatedInternetAccess.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedInternetAccess))
+            )
             .andExpect(status().isOk());
 
         // Validate the InternetAccess in the database
@@ -289,13 +293,17 @@ public class InternetAccessResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingInternetAccess() throws Exception {
+    void putNonExistingInternetAccess() throws Exception {
         int databaseSizeBeforeUpdate = internetAccessRepository.findAll().size();
+        internetAccess.setId(count.incrementAndGet());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restInternetAccessMockMvc.perform(put("/api/internet-accesses")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(internetAccess)))
+        restInternetAccessMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, internetAccess.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(internetAccess))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the InternetAccess in the database
@@ -305,15 +313,180 @@ public class InternetAccessResourceIT {
 
     @Test
     @Transactional
-    public void deleteInternetAccess() throws Exception {
+    void putWithIdMismatchInternetAccess() throws Exception {
+        int databaseSizeBeforeUpdate = internetAccessRepository.findAll().size();
+        internetAccess.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restInternetAccessMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(internetAccess))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the InternetAccess in the database
+        List<InternetAccess> internetAccessList = internetAccessRepository.findAll();
+        assertThat(internetAccessList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void putWithMissingIdPathParamInternetAccess() throws Exception {
+        int databaseSizeBeforeUpdate = internetAccessRepository.findAll().size();
+        internetAccess.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restInternetAccessMockMvc
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(internetAccess)))
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the InternetAccess in the database
+        List<InternetAccess> internetAccessList = internetAccessRepository.findAll();
+        assertThat(internetAccessList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void partialUpdateInternetAccessWithPatch() throws Exception {
         // Initialize the database
-        internetAccessService.save(internetAccess);
+        internetAccessRepository.saveAndFlush(internetAccess);
+
+        int databaseSizeBeforeUpdate = internetAccessRepository.findAll().size();
+
+        // Update the internetAccess using partial update
+        InternetAccess partialUpdatedInternetAccess = new InternetAccess();
+        partialUpdatedInternetAccess.setId(internetAccess.getId());
+
+        partialUpdatedInternetAccess.blocked(UPDATED_BLOCKED).ip2(UPDATED_IP_2);
+
+        restInternetAccessMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedInternetAccess.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedInternetAccess))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the InternetAccess in the database
+        List<InternetAccess> internetAccessList = internetAccessRepository.findAll();
+        assertThat(internetAccessList).hasSize(databaseSizeBeforeUpdate);
+        InternetAccess testInternetAccess = internetAccessList.get(internetAccessList.size() - 1);
+        assertThat(testInternetAccess.getBlocked()).isEqualTo(UPDATED_BLOCKED);
+        assertThat(testInternetAccess.getIp1()).isEqualTo(DEFAULT_IP_1);
+        assertThat(testInternetAccess.getIp2()).isEqualTo(UPDATED_IP_2);
+        assertThat(testInternetAccess.getSwitchInterface()).isEqualTo(DEFAULT_SWITCH_INTERFACE);
+        assertThat(testInternetAccess.getPort()).isEqualTo(DEFAULT_PORT);
+    }
+
+    @Test
+    @Transactional
+    void fullUpdateInternetAccessWithPatch() throws Exception {
+        // Initialize the database
+        internetAccessRepository.saveAndFlush(internetAccess);
+
+        int databaseSizeBeforeUpdate = internetAccessRepository.findAll().size();
+
+        // Update the internetAccess using partial update
+        InternetAccess partialUpdatedInternetAccess = new InternetAccess();
+        partialUpdatedInternetAccess.setId(internetAccess.getId());
+
+        partialUpdatedInternetAccess
+            .blocked(UPDATED_BLOCKED)
+            .ip1(UPDATED_IP_1)
+            .ip2(UPDATED_IP_2)
+            .switchInterface(UPDATED_SWITCH_INTERFACE)
+            .port(UPDATED_PORT);
+
+        restInternetAccessMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedInternetAccess.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedInternetAccess))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the InternetAccess in the database
+        List<InternetAccess> internetAccessList = internetAccessRepository.findAll();
+        assertThat(internetAccessList).hasSize(databaseSizeBeforeUpdate);
+        InternetAccess testInternetAccess = internetAccessList.get(internetAccessList.size() - 1);
+        assertThat(testInternetAccess.getBlocked()).isEqualTo(UPDATED_BLOCKED);
+        assertThat(testInternetAccess.getIp1()).isEqualTo(UPDATED_IP_1);
+        assertThat(testInternetAccess.getIp2()).isEqualTo(UPDATED_IP_2);
+        assertThat(testInternetAccess.getSwitchInterface()).isEqualTo(UPDATED_SWITCH_INTERFACE);
+        assertThat(testInternetAccess.getPort()).isEqualTo(UPDATED_PORT);
+    }
+
+    @Test
+    @Transactional
+    void patchNonExistingInternetAccess() throws Exception {
+        int databaseSizeBeforeUpdate = internetAccessRepository.findAll().size();
+        internetAccess.setId(count.incrementAndGet());
+
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        restInternetAccessMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, internetAccess.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(internetAccess))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the InternetAccess in the database
+        List<InternetAccess> internetAccessList = internetAccessRepository.findAll();
+        assertThat(internetAccessList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithIdMismatchInternetAccess() throws Exception {
+        int databaseSizeBeforeUpdate = internetAccessRepository.findAll().size();
+        internetAccess.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restInternetAccessMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(internetAccess))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the InternetAccess in the database
+        List<InternetAccess> internetAccessList = internetAccessRepository.findAll();
+        assertThat(internetAccessList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithMissingIdPathParamInternetAccess() throws Exception {
+        int databaseSizeBeforeUpdate = internetAccessRepository.findAll().size();
+        internetAccess.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restInternetAccessMockMvc
+            .perform(
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(internetAccess))
+            )
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the InternetAccess in the database
+        List<InternetAccess> internetAccessList = internetAccessRepository.findAll();
+        assertThat(internetAccessList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void deleteInternetAccess() throws Exception {
+        // Initialize the database
+        internetAccessRepository.saveAndFlush(internetAccess);
 
         int databaseSizeBeforeDelete = internetAccessRepository.findAll().size();
 
         // Delete the internetAccess
-        restInternetAccessMockMvc.perform(delete("/api/internet-accesses/{id}", internetAccess.getId())
-            .accept(MediaType.APPLICATION_JSON))
+        restInternetAccessMockMvc
+            .perform(delete(ENTITY_API_URL_ID, internetAccess.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

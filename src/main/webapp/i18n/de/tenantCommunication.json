@@ -3,6 +3,7 @@
     "tenantCommunication": {
       "home": {
         "title": "Mieterkommunikationen",
+        "refreshListLabel": "Liste aktualisieren",
         "createLabel": "Mieterkommunikation erstellen",
         "createOrEditLabel": "Mieterkommunikation erstellen oder bearbeiten",
         "notFound": "No Mieterkommunikationen found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Mieterkommunikation"
       },
+      "id": "ID",
       "subject": "Betreff",
       "text": "Text",
       "note": "Notiz",

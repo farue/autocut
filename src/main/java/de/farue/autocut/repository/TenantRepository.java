@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 /**
- * Spring Data  repository for the Tenant entity.
+ * Spring Data SQL repository for the Tenant entity.
  */
 @SuppressWarnings("unused")
 @Repository

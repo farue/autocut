@@ -45,6 +45,35 @@ public class ApartmentService {
     }
 
     /**
+     * Partially update a apartment.
+     *
+     * @param apartment the entity to update partially.
+     * @return the persisted entity.
+     */
+    public Optional<Apartment> partialUpdate(Apartment apartment) {
+        log.debug("Request to partially update Apartment : {}", apartment);
+
+        return apartmentRepository
+            .findById(apartment.getId())
+            .map(
+                existingApartment -> {
+                    if (apartment.getNr() != null) {
+                        existingApartment.setNr(apartment.getNr());
+                    }
+                    if (apartment.getType() != null) {
+                        existingApartment.setType(apartment.getType());
+                    }
+                    if (apartment.getMaxNumberOfLeases() != null) {
+                        existingApartment.setMaxNumberOfLeases(apartment.getMaxNumberOfLeases());
+                    }
+
+                    return existingApartment;
+                }
+            )
+            .map(apartmentRepository::save);
+    }
+
+    /**
      * Get all the apartments.
      *
      * @return the list of entities.
@@ -54,7 +83,6 @@ public class ApartmentService {
         log.debug("Request to get all Apartments");
         return apartmentRepository.findAll();
     }
-
 
     /**
      * Get one apartment by id.

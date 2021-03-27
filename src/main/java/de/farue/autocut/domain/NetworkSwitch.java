@@ -1,15 +1,8 @@
 package de.farue.autocut.domain;
 
 import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -44,8 +37,13 @@ public class NetworkSwitch implements Serializable {
         this.id = id;
     }
 
+    public NetworkSwitch id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getInterfaceName() {
-        return interfaceName;
+        return this.interfaceName;
     }
 
     public NetworkSwitch interfaceName(String interfaceName) {
@@ -58,7 +56,7 @@ public class NetworkSwitch implements Serializable {
     }
 
     public String getSshHost() {
-        return sshHost;
+        return this.sshHost;
     }
 
     public NetworkSwitch sshHost(String sshHost) {
@@ -84,7 +82,8 @@ public class NetworkSwitch implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

@@ -54,36 +54,114 @@ public class LaundryMachineProgramResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/laundry-machine-programs")
-    public ResponseEntity<LaundryMachineProgram> createLaundryMachineProgram(@Valid @RequestBody LaundryMachineProgram laundryMachineProgram) throws URISyntaxException {
+    public ResponseEntity<LaundryMachineProgram> createLaundryMachineProgram(
+        @Valid @RequestBody LaundryMachineProgram laundryMachineProgram
+    ) throws URISyntaxException {
         log.debug("REST request to save LaundryMachineProgram : {}", laundryMachineProgram);
         if (laundryMachineProgram.getId() != null) {
             throw new BadRequestAlertException("A new laundryMachineProgram cannot already have an ID", ENTITY_NAME, "idexists");
         }
         LaundryMachineProgram result = laundryMachineProgramRepository.save(laundryMachineProgram);
-        return ResponseEntity.created(new URI("/api/laundry-machine-programs/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/laundry-machine-programs/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /laundry-machine-programs} : Updates an existing laundryMachineProgram.
+     * {@code PUT  /laundry-machine-programs/:id} : Updates an existing laundryMachineProgram.
      *
+     * @param id the id of the laundryMachineProgram to save.
      * @param laundryMachineProgram the laundryMachineProgram to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated laundryMachineProgram,
      * or with status {@code 400 (Bad Request)} if the laundryMachineProgram is not valid,
      * or with status {@code 500 (Internal Server Error)} if the laundryMachineProgram couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/laundry-machine-programs")
-    public ResponseEntity<LaundryMachineProgram> updateLaundryMachineProgram(@Valid @RequestBody LaundryMachineProgram laundryMachineProgram) throws URISyntaxException {
-        log.debug("REST request to update LaundryMachineProgram : {}", laundryMachineProgram);
+    @PutMapping("/laundry-machine-programs/{id}")
+    public ResponseEntity<LaundryMachineProgram> updateLaundryMachineProgram(
+        @PathVariable(value = "id", required = false) final Long id,
+        @Valid @RequestBody LaundryMachineProgram laundryMachineProgram
+    ) throws URISyntaxException {
+        log.debug("REST request to update LaundryMachineProgram : {}, {}", id, laundryMachineProgram);
         if (laundryMachineProgram.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        if (!Objects.equals(id, laundryMachineProgram.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!laundryMachineProgramRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
         LaundryMachineProgram result = laundryMachineProgramRepository.save(laundryMachineProgram);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, laundryMachineProgram.getId().toString()))
             .body(result);
+    }
+
+    /**
+     * {@code PATCH  /laundry-machine-programs/:id} : Partial updates given fields of an existing laundryMachineProgram, field will ignore if it is null
+     *
+     * @param id the id of the laundryMachineProgram to save.
+     * @param laundryMachineProgram the laundryMachineProgram to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated laundryMachineProgram,
+     * or with status {@code 400 (Bad Request)} if the laundryMachineProgram is not valid,
+     * or with status {@code 404 (Not Found)} if the laundryMachineProgram is not found,
+     * or with status {@code 500 (Internal Server Error)} if the laundryMachineProgram couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PatchMapping(value = "/laundry-machine-programs/{id}", consumes = "application/merge-patch+json")
+    public ResponseEntity<LaundryMachineProgram> partialUpdateLaundryMachineProgram(
+        @PathVariable(value = "id", required = false) final Long id,
+        @NotNull @RequestBody LaundryMachineProgram laundryMachineProgram
+    ) throws URISyntaxException {
+        log.debug("REST request to partial update LaundryMachineProgram partially : {}, {}", id, laundryMachineProgram);
+        if (laundryMachineProgram.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, laundryMachineProgram.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!laundryMachineProgramRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
+        Optional<LaundryMachineProgram> result = laundryMachineProgramRepository
+            .findById(laundryMachineProgram.getId())
+            .map(
+                existingLaundryMachineProgram -> {
+                    if (laundryMachineProgram.getName() != null) {
+                        existingLaundryMachineProgram.setName(laundryMachineProgram.getName());
+                    }
+                    if (laundryMachineProgram.getSubprogram() != null) {
+                        existingLaundryMachineProgram.setSubprogram(laundryMachineProgram.getSubprogram());
+                    }
+                    if (laundryMachineProgram.getTime() != null) {
+                        existingLaundryMachineProgram.setTime(laundryMachineProgram.getTime());
+                    }
+                    if (laundryMachineProgram.getSpin() != null) {
+                        existingLaundryMachineProgram.setSpin(laundryMachineProgram.getSpin());
+                    }
+                    if (laundryMachineProgram.getPreWash() != null) {
+                        existingLaundryMachineProgram.setPreWash(laundryMachineProgram.getPreWash());
+                    }
+                    if (laundryMachineProgram.getProtect() != null) {
+                        existingLaundryMachineProgram.setProtect(laundryMachineProgram.getProtect());
+                    }
+
+                    return existingLaundryMachineProgram;
+                }
+            )
+            .map(laundryMachineProgramRepository::save);
+
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, laundryMachineProgram.getId().toString())
+        );
     }
 
     /**
@@ -121,6 +199,9 @@ public class LaundryMachineProgramResource {
         log.debug("REST request to delete LaundryMachineProgram : {}", id);
 
         laundryMachineProgramRepository.deleteById(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

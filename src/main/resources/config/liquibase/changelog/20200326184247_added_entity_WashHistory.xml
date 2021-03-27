@@ -3,26 +3,24 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-
-        <property name="autoIncrement" value="true"/>
 
     <!--
         Added the entity WashHistory.
     -->
     <changeSet id="20200326184247-1" author="jhipster">
         <createTable tableName="wash_history">
-            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="using_date" type="datetime">
+            <column name="using_date" type="${datetimeType}">
                 <constraints nullable="true" />
             </column>
-            <column name="reservation_date" type="datetime">
+            <column name="reservation_date" type="${datetimeType}">
                 <constraints nullable="true" />
             </column>
-            <column name="last_modified_date" type="datetime">
+            <column name="last_modified_date" type="${datetimeType}">
                 <constraints nullable="true" />
             </column>
             <column name="status" type="varchar(255)">
@@ -42,14 +40,11 @@
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
-        <dropDefaultValue tableName="wash_history" columnName="using_date" columnDataType="datetime"/>
-        <dropDefaultValue tableName="wash_history" columnName="reservation_date" columnDataType="datetime"/>
-        <dropDefaultValue tableName="wash_history" columnName="last_modified_date" columnDataType="datetime"/>
+        <dropDefaultValue tableName="wash_history" columnName="using_date" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="wash_history" columnName="reservation_date" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="wash_history" columnName="last_modified_date" columnDataType="${datetimeType}"/>
     </changeSet>
 
-    <changeSet id="20200326184247-1-relations" author="jhipster">
-
-    </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
     <!--
@@ -66,12 +61,11 @@
                   separator=";"
                   tableName="wash_history">
             <column name="id" type="numeric"/>
-            <column name="using_date" type="datetime"/>
-            <column name="reservation_date" type="datetime"/>
-            <column name="last_modified_date" type="datetime"/>
+            <column name="using_date" type="${datetimeType}"/>
+            <column name="reservation_date" type="${datetimeType}"/>
+            <column name="last_modified_date" type="${datetimeType}"/>
             <column name="status" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
-
 </databaseChangeLog>

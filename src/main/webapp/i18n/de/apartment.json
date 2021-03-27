@@ -3,6 +3,7 @@
     "apartment": {
       "home": {
         "title": "Wohnungen",
+        "refreshListLabel": "Liste aktualisieren",
         "createLabel": "Wohnung erstellen",
         "createOrEditLabel": "Wohnung erstellen oder bearbeiten",
         "notFound": "Keine Wohnungen gefunden"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Wohnung"
       },
+      "id": "ID",
       "nr": "Wohnung Nr",
       "type": "Wohnung Typ",
       "maxNumberOfLeases": "Max. Anzahl Mietverträge",

@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
-import { AutocutSharedModule } from 'app/shared/shared.module';
-import { LaundryMachineComponent } from './laundry-machine.component';
-import { LaundryMachineDetailComponent } from './laundry-machine-detail.component';
-import { LaundryMachineUpdateComponent } from './laundry-machine-update.component';
-import { LaundryMachineDeleteDialogComponent } from './laundry-machine-delete-dialog.component';
-import { laundryMachineRoute } from './laundry-machine.route';
+import { SharedModule } from 'app/shared/shared.module';
+import { LaundryMachineComponent } from './list/laundry-machine.component';
+import { LaundryMachineDetailComponent } from './detail/laundry-machine-detail.component';
+import { LaundryMachineUpdateComponent } from './update/laundry-machine-update.component';
+import { LaundryMachineDeleteDialogComponent } from './delete/laundry-machine-delete-dialog.component';
+import { LaundryMachineRoutingModule } from './route/laundry-machine-routing.module';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(laundryMachineRoute)],
+  imports: [SharedModule, LaundryMachineRoutingModule],
   declarations: [
     LaundryMachineComponent,
     LaundryMachineDetailComponent,
@@ -18,4 +17,4 @@ import { laundryMachineRoute } from './laundry-machine.route';
   ],
   entryComponents: [LaundryMachineDeleteDialogComponent],
 })
-export class AutocutLaundryMachineModule {}
+export class LaundryMachineModule {}

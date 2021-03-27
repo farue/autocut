@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
-import { AutocutSharedModule } from 'app/shared/shared.module';
-import { GlobalSettingComponent } from './global-setting.component';
-import { GlobalSettingDetailComponent } from './global-setting-detail.component';
-import { GlobalSettingUpdateComponent } from './global-setting-update.component';
-import { GlobalSettingDeleteDialogComponent } from './global-setting-delete-dialog.component';
-import { globalSettingRoute } from './global-setting.route';
+import { SharedModule } from 'app/shared/shared.module';
+import { GlobalSettingComponent } from './list/global-setting.component';
+import { GlobalSettingDetailComponent } from './detail/global-setting-detail.component';
+import { GlobalSettingUpdateComponent } from './update/global-setting-update.component';
+import { GlobalSettingDeleteDialogComponent } from './delete/global-setting-delete-dialog.component';
+import { GlobalSettingRoutingModule } from './route/global-setting-routing.module';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(globalSettingRoute)],
+  imports: [SharedModule, GlobalSettingRoutingModule],
   declarations: [GlobalSettingComponent, GlobalSettingDetailComponent, GlobalSettingUpdateComponent, GlobalSettingDeleteDialogComponent],
   entryComponents: [GlobalSettingDeleteDialogComponent],
 })
-export class AutocutGlobalSettingModule {}
+export class GlobalSettingModule {}

@@ -1,13 +1,14 @@
 package de.farue.autocut.domain;
 
-import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
-import de.farue.autocut.web.rest.TestUtil;
 
-public class LaundryMachineTest {
+import de.farue.autocut.web.rest.TestUtil;
+import org.junit.jupiter.api.Test;
+
+class LaundryMachineTest {
 
     @Test
-    public void equalsVerifier() throws Exception {
+    void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(LaundryMachine.class);
         LaundryMachine laundryMachine1 = new LaundryMachine();
         laundryMachine1.setId(1L);

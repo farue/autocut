@@ -30,6 +30,7 @@ import de.farue.autocut.domain.Apartment;
 import de.farue.autocut.domain.InternalTransaction;
 import de.farue.autocut.domain.Tenant;
 import de.farue.autocut.domain.TransactionBook;
+import de.farue.autocut.repository.TransactionBookRepository;
 import de.farue.autocut.repository.UserRepository;
 import de.farue.autocut.security.SecurityUtils;
 import de.farue.autocut.service.LeaseService;
@@ -58,6 +59,7 @@ public class TransactionBookResource {
 
     private final TransactionBookService transactionBookService;
     private final InternalTransactionService transactionService;
+    private final TransactionBookRepository transactionBookRepository;
 
     private final LeaseService leaseService;
     private final TenantService tenantService;
@@ -67,6 +69,7 @@ public class TransactionBookResource {
     public TransactionBookResource(TransactionBookService transactionBookService, InternalTransactionService transactionService,
         LeaseService leaseService, TenantService tenantService, UserRepository userRepository) {
         this.transactionBookService = transactionBookService;
+        this.transactionBookRepository = transactionBookRepository;
         this.transactionService = transactionService;
         this.leaseService = leaseService;
         this.tenantService = tenantService;
@@ -81,36 +84,87 @@ public class TransactionBookResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/transaction-books")
-    public ResponseEntity<TransactionBook> createTransactionBook(@Valid @RequestBody TransactionBook transactionBook) throws URISyntaxException {
+    public ResponseEntity<TransactionBook> createTransactionBook(@Valid @RequestBody TransactionBook transactionBook)
+        throws URISyntaxException {
         log.debug("REST request to save TransactionBook : {}", transactionBook);
         if (transactionBook.getId() != null) {
             throw new BadRequestAlertException("A new transactionBook cannot already have an ID", ENTITY_NAME, "idexists");
         }
         TransactionBook result = transactionBookService.save(transactionBook);
-        return ResponseEntity.created(new URI("/api/transaction-books/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/transaction-books/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /transaction-books} : Updates an existing transactionBook.
+     * {@code PUT  /transaction-books/:id} : Updates an existing transactionBook.
      *
+     * @param id the id of the transactionBook to save.
      * @param transactionBook the transactionBook to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated transactionBook,
      * or with status {@code 400 (Bad Request)} if the transactionBook is not valid,
      * or with status {@code 500 (Internal Server Error)} if the transactionBook couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/transaction-books")
-    public ResponseEntity<TransactionBook> updateTransactionBook(@Valid @RequestBody TransactionBook transactionBook) throws URISyntaxException {
-        log.debug("REST request to update TransactionBook : {}", transactionBook);
+    @PutMapping("/transaction-books/{id}")
+    public ResponseEntity<TransactionBook> updateTransactionBook(
+        @PathVariable(value = "id", required = false) final Long id,
+        @Valid @RequestBody TransactionBook transactionBook
+    ) throws URISyntaxException {
+        log.debug("REST request to update TransactionBook : {}, {}", id, transactionBook);
         if (transactionBook.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        if (!Objects.equals(id, transactionBook.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!transactionBookRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
         TransactionBook result = transactionBookService.save(transactionBook);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, transactionBook.getId().toString()))
             .body(result);
+    }
+
+    /**
+     * {@code PATCH  /transaction-books/:id} : Partial updates given fields of an existing transactionBook, field will ignore if it is null
+     *
+     * @param id the id of the transactionBook to save.
+     * @param transactionBook the transactionBook to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated transactionBook,
+     * or with status {@code 400 (Bad Request)} if the transactionBook is not valid,
+     * or with status {@code 404 (Not Found)} if the transactionBook is not found,
+     * or with status {@code 500 (Internal Server Error)} if the transactionBook couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PatchMapping(value = "/transaction-books/{id}", consumes = "application/merge-patch+json")
+    public ResponseEntity<TransactionBook> partialUpdateTransactionBook(
+        @PathVariable(value = "id", required = false) final Long id,
+        @NotNull @RequestBody TransactionBook transactionBook
+    ) throws URISyntaxException {
+        log.debug("REST request to partial update TransactionBook partially : {}, {}", id, transactionBook);
+        if (transactionBook.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, transactionBook.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!transactionBookRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
+        Optional<TransactionBook> result = transactionBookService.partialUpdate(transactionBook);
+
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, transactionBook.getId().toString())
+        );
     }
 
     /**
@@ -147,7 +201,10 @@ public class TransactionBookResource {
     public ResponseEntity<Void> deleteTransactionBook(@PathVariable Long id) {
         log.debug("REST request to delete TransactionBook : {}", id);
         transactionBookService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 
     @GetMapping("/transaction-books/overview")

@@ -20,6 +20,5 @@ public final class ErrorConstants {
     public static final URI LAUNDRY_MACHINE_UNAVAILABLE_TYPE = URI.create(PROBLEM_BASE_URL + "/laundry-machine-unavailable");
     public static final URI LAUNDRY_MACHINE_DOES_NOT_EXIST_TYPE = URI.create(PROBLEM_BASE_URL + "/laundry-machine-does-not-exist");
 
-    private ErrorConstants() {
-    }
+    private ErrorConstants() {}
 }

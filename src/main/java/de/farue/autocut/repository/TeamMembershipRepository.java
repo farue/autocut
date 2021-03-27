@@ -6,9 +6,8 @@ import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
 /**
- * Spring Data  repository for the TeamMembership entity.
+ * Spring Data SQL repository for the TeamMembership entity.
  */
 @SuppressWarnings("unused")
 @Repository
-public interface TeamMembershipRepository extends JpaRepository<TeamMembership, Long> {
-}
+public interface TeamMembershipRepository extends JpaRepository<TeamMembership, Long> {}

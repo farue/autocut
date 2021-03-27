@@ -11,7 +11,7 @@ import de.farue.autocut.domain.LaundryMachine;
 
 
 /**
- * Spring Data  repository for the LaundryMachine entity.
+ * Spring Data SQL repository for the LaundryMachine entity.
  */
 @Repository
 public interface LaundryMachineRepository extends JpaRepository<LaundryMachine, Long> {

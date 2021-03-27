@@ -3,9 +3,10 @@
     "activity": {
       "home": {
         "title": "Activities",
+        "refreshListLabel": "Liste aktualisieren",
         "createLabel": "Activity erstellen",
         "createOrEditLabel": "Activity erstellen oder bearbeiten",
-        "notFound": "No Activities found"
+        "notFound": "Keine Activities gefunden"
       },
       "created": "Activity erstellt mit ID {{ param }}",
       "updated": "Activity aktualisiert mit ID {{ param }}",
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Activity"
       },
+      "id": "ID",
       "year": "Year",
       "term": "Term",
       "start": "Start",

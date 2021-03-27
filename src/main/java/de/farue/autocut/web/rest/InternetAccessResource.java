@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.farue.autocut.domain.InternetAccess;
+import de.farue.autocut.repository.InternetAccessRepository;
 import de.farue.autocut.service.InternetAccessService;
 import de.farue.autocut.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
@@ -43,8 +44,11 @@ public class InternetAccessResource {
 
     private final InternetAccessService internetAccessService;
 
-    public InternetAccessResource(InternetAccessService internetAccessService) {
+    private final InternetAccessRepository internetAccessRepository;
+
+    public InternetAccessResource(InternetAccessService internetAccessService, InternetAccessRepository internetAccessRepository) {
         this.internetAccessService = internetAccessService;
+        this.internetAccessRepository = internetAccessRepository;
     }
 
     /**
@@ -55,36 +59,87 @@ public class InternetAccessResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/internet-accesses")
-    public ResponseEntity<InternetAccess> createInternetAccess(@Valid @RequestBody InternetAccess internetAccess) throws URISyntaxException {
+    public ResponseEntity<InternetAccess> createInternetAccess(@Valid @RequestBody InternetAccess internetAccess)
+        throws URISyntaxException {
         log.debug("REST request to save InternetAccess : {}", internetAccess);
         if (internetAccess.getId() != null) {
             throw new BadRequestAlertException("A new internetAccess cannot already have an ID", ENTITY_NAME, "idexists");
         }
         InternetAccess result = internetAccessService.save(internetAccess);
-        return ResponseEntity.created(new URI("/api/internet-accesses/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/internet-accesses/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /internet-accesses} : Updates an existing internetAccess.
+     * {@code PUT  /internet-accesses/:id} : Updates an existing internetAccess.
      *
+     * @param id the id of the internetAccess to save.
      * @param internetAccess the internetAccess to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated internetAccess,
      * or with status {@code 400 (Bad Request)} if the internetAccess is not valid,
      * or with status {@code 500 (Internal Server Error)} if the internetAccess couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/internet-accesses")
-    public ResponseEntity<InternetAccess> updateInternetAccess(@Valid @RequestBody InternetAccess internetAccess) throws URISyntaxException {
-        log.debug("REST request to update InternetAccess : {}", internetAccess);
+    @PutMapping("/internet-accesses/{id}")
+    public ResponseEntity<InternetAccess> updateInternetAccess(
+        @PathVariable(value = "id", required = false) final Long id,
+        @Valid @RequestBody InternetAccess internetAccess
+    ) throws URISyntaxException {
+        log.debug("REST request to update InternetAccess : {}, {}", id, internetAccess);
         if (internetAccess.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        if (!Objects.equals(id, internetAccess.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!internetAccessRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
         InternetAccess result = internetAccessService.save(internetAccess);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, internetAccess.getId().toString()))
             .body(result);
+    }
+
+    /**
+     * {@code PATCH  /internet-accesses/:id} : Partial updates given fields of an existing internetAccess, field will ignore if it is null
+     *
+     * @param id the id of the internetAccess to save.
+     * @param internetAccess the internetAccess to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated internetAccess,
+     * or with status {@code 400 (Bad Request)} if the internetAccess is not valid,
+     * or with status {@code 404 (Not Found)} if the internetAccess is not found,
+     * or with status {@code 500 (Internal Server Error)} if the internetAccess couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PatchMapping(value = "/internet-accesses/{id}", consumes = "application/merge-patch+json")
+    public ResponseEntity<InternetAccess> partialUpdateInternetAccess(
+        @PathVariable(value = "id", required = false) final Long id,
+        @NotNull @RequestBody InternetAccess internetAccess
+    ) throws URISyntaxException {
+        log.debug("REST request to partial update InternetAccess partially : {}, {}", id, internetAccess);
+        if (internetAccess.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, internetAccess.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!internetAccessRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
+        Optional<InternetAccess> result = internetAccessService.partialUpdate(internetAccess);
+
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, internetAccess.getId().toString())
+        );
     }
 
     /**
@@ -126,6 +181,9 @@ public class InternetAccessResource {
     public ResponseEntity<Void> deleteInternetAccess(@PathVariable Long id) {
         log.debug("REST request to delete InternetAccess : {}", id);
         internetAccessService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

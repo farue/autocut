@@ -1,40 +1,36 @@
 package de.farue.autocut.web.rest;
 
-import de.farue.autocut.AutocutApp;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import de.farue.autocut.IntegrationTest;
 import de.farue.autocut.domain.TenantCommunication;
 import de.farue.autocut.repository.TenantCommunicationRepository;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.springframework.util.Base64Utils;
 
 /**
  * Integration tests for the {@link TenantCommunicationResource} REST controller.
  */
-@SpringBootTest(classes = AutocutApp.class)
+@IntegrationTest
 @AutoConfigureMockMvc
 @WithMockUser
-public class TenantCommunicationResourceIT {
+class TenantCommunicationResourceIT {
 
     private static final String DEFAULT_SUBJECT = "AAAAAAAAAA";
     private static final String UPDATED_SUBJECT = "BBBBBBBBBB";
@@ -47,6 +43,12 @@ public class TenantCommunicationResourceIT {
 
     private static final Instant DEFAULT_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final String ENTITY_API_URL = "/api/tenant-communications";
+    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
+
+    private static Random random = new Random();
+    private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     @Autowired
     private TenantCommunicationRepository tenantCommunicationRepository;
@@ -73,6 +75,7 @@ public class TenantCommunicationResourceIT {
             .date(DEFAULT_DATE);
         return tenantCommunication;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -95,12 +98,13 @@ public class TenantCommunicationResourceIT {
 
     @Test
     @Transactional
-    public void createTenantCommunication() throws Exception {
+    void createTenantCommunication() throws Exception {
         int databaseSizeBeforeCreate = tenantCommunicationRepository.findAll().size();
         // Create the TenantCommunication
-        restTenantCommunicationMockMvc.perform(post("/api/tenant-communications")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(tenantCommunication)))
+        restTenantCommunicationMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(tenantCommunication))
+            )
             .andExpect(status().isCreated());
 
         // Validate the TenantCommunication in the database
@@ -115,16 +119,17 @@ public class TenantCommunicationResourceIT {
 
     @Test
     @Transactional
-    public void createTenantCommunicationWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = tenantCommunicationRepository.findAll().size();
-
+    void createTenantCommunicationWithExistingId() throws Exception {
         // Create the TenantCommunication with an existing ID
         tenantCommunication.setId(1L);
 
+        int databaseSizeBeforeCreate = tenantCommunicationRepository.findAll().size();
+
         // An entity with an existing ID cannot be created, so this API call must fail
-        restTenantCommunicationMockMvc.perform(post("/api/tenant-communications")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(tenantCommunication)))
+        restTenantCommunicationMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(tenantCommunication))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the TenantCommunication in the database
@@ -132,19 +137,19 @@ public class TenantCommunicationResourceIT {
         assertThat(tenantCommunicationList).hasSize(databaseSizeBeforeCreate);
     }
 
-
     @Test
     @Transactional
-    public void checkSubjectIsRequired() throws Exception {
+    void checkSubjectIsRequired() throws Exception {
         int databaseSizeBeforeTest = tenantCommunicationRepository.findAll().size();
         // set the field null
         tenantCommunication.setSubject(null);
 
         // Create the TenantCommunication, which fails.
 
-        restTenantCommunicationMockMvc.perform(post("/api/tenant-communications")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(tenantCommunication)))
+        restTenantCommunicationMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(tenantCommunication))
+            )
             .andExpect(status().isBadRequest());
 
         List<TenantCommunication> tenantCommunicationList = tenantCommunicationRepository.findAll();
@@ -153,16 +158,17 @@ public class TenantCommunicationResourceIT {
 
     @Test
     @Transactional
-    public void checkDateIsRequired() throws Exception {
+    void checkDateIsRequired() throws Exception {
         int databaseSizeBeforeTest = tenantCommunicationRepository.findAll().size();
         // set the field null
         tenantCommunication.setDate(null);
 
         // Create the TenantCommunication, which fails.
 
-        restTenantCommunicationMockMvc.perform(post("/api/tenant-communications")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(tenantCommunication)))
+        restTenantCommunicationMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(tenantCommunication))
+            )
             .andExpect(status().isBadRequest());
 
         List<TenantCommunication> tenantCommunicationList = tenantCommunicationRepository.findAll();
@@ -171,12 +177,13 @@ public class TenantCommunicationResourceIT {
 
     @Test
     @Transactional
-    public void getAllTenantCommunications() throws Exception {
+    void getAllTenantCommunications() throws Exception {
         // Initialize the database
         tenantCommunicationRepository.saveAndFlush(tenantCommunication);
 
         // Get all the tenantCommunicationList
-        restTenantCommunicationMockMvc.perform(get("/api/tenant-communications?sort=id,desc"))
+        restTenantCommunicationMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(tenantCommunication.getId().intValue())))
@@ -188,12 +195,13 @@ public class TenantCommunicationResourceIT {
 
     @Test
     @Transactional
-    public void getTenantCommunication() throws Exception {
+    void getTenantCommunication() throws Exception {
         // Initialize the database
         tenantCommunicationRepository.saveAndFlush(tenantCommunication);
 
         // Get the tenantCommunication
-        restTenantCommunicationMockMvc.perform(get("/api/tenant-communications/{id}", tenantCommunication.getId()))
+        restTenantCommunicationMockMvc
+            .perform(get(ENTITY_API_URL_ID, tenantCommunication.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(tenantCommunication.getId().intValue()))
@@ -202,17 +210,17 @@ public class TenantCommunicationResourceIT {
             .andExpect(jsonPath("$.note").value(DEFAULT_NOTE.toString()))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
     }
+
     @Test
     @Transactional
-    public void getNonExistingTenantCommunication() throws Exception {
+    void getNonExistingTenantCommunication() throws Exception {
         // Get the tenantCommunication
-        restTenantCommunicationMockMvc.perform(get("/api/tenant-communications/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restTenantCommunicationMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    public void updateTenantCommunication() throws Exception {
+    void putNewTenantCommunication() throws Exception {
         // Initialize the database
         tenantCommunicationRepository.saveAndFlush(tenantCommunication);
 
@@ -222,15 +230,14 @@ public class TenantCommunicationResourceIT {
         TenantCommunication updatedTenantCommunication = tenantCommunicationRepository.findById(tenantCommunication.getId()).get();
         // Disconnect from session so that the updates on updatedTenantCommunication are not directly saved in db
         em.detach(updatedTenantCommunication);
-        updatedTenantCommunication
-            .subject(UPDATED_SUBJECT)
-            .text(UPDATED_TEXT)
-            .note(UPDATED_NOTE)
-            .date(UPDATED_DATE);
+        updatedTenantCommunication.subject(UPDATED_SUBJECT).text(UPDATED_TEXT).note(UPDATED_NOTE).date(UPDATED_DATE);
 
-        restTenantCommunicationMockMvc.perform(put("/api/tenant-communications")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(updatedTenantCommunication)))
+        restTenantCommunicationMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, updatedTenantCommunication.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedTenantCommunication))
+            )
             .andExpect(status().isOk());
 
         // Validate the TenantCommunication in the database
@@ -245,13 +252,17 @@ public class TenantCommunicationResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingTenantCommunication() throws Exception {
+    void putNonExistingTenantCommunication() throws Exception {
         int databaseSizeBeforeUpdate = tenantCommunicationRepository.findAll().size();
+        tenantCommunication.setId(count.incrementAndGet());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restTenantCommunicationMockMvc.perform(put("/api/tenant-communications")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(tenantCommunication)))
+        restTenantCommunicationMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, tenantCommunication.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(tenantCommunication))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the TenantCommunication in the database
@@ -261,15 +272,177 @@ public class TenantCommunicationResourceIT {
 
     @Test
     @Transactional
-    public void deleteTenantCommunication() throws Exception {
+    void putWithIdMismatchTenantCommunication() throws Exception {
+        int databaseSizeBeforeUpdate = tenantCommunicationRepository.findAll().size();
+        tenantCommunication.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restTenantCommunicationMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(tenantCommunication))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the TenantCommunication in the database
+        List<TenantCommunication> tenantCommunicationList = tenantCommunicationRepository.findAll();
+        assertThat(tenantCommunicationList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void putWithMissingIdPathParamTenantCommunication() throws Exception {
+        int databaseSizeBeforeUpdate = tenantCommunicationRepository.findAll().size();
+        tenantCommunication.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restTenantCommunicationMockMvc
+            .perform(
+                put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(tenantCommunication))
+            )
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the TenantCommunication in the database
+        List<TenantCommunication> tenantCommunicationList = tenantCommunicationRepository.findAll();
+        assertThat(tenantCommunicationList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void partialUpdateTenantCommunicationWithPatch() throws Exception {
+        // Initialize the database
+        tenantCommunicationRepository.saveAndFlush(tenantCommunication);
+
+        int databaseSizeBeforeUpdate = tenantCommunicationRepository.findAll().size();
+
+        // Update the tenantCommunication using partial update
+        TenantCommunication partialUpdatedTenantCommunication = new TenantCommunication();
+        partialUpdatedTenantCommunication.setId(tenantCommunication.getId());
+
+        partialUpdatedTenantCommunication.subject(UPDATED_SUBJECT);
+
+        restTenantCommunicationMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedTenantCommunication.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedTenantCommunication))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the TenantCommunication in the database
+        List<TenantCommunication> tenantCommunicationList = tenantCommunicationRepository.findAll();
+        assertThat(tenantCommunicationList).hasSize(databaseSizeBeforeUpdate);
+        TenantCommunication testTenantCommunication = tenantCommunicationList.get(tenantCommunicationList.size() - 1);
+        assertThat(testTenantCommunication.getSubject()).isEqualTo(UPDATED_SUBJECT);
+        assertThat(testTenantCommunication.getText()).isEqualTo(DEFAULT_TEXT);
+        assertThat(testTenantCommunication.getNote()).isEqualTo(DEFAULT_NOTE);
+        assertThat(testTenantCommunication.getDate()).isEqualTo(DEFAULT_DATE);
+    }
+
+    @Test
+    @Transactional
+    void fullUpdateTenantCommunicationWithPatch() throws Exception {
+        // Initialize the database
+        tenantCommunicationRepository.saveAndFlush(tenantCommunication);
+
+        int databaseSizeBeforeUpdate = tenantCommunicationRepository.findAll().size();
+
+        // Update the tenantCommunication using partial update
+        TenantCommunication partialUpdatedTenantCommunication = new TenantCommunication();
+        partialUpdatedTenantCommunication.setId(tenantCommunication.getId());
+
+        partialUpdatedTenantCommunication.subject(UPDATED_SUBJECT).text(UPDATED_TEXT).note(UPDATED_NOTE).date(UPDATED_DATE);
+
+        restTenantCommunicationMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedTenantCommunication.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedTenantCommunication))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the TenantCommunication in the database
+        List<TenantCommunication> tenantCommunicationList = tenantCommunicationRepository.findAll();
+        assertThat(tenantCommunicationList).hasSize(databaseSizeBeforeUpdate);
+        TenantCommunication testTenantCommunication = tenantCommunicationList.get(tenantCommunicationList.size() - 1);
+        assertThat(testTenantCommunication.getSubject()).isEqualTo(UPDATED_SUBJECT);
+        assertThat(testTenantCommunication.getText()).isEqualTo(UPDATED_TEXT);
+        assertThat(testTenantCommunication.getNote()).isEqualTo(UPDATED_NOTE);
+        assertThat(testTenantCommunication.getDate()).isEqualTo(UPDATED_DATE);
+    }
+
+    @Test
+    @Transactional
+    void patchNonExistingTenantCommunication() throws Exception {
+        int databaseSizeBeforeUpdate = tenantCommunicationRepository.findAll().size();
+        tenantCommunication.setId(count.incrementAndGet());
+
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        restTenantCommunicationMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, tenantCommunication.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(tenantCommunication))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the TenantCommunication in the database
+        List<TenantCommunication> tenantCommunicationList = tenantCommunicationRepository.findAll();
+        assertThat(tenantCommunicationList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithIdMismatchTenantCommunication() throws Exception {
+        int databaseSizeBeforeUpdate = tenantCommunicationRepository.findAll().size();
+        tenantCommunication.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restTenantCommunicationMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(tenantCommunication))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the TenantCommunication in the database
+        List<TenantCommunication> tenantCommunicationList = tenantCommunicationRepository.findAll();
+        assertThat(tenantCommunicationList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithMissingIdPathParamTenantCommunication() throws Exception {
+        int databaseSizeBeforeUpdate = tenantCommunicationRepository.findAll().size();
+        tenantCommunication.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restTenantCommunicationMockMvc
+            .perform(
+                patch(ENTITY_API_URL)
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(tenantCommunication))
+            )
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the TenantCommunication in the database
+        List<TenantCommunication> tenantCommunicationList = tenantCommunicationRepository.findAll();
+        assertThat(tenantCommunicationList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void deleteTenantCommunication() throws Exception {
         // Initialize the database
         tenantCommunicationRepository.saveAndFlush(tenantCommunication);
 
         int databaseSizeBeforeDelete = tenantCommunicationRepository.findAll().size();
 
         // Delete the tenantCommunication
-        restTenantCommunicationMockMvc.perform(delete("/api/tenant-communications/{id}", tenantCommunication.getId())
-            .accept(MediaType.APPLICATION_JSON))
+        restTenantCommunicationMockMvc
+            .perform(delete(ENTITY_API_URL_ID, tenantCommunication.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

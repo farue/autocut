@@ -3,29 +3,24 @@ package de.farue.autocut.security;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
+import de.farue.autocut.IntegrationTest;
+import de.farue.autocut.domain.User;
+import de.farue.autocut.repository.UserRepository;
 import java.util.Locale;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.Tenant;
-import de.farue.autocut.domain.User;
-import de.farue.autocut.repository.TenantRepository;
-import de.farue.autocut.repository.UserRepository;
-
 /**
  * Integrations tests for {@link DomainUserDetailsService}.
  */
-@SpringBootTest(classes = AutocutApp.class)
 @Transactional
-public class DomainUserDetailsServiceIT {
+@IntegrationTest
+class DomainUserDetailsServiceIT {
 
     private static final String USER_ONE_LOGIN = "test-user-one";
     private static final String USER_ONE_EMAIL = "test-user-one@localhost";
@@ -115,54 +110,54 @@ public class DomainUserDetailsServiceIT {
     }
 
     @Test
-    public void assertThatUserCanBeFoundByLogin() {
+    void assertThatUserCanBeFoundByLogin() {
         UserDetails userDetails = domainUserDetailsService.loadUserByUsername(USER_ONE_LOGIN);
         assertThat(userDetails).isNotNull();
         assertThat(userDetails.getUsername()).isEqualTo(USER_ONE_LOGIN);
     }
 
     @Test
-    public void assertThatUserCanBeFoundByLoginIgnoreCase() {
+    void assertThatUserCanBeFoundByLoginIgnoreCase() {
         UserDetails userDetails = domainUserDetailsService.loadUserByUsername(USER_ONE_LOGIN.toUpperCase(Locale.ENGLISH));
         assertThat(userDetails).isNotNull();
         assertThat(userDetails.getUsername()).isEqualTo(USER_ONE_LOGIN);
     }
 
     @Test
-    public void assertThatUserCanBeFoundByEmail() {
+    void assertThatUserCanBeFoundByEmail() {
         UserDetails userDetails = domainUserDetailsService.loadUserByUsername(USER_TWO_EMAIL);
         assertThat(userDetails).isNotNull();
         assertThat(userDetails.getUsername()).isEqualTo(USER_TWO_LOGIN);
     }
 
     @Test
-    public void assertThatUserCanBeFoundByEmailIgnoreCase() {
+    void assertThatUserCanBeFoundByEmailIgnoreCase() {
         UserDetails userDetails = domainUserDetailsService.loadUserByUsername(USER_TWO_EMAIL.toUpperCase(Locale.ENGLISH));
         assertThat(userDetails).isNotNull();
         assertThat(userDetails.getUsername()).isEqualTo(USER_TWO_LOGIN);
     }
 
     @Test
-    public void assertThatEmailIsPrioritizedOverLogin() {
+    void assertThatEmailIsPrioritizedOverLogin() {
         UserDetails userDetails = domainUserDetailsService.loadUserByUsername(USER_ONE_EMAIL);
         assertThat(userDetails).isNotNull();
         assertThat(userDetails.getUsername()).isEqualTo(USER_ONE_LOGIN);
     }
 
     @Test
-    public void assertThatUserNotActivatedExceptionIsThrownForNotActivatedUsers() {
-        assertThatExceptionOfType(UserNotActivatedException.class).isThrownBy(
-            () -> domainUserDetailsService.loadUserByUsername(USER_THREE_LOGIN));
+    void assertThatUserNotActivatedExceptionIsThrownForNotActivatedUsers() {
+        assertThatExceptionOfType(UserNotActivatedException.class)
+            .isThrownBy(() -> domainUserDetailsService.loadUserByUsername(USER_THREE_LOGIN));
     }
 
     @Test
-    public void assertThatUserNotVerifiedExceptionIsThrownForNotUsersWithNotVerifiedTenant() {
+    void assertThatUserNotVerifiedExceptionIsThrownForNotUsersWithNotVerifiedTenant() {
         assertThatExceptionOfType(UserNotVerifiedException.class).isThrownBy(
             () -> domainUserDetailsService.loadUserByUsername(USER_WITH_TENANT_NOT_VERIFIED_LOGIN));
     }
 
     @Test
-    public void assertThatUserCanBeFoundWhenTenantIsVerified() {
+    void assertThatUserCanBeFoundWhenTenantIsVerified() {
         UserDetails userDetails = domainUserDetailsService.loadUserByUsername(USER_WITH_TENANT_VERIFIED_LOGIN);
         assertThat(userDetails).isNotNull();
         assertThat(userDetails.getUsername()).isEqualTo(USER_WITH_TENANT_VERIFIED_LOGIN);

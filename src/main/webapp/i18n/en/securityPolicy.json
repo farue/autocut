@@ -3,6 +3,7 @@
     "securityPolicy": {
       "home": {
         "title": "Security Policies",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Security Policy",
         "createOrEditLabel": "Create or edit a Security Policy",
         "notFound": "No Security Policies found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Security Policy"
       },
+      "id": "ID",
       "protectionUnit": "Protection Unit",
       "access": "Access",
       "teamMember": "Team Member",
