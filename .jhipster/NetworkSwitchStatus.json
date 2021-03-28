@@ -3,17 +3,17 @@
   "clientRootFolder": "",
   "relationships": [
     {
-      "relationshipName": "networkSwitch",
-      "otherEntityName": "networkSwitch",
       "relationshipType": "many-to-one",
-      "otherEntityField": "id",
-      "otherEntityRelationshipName": "networkSwitchStatus"
+      "otherEntityName": "networkSwitch",
+      "otherEntityRelationshipName": "networkSwitchStatus",
+      "relationshipName": "networkSwitch"
     }
   ],
   "fields": [
     {
       "fieldName": "port",
-      "fieldType": "String"
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "name",
@@ -49,5 +49,8 @@
   "databaseType": "sql",
   "readOnly": false,
   "jpaMetamodelFiltering": false,
-  "pagination": "no"
+  "pagination": "no",
+  "name": "NetworkSwitchStatus",
+  "embedded": false,
+  "applications": ["autocut"]
 }

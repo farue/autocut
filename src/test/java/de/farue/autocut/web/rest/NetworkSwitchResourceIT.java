@@ -20,7 +20,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
 
 /**
  * Integration tests for the {@link NetworkSwitchResource} REST controller.
@@ -36,11 +35,14 @@ class NetworkSwitchResourceIT {
     private static final String DEFAULT_SSH_HOST = "AAAAAAAAAA";
     private static final String UPDATED_SSH_HOST = "BBBBBBBBBB";
 
-    @Autowired
-    private NetworkSwitchRepository networkSwitchRepository;
+    private static final String ENTITY_API_URL = "/api/network-switches";
+    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
+
+    private static Random random = new Random();
+    private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     @Autowired
-    private NetworkSwitchService networkSwitchService;
+    private NetworkSwitchRepository networkSwitchRepository;
 
     @Autowired
     private EntityManager em;
@@ -57,9 +59,7 @@ class NetworkSwitchResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static NetworkSwitch createEntity(EntityManager em) {
-        NetworkSwitch networkSwitch = new NetworkSwitch()
-            .interfaceName(DEFAULT_INTERFACE_NAME)
-            .sshHost(DEFAULT_SSH_HOST);
+        NetworkSwitch networkSwitch = new NetworkSwitch().interfaceName(DEFAULT_INTERFACE_NAME).sshHost(DEFAULT_SSH_HOST);
         return networkSwitch;
     }
 
@@ -70,9 +70,7 @@ class NetworkSwitchResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static NetworkSwitch createUpdatedEntity(EntityManager em) {
-        NetworkSwitch networkSwitch = new NetworkSwitch()
-            .interfaceName(UPDATED_INTERFACE_NAME)
-            .sshHost(UPDATED_SSH_HOST);
+        NetworkSwitch networkSwitch = new NetworkSwitch().interfaceName(UPDATED_INTERFACE_NAME).sshHost(UPDATED_SSH_HOST);
         return networkSwitch;
     }
 
@@ -152,23 +150,6 @@ class NetworkSwitchResourceIT {
 
     @Test
     @Transactional
-    void checkSshPortIsRequired() throws Exception {
-        int databaseSizeBeforeTest = networkSwitchRepository.findAll().size();
-        // set the field null
-        networkSwitch.setSshPort(null);
-
-        // Create the NetworkSwitch, which fails.
-
-        restNetworkSwitchMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(networkSwitch)))
-            .andExpect(status().isBadRequest());
-
-        List<NetworkSwitch> networkSwitchList = networkSwitchRepository.findAll();
-        assertThat(networkSwitchList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void getAllNetworkSwitches() throws Exception {
         // Initialize the database
         networkSwitchRepository.saveAndFlush(networkSwitch);
@@ -210,7 +191,7 @@ class NetworkSwitchResourceIT {
     @Transactional
     void putNewNetworkSwitch() throws Exception {
         // Initialize the database
-        networkSwitchService.save(networkSwitch);
+        networkSwitchRepository.saveAndFlush(networkSwitch);
 
         int databaseSizeBeforeUpdate = networkSwitchRepository.findAll().size();
 
@@ -218,9 +199,7 @@ class NetworkSwitchResourceIT {
         NetworkSwitch updatedNetworkSwitch = networkSwitchRepository.findById(networkSwitch.getId()).get();
         // Disconnect from session so that the updates on updatedNetworkSwitch are not directly saved in db
         em.detach(updatedNetworkSwitch);
-        updatedNetworkSwitch
-            .interfaceName(UPDATED_INTERFACE_NAME)
-            .sshHost(UPDATED_SSH_HOST);
+        updatedNetworkSwitch.interfaceName(UPDATED_INTERFACE_NAME).sshHost(UPDATED_SSH_HOST);
 
         restNetworkSwitchMockMvc
             .perform(
@@ -306,7 +285,7 @@ class NetworkSwitchResourceIT {
         NetworkSwitch partialUpdatedNetworkSwitch = new NetworkSwitch();
         partialUpdatedNetworkSwitch.setId(networkSwitch.getId());
 
-        partialUpdatedNetworkSwitch.sshHost(UPDATED_SSH_HOST).sshPort(UPDATED_SSH_PORT).sshKey(UPDATED_SSH_KEY);
+        partialUpdatedNetworkSwitch.sshHost(UPDATED_SSH_HOST);
 
         restNetworkSwitchMockMvc
             .perform(
@@ -322,8 +301,6 @@ class NetworkSwitchResourceIT {
         NetworkSwitch testNetworkSwitch = networkSwitchList.get(networkSwitchList.size() - 1);
         assertThat(testNetworkSwitch.getInterfaceName()).isEqualTo(DEFAULT_INTERFACE_NAME);
         assertThat(testNetworkSwitch.getSshHost()).isEqualTo(UPDATED_SSH_HOST);
-        assertThat(testNetworkSwitch.getSshPort()).isEqualTo(UPDATED_SSH_PORT);
-        assertThat(testNetworkSwitch.getSshKey()).isEqualTo(UPDATED_SSH_KEY);
     }
 
     @Test
@@ -338,11 +315,7 @@ class NetworkSwitchResourceIT {
         NetworkSwitch partialUpdatedNetworkSwitch = new NetworkSwitch();
         partialUpdatedNetworkSwitch.setId(networkSwitch.getId());
 
-        partialUpdatedNetworkSwitch
-            .interfaceName(UPDATED_INTERFACE_NAME)
-            .sshHost(UPDATED_SSH_HOST)
-            .sshPort(UPDATED_SSH_PORT)
-            .sshKey(UPDATED_SSH_KEY);
+        partialUpdatedNetworkSwitch.interfaceName(UPDATED_INTERFACE_NAME).sshHost(UPDATED_SSH_HOST);
 
         restNetworkSwitchMockMvc
             .perform(
@@ -358,8 +331,6 @@ class NetworkSwitchResourceIT {
         NetworkSwitch testNetworkSwitch = networkSwitchList.get(networkSwitchList.size() - 1);
         assertThat(testNetworkSwitch.getInterfaceName()).isEqualTo(UPDATED_INTERFACE_NAME);
         assertThat(testNetworkSwitch.getSshHost()).isEqualTo(UPDATED_SSH_HOST);
-        assertThat(testNetworkSwitch.getSshPort()).isEqualTo(UPDATED_SSH_PORT);
-        assertThat(testNetworkSwitch.getSshKey()).isEqualTo(UPDATED_SSH_KEY);
     }
 
     @Test
@@ -424,7 +395,7 @@ class NetworkSwitchResourceIT {
     @Transactional
     void deleteNetworkSwitch() throws Exception {
         // Initialize the database
-        networkSwitchService.save(networkSwitch);
+        networkSwitchRepository.saveAndFlush(networkSwitch);
 
         int databaseSizeBeforeDelete = networkSwitchRepository.findAll().size();
 

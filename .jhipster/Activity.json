@@ -4,17 +4,13 @@
     {
       "fieldName": "year",
       "fieldType": "Integer",
-      "fieldValidateRules": [
-        "required"
-      ]
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "term",
       "fieldType": "SemesterTerms",
       "fieldValues": "SUMMER_TERM,WINTER_TERM",
-      "fieldValidateRules": [
-        "required"
-      ]
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "start",
@@ -42,15 +38,13 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "tenant",
       "otherEntityRelationshipName": "activity",
-      "relationshipName": "tenant",
-      "otherEntityField": "id"
+      "relationshipName": "tenant"
     },
     {
       "relationshipType": "many-to-one",
       "otherEntityName": "teamMembership",
       "otherEntityRelationshipName": "activity",
-      "relationshipName": "teamMembership",
-      "otherEntityField": "id"
+      "relationshipName": "teamMembership"
     }
   ],
   "changelogDate": "20200112182900",
@@ -62,7 +56,7 @@
   "fluentMethods": true,
   "readOnly": false,
   "clientRootFolder": "",
-  "applications": "*",
+  "applications": ["autocut"],
   "embedded": false,
   "javadoc": "Activity always describes an entire semester since its main purpose is to capture who is\\neligible for a discount, and its secondary purpose is to store activity counted at StW.\\nBoth these things are in terms of full semesters."
 }

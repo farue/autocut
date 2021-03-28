@@ -14,13 +14,12 @@ services:
     environment:
       - TZ=Europe/Berlin
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
-      - SPRING_PROFILES_ACTIVE=prod,swagger
+      - SPRING_PROFILES_ACTIVE=prod,api-docs
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
       - SPRING_DATASOURCE_URL=jdbc:mysql://autocut-mysql:3306/autocut?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+      - SPRING_LIQUIBASE_URL=jdbc:mysql://autocut-mysql:3306/autocut?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
-      - APPLICATION_BANKING_PASSPORTPASSWORD
-      - APPLICATION_BANKING_PIN
-      - APPLICATION_BANKING_USER
+      - JASYPT_ENCRYPTOR_PASSWORD
     ports:
       - 8080:8080
     labels:
@@ -53,7 +52,7 @@ services:
       start_period: 40s
 
   autocut-mysql:
-    image: mysql:8.0.20
+    image: mysql:8.0.23
     container_name: 'autocut-mysql'
     restart: always
     volumes:

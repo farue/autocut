@@ -1,6 +1,5 @@
 import { Route } from '@angular/router';
 
-import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 import { ToolsComponent } from 'app/info/statutes/tools/tools.component';
 
 export const TOOLS_ROUTE: Route = {
@@ -10,5 +9,4 @@ export const TOOLS_ROUTE: Route = {
     authorities: [],
     pageTitle: 'statutes.tools.title'
   },
-  canActivate: [UserRouteAccessService]
 };

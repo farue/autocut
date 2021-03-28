@@ -2,7 +2,7 @@
   "generator-jhipster": {
     "promptValues": {
       "packageName": "de.farue.autocut",
-      "nativeLanguage": "en"
+      "nativeLanguage": "de"
     },
     "jhipsterVersion": "7.0.0",
     "applicationType": "monolith",
@@ -25,7 +25,7 @@
     "jwtSecretKey": "MzNkNDYyZDgyZWI0MTJiMGNlNmI1MzIxNThiMzkyNTQ3OTY4ZTA4ZDM3OThlNDE2ZGQzYzc4N2UwZmRhMDA3NGJjZmJlZjZjYjExYWQxZmU1M2NjN2QwZTM3MTYyOWRjYmM2MGM4NmFlYWZkODI3ODNhNjlhNGMyMDljZWJiMWU=",
     "clientFramework": "angularX",
     "clientTheme": "darkly",
-    "clientThemeVariant": "dark",
+    "clientThemeVariant": "primary",
     "useSass": true,
     "clientPackageManager": "npm",
     "testFrameworks": [],
@@ -34,10 +34,8 @@
     "dtoSuffix": "DTO",
     "otherModules": [],
     "enableTranslation": true,
-    "nativeLanguage": "en",
-    "languages": ["en", "de"],
-    "herokuAppName": "autocut",
-    "herokuDeployType": "git",
+    "nativeLanguage": "de",
+    "languages": ["de", "en"],
     "embeddableLaunchScript": false,
     "blueprints": [],
     "creationTimestamp": 1578829876752,
@@ -51,24 +49,27 @@
     "withAdminUi": true,
     "reactive": false,
     "entities": [
-      "Tenant",
-      "Team",
-      "Lease",
-      "Apartment",
-      "Address",
-      "SecurityPolicy",
-      "InternetAccess",
-      "Transaction",
-      "TenantCommunication",
       "Activity",
+      "Address",
+      "Apartment",
+      "BankAccount",
+      "BankTransaction",
       "Communication",
+      "GlobalSetting",
+      "InternalTransaction",
+      "InternetAccess",
       "LaundryMachine",
       "LaundryMachineProgram",
-      "WashHistory",
-      "GlobalSetting",
+      "Lease",
       "NetworkSwitch",
+      "NetworkSwitchStatus",
+      "SecurityPolicy",
+      "Team",
+      "TeamMembership",
+      "Tenant",
+      "TenantCommunication",
       "TransactionBook",
-      "TeamMembership"
+      "WashHistory"
     ]
   }
 }

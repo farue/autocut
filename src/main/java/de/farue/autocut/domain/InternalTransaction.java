@@ -1,17 +1,22 @@
 package de.farue.autocut.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import de.farue.autocut.domain.enumeration.TransactionType;
 
+/**
+ * A InternalTransaction.
+ */
 @Entity
 @Table(name = "internal_transaction")
 public class InternalTransaction extends Transaction {
@@ -74,7 +79,7 @@ public class InternalTransaction extends Transaction {
     }
 
     public String getIssuer() {
-        return issuer;
+        return this.issuer;
     }
 
     public InternalTransaction issuer(String issuer) {
@@ -87,7 +92,7 @@ public class InternalTransaction extends Transaction {
     }
 
     public String getRecipient() {
-        return recipient;
+        return this.recipient;
     }
 
     public InternalTransaction recipient(String recipient) {
@@ -110,7 +115,7 @@ public class InternalTransaction extends Transaction {
     }
 
     public void setTransactionType(TransactionType type) {
-        setType(type.name());
+        this.setType(type.name());
     }
 
     // prettier-ignore
@@ -126,7 +131,6 @@ public class InternalTransaction extends Transaction {
             ", description='" + getDescription() + "'" +
             ", serviceQulifier='" + getServiceQulifier() + "'" +
             ", issuer='" + getIssuer() + "'" +
-            ", recipient='" + getRecipient() + "'" +
             ", recipient='" + getRecipient() + "'" +
             "}";
     }

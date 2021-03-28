@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { ITEMS_PER_PAGE } from '../../shared/constants/pagination.constants';
+import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { TransactionService } from './transaction.service';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
 import { ITransactionOverview } from './transaction-overview.model';
-import { IInternalTransaction } from '../../shared/model/internal-transaction.model';
+import { IInternalTransaction } from "app/entities/internal-transaction/internal-transaction.model";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: 'jhi-service-transaction',
   templateUrl: './transaction.component.html',
-  styleUrls: ['transaction.component.scss'],
+  styleUrls: ['./transaction.component.scss'],
 })
 export class TransactionComponent implements OnInit {
   balance = 0;
@@ -23,7 +24,7 @@ export class TransactionComponent implements OnInit {
 
   purpose$: Observable<string> = this.transactionService.loadPurpose();
 
-  constructor(private transactionService: TransactionService, private activatedRoute: ActivatedRoute, private router: Router) {}
+  constructor(private transactionService: TransactionService, private activatedRoute: ActivatedRoute, private router: Router, public translateService: TranslateService) {}
 
   ngOnInit(): void {
     this.handleNavigation();
@@ -58,8 +59,8 @@ export class TransactionComponent implements OnInit {
 
   private onSuccess(transactionOverview: ITransactionOverview | null, headers: HttpHeaders): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
-    this.balance = transactionOverview?.balanceNow || 0;
-    this.deposit = transactionOverview?.deposit || 0;
+    this.balance = transactionOverview?.balanceNow ?? 0;
+    this.deposit = transactionOverview?.deposit ?? 0;
     this.transactions = transactionOverview?.transactions;
   }
 }

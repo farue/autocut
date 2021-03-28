@@ -2,7 +2,6 @@
 @import '~bootstrap/scss/functions';
 @import '~bootswatch/dist/darkly/variables';
 @import '~bootstrap/scss/variables';
-@import '~@ng-select/ng-select/themes/default.theme.css';
 
 /* ==============================================================
 Bootstrap tweaks
@@ -62,10 +61,6 @@ Generic styles
 
 .w-60 {
   width: 60% !important;
-}
-
-.card-content {
-  max-width: 870px;
 }
 
 .break {

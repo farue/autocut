@@ -1,22 +1,19 @@
 package de.farue.autocut.config;
 
 import java.time.Duration;
-
 import org.ehcache.config.builders.*;
 import org.ehcache.jsr107.Eh107Configuration;
-
 import org.hibernate.cache.jcache.ConfigSettings;
-import io.github.jhipster.config.JHipsterProperties;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.info.GitProperties;
-import org.springframework.cache.interceptor.KeyGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
-import io.github.jhipster.config.cache.PrefixedKeyGenerator;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.*;
+import tech.jhipster.config.JHipsterProperties;
+import tech.jhipster.config.cache.PrefixedKeyGenerator;
 
 @Configuration
 @EnableCaching
@@ -63,9 +60,9 @@ public class CacheConfiguration {
             createCache(cm, de.farue.autocut.domain.Address.class.getName());
             createCache(cm, de.farue.autocut.domain.SecurityPolicy.class.getName());
             createCache(cm, de.farue.autocut.domain.InternetAccess.class.getName());
-            createCache(cm, de.farue.autocut.domain.Transaction.class.getName());
-            createCache(cm, de.farue.autocut.domain.Transaction.class.getName() + ".lefts");
-            createCache(cm, de.farue.autocut.domain.Transaction.class.getName() + ".rights");
+            createCache(cm, de.farue.autocut.domain.InternalTransaction.class.getName());
+            createCache(cm, de.farue.autocut.domain.InternalTransaction.class.getName() + ".lefts");
+            createCache(cm, de.farue.autocut.domain.InternalTransaction.class.getName() + ".rights");
             createCache(cm, de.farue.autocut.domain.TenantCommunication.class.getName());
             createCache(cm, de.farue.autocut.domain.Activity.class.getName());
             createCache(cm, de.farue.autocut.domain.Communication.class.getName());
@@ -76,10 +73,16 @@ public class CacheConfiguration {
             createCache(cm, de.farue.autocut.domain.GlobalSetting.class.getName());
             createCache(cm, de.farue.autocut.domain.NetworkSwitch.class.getName());
             createCache(cm, de.farue.autocut.domain.TransactionBook.class.getName());
-            createCache(cm, de.farue.autocut.domain.TransactionBook.class.getName() + ".transactions");
+            createCache(cm, de.farue.autocut.domain.TransactionBook.class.getName() + ".iTransactions");
+            createCache(cm, de.farue.autocut.domain.TransactionBook.class.getName() + ".bTransactions");
             createCache(cm, de.farue.autocut.domain.TransactionBook.class.getName() + ".leases");
             createCache(cm, de.farue.autocut.domain.TeamMembership.class.getName());
             createCache(cm, de.farue.autocut.domain.TeamMembership.class.getName() + ".securityPolicies");
+            createCache(cm, de.farue.autocut.domain.BankAccount.class.getName());
+            createCache(cm, de.farue.autocut.domain.BankTransaction.class.getName());
+            createCache(cm, de.farue.autocut.domain.BankTransaction.class.getName() + ".lefts");
+            createCache(cm, de.farue.autocut.domain.BankTransaction.class.getName() + ".rights");
+            createCache(cm, de.farue.autocut.domain.NetworkSwitchStatus.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

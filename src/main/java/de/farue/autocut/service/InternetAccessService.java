@@ -1,17 +1,15 @@
 package de.farue.autocut.service;
 
+import de.farue.autocut.domain.InternetAccess;
+import de.farue.autocut.repository.InternetAccessRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import de.farue.autocut.domain.InternetAccess;
-import de.farue.autocut.repository.InternetAccessRepository;
 
 /**
  * Service Implementation for managing {@link InternetAccess}.
@@ -52,9 +50,6 @@ public class InternetAccessService {
             .findById(internetAccess.getId())
             .map(
                 existingInternetAccess -> {
-                    if (internetAccess.getBlocked() != null) {
-                        existingInternetAccess.setBlocked(internetAccess.getBlocked());
-                    }
                     if (internetAccess.getIp1() != null) {
                         existingInternetAccess.setIp1(internetAccess.getIp1());
                     }

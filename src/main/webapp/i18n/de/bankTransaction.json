@@ -3,9 +3,10 @@
     "bankTransaction": {
       "home": {
         "title": "Bank Transactions",
+        "refreshListLabel": "Liste aktualisieren",
         "createLabel": "Bank Transaction erstellen",
         "createOrEditLabel": "Bank Transaction erstellen oder bearbeiten",
-        "notFound": "No Bank Transactions found"
+        "notFound": "Keine Bank Transactions gefunden"
       },
       "created": "Bank Transaction erstellt mit ID {{ param }}",
       "updated": "Bank Transaction aktualisiert mit ID {{ param }}",
@@ -16,12 +17,13 @@
       "detail": {
         "title": "Bank Transaction"
       },
+      "id": "ID",
       "bookingDate": "Booking Date",
       "valueDate": "Value Date",
       "value": "Value",
       "balanceAfter": "Balance After",
       "type": "Type",
-      "description": "Zweck",
+      "description": "Description",
       "customerRef": "Customer Ref",
       "gvCode": "Gv Code",
       "endToEnd": "End To End",

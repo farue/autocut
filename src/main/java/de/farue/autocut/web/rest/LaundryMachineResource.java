@@ -1,26 +1,5 @@
 package de.farue.autocut.web.rest;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
-
-import javax.validation.Valid;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import de.farue.autocut.domain.LaundryMachine;
 import de.farue.autocut.domain.LaundryMachineProgram;
 import de.farue.autocut.repository.LaundryMachineProgramRepository;
@@ -30,8 +9,20 @@ import de.farue.autocut.security.SecurityUtils;
 import de.farue.autocut.service.LaundryMachineService;
 import de.farue.autocut.service.TenantService;
 import de.farue.autocut.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link de.farue.autocut.domain.LaundryMachine}.
@@ -48,6 +39,7 @@ public class LaundryMachineResource {
     private String applicationName;
 
     private final LaundryMachineService laundryMachineService;
+
     private final LaundryMachineRepository laundryMachineRepository;
     private final LaundryMachineProgramRepository laundryMachineProgramRepository;
     private final UserRepository userRepository;
@@ -146,27 +138,7 @@ public class LaundryMachineResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<LaundryMachine> result = laundryMachineRepository
-            .findById(laundryMachine.getId())
-            .map(
-                existingLaundryMachine -> {
-                    if (laundryMachine.getIdentifier() != null) {
-                        existingLaundryMachine.setIdentifier(laundryMachine.getIdentifier());
-                    }
-                    if (laundryMachine.getName() != null) {
-                        existingLaundryMachine.setName(laundryMachine.getName());
-                    }
-                    if (laundryMachine.getType() != null) {
-                        existingLaundryMachine.setType(laundryMachine.getType());
-                    }
-                    if (laundryMachine.getEnabled() != null) {
-                        existingLaundryMachine.setEnabled(laundryMachine.getEnabled());
-                    }
-
-                    return existingLaundryMachine;
-                }
-            )
-            .map(laundryMachineRepository::save);
+        Optional<LaundryMachine> result = laundryMachineService.partialUpdate(laundryMachine);
 
         return ResponseUtil.wrapOrNotFound(
             result,

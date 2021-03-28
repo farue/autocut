@@ -24,29 +24,25 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "tenant",
       "otherEntityRelationshipName": "washHistory",
-      "relationshipName": "reservationTenant",
-      "otherEntityField": "id"
+      "relationshipName": "reservationTenant"
     },
     {
       "relationshipType": "many-to-one",
       "otherEntityName": "tenant",
       "otherEntityRelationshipName": "washHistory",
-      "relationshipName": "usingTenant",
-      "otherEntityField": "id"
+      "relationshipName": "usingTenant"
     },
     {
       "relationshipType": "many-to-one",
       "otherEntityName": "laundryMachine",
       "otherEntityRelationshipName": "washHistory",
-      "relationshipName": "machine",
-      "otherEntityField": "id"
+      "relationshipName": "machine"
     },
     {
       "relationshipType": "many-to-one",
       "otherEntityName": "laundryMachineProgram",
       "otherEntityRelationshipName": "washHistory",
-      "relationshipName": "program",
-      "otherEntityField": "id"
+      "relationshipName": "program"
     }
   ],
   "changelogDate": "20200326184247",
@@ -58,6 +54,6 @@
   "fluentMethods": true,
   "readOnly": false,
   "clientRootFolder": "",
-  "applications": "*",
+  "applications": ["autocut"],
   "embedded": false
 }

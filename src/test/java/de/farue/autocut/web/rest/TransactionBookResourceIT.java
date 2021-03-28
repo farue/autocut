@@ -2,18 +2,17 @@ package de.farue.autocut.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import de.farue.autocut.IntegrationTest;
+import de.farue.autocut.domain.TransactionBook;
+import de.farue.autocut.domain.enumeration.TransactionBookType;
+import de.farue.autocut.repository.TransactionBookRepository;
 import java.util.List;
-
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +22,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.TransactionBook;
-import de.farue.autocut.domain.enumeration.TransactionBookType;
-import de.farue.autocut.repository.TransactionBookRepository;
-import de.farue.autocut.service.accounting.TransactionBookService;
 /**
  * Integration tests for the {@link TransactionBookResource} REST controller.
  */

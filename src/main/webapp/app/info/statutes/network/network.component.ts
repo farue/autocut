@@ -1,12 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'jhi-statutes',
   templateUrl: './network.component.html',
-  styleUrls: ['network.component.scss']
+  styleUrls: ['./network.component.scss']
 })
-export class NetworkComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit(): void {}
+export class NetworkComponent {
 }

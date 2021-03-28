@@ -18,7 +18,7 @@ import de.farue.autocut.security.SecurityUtils;
 import de.farue.autocut.service.TenantService;
 import de.farue.autocut.service.UserService;
 import de.farue.autocut.service.dto.UserDTO;
-import io.github.jhipster.web.util.ResponseUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 @RestController
 @RequestMapping("/api/me")

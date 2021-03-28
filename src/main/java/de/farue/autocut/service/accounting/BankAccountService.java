@@ -1,16 +1,17 @@
 package de.farue.autocut.service.accounting;
 
+import de.farue.autocut.domain.BankAccount;
+import de.farue.autocut.repository.BankAccountRepository;
 import java.util.List;
 import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.farue.autocut.domain.BankAccount;
-import de.farue.autocut.repository.BankAccountRepository;
-
+/**
+ * Service Implementation for managing {@link BankAccount}.
+ */
 @Service
 @Transactional
 public class BankAccountService {
@@ -24,7 +25,7 @@ public class BankAccountService {
     }
 
     /**
-     * Save a activity.
+     * Save a bankAccount.
      *
      * @param bankAccount the entity to save.
      * @return the persisted entity.
@@ -32,6 +33,35 @@ public class BankAccountService {
     public BankAccount save(BankAccount bankAccount) {
         log.debug("Request to save BankAccount : {}", bankAccount);
         return bankAccountRepository.save(bankAccount);
+    }
+
+    /**
+     * Partially update a bankAccount.
+     *
+     * @param bankAccount the entity to update partially.
+     * @return the persisted entity.
+     */
+    public Optional<BankAccount> partialUpdate(BankAccount bankAccount) {
+        log.debug("Request to partially update BankAccount : {}", bankAccount);
+
+        return bankAccountRepository
+            .findById(bankAccount.getId())
+            .map(
+                existingBankAccount -> {
+                    if (bankAccount.getName() != null) {
+                        existingBankAccount.setName(bankAccount.getName());
+                    }
+                    if (bankAccount.getBic() != null) {
+                        existingBankAccount.setBic(bankAccount.getBic());
+                    }
+                    if (bankAccount.getIban() != null) {
+                        existingBankAccount.setIban(bankAccount.getIban());
+                    }
+
+                    return existingBankAccount;
+                }
+            )
+            .map(bankAccountRepository::save);
     }
 
     /**
@@ -44,7 +74,6 @@ public class BankAccountService {
         log.debug("Request to get all BankAccounts");
         return bankAccountRepository.findAll();
     }
-
 
     /**
      * Get one bankAccount by id.

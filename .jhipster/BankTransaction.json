@@ -4,30 +4,22 @@
     {
       "fieldName": "bookingDate",
       "fieldType": "Instant",
-      "fieldValidateRules": [
-        "required"
-      ]
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "valueDate",
       "fieldType": "Instant",
-      "fieldValidateRules": [
-        "required"
-      ]
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "value",
       "fieldType": "BigDecimal",
-      "fieldValidateRules": [
-        "required"
-      ]
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "balanceAfter",
       "fieldType": "BigDecimal",
-      "fieldValidateRules": [
-        "required"
-      ]
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "type",
@@ -68,22 +60,19 @@
       "otherEntityName": "bankAccount",
       "otherEntityRelationshipName": "bankTransaction",
       "relationshipValidateRules": "required",
-      "relationshipName": "bankAccount",
-      "otherEntityField": "id"
+      "relationshipName": "bankAccount"
     },
     {
       "relationshipType": "many-to-one",
       "otherEntityName": "bankAccount",
       "otherEntityRelationshipName": "bankTransaction",
-      "relationshipName": "contraBankAccount",
-      "otherEntityField": "id"
+      "relationshipName": "contraBankAccount"
     },
     {
       "relationshipType": "many-to-many",
       "otherEntityName": "bankTransaction",
       "otherEntityRelationshipName": "right",
       "relationshipName": "left",
-      "otherEntityField": "id",
       "ownerSide": true
     },
     {
@@ -91,15 +80,13 @@
       "otherEntityName": "transactionBook",
       "otherEntityRelationshipName": "bTransaction",
       "relationshipValidateRules": "required",
-      "relationshipName": "transactionBook",
-      "otherEntityField": "id"
+      "relationshipName": "transactionBook"
     },
     {
       "relationshipType": "many-to-many",
       "otherEntityName": "bankTransaction",
       "otherEntityRelationshipName": "left",
       "relationshipName": "right",
-      "otherEntityField": "id",
       "ownerSide": false
     }
   ],
@@ -107,11 +94,11 @@
   "entityTableName": "bank_transaction",
   "dto": "no",
   "pagination": "no",
-  "service": "no",
+  "service": "serviceClass",
   "jpaMetamodelFiltering": false,
   "fluentMethods": true,
   "readOnly": false,
   "embedded": false,
   "clientRootFolder": "",
-  "applications": "*"
+  "applications": ["autocut"]
 }

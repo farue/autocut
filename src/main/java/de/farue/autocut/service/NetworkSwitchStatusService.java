@@ -1,5 +1,11 @@
 package de.farue.autocut.service;
 
+import de.farue.autocut.domain.InternetAccess;
+import de.farue.autocut.domain.NetworkSwitch;
+import de.farue.autocut.domain.NetworkSwitchStatus;
+import de.farue.autocut.repository.NetworkSwitchStatusRepository;
+import de.farue.autocut.service.internetaccess.SwitchStatusColumns;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.TemporalAmount;
@@ -17,12 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Table;
-
-import de.farue.autocut.domain.InternetAccess;
-import de.farue.autocut.domain.NetworkSwitch;
-import de.farue.autocut.domain.NetworkSwitchStatus;
-import de.farue.autocut.repository.NetworkSwitchStatusRepository;
-import de.farue.autocut.service.internetaccess.SwitchStatusColumns;
 
 /**
  * Service Implementation for managing {@link NetworkSwitchStatus}.
@@ -56,6 +56,47 @@ public class NetworkSwitchStatusService {
     }
 
     /**
+     * Partially update a networkSwitchStatus.
+     *
+     * @param networkSwitchStatus the entity to update partially.
+     * @return the persisted entity.
+     */
+    public Optional<NetworkSwitchStatus> partialUpdate(NetworkSwitchStatus networkSwitchStatus) {
+        log.debug("Request to partially update NetworkSwitchStatus : {}", networkSwitchStatus);
+
+        return networkSwitchStatusRepository
+            .findById(networkSwitchStatus.getId())
+            .map(
+                existingNetworkSwitchStatus -> {
+                    if (networkSwitchStatus.getPort() != null) {
+                        existingNetworkSwitchStatus.setPort(networkSwitchStatus.getPort());
+                    }
+                    if (networkSwitchStatus.getName() != null) {
+                        existingNetworkSwitchStatus.setName(networkSwitchStatus.getName());
+                    }
+                    if (networkSwitchStatus.getStatus() != null) {
+                        existingNetworkSwitchStatus.setStatus(networkSwitchStatus.getStatus());
+                    }
+                    if (networkSwitchStatus.getVlan() != null) {
+                        existingNetworkSwitchStatus.setVlan(networkSwitchStatus.getVlan());
+                    }
+                    if (networkSwitchStatus.getSpeed() != null) {
+                        existingNetworkSwitchStatus.setSpeed(networkSwitchStatus.getSpeed());
+                    }
+                    if (networkSwitchStatus.getType() != null) {
+                        existingNetworkSwitchStatus.setType(networkSwitchStatus.getType());
+                    }
+                    if (networkSwitchStatus.getTimestamp() != null) {
+                        existingNetworkSwitchStatus.setTimestamp(networkSwitchStatus.getTimestamp());
+                    }
+
+                    return existingNetworkSwitchStatus;
+                }
+            )
+            .map(networkSwitchStatusRepository::save);
+    }
+
+    /**
      * Get all the networkSwitchStatuses.
      *
      * @return the list of entities.
@@ -65,7 +106,6 @@ public class NetworkSwitchStatusService {
         log.debug("Request to get all NetworkSwitchStatuses");
         return networkSwitchStatusRepository.findAll();
     }
-
 
     /**
      * Get one networkSwitchStatus by id.

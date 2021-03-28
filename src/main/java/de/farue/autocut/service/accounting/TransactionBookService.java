@@ -49,6 +49,32 @@ public class TransactionBookService {
     }
 
     /**
+     * Partially update a transactionBook.
+     *
+     * @param transactionBook the entity to update partially.
+     * @return the persisted entity.
+     */
+    public Optional<TransactionBook> partialUpdate(TransactionBook transactionBook) {
+        log.debug("Request to partially update TransactionBook : {}", transactionBook);
+
+        return transactionBookRepository
+            .findById(transactionBook.getId())
+            .map(
+                existingTransactionBook -> {
+                    if (transactionBook.getName() != null) {
+                        existingTransactionBook.setName(transactionBook.getName());
+                    }
+                    if (transactionBook.getType() != null) {
+                        existingTransactionBook.setType(transactionBook.getType());
+                    }
+
+                    return existingTransactionBook;
+                }
+            )
+            .map(transactionBookRepository::save);
+    }
+
+    /**
      * Get all the transactionBooks.
      *
      * @return the list of entities.

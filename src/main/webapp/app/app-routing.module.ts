@@ -30,6 +30,14 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
           loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
         },
         {
+          path: 'self-administration',
+          loadChildren: () => import('./self-administration/self-administration-routing.module').then(m => m.SelfAdministrationRoutingModule),
+        },
+        {
+          path: 'teams',
+          loadChildren: () => import('./teams/teams.module').then(m => m.TeamsModule),
+        },
+        {
           path: 'info',
           loadChildren: () => import('./info/info-routing.module').then(m => m.InfoRoutingModule),
         },

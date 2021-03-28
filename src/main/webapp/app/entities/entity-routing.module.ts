@@ -40,9 +40,9 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./internet-access/internet-access.module').then(m => m.InternetAccessModule),
       },
       {
-        path: 'transaction',
-        data: { pageTitle: 'autocutApp.transaction.home.title' },
-        loadChildren: () => import('./transaction/transaction.module').then(m => m.TransactionModule),
+        path: 'internal-transaction',
+        data: { pageTitle: 'autocutApp.internalTransaction.home.title' },
+        loadChildren: () => import('./internal-transaction/internal-transaction.module').then(m => m.InternalTransactionModule),
       },
       {
         path: 'tenant-communication',
@@ -93,6 +93,21 @@ import { RouterModule } from '@angular/router';
         path: 'team-membership',
         data: { pageTitle: 'autocutApp.teamMembership.home.title' },
         loadChildren: () => import('./team-membership/team-membership.module').then(m => m.TeamMembershipModule),
+      },
+      {
+        path: 'bank-account',
+        data: { pageTitle: 'autocutApp.bankAccount.home.title' },
+        loadChildren: () => import('./bank-account/bank-account.module').then(m => m.BankAccountModule),
+      },
+      {
+        path: 'bank-transaction',
+        data: { pageTitle: 'autocutApp.bankTransaction.home.title' },
+        loadChildren: () => import('./bank-transaction/bank-transaction.module').then(m => m.BankTransactionModule),
+      },
+      {
+        path: 'network-switch-status',
+        data: { pageTitle: 'autocutApp.networkSwitchStatus.home.title' },
+        loadChildren: () => import('./network-switch-status/network-switch-status.module').then(m => m.NetworkSwitchStatusModule),
       },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),

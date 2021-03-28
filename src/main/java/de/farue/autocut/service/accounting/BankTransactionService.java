@@ -31,6 +31,28 @@ public class BankTransactionService extends TransactionService<BankTransaction> 
         return transactionRepository;
     }
 
+    @Override
+    protected void partialUpdate(BankTransaction existingTransaction, BankTransaction transaction) {
+        if (transaction.getCustomerRef() != null) {
+            existingTransaction.setCustomerRef(transaction.getCustomerRef());
+        }
+        if (transaction.getGvCode() != null) {
+            existingTransaction.setGvCode(transaction.getGvCode());
+        }
+        if (transaction.getEndToEnd() != null) {
+            existingTransaction.setEndToEnd(transaction.getEndToEnd());
+        }
+        if (transaction.getPrimanota() != null) {
+            existingTransaction.setPrimanota(transaction.getPrimanota());
+        }
+        if (transaction.getCreditor() != null) {
+            existingTransaction.setCreditor(transaction.getCreditor());
+        }
+        if (transaction.getMandate() != null) {
+            existingTransaction.setMandate(transaction.getMandate());
+        }
+    }
+
     public void saveWithContraTransaction(BankTransaction transaction) {
         bankTransactionContraTransactionProvider.calculateContraTransaction(transaction)
             .ifPresent(contraTransaction -> {

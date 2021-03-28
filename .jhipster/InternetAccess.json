@@ -4,31 +4,22 @@
     {
       "fieldName": "ip1",
       "fieldType": "String",
-      "fieldValidateRules": [
-        "required"
-      ]
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "ip2",
       "fieldType": "String",
-      "fieldValidateRules": [
-        "required"
-      ]
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "switchInterface",
       "fieldType": "String",
-      "fieldValidateRules": [
-        "required"
-      ]
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "port",
       "fieldType": "Integer",
-      "fieldValidateRules": [
-        "required",
-        "min"
-      ],
+      "fieldValidateRules": ["required", "min"],
       "fieldValidateRulesMin": "1"
     }
   ],
@@ -37,8 +28,7 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "networkSwitch",
       "otherEntityRelationshipName": "internetAccess",
-      "relationshipName": "networkSwitch",
-      "otherEntityField": "id"
+      "relationshipName": "networkSwitch"
     },
     {
       "relationshipType": "one-to-one",
@@ -57,6 +47,6 @@
   "fluentMethods": true,
   "readOnly": false,
   "clientRootFolder": "",
-  "applications": "*",
+  "applications": ["autocut"],
   "embedded": false
 }

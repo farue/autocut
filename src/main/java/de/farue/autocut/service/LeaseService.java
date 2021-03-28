@@ -1,5 +1,8 @@
 package de.farue.autocut.service;
 
+import de.farue.autocut.domain.Lease;
+import de.farue.autocut.repository.LeaseRepository;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;

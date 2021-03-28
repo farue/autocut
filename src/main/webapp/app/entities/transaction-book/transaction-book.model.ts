@@ -1,6 +1,6 @@
-import { ITransaction } from 'app/entities/transaction/transaction.model';
 import { ILease } from 'app/entities/lease/lease.model';
 import { TransactionBookType } from 'app/entities/enumerations/transaction-book-type.model';
+import { ITransaction } from "app/entities/transaction/transaction.model";
 
 export interface ITransactionBook {
   id?: number;

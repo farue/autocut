@@ -2,13 +2,15 @@ package de.farue.autocut.service;
 
 import static de.farue.autocut.utils.BigDecimalUtil.modify;
 
+import de.farue.autocut.domain.LaundryMachine;
+import de.farue.autocut.repository.LaundryMachineRepository;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-import javax.annotation.Nullable;
-
+import org.apache.commons.lang3.BooleanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +72,7 @@ public class LaundryMachineService {
     }
 
     /**
-     * Save a laundry machine.
+     * Save a laundryMachine.
      *
      * @param laundryMachine the entity to save.
      * @return the persisted entity.
@@ -81,7 +83,39 @@ public class LaundryMachineService {
     }
 
     /**
-     * Get all the laundry machines.
+     * Partially update a laundryMachine.
+     *
+     * @param laundryMachine the entity to update partially.
+     * @return the persisted entity.
+     */
+    public Optional<LaundryMachine> partialUpdate(LaundryMachine laundryMachine) {
+        log.debug("Request to partially update LaundryMachine : {}", laundryMachine);
+
+        return laundryMachineRepository
+            .findById(laundryMachine.getId())
+            .map(
+                existingLaundryMachine -> {
+                    if (laundryMachine.getIdentifier() != null) {
+                        existingLaundryMachine.setIdentifier(laundryMachine.getIdentifier());
+                    }
+                    if (laundryMachine.getName() != null) {
+                        existingLaundryMachine.setName(laundryMachine.getName());
+                    }
+                    if (laundryMachine.getType() != null) {
+                        existingLaundryMachine.setType(laundryMachine.getType());
+                    }
+                    if (laundryMachine.getEnabled() != null) {
+                        existingLaundryMachine.setEnabled(laundryMachine.getEnabled());
+                    }
+
+                    return existingLaundryMachine;
+                }
+            )
+            .map(laundryMachineRepository::save);
+    }
+
+    /**
+     * Get all the laundryMachines.
      *
      * @return the list of entities.
      */
@@ -91,9 +125,8 @@ public class LaundryMachineService {
         return laundryMachineRepository.findAll();
     }
 
-
     /**
-     * Get one laundry machine by id.
+     * Get one laundryMachine by id.
      *
      * @param id the id of the entity.
      * @return the entity.
@@ -105,7 +138,7 @@ public class LaundryMachineService {
     }
 
     /**
-     * Delete the laundry machine by id.
+     * Delete the laundryMachine by id.
      *
      * @param id the id of the entity.
      */
@@ -125,7 +158,7 @@ public class LaundryMachineService {
 
         Instant timestamp = Instant.now();
         WashHistory washHistory = findOrCreateWashHistory(tenant, timestamp, machine, program);
-        if (!machine.isEnabled()) {
+        if (BooleanUtils.isFalse(machine.getEnabled())) {
             log.debug("{} is disabled. Adding history item {}", machine.getName(), washHistory);
             washHistory.setStatus(WashHistoryStatus.CANCELLED_BY_SYSTEM);
             washHistoryService.save(washHistory);
@@ -178,7 +211,7 @@ public class LaundryMachineService {
     }
 
     private WashHistory findOrCreateWashHistory(Tenant tenant, Instant time,
-        @Nullable LaundryMachine machine, @Nullable LaundryMachineProgram program) {
+        LaundryMachine machine, LaundryMachineProgram program) {
         Optional<WashHistory> reservationOpt;
         if (machine == null && program == null) {
             reservationOpt = washHistoryService.getFirstOpenReservation(tenant, time);

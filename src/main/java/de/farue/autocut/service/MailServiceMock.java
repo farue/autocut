@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import de.farue.autocut.email.ImapFolderFactory;
-import io.github.jhipster.config.JHipsterConstants;
-import io.github.jhipster.config.JHipsterProperties;
+import tech.jhipster.config.JHipsterConstants;
+import tech.jhipster.config.JHipsterProperties;
 
 @Service
 @Profile("!" + JHipsterConstants.SPRING_PROFILE_PRODUCTION)

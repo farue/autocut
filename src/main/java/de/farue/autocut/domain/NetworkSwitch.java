@@ -67,6 +67,7 @@ public class NetworkSwitch implements Serializable {
     public void setSshHost(String sshHost) {
         this.sshHost = sshHost;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override

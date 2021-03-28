@@ -1,16 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'jhi-fee',
   templateUrl: './fee.component.html',
-  styleUrls: ['fee.component.scss']
+  styleUrls: ['./fee.component.scss']
 })
-export class FeeComponent implements OnInit {
-  message: string;
-
-  constructor() {
-    this.message = 'Fee message';
-  }
-
-  ngOnInit(): void {}
+export class FeeComponent{
+  message = 'Fee message';
 }

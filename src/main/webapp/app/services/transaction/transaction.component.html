@@ -29,11 +29,11 @@
     <div class="row">
         <div class="col">
             <h2><span jhiTranslate="transaction.balance"></span><span>:</span>
-            <span [className]="balance >= 0 ? 'col-green' : 'col-red'">{{ balance | money }}</span></h2>
+            <span [className]="balance >= 0 ? 'col-green' : 'col-red'">{{ balance | i18nCurrency:translateService.currentLang }}</span></h2>
         </div>
         <div class="col">
             <h2><span jhiTranslate="transaction.deposit"></span><span>:</span>
-                <span [className]="balance >= 0 ? 'col-blue' : 'col-red'">{{ deposit | money }}</span></h2>
+                <span [className]="balance >= 0 ? 'col-blue' : 'col-red'">{{ deposit | i18nCurrency:translateService.currentLang }}</span></h2>
         </div>
     </div>
 
@@ -53,10 +53,10 @@
             <tbody *ngIf="transactions">
             <tr *ngFor="let transaction of transactions">
                 <td jhiTranslate="{{ 'autocutApp.TransactionKind.' + transaction.type }}">{{ transaction.type }}</td>
-                <td>{{ transaction.bookingDate | localizedDate:'short' }}</td>
-                <td>{{ transaction.valueDate | localizedDate:'short' }}</td>
-                <td>{{ transaction.value | money }}</td>
-                <td>{{ transaction.balanceAfter | money }}</td>
+                <td>{{ transaction.bookingDate | i18nDate:translateService.currentLang }}</td>
+                <td>{{ transaction.valueDate | i18nDate:translateService.currentLang }}</td>
+                <td>{{ transaction.value | i18nCurrency:translateService.currentLang }}</td>
+                <td>{{ transaction.balanceAfter | i18nCurrency:translateService.currentLang }}</td>
                 <td>{{ transaction.description }}</td>
                 <td>{{ transaction.issuer }}</td>
             </tr>
@@ -66,11 +66,18 @@
 
     <div *ngIf="transactions">
         <div class="row justify-content-center">
-            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+            <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
         </div>
 
         <div class="row justify-content-center">
-            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="transition()"></ngb-pagination>
+            <ngb-pagination
+              [collectionSize]="totalItems"
+              [(page)]="page"
+              [pageSize]="itemsPerPage"
+              [maxSize]="5"
+              [rotate]="true"
+              [boundaryLinks]="true"
+              (pageChange)="transition()"></ngb-pagination>
         </div>
     </div>
 </div>

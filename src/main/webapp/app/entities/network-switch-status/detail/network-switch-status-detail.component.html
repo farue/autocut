@@ -1,0 +1,66 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="networkSwitchStatus">
+      <h2 data-cy="networkSwitchStatusDetailsHeading">
+        <span jhiTranslate="autocutApp.networkSwitchStatus.detail.title">Network Switch Status</span>
+      </h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ networkSwitchStatus.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.networkSwitchStatus.port">Port</span></dt>
+        <dd>
+          <span>{{ networkSwitchStatus.port }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.networkSwitchStatus.name">Name</span></dt>
+        <dd>
+          <span>{{ networkSwitchStatus.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.networkSwitchStatus.status">Status</span></dt>
+        <dd>
+          <span>{{ networkSwitchStatus.status }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.networkSwitchStatus.vlan">Vlan</span></dt>
+        <dd>
+          <span>{{ networkSwitchStatus.vlan }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.networkSwitchStatus.speed">Speed</span></dt>
+        <dd>
+          <span>{{ networkSwitchStatus.speed }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.networkSwitchStatus.type">Type</span></dt>
+        <dd>
+          <span>{{ networkSwitchStatus.type }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.networkSwitchStatus.timestamp">Timestamp</span></dt>
+        <dd>
+          <span>{{ networkSwitchStatus.timestamp | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.networkSwitchStatus.networkSwitch">Network Switch</span></dt>
+        <dd>
+          <div *ngIf="networkSwitchStatus.networkSwitch">
+            <a [routerLink]="['/network-switch', networkSwitchStatus.networkSwitch?.id, 'view']">{{
+              networkSwitchStatus.networkSwitch?.id
+            }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/network-switch-status', networkSwitchStatus.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

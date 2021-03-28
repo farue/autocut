@@ -2,7 +2,7 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
     <!--
         Added the constraints for entity WashHistory.
     -->
@@ -10,25 +10,25 @@
         
         <addForeignKeyConstraint baseColumnNames="reservation_tenant_id"
                                  baseTableName="wash_history"
-                                 constraintName="fk_wash_history__reservation_tenant_id"
+                                 constraintName="fk_wash_history_reservation_tenant_id"
                                  referencedColumnNames="id"
                                  referencedTableName="tenant"/>
 
         <addForeignKeyConstraint baseColumnNames="using_tenant_id"
                                  baseTableName="wash_history"
-                                 constraintName="fk_wash_history__using_tenant_id"
+                                 constraintName="fk_wash_history_using_tenant_id"
                                  referencedColumnNames="id"
                                  referencedTableName="tenant"/>
 
         <addForeignKeyConstraint baseColumnNames="machine_id"
                                  baseTableName="wash_history"
-                                 constraintName="fk_wash_history__machine_id"
+                                 constraintName="fk_wash_history_machine_id"
                                  referencedColumnNames="id"
                                  referencedTableName="laundry_machine"/>
 
         <addForeignKeyConstraint baseColumnNames="program_id"
                                  baseTableName="wash_history"
-                                 constraintName="fk_wash_history__program_id"
+                                 constraintName="fk_wash_history_program_id"
                                  referencedColumnNames="id"
                                  referencedTableName="laundry_machine_program"/>
 

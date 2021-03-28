@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { SERVER_API_URL } from '../../app.constants';
+import { SERVER_API_URL } from 'app/app.constants';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { createRequestOption, Pagination } from '../../shared/util/request-util';
+import { createRequestOption } from 'app/core/request/request-util';
+import { Pagination } from 'app/core/request/request.model';
 import { ITransactionOverview } from './transaction-overview.model';
 
 @Injectable({ providedIn: 'root' })

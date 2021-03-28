@@ -1,7 +1,6 @@
 package de.farue.autocut.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import de.farue.autocut.domain.enumeration.TransactionKind;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -56,15 +55,17 @@ public abstract class Transaction implements Serializable {
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JoinTable(name = "transaction_link",
-               joinColumns = @JoinColumn(name = "right_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "left_id", referencedColumnName = "id"))
+    @JoinTable(
+        name = "transaction_link",
+        joinColumns = @JoinColumn(name = "right_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "left_id", referencedColumnName = "id")
+    )
     @JsonIgnoreProperties({ "lefts", "transactionBook", "rights" })
     private Set<Transaction> lefts = new HashSet<>();
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "transactions", "leases" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "transactions" }, allowSetters = true)
     private TransactionBook transactionBook;
 
     @ManyToMany(mappedBy = "lefts")
@@ -98,7 +99,7 @@ public abstract class Transaction implements Serializable {
         return this;
     }
 
-    public TransactionKind getType() {
+    public String getType() {
         return this.type;
     }
 

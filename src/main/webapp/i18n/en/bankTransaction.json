@@ -3,6 +3,7 @@
     "bankTransaction": {
       "home": {
         "title": "Bank Transactions",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Bank Transaction",
         "createOrEditLabel": "Create or edit a Bank Transaction",
         "notFound": "No Bank Transactions found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Bank Transaction"
       },
+      "id": "ID",
       "bookingDate": "Booking Date",
       "valueDate": "Value Date",
       "value": "Value",

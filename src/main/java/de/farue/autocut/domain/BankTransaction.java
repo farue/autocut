@@ -2,17 +2,17 @@ package de.farue.autocut.domain;
 
 import static de.farue.autocut.utils.BigDecimalUtil.compare;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A BankTransaction.
@@ -100,7 +100,7 @@ public class BankTransaction extends Transaction {
     }
 
     public String getCustomerRef() {
-        return customerRef;
+        return this.customerRef;
     }
 
     public BankTransaction customerRef(String customerRef) {
@@ -113,7 +113,7 @@ public class BankTransaction extends Transaction {
     }
 
     public String getGvCode() {
-        return gvCode;
+        return this.gvCode;
     }
 
     public BankTransaction gvCode(String gvCode) {
@@ -126,7 +126,7 @@ public class BankTransaction extends Transaction {
     }
 
     public String getEndToEnd() {
-        return endToEnd;
+        return this.endToEnd;
     }
 
     public BankTransaction endToEnd(String endToEnd) {
@@ -139,7 +139,7 @@ public class BankTransaction extends Transaction {
     }
 
     public String getPrimanota() {
-        return primanota;
+        return this.primanota;
     }
 
     public BankTransaction primanota(String primanota) {
@@ -152,7 +152,7 @@ public class BankTransaction extends Transaction {
     }
 
     public String getCreditor() {
-        return creditor;
+        return this.creditor;
     }
 
     public BankTransaction creditor(String creditor) {
@@ -165,7 +165,7 @@ public class BankTransaction extends Transaction {
     }
 
     public String getMandate() {
-        return mandate;
+        return this.mandate;
     }
 
     public BankTransaction mandate(String mandate) {
@@ -178,11 +178,11 @@ public class BankTransaction extends Transaction {
     }
 
     public BankAccount getBankAccount() {
-        return bankAccount;
+        return this.bankAccount;
     }
 
     public BankTransaction bankAccount(BankAccount bankAccount) {
-        this.bankAccount = bankAccount;
+        this.setBankAccount(bankAccount);
         return this;
     }
 
@@ -191,11 +191,11 @@ public class BankTransaction extends Transaction {
     }
 
     public BankAccount getContraBankAccount() {
-        return contraBankAccount;
+        return this.contraBankAccount;
     }
 
     public BankTransaction contraBankAccount(BankAccount bankAccount) {
-        this.contraBankAccount = bankAccount;
+        this.setContraBankAccount(bankAccount);
         return this;
     }
 

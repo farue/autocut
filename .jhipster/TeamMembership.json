@@ -26,16 +26,14 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "tenant",
       "otherEntityRelationshipName": "teamMembership",
-      "relationshipName": "tenant",
-      "otherEntityField": "id"
+      "relationshipName": "tenant"
     },
     {
       "relationshipType": "many-to-one",
       "otherEntityName": "team",
       "otherEntityRelationshipName": "teamMembership",
       "relationshipValidateRules": "required",
-      "relationshipName": "team",
-      "otherEntityField": "id"
+      "relationshipName": "team"
     }
   ],
   "changelogDate": "20201022221139",
@@ -48,5 +46,5 @@
   "readOnly": false,
   "embedded": false,
   "clientRootFolder": "",
-  "applications": "*"
+  "applications": ["autocut"]
 }

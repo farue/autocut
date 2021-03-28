@@ -3,6 +3,7 @@
     "internalTransaction": {
       "home": {
         "title": "Internal Transactions",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Internal Transaction",
         "createOrEditLabel": "Create or edit a Internal Transaction",
         "notFound": "No Internal Transactions found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Internal Transaction"
       },
+      "id": "ID",
       "type": "Type",
       "bookingDate": "Booking Date",
       "valueDate": "Value Date",

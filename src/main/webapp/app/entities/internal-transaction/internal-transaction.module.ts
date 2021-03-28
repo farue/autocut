@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
-import { AutocutSharedModule } from 'app/shared/shared.module';
-import { InternalTransactionComponent } from './internal-transaction.component';
-import { InternalTransactionDetailComponent } from './internal-transaction-detail.component';
-import { InternalTransactionUpdateComponent } from './internal-transaction-update.component';
-import { InternalTransactionDeleteDialogComponent } from './internal-transaction-delete-dialog.component';
-import { internalTransactionRoute } from './internal-transaction.route';
+import { SharedModule } from 'app/shared/shared.module';
+import { InternalTransactionComponent } from './list/internal-transaction.component';
+import { InternalTransactionDetailComponent } from './detail/internal-transaction-detail.component';
+import { InternalTransactionUpdateComponent } from './update/internal-transaction-update.component';
+import { InternalTransactionDeleteDialogComponent } from './delete/internal-transaction-delete-dialog.component';
+import { InternalTransactionRoutingModule } from './route/internal-transaction-routing.module';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(internalTransactionRoute)],
+  imports: [SharedModule, InternalTransactionRoutingModule],
   declarations: [
     InternalTransactionComponent,
     InternalTransactionDetailComponent,
@@ -18,4 +17,4 @@ import { internalTransactionRoute } from './internal-transaction.route';
   ],
   entryComponents: [InternalTransactionDeleteDialogComponent],
 })
-export class AutocutInternalTransactionModule {}
+export class InternalTransactionModule {}

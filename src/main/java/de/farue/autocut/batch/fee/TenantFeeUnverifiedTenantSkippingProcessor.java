@@ -9,7 +9,7 @@ public class TenantFeeUnverifiedTenantSkippingProcessor implements ItemProcessor
 
     @Override
     public Lease process(Lease lease) {
-        boolean verifiedTenants = lease.getTenants().stream().anyMatch(Tenant::isVerified);
+        boolean verifiedTenants = lease.getTenants().stream().anyMatch(Tenant::getVerified);
         return verifiedTenants ? lease : null;
     }
 }

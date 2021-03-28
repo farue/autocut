@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import de.farue.autocut.IntegrationTest;
+import de.farue.autocut.domain.Tenant;
 import de.farue.autocut.domain.User;
+import de.farue.autocut.repository.TenantRepository;
 import de.farue.autocut.repository.UserRepository;
 import java.util.Locale;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -157,7 +159,7 @@ class DomainUserDetailsServiceIT {
     }
 
     @Test
-    void assertThatUserCanBeFoundWhenTenantIsVerified() {
+    void assertThatUserCanBeFoundWhenTenantgetVerified() {
         UserDetails userDetails = domainUserDetailsService.loadUserByUsername(USER_WITH_TENANT_VERIFIED_LOGIN);
         assertThat(userDetails).isNotNull();
         assertThat(userDetails.getUsername()).isEqualTo(USER_WITH_TENANT_VERIFIED_LOGIN);

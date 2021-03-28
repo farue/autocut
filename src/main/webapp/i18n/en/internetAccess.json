@@ -18,7 +18,6 @@
         "title": "Internet Access"
       },
       "id": "ID",
-      "blocked": "Blocked",
       "ip1": "Ip 1",
       "ip2": "Ip 2",
       "switchInterface": "Switch Interface",

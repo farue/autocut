@@ -12,6 +12,7 @@ plugins {
     id "io.freefair.lombok"
     id "maven-publish"
     id "idea"
+    id "eclipse"
     id "jacoco"
     id "org.springframework.boot"
     id "com.google.cloud.tools.jib"
@@ -63,6 +64,16 @@ if (project.hasProperty("gae")) {
 idea {
     module {
 //        excludeDirs += files("node_modules")
+    }
+}
+
+eclipse {
+    sourceSets {
+        main {
+            java {
+                srcDirs += ["build/generated/sources/annotationProcessor/java/main"]
+            }
+        }
     }
 }
 
@@ -133,6 +144,8 @@ liquibase {
             defaultSchemaName ""
             logLevel "debug"
             classpath "src/main/resources/"
+
+            // Autocut: JHipster only has context "faker", add dev and prod
             if (project.hasProperty("prod")) {
                 contexts "prod"
             } else {
@@ -231,12 +244,10 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-undertow"
     implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
     implementation "org.zalando:problem-spring-web"
-    implementation "org.springframework.cloud:spring-cloud-starter-feign:${spring_cloud_starter_feign_version}"
     implementation "org.springframework.security:spring-security-config"
 
     implementation "org.springframework.security:spring-security-data"
     implementation "org.springframework.security:spring-security-web"
-    implementation "com.github.ulisesbocchio:jasypt-spring-boot-starter:${jasypt_spring_boot_starter_version}"
     implementation "io.jsonwebtoken:jjwt-api"
     if (!project.hasProperty("gae")) {
         runtimeOnly "io.jsonwebtoken:jjwt-impl"
@@ -264,12 +275,16 @@ dependencies {
     liquibaseRuntime "com.h2database:h2"
     //jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
 
+    // Autocut
+    implementation "org.springframework.cloud:spring-cloud-starter-feign:${spring_cloud_starter_feign_version}"
+    implementation "com.github.ulisesbocchio:jasypt-spring-boot-starter:${jasypt_spring_boot_starter_version}"
     implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:${p6spy_spring_boot_starter_version}")
     implementation("com.github.hbci4j:hbci4j-core:+")
     implementation "com.hierynomus:sshj:${sshj_version}"
     implementation "net.sf.expectit:expectit-core:${expectit_core_version}"
     implementation "org.springframework.data:spring-data-envers"
     implementation "org.springframework.boot:spring-boot-starter-batch"
+    implementation "com.google.guava:guava:30.1.1-jre"
     liquibaseRuntime "org.springframework.boot:spring-boot-starter-batch" // so liquibase finds the setup schemas
 }
 

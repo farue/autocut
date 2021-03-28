@@ -1,6 +1,8 @@
 export const PROBLEM_BASE_URL = 'https://www.jhipster.tech/problem';
 export const EMAIL_ALREADY_USED_TYPE = PROBLEM_BASE_URL + '/email-already-used';
 export const LOGIN_ALREADY_USED_TYPE = PROBLEM_BASE_URL + '/login-already-used';
+
+// Autocut
 export const USER_NOT_ACTIVATED_TYPE = PROBLEM_BASE_URL + '/user-not-activated';
 export const USER_NOT_VERIFIED_TYPE = PROBLEM_BASE_URL + '/user-not-verified';
 

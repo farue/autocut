@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { LaundryMachine } from 'app/shared/model/laundry-machine.model';
+import { LaundryMachine } from 'app/entities/laundry-machine/laundry-machine.model';
 import { SERVER_API_URL } from 'app/app.constants';
-import { LaundryMachineProgram } from 'app/shared/model/laundry-machine-program.model';
+import { LaundryMachineProgram } from 'app/entities/laundry-machine-program/laundry-machine-program.model';
 import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })

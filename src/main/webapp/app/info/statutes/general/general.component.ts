@@ -1,12 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'jhi-statutes',
   templateUrl: './general.component.html',
-  styleUrls: ['general.component.scss']
+  styleUrls: ['./general.component.scss']
 })
-export class GeneralComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit(): void {}
+export class GeneralComponent {
 }

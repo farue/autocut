@@ -2,7 +2,6 @@ package de.farue.autocut.config;
 
 import de.farue.autocut.security.*;
 import de.farue.autocut.security.jwt.*;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;

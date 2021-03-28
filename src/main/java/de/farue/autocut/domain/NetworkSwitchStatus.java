@@ -2,20 +2,10 @@ package de.farue.autocut.domain;
 
 import java.io.Serializable;
 import java.time.Instant;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * A NetworkSwitchStatus.
@@ -31,7 +21,8 @@ public class NetworkSwitchStatus implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "port")
+    @NotNull
+    @Column(name = "port", nullable = false)
     private String port;
 
     @Column(name = "name")
@@ -54,7 +45,6 @@ public class NetworkSwitchStatus implements Serializable {
     private Instant timestamp;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "networkSwitchStatuses", allowSetters = true)
     private NetworkSwitch networkSwitch;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -66,8 +56,13 @@ public class NetworkSwitchStatus implements Serializable {
         this.id = id;
     }
 
+    public NetworkSwitchStatus id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getPort() {
-        return port;
+        return this.port;
     }
 
     public NetworkSwitchStatus port(String port) {
@@ -80,7 +75,7 @@ public class NetworkSwitchStatus implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public NetworkSwitchStatus name(String name) {
@@ -93,7 +88,7 @@ public class NetworkSwitchStatus implements Serializable {
     }
 
     public String getStatus() {
-        return status;
+        return this.status;
     }
 
     public NetworkSwitchStatus status(String status) {
@@ -106,7 +101,7 @@ public class NetworkSwitchStatus implements Serializable {
     }
 
     public String getVlan() {
-        return vlan;
+        return this.vlan;
     }
 
     public NetworkSwitchStatus vlan(String vlan) {
@@ -119,7 +114,7 @@ public class NetworkSwitchStatus implements Serializable {
     }
 
     public String getSpeed() {
-        return speed;
+        return this.speed;
     }
 
     public NetworkSwitchStatus speed(String speed) {
@@ -132,7 +127,7 @@ public class NetworkSwitchStatus implements Serializable {
     }
 
     public String getType() {
-        return type;
+        return this.type;
     }
 
     public NetworkSwitchStatus type(String type) {
@@ -145,7 +140,7 @@ public class NetworkSwitchStatus implements Serializable {
     }
 
     public Instant getTimestamp() {
-        return timestamp;
+        return this.timestamp;
     }
 
     public NetworkSwitchStatus timestamp(Instant timestamp) {
@@ -158,17 +153,18 @@ public class NetworkSwitchStatus implements Serializable {
     }
 
     public NetworkSwitch getNetworkSwitch() {
-        return networkSwitch;
+        return this.networkSwitch;
     }
 
     public NetworkSwitchStatus networkSwitch(NetworkSwitch networkSwitch) {
-        this.networkSwitch = networkSwitch;
+        this.setNetworkSwitch(networkSwitch);
         return this;
     }
 
     public void setNetworkSwitch(NetworkSwitch networkSwitch) {
         this.networkSwitch = networkSwitch;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -184,7 +180,8 @@ public class NetworkSwitchStatus implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

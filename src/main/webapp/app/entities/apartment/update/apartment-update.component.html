@@ -30,6 +30,7 @@
             <option value="SHARED">{{ 'autocutApp.ApartmentTypes.SHARED' | translate }}</option>
             <option value="SINGLE">{{ 'autocutApp.ApartmentTypes.SINGLE' | translate }}</option>
             <option value="SHORT_TERM">{{ 'autocutApp.ApartmentTypes.SHORT_TERM' | translate }}</option>
+            <option value="BACKUP">{{ 'autocutApp.ApartmentTypes.BACKUP' | translate }}</option>
           </select>
           <div *ngIf="editForm.get('type')!.invalid && (editForm.get('type')!.dirty || editForm.get('type')!.touched)">
             <small class="form-text text-danger" *ngIf="editForm.get('type')?.errors?.required" jhiTranslate="entity.validation.required">

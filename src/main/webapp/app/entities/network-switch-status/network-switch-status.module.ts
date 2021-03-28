@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
-import { AutocutSharedModule } from 'app/shared/shared.module';
-import { NetworkSwitchStatusComponent } from './network-switch-status.component';
-import { NetworkSwitchStatusDetailComponent } from './network-switch-status-detail.component';
-import { NetworkSwitchStatusUpdateComponent } from './network-switch-status-update.component';
-import { NetworkSwitchStatusDeleteDialogComponent } from './network-switch-status-delete-dialog.component';
-import { networkSwitchStatusRoute } from './network-switch-status.route';
+import { SharedModule } from 'app/shared/shared.module';
+import { NetworkSwitchStatusComponent } from './list/network-switch-status.component';
+import { NetworkSwitchStatusDetailComponent } from './detail/network-switch-status-detail.component';
+import { NetworkSwitchStatusUpdateComponent } from './update/network-switch-status-update.component';
+import { NetworkSwitchStatusDeleteDialogComponent } from './delete/network-switch-status-delete-dialog.component';
+import { NetworkSwitchStatusRoutingModule } from './route/network-switch-status-routing.module';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(networkSwitchStatusRoute)],
+  imports: [SharedModule, NetworkSwitchStatusRoutingModule],
   declarations: [
     NetworkSwitchStatusComponent,
     NetworkSwitchStatusDetailComponent,
@@ -18,4 +17,4 @@ import { networkSwitchStatusRoute } from './network-switch-status.route';
   ],
   entryComponents: [NetworkSwitchStatusDeleteDialogComponent],
 })
-export class AutocutNetworkSwitchStatusModule {}
+export class NetworkSwitchStatusModule {}

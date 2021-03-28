@@ -2,7 +2,7 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
     <!--
         Added the constraints for entity SecurityPolicy.
     -->
@@ -10,13 +10,13 @@
 
         <addForeignKeyConstraint baseColumnNames="team_member_id"
                                  baseTableName="security_policy"
-                                 constraintName="fk_security_policy__team_member_id"
+                                 constraintName="fk_security_policy_team_member_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="team_membership"/>
+                                 referencedTableName="team_member"/>
 
         <addForeignKeyConstraint baseColumnNames="tenant_id"
                                  baseTableName="security_policy"
-                                 constraintName="fk_security_policy__tenant_id"
+                                 constraintName="fk_security_policy_tenant_id"
                                  referencedColumnNames="id"
                                  referencedTableName="tenant"/>
 

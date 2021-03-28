@@ -108,7 +108,6 @@ class InternetAccessResourceIT {
         List<InternetAccess> internetAccessList = internetAccessRepository.findAll();
         assertThat(internetAccessList).hasSize(databaseSizeBeforeCreate + 1);
         InternetAccess testInternetAccess = internetAccessList.get(internetAccessList.size() - 1);
-        assertThat(testInternetAccess.getBlocked()).isEqualTo(DEFAULT_BLOCKED);
         assertThat(testInternetAccess.getIp1()).isEqualTo(DEFAULT_IP_1);
         assertThat(testInternetAccess.getIp2()).isEqualTo(DEFAULT_IP_2);
         assertThat(testInternetAccess.getSwitchInterface()).isEqualTo(DEFAULT_SWITCH_INTERFACE);
@@ -134,7 +133,6 @@ class InternetAccessResourceIT {
         List<InternetAccess> internetAccessList = internetAccessRepository.findAll();
         assertThat(internetAccessList).hasSize(databaseSizeBeforeCreate);
     }
-
 
     @Test
     @Transactional
@@ -267,11 +265,7 @@ class InternetAccessResourceIT {
         InternetAccess updatedInternetAccess = internetAccessRepository.findById(internetAccess.getId()).get();
         // Disconnect from session so that the updates on updatedInternetAccess are not directly saved in db
         em.detach(updatedInternetAccess);
-        updatedInternetAccess
-            .ip1(UPDATED_IP_1)
-            .ip2(UPDATED_IP_2)
-            .switchInterface(UPDATED_SWITCH_INTERFACE)
-            .port(UPDATED_PORT);
+        updatedInternetAccess.ip1(UPDATED_IP_1).ip2(UPDATED_IP_2).switchInterface(UPDATED_SWITCH_INTERFACE).port(UPDATED_PORT);
 
         restInternetAccessMockMvc
             .perform(
@@ -359,7 +353,7 @@ class InternetAccessResourceIT {
         InternetAccess partialUpdatedInternetAccess = new InternetAccess();
         partialUpdatedInternetAccess.setId(internetAccess.getId());
 
-        partialUpdatedInternetAccess.blocked(UPDATED_BLOCKED).ip2(UPDATED_IP_2);
+        partialUpdatedInternetAccess.ip1(UPDATED_IP_1).switchInterface(UPDATED_SWITCH_INTERFACE);
 
         restInternetAccessMockMvc
             .perform(
@@ -373,10 +367,9 @@ class InternetAccessResourceIT {
         List<InternetAccess> internetAccessList = internetAccessRepository.findAll();
         assertThat(internetAccessList).hasSize(databaseSizeBeforeUpdate);
         InternetAccess testInternetAccess = internetAccessList.get(internetAccessList.size() - 1);
-        assertThat(testInternetAccess.getBlocked()).isEqualTo(UPDATED_BLOCKED);
-        assertThat(testInternetAccess.getIp1()).isEqualTo(DEFAULT_IP_1);
-        assertThat(testInternetAccess.getIp2()).isEqualTo(UPDATED_IP_2);
-        assertThat(testInternetAccess.getSwitchInterface()).isEqualTo(DEFAULT_SWITCH_INTERFACE);
+        assertThat(testInternetAccess.getIp1()).isEqualTo(UPDATED_IP_1);
+        assertThat(testInternetAccess.getIp2()).isEqualTo(DEFAULT_IP_2);
+        assertThat(testInternetAccess.getSwitchInterface()).isEqualTo(UPDATED_SWITCH_INTERFACE);
         assertThat(testInternetAccess.getPort()).isEqualTo(DEFAULT_PORT);
     }
 
@@ -392,12 +385,7 @@ class InternetAccessResourceIT {
         InternetAccess partialUpdatedInternetAccess = new InternetAccess();
         partialUpdatedInternetAccess.setId(internetAccess.getId());
 
-        partialUpdatedInternetAccess
-            .blocked(UPDATED_BLOCKED)
-            .ip1(UPDATED_IP_1)
-            .ip2(UPDATED_IP_2)
-            .switchInterface(UPDATED_SWITCH_INTERFACE)
-            .port(UPDATED_PORT);
+        partialUpdatedInternetAccess.ip1(UPDATED_IP_1).ip2(UPDATED_IP_2).switchInterface(UPDATED_SWITCH_INTERFACE).port(UPDATED_PORT);
 
         restInternetAccessMockMvc
             .perform(
@@ -411,7 +399,6 @@ class InternetAccessResourceIT {
         List<InternetAccess> internetAccessList = internetAccessRepository.findAll();
         assertThat(internetAccessList).hasSize(databaseSizeBeforeUpdate);
         InternetAccess testInternetAccess = internetAccessList.get(internetAccessList.size() - 1);
-        assertThat(testInternetAccess.getBlocked()).isEqualTo(UPDATED_BLOCKED);
         assertThat(testInternetAccess.getIp1()).isEqualTo(UPDATED_IP_1);
         assertThat(testInternetAccess.getIp2()).isEqualTo(UPDATED_IP_2);
         assertThat(testInternetAccess.getSwitchInterface()).isEqualTo(UPDATED_SWITCH_INTERFACE);

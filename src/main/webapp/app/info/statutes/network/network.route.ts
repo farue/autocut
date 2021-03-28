@@ -1,6 +1,5 @@
 import { Route } from '@angular/router';
 
-import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 import { NetworkComponent } from './network.component';
 
 export const NETWORK_ROUTE: Route = {
@@ -10,5 +9,4 @@ export const NETWORK_ROUTE: Route = {
     authorities: [],
     pageTitle: 'statutes.network.title'
   },
-  canActivate: [UserRouteAccessService]
 };

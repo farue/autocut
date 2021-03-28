@@ -1,27 +1,26 @@
 package de.farue.autocut.web.rest;
 
+import static de.farue.autocut.web.rest.TestUtil.sameNumber;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import de.farue.autocut.IntegrationTest;
+import de.farue.autocut.domain.InternalTransaction;
+import de.farue.autocut.domain.TransactionBook;
+import de.farue.autocut.domain.enumeration.TransactionType;
+import de.farue.autocut.repository.InternalTransactionRepository;
+import de.farue.autocut.service.accounting.InternalTransactionService;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,28 +28,21 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.InternalTransaction;
-import de.farue.autocut.domain.TransactionBook;
-import de.farue.autocut.domain.enumeration.TransactionType;
-import de.farue.autocut.repository.InternalTransactionRepository;
-import de.farue.autocut.service.accounting.InternalTransactionService;
-
 /**
  * Integration tests for the {@link InternalTransactionResource} REST controller.
  */
-@SpringBootTest(classes = AutocutApp.class)
+@IntegrationTest
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
-public class InternalTransactionResourceIT {
+class InternalTransactionResourceIT {
 
     private static final TransactionType DEFAULT_TYPE = TransactionType.TRANSFER;
     private static final TransactionType UPDATED_TYPE = TransactionType.CORRECTION;
@@ -79,6 +71,12 @@ public class InternalTransactionResourceIT {
     private static final String DEFAULT_RECIPIENT = "AAAAAAAAAA";
     private static final String UPDATED_RECIPIENT = "BBBBBBBBBB";
 
+    private static final String ENTITY_API_URL = "/api/internal-transactions";
+    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
+
+    private static Random random = new Random();
+    private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
+
     @Autowired
     private InternalTransactionRepository internalTransactionRepository;
 
@@ -87,9 +85,6 @@ public class InternalTransactionResourceIT {
 
     @Mock
     private InternalTransactionService internalTransactionServiceMock;
-
-    @Autowired
-    private InternalTransactionService internalTransactionService;
 
     @Autowired
     private EntityManager em;
@@ -128,6 +123,7 @@ public class InternalTransactionResourceIT {
         internalTransaction.setTransactionBook(transactionBook);
         return internalTransaction;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -165,12 +161,13 @@ public class InternalTransactionResourceIT {
 
     @Test
     @Transactional
-    public void createInternalTransaction() throws Exception {
+    void createInternalTransaction() throws Exception {
         int databaseSizeBeforeCreate = internalTransactionRepository.findAll().size();
         // Create the InternalTransaction
-        restInternalTransactionMockMvc.perform(post("/api/internal-transactions")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(internalTransaction)))
+        restInternalTransactionMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(internalTransaction))
+            )
             .andExpect(status().isCreated());
 
         // Validate the InternalTransaction in the database
@@ -180,8 +177,8 @@ public class InternalTransactionResourceIT {
         assertThat(testInternalTransaction.getTransactionType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testInternalTransaction.getBookingDate()).isEqualTo(DEFAULT_BOOKING_DATE);
         assertThat(testInternalTransaction.getValueDate()).isEqualTo(DEFAULT_VALUE_DATE);
-        assertThat(testInternalTransaction.getValue()).isEqualTo(DEFAULT_VALUE);
-        assertThat(testInternalTransaction.getBalanceAfter()).isEqualTo(DEFAULT_BALANCE_AFTER);
+        assertThat(testInternalTransaction.getValue()).isEqualByComparingTo(DEFAULT_VALUE);
+        assertThat(testInternalTransaction.getBalanceAfter()).isEqualByComparingTo(DEFAULT_BALANCE_AFTER);
         assertThat(testInternalTransaction.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testInternalTransaction.getServiceQulifier()).isEqualTo(DEFAULT_SERVICE_QULIFIER);
         assertThat(testInternalTransaction.getIssuer()).isEqualTo(DEFAULT_ISSUER);
@@ -190,16 +187,17 @@ public class InternalTransactionResourceIT {
 
     @Test
     @Transactional
-    public void createInternalTransactionWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = internalTransactionRepository.findAll().size();
-
+    void createInternalTransactionWithExistingId() throws Exception {
         // Create the InternalTransaction with an existing ID
         internalTransaction.setId(1L);
 
+        int databaseSizeBeforeCreate = internalTransactionRepository.findAll().size();
+
         // An entity with an existing ID cannot be created, so this API call must fail
-        restInternalTransactionMockMvc.perform(post("/api/internal-transactions")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(internalTransaction)))
+        restInternalTransactionMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(internalTransaction))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the InternalTransaction in the database
@@ -207,20 +205,19 @@ public class InternalTransactionResourceIT {
         assertThat(internalTransactionList).hasSize(databaseSizeBeforeCreate);
     }
 
-
     @Test
     @Transactional
-    public void checkTypeIsRequired() throws Exception {
+    void checkTypeIsRequired() throws Exception {
         int databaseSizeBeforeTest = internalTransactionRepository.findAll().size();
         // set the field null
         internalTransaction.setType(null);
 
         // Create the InternalTransaction, which fails.
 
-
-        restInternalTransactionMockMvc.perform(post("/api/internal-transactions")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(internalTransaction)))
+        restInternalTransactionMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(internalTransaction))
+            )
             .andExpect(status().isBadRequest());
 
         List<InternalTransaction> internalTransactionList = internalTransactionRepository.findAll();
@@ -229,17 +226,17 @@ public class InternalTransactionResourceIT {
 
     @Test
     @Transactional
-    public void checkBookingDateIsRequired() throws Exception {
+    void checkBookingDateIsRequired() throws Exception {
         int databaseSizeBeforeTest = internalTransactionRepository.findAll().size();
         // set the field null
         internalTransaction.setBookingDate(null);
 
         // Create the InternalTransaction, which fails.
 
-
-        restInternalTransactionMockMvc.perform(post("/api/internal-transactions")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(internalTransaction)))
+        restInternalTransactionMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(internalTransaction))
+            )
             .andExpect(status().isBadRequest());
 
         List<InternalTransaction> internalTransactionList = internalTransactionRepository.findAll();
@@ -248,17 +245,17 @@ public class InternalTransactionResourceIT {
 
     @Test
     @Transactional
-    public void checkValueDateIsRequired() throws Exception {
+    void checkValueDateIsRequired() throws Exception {
         int databaseSizeBeforeTest = internalTransactionRepository.findAll().size();
         // set the field null
         internalTransaction.setValueDate(null);
 
         // Create the InternalTransaction, which fails.
 
-
-        restInternalTransactionMockMvc.perform(post("/api/internal-transactions")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(internalTransaction)))
+        restInternalTransactionMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(internalTransaction))
+            )
             .andExpect(status().isBadRequest());
 
         List<InternalTransaction> internalTransactionList = internalTransactionRepository.findAll();
@@ -267,17 +264,17 @@ public class InternalTransactionResourceIT {
 
     @Test
     @Transactional
-    public void checkValueIsRequired() throws Exception {
+    void checkValueIsRequired() throws Exception {
         int databaseSizeBeforeTest = internalTransactionRepository.findAll().size();
         // set the field null
         internalTransaction.setValue(null);
 
         // Create the InternalTransaction, which fails.
 
-
-        restInternalTransactionMockMvc.perform(post("/api/internal-transactions")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(internalTransaction)))
+        restInternalTransactionMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(internalTransaction))
+            )
             .andExpect(status().isBadRequest());
 
         List<InternalTransaction> internalTransactionList = internalTransactionRepository.findAll();
@@ -286,17 +283,17 @@ public class InternalTransactionResourceIT {
 
     @Test
     @Transactional
-    public void checkBalanceAfterIsRequired() throws Exception {
+    void checkBalanceAfterIsRequired() throws Exception {
         int databaseSizeBeforeTest = internalTransactionRepository.findAll().size();
         // set the field null
         internalTransaction.setBalanceAfter(null);
 
         // Create the InternalTransaction, which fails.
 
-
-        restInternalTransactionMockMvc.perform(post("/api/internal-transactions")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(internalTransaction)))
+        restInternalTransactionMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(internalTransaction))
+            )
             .andExpect(status().isBadRequest());
 
         List<InternalTransaction> internalTransactionList = internalTransactionRepository.findAll();
@@ -305,17 +302,17 @@ public class InternalTransactionResourceIT {
 
     @Test
     @Transactional
-    public void checkIssuerIsRequired() throws Exception {
+    void checkIssuerIsRequired() throws Exception {
         int databaseSizeBeforeTest = internalTransactionRepository.findAll().size();
         // set the field null
         internalTransaction.setIssuer(null);
 
         // Create the InternalTransaction, which fails.
 
-
-        restInternalTransactionMockMvc.perform(post("/api/internal-transactions")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(internalTransaction)))
+        restInternalTransactionMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(internalTransaction))
+            )
             .andExpect(status().isBadRequest());
 
         List<InternalTransaction> internalTransactionList = internalTransactionRepository.findAll();
@@ -324,12 +321,13 @@ public class InternalTransactionResourceIT {
 
     @Test
     @Transactional
-    public void getAllInternalTransactions() throws Exception {
+    void getAllInternalTransactions() throws Exception {
         // Initialize the database
         internalTransactionRepository.saveAndFlush(internalTransaction);
 
         // Get all the internalTransactionList
-        restInternalTransactionMockMvc.perform(get("/api/internal-transactions?sort=id,desc"))
+        restInternalTransactionMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(internalTransaction.getId().intValue())))
@@ -344,32 +342,31 @@ public class InternalTransactionResourceIT {
             .andExpect(jsonPath("$.[*].recipient").value(hasItem(DEFAULT_RECIPIENT)));
     }
 
-    public void getAllInternalTransactionsWithEagerRelationshipsIsEnabled() throws Exception {
+    void getAllInternalTransactionsWithEagerRelationshipsIsEnabled() throws Exception {
         when(internalTransactionServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl<>(new ArrayList<>()));
 
-        restInternalTransactionMockMvc.perform(get("/api/internal-transactions?eagerload=true"))
-            .andExpect(status().isOk());
+        restInternalTransactionMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
 
         verify(internalTransactionServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
-    public void getAllInternalTransactionsWithEagerRelationshipsIsNotEnabled() throws Exception {
+    void getAllInternalTransactionsWithEagerRelationshipsIsNotEnabled() throws Exception {
         when(internalTransactionServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl<>(new ArrayList<>()));
 
-        restInternalTransactionMockMvc.perform(get("/api/internal-transactions?eagerload=true"))
-            .andExpect(status().isOk());
+        restInternalTransactionMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
 
         verify(internalTransactionServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @Test
     @Transactional
-    public void getInternalTransaction() throws Exception {
+    void getInternalTransaction() throws Exception {
         // Initialize the database
         internalTransactionRepository.saveAndFlush(internalTransaction);
 
         // Get the internalTransaction
-        restInternalTransactionMockMvc.perform(get("/api/internal-transactions/{id}", internalTransaction.getId()))
+        restInternalTransactionMockMvc
+            .perform(get(ENTITY_API_URL_ID, internalTransaction.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(internalTransaction.getId().intValue()))
@@ -383,19 +380,19 @@ public class InternalTransactionResourceIT {
             .andExpect(jsonPath("$.issuer").value(DEFAULT_ISSUER))
             .andExpect(jsonPath("$.recipient").value(DEFAULT_RECIPIENT));
     }
+
     @Test
     @Transactional
-    public void getNonExistingInternalTransaction() throws Exception {
+    void getNonExistingInternalTransaction() throws Exception {
         // Get the internalTransaction
-        restInternalTransactionMockMvc.perform(get("/api/internal-transactions/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restInternalTransactionMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    public void updateInternalTransaction() throws Exception {
+    void putNewInternalTransaction() throws Exception {
         // Initialize the database
-        internalTransactionService.save(internalTransaction);
+        internalTransactionRepository.saveAndFlush(internalTransaction);
 
         int databaseSizeBeforeUpdate = internalTransactionRepository.findAll().size();
 
@@ -414,9 +411,12 @@ public class InternalTransactionResourceIT {
             .issuer(UPDATED_ISSUER)
             .recipient(UPDATED_RECIPIENT);
 
-        restInternalTransactionMockMvc.perform(put("/api/internal-transactions")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(updatedInternalTransaction)))
+        restInternalTransactionMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, updatedInternalTransaction.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedInternalTransaction))
+            )
             .andExpect(status().isOk());
 
         // Validate the InternalTransaction in the database
@@ -427,7 +427,7 @@ public class InternalTransactionResourceIT {
         assertThat(testInternalTransaction.getBookingDate()).isEqualTo(DEFAULT_BOOKING_DATE);
         assertThat(testInternalTransaction.getValueDate()).isEqualTo(DEFAULT_VALUE_DATE);
         assertThat(testInternalTransaction.getValue()).isEqualTo(UPDATED_VALUE);
-        assertThat(testInternalTransaction.getBalanceAfter()).isEqualByComparingTo(UPDATED_BALANCE_AFTER);
+        assertThat(testInternalTransaction.getBalanceAfter()).isEqualTo(UPDATED_BALANCE_AFTER);
         assertThat(testInternalTransaction.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testInternalTransaction.getServiceQulifier()).isEqualTo(UPDATED_SERVICE_QULIFIER);
         assertThat(testInternalTransaction.getIssuer()).isEqualTo(UPDATED_ISSUER);
@@ -436,13 +436,17 @@ public class InternalTransactionResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingInternalTransaction() throws Exception {
+    void putNonExistingInternalTransaction() throws Exception {
         int databaseSizeBeforeUpdate = internalTransactionRepository.findAll().size();
+        internalTransaction.setId(count.incrementAndGet());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restInternalTransactionMockMvc.perform(put("/api/internal-transactions")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(internalTransaction)))
+        restInternalTransactionMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, internalTransaction.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(internalTransaction))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the InternalTransaction in the database
@@ -452,15 +456,196 @@ public class InternalTransactionResourceIT {
 
     @Test
     @Transactional
-    public void deleteInternalTransaction() throws Exception {
+    void putWithIdMismatchInternalTransaction() throws Exception {
+        int databaseSizeBeforeUpdate = internalTransactionRepository.findAll().size();
+        internalTransaction.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restInternalTransactionMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(internalTransaction))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the InternalTransaction in the database
+        List<InternalTransaction> internalTransactionList = internalTransactionRepository.findAll();
+        assertThat(internalTransactionList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void putWithMissingIdPathParamInternalTransaction() throws Exception {
+        int databaseSizeBeforeUpdate = internalTransactionRepository.findAll().size();
+        internalTransaction.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restInternalTransactionMockMvc
+            .perform(
+                put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(internalTransaction))
+            )
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the InternalTransaction in the database
+        List<InternalTransaction> internalTransactionList = internalTransactionRepository.findAll();
+        assertThat(internalTransactionList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void partialUpdateInternalTransactionWithPatch() throws Exception {
         // Initialize the database
-        internalTransactionService.save(internalTransaction);
+        internalTransactionRepository.saveAndFlush(internalTransaction);
+
+        int databaseSizeBeforeUpdate = internalTransactionRepository.findAll().size();
+
+        // Update the internalTransaction using partial update
+        InternalTransaction partialUpdatedInternalTransaction = new InternalTransaction();
+        partialUpdatedInternalTransaction.setId(internalTransaction.getId());
+
+        partialUpdatedInternalTransaction.bookingDate(UPDATED_BOOKING_DATE).value(UPDATED_VALUE).issuer(UPDATED_ISSUER);
+
+        restInternalTransactionMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedInternalTransaction.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedInternalTransaction))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the InternalTransaction in the database
+        List<InternalTransaction> internalTransactionList = internalTransactionRepository.findAll();
+        assertThat(internalTransactionList).hasSize(databaseSizeBeforeUpdate);
+        InternalTransaction testInternalTransaction = internalTransactionList.get(internalTransactionList.size() - 1);
+        assertThat(testInternalTransaction.getTransactionType()).isEqualTo(DEFAULT_TYPE);
+        assertThat(testInternalTransaction.getBookingDate()).isEqualTo(UPDATED_BOOKING_DATE);
+        assertThat(testInternalTransaction.getValueDate()).isEqualTo(DEFAULT_VALUE_DATE);
+        assertThat(testInternalTransaction.getValue()).isEqualByComparingTo(UPDATED_VALUE);
+        assertThat(testInternalTransaction.getBalanceAfter()).isEqualByComparingTo(DEFAULT_BALANCE_AFTER);
+        assertThat(testInternalTransaction.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testInternalTransaction.getServiceQulifier()).isEqualTo(DEFAULT_SERVICE_QULIFIER);
+        assertThat(testInternalTransaction.getIssuer()).isEqualTo(UPDATED_ISSUER);
+        assertThat(testInternalTransaction.getRecipient()).isEqualTo(DEFAULT_RECIPIENT);
+    }
+
+    @Test
+    @Transactional
+    void fullUpdateInternalTransactionWithPatch() throws Exception {
+        // Initialize the database
+        internalTransactionRepository.saveAndFlush(internalTransaction);
+
+        int databaseSizeBeforeUpdate = internalTransactionRepository.findAll().size();
+
+        // Update the internalTransaction using partial update
+        InternalTransaction partialUpdatedInternalTransaction = new InternalTransaction();
+        partialUpdatedInternalTransaction.setId(internalTransaction.getId());
+
+        partialUpdatedInternalTransaction
+            .transactionType(UPDATED_TYPE)
+            .bookingDate(UPDATED_BOOKING_DATE)
+            .valueDate(UPDATED_VALUE_DATE)
+            .value(UPDATED_VALUE)
+            .balanceAfter(UPDATED_BALANCE_AFTER)
+            .description(UPDATED_DESCRIPTION)
+            .serviceQulifier(UPDATED_SERVICE_QULIFIER)
+            .issuer(UPDATED_ISSUER)
+            .recipient(UPDATED_RECIPIENT);
+
+        restInternalTransactionMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedInternalTransaction.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedInternalTransaction))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the InternalTransaction in the database
+        List<InternalTransaction> internalTransactionList = internalTransactionRepository.findAll();
+        assertThat(internalTransactionList).hasSize(databaseSizeBeforeUpdate);
+        InternalTransaction testInternalTransaction = internalTransactionList.get(internalTransactionList.size() - 1);
+        assertThat(testInternalTransaction.getTransactionType()).isEqualTo(UPDATED_TYPE);
+        assertThat(testInternalTransaction.getBookingDate()).isEqualTo(UPDATED_BOOKING_DATE);
+        assertThat(testInternalTransaction.getValueDate()).isEqualTo(UPDATED_VALUE_DATE);
+        assertThat(testInternalTransaction.getValue()).isEqualByComparingTo(UPDATED_VALUE);
+        assertThat(testInternalTransaction.getBalanceAfter()).isEqualByComparingTo(UPDATED_BALANCE_AFTER);
+        assertThat(testInternalTransaction.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testInternalTransaction.getServiceQulifier()).isEqualTo(UPDATED_SERVICE_QULIFIER);
+        assertThat(testInternalTransaction.getIssuer()).isEqualTo(UPDATED_ISSUER);
+        assertThat(testInternalTransaction.getRecipient()).isEqualTo(UPDATED_RECIPIENT);
+    }
+
+    @Test
+    @Transactional
+    void patchNonExistingInternalTransaction() throws Exception {
+        int databaseSizeBeforeUpdate = internalTransactionRepository.findAll().size();
+        internalTransaction.setId(count.incrementAndGet());
+
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        restInternalTransactionMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, internalTransaction.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(internalTransaction))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the InternalTransaction in the database
+        List<InternalTransaction> internalTransactionList = internalTransactionRepository.findAll();
+        assertThat(internalTransactionList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithIdMismatchInternalTransaction() throws Exception {
+        int databaseSizeBeforeUpdate = internalTransactionRepository.findAll().size();
+        internalTransaction.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restInternalTransactionMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(internalTransaction))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the InternalTransaction in the database
+        List<InternalTransaction> internalTransactionList = internalTransactionRepository.findAll();
+        assertThat(internalTransactionList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithMissingIdPathParamInternalTransaction() throws Exception {
+        int databaseSizeBeforeUpdate = internalTransactionRepository.findAll().size();
+        internalTransaction.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restInternalTransactionMockMvc
+            .perform(
+                patch(ENTITY_API_URL)
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(internalTransaction))
+            )
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the InternalTransaction in the database
+        List<InternalTransaction> internalTransactionList = internalTransactionRepository.findAll();
+        assertThat(internalTransactionList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void deleteInternalTransaction() throws Exception {
+        // Initialize the database
+        internalTransactionRepository.saveAndFlush(internalTransaction);
 
         int databaseSizeBeforeDelete = internalTransactionRepository.findAll().size();
 
         // Delete the internalTransaction
-        restInternalTransactionMockMvc.perform(delete("/api/internal-transactions/{id}", internalTransaction.getId())
-            .accept(MediaType.APPLICATION_JSON))
+        restInternalTransactionMockMvc
+            .perform(delete(ENTITY_API_URL_ID, internalTransaction.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

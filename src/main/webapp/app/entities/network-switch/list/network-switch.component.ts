@@ -5,7 +5,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { INetworkSwitch } from '../network-switch.model';
 import { NetworkSwitchService } from '../service/network-switch.service';
 import { NetworkSwitchDeleteDialogComponent } from '../delete/network-switch-delete-dialog.component';
-import { DataUtils } from 'app/core/util/data-util.service';
 
 @Component({
   selector: 'jhi-network-switch',
@@ -15,7 +14,7 @@ export class NetworkSwitchComponent implements OnInit {
   networkSwitches?: INetworkSwitch[];
   isLoading = false;
 
-  constructor(protected networkSwitchService: NetworkSwitchService, protected dataUtils: DataUtils, protected modalService: NgbModal) {}
+  constructor(protected networkSwitchService: NetworkSwitchService, protected modalService: NgbModal) {}
 
   loadAll(): void {
     this.isLoading = true;
@@ -37,14 +36,6 @@ export class NetworkSwitchComponent implements OnInit {
 
   trackId(index: number, item: INetworkSwitch): number {
     return item.id!;
-  }
-
-  byteSize(base64String: string): string {
-    return this.dataUtils.byteSize(base64String);
-  }
-
-  openFile(base64String: string, contentType: string | null | undefined): void {
-    return this.dataUtils.openFile(base64String, contentType);
   }
 
   delete(networkSwitch: INetworkSwitch): void {

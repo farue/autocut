@@ -31,7 +31,7 @@ import de.farue.autocut.service.accounting.PurposeBankTransactionMatcher;
 import de.farue.autocut.service.accounting.TenantNameMatchCandidateProvider;
 import de.farue.autocut.service.accounting.TenantPurposeMatchCandidateProvider;
 import de.farue.autocut.service.accounting.TransactionBookService;
-import io.github.jhipster.config.JHipsterConstants;
+import tech.jhipster.config.JHipsterConstants;
 
 @Configuration
 public class AccountingConfiguration {

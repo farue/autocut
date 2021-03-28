@@ -23,12 +23,12 @@
         "main": "Entitäten",
         "tenant": "Mieter",
         "team": "AG",
-        "teamMember": "AG Mitglied",
         "lease": "Mietvertrag",
         "apartment": "Wohnung",
         "address": "Adresse",
         "securityPolicy": "Sicherheitsrichtlinien",
         "internetAccess": "Internetzugang",
+        "internalTransaction": "Internal Transaction",
         "tenantCommunication": "Mieter Kommunikation",
         "activity": "Aktivität",
         "communication": "Kommunikation",
@@ -39,10 +39,8 @@
         "networkSwitch": "Switch",
         "transactionBook": "Transaction Book",
         "teamMembership": "Team Membership",
-        "transaction": "Transaction",
         "bankAccount": "Bank Account",
         "bankTransaction": "Bank Transaction",
-        "internalTransaction": "Internal Transaction",
         "networkSwitchStatus": "Network Switch Status",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
@@ -185,5 +183,5 @@
       "not.image": "Es wird erwartet, dass die Datei ein Bild ist. Die Datei ist jedoch vom Typ \"{{ fileType }}\""
     }
   },
-  "footer": "© 2020 FaRü Familienwohnheim Rütscher Straße. Alle Rechte vorbehalten."
+  "footer": "© 2021 FaRü Familienwohnheim Rütscher Straße. Alle Rechte vorbehalten."
 }

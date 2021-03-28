@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User } from '../../core/user/user.model';
+import { User } from 'app/admin/user-management/user-management.model';
 import { HttpClient } from '@angular/common/http';
-import { SERVER_API_URL } from '../../app.constants';
-import { Tenant } from '../model/tenant.model';
-import { Lease } from '../model/lease.model';
-import { TransactionBook } from '../model/transaction-book.model';
+import { SERVER_API_URL } from 'app/app.constants';
+import { Tenant } from 'app/entities/tenant/tenant.model';
+import { Lease } from 'app/entities/lease/lease.model';
+import { TransactionBook } from 'app/entities/transaction-book/transaction-book.model';
 
 @Injectable({ providedIn: 'root' })
 export class LoggedInUserService {

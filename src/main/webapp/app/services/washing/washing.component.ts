@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { WashingService } from 'app/services/washing/washing.service';
-import { LaundryMachine } from 'app/shared/model/laundry-machine.model';
-import { LaundryMachineProgram } from 'app/shared/model/laundry-machine-program.model';
+import { LaundryMachine } from 'app/entities/laundry-machine/laundry-machine.model';
+import { LaundryMachineProgram } from 'app/entities/laundry-machine-program/laundry-machine-program.model';
 import { HttpErrorResponse } from '@angular/common/http';
-import { INSUFFICIENT_FUNDS_TYPE, LAUNDRY_MACHINE_UNAVAILABLE_TYPE } from 'app/shared/constants/error.constants';
-import { LaundryMachineType } from 'app/shared/model/enumerations/laundry-machine-type.model';
+import { INSUFFICIENT_FUNDS_TYPE, LAUNDRY_MACHINE_UNAVAILABLE_TYPE } from 'app/config/error.constants';
+import { LaundryMachineType } from 'app/entities/enumerations/laundry-machine-type.model';
 
 @Component({
   selector: 'jhi-application',
   templateUrl: './washing.component.html',
-  styleUrls: ['washing.component.scss'],
+  styleUrls: ['./washing.component.scss'],
 })
 export class WashingComponent implements OnInit {
   message: string;
@@ -84,8 +84,8 @@ export class WashingComponent implements OnInit {
     return this.getSelectedProgram() == null;
   }
 
-  private getSelectedProgram(): LaundryMachineProgram | null {
-    const programs = this.filterPrograms(
+  getSelectedProgram(): LaundryMachineProgram | null {
+    const programs: LaundryMachineProgram[] = this.filterPrograms(
       this.selectedProgram,
       this.selectedSubprogram,
       this.selectedSpin,
@@ -93,13 +93,13 @@ export class WashingComponent implements OnInit {
       this.selectedProtect
     );
     if (programs.length === 1) {
-      return programs[0];
+      return programs[0] ;
     } else {
       return null;
     }
   }
 
-  private filterPrograms(
+  filterPrograms(
     program?: string,
     subprogram?: string,
     spin?: number,
@@ -219,7 +219,7 @@ export class WashingComponent implements OnInit {
   }
 
   private getSubprogramsForProgram(program: string): string[] {
-    if (this.selectedMachine == null || program == null) {
+    if (this.selectedMachine == null) {
       return [];
     }
     return this.selectedMachine

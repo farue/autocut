@@ -10,16 +10,6 @@ import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
-import java.io.Serializable;
-import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
-
-import de.farue.autocut.domain.enumeration.SemesterTerms;
-
 /**
  * Activity always describes an entire semester since its main purpose is to capture who is
  * eligible for a discount, and its secondary purpose is to store activity counted at StW.

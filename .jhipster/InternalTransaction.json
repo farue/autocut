@@ -4,9 +4,7 @@
     {
       "fieldName": "type",
       "fieldType": "String",
-      "fieldValidateRules": [
-        "required"
-      ]
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "bookingDate",
@@ -52,7 +50,6 @@
       "otherEntityName": "internalTransaction",
       "otherEntityRelationshipName": "right",
       "relationshipName": "left",
-      "otherEntityField": "id",
       "ownerSide": true
     },
     {
@@ -60,15 +57,13 @@
       "otherEntityName": "transactionBook",
       "otherEntityRelationshipName": "iTransaction",
       "relationshipValidateRules": "required",
-      "relationshipName": "transactionBook",
-      "otherEntityField": "id"
+      "relationshipName": "transactionBook"
     },
     {
       "relationshipType": "many-to-many",
       "otherEntityName": "internalTransaction",
       "otherEntityRelationshipName": "left",
       "relationshipName": "right",
-      "otherEntityField": "id",
       "ownerSide": false
     }
   ],
@@ -81,6 +76,6 @@
   "fluentMethods": true,
   "readOnly": false,
   "clientRootFolder": "",
-  "applications": "*",
+  "applications": ["autocut"],
   "embedded": false
 }

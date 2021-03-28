@@ -1,16 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'jhi-janitor',
   templateUrl: './janitor.component.html',
-  styleUrls: ['janitor.component.scss']
+  styleUrls: ['./janitor.component.scss']
 })
-export class JanitorComponent implements OnInit {
-  message: string;
-
-  constructor() {
-    this.message = 'JanitorComponent message';
-  }
-
-  ngOnInit(): void {}
+export class JanitorComponent {
+  message = 'JanitorComponent message';
 }

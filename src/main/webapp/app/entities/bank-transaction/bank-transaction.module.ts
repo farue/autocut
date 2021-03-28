@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
-import { AutocutSharedModule } from 'app/shared/shared.module';
-import { BankTransactionComponent } from './bank-transaction.component';
-import { BankTransactionDetailComponent } from './bank-transaction-detail.component';
-import { BankTransactionUpdateComponent } from './bank-transaction-update.component';
-import { BankTransactionDeleteDialogComponent } from './bank-transaction-delete-dialog.component';
-import { bankTransactionRoute } from './bank-transaction.route';
+import { SharedModule } from 'app/shared/shared.module';
+import { BankTransactionComponent } from './list/bank-transaction.component';
+import { BankTransactionDetailComponent } from './detail/bank-transaction-detail.component';
+import { BankTransactionUpdateComponent } from './update/bank-transaction-update.component';
+import { BankTransactionDeleteDialogComponent } from './delete/bank-transaction-delete-dialog.component';
+import { BankTransactionRoutingModule } from './route/bank-transaction-routing.module';
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forChild(bankTransactionRoute)],
+  imports: [SharedModule, BankTransactionRoutingModule],
   declarations: [
     BankTransactionComponent,
     BankTransactionDetailComponent,
@@ -18,4 +17,4 @@ import { bankTransactionRoute } from './bank-transaction.route';
   ],
   entryComponents: [BankTransactionDeleteDialogComponent],
 })
-export class AutocutBankTransactionModule {}
+export class BankTransactionModule {}

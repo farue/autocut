@@ -2,39 +2,32 @@ package de.farue.autocut.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import de.farue.autocut.IntegrationTest;
+import de.farue.autocut.domain.BankAccount;
+import de.farue.autocut.repository.BankAccountRepository;
 import java.util.List;
-
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.BankAccount;
-import de.farue.autocut.repository.BankAccountRepository;
-
 /**
  * Integration tests for the {@link BankAccountResource} REST controller.
  */
-@SpringBootTest(classes = AutocutApp.class)
+@IntegrationTest
 @AutoConfigureMockMvc
 @WithMockUser
-public class BankAccountResourceIT {
+class BankAccountResourceIT {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
@@ -44,6 +37,12 @@ public class BankAccountResourceIT {
 
     private static final String DEFAULT_IBAN = "AAAAAAAAAA";
     private static final String UPDATED_IBAN = "BBBBBBBBBB";
+
+    private static final String ENTITY_API_URL = "/api/bank-accounts";
+    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
+
+    private static Random random = new Random();
+    private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     @Autowired
     private BankAccountRepository bankAccountRepository;
@@ -63,12 +62,10 @@ public class BankAccountResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static BankAccount createEntity(EntityManager em) {
-        BankAccount bankAccount = new BankAccount()
-            .name(DEFAULT_NAME)
-            .bic(DEFAULT_BIC)
-            .iban(DEFAULT_IBAN);
+        BankAccount bankAccount = new BankAccount().name(DEFAULT_NAME).bic(DEFAULT_BIC).iban(DEFAULT_IBAN);
         return bankAccount;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -76,10 +73,7 @@ public class BankAccountResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static BankAccount createUpdatedEntity(EntityManager em) {
-        BankAccount bankAccount = new BankAccount()
-            .name(UPDATED_NAME)
-            .bic(UPDATED_BIC)
-            .iban(UPDATED_IBAN);
+        BankAccount bankAccount = new BankAccount().name(UPDATED_NAME).bic(UPDATED_BIC).iban(UPDATED_IBAN);
         return bankAccount;
     }
 
@@ -90,12 +84,11 @@ public class BankAccountResourceIT {
 
     @Test
     @Transactional
-    public void createBankAccount() throws Exception {
+    void createBankAccount() throws Exception {
         int databaseSizeBeforeCreate = bankAccountRepository.findAll().size();
         // Create the BankAccount
-        restBankAccountMockMvc.perform(post("/api/bank-accounts")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(bankAccount)))
+        restBankAccountMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(bankAccount)))
             .andExpect(status().isCreated());
 
         // Validate the BankAccount in the database
@@ -109,16 +102,15 @@ public class BankAccountResourceIT {
 
     @Test
     @Transactional
-    public void createBankAccountWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = bankAccountRepository.findAll().size();
-
+    void createBankAccountWithExistingId() throws Exception {
         // Create the BankAccount with an existing ID
         bankAccount.setId(1L);
 
+        int databaseSizeBeforeCreate = bankAccountRepository.findAll().size();
+
         // An entity with an existing ID cannot be created, so this API call must fail
-        restBankAccountMockMvc.perform(post("/api/bank-accounts")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(bankAccount)))
+        restBankAccountMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(bankAccount)))
             .andExpect(status().isBadRequest());
 
         // Validate the BankAccount in the database
@@ -126,20 +118,17 @@ public class BankAccountResourceIT {
         assertThat(bankAccountList).hasSize(databaseSizeBeforeCreate);
     }
 
-
     @Test
     @Transactional
-    public void checkNameIsRequired() throws Exception {
+    void checkNameIsRequired() throws Exception {
         int databaseSizeBeforeTest = bankAccountRepository.findAll().size();
         // set the field null
         bankAccount.setName(null);
 
         // Create the BankAccount, which fails.
 
-
-        restBankAccountMockMvc.perform(post("/api/bank-accounts")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(bankAccount)))
+        restBankAccountMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(bankAccount)))
             .andExpect(status().isBadRequest());
 
         List<BankAccount> bankAccountList = bankAccountRepository.findAll();
@@ -148,17 +137,15 @@ public class BankAccountResourceIT {
 
     @Test
     @Transactional
-    public void checkBicIsRequired() throws Exception {
+    void checkBicIsRequired() throws Exception {
         int databaseSizeBeforeTest = bankAccountRepository.findAll().size();
         // set the field null
         bankAccount.setBic(null);
 
         // Create the BankAccount, which fails.
 
-
-        restBankAccountMockMvc.perform(post("/api/bank-accounts")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(bankAccount)))
+        restBankAccountMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(bankAccount)))
             .andExpect(status().isBadRequest());
 
         List<BankAccount> bankAccountList = bankAccountRepository.findAll();
@@ -167,17 +154,15 @@ public class BankAccountResourceIT {
 
     @Test
     @Transactional
-    public void checkIbanIsRequired() throws Exception {
+    void checkIbanIsRequired() throws Exception {
         int databaseSizeBeforeTest = bankAccountRepository.findAll().size();
         // set the field null
         bankAccount.setIban(null);
 
         // Create the BankAccount, which fails.
 
-
-        restBankAccountMockMvc.perform(post("/api/bank-accounts")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(bankAccount)))
+        restBankAccountMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(bankAccount)))
             .andExpect(status().isBadRequest());
 
         List<BankAccount> bankAccountList = bankAccountRepository.findAll();
@@ -186,12 +171,13 @@ public class BankAccountResourceIT {
 
     @Test
     @Transactional
-    public void getAllBankAccounts() throws Exception {
+    void getAllBankAccounts() throws Exception {
         // Initialize the database
         bankAccountRepository.saveAndFlush(bankAccount);
 
         // Get all the bankAccountList
-        restBankAccountMockMvc.perform(get("/api/bank-accounts?sort=id,desc"))
+        restBankAccountMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(bankAccount.getId().intValue())))
@@ -202,12 +188,13 @@ public class BankAccountResourceIT {
 
     @Test
     @Transactional
-    public void getBankAccount() throws Exception {
+    void getBankAccount() throws Exception {
         // Initialize the database
         bankAccountRepository.saveAndFlush(bankAccount);
 
         // Get the bankAccount
-        restBankAccountMockMvc.perform(get("/api/bank-accounts/{id}", bankAccount.getId()))
+        restBankAccountMockMvc
+            .perform(get(ENTITY_API_URL_ID, bankAccount.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(bankAccount.getId().intValue()))
@@ -215,17 +202,17 @@ public class BankAccountResourceIT {
             .andExpect(jsonPath("$.bic").value(DEFAULT_BIC))
             .andExpect(jsonPath("$.iban").value(DEFAULT_IBAN));
     }
+
     @Test
     @Transactional
-    public void getNonExistingBankAccount() throws Exception {
+    void getNonExistingBankAccount() throws Exception {
         // Get the bankAccount
-        restBankAccountMockMvc.perform(get("/api/bank-accounts/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restBankAccountMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    public void updateBankAccount() throws Exception {
+    void putNewBankAccount() throws Exception {
         // Initialize the database
         bankAccountRepository.saveAndFlush(bankAccount);
 
@@ -235,14 +222,14 @@ public class BankAccountResourceIT {
         BankAccount updatedBankAccount = bankAccountRepository.findById(bankAccount.getId()).get();
         // Disconnect from session so that the updates on updatedBankAccount are not directly saved in db
         em.detach(updatedBankAccount);
-        updatedBankAccount
-            .name(UPDATED_NAME)
-            .bic(UPDATED_BIC)
-            .iban(UPDATED_IBAN);
+        updatedBankAccount.name(UPDATED_NAME).bic(UPDATED_BIC).iban(UPDATED_IBAN);
 
-        restBankAccountMockMvc.perform(put("/api/bank-accounts")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(updatedBankAccount)))
+        restBankAccountMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, updatedBankAccount.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedBankAccount))
+            )
             .andExpect(status().isOk());
 
         // Validate the BankAccount in the database
@@ -256,13 +243,17 @@ public class BankAccountResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingBankAccount() throws Exception {
+    void putNonExistingBankAccount() throws Exception {
         int databaseSizeBeforeUpdate = bankAccountRepository.findAll().size();
+        bankAccount.setId(count.incrementAndGet());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restBankAccountMockMvc.perform(put("/api/bank-accounts")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(bankAccount)))
+        restBankAccountMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, bankAccount.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(bankAccount))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the BankAccount in the database
@@ -272,15 +263,171 @@ public class BankAccountResourceIT {
 
     @Test
     @Transactional
-    public void deleteBankAccount() throws Exception {
+    void putWithIdMismatchBankAccount() throws Exception {
+        int databaseSizeBeforeUpdate = bankAccountRepository.findAll().size();
+        bankAccount.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restBankAccountMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(bankAccount))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the BankAccount in the database
+        List<BankAccount> bankAccountList = bankAccountRepository.findAll();
+        assertThat(bankAccountList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void putWithMissingIdPathParamBankAccount() throws Exception {
+        int databaseSizeBeforeUpdate = bankAccountRepository.findAll().size();
+        bankAccount.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restBankAccountMockMvc
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(bankAccount)))
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the BankAccount in the database
+        List<BankAccount> bankAccountList = bankAccountRepository.findAll();
+        assertThat(bankAccountList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void partialUpdateBankAccountWithPatch() throws Exception {
+        // Initialize the database
+        bankAccountRepository.saveAndFlush(bankAccount);
+
+        int databaseSizeBeforeUpdate = bankAccountRepository.findAll().size();
+
+        // Update the bankAccount using partial update
+        BankAccount partialUpdatedBankAccount = new BankAccount();
+        partialUpdatedBankAccount.setId(bankAccount.getId());
+
+        partialUpdatedBankAccount.bic(UPDATED_BIC).iban(UPDATED_IBAN);
+
+        restBankAccountMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedBankAccount.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedBankAccount))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the BankAccount in the database
+        List<BankAccount> bankAccountList = bankAccountRepository.findAll();
+        assertThat(bankAccountList).hasSize(databaseSizeBeforeUpdate);
+        BankAccount testBankAccount = bankAccountList.get(bankAccountList.size() - 1);
+        assertThat(testBankAccount.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testBankAccount.getBic()).isEqualTo(UPDATED_BIC);
+        assertThat(testBankAccount.getIban()).isEqualTo(UPDATED_IBAN);
+    }
+
+    @Test
+    @Transactional
+    void fullUpdateBankAccountWithPatch() throws Exception {
+        // Initialize the database
+        bankAccountRepository.saveAndFlush(bankAccount);
+
+        int databaseSizeBeforeUpdate = bankAccountRepository.findAll().size();
+
+        // Update the bankAccount using partial update
+        BankAccount partialUpdatedBankAccount = new BankAccount();
+        partialUpdatedBankAccount.setId(bankAccount.getId());
+
+        partialUpdatedBankAccount.name(UPDATED_NAME).bic(UPDATED_BIC).iban(UPDATED_IBAN);
+
+        restBankAccountMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedBankAccount.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedBankAccount))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the BankAccount in the database
+        List<BankAccount> bankAccountList = bankAccountRepository.findAll();
+        assertThat(bankAccountList).hasSize(databaseSizeBeforeUpdate);
+        BankAccount testBankAccount = bankAccountList.get(bankAccountList.size() - 1);
+        assertThat(testBankAccount.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testBankAccount.getBic()).isEqualTo(UPDATED_BIC);
+        assertThat(testBankAccount.getIban()).isEqualTo(UPDATED_IBAN);
+    }
+
+    @Test
+    @Transactional
+    void patchNonExistingBankAccount() throws Exception {
+        int databaseSizeBeforeUpdate = bankAccountRepository.findAll().size();
+        bankAccount.setId(count.incrementAndGet());
+
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        restBankAccountMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, bankAccount.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(bankAccount))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the BankAccount in the database
+        List<BankAccount> bankAccountList = bankAccountRepository.findAll();
+        assertThat(bankAccountList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithIdMismatchBankAccount() throws Exception {
+        int databaseSizeBeforeUpdate = bankAccountRepository.findAll().size();
+        bankAccount.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restBankAccountMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(bankAccount))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the BankAccount in the database
+        List<BankAccount> bankAccountList = bankAccountRepository.findAll();
+        assertThat(bankAccountList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithMissingIdPathParamBankAccount() throws Exception {
+        int databaseSizeBeforeUpdate = bankAccountRepository.findAll().size();
+        bankAccount.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restBankAccountMockMvc
+            .perform(
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(bankAccount))
+            )
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the BankAccount in the database
+        List<BankAccount> bankAccountList = bankAccountRepository.findAll();
+        assertThat(bankAccountList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void deleteBankAccount() throws Exception {
         // Initialize the database
         bankAccountRepository.saveAndFlush(bankAccount);
 
         int databaseSizeBeforeDelete = bankAccountRepository.findAll().size();
 
         // Delete the bankAccount
-        restBankAccountMockMvc.perform(delete("/api/bank-accounts/{id}", bankAccount.getId())
-            .accept(MediaType.APPLICATION_JSON))
+        restBankAccountMockMvc
+            .perform(delete(ENTITY_API_URL_ID, bankAccount.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

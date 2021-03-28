@@ -10,25 +10,6 @@ import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 /**
  * A Lease.
  */
@@ -73,7 +54,7 @@ public class Lease implements Serializable {
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JoinTable(
-        name = "rel_lease__transaction_book",
+        name = "lease_transaction_book",
         joinColumns = @JoinColumn(name = "lease_id"),
         inverseJoinColumns = @JoinColumn(name = "transaction_book_id")
     )
@@ -81,7 +62,7 @@ public class Lease implements Serializable {
     private Set<TransactionBook> transactionBooks = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "internetAccess", "leases", "address" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "leases", "address" }, allowSetters = true)
     private Apartment apartment;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

@@ -17,13 +17,13 @@
   "entityTableName": "network_switch",
   "dto": "no",
   "pagination": "no",
-  "service": "yes",
+  "service": "serviceClass",
   "jpaMetamodelFiltering": false,
   "fluentMethods": true,
   "readOnly": false,
   "embedded": false,
   "clientRootFolder": "",
-  "applications": "*",
+  "applications": ["autocut"],
   "searchEngine": false,
   "databaseType": "sql"
 }

@@ -21,7 +21,7 @@ Navbar
   .dropdown-item.active,
   .dropdown-item.active:focus,
   .dropdown-item.active:hover {
-    background-color: $dark;
+    background-color: $light;
   }
 
   ul.navbar-nav {
@@ -44,7 +44,7 @@ Navbar
   position: relative;
 
   &:hover span {
-    background-color: $navbar-dark-hover-color;
+    background-color: $navbar-light-hover-color;
   }
 
   span {
@@ -53,9 +53,9 @@ Navbar
     margin-top: 4px;
     margin-bottom: 4px;
     position: absolute;
-    background-color: $navbar-dark-color;
+    background-color: $navbar-light-color;
     left: 0;
-    transition: 0.55s;
+    transition: 0.2s;
   }
 }
 
@@ -74,7 +74,7 @@ Navbar
 .navbar-toggler.open .top-bar {
   top: 6px;
   transform: rotate(45deg);
-  transition: 0.55s 0.5s;
+  transition: 0.2s;
 }
 
 .navbar-toggler.open .middle-bar {
@@ -83,8 +83,8 @@ Navbar
 
 .navbar-toggler.open .bottom-bar {
   top: 6px;
-  transform: rotate(-405deg);
-  transition: 0.55s 0.5s;
+  transform: rotate(-45deg);
+  transition: 0.2s;
 }
 
 /* ==========================================================================

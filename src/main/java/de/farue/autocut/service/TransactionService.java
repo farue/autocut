@@ -32,6 +32,9 @@ public abstract class TransactionService<T extends Transaction> {
     private final Logger log = LoggerFactory.getLogger(TransactionService.class);
 
     protected abstract TransactionRepository<T> getRepository();
+
+    protected abstract void partialUpdate(T existingTransaction, T transaction);
+
     /**
      * Save a transaction.
      *
@@ -65,15 +68,15 @@ public abstract class TransactionService<T extends Transaction> {
      * @param transaction the entity to update partially.
      * @return the persisted entity.
      */
-    public Optional<Transaction> partialUpdate(Transaction transaction) {
+    public Optional<T> partialUpdate(T transaction) {
         log.debug("Request to partially update Transaction : {}", transaction);
 
-        return transactionRepository
+        return getRepository()
             .findById(transaction.getId())
             .map(
                 existingTransaction -> {
-                    if (transaction.getKind() != null) {
-                        existingTransaction.setKind(transaction.getKind());
+                    if (transaction.getType() != null) {
+                        existingTransaction.setType(transaction.getType());
                     }
                     if (transaction.getBookingDate() != null) {
                         existingTransaction.setBookingDate(transaction.getBookingDate());
@@ -93,17 +96,12 @@ public abstract class TransactionService<T extends Transaction> {
                     if (transaction.getServiceQulifier() != null) {
                         existingTransaction.setServiceQulifier(transaction.getServiceQulifier());
                     }
-                    if (transaction.getIssuer() != null) {
-                        existingTransaction.setIssuer(transaction.getIssuer());
-                    }
-                    if (transaction.getRecipient() != null) {
-                        existingTransaction.setRecipient(transaction.getRecipient());
-                    }
+                    partialUpdate(existingTransaction, transaction);
 
                     return existingTransaction;
                 }
             )
-            .map(transactionRepository::save);
+            .map(getRepository()::save);
     }
 
     /**

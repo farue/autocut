@@ -2,7 +2,7 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
     <!--
         Added the constraints for entity LaundryMachineProgram.
     -->
@@ -10,7 +10,7 @@
         
         <addForeignKeyConstraint baseColumnNames="laundry_machine_id"
                                  baseTableName="laundry_machine_program"
-                                 constraintName="fk_laundry_machine_program__laundry_machine_id"
+                                 constraintName="fk_laundry_machine_program_laundry_machine_id"
                                  referencedColumnNames="id"
                                  referencedTableName="laundry_machine"/>
 

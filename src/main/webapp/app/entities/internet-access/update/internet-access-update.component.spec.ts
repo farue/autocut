@@ -42,10 +42,10 @@ describe('Component Tests', () => {
     describe('ngOnInit', () => {
       it('Should call NetworkSwitch query and add missing value', () => {
         const internetAccess: IInternetAccess = { id: 456 };
-        const networkSwitch: INetworkSwitch = { id: 62261 };
+        const networkSwitch: INetworkSwitch = { id: 62951 };
         internetAccess.networkSwitch = networkSwitch;
 
-        const networkSwitchCollection: INetworkSwitch[] = [{ id: 4040 }];
+        const networkSwitchCollection: INetworkSwitch[] = [{ id: 62261 }];
         spyOn(networkSwitchService, 'query').and.returnValue(of(new HttpResponse({ body: networkSwitchCollection })));
         const additionalNetworkSwitches = [networkSwitch];
         const expectedCollection: INetworkSwitch[] = [...additionalNetworkSwitches, ...networkSwitchCollection];
@@ -64,7 +64,7 @@ describe('Component Tests', () => {
 
       it('Should update editForm', () => {
         const internetAccess: IInternetAccess = { id: 456 };
-        const networkSwitch: INetworkSwitch = { id: 79747 };
+        const networkSwitch: INetworkSwitch = { id: 4040 };
         internetAccess.networkSwitch = networkSwitch;
 
         activatedRoute.data = of({ internetAccess });

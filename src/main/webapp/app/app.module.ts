@@ -1,11 +1,13 @@
+/* eslint-disable */
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import locale from '@angular/common/locales/en';
+import localeDe from '@angular/common/locales/de';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { TranslateModule, TranslateService, TranslateLoader, MissingTranslationHandler } from '@ngx-translate/core';
+import { TranslateModule, TranslateService, TranslateLoader, MissingTranslationHandler, LangChangeEvent } from '@ngx-translate/core';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import * as dayjs from 'dayjs';
 import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -28,6 +30,7 @@ import { FooterComponent } from './layouts/footer/footer.component';
 import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
+import { SelfAdministrationModule } from "app/self-administration/self-administration.module";
 
 @NgModule({
   imports: [
@@ -52,10 +55,13 @@ import { ErrorComponent } from './layouts/error/error.component';
         useFactory: missingTranslationHandler,
       },
     }),
+
+    // Autocut
+    SelfAdministrationModule,
   ],
   providers: [
     Title,
-    { provide: LOCALE_ID, useValue: 'en' },
+    { provide: LOCALE_ID, useValue: 'de' },
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
     httpInterceptorProviders,
   ],
@@ -71,9 +77,10 @@ export class AppModule {
   ) {
     applicationConfigService.setEndpointPrefix(SERVER_API_URL);
     registerLocaleData(locale);
+    registerLocaleData(localeDe);
     iconLibrary.addIcons(...fontAwesomeIcons);
     dpConfig.minDate = { year: dayjs().subtract(100, 'year').year(), month: 1, day: 1 };
-    translateService.setDefaultLang('en');
-    translateService.use('en');
+    translateService.setDefaultLang('de');
+    translateService.use('de');
   }
 }

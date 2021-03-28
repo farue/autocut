@@ -22,9 +22,7 @@ export class PhotoService {
     return this.http
       .get<any>('content/data/photos.json')
       .toPromise()
-      .then(res => {
-        return res.data as Photo[];
-      });
+      .then(res => res.data as Photo[]);
   }
 
   // getPhotos(): void {

@@ -59,19 +59,6 @@ public class InternetAccess implements Serializable {
         return this;
     }
 
-    public Boolean getBlocked() {
-        return this.blocked;
-    }
-
-    public InternetAccess blocked(Boolean blocked) {
-        this.blocked = blocked;
-        return this;
-    }
-
-    public void setBlocked(Boolean blocked) {
-        this.blocked = blocked;
-    }
-
     public String getIp1() {
         return this.ip1;
     }
@@ -187,7 +174,6 @@ public class InternetAccess implements Serializable {
     public String toString() {
         return "InternetAccess{" +
             "id=" + getId() +
-            ", blocked='" + getBlocked() + "'" +
             ", ip1='" + getIp1() + "'" +
             ", ip2='" + getIp2() + "'" +
             ", switchInterface='" + getSwitchInterface() + "'" +

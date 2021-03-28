@@ -2,7 +2,7 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
     <!--
         Added the constraints for entity TenantCommunication.
     -->
@@ -10,7 +10,7 @@
         
         <addForeignKeyConstraint baseColumnNames="tenant_id"
                                  baseTableName="tenant_communication"
-                                 constraintName="fk_tenant_communication__tenant_id"
+                                 constraintName="fk_tenant_communication_tenant_id"
                                  referencedColumnNames="id"
                                  referencedTableName="tenant"/>
 

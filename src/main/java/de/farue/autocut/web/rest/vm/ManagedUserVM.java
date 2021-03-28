@@ -1,10 +1,14 @@
 package de.farue.autocut.web.rest.vm;
 
-import de.farue.autocut.service.dto.AdminUserDTO;
-import javax.validation.constraints.Size;
+import java.time.LocalDate;
 
 import de.farue.autocut.service.StwApartmentParser;
-import de.farue.autocut.service.dto.UserDTO;
+import de.farue.autocut.service.dto.AdminUserDTO;
+
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  * View Model extending the AdminUserDTO, which is meant to be used in the user management UI.

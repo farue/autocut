@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
 
-import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { AboutComponent } from './about.component';
 import { TERMS_ROUTE } from 'app/info/about/terms/terms.route';
 import { PRIVACY_ROUTE } from 'app/info/about/privacy/privacy.route';

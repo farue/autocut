@@ -1,16 +1,8 @@
 package de.farue.autocut.domain;
 
 import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -51,8 +43,13 @@ public class BankAccount implements Serializable {
         this.id = id;
     }
 
+    public BankAccount id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public BankAccount name(String name) {
@@ -65,7 +62,7 @@ public class BankAccount implements Serializable {
     }
 
     public String getBic() {
-        return bic;
+        return this.bic;
     }
 
     public BankAccount bic(String bic) {
@@ -78,7 +75,7 @@ public class BankAccount implements Serializable {
     }
 
     public String getIban() {
-        return iban;
+        return this.iban;
     }
 
     public BankAccount iban(String iban) {
@@ -89,6 +86,7 @@ public class BankAccount implements Serializable {
     public void setIban(String iban) {
         this.iban = iban;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -104,7 +102,8 @@ public class BankAccount implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

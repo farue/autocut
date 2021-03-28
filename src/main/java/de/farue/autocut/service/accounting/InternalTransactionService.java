@@ -50,6 +50,16 @@ public class InternalTransactionService extends TransactionService<InternalTrans
         saveBooking(bookingTemplate, internalBookingContraTransactionProvider);
     }
 
+    @Override
+    protected void partialUpdate(InternalTransaction existingTransaction, InternalTransaction transaction) {
+        if (transaction.getIssuer() != null) {
+            existingTransaction.setIssuer(transaction.getIssuer());
+        }
+        if (transaction.getRecipient() != null) {
+            existingTransaction.setRecipient(transaction.getRecipient());
+        }
+    }
+
     private void saveBooking(BookingTemplate bookingTemplate, InternalBookingContraTransactionProvider contraTransactionsProvider) {
         validate(bookingTemplate);
 

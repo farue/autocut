@@ -24,8 +24,6 @@ describe('Service Tests', () => {
         id: 0,
         interfaceName: 'AAAAAAA',
         sshHost: 'AAAAAAA',
-        sshPort: 0,
-        sshKey: 'AAAAAAA',
       };
     });
 
@@ -63,8 +61,6 @@ describe('Service Tests', () => {
             id: 1,
             interfaceName: 'BBBBBB',
             sshHost: 'BBBBBB',
-            sshPort: 1,
-            sshKey: 'BBBBBB',
           },
           elemDefault
         );
@@ -82,8 +78,6 @@ describe('Service Tests', () => {
         const patchObject = Object.assign(
           {
             sshHost: 'BBBBBB',
-            sshPort: 1,
-            sshKey: 'BBBBBB',
           },
           new NetworkSwitch()
         );
@@ -105,8 +99,6 @@ describe('Service Tests', () => {
             id: 1,
             interfaceName: 'BBBBBB',
             sshHost: 'BBBBBB',
-            sshPort: 1,
-            sshKey: 'BBBBBB',
           },
           elemDefault
         );
@@ -158,7 +150,7 @@ describe('Service Tests', () => {
         });
 
         it('should add only unique NetworkSwitch to an array', () => {
-          const networkSwitchArray: INetworkSwitch[] = [{ id: 123 }, { id: 456 }, { id: 96912 }];
+          const networkSwitchArray: INetworkSwitch[] = [{ id: 123 }, { id: 456 }, { id: 64445 }];
           const networkSwitchCollection: INetworkSwitch[] = [{ id: 123 }];
           expectedResult = service.addNetworkSwitchToCollectionIfMissing(networkSwitchCollection, ...networkSwitchArray);
           expect(expectedResult).toHaveLength(3);

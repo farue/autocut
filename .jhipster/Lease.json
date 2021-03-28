@@ -38,15 +38,13 @@
       "otherEntityName": "transactionBook",
       "otherEntityRelationshipName": "lease",
       "relationshipName": "transactionBook",
-      "otherEntityField": "id",
       "ownerSide": true
     },
     {
       "relationshipType": "many-to-one",
       "otherEntityName": "apartment",
       "otherEntityRelationshipName": "leases",
-      "relationshipName": "apartment",
-      "otherEntityField": "id"
+      "relationshipName": "apartment"
     }
   ],
   "changelogDate": "20191117011744",
@@ -58,6 +56,6 @@
   "fluentMethods": true,
   "readOnly": false,
   "clientRootFolder": "",
-  "applications": "*",
+  "applications": ["autocut"],
   "embedded": false
 }

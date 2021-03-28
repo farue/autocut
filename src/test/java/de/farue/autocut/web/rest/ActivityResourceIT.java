@@ -63,9 +63,6 @@ class ActivityResourceIT {
     private ActivityRepository activityRepository;
 
     @Autowired
-    private ActivityService activityService;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
@@ -241,7 +238,7 @@ class ActivityResourceIT {
     @Transactional
     void putNewActivity() throws Exception {
         // Initialize the database
-        activityService.save(activity);
+        activityRepository.saveAndFlush(activity);
 
         int databaseSizeBeforeUpdate = activityRepository.findAll().size();
 
@@ -478,7 +475,7 @@ class ActivityResourceIT {
     @Transactional
     void deleteActivity() throws Exception {
         // Initialize the database
-        activityService.save(activity);
+        activityRepository.saveAndFlush(activity);
 
         int databaseSizeBeforeDelete = activityRepository.findAll().size();
 

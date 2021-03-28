@@ -8,7 +8,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import de.farue.autocut.IntegrationTest;
 import de.farue.autocut.domain.Tenant;
 import de.farue.autocut.repository.TenantRepository;
-import de.farue.autocut.service.TenantService;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +22,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 /**
  * Integration tests for the {@link TenantResource} REST controller.
  */
@@ -39,12 +29,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @WithMockUser
 class TenantResourceIT {
-
-    private static final String DEFAULT_FIRST_NAME = "AAAAAAAAAA";
-    private static final String UPDATED_FIRST_NAME = "BBBBBBBBBB";
-
-    private static final String DEFAULT_LAST_NAME = "AAAAAAAAAA";
-    private static final String UPDATED_LAST_NAME = "BBBBBBBBBB";
 
     private static final String DEFAULT_FIRST_NAME = "AAAAAAAAAA";
     private static final String UPDATED_FIRST_NAME = "BBBBBBBBBB";
@@ -180,44 +164,6 @@ class TenantResourceIT {
 
         restTenantMockMvc
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(tenant)))
-            .andExpect(status().isBadRequest());
-
-        List<Tenant> tenantList = tenantRepository.findAll();
-        assertThat(tenantList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkFirstNameIsRequired() throws Exception {
-        int databaseSizeBeforeTest = tenantRepository.findAll().size();
-        // set the field null
-        tenant.setFirstName(null);
-
-        // Create the Tenant, which fails.
-
-
-        restTenantMockMvc.perform(post("/api/tenants")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(tenant)))
-            .andExpect(status().isBadRequest());
-
-        List<Tenant> tenantList = tenantRepository.findAll();
-        assertThat(tenantList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkLastNameIsRequired() throws Exception {
-        int databaseSizeBeforeTest = tenantRepository.findAll().size();
-        // set the field null
-        tenant.setLastName(null);
-
-        // Create the Tenant, which fails.
-
-
-        restTenantMockMvc.perform(post("/api/tenants")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(tenant)))
             .andExpect(status().isBadRequest());
 
         List<Tenant> tenantList = tenantRepository.findAll();

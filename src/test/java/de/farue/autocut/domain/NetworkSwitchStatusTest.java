@@ -2,14 +2,13 @@ package de.farue.autocut.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import de.farue.autocut.web.rest.TestUtil;
 import org.junit.jupiter.api.Test;
 
-import de.farue.autocut.web.rest.TestUtil;
-
-public class NetworkSwitchStatusTest {
+class NetworkSwitchStatusTest {
 
     @Test
-    public void equalsVerifier() throws Exception {
+    void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(NetworkSwitchStatus.class);
         NetworkSwitchStatus networkSwitchStatus1 = new NetworkSwitchStatus();
         networkSwitchStatus1.setId(1L);

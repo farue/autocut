@@ -1,19 +1,14 @@
 package de.farue.autocut.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import de.farue.autocut.domain.enumeration.TransactionBookType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
-import de.farue.autocut.domain.enumeration.TransactionBookType;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A TransactionBook.

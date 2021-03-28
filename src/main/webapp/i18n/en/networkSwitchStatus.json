@@ -3,6 +3,7 @@
     "networkSwitchStatus": {
       "home": {
         "title": "Network Switch Statuses",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Network Switch Status",
         "createOrEditLabel": "Create or edit a Network Switch Status",
         "notFound": "No Network Switch Statuses found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Network Switch Status"
       },
+      "id": "ID",
       "port": "Port",
       "name": "Name",
       "status": "Status",

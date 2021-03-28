@@ -1,18 +1,10 @@
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
-import {RouterModule} from '@angular/router';
-
-import {AutocutSharedModule} from 'app/shared/shared.module';
-
-import {SELF_ADMINISTRATION_ROUTE, SelfAdministrationComponent} from './';
-import {SpokesmanComponent} from './spokesman/spokesman.component';
-import {AssignmentCommitteeComponent} from './assignment-committee/assignment-committee.component';
-import {JanitorComponent} from './janitor/janitor.component';
+import {NgModule} from '@angular/core';
+import {SharedModule} from 'app/shared/shared.module';
+import { SelfAdministrationComponent } from "./self-administration.component";
+import { SelfAdministrationRoutingModule } from "app/self-administration/self-administration-routing.module";
 
 @NgModule({
-  imports: [AutocutSharedModule, RouterModule.forRoot([SELF_ADMINISTRATION_ROUTE], { useHash: true })],
-  declarations: [SelfAdministrationComponent, SpokesmanComponent, AssignmentCommitteeComponent, JanitorComponent],
-  entryComponents: [],
-  providers: [],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [SharedModule, SelfAdministrationRoutingModule],
+  declarations: [SelfAdministrationComponent],
 })
-export class AutocutAppSelfAdministrationModule {}
+export class SelfAdministrationModule {}

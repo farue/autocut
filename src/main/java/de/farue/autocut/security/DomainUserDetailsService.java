@@ -1,9 +1,9 @@
 package de.farue.autocut.security;
 
-import java.util.List;
-import java.util.Locale;
+import de.farue.autocut.domain.User;
+import de.farue.autocut.repository.UserRepository;
+import java.util.*;
 import java.util.stream.Collectors;
-
 import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +63,7 @@ public class DomainUserDetailsService implements UserDetailsService {
 
         // If a tenant exists, they have to be verified to log in
         // Admin account does not have tenant entity, so log in must be possible in this case
-        if (!tenantService.findOneByUser(user).map(Tenant::isVerified).orElse(true)) {
+        if (!tenantService.findOneByUser(user).map(Tenant::getVerified).orElse(true)) {
             throw new UserNotVerifiedException("User " + lowercaseLogin + " was not verified");
         }
 

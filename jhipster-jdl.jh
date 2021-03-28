@@ -1,3 +1,23 @@
+application {
+    config {
+        applicationType monolith,
+        baseName autocut,
+        packageName de.farue.autocut,
+        authenticationType jwt,
+        cacheProvider ehcache,
+        buildTool gradle,
+        databaseType sql,
+        devDatabaseType h2Disk,
+        prodDatabaseType mysql,
+        enableTranslation true,
+        nativeLanguage de,
+        languages [de, en],
+        clientTheme darkly,
+        clientThemeVariant dark
+    }
+    entities *
+}
+
 // ****************************************************
 // * Tenant Manaagement
 // ****************************************************
@@ -108,6 +128,7 @@ entity NetworkSwitchStatus {
     vlan String
     speed String
     type String
+    timestamp Instant
 }
 
 @service(serviceClass)
@@ -177,7 +198,7 @@ relationship ManyToOne {
 }
 
 relationship OneToMany {
-    Team to TeamMembership{team required}
+    Team{teamMembership} to TeamMembership{team required}
 	TeamMembership{securityPolicies} to SecurityPolicy{teamMember}
     Tenant{securityPolicies} to SecurityPolicy{tenant}
 }
@@ -241,12 +262,14 @@ relationship ManyToMany {
     BankTransaction{left} to BankTransaction{right}
 }
 
+@service(serviceClass)
 entity BankAccount {
     name String required
     bic String maxlength(11) required
     iban String maxlength(34) required unique
 }
 
+@service(serviceClass)
 entity BankTransaction {
     bookingDate Instant required
     valueDate Instant required
@@ -286,6 +309,7 @@ relationship ManyToOne {
 // * Wash System
 // ****************************************************
 
+@service(serviceClass)
 entity LaundryMachine {
     identifier String required
 	name String required
@@ -325,7 +349,7 @@ enum LaundryMachineType {
 }
 
 relationship OneToMany {
-	LaundryMachine{programs} to LaundryMachineProgram
+	LaundryMachine{programs} to LaundryMachineProgram{laundryMachine}
 }
 
 relationship ManyToOne {

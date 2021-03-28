@@ -1,8 +1,8 @@
 package de.farue.autocut.service;
 
+import de.farue.autocut.domain.User;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
-
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import org.slf4j.Logger;
@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Profile;
 import org.springframework.mail.MailException;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -21,8 +22,8 @@ import tech.jhipster.config.JHipsterProperties;
 import de.farue.autocut.domain.User;
 import de.farue.autocut.email.ImapFolder;
 import de.farue.autocut.email.ImapFolderFactory;
-import io.github.jhipster.config.JHipsterConstants;
-import io.github.jhipster.config.JHipsterProperties;
+import tech.jhipster.config.JHipsterConstants;
+import tech.jhipster.config.JHipsterProperties;
 
 /**
  * Service for sending emails.

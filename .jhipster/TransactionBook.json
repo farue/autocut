@@ -30,7 +30,6 @@
       "otherEntityName": "lease",
       "otherEntityRelationshipName": "transactionBook",
       "relationshipName": "lease",
-      "otherEntityField": "id",
       "ownerSide": false
     }
   ],
@@ -44,5 +43,5 @@
   "readOnly": false,
   "embedded": false,
   "clientRootFolder": "",
-  "applications": "*"
+  "applications": ["autocut"]
 }

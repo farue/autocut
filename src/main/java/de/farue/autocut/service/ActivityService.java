@@ -2,11 +2,13 @@ package de.farue.autocut.service;
 
 import static de.farue.autocut.utils.BigDecimalUtil.modify;
 
+import de.farue.autocut.domain.Activity;
+import de.farue.autocut.repository.ActivityRepository;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -144,6 +146,6 @@ public class ActivityService {
     public boolean isEligibleForDiscount(Lease lease, LocalDate chargeDate) {
         // Check if any activity during the last semester involves a discount
         List<Activity> activities = findActivityOn(lease, chargeDate.minusMonths(6));
-        return activities.stream().anyMatch(Activity::isDiscount);
+        return activities.stream().anyMatch(Activity::getDiscount);
     }
 }

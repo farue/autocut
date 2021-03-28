@@ -2,7 +2,7 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
     <!--
         Added the constraints for entity Apartment.
     -->
@@ -10,13 +10,13 @@
         
         <addForeignKeyConstraint baseColumnNames="internet_access_id"
                                  baseTableName="apartment"
-                                 constraintName="fk_apartment__internet_access_id"
+                                 constraintName="fk_apartment_internet_access_id"
                                  referencedColumnNames="id"
                                  referencedTableName="internet_access"/>
 
         <addForeignKeyConstraint baseColumnNames="address_id"
                                  baseTableName="apartment"
-                                 constraintName="fk_apartment__address_id"
+                                 constraintName="fk_apartment_address_id"
                                  referencedColumnNames="id"
                                  referencedTableName="address"/>
 

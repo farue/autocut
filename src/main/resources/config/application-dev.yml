@@ -118,3 +118,15 @@ jhipster:
 application:
   washit:
     url: localhost:8090
+  banking:
+    user: user
+    pin: pin
+    passportPassword: passportPassword
+  switchConnections:
+    - privateKey: privateKey
+      publicKey: publicKey
+    - privateKey: privateKey
+      publicKey: publicKey
+    - privateKey: privateKey
+      publicKey: publicKey
+

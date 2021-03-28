@@ -1,14 +1,18 @@
 package de.farue.autocut.service;
 
+import de.farue.autocut.config.Constants;
+import de.farue.autocut.domain.Authority;
+import de.farue.autocut.domain.User;
+import de.farue.autocut.repository.AuthorityRepository;
+import de.farue.autocut.repository.UserRepository;
+import de.farue.autocut.security.AuthoritiesConstants;
+import de.farue.autocut.security.SecurityUtils;
+import de.farue.autocut.service.dto.AdminUserDTO;
+import de.farue.autocut.service.dto.UserDTO;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -18,16 +22,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import de.farue.autocut.config.Constants;
-import de.farue.autocut.domain.Authority;
-import de.farue.autocut.domain.User;
-import de.farue.autocut.repository.AuthorityRepository;
-import de.farue.autocut.repository.UserRepository;
-import de.farue.autocut.security.AuthoritiesConstants;
-import de.farue.autocut.security.SecurityUtils;
-import de.farue.autocut.service.dto.UserDTO;
-import io.github.jhipster.security.RandomUtil;
+import tech.jhipster.security.RandomUtil;
 
 /**
  * Service class for managing users.
@@ -137,13 +132,12 @@ public class UserService {
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
-
         this.clearUserCaches(newUser);
         log.debug("Created Information for User: {}", newUser);
         return newUser;
     }
 
-    public User createUser(UserDTO userDTO) {
+    public User createUser(AdminUserDTO userDTO) {
         User user = new User();
         user.setLogin(userDTO.getLogin().toLowerCase());
         user.setFirstName(userDTO.getFirstName());

@@ -1,24 +1,25 @@
 <div class="d-flex flex-column align-items-center">
     <div class="row">
-        <h1 class="display-4 text-center" jhiTranslate="home.title">Welcome to Familienwohnheim Rütscher Straße!</h1>
+        <h1 class="text-center" jhiTranslate="home.title">Welcome to Familienwohnheim Rütscher Straße!</h1>
     </div>
-    <div class="row">
-        <div class="alert alert-info">
-            <p jhiTranslate="home.message.development">This website is under active development.</p>
-            <span jhiTranslate="home.message.oldwebsite">Follow this link to the wordpress website:</span> <a (click)="redirectToWpWebsite()">https://www.wp.farue.rwth-aachen.de</a>
+  <div class="col-12 m-3">
+    <div class="row justify-content-center">
+      <div class="alert alert-primary">
+        <p jhiTranslate="home.message.development">This website is under active development.</p>
+        <span jhiTranslate="home.message.oldwebsite">Follow this link to the wordpress website:</span> <a (click)="redirectToWpWebsite()">https://www.wp.farue.rwth-aachen.de</a>
+      </div>
+    </div>
+    <p-galleria [value]="images" [responsiveOptions]="responsiveOptions" [containerStyle]="{'max-width': '1000px'}" [numVisible]="7" [circular]="true"
+                [autoPlay]="true"
+                [transitionInterval]="2000">
+      <ng-template pTemplate="item" let-item>
+        <img [src]="item.previewImageSrc" style="width: 100%; display: block;"/>
+      </ng-template>
+      <ng-template pTemplate="thumbnail" let-item>
+        <div class="p-grid p-nogutter p-justify-center">
+          <img [src]="item.thumbnailImageSrc" style="display: block; max-height: 60px; max-width: 80px"/>
         </div>
-    </div>
-    <div class="col-12 m-3">
-        <p-galleria [value]="images" [responsiveOptions]="responsiveOptions" [containerStyle]="{'max-width': '1000px'}" [numVisible]="7" [circular]="true" [autoPlay]="true"
-                    [transitionInterval]="2000">
-            <ng-template pTemplate="item" let-item>
-                <img [src]="item.previewImageSrc" style="width: 100%; display: block;"/>
-            </ng-template>
-            <ng-template pTemplate="thumbnail" let-item>
-                <div class="p-grid p-nogutter p-justify-center">
-                    <img [src]="item.thumbnailImageSrc" style="display: block; max-height: 60px; max-width: 80px"/>
-                </div>
-            </ng-template>
-        </p-galleria>
-    </div>
+      </ng-template>
+    </p-galleria>
+  </div>
 </div>

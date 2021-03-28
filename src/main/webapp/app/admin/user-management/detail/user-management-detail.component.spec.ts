@@ -11,9 +11,6 @@ describe('Component Tests', () => {
   describe('User Management Detail Component', () => {
     let comp: UserManagementDetailComponent;
     let fixture: ComponentFixture<UserManagementDetailComponent>;
-    const route: ActivatedRoute = ({
-      data: of({ user: new User(1, 'user', 'first', 'last', '11-11', 'first@last.com', true, 'en', [Authority.USER], 'admin') }),
-    } as any) as ActivatedRoute;
 
     beforeEach(
       waitForAsync(() => {

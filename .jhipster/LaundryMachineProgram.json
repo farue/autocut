@@ -4,9 +4,7 @@
     {
       "fieldName": "name",
       "fieldType": "String",
-      "fieldValidateRules": [
-        "required"
-      ]
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "subprogram",
@@ -15,9 +13,7 @@
     {
       "fieldName": "time",
       "fieldType": "Integer",
-      "fieldValidateRules": [
-        "required"
-      ]
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "spin",
@@ -37,8 +33,7 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "laundryMachine",
       "otherEntityRelationshipName": "programs",
-      "relationshipName": "laundryMachine",
-      "otherEntityField": "id"
+      "relationshipName": "laundryMachine"
     }
   ],
   "changelogDate": "20200326184246",
@@ -50,6 +45,6 @@
   "fluentMethods": true,
   "readOnly": false,
   "clientRootFolder": "",
-  "applications": "*",
+  "applications": ["autocut"],
   "embedded": false
 }

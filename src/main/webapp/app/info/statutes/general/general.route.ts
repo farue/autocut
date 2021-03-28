@@ -1,6 +1,5 @@
 import { Route } from '@angular/router';
 
-import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 import { GeneralComponent } from './general.component';
 
 export const GENERAL_ROUTE: Route = {
@@ -10,5 +9,4 @@ export const GENERAL_ROUTE: Route = {
     authorities: [],
     pageTitle: 'statutes.general.title'
   },
-  canActivate: [UserRouteAccessService]
 };

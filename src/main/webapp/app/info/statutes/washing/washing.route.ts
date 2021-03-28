@@ -1,6 +1,5 @@
 import { Route } from '@angular/router';
 
-import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 import { WashingComponent } from './washing.component';
 
 export const WASHING_ROUTE: Route = {
@@ -10,5 +9,4 @@ export const WASHING_ROUTE: Route = {
     authorities: [],
     pageTitle: 'washing.title'
   },
-  canActivate: [UserRouteAccessService]
 };

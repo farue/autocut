@@ -3,26 +3,19 @@ package de.farue.autocut.web.rest;
 import de.farue.autocut.domain.GlobalSetting;
 import de.farue.autocut.repository.GlobalSettingRepository;
 import de.farue.autocut.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.bind.annotation.*;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link de.farue.autocut.domain.GlobalSetting}.
@@ -185,7 +178,6 @@ public class GlobalSettingResource {
     @DeleteMapping("/global-settings/{id}")
     public ResponseEntity<Void> deleteGlobalSetting(@PathVariable Long id) {
         log.debug("REST request to delete GlobalSetting : {}", id);
-
         globalSettingRepository.deleteById(id);
         return ResponseEntity
             .noContent()

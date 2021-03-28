@@ -22,7 +22,6 @@ describe('Service Tests', () => {
 
       elemDefault = {
         id: 0,
-        blocked: false,
         ip1: 'AAAAAAA',
         ip2: 'AAAAAAA',
         switchInterface: 'AAAAAAA',
@@ -62,7 +61,6 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 1,
-            blocked: true,
             ip1: 'BBBBBB',
             ip2: 'BBBBBB',
             switchInterface: 'BBBBBB',
@@ -83,8 +81,8 @@ describe('Service Tests', () => {
       it('should partial update a InternetAccess', () => {
         const patchObject = Object.assign(
           {
-            blocked: true,
-            ip2: 'BBBBBB',
+            ip1: 'BBBBBB',
+            switchInterface: 'BBBBBB',
           },
           new InternetAccess()
         );
@@ -104,7 +102,6 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 1,
-            blocked: true,
             ip1: 'BBBBBB',
             ip2: 'BBBBBB',
             switchInterface: 'BBBBBB',
@@ -160,7 +157,7 @@ describe('Service Tests', () => {
         });
 
         it('should add only unique InternetAccess to an array', () => {
-          const internetAccessArray: IInternetAccess[] = [{ id: 123 }, { id: 456 }, { id: 62951 }];
+          const internetAccessArray: IInternetAccess[] = [{ id: 123 }, { id: 456 }, { id: 2459 }];
           const internetAccessCollection: IInternetAccess[] = [{ id: 123 }];
           expectedResult = service.addInternetAccessToCollectionIfMissing(internetAccessCollection, ...internetAccessArray);
           expect(expectedResult).toHaveLength(3);
