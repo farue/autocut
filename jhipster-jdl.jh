@@ -12,8 +12,8 @@ application {
         enableTranslation true,
         nativeLanguage de,
         languages [de, en],
-        clientTheme darkly,
-        clientThemeVariant dark
+        clientTheme materia,
+        clientThemeVariant light
     }
     entities *
 }
