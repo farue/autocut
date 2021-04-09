@@ -2,7 +2,6 @@ package de.farue.autocut.service;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import lombok.Data;
 
 public class StwApartmentParser {
@@ -39,5 +38,4 @@ public class StwApartmentParser {
         private int apartmentTypeIdentifier;
         private int apartmentNr;
     }
-
 }

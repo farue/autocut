@@ -1,7 +1,6 @@
 package de.farue.autocut.batch;
 
 import java.util.List;
-
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemWriter;
 

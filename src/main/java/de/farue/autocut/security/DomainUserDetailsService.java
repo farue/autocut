@@ -1,7 +1,9 @@
 package de.farue.autocut.security;
 
+import de.farue.autocut.domain.Tenant;
 import de.farue.autocut.domain.User;
 import de.farue.autocut.repository.UserRepository;
+import de.farue.autocut.service.TenantService;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
@@ -14,11 +16,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import de.farue.autocut.domain.Tenant;
-import de.farue.autocut.domain.User;
-import de.farue.autocut.repository.UserRepository;
-import de.farue.autocut.service.TenantService;
 
 /**
  * Authenticate a user from the database.

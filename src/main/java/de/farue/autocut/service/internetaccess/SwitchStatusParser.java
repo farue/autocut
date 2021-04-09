@@ -1,20 +1,18 @@
 package de.farue.autocut.service.internetaccess;
 
+import com.google.common.collect.ArrayTable;
+import com.google.common.collect.Table;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.apache.commons.lang3.StringUtils;
-
-import com.google.common.collect.ArrayTable;
-import com.google.common.collect.Table;
 
 public class SwitchStatusParser {
 
     public Table<String, String, String> parse(String interfaceStatusString) {
         String[] lines = interfaceStatusString.split("\\R");
         int headerIndex = 0;
-        for ( ; headerIndex < lines.length && StringUtils.isEmpty(lines[headerIndex]); headerIndex++) { }
+        for (; headerIndex < lines.length && StringUtils.isEmpty(lines[headerIndex]); headerIndex++) {}
         String header = lines[headerIndex];
         List<Integer> columnStartIndices = getColumnStartIndices(header);
         int numColumns = columnStartIndices.size();
@@ -26,7 +24,9 @@ public class SwitchStatusParser {
             }
         }
 
-        List<String> rowKeys = bodyLines.stream().map(line -> getCellAt(line, columnStartIndices.get(0), columnStartIndices.get(1)))
+        List<String> rowKeys = bodyLines
+            .stream()
+            .map(line -> getCellAt(line, columnStartIndices.get(0), columnStartIndices.get(1)))
             .collect(Collectors.toList());
         List<String> columnKeys = getCells(header, columnStartIndices);
 
@@ -36,7 +36,9 @@ public class SwitchStatusParser {
             String line = bodyLines.get(i);
             List<String> cells = getCells(line, columnStartIndices);
             if (cells.size() != columnKeys.size()) {
-                throw new RuntimeException("Expected " + columnKeys.size() + " cells in row " + i + " but was " + cells.size() + ": " + cells);
+                throw new RuntimeException(
+                    "Expected " + columnKeys.size() + " cells in row " + i + " but was " + cells.size() + ": " + cells
+                );
             }
             for (int j = 0; j < cells.size(); j++) {
                 table.put(rowKeys.get(i), columnKeys.get(j), cells.get(j));

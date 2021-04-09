@@ -5,8 +5,8 @@ import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
 import { ITransactionOverview } from './transaction-overview.model';
-import { IInternalTransaction } from "app/entities/internal-transaction/internal-transaction.model";
-import { TranslateService } from "@ngx-translate/core";
+import { IInternalTransaction } from 'app/entities/internal-transaction/internal-transaction.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'jhi-service-transaction',
@@ -24,7 +24,12 @@ export class TransactionComponent implements OnInit {
 
   purpose$: Observable<string> = this.transactionService.loadPurpose();
 
-  constructor(private transactionService: TransactionService, private activatedRoute: ActivatedRoute, private router: Router, public translateService: TranslateService) {}
+  constructor(
+    private transactionService: TransactionService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    public translateService: TranslateService
+  ) {}
 
   ngOnInit(): void {
     this.handleNavigation();

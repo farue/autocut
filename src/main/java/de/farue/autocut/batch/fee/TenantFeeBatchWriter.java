@@ -1,11 +1,9 @@
 package de.farue.autocut.batch.fee;
 
-import java.util.List;
-
-import org.springframework.batch.item.ItemWriter;
-
 import de.farue.autocut.service.accounting.BookingTemplate;
 import de.farue.autocut.service.accounting.InternalTransactionService;
+import java.util.List;
+import org.springframework.batch.item.ItemWriter;
 
 public class TenantFeeBatchWriter implements ItemWriter<BookingTemplate> {
 

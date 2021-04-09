@@ -3,20 +3,6 @@ package de.farue.autocut.service.accounting;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.Optional;
-import java.util.Set;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.transaction.annotation.Transactional;
-
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.BankAccount;
 import de.farue.autocut.domain.BankTransaction;
@@ -25,8 +11,20 @@ import de.farue.autocut.domain.Tenant;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.service.LeaseService;
 import de.farue.autocut.service.TenantService;
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Optional;
+import java.util.Set;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.transaction.annotation.Transactional;
 
-@SuppressWarnings({"FieldCanBeLocal", "unused"})
+@SuppressWarnings({ "FieldCanBeLocal", "unused" })
 @SpringBootTest(classes = AutocutApp.class)
 public class PurposeBankTransactionMatcherIT {
 
@@ -77,65 +75,32 @@ public class PurposeBankTransactionMatcherIT {
 
     @BeforeEach
     void setUp() {
-        Lease lease1 = new Lease()
-            .nr(ANY_NO)
-            .start(ANY_START)
-            .end(ANY_END);
-        Tenant tenant1 = new Tenant()
-            .firstName("Bob")
-            .lastName("Miller")
-            .lease(lease1);
+        Lease lease1 = new Lease().nr(ANY_NO).start(ANY_START).end(ANY_END);
+        Tenant tenant1 = new Tenant().firstName("Bob").lastName("Miller").lease(lease1);
         this.lease1 = leaseService.save(lease1);
         this.tenant1 = tenantService.save(tenant1);
 
-        Lease lease2 = new Lease()
-            .nr(ANY_NO)
-            .start(ANY_START)
-            .end(ANY_END);
-        Tenant tenant2 = new Tenant()
-            .firstName("Alice")
-            .lastName("Wonderland")
-            .lease(lease2);
+        Lease lease2 = new Lease().nr(ANY_NO).start(ANY_START).end(ANY_END);
+        Tenant tenant2 = new Tenant().firstName("Alice").lastName("Wonderland").lease(lease2);
         this.lease2 = leaseService.save(lease2);
         this.tenant2 = tenantService.save(tenant2);
 
-        Lease lease3 = new Lease()
-            .nr(ANY_NO)
-            .start(ANY_START)
-            .end(ANY_END);
-        Tenant tenant3 = new Tenant()
-            .firstName("Chris")
-            .lastName("Black")
-            .lease(lease3);
+        Lease lease3 = new Lease().nr(ANY_NO).start(ANY_START).end(ANY_END);
+        Tenant tenant3 = new Tenant().firstName("Chris").lastName("Black").lease(lease3);
         this.lease3 = leaseService.save(lease3);
         this.tenant3 = tenantService.save(tenant3);
 
-        Lease lease4 = new Lease()
-            .nr(ANY_NO)
-            .start(ANY_START)
-            .end(ANY_END);
-        Tenant tenant4 = new Tenant()
-            .firstName("Jet")
-            .lastName("Li")
-            .lease(lease4);
+        Lease lease4 = new Lease().nr(ANY_NO).start(ANY_START).end(ANY_END);
+        Tenant tenant4 = new Tenant().firstName("Jet").lastName("Li").lease(lease4);
         this.lease4 = leaseService.save(lease4);
         this.tenant4 = tenantService.save(tenant4);
 
-        Lease lease5 = new Lease()
-            .nr(ANY_NO)
-            .start(ANY_START)
-            .end(ANY_END);
-        Tenant tenant5 = new Tenant()
-            .firstName("Chen")
-            .lastName("Li")
-            .lease(lease5);
+        Lease lease5 = new Lease().nr(ANY_NO).start(ANY_START).end(ANY_END);
+        Tenant tenant5 = new Tenant().firstName("Chen").lastName("Li").lease(lease5);
         this.lease5 = leaseService.save(lease5);
         this.tenant5 = tenantService.save(tenant5);
 
-        BankAccount contraBankAccount = new BankAccount()
-            .bic("MALADE51KOB")
-            .iban("DE13570501204826655542")
-            .name("Chris Black");
+        BankAccount contraBankAccount = new BankAccount().bic("MALADE51KOB").iban("DE13570501204826655542").name("Chris Black");
         this.contraBankAccount = bankAccountService.save(contraBankAccount);
 
         when(matchCandidateProvider.buildMatchCandidates(tenant1)).thenReturn(Set.of("Bob Miller 123 45", "Miller 123 45"));

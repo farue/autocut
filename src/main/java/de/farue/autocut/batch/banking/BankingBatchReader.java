@@ -1,11 +1,9 @@
 package de.farue.autocut.batch.banking;
 
+import de.farue.autocut.service.accounting.BankingService;
 import java.util.List;
-
 import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
 import org.springframework.batch.item.ItemReader;
-
-import de.farue.autocut.service.accounting.BankingService;
 
 public class BankingBatchReader implements ItemReader<UmsLine> {
 

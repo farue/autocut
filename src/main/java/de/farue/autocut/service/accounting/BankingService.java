@@ -1,12 +1,12 @@
 package de.farue.autocut.service.accounting;
 
+import com.google.common.base.Preconditions;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
-
 import org.apache.commons.lang3.StringUtils;
 import org.kapott.hbci.GV.HBCIJob;
 import org.kapott.hbci.GV_Result.GVRKUms;
@@ -25,8 +25,6 @@ import org.kapott.hbci.structures.Konto;
 import org.kapott.hbci.structures.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Preconditions;
 
 public class BankingService {
 

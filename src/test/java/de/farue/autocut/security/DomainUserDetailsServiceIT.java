@@ -86,11 +86,7 @@ class DomainUserDetailsServiceIT {
         userFour.setLangKey("en");
         userRepository.save(userFour);
 
-        Tenant tenantNotVerified = new Tenant()
-            .firstName("tenantOne")
-            .lastName("notVerified")
-            .user(userFour)
-            .verified(false);
+        Tenant tenantNotVerified = new Tenant().firstName("tenantOne").lastName("notVerified").user(userFour).verified(false);
         tenantRepository.save(tenantNotVerified);
 
         User userFive = new User();
@@ -103,11 +99,7 @@ class DomainUserDetailsServiceIT {
         userFive.setLangKey("en");
         userRepository.save(userFive);
 
-        Tenant tenantVerified = new Tenant()
-            .firstName("tenantTwo")
-            .lastName("verified")
-            .user(userFive)
-            .verified(true);
+        Tenant tenantVerified = new Tenant().firstName("tenantTwo").lastName("verified").user(userFive).verified(true);
         tenantRepository.save(tenantVerified);
     }
 
@@ -154,8 +146,8 @@ class DomainUserDetailsServiceIT {
 
     @Test
     void assertThatUserNotVerifiedExceptionIsThrownForNotUsersWithNotVerifiedTenant() {
-        assertThatExceptionOfType(UserNotVerifiedException.class).isThrownBy(
-            () -> domainUserDetailsService.loadUserByUsername(USER_WITH_TENANT_NOT_VERIFIED_LOGIN));
+        assertThatExceptionOfType(UserNotVerifiedException.class)
+            .isThrownBy(() -> domainUserDetailsService.loadUserByUsername(USER_WITH_TENANT_NOT_VERIFIED_LOGIN));
     }
 
     @Test

@@ -1,9 +1,8 @@
 package de.farue.autocut.service.accounting;
 
+import de.farue.autocut.domain.Tenant;
 import java.util.HashSet;
 import java.util.Set;
-
-import de.farue.autocut.domain.Tenant;
 
 public class TenantPurposeMatchCandidateProvider implements MatchCandidateProvider {
 
@@ -13,7 +12,8 @@ public class TenantPurposeMatchCandidateProvider implements MatchCandidateProvid
             tenant.getLease().getApartment().getAddress().getStreetNumber(),
             tenant.getLease().getApartment().getNr(),
             tenant.getFirstName(),
-            tenant.getLastName());
+            tenant.getLastName()
+        );
     }
 
     public Set<String> buildMatchCandidates(String streetNumber, String apartmentNumber, String firstName, String lastName) {

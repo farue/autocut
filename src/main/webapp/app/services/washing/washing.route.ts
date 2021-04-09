@@ -6,6 +6,6 @@ export const WASHING_ROUTE: Route = {
   path: '',
   component: WashingComponent,
   data: {
-    pageTitle: 'washing.title'
-  }
+    pageTitle: 'washing.title',
+  },
 };

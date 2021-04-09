@@ -30,5 +30,4 @@ public class JasyptEncryptor {
         System.out.println(encrypted);
         System.out.println("########################");
     }
-
 }

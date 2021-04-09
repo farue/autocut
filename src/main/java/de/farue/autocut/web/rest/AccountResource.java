@@ -1,10 +1,23 @@
 package de.farue.autocut.web.rest;
 
+import de.farue.autocut.domain.Lease;
+import de.farue.autocut.domain.User;
+import de.farue.autocut.repository.UserRepository;
+import de.farue.autocut.security.SecurityUtils;
+import de.farue.autocut.service.LeaseService;
+import de.farue.autocut.service.MailService;
+import de.farue.autocut.service.TenantService;
+import de.farue.autocut.service.UserService;
+import de.farue.autocut.service.dto.AdminUserDTO;
+import de.farue.autocut.service.dto.PasswordChangeDTO;
+import de.farue.autocut.web.rest.errors.EmailAlreadyUsedException;
+import de.farue.autocut.web.rest.errors.InvalidPasswordException;
+import de.farue.autocut.web.rest.errors.LoginAlreadyUsedException;
+import de.farue.autocut.web.rest.vm.KeyAndPasswordVM;
+import de.farue.autocut.web.rest.vm.ManagedUserVM;
 import java.util.Optional;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,23 +30,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import de.farue.autocut.domain.Lease;
-import de.farue.autocut.domain.User;
-import de.farue.autocut.repository.UserRepository;
-import de.farue.autocut.security.SecurityUtils;
-import de.farue.autocut.service.LeaseService;
-import de.farue.autocut.service.MailService;
-import de.farue.autocut.service.TenantService;
-import de.farue.autocut.service.UserService;
-import de.farue.autocut.service.dto.AdminUserDTO;
-import de.farue.autocut.service.dto.PasswordChangeDTO;
-import de.farue.autocut.service.dto.UserDTO;
-import de.farue.autocut.web.rest.errors.EmailAlreadyUsedException;
-import de.farue.autocut.web.rest.errors.InvalidPasswordException;
-import de.farue.autocut.web.rest.errors.LoginAlreadyUsedException;
-import de.farue.autocut.web.rest.vm.KeyAndPasswordVM;
-import de.farue.autocut.web.rest.vm.ManagedUserVM;
 
 /**
  * REST controller for managing the current user's account.
@@ -61,8 +57,13 @@ public class AccountResource {
 
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, LeaseService leaseService, TenantService tenantService,
-        MailService mailService) {
+    public AccountResource(
+        UserRepository userRepository,
+        UserService userService,
+        LeaseService leaseService,
+        TenantService tenantService,
+        MailService mailService
+    ) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.leaseService = leaseService;

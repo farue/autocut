@@ -8,7 +8,7 @@ export const COOKIES_ROUTE: Route = {
   component: CookiesComponent,
   data: {
     authorities: [],
-    pageTitle: 'about.cookies.title'
+    pageTitle: 'about.cookies.title',
   },
-  canActivate: [UserRouteAccessService]
+  canActivate: [UserRouteAccessService],
 };

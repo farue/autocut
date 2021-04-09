@@ -1,10 +1,10 @@
 import { Route } from '@angular/router';
-import { ProtocolsComponent } from "app/info/protocols/protocols.component";
+import { ProtocolsComponent } from 'app/info/protocols/protocols.component';
 
 export const PROTOCOLS_ROUTE: Route = {
   path: '',
   component: ProtocolsComponent,
   data: {
-    pageTitle: 'protocols.title'
-  }
+    pageTitle: 'protocols.title',
+  },
 };

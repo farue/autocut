@@ -11,8 +11,8 @@ import { FormatMediumDatePipe } from './date/format-medium-date.pipe';
 import { SortByDirective } from './sort/sort-by.directive';
 import { SortDirective } from './sort/sort.directive';
 import { ItemCountComponent } from './pagination/item-count.component';
-import { I18nDatePipe } from "app/shared/pipes/i18n-date.pipe";
-import { I18nCurrencyPipe } from "app/shared/pipes/i18n-currency.pipe";
+import { I18nDatePipe } from 'app/shared/pipes/i18n-date.pipe';
+import { I18nCurrencyPipe } from 'app/shared/pipes/i18n-currency.pipe';
 
 @NgModule({
   imports: [SharedLibsModule],
@@ -30,7 +30,7 @@ import { I18nCurrencyPipe } from "app/shared/pipes/i18n-currency.pipe";
     ItemCountComponent,
     // Autocut
     I18nDatePipe,
-    I18nCurrencyPipe
+    I18nCurrencyPipe,
   ],
   exports: [
     SharedLibsModule,
@@ -47,7 +47,7 @@ import { I18nCurrencyPipe } from "app/shared/pipes/i18n-currency.pipe";
     ItemCountComponent,
     // Autocut
     I18nDatePipe,
-    I18nCurrencyPipe
+    I18nCurrencyPipe,
   ],
 })
 export class SharedModule {}

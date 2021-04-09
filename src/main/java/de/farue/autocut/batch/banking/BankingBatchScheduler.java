@@ -1,7 +1,6 @@
 package de.farue.autocut.batch.banking;
 
 import java.time.Instant;
-
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;

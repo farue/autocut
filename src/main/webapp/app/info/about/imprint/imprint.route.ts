@@ -8,7 +8,7 @@ export const IMPRINT_ROUTE: Route = {
   component: ImprintComponent,
   data: {
     authorities: [],
-    pageTitle: 'about.impressum.title'
+    pageTitle: 'about.impressum.title',
   },
-  canActivate: [UserRouteAccessService]
+  canActivate: [UserRouteAccessService],
 };

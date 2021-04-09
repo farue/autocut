@@ -2,12 +2,10 @@ package de.farue.autocut.service.internetaccess;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.StringUtils;
-
 import net.sf.expectit.Expect;
 import net.sf.expectit.Result;
 import net.sf.expectit.matcher.Matchers;
+import org.apache.commons.lang3.StringUtils;
 
 public class SimpleSshShell implements SshShell {
 

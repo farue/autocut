@@ -6,6 +6,6 @@ import { ContactsComponent } from 'app/info/contacts/contacts.component';
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild([CONTACTS_ROUTE])],
-  declarations: [ContactsComponent]
+  declarations: [ContactsComponent],
 })
 export class ContactsModule {}

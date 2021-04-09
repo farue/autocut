@@ -1,15 +1,5 @@
 package de.farue.autocut.web.rest;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import de.farue.autocut.domain.Lease;
 import de.farue.autocut.domain.Tenant;
 import de.farue.autocut.domain.TransactionBook;
@@ -18,6 +8,14 @@ import de.farue.autocut.security.SecurityUtils;
 import de.farue.autocut.service.TenantService;
 import de.farue.autocut.service.UserService;
 import de.farue.autocut.service.dto.UserDTO;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import tech.jhipster.web.util.ResponseUtil;
 
 @RestController
@@ -36,18 +34,16 @@ public class LoggedInUserResource {
 
     @GetMapping
     public UserDTO getUser() {
-        return userService.getUserWithAuthorities()
-            .map(UserDTO::new)
-            .orElseThrow();
+        return userService.getUserWithAuthorities().map(UserDTO::new).orElseThrow();
     }
 
     @GetMapping("/tenant")
     public Tenant getTenant() {
-        return SecurityUtils.getCurrentUserLogin()
+        return SecurityUtils
+            .getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
             .flatMap(tenantService::findOneByUser)
             .orElseThrow();
-
     }
 
     @GetMapping("/lease")
@@ -63,8 +59,7 @@ public class LoggedInUserResource {
     @GetMapping("/transaction-books/{id}")
     public ResponseEntity<TransactionBook> getTransactionBook(@PathVariable Long id) {
         return ResponseUtil.wrapOrNotFound(
-            getLease().getTransactionBooks().stream()
-                .filter(transactionBook -> Objects.equals(transactionBook.getId(), id))
-                .findFirst());
+            getLease().getTransactionBooks().stream().filter(transactionBook -> Objects.equals(transactionBook.getId(), id)).findFirst()
+        );
     }
 }

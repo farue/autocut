@@ -1,8 +1,21 @@
 package de.farue.autocut.config;
 
+import de.farue.autocut.batch.ItemListWriter;
+import de.farue.autocut.batch.fee.TenantFeeBatchWriter;
+import de.farue.autocut.batch.fee.TenantFeeChargingBatchProcessor;
+import de.farue.autocut.batch.fee.TenantFeeCorrectingBatchProcessor;
+import de.farue.autocut.batch.fee.TenantFeeServiceQualifierDataMapper;
+import de.farue.autocut.batch.fee.TenantFeeUnverifiedTenantSkippingProcessor;
+import de.farue.autocut.domain.Lease;
+import de.farue.autocut.domain.Lease_;
+import de.farue.autocut.repository.InternalTransactionRepository;
+import de.farue.autocut.repository.LeaseRepository;
+import de.farue.autocut.service.ActivityService;
+import de.farue.autocut.service.LeaseService;
+import de.farue.autocut.service.accounting.BookingTemplate;
+import de.farue.autocut.service.accounting.InternalTransactionService;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -19,21 +32,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort.Direction;
 
-import de.farue.autocut.batch.ItemListWriter;
-import de.farue.autocut.batch.fee.TenantFeeBatchWriter;
-import de.farue.autocut.batch.fee.TenantFeeChargingBatchProcessor;
-import de.farue.autocut.batch.fee.TenantFeeCorrectingBatchProcessor;
-import de.farue.autocut.batch.fee.TenantFeeServiceQualifierDataMapper;
-import de.farue.autocut.batch.fee.TenantFeeUnverifiedTenantSkippingProcessor;
-import de.farue.autocut.domain.Lease;
-import de.farue.autocut.domain.Lease_;
-import de.farue.autocut.repository.InternalTransactionRepository;
-import de.farue.autocut.repository.LeaseRepository;
-import de.farue.autocut.service.ActivityService;
-import de.farue.autocut.service.LeaseService;
-import de.farue.autocut.service.accounting.BookingTemplate;
-import de.farue.autocut.service.accounting.InternalTransactionService;
-
 @Configuration
 public class TenantFeeBatchConfiguration {
 
@@ -45,16 +43,17 @@ public class TenantFeeBatchConfiguration {
 
     @Bean
     public Job tenantFeeJob(JobRepository jobRepository, Step correctingFeeStep, Step chargingFeeStep) {
-        return jobBuilderFactory.get("tenantFeeJob")
-            .repository(jobRepository)
-            .start(correctingFeeStep)
-            .next(chargingFeeStep)
-            .build();
+        return jobBuilderFactory.get("tenantFeeJob").repository(jobRepository).start(correctingFeeStep).next(chargingFeeStep).build();
     }
 
     @Bean
-    public Step correctingFeeStep(ItemReader<Lease> tenantFeeReader, ItemProcessor<Lease, List<BookingTemplate>> tenantFeeCorrectingProcessor, ItemWriter<List<BookingTemplate>> writer) {
-        return stepBuilderFactory.get("correctingFeeStep")
+    public Step correctingFeeStep(
+        ItemReader<Lease> tenantFeeReader,
+        ItemProcessor<Lease, List<BookingTemplate>> tenantFeeCorrectingProcessor,
+        ItemWriter<List<BookingTemplate>> writer
+    ) {
+        return stepBuilderFactory
+            .get("correctingFeeStep")
             .<Lease, List<BookingTemplate>>chunk(10)
             .reader(tenantFeeReader)
             .processor(tenantFeeCorrectingProcessor)
@@ -63,9 +62,13 @@ public class TenantFeeBatchConfiguration {
     }
 
     @Bean
-    public Step chargingFeeStep(ItemReader<Lease> tenantFeeReader, ItemProcessor<Lease, List<BookingTemplate>> tenantFeeCompositeChargingProcessor,
-        ItemWriter<List<BookingTemplate>> writer) {
-        return stepBuilderFactory.get("chargingFeeStep")
+    public Step chargingFeeStep(
+        ItemReader<Lease> tenantFeeReader,
+        ItemProcessor<Lease, List<BookingTemplate>> tenantFeeCompositeChargingProcessor,
+        ItemWriter<List<BookingTemplate>> writer
+    ) {
+        return stepBuilderFactory
+            .get("chargingFeeStep")
             .<Lease, List<BookingTemplate>>chunk(10)
             .reader(tenantFeeReader)
             .processor(tenantFeeCompositeChargingProcessor)
@@ -85,15 +88,21 @@ public class TenantFeeBatchConfiguration {
 
     @Bean
     @StepScope
-    public TenantFeeCorrectingBatchProcessor tenantFeeCorrectingProcessor(InternalTransactionRepository transactionRepository, LeaseService leaseService,
-        ActivityService activityService, TenantFeeServiceQualifierDataMapper serviceQualifierDataMapper) {
+    public TenantFeeCorrectingBatchProcessor tenantFeeCorrectingProcessor(
+        InternalTransactionRepository transactionRepository,
+        LeaseService leaseService,
+        ActivityService activityService,
+        TenantFeeServiceQualifierDataMapper serviceQualifierDataMapper
+    ) {
         return new TenantFeeCorrectingBatchProcessor(leaseService, serviceQualifierDataMapper, transactionRepository, activityService);
     }
 
     @Bean
     @StepScope
-    public CompositeItemProcessor<Lease, List<BookingTemplate>> tenantFeeCompositeChargingProcessor(ItemProcessor<Lease, Lease> tenantFeeEnverifiedTenantSkippingProcessor,
-        ItemProcessor<Lease, List<BookingTemplate>> tenantFeeChargingProcessor) {
+    public CompositeItemProcessor<Lease, List<BookingTemplate>> tenantFeeCompositeChargingProcessor(
+        ItemProcessor<Lease, Lease> tenantFeeEnverifiedTenantSkippingProcessor,
+        ItemProcessor<Lease, List<BookingTemplate>> tenantFeeChargingProcessor
+    ) {
         CompositeItemProcessor<Lease, List<BookingTemplate>> compositeProcessor = new CompositeItemProcessor<>();
         compositeProcessor.setDelegates(List.of(tenantFeeEnverifiedTenantSkippingProcessor, tenantFeeChargingProcessor));
         return compositeProcessor;
@@ -107,8 +116,12 @@ public class TenantFeeBatchConfiguration {
 
     @Bean
     @StepScope
-    public TenantFeeChargingBatchProcessor tenantFeeChargingProcessor(InternalTransactionRepository transactionRepository, LeaseService leaseService,
-        ActivityService activityService, TenantFeeServiceQualifierDataMapper serviceQualifierDataMapper) {
+    public TenantFeeChargingBatchProcessor tenantFeeChargingProcessor(
+        InternalTransactionRepository transactionRepository,
+        LeaseService leaseService,
+        ActivityService activityService,
+        TenantFeeServiceQualifierDataMapper serviceQualifierDataMapper
+    ) {
         return new TenantFeeChargingBatchProcessor(transactionRepository, leaseService, activityService, serviceQualifierDataMapper);
     }
 
@@ -123,5 +136,4 @@ public class TenantFeeBatchConfiguration {
     public TenantFeeBatchWriter tenantFeeBookingTemplateItemWriter(InternalTransactionService transactionService) {
         return new TenantFeeBatchWriter(transactionService);
     }
-
 }

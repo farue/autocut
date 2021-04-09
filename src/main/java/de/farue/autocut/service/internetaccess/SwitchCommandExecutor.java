@@ -1,11 +1,9 @@
 package de.farue.autocut.service.internetaccess;
 
+import com.google.common.collect.Table;
+import de.farue.autocut.domain.InternetAccess;
 import java.io.Closeable;
 import java.io.IOException;
-
-import com.google.common.collect.Table;
-
-import de.farue.autocut.domain.InternetAccess;
 
 public class SwitchCommandExecutor implements Closeable {
 

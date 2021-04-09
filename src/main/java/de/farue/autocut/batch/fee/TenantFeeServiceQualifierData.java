@@ -1,7 +1,6 @@
 package de.farue.autocut.batch.fee;
 
 import java.time.LocalDate;
-
 import lombok.Data;
 
 @Data

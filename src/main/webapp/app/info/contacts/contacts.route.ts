@@ -6,6 +6,6 @@ export const CONTACTS_ROUTE: Route = {
   path: '',
   component: ContactsComponent,
   data: {
-    pageTitle: 'contacts.title'
-  }
+    pageTitle: 'contacts.title',
+  },
 };

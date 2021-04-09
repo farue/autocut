@@ -1,15 +1,5 @@
 package de.farue.autocut.config;
 
-import java.util.List;
-
-import org.kapott.hbci.callback.HBCICallback;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Profile;
-import org.springframework.core.env.Environment;
-
 import de.farue.autocut.domain.BankAccount;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.repository.BankAccountRepository;
@@ -31,6 +21,14 @@ import de.farue.autocut.service.accounting.PurposeBankTransactionMatcher;
 import de.farue.autocut.service.accounting.TenantNameMatchCandidateProvider;
 import de.farue.autocut.service.accounting.TenantPurposeMatchCandidateProvider;
 import de.farue.autocut.service.accounting.TransactionBookService;
+import java.util.List;
+import org.kapott.hbci.callback.HBCICallback;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Environment;
 import tech.jhipster.config.JHipsterConstants;
 
 @Configuration
@@ -81,46 +79,63 @@ public class AccountingConfiguration {
     }
 
     @Bean
-    public BankTransactionMatcher bankTransactionMatcher(PurposeBankTransactionMatcher purposeBankTransactionMatcher,
+    public BankTransactionMatcher bankTransactionMatcher(
+        PurposeBankTransactionMatcher purposeBankTransactionMatcher,
         ContraAccountPreviousBookingBankTransactionMatcher contraAccountPreviousBookingBankTransactionMatcher,
-        ContraAccountNameBankTransactionMatcher contraAccountNameBankTransactionMatcher) {
+        ContraAccountNameBankTransactionMatcher contraAccountNameBankTransactionMatcher
+    ) {
         CompositeBankTransactionMatcher compositeBankTransactionMatcher = new CompositeBankTransactionMatcher();
-        compositeBankTransactionMatcher.setMatchers(List.of(
-            purposeBankTransactionMatcher,
-            contraAccountPreviousBookingBankTransactionMatcher,
-            contraAccountNameBankTransactionMatcher
-        ));
+        compositeBankTransactionMatcher.setMatchers(
+            List.of(
+                purposeBankTransactionMatcher,
+                contraAccountPreviousBookingBankTransactionMatcher,
+                contraAccountNameBankTransactionMatcher
+            )
+        );
         return compositeBankTransactionMatcher;
     }
 
     @Bean
-    public PurposeBankTransactionMatcher purposeBankTransactionMatcher(TenantService tenantService, LeaseService leaseService,
-        MatchCandidateProvider tenantPurposeMatchCandidateProvider) {
+    public PurposeBankTransactionMatcher purposeBankTransactionMatcher(
+        TenantService tenantService,
+        LeaseService leaseService,
+        MatchCandidateProvider tenantPurposeMatchCandidateProvider
+    ) {
         return new PurposeBankTransactionMatcher(tenantService, leaseService, tenantPurposeMatchCandidateProvider);
     }
 
     @Bean
     public ContraAccountPreviousBookingBankTransactionMatcher contraAccountPreviousBookingBankTransactionMatcher(
-        BankTransactionRepository bankTransactionRepository) {
+        BankTransactionRepository bankTransactionRepository
+    ) {
         return new ContraAccountPreviousBookingBankTransactionMatcher(bankTransactionRepository);
     }
 
     @Bean
-    public ContraAccountNameBankTransactionMatcher contraAccountNameBankTransactionMatcher(TenantService tenantService, LeaseService leaseService,
-        MatchCandidateProvider tenantNameMatchCandidateProvider) {
+    public ContraAccountNameBankTransactionMatcher contraAccountNameBankTransactionMatcher(
+        TenantService tenantService,
+        LeaseService leaseService,
+        MatchCandidateProvider tenantNameMatchCandidateProvider
+    ) {
         return new ContraAccountNameBankTransactionMatcher(tenantService, leaseService, tenantNameMatchCandidateProvider);
     }
 
     @Bean
-    public BankTransactionContraTransactionProvider bankTransactionContraTransactionProvider(BankTransactionMatcher bankTransactionMatcher) {
-        BankTransactionContraTransactionProvider contraTransactionProvider = new BankTransactionContraTransactionProvider(bankTransactionMatcher);
+    public BankTransactionContraTransactionProvider bankTransactionContraTransactionProvider(
+        BankTransactionMatcher bankTransactionMatcher
+    ) {
+        BankTransactionContraTransactionProvider contraTransactionProvider = new BankTransactionContraTransactionProvider(
+            bankTransactionMatcher
+        );
         contraTransactionProvider.setIssuer(BankTransactionService.class.getSimpleName());
         return contraTransactionProvider;
     }
 
     @Bean
-    public InternalBookingContraTransactionProvider internalBookingContraTransactionProvider(TransactionBook referenceCashTransactionBook,
-        TransactionBook referenceRevenueTransactionBook) {
+    public InternalBookingContraTransactionProvider internalBookingContraTransactionProvider(
+        TransactionBook referenceCashTransactionBook,
+        TransactionBook referenceRevenueTransactionBook
+    ) {
         return new InternalBookingContraTransactionProvider(referenceCashTransactionBook, referenceRevenueTransactionBook);
     }
 
@@ -139,10 +154,16 @@ public class AccountingConfiguration {
     @Bean
     @Lazy
     public BankAccount referenceBankAccount(BankAccountRepository bankAccountRepository) {
-        return bankAccountRepository.findFirstByIban(applicationProperties.getBanking().getIban())
-            .orElseGet(() -> bankAccountRepository.save(new BankAccount()
-                .name(applicationProperties.getBanking().getName())
-                .iban(applicationProperties.getBanking().getIban())
-                .bic(applicationProperties.getBanking().getBic())));
+        return bankAccountRepository
+            .findFirstByIban(applicationProperties.getBanking().getIban())
+            .orElseGet(
+                () ->
+                    bankAccountRepository.save(
+                        new BankAccount()
+                            .name(applicationProperties.getBanking().getName())
+                            .iban(applicationProperties.getBanking().getIban())
+                            .bic(applicationProperties.getBanking().getBic())
+                    )
+            );
     }
 }

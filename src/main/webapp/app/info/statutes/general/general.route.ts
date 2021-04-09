@@ -7,6 +7,6 @@ export const GENERAL_ROUTE: Route = {
   component: GeneralComponent,
   data: {
     authorities: [],
-    pageTitle: 'statutes.general.title'
+    pageTitle: 'statutes.general.title',
   },
 };

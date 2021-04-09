@@ -12,8 +12,8 @@ export const ABOUT_ROUTE: Route = {
   component: AboutComponent,
   data: {
     authorities: [],
-    pageTitle: 'about.title'
+    pageTitle: 'about.title',
   },
   canActivate: [UserRouteAccessService],
-  children: [TERMS_ROUTE, PRIVACY_ROUTE, COOKIES_ROUTE, IMPRINT_ROUTE]
+  children: [TERMS_ROUTE, PRIVACY_ROUTE, COOKIES_ROUTE, IMPRINT_ROUTE],
 };

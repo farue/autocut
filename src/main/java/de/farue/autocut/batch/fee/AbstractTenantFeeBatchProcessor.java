@@ -1,14 +1,12 @@
 package de.farue.autocut.batch.fee;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import org.springframework.batch.item.ItemProcessor;
-
 import de.farue.autocut.domain.Lease;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.service.LeaseService;
 import de.farue.autocut.service.accounting.BookingTemplate;
+import java.time.LocalDate;
+import java.util.List;
+import org.springframework.batch.item.ItemProcessor;
 
 public abstract class AbstractTenantFeeBatchProcessor implements ItemProcessor<Lease, List<BookingTemplate>> {
 

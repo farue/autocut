@@ -1,14 +1,12 @@
 package de.farue.autocut.service.accounting;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import de.farue.autocut.domain.BankTransaction;
 import de.farue.autocut.repository.BankTransactionRepository;
 import de.farue.autocut.repository.TransactionRepository;
 import de.farue.autocut.service.TransactionService;
+import java.util.List;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
@@ -18,9 +16,11 @@ public class BankTransactionService extends TransactionService<BankTransaction> 
     private final InternalTransactionService internalTransactionService;
     private final BankTransactionContraTransactionProvider bankTransactionContraTransactionProvider;
 
-    public BankTransactionService(BankTransactionRepository transactionRepository,
+    public BankTransactionService(
+        BankTransactionRepository transactionRepository,
         InternalTransactionService internalTransactionService,
-        BankTransactionContraTransactionProvider bankTransactionContraTransactionProvider) {
+        BankTransactionContraTransactionProvider bankTransactionContraTransactionProvider
+    ) {
         this.transactionRepository = transactionRepository;
         this.internalTransactionService = internalTransactionService;
         this.bankTransactionContraTransactionProvider = bankTransactionContraTransactionProvider;
@@ -54,11 +54,14 @@ public class BankTransactionService extends TransactionService<BankTransaction> 
     }
 
     public void saveWithContraTransaction(BankTransaction transaction) {
-        bankTransactionContraTransactionProvider.calculateContraTransaction(transaction)
-            .ifPresent(contraTransaction -> {
-                contraTransaction.link(transaction);
-                internalTransactionService.save(contraTransaction);
-            });
+        bankTransactionContraTransactionProvider
+            .calculateContraTransaction(transaction)
+            .ifPresent(
+                contraTransaction -> {
+                    contraTransaction.link(transaction);
+                    internalTransactionService.save(contraTransaction);
+                }
+            );
         transactionRepository.save(transaction);
     }
 

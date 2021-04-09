@@ -9,5 +9,4 @@ public class BookingBuilder {
     public static TransactionTemplate.TransactionTemplateBuilder transactionTemplate() {
         return TransactionTemplate.builder();
     }
-
 }

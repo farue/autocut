@@ -2,26 +2,6 @@ package de.farue.autocut.batch.fee;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.YearMonth;
-import java.time.ZoneId;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
-import org.springframework.transaction.support.TransactionTemplate;
-
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.Activity;
 import de.farue.autocut.domain.InternalTransaction;
@@ -37,6 +17,24 @@ import de.farue.autocut.service.LeaseService;
 import de.farue.autocut.service.TenantService;
 import de.farue.autocut.service.accounting.InternalTransactionService;
 import de.farue.autocut.service.accounting.TransactionBookService;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.ZoneId;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.transaction.support.TransactionTemplate;
 
 @SpringBootTest(classes = AutocutApp.class)
 class TenantFeeBatchIT {
@@ -72,17 +70,10 @@ class TenantFeeBatchIT {
 
     @BeforeEach
     void setUp() {
-        Lease lease = new Lease()
-            .start(LocalDate.of(2020, 4, 10))
-            .end(LocalDate.of(2020, 9, 30))
-            .nr("nr");
+        Lease lease = new Lease().start(LocalDate.of(2020, 4, 10)).end(LocalDate.of(2020, 9, 30)).nr("nr");
         this.lease = leaseService.save(lease);
 
-        Tenant tenant = new Tenant()
-            .firstName(TENANT_FIRST_NAME)
-            .lastName(TENANT_LAST_NAME)
-            .lease(lease)
-            .verified(true);
+        Tenant tenant = new Tenant().firstName(TENANT_FIRST_NAME).lastName(TENANT_LAST_NAME).lease(lease).verified(true);
         this.tenant = tenantService.save(tenant);
 
         this.transactionBook = leaseService.getCashTransactionBook(lease);
@@ -110,27 +101,31 @@ class TenantFeeBatchIT {
 
     @AfterEach
     void tearDown() {
-        transactionTemplate.execute(txInfo -> {
-            TransactionBook transactionBook = transactionBookService.findOne(this.transactionBook.getId()).get();
-            Lease lease = leaseService.findOne(this.lease.getId()).get();
-            Tenant tenant = tenantService.findOne(this.tenant.getId()).get();
+        transactionTemplate.execute(
+            txInfo -> {
+                TransactionBook transactionBook = transactionBookService.findOne(this.transactionBook.getId()).get();
+                Lease lease = leaseService.findOne(this.lease.getId()).get();
+                Tenant tenant = tenantService.findOne(this.tenant.getId()).get();
 
-            List<InternalTransaction> createdTransactions = transactionService.findAllForTransactionBookWithLinks(transactionBook);
-            Set<Transaction> linkedTransactions = new HashSet<>();
-            createdTransactions.forEach(transaction -> {
-                Set<Transaction> linked = transaction.getLefts();
-                linkedTransactions.addAll(linked);
+                List<InternalTransaction> createdTransactions = transactionService.findAllForTransactionBookWithLinks(transactionBook);
+                Set<Transaction> linkedTransactions = new HashSet<>();
+                createdTransactions.forEach(
+                    transaction -> {
+                        Set<Transaction> linked = transaction.getLefts();
+                        linkedTransactions.addAll(linked);
 
-                transactionService.delete(transaction.getId());
-            });
-            linkedTransactions.forEach(transaction -> transactionService.delete(transaction.getId()));
+                        transactionService.delete(transaction.getId());
+                    }
+                );
+                linkedTransactions.forEach(transaction -> transactionService.delete(transaction.getId()));
 
-            lease.removeTransactionBook(transactionBook);
-            transactionBookService.delete(transactionBook.getId());
-            tenantService.delete(tenant.getId());
-            leaseService.delete(lease.getId());
-            return null;
-        });
+                lease.removeTransactionBook(transactionBook);
+                transactionBookService.delete(transactionBook.getId());
+                tenantService.delete(tenant.getId());
+                leaseService.delete(lease.getId());
+                return null;
+            }
+        );
     }
 
     @Nested
@@ -138,15 +133,18 @@ class TenantFeeBatchIT {
 
         @Nested
         @SpringBootTest(classes = AutocutApp.class)
-        class NoPreviousCharges{
+        class NoPreviousCharges {
 
             @Test
             void testDefaultCase() throws Exception {
                 batchScheduler.setChargePeriod(CHARGE_PERIOD);
                 batchScheduler.launchJob();
 
-                List<InternalTransaction> transactions = transactionService.findAllForTransactionBook(transactionBook, PageRequest
-                    .of(0, Integer.MAX_VALUE, Sort.by(Order.asc(Transaction_.VALUE_DATE), Order.asc(Transaction_.ID))))
+                List<InternalTransaction> transactions = transactionService
+                    .findAllForTransactionBook(
+                        transactionBook,
+                        PageRequest.of(0, Integer.MAX_VALUE, Sort.by(Order.asc(Transaction_.VALUE_DATE), Order.asc(Transaction_.ID)))
+                    )
                     .getContent();
 
                 Transaction transactionBeforeCharges = transactions.get(0);
@@ -194,8 +192,11 @@ class TenantFeeBatchIT {
                 batchScheduler.setChargePeriod(CHARGE_PERIOD);
                 batchScheduler.launchJob();
 
-                List<InternalTransaction> transactions = transactionService.findAllForTransactionBook(transactionBook, PageRequest
-                    .of(0, Integer.MAX_VALUE, Sort.by(Order.asc(Transaction_.VALUE_DATE), Order.asc(Transaction_.ID))))
+                List<InternalTransaction> transactions = transactionService
+                    .findAllForTransactionBook(
+                        transactionBook,
+                        PageRequest.of(0, Integer.MAX_VALUE, Sort.by(Order.asc(Transaction_.VALUE_DATE), Order.asc(Transaction_.ID)))
+                    )
                     .getContent();
 
                 Transaction transactionBeforeCharges = transactions.get(0);
@@ -242,10 +243,7 @@ class TenantFeeBatchIT {
             @BeforeEach
             void setUp() {
                 // we ignore for a moment that the lease had not started by this time
-                Activity activity = new Activity()
-                    .year(2019)
-                    .term(SemesterTerms.WINTER_TERM)
-                    .tenant(tenant);
+                Activity activity = new Activity().year(2019).term(SemesterTerms.WINTER_TERM).tenant(tenant);
                 this.activity = activityService.save(activity);
             }
 
@@ -287,8 +285,11 @@ class TenantFeeBatchIT {
                 batchScheduler.setChargePeriod(CHARGE_PERIOD);
                 batchScheduler.launchJob();
 
-                List<InternalTransaction> transactions = transactionService.findAllForTransactionBook(transactionBook, PageRequest
-                    .of(0, Integer.MAX_VALUE, Sort.by(Order.asc(Transaction_.VALUE_DATE), Order.asc(Transaction_.ID))))
+                List<InternalTransaction> transactions = transactionService
+                    .findAllForTransactionBook(
+                        transactionBook,
+                        PageRequest.of(0, Integer.MAX_VALUE, Sort.by(Order.asc(Transaction_.VALUE_DATE), Order.asc(Transaction_.ID)))
+                    )
                     .getContent();
 
                 Transaction transactionBeforeCharges = transactions.get(0);
@@ -366,8 +367,11 @@ class TenantFeeBatchIT {
                 batchScheduler.setChargePeriod(CHARGE_PERIOD);
                 batchScheduler.launchJob();
 
-                List<InternalTransaction> transactions = transactionService.findAllForTransactionBook(transactionBook, PageRequest
-                    .of(0, Integer.MAX_VALUE, Sort.by(Order.asc(Transaction_.VALUE_DATE), Order.asc(Transaction_.ID))))
+                List<InternalTransaction> transactions = transactionService
+                    .findAllForTransactionBook(
+                        transactionBook,
+                        PageRequest.of(0, Integer.MAX_VALUE, Sort.by(Order.asc(Transaction_.VALUE_DATE), Order.asc(Transaction_.ID)))
+                    )
                     .getContent();
 
                 InternalTransaction transactionBeforeCharges = transactions.get(0);
@@ -465,8 +469,11 @@ class TenantFeeBatchIT {
             batchScheduler.setChargePeriod(CHARGE_PERIOD);
             batchScheduler.launchJob();
 
-            List<InternalTransaction> transactions = transactionService.findAllForTransactionBook(transactionBook, PageRequest
-                .of(0, Integer.MAX_VALUE, Sort.by(Order.asc(Transaction_.VALUE_DATE), Order.asc(Transaction_.ID))))
+            List<InternalTransaction> transactions = transactionService
+                .findAllForTransactionBook(
+                    transactionBook,
+                    PageRequest.of(0, Integer.MAX_VALUE, Sort.by(Order.asc(Transaction_.VALUE_DATE), Order.asc(Transaction_.ID)))
+                )
                 .getContent();
 
             InternalTransaction transactionBeforeCharges = transactions.get(0);

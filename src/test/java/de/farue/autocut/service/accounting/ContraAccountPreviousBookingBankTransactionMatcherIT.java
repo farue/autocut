@@ -2,18 +2,6 @@ package de.farue.autocut.service.accounting;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.Optional;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
-
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.BankAccount;
 import de.farue.autocut.domain.BankTransaction;
@@ -27,8 +15,18 @@ import de.farue.autocut.repository.BankTransactionRepository;
 import de.farue.autocut.repository.InternalTransactionRepository;
 import de.farue.autocut.service.LeaseService;
 import de.farue.autocut.service.TenantService;
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
-@SuppressWarnings({"FieldCanBeLocal", "unused"})
+@SuppressWarnings({ "FieldCanBeLocal", "unused" })
 @SpringBootTest(classes = AutocutApp.class)
 class ContraAccountPreviousBookingBankTransactionMatcherIT {
 
@@ -75,14 +73,8 @@ class ContraAccountPreviousBookingBankTransactionMatcherIT {
 
     @BeforeEach
     void setUp() {
-        Lease lease1 = new Lease()
-            .nr(ANY_NO)
-            .start(ANY_START)
-            .end(ANY_END);
-        Tenant tenant1 = new Tenant()
-            .firstName("Bob")
-            .lastName("Miller")
-            .lease(lease1);
+        Lease lease1 = new Lease().nr(ANY_NO).start(ANY_START).end(ANY_END);
+        Tenant tenant1 = new Tenant().firstName("Bob").lastName("Miller").lease(lease1);
         this.lease1 = leaseService.save(lease1);
         this.tenant1 = tenantService.save(tenant1);
     }
@@ -90,10 +82,7 @@ class ContraAccountPreviousBookingBankTransactionMatcherIT {
     @Test
     @Transactional
     void testNoPreviousBooking() {
-        BankAccount contraBankAccount = new BankAccount()
-            .bic("MALADE51KOB")
-            .iban("DE13570501204826655542")
-            .name("Bob Miller");
+        BankAccount contraBankAccount = new BankAccount().bic("MALADE51KOB").iban("DE13570501204826655542").name("Bob Miller");
         BankTransaction bankTransaction = new BankTransaction()
             .type(ANY_TYPE)
             .bookingDate(ANY_BOOKING_DATE)
@@ -113,10 +102,7 @@ class ContraAccountPreviousBookingBankTransactionMatcherIT {
     @Test
     @Transactional
     void testPreviousBookingsLinkedToSingleTenant() {
-        BankAccount contraBankAccount = new BankAccount()
-            .bic("MALADE51KOB")
-            .iban("DE13570501204826655542")
-            .name("Bob Miller");
+        BankAccount contraBankAccount = new BankAccount().bic("MALADE51KOB").iban("DE13570501204826655542").name("Bob Miller");
         contraBankAccount = bankAccountRepository.save(contraBankAccount);
 
         BankTransaction previousBankTransaction = new BankTransaction()
@@ -163,16 +149,10 @@ class ContraAccountPreviousBookingBankTransactionMatcherIT {
     @Test
     @Transactional
     void testPreviousBookingsLinkedToMultipleTenants() {
-        BankAccount contraBankAccount = new BankAccount()
-            .bic("MALADE51KOB")
-            .iban("DE13570501204826655542")
-            .name("Bob Miller");
+        BankAccount contraBankAccount = new BankAccount().bic("MALADE51KOB").iban("DE13570501204826655542").name("Bob Miller");
         contraBankAccount = bankAccountRepository.save(contraBankAccount);
 
-        Lease lease2 = new Lease()
-            .nr(ANY_OTHER_NO)
-            .start(ANY_START)
-            .end(ANY_END);
+        Lease lease2 = new Lease().nr(ANY_OTHER_NO).start(ANY_START).end(ANY_END);
         lease2 = leaseService.save(lease2);
 
         BankTransaction previousBankTransaction1 = new BankTransaction()

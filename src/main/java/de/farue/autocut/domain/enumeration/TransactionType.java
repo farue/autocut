@@ -4,7 +4,6 @@ package de.farue.autocut.domain.enumeration;
  * The TransactionKind enumeration.
  */
 public enum TransactionType {
-
     /**
      * A transaction with negative amount. The difference between a fee and a purchase is that a
      * fee is not paid in exchange for an immediate good.
@@ -34,5 +33,5 @@ public enum TransactionType {
     /**
      * A transaction with a negative amount. In exchange the payer receives a different good.
      */
-    PURCHASE
+    PURCHASE,
 }

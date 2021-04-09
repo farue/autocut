@@ -3,8 +3,10 @@ package de.farue.autocut.service;
 import static de.farue.autocut.utils.BigDecimalUtil.modify;
 
 import de.farue.autocut.domain.Activity;
+import de.farue.autocut.domain.Lease;
+import de.farue.autocut.domain.enumeration.SemesterTerms;
 import de.farue.autocut.repository.ActivityRepository;
-
+import de.farue.autocut.utils.DateUtil;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -14,12 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import de.farue.autocut.domain.Activity;
-import de.farue.autocut.domain.Lease;
-import de.farue.autocut.domain.enumeration.SemesterTerms;
-import de.farue.autocut.repository.ActivityRepository;
-import de.farue.autocut.utils.DateUtil;
 
 /**
  * Service Implementation for managing {@link Activity}.
@@ -138,8 +134,9 @@ public class ActivityService {
     }
 
     public BigDecimal getFeeValue(Lease lease, LocalDate chargeDate) {
-        BigDecimal positiveValue =
-            isEligibleForDiscount(lease, chargeDate) ? globalSettingService.getValue(DISCOUNTED_FEE_KEY) : globalSettingService.getValue(FEE_KEY);
+        BigDecimal positiveValue = isEligibleForDiscount(lease, chargeDate)
+            ? globalSettingService.getValue(DISCOUNTED_FEE_KEY)
+            : globalSettingService.getValue(FEE_KEY);
         return modify(positiveValue).negative();
     }
 

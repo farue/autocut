@@ -1,4 +1,4 @@
-import { ITransaction } from "app/entities/transaction/transaction.model";
+import { ITransaction } from 'app/entities/transaction/transaction.model';
 
 export interface ITransactionOverview {
   balanceNow?: number;

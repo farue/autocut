@@ -2,6 +2,10 @@ package de.farue.autocut.service.accounting;
 
 import static de.farue.autocut.utils.BigDecimalUtil.compare;
 
+import de.farue.autocut.domain.InternalTransaction;
+import de.farue.autocut.domain.Transaction;
+import de.farue.autocut.domain.TransactionBook;
+import de.farue.autocut.domain.enumeration.TransactionType;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -10,26 +14,33 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import de.farue.autocut.domain.InternalTransaction;
-import de.farue.autocut.domain.Transaction;
-import de.farue.autocut.domain.TransactionBook;
-import de.farue.autocut.domain.enumeration.TransactionType;
-
 public class InternalBookingContraTransactionProvider {
 
     private TransactionBook referenceCashTransactionBook;
     private TransactionBook referenceRevenueTransactionBook;
 
-    public InternalBookingContraTransactionProvider(TransactionBook referenceCashTransactionBook, TransactionBook referenceRevenueTransactionBook) {
+    public InternalBookingContraTransactionProvider(
+        TransactionBook referenceCashTransactionBook,
+        TransactionBook referenceRevenueTransactionBook
+    ) {
         this.referenceCashTransactionBook = referenceCashTransactionBook;
         this.referenceRevenueTransactionBook = referenceRevenueTransactionBook;
     }
 
-    public List<InternalTransaction> calculateContraTransactions(List<InternalTransaction> transactions,
-        Instant bookingDate, Instant valueDate) {
+    public List<InternalTransaction> calculateContraTransactions(
+        List<InternalTransaction> transactions,
+        Instant bookingDate,
+        Instant valueDate
+    ) {
         List<InternalTransaction> contraTransactions = new ArrayList<>();
-        Map<TransactionType, BigDecimal> summedValueByTransactionKind = transactions.stream().collect(Collectors.groupingBy(InternalTransaction::getTransactionType,
-            Collectors.mapping(Transaction::getValue, Collectors.reducing(BigDecimal.ZERO, BigDecimal::add))));
+        Map<TransactionType, BigDecimal> summedValueByTransactionKind = transactions
+            .stream()
+            .collect(
+                Collectors.groupingBy(
+                    InternalTransaction::getTransactionType,
+                    Collectors.mapping(Transaction::getValue, Collectors.reducing(BigDecimal.ZERO, BigDecimal::add))
+                )
+            );
         for (Entry<TransactionType, BigDecimal> entry : summedValueByTransactionKind.entrySet()) {
             TransactionType transactionType = entry.getKey();
             BigDecimal summedValue = entry.getValue();
@@ -63,7 +74,9 @@ public class InternalBookingContraTransactionProvider {
                 contraValue = value.negate();
                 targetTransactionBook = referenceRevenueTransactionBook;
             }
-            case CREDIT -> throw new IllegalArgumentException("Credit bookings for members have to originate from transactions on own cash account");
+            case CREDIT -> throw new IllegalArgumentException(
+                "Credit bookings for members have to originate from transactions on own cash account"
+            );
             case TRANSFER -> throw new IllegalArgumentException("The sum of all transfer bookings must be 0.");
             default -> throw new IllegalStateException("Unexpected value: " + type);
         }

@@ -1,6 +1,8 @@
 package de.farue.autocut.service;
 
+import de.farue.autocut.domain.Lease;
 import de.farue.autocut.domain.Tenant;
+import de.farue.autocut.domain.User;
 import de.farue.autocut.repository.TenantRepository;
 import java.util.List;
 import java.util.Optional;
@@ -8,11 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import de.farue.autocut.domain.Lease;
-import de.farue.autocut.domain.Tenant;
-import de.farue.autocut.domain.User;
-import de.farue.autocut.repository.TenantRepository;
 
 /**
  * Service Implementation for managing {@link Tenant}.
@@ -117,12 +114,7 @@ public class TenantService {
     }
 
     public Tenant createNewTenant(String firstName, String lastName, User user, Lease lease) {
-        Tenant tenant = new Tenant()
-            .firstName(firstName)
-            .lastName(lastName)
-            .user(user)
-            .verified(false)
-            .lease(lease);
+        Tenant tenant = new Tenant().firstName(firstName).lastName(lastName).user(user).verified(false).lease(lease);
 
         leaseService.save(lease);
         save(tenant);

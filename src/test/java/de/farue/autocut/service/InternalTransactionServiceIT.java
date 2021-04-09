@@ -3,22 +3,6 @@ package de.farue.autocut.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
-import org.springframework.transaction.annotation.Transactional;
-
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.InternalTransaction;
 import de.farue.autocut.domain.Transaction;
@@ -31,6 +15,20 @@ import de.farue.autocut.service.accounting.BookingBuilder;
 import de.farue.autocut.service.accounting.BookingTemplate;
 import de.farue.autocut.service.accounting.InternalTransactionService;
 import de.farue.autocut.service.accounting.TransactionBookService;
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(classes = AutocutApp.class)
 @Transactional
@@ -61,35 +59,42 @@ public class InternalTransactionServiceIT {
                 @Test
                 @Transactional
                 void shouldCalculateBalanceCorrectly() {
-                    TransactionBook transactionBook = new TransactionBook()
-                        .type(TransactionBookType.CASH);
+                    TransactionBook transactionBook = new TransactionBook().type(TransactionBookType.CASH);
                     transactionBookService.save(transactionBook);
 
-                    BookingTemplate existingBooking = BookingBuilder.bookingTemplate()
+                    BookingTemplate existingBooking = BookingBuilder
+                        .bookingTemplate()
                         .bookingDate(todayPlusDays(0))
                         .valueDate(todayPlusDays(0))
-                        .transactionTemplate(BookingBuilder.transactionTemplate()
-                            .transactionBook(transactionBook)
-                            .description("Test transaction 1")
-                            .issuer("test")
-                            .type(TransactionType.CORRECTION)
-                            .recipient("test transaction book")
-                            .value(new BigDecimal("100"))
-                            .build())
+                        .transactionTemplate(
+                            BookingBuilder
+                                .transactionTemplate()
+                                .transactionBook(transactionBook)
+                                .description("Test transaction 1")
+                                .issuer("test")
+                                .type(TransactionType.CORRECTION)
+                                .recipient("test transaction book")
+                                .value(new BigDecimal("100"))
+                                .build()
+                        )
                         .build();
                     transactionService.saveWithContraTransaction(existingBooking);
 
-                    BookingTemplate newBooking = BookingBuilder.bookingTemplate()
+                    BookingTemplate newBooking = BookingBuilder
+                        .bookingTemplate()
                         .bookingDate(todayPlusDays(0))
                         .valueDate(todayPlusDays(0))
-                        .transactionTemplate(BookingBuilder.transactionTemplate()
-                            .transactionBook(transactionBook)
-                            .description("Test transaction 2")
-                            .issuer("test")
-                            .type(TransactionType.FEE)
-                            .recipient("test transaction book")
-                            .value(new BigDecimal("-8.20"))
-                            .build())
+                        .transactionTemplate(
+                            BookingBuilder
+                                .transactionTemplate()
+                                .transactionBook(transactionBook)
+                                .description("Test transaction 2")
+                                .issuer("test")
+                                .type(TransactionType.FEE)
+                                .recipient("test transaction book")
+                                .value(new BigDecimal("-8.20"))
+                                .build()
+                        )
                         .build();
                     transactionService.saveWithContraTransaction(newBooking);
 
@@ -100,8 +105,7 @@ public class InternalTransactionServiceIT {
             @Test
             @Transactional
             void shouldCalculateBalanceOfLaterTransactionsCorrectly() {
-                TransactionBook transactionBook = new TransactionBook()
-                    .type(TransactionBookType.CASH);
+                TransactionBook transactionBook = new TransactionBook().type(TransactionBookType.CASH);
                 transactionBookService.save(transactionBook);
 
                 InternalTransaction transactionInPast = new InternalTransaction()
@@ -157,7 +161,10 @@ public class InternalTransactionServiceIT {
 
                 // Transactions in reverse chronological order
                 List<InternalTransaction> transactions = transactionService
-                    .findAllForTransactionBook(transactionBook, PageRequest.of(0, 5, Sort.by(Order.desc(Transaction_.VALUE_DATE), Order.desc(Transaction_.ID))))
+                    .findAllForTransactionBook(
+                        transactionBook,
+                        PageRequest.of(0, 5, Sort.by(Order.desc(Transaction_.VALUE_DATE), Order.desc(Transaction_.ID)))
+                    )
                     .getContent();
                 transactionInThreeDays = transactions.get(0);
                 transactionInTwoDays2 = transactions.get(1);
@@ -183,8 +190,7 @@ public class InternalTransactionServiceIT {
             @Test
             @Transactional
             void whenBookingIsFee() {
-                TransactionBook transactionBook = new TransactionBook()
-                    .type(TransactionBookType.CASH);
+                TransactionBook transactionBook = new TransactionBook().type(TransactionBookType.CASH);
                 transactionBookService.save(transactionBook);
 
                 InternalTransaction initialTransaction = new InternalTransaction()
@@ -199,17 +205,21 @@ public class InternalTransactionServiceIT {
                     .balanceAfter(new BigDecimal("100"));
                 transactionService.save(initialTransaction);
 
-                BookingTemplate booking = BookingBuilder.bookingTemplate()
+                BookingTemplate booking = BookingBuilder
+                    .bookingTemplate()
                     .bookingDate(todayPlusDays(0))
                     .valueDate(todayPlusDays(0))
-                    .transactionTemplate(BookingBuilder.transactionTemplate()
-                        .transactionBook(transactionBook)
-                        .description("Test transaction 1")
-                        .issuer("test")
-                        .type(TransactionType.FEE)
-                        .recipient("test transaction book")
-                        .value(new BigDecimal("-10"))
-                        .build())
+                    .transactionTemplate(
+                        BookingBuilder
+                            .transactionTemplate()
+                            .transactionBook(transactionBook)
+                            .description("Test transaction 1")
+                            .issuer("test")
+                            .type(TransactionType.FEE)
+                            .recipient("test transaction book")
+                            .value(new BigDecimal("-10"))
+                            .build()
+                    )
                     .build();
 
                 List<InternalTransaction> cashTransactionsBefore = transactionService
@@ -233,7 +243,9 @@ public class InternalTransactionServiceIT {
                 assertThat(revenueTransaction.getRecipient()).isNull();
                 assertThat(revenueTransaction.getValue()).isEqualByComparingTo("10");
 
-                List<InternalTransaction> memberTransactions = transactionService.findAllForTransactionBook(transactionBook, Pageable.unpaged()).getContent();
+                List<InternalTransaction> memberTransactions = transactionService
+                    .findAllForTransactionBook(transactionBook, Pageable.unpaged())
+                    .getContent();
                 Transaction transaction = memberTransactions.get(memberTransactions.size() - 1);
                 assertThat(revenueTransaction.getLefts()).contains(transaction);
                 assertThat(transaction.getLefts()).contains(revenueTransaction);
@@ -242,8 +254,7 @@ public class InternalTransactionServiceIT {
             @Test
             @Transactional
             void whenBookingIsDebit() {
-                TransactionBook transactionBook = new TransactionBook()
-                    .type(TransactionBookType.CASH);
+                TransactionBook transactionBook = new TransactionBook().type(TransactionBookType.CASH);
                 transactionBookService.save(transactionBook);
 
                 InternalTransaction initialTransaction = new InternalTransaction()
@@ -258,17 +269,21 @@ public class InternalTransactionServiceIT {
                     .balanceAfter(new BigDecimal("100"));
                 transactionService.save(initialTransaction);
 
-                BookingTemplate booking = BookingBuilder.bookingTemplate()
+                BookingTemplate booking = BookingBuilder
+                    .bookingTemplate()
                     .bookingDate(todayPlusDays(0))
                     .valueDate(todayPlusDays(0))
-                    .transactionTemplate(BookingBuilder.transactionTemplate()
-                        .transactionBook(transactionBook)
-                        .description("Test transaction 1")
-                        .issuer("test")
-                        .type(TransactionType.DEBIT)
-                        .recipient("test transaction book")
-                        .value(new BigDecimal("-10"))
-                        .build())
+                    .transactionTemplate(
+                        BookingBuilder
+                            .transactionTemplate()
+                            .transactionBook(transactionBook)
+                            .description("Test transaction 1")
+                            .issuer("test")
+                            .type(TransactionType.DEBIT)
+                            .recipient("test transaction book")
+                            .value(new BigDecimal("-10"))
+                            .build()
+                    )
                     .build();
 
                 List<InternalTransaction> revenueTransactionsBefore = transactionService
@@ -292,7 +307,9 @@ public class InternalTransactionServiceIT {
                 assertThat(cashTransaction.getRecipient()).isNull();
                 assertThat(cashTransaction.getValue()).isEqualByComparingTo("-10");
 
-                List<InternalTransaction> memberTransactions = transactionService.findAllForTransactionBook(transactionBook, Pageable.unpaged()).getContent();
+                List<InternalTransaction> memberTransactions = transactionService
+                    .findAllForTransactionBook(transactionBook, Pageable.unpaged())
+                    .getContent();
                 Transaction transaction = memberTransactions.get(memberTransactions.size() - 1);
                 assertThat(cashTransaction.getLefts()).contains(transaction);
                 assertThat(transaction.getLefts()).contains(cashTransaction);
@@ -301,8 +318,7 @@ public class InternalTransactionServiceIT {
             @Test
             @Transactional
             void whenBookingIsPurchase() {
-                TransactionBook transactionBook = new TransactionBook()
-                    .type(TransactionBookType.CASH);
+                TransactionBook transactionBook = new TransactionBook().type(TransactionBookType.CASH);
                 transactionBookService.save(transactionBook);
 
                 InternalTransaction initialTransaction = new InternalTransaction()
@@ -317,17 +333,21 @@ public class InternalTransactionServiceIT {
                     .balanceAfter(new BigDecimal("100"));
                 transactionService.save(initialTransaction);
 
-                BookingTemplate booking = BookingBuilder.bookingTemplate()
+                BookingTemplate booking = BookingBuilder
+                    .bookingTemplate()
                     .bookingDate(todayPlusDays(0))
                     .valueDate(todayPlusDays(0))
-                    .transactionTemplate(BookingBuilder.transactionTemplate()
-                        .transactionBook(transactionBook)
-                        .description("Test transaction 1")
-                        .issuer("test")
-                        .type(TransactionType.PURCHASE)
-                        .recipient("test transaction book")
-                        .value(new BigDecimal("-10"))
-                        .build())
+                    .transactionTemplate(
+                        BookingBuilder
+                            .transactionTemplate()
+                            .transactionBook(transactionBook)
+                            .description("Test transaction 1")
+                            .issuer("test")
+                            .type(TransactionType.PURCHASE)
+                            .recipient("test transaction book")
+                            .value(new BigDecimal("-10"))
+                            .build()
+                    )
                     .build();
 
                 List<InternalTransaction> cashTransactionsBefore = transactionService
@@ -351,7 +371,9 @@ public class InternalTransactionServiceIT {
                 assertThat(revenueTransaction.getRecipient()).isNull();
                 assertThat(revenueTransaction.getValue()).isEqualByComparingTo("10");
 
-                List<InternalTransaction> memberTransactions = transactionService.findAllForTransactionBook(transactionBook, Pageable.unpaged()).getContent();
+                List<InternalTransaction> memberTransactions = transactionService
+                    .findAllForTransactionBook(transactionBook, Pageable.unpaged())
+                    .getContent();
                 Transaction transaction = memberTransactions.get(memberTransactions.size() - 1);
                 assertThat(revenueTransaction.getLefts()).contains(transaction);
                 assertThat(transaction.getLefts()).contains(revenueTransaction);
@@ -360,21 +382,24 @@ public class InternalTransactionServiceIT {
             @Test
             @Transactional
             void whenBookingIsCorrection() {
-                TransactionBook transactionBook = new TransactionBook()
-                    .type(TransactionBookType.CASH);
+                TransactionBook transactionBook = new TransactionBook().type(TransactionBookType.CASH);
                 transactionBookService.save(transactionBook);
 
-                BookingTemplate booking = BookingBuilder.bookingTemplate()
+                BookingTemplate booking = BookingBuilder
+                    .bookingTemplate()
                     .bookingDate(todayPlusDays(0))
                     .valueDate(todayPlusDays(0))
-                    .transactionTemplate(BookingBuilder.transactionTemplate()
-                        .transactionBook(transactionBook)
-                        .description("Test transaction 1")
-                        .issuer("test")
-                        .type(TransactionType.CORRECTION)
-                        .recipient("test transaction book")
-                        .value(new BigDecimal("10"))
-                        .build())
+                    .transactionTemplate(
+                        BookingBuilder
+                            .transactionTemplate()
+                            .transactionBook(transactionBook)
+                            .description("Test transaction 1")
+                            .issuer("test")
+                            .type(TransactionType.CORRECTION)
+                            .recipient("test transaction book")
+                            .value(new BigDecimal("10"))
+                            .build()
+                    )
                     .build();
 
                 List<InternalTransaction> cashTransactionsBefore = transactionService
@@ -398,7 +423,9 @@ public class InternalTransactionServiceIT {
                 assertThat(revenueTransaction.getRecipient()).isNull();
                 assertThat(revenueTransaction.getValue()).isEqualByComparingTo("-10");
 
-                List<InternalTransaction> memberTransactions = transactionService.findAllForTransactionBook(transactionBook, Pageable.unpaged()).getContent();
+                List<InternalTransaction> memberTransactions = transactionService
+                    .findAllForTransactionBook(transactionBook, Pageable.unpaged())
+                    .getContent();
                 Transaction transaction = memberTransactions.get(memberTransactions.size() - 1);
                 assertThat(revenueTransaction.getLefts()).contains(transaction);
                 assertThat(transaction.getLefts()).contains(revenueTransaction);
@@ -407,12 +434,10 @@ public class InternalTransactionServiceIT {
             @Test
             @Transactional
             void whenBookingIsTransfer() {
-                TransactionBook transactionBookOrigin = new TransactionBook()
-                    .type(TransactionBookType.CASH);
+                TransactionBook transactionBookOrigin = new TransactionBook().type(TransactionBookType.CASH);
                 transactionBookService.save(transactionBookOrigin);
 
-                TransactionBook transactionBookTarget = new TransactionBook()
-                    .type(TransactionBookType.CASH);
+                TransactionBook transactionBookTarget = new TransactionBook().type(TransactionBookType.CASH);
                 transactionBookService.save(transactionBookTarget);
 
                 InternalTransaction initialTransaction = new InternalTransaction()
@@ -427,25 +452,32 @@ public class InternalTransactionServiceIT {
                     .balanceAfter(new BigDecimal("100"));
                 transactionService.save(initialTransaction);
 
-                BookingTemplate booking = BookingBuilder.bookingTemplate()
+                BookingTemplate booking = BookingBuilder
+                    .bookingTemplate()
                     .bookingDate(todayPlusDays(0))
                     .valueDate(todayPlusDays(0))
-                    .transactionTemplate(BookingBuilder.transactionTemplate()
-                        .transactionBook(transactionBookOrigin)
-                        .description("Test transaction 1")
-                        .issuer("user 1")
-                        .type(TransactionType.TRANSFER)
-                        .recipient("user 2")
-                        .value(new BigDecimal("-10"))
-                        .build())
-                    .transactionTemplate(BookingBuilder.transactionTemplate()
-                        .transactionBook(transactionBookTarget)
-                        .description("Test transaction 1")
-                        .issuer("user 1")
-                        .type(TransactionType.TRANSFER)
-                        .recipient("user 2")
-                        .value(new BigDecimal("10"))
-                        .build())
+                    .transactionTemplate(
+                        BookingBuilder
+                            .transactionTemplate()
+                            .transactionBook(transactionBookOrigin)
+                            .description("Test transaction 1")
+                            .issuer("user 1")
+                            .type(TransactionType.TRANSFER)
+                            .recipient("user 2")
+                            .value(new BigDecimal("-10"))
+                            .build()
+                    )
+                    .transactionTemplate(
+                        BookingBuilder
+                            .transactionTemplate()
+                            .transactionBook(transactionBookTarget)
+                            .description("Test transaction 1")
+                            .issuer("user 1")
+                            .type(TransactionType.TRANSFER)
+                            .recipient("user 2")
+                            .value(new BigDecimal("10"))
+                            .build()
+                    )
                     .build();
 
                 List<InternalTransaction> cashTransactionsBefore = transactionService
@@ -466,8 +498,12 @@ public class InternalTransactionServiceIT {
                 Assertions.assertThat(cashTransactionsBefore).hasSameElementsAs(cashTransactionsAfter);
                 Assertions.assertThat(revenueTransactionsBefore).hasSameElementsAs(revenueTransactionsAfter);
 
-                List<InternalTransaction> originTransactions = transactionService.findAllForTransactionBook(transactionBookOrigin, Pageable.unpaged()).getContent();
-                List<InternalTransaction> targetTransactions = transactionService.findAllForTransactionBook(transactionBookTarget, Pageable.unpaged()).getContent();
+                List<InternalTransaction> originTransactions = transactionService
+                    .findAllForTransactionBook(transactionBookOrigin, Pageable.unpaged())
+                    .getContent();
+                List<InternalTransaction> targetTransactions = transactionService
+                    .findAllForTransactionBook(transactionBookTarget, Pageable.unpaged())
+                    .getContent();
                 Transaction targetTransaction = targetTransactions.get(targetTransactions.size() - 1);
                 Transaction originTransaction = originTransactions.get(originTransactions.size() - 1);
                 assertThat(originTransaction.getLefts()).contains(targetTransaction);
@@ -477,24 +513,28 @@ public class InternalTransactionServiceIT {
             @Test
             @Transactional
             void whenBookingIsCredit() {
-                TransactionBook transactionBook = new TransactionBook()
-                    .type(TransactionBookType.CASH);
+                TransactionBook transactionBook = new TransactionBook().type(TransactionBookType.CASH);
                 transactionBookService.save(transactionBook);
 
-                BookingTemplate booking = BookingBuilder.bookingTemplate()
+                BookingTemplate booking = BookingBuilder
+                    .bookingTemplate()
                     .bookingDate(todayPlusDays(0))
                     .valueDate(todayPlusDays(0))
-                    .transactionTemplate(BookingBuilder.transactionTemplate()
-                        .transactionBook(transactionBook)
-                        .description("Test transaction 1")
-                        .issuer("test")
-                        .type(TransactionType.CREDIT)
-                        .recipient("test transaction book")
-                        .value(new BigDecimal("10"))
-                        .build())
+                    .transactionTemplate(
+                        BookingBuilder
+                            .transactionTemplate()
+                            .transactionBook(transactionBook)
+                            .description("Test transaction 1")
+                            .issuer("test")
+                            .type(TransactionType.CREDIT)
+                            .recipient("test transaction book")
+                            .value(new BigDecimal("10"))
+                            .build()
+                    )
                     .build();
 
-                assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> transactionService.saveWithContraTransaction(booking));
+                assertThatExceptionOfType(IllegalArgumentException.class)
+                    .isThrownBy(() -> transactionService.saveWithContraTransaction(booking));
             }
         }
     }
@@ -509,8 +549,7 @@ public class InternalTransactionServiceIT {
             @Test
             @Transactional
             void shouldNotUpdateBalance() {
-                TransactionBook transactionBook = new TransactionBook()
-                    .type(TransactionBookType.CASH);
+                TransactionBook transactionBook = new TransactionBook().type(TransactionBookType.CASH);
                 transactionBookService.save(transactionBook);
 
                 // If db precision is milliseconds, rounding occurs: #47
@@ -562,8 +601,7 @@ public class InternalTransactionServiceIT {
         @Test
         @Transactional
         void shouldCalculateBalanceOfLaterTransactionsCorrectly() {
-            TransactionBook transactionBook = new TransactionBook()
-                .type(TransactionBookType.CASH);
+            TransactionBook transactionBook = new TransactionBook().type(TransactionBookType.CASH);
             transactionBookService.save(transactionBook);
 
             InternalTransaction transactionInPast = new InternalTransaction()
@@ -621,7 +659,10 @@ public class InternalTransactionServiceIT {
 
             // Transactions in reverse chronological order
             List<InternalTransaction> transactions = transactionService
-                .findAllForTransactionBook(transactionBook, PageRequest.of(0, 5, Sort.by(Order.desc(Transaction_.VALUE_DATE), Order.desc(Transaction_.ID))))
+                .findAllForTransactionBook(
+                    transactionBook,
+                    PageRequest.of(0, 5, Sort.by(Order.desc(Transaction_.VALUE_DATE), Order.desc(Transaction_.ID)))
+                )
                 .getContent();
             transactionInThreeDays = transactions.get(0);
             transactionInTwoDays2 = transactions.get(1);

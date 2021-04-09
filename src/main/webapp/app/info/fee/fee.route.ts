@@ -6,6 +6,6 @@ export const FEE_ROUTE: Route = {
   path: '',
   component: FeeComponent,
   data: {
-    pageTitle: 'fee.title'
-  }
+    pageTitle: 'fee.title',
+  },
 };

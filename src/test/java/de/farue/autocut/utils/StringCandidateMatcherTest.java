@@ -2,11 +2,9 @@ package de.farue.autocut.utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Set;
-
-import org.junit.jupiter.api.Test;
-
 import de.farue.autocut.utils.StringCandidateMatcher.MatchResult;
+import java.util.Set;
+import org.junit.jupiter.api.Test;
 
 class StringCandidateMatcherTest {
 
@@ -50,23 +48,14 @@ class StringCandidateMatcherTest {
 
     @Test
     void testMultipleMatchesLongestCandidate() {
-        Set<String> candidates = Set.of(
-            "the quick",
-            "lazy dog",
-            "brown jumps the lazy",
-            "over"
-        );
+        Set<String> candidates = Set.of("the quick", "lazy dog", "brown jumps the lazy", "over");
         MatchResult result = StringCandidateMatcher.findBestMatch(candidates, "the quick brown fox jumps over the lazy dog");
         assertThat(result.candidate).isEqualTo("brown jumps the lazy");
     }
 
     @Test
     void bankPurpose() {
-        Set<String> candidates = Set.of(
-            "123 45 bob miller",
-            "123 45 miller",
-            "bob miller 123 45",
-            "miller 123 45");
+        Set<String> candidates = Set.of("123 45 bob miller", "123 45 miller", "bob miller 123 45", "miller 123 45");
         String purpose = "transfer 123 45 31 45 for bobmiller";
         MatchResult result = StringCandidateMatcher.findBestMatch(candidates, purpose);
         assertThat(result.tokens).containsExactly(null, "123", "45", null, null, null, "bobmiller");

@@ -1,10 +1,8 @@
 package de.farue.autocut.web.rest.vm;
 
-import java.time.LocalDate;
-
 import de.farue.autocut.service.StwApartmentParser;
 import de.farue.autocut.service.dto.AdminUserDTO;
-
+import java.time.LocalDate;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
@@ -21,10 +19,13 @@ public class ManagedUserVM extends AdminUserDTO {
 
     @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
     private String password;
+
     @Pattern(regexp = StwApartmentParser.APARTMENT_REGEX)
     private String apartment;
+
     @PastOrPresent
     private LocalDate start;
+
     @FutureOrPresent
     private LocalDate end;
 

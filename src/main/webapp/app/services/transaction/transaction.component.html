@@ -1,83 +1,88 @@
 <div>
-    <div class="col-md-6">
-        <p jhiTranslate="transaction.paymentInstructions">Payment instructions:</p>
-        <div class="table-responsive">
-            <table class="table table-striped" aria-describedby="page-heading">
-                <tr>
-                    <td jhiTranslate="transaction.payment.recipient">Recipient</td>
-                    <td>Fam. Wohnheim Rütscher Str.</td>
-                </tr>
-                <tr>
-                    <td jhiTranslate="transaction.payment.iban">IBAN</td>
-                    <td>DE14 5001 0060 0224 7886 02</td>
-                </tr>
-                <tr>
-                    <td jhiTranslate="transaction.payment.bic">BIC</td>
-                    <td>PBNKDEFF</td>
-                </tr>
-                <tr>
-                    <td jhiTranslate="transaction.payment.bank">Bank</td>
-                    <td>Postbank AG</td>
-                </tr>
-                <tr>
-                    <td jhiTranslate="transaction.payment.purpose">Zweck</td>
-                    <td>{{ purpose$ | async }}</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <h2><span jhiTranslate="transaction.balance"></span><span>:</span>
-            <span [className]="balance >= 0 ? 'col-green' : 'col-red'">{{ balance | i18nCurrency:translateService.currentLang }}</span></h2>
-        </div>
-        <div class="col">
-            <h2><span jhiTranslate="transaction.deposit"></span><span>:</span>
-                <span [className]="balance >= 0 ? 'col-blue' : 'col-red'">{{ deposit | i18nCurrency:translateService.currentLang }}</span></h2>
-        </div>
-    </div>
-
+  <div class="col-md-6">
+    <p jhiTranslate="transaction.paymentInstructions">Payment instructions:</p>
     <div class="table-responsive">
-        <table class="table table-striped" aria-describedby="page-heading">
-            <thead>
-            <tr>
-                <th scope="col"><span jhiTranslate="transaction.table.kind">Kind</span></th>
-                <th scope="col"><span jhiTranslate="transaction.table.bookingDate">Booking Date</span></th>
-                <th scope="col"><span jhiTranslate="transaction.table.valueDate">Value Date</span></th>
-                <th scope="col"><span jhiTranslate="transaction.table.value">Value</span></th>
-                <th scope="col"><span jhiTranslate="transaction.table.balanceAfter">Balance After</span></th>
-                <th scope="col"><span jhiTranslate="transaction.table.description">Description</span></th>
-                <th scope="col"><span jhiTranslate="transaction.table.issuer">Issuer</span></th>
-            </tr>
-            </thead>
-            <tbody *ngIf="transactions">
-            <tr *ngFor="let transaction of transactions">
-                <td jhiTranslate="{{ 'autocutApp.TransactionKind.' + transaction.type }}">{{ transaction.type }}</td>
-                <td>{{ transaction.bookingDate | i18nDate:translateService.currentLang }}</td>
-                <td>{{ transaction.valueDate | i18nDate:translateService.currentLang }}</td>
-                <td>{{ transaction.value | i18nCurrency:translateService.currentLang }}</td>
-                <td>{{ transaction.balanceAfter | i18nCurrency:translateService.currentLang }}</td>
-                <td>{{ transaction.description }}</td>
-                <td>{{ transaction.issuer }}</td>
-            </tr>
-            </tbody>
-        </table>
+      <table class="table table-striped" aria-describedby="page-heading">
+        <tr>
+          <td jhiTranslate="transaction.payment.recipient">Recipient</td>
+          <td>Fam. Wohnheim Rütscher Str.</td>
+        </tr>
+        <tr>
+          <td jhiTranslate="transaction.payment.iban">IBAN</td>
+          <td>DE14 5001 0060 0224 7886 02</td>
+        </tr>
+        <tr>
+          <td jhiTranslate="transaction.payment.bic">BIC</td>
+          <td>PBNKDEFF</td>
+        </tr>
+        <tr>
+          <td jhiTranslate="transaction.payment.bank">Bank</td>
+          <td>Postbank AG</td>
+        </tr>
+        <tr>
+          <td jhiTranslate="transaction.payment.purpose">Zweck</td>
+          <td>{{ purpose$ | async }}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h2>
+        <span jhiTranslate="transaction.balance"></span><span>:</span>
+        <span [className]="balance >= 0 ? 'col-green' : 'col-red'">{{ balance | i18nCurrency: translateService.currentLang }}</span>
+      </h2>
+    </div>
+    <div class="col">
+      <h2>
+        <span jhiTranslate="transaction.deposit"></span><span>:</span>
+        <span [className]="balance >= 0 ? 'col-blue' : 'col-red'">{{ deposit | i18nCurrency: translateService.currentLang }}</span>
+      </h2>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"><span jhiTranslate="transaction.table.kind">Kind</span></th>
+          <th scope="col"><span jhiTranslate="transaction.table.bookingDate">Booking Date</span></th>
+          <th scope="col"><span jhiTranslate="transaction.table.valueDate">Value Date</span></th>
+          <th scope="col"><span jhiTranslate="transaction.table.value">Value</span></th>
+          <th scope="col"><span jhiTranslate="transaction.table.balanceAfter">Balance After</span></th>
+          <th scope="col"><span jhiTranslate="transaction.table.description">Description</span></th>
+          <th scope="col"><span jhiTranslate="transaction.table.issuer">Issuer</span></th>
+        </tr>
+      </thead>
+      <tbody *ngIf="transactions">
+        <tr *ngFor="let transaction of transactions">
+          <td jhiTranslate="{{ 'autocutApp.TransactionKind.' + transaction.type }}">{{ transaction.type }}</td>
+          <td>{{ transaction.bookingDate | i18nDate: translateService.currentLang }}</td>
+          <td>{{ transaction.valueDate | i18nDate: translateService.currentLang }}</td>
+          <td>{{ transaction.value | i18nCurrency: translateService.currentLang }}</td>
+          <td>{{ transaction.balanceAfter | i18nCurrency: translateService.currentLang }}</td>
+          <td>{{ transaction.description }}</td>
+          <td>{{ transaction.issuer }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="transactions">
+    <div class="row justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
     </div>
 
-    <div *ngIf="transactions">
-        <div class="row justify-content-center">
-            <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
-        </div>
-
-        <div class="row justify-content-center">
-            <ngb-pagination
-              [collectionSize]="totalItems"
-              [(page)]="page"
-              [pageSize]="itemsPerPage"
-              [maxSize]="5"
-              [rotate]="true"
-              [boundaryLinks]="true"
-              (pageChange)="transition()"></ngb-pagination>
-        </div>
+    <div class="row justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="transition()"
+      ></ngb-pagination>
     </div>
+  </div>
 </div>

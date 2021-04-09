@@ -9,9 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.farue.autocut.domain.Address;
-import de.farue.autocut.repository.AddressRepository;
-
 /**
  * Service Implementation for managing {@link Address}.
  */
@@ -109,10 +106,18 @@ public class AddressService {
     public Optional<Address> findByStudierendenwerkStreetNrIdentifier(int streetNrIdentifier) {
         return switch (streetNrIdentifier) {
             case 3 -> addressRepository.findOneByStreetAndStreetNumberAndZipAndCityAndCountry(
-                "Rütscher Str.", "123", "52072", "Aachen", "Germany"
+                "Rütscher Str.",
+                "123",
+                "52072",
+                "Aachen",
+                "Germany"
             );
             case 5 -> addressRepository.findOneByStreetAndStreetNumberAndZipAndCityAndCountry(
-                "Rütscher Str.", "125", "52072", "Aachen", "Germany"
+                "Rütscher Str.",
+                "125",
+                "52072",
+                "Aachen",
+                "Germany"
             );
             default -> throw new IllegalArgumentException("Street no identifier needs to be 3 or 5, but was " + streetNrIdentifier);
         };

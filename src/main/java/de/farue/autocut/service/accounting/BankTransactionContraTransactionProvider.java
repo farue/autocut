@@ -2,15 +2,14 @@ package de.farue.autocut.service.accounting;
 
 import static de.farue.autocut.utils.BigDecimalUtil.compare;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Optional;
-
 import de.farue.autocut.domain.BankTransaction;
 import de.farue.autocut.domain.InternalTransaction;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.domain.enumeration.TransactionType;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Optional;
 
 public class BankTransactionContraTransactionProvider {
 
@@ -31,7 +30,8 @@ public class BankTransactionContraTransactionProvider {
     }
 
     public Optional<InternalTransaction> calculateContraTransaction(BankTransaction bankTransaction) {
-        return bankTransactionMatcher.findMatch(bankTransaction)
+        return bankTransactionMatcher
+            .findMatch(bankTransaction)
             .map(contraTransactionBook -> createContraTransaction(bankTransaction, contraTransactionBook));
     }
 

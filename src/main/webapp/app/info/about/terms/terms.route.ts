@@ -8,7 +8,7 @@ export const TERMS_ROUTE: Route = {
   component: TermsComponent,
   data: {
     authorities: [],
-    pageTitle: 'about.terms.title'
+    pageTitle: 'about.terms.title',
   },
-  canActivate: [UserRouteAccessService]
+  canActivate: [UserRouteAccessService],
 };

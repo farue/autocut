@@ -7,6 +7,6 @@ export const TOOLS_ROUTE: Route = {
   component: ToolsComponent,
   data: {
     authorities: [],
-    pageTitle: 'statutes.tools.title'
+    pageTitle: 'statutes.tools.title',
   },
 };

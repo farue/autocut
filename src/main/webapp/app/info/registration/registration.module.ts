@@ -6,6 +6,6 @@ import { RegistrationComponent } from 'app/info/registration/registration.compon
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild([REGISTRATION_ROUTE])],
-  declarations: [RegistrationComponent]
+  declarations: [RegistrationComponent],
 })
 export class RegistrationModule {}

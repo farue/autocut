@@ -1,22 +1,19 @@
 package de.farue.autocut.batch.banking;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-import org.apache.commons.lang3.StringUtils;
-import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
-import org.kapott.hbci.structures.Konto;
-import org.springframework.batch.item.ItemProcessor;
-
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
-
 import de.farue.autocut.domain.BankAccount;
 import de.farue.autocut.domain.BankTransaction;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.repository.BankAccountRepository;
 import de.farue.autocut.service.accounting.BankTransactionService;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import org.apache.commons.lang3.StringUtils;
+import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
+import org.kapott.hbci.structures.Konto;
+import org.springframework.batch.item.ItemProcessor;
 
 public class BankingBatchProcessor implements ItemProcessor<UmsLine, BankTransaction> {
 
@@ -96,10 +93,10 @@ public class BankingBatchProcessor implements ItemProcessor<UmsLine, BankTransac
             return Optional.empty();
         }
 
-        return Optional.of(bankAccountRepository.findFirstByIban(iban)
-            .orElseGet(() -> bankAccountRepository.save(new BankAccount()
-                .name(name)
-                .iban(iban)
-                .bic(bic))));
+        return Optional.of(
+            bankAccountRepository
+                .findFirstByIban(iban)
+                .orElseGet(() -> bankAccountRepository.save(new BankAccount().name(name).iban(iban).bic(bic)))
+        );
     }
 }

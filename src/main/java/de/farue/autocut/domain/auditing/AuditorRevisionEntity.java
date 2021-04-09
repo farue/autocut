@@ -2,7 +2,6 @@ package de.farue.autocut.domain.auditing;
 
 import java.text.DateFormat;
 import java.util.Objects;
-
 import org.hibernate.envers.DefaultRevisionEntity;
 import org.hibernate.envers.RevisionEntity;
 
@@ -42,10 +41,18 @@ public class AuditorRevisionEntity extends DefaultRevisionEntity {
 
     @Override
     public String toString() {
-        return "AuditorRevisionEntity{" +
-            "id='" + getId() + '\'' +
-            ", revisionDate='" + DateFormat.getDateTimeInstance().format(getRevisionDate()) + '\'' +
-            ", auditor='" + auditor + '\'' +
-            "}";
+        return (
+            "AuditorRevisionEntity{" +
+            "id='" +
+            getId() +
+            '\'' +
+            ", revisionDate='" +
+            DateFormat.getDateTimeInstance().format(getRevisionDate()) +
+            '\'' +
+            ", auditor='" +
+            auditor +
+            '\'' +
+            "}"
+        );
     }
 }

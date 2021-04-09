@@ -93,19 +93,13 @@ export class WashingComponent implements OnInit {
       this.selectedProtect
     );
     if (programs.length === 1) {
-      return programs[0] ;
+      return programs[0];
     } else {
       return null;
     }
   }
 
-  filterPrograms(
-    program?: string,
-    subprogram?: string,
-    spin?: number,
-    preWash?: boolean,
-    protect?: boolean
-  ): LaundryMachineProgram[] {
+  filterPrograms(program?: string, subprogram?: string, spin?: number, preWash?: boolean, protect?: boolean): LaundryMachineProgram[] {
     if (this.selectedMachine == null) {
       return [];
     }

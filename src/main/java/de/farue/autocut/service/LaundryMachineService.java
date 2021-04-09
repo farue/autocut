@@ -2,21 +2,6 @@ package de.farue.autocut.service;
 
 import static de.farue.autocut.utils.BigDecimalUtil.modify;
 
-import de.farue.autocut.domain.LaundryMachine;
-import de.farue.autocut.repository.LaundryMachineRepository;
-
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-
-import org.apache.commons.lang3.BooleanUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import de.farue.autocut.domain.GlobalSetting;
 import de.farue.autocut.domain.LaundryMachine;
 import de.farue.autocut.domain.LaundryMachineProgram;
@@ -31,6 +16,16 @@ import de.farue.autocut.repository.UserRepository;
 import de.farue.autocut.service.accounting.BookingBuilder;
 import de.farue.autocut.service.accounting.BookingTemplate;
 import de.farue.autocut.service.accounting.InternalTransactionService;
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+import org.apache.commons.lang3.BooleanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
@@ -53,13 +48,15 @@ public class LaundryMachineService {
     @Autowired
     public LaundryMachineService(
         WashItClient washItClient,
-        LeaseService leaseService, WashHistoryService washHistoryService,
+        LeaseService leaseService,
+        WashHistoryService washHistoryService,
         InternalTransactionService transactionService,
         GlobalSettingService globalSettingService,
         UserRepository userRepository,
         TenantRepository tenantRepository,
         LaundryMachineRepository laundryMachineRepository,
-        LaundryMachineProgramRepository laundryMachineProgramRepository) {
+        LaundryMachineProgramRepository laundryMachineProgramRepository
+    ) {
         this.washItClient = washItClient;
         this.leaseService = leaseService;
         this.washHistoryService = washHistoryService;
@@ -153,7 +150,9 @@ public class LaundryMachineService {
 
     public void purchaseAndUnlock(Tenant tenant, LaundryMachine machine, LaundryMachineProgram program) {
         if (!machine.equals(program.getLaundryMachine())) {
-            throw new IllegalArgumentException("Supplied LaundryMachineProgram does not belong to LaundryMachine. " + machine + ", " + program);
+            throw new IllegalArgumentException(
+                "Supplied LaundryMachineProgram does not belong to LaundryMachine. " + machine + ", " + program
+            );
         }
 
         Instant timestamp = Instant.now();
@@ -164,24 +163,27 @@ public class LaundryMachineService {
             washHistoryService.save(washHistory);
             throw new LaundryMachineUnavailableException();
         }
-        BigDecimal cost = switch (machine.getType()) {
-            case WASHING_MACHINE -> globalSettingService
-                .getValue(GlobalSetting.WASHING_PRICE_WASHING_MACHINE);
-            case DRYER -> globalSettingService
-                .getValue(GlobalSetting.WASHING_PRICE_DRYER);
-        };
+        BigDecimal cost =
+            switch (machine.getType()) {
+                case WASHING_MACHINE -> globalSettingService.getValue(GlobalSetting.WASHING_PRICE_WASHING_MACHINE);
+                case DRYER -> globalSettingService.getValue(GlobalSetting.WASHING_PRICE_DRYER);
+            };
 
         BigDecimal value = modify(cost).negative();
-        BookingTemplate bookingTemplate = BookingBuilder.bookingTemplate()
+        BookingTemplate bookingTemplate = BookingBuilder
+            .bookingTemplate()
             .bookingDate(timestamp)
             .valueDate(timestamp)
-            .transactionTemplate(BookingBuilder.transactionTemplate()
-                .type(TransactionType.PURCHASE)
-                .value(value)
-                .transactionBook(leaseService.getCashTransactionBook(tenant.getLease()))
-                .issuer(LaundryMachineService.class.getSimpleName())
-                .description(machine.getName())
-                .build())
+            .transactionTemplate(
+                BookingBuilder
+                    .transactionTemplate()
+                    .type(TransactionType.PURCHASE)
+                    .value(value)
+                    .transactionBook(leaseService.getCashTransactionBook(tenant.getLease()))
+                    .issuer(LaundryMachineService.class.getSimpleName())
+                    .description(machine.getName())
+                    .build()
+            )
             .build();
 
         transactionService.saveWithContraTransaction(bookingTemplate);
@@ -210,20 +212,16 @@ public class LaundryMachineService {
         laundryMachineRepository.save(machine);
     }
 
-    private WashHistory findOrCreateWashHistory(Tenant tenant, Instant time,
-        LaundryMachine machine, LaundryMachineProgram program) {
+    private WashHistory findOrCreateWashHistory(Tenant tenant, Instant time, LaundryMachine machine, LaundryMachineProgram program) {
         Optional<WashHistory> reservationOpt;
         if (machine == null && program == null) {
             reservationOpt = washHistoryService.getFirstOpenReservation(tenant, time);
         } else if (machine == null) {
-            reservationOpt = washHistoryService
-                .getFirstOpenReservationWithProgram(tenant, time, program);
+            reservationOpt = washHistoryService.getFirstOpenReservationWithProgram(tenant, time, program);
         } else if (program == null) {
-            reservationOpt = washHistoryService
-                .getFirstOpenReservationWithMachine(tenant, time, machine);
+            reservationOpt = washHistoryService.getFirstOpenReservationWithMachine(tenant, time, machine);
         } else {
-            reservationOpt = washHistoryService
-                .getFirstOpenReservationWithMachineAndProgram(tenant, time, machine, program);
+            reservationOpt = washHistoryService.getFirstOpenReservationWithMachineAndProgram(tenant, time, machine, program);
             if (reservationOpt.isEmpty()) {
                 WashHistory washHistory = new WashHistory();
                 washHistory.setUsingDate(time);
@@ -236,6 +234,4 @@ public class LaundryMachineService {
         }
         return reservationOpt.orElseThrow(IllegalArgumentException::new);
     }
-
-
 }

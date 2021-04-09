@@ -31,7 +31,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -58,10 +57,14 @@ public class TransactionBookResource {
     private final TenantService tenantService;
     private final UserRepository userRepository;
 
-
-    public TransactionBookResource(TransactionBookService transactionBookService, InternalTransactionService transactionService,
-        TransactionBookRepository transactionBookRepository, LeaseService leaseService, TenantService tenantService,
-        UserRepository userRepository) {
+    public TransactionBookResource(
+        TransactionBookService transactionBookService,
+        InternalTransactionService transactionService,
+        TransactionBookRepository transactionBookRepository,
+        LeaseService leaseService,
+        TenantService tenantService,
+        UserRepository userRepository
+    ) {
         this.transactionBookService = transactionBookService;
         this.transactionService = transactionService;
         this.transactionBookRepository = transactionBookRepository;
@@ -204,37 +207,53 @@ public class TransactionBookResource {
     @GetMapping("/transaction-books/overview")
     @Transactional
     public ResponseEntity<TransactionsOverviewDTO> getTransactionsOverview(Pageable pageable) {
-        return SecurityUtils.getCurrentUserLogin()
+        return SecurityUtils
+            .getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
             .flatMap(tenantService::findOneByUser)
             .map(Tenant::getLease)
-            .map(lease -> {
-                TransactionBook cashTransactionBook = leaseService.getCashTransactionBook(lease);
-                TransactionBook depositTransactionBook = leaseService.getDepositTransactionBook(lease);
-                Page<InternalTransaction> page = transactionService.findAllForTransactionBook(cashTransactionBook, pageable);
+            .map(
+                lease -> {
+                    TransactionBook cashTransactionBook = leaseService.getCashTransactionBook(lease);
+                    TransactionBook depositTransactionBook = leaseService.getDepositTransactionBook(lease);
+                    Page<InternalTransaction> page = transactionService.findAllForTransactionBook(cashTransactionBook, pageable);
 
-                TransactionsOverviewDTO dto = new TransactionsOverviewDTO();
-                dto.setTransactions(page.getContent());
-                dto.setBalanceNow(transactionBookService.getCurrentBalance(cashTransactionBook));
-                dto.setDeposit(transactionBookService.getCurrentBalance(depositTransactionBook));
+                    TransactionsOverviewDTO dto = new TransactionsOverviewDTO();
+                    dto.setTransactions(page.getContent());
+                    dto.setBalanceNow(transactionBookService.getCurrentBalance(cashTransactionBook));
+                    dto.setDeposit(transactionBookService.getCurrentBalance(depositTransactionBook));
 
-                HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-                return new ResponseEntity<>(dto, headers, HttpStatus.OK);
-            })
+                    HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
+                        ServletUriComponentsBuilder.fromCurrentRequest(),
+                        page
+                    );
+                    return new ResponseEntity<>(dto, headers, HttpStatus.OK);
+                }
+            )
             .orElse(new ResponseEntity<>(HttpStatus.OK));
-
     }
 
     @GetMapping("/transaction-books/purpose")
     @Transactional
     public String getPurpose() {
-        return SecurityUtils.getCurrentUserLogin()
+        return SecurityUtils
+            .getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
             .flatMap(tenantService::findOneByUser)
-            .map(tenant -> {
-                Apartment apartment = tenant.getLease().getApartment();
-                return apartment.getAddress().getStreetNumber() + "/" + apartment.getNr() + " " + tenant.getFirstName() + " " + tenant.getLastName();
-            })
+            .map(
+                tenant -> {
+                    Apartment apartment = tenant.getLease().getApartment();
+                    return (
+                        apartment.getAddress().getStreetNumber() +
+                        "/" +
+                        apartment.getNr() +
+                        " " +
+                        tenant.getFirstName() +
+                        " " +
+                        tenant.getLastName()
+                    );
+                }
+            )
             .orElse("");
     }
 }

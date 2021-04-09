@@ -12,4 +12,4 @@ import 'dayjs/locale/de';
 dayjs.extend(customParseFormat);
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
-dayjs.extend(LocalizedFormat)
+dayjs.extend(LocalizedFormat);

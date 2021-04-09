@@ -1,11 +1,10 @@
 package de.farue.autocut.service.accounting;
 
+import de.farue.autocut.domain.BankTransaction;
+import de.farue.autocut.domain.TransactionBook;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import de.farue.autocut.domain.BankTransaction;
-import de.farue.autocut.domain.TransactionBook;
 
 public class CompositeBankTransactionMatcher implements BankTransactionMatcher {
 

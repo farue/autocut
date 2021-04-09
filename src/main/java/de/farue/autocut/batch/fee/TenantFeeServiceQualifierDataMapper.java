@@ -3,7 +3,6 @@ package de.farue.autocut.batch.fee;
 import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.springframework.stereotype.Component;
 
 @Component
@@ -31,9 +30,6 @@ public class TenantFeeServiceQualifierDataMapper {
     }
 
     public String map(TenantFeeServiceQualifierData serviceQualifierData) {
-        return serviceQualifierData.getChargeDate().toString()
-            + ";"
-            + serviceQualifierData.isDiscount();
+        return serviceQualifierData.getChargeDate().toString() + ";" + serviceQualifierData.isDiscount();
     }
-
 }

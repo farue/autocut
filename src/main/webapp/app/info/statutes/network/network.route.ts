@@ -7,6 +7,6 @@ export const NETWORK_ROUTE: Route = {
   component: NetworkComponent,
   data: {
     authorities: [],
-    pageTitle: 'statutes.network.title'
+    pageTitle: 'statutes.network.title',
   },
 };

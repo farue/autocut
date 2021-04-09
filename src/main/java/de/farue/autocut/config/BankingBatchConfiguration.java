@@ -1,5 +1,14 @@
 package de.farue.autocut.config;
 
+import de.farue.autocut.batch.banking.BankingBatchProcessor;
+import de.farue.autocut.batch.banking.BankingBatchReader;
+import de.farue.autocut.batch.banking.BankingBatchWriter;
+import de.farue.autocut.domain.BankAccount;
+import de.farue.autocut.domain.BankTransaction;
+import de.farue.autocut.domain.TransactionBook;
+import de.farue.autocut.repository.BankAccountRepository;
+import de.farue.autocut.service.accounting.BankTransactionService;
+import de.farue.autocut.service.accounting.BankingService;
 import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -14,16 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import de.farue.autocut.batch.banking.BankingBatchProcessor;
-import de.farue.autocut.batch.banking.BankingBatchReader;
-import de.farue.autocut.batch.banking.BankingBatchWriter;
-import de.farue.autocut.domain.BankAccount;
-import de.farue.autocut.domain.BankTransaction;
-import de.farue.autocut.domain.TransactionBook;
-import de.farue.autocut.repository.BankAccountRepository;
-import de.farue.autocut.service.accounting.BankTransactionService;
-import de.farue.autocut.service.accounting.BankingService;
-
 @Configuration
 public class BankingBatchConfiguration {
 
@@ -35,7 +34,8 @@ public class BankingBatchConfiguration {
 
     @Bean
     public Job bankingJob(JobRepository jobRepository, Step bankingStep) {
-        return jobBuilderFactory.get("bankingJob")
+        return jobBuilderFactory
+            .get("bankingJob")
             .repository(jobRepository)
             // we can't guarantee that the reader will always provide the same results upon restart
             .preventRestart()
@@ -44,8 +44,13 @@ public class BankingBatchConfiguration {
     }
 
     @Bean
-    public Step bankingStep(ItemReader<UmsLine> bankingBatchReader, ItemProcessor<UmsLine, BankTransaction> bankingBatchProcessor, ItemWriter<BankTransaction> bankingBatchWriter) {
-        return stepBuilderFactory.get("bankingStep")
+    public Step bankingStep(
+        ItemReader<UmsLine> bankingBatchReader,
+        ItemProcessor<UmsLine, BankTransaction> bankingBatchProcessor,
+        ItemWriter<BankTransaction> bankingBatchWriter
+    ) {
+        return stepBuilderFactory
+            .get("bankingStep")
             .<UmsLine, BankTransaction>chunk(10)
             .reader(bankingBatchReader)
             .processor(bankingBatchProcessor)
@@ -61,9 +66,12 @@ public class BankingBatchConfiguration {
 
     @Bean
     @StepScope
-    public BankingBatchProcessor bankingBatchProcessor(BankAccountRepository bankAccountRepository,
-        BankTransactionService bankTransactionService, BankAccount referenceBankAccount,
-        TransactionBook referenceCashTransactionBook) {
+    public BankingBatchProcessor bankingBatchProcessor(
+        BankAccountRepository bankAccountRepository,
+        BankTransactionService bankTransactionService,
+        BankAccount referenceBankAccount,
+        TransactionBook referenceCashTransactionBook
+    ) {
         BankingBatchProcessor bankingBatchProcessor = new BankingBatchProcessor(bankAccountRepository, bankTransactionService);
         bankingBatchProcessor.setReferenceAccount(referenceBankAccount);
         bankingBatchProcessor.setReferenceTransactionBook(referenceCashTransactionBook);

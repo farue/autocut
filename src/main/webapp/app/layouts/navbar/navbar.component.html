@@ -31,38 +31,35 @@
 
       <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
         <a class="nav-link" routerLink="self-administration" (click)="collapseNavbar()">
-                    <span>
-                        <fa-icon icon="landmark" [fixedWidth]="true"></fa-icon>
-                        <span jhiTranslate="global.menu.self-administration">Self administration</span>
-                    </span>
+          <span>
+            <fa-icon icon="landmark" [fixedWidth]="true"></fa-icon>
+            <span jhiTranslate="global.menu.self-administration">Self administration</span>
+          </span>
         </a>
       </li>
 
       <li ngbDropdown class="nav-item dropdown pointer" display="dynamic">
         <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="teamsnavBarDropdown">
-                    <span>
-                        <fa-icon icon="users" [fixedWidth]="true"></fa-icon>
-                        <span jhiTranslate="global.menu.teams">Teams</span>
-                    </span>
+          <span>
+            <fa-icon icon="users" [fixedWidth]="true"></fa-icon>
+            <span jhiTranslate="global.menu.teams">Teams</span>
+          </span>
         </a>
         <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="languagesnavBarDropdown">
           <li>
-            <a class="dropdown-item" routerLink="teams/networking" routerLinkActive="active"
-               (click)="collapseNavbar()">
+            <a class="dropdown-item" routerLink="teams/networking" routerLinkActive="active" (click)="collapseNavbar()">
               <fa-icon icon="network-wired" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="networking-team.title">Networking Team</span>
             </a>
           </li>
           <li>
-            <a class="dropdown-item" routerLink="teams/washing" routerLinkActive="active"
-               (click)="collapseNavbar()">
+            <a class="dropdown-item" routerLink="teams/washing" routerLinkActive="active" (click)="collapseNavbar()">
               <fa-icon icon="tshirt" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="washing-team.title">Washing Team</span>
             </a>
           </li>
           <li>
-            <a class="dropdown-item" routerLink="teams/tools" routerLinkActive="active"
-               (click)="collapseNavbar()">
+            <a class="dropdown-item" routerLink="teams/tools" routerLinkActive="active" (click)="collapseNavbar()">
               <fa-icon icon="hammer" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="tools-team.title">Tools Team</span>
             </a>
@@ -71,57 +68,50 @@
       </li>
       <li ngbDropdown class="nav-item dropdown pointer" display="dynamic">
         <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="infonavBarDropdown">
-                    <span>
-                        <fa-icon icon="info" [fixedWidth]="true"></fa-icon>
-                        <span jhiTranslate="global.menu.info">Info</span>
-                    </span>
+          <span>
+            <fa-icon icon="info" [fixedWidth]="true"></fa-icon>
+            <span jhiTranslate="global.menu.info">Info</span>
+          </span>
         </a>
         <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="languagesnavBarDropdown">
           <li>
-            <a class="dropdown-item" routerLink="info/application" routerLinkActive="active"
-               (click)="collapseNavbar()">
+            <a class="dropdown-item" routerLink="info/application" routerLinkActive="active" (click)="collapseNavbar()">
               <fa-icon icon="id-card" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="application.title">Application</span>
             </a>
           </li>
           <li>
-            <a class="dropdown-item" routerLink="info/registration" routerLinkActive="active"
-               (click)="collapseNavbar()">
+            <a class="dropdown-item" routerLink="info/registration" routerLinkActive="active" (click)="collapseNavbar()">
               <fa-icon icon="edit" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="registration.title">Registration</span>
             </a>
           </li>
           <li>
-            <a class="dropdown-item" routerLink="info/fee" routerLinkActive="active"
-               (click)="collapseNavbar()">
+            <a class="dropdown-item" routerLink="info/fee" routerLinkActive="active" (click)="collapseNavbar()">
               <fa-icon icon="dollar-sign" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="fee.title">Fee</span>
             </a>
           </li>
           <li *ngSwitchCase="true">
-            <a class="dropdown-item" routerLink="info/protocols" routerLinkActive="active"
-               (click)="collapseNavbar()">
+            <a class="dropdown-item" routerLink="info/protocols" routerLinkActive="active" (click)="collapseNavbar()">
               <fa-icon icon="scroll" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="protocols.title">Protocols</span>
             </a>
           </li>
           <li>
-            <a class="dropdown-item" routerLink="info/contacts" routerLinkActive="active"
-               (click)="collapseNavbar()">
+            <a class="dropdown-item" routerLink="info/contacts" routerLinkActive="active" (click)="collapseNavbar()">
               <fa-icon icon="address-book" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="contacts.title">Contacts</span>
             </a>
           </li>
           <li>
-            <a class="dropdown-item" routerLink="info/statutes" routerLinkActive="active"
-               (click)="collapseNavbar()">
+            <a class="dropdown-item" routerLink="info/statutes" routerLinkActive="active" (click)="collapseNavbar()">
               <fa-icon icon="balance-scale-left" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="statutes.title">Statutes</span>
             </a>
           </li>
           <li>
-            <a class="dropdown-item" routerLink="info/about" routerLinkActive="active"
-               (click)="collapseNavbar()">
+            <a class="dropdown-item" routerLink="info/about" routerLinkActive="active" (click)="collapseNavbar()">
               <fa-icon icon="question" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="about.title">About</span>
             </a>
@@ -463,10 +453,10 @@
     <ul class="navbar-nav ml-auto">
       <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer" display="dynamic">
         <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="servicesnavBarDropdown">
-                    <span>
-                        <fa-icon icon="tools" [fixedWidth]="true"></fa-icon>
-                        <span jhiTranslate="global.menu.services.main" class="d-md-inline-block d-lg-none d-xl-inline-block">Services</span>
-                    </span>
+          <span>
+            <fa-icon icon="tools" [fixedWidth]="true"></fa-icon>
+            <span jhiTranslate="global.menu.services.main" class="d-md-inline-block d-lg-none d-xl-inline-block">Services</span>
+          </span>
         </a>
         <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="languagesnavBarDropdown">
           <li>
@@ -519,7 +509,7 @@
           <span *ngIf="!getImageUrl()">
             <fa-icon icon="user" [fixedWidth]="true"></fa-icon>
             <span *ngIf="!getUserName()" jhiTranslate="global.menu.account.main">Account</span>
-            <span *ngIf="getUserName()" class="d-md-inline-block d-lg-none d-xl-inline-block">{{getUserName()}}</span>
+            <span *ngIf="getUserName()" class="d-md-inline-block d-lg-none d-xl-inline-block">{{ getUserName() }}</span>
           </span>
           <span *ngIf="getImageUrl()">
             <img [src]="getImageUrl()" class="profile-image rounded-circle" alt="Avatar" />

@@ -104,14 +104,14 @@ public class UserService {
             .findOneByLogin(userDTO.getLogin().toLowerCase())
             .ifPresent(
                 existingUser -> {
-                        throw new UsernameAlreadyUsedException();
+                    throw new UsernameAlreadyUsedException();
                 }
             );
         userRepository
             .findOneByEmailIgnoreCase(userDTO.getEmail())
             .ifPresent(
                 existingUser -> {
-                        throw new EmailAlreadyUsedException();
+                    throw new EmailAlreadyUsedException();
                 }
             );
         User newUser = new User();

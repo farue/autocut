@@ -4,21 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-
 import com.google.common.collect.ArrayTable;
 import com.google.common.collect.Table;
-
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.NetworkSwitch;
 import de.farue.autocut.domain.NetworkSwitchStatus;
@@ -26,8 +13,18 @@ import de.farue.autocut.repository.NetworkSwitchRepository;
 import de.farue.autocut.service.NetworkSwitchStatusServiceIT.SwitchConnectionConfiguration;
 import de.farue.autocut.service.internetaccess.SwitchCommandExecutor;
 import de.farue.autocut.service.internetaccess.SwitchStatusColumns;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
 
-@SpringBootTest(classes = {AutocutApp.class, SwitchConnectionConfiguration.class})
+@SpringBootTest(classes = { AutocutApp.class, SwitchConnectionConfiguration.class })
 class NetworkSwitchStatusServiceIT {
 
     private static final String SWITCH_STATUS_CONNECTED = "connected";
@@ -80,14 +77,10 @@ class NetworkSwitchStatusServiceIT {
 
     @BeforeEach
     void setUp() {
-        NetworkSwitch switch1 = new NetworkSwitch()
-            .interfaceName("Gi0")
-            .sshHost("host1");
+        NetworkSwitch switch1 = new NetworkSwitch().interfaceName("Gi0").sshHost("host1");
         this.switch1 = networkSwitchRepository.save(switch1);
 
-        NetworkSwitch switch2 = new NetworkSwitch()
-            .interfaceName("Gi0")
-            .sshHost("host2");
+        NetworkSwitch switch2 = new NetworkSwitch().interfaceName("Gi0").sshHost("host2");
         this.switch2 = networkSwitchRepository.save(switch2);
     }
 
@@ -129,9 +122,15 @@ class NetworkSwitchStatusServiceIT {
 
         private Table<String, String, String> switch1status1() {
             List<String> rowKeys = List.of(SWITCH_STATUS_PORT_1);
-            List<String> columnKeys = List
-                .of(SwitchStatusColumns.PORT, SwitchStatusColumns.NAME, SwitchStatusColumns.STATUS, SwitchStatusColumns.VLAN, SwitchStatusColumns.DUPLEX,
-                    SwitchStatusColumns.SPEED, SwitchStatusColumns.TYPE);
+            List<String> columnKeys = List.of(
+                SwitchStatusColumns.PORT,
+                SwitchStatusColumns.NAME,
+                SwitchStatusColumns.STATUS,
+                SwitchStatusColumns.VLAN,
+                SwitchStatusColumns.DUPLEX,
+                SwitchStatusColumns.SPEED,
+                SwitchStatusColumns.TYPE
+            );
 
             @SuppressWarnings("UnstableApiUsage")
             Table<String, String, String> table = ArrayTable.create(rowKeys, columnKeys);
@@ -149,9 +148,15 @@ class NetworkSwitchStatusServiceIT {
 
         private Table<String, String, String> switch1status2() {
             List<String> rowKeys = List.of(SWITCH_STATUS_PORT_1, SWITCH_STATUS_PORT_2, SWITCH_STATUS_PORT_3);
-            List<String> columnKeys = List
-                .of(SwitchStatusColumns.PORT, SwitchStatusColumns.NAME, SwitchStatusColumns.STATUS, SwitchStatusColumns.VLAN, SwitchStatusColumns.DUPLEX,
-                    SwitchStatusColumns.SPEED, SwitchStatusColumns.TYPE);
+            List<String> columnKeys = List.of(
+                SwitchStatusColumns.PORT,
+                SwitchStatusColumns.NAME,
+                SwitchStatusColumns.STATUS,
+                SwitchStatusColumns.VLAN,
+                SwitchStatusColumns.DUPLEX,
+                SwitchStatusColumns.SPEED,
+                SwitchStatusColumns.TYPE
+            );
 
             @SuppressWarnings("UnstableApiUsage")
             Table<String, String, String> table = ArrayTable.create(rowKeys, columnKeys);
@@ -185,9 +190,15 @@ class NetworkSwitchStatusServiceIT {
 
         private Table<String, String, String> switch2status1() {
             List<String> rowKeys = List.of(SWITCH_STATUS_PORT_4, SWITCH_STATUS_PORT_5);
-            List<String> columnKeys = List
-                .of(SwitchStatusColumns.PORT, SwitchStatusColumns.NAME, SwitchStatusColumns.STATUS, SwitchStatusColumns.VLAN, SwitchStatusColumns.DUPLEX,
-                    SwitchStatusColumns.SPEED, SwitchStatusColumns.TYPE);
+            List<String> columnKeys = List.of(
+                SwitchStatusColumns.PORT,
+                SwitchStatusColumns.NAME,
+                SwitchStatusColumns.STATUS,
+                SwitchStatusColumns.VLAN,
+                SwitchStatusColumns.DUPLEX,
+                SwitchStatusColumns.SPEED,
+                SwitchStatusColumns.TYPE
+            );
 
             @SuppressWarnings("UnstableApiUsage")
             Table<String, String, String> table = ArrayTable.create(rowKeys, columnKeys);
@@ -213,9 +224,15 @@ class NetworkSwitchStatusServiceIT {
 
         private Table<String, String, String> switch2status2() {
             List<String> rowKeys = List.of(SWITCH_STATUS_PORT_4, SWITCH_STATUS_PORT_5);
-            List<String> columnKeys = List
-                .of(SwitchStatusColumns.PORT, SwitchStatusColumns.NAME, SwitchStatusColumns.STATUS, SwitchStatusColumns.VLAN, SwitchStatusColumns.DUPLEX,
-                    SwitchStatusColumns.SPEED, SwitchStatusColumns.TYPE);
+            List<String> columnKeys = List.of(
+                SwitchStatusColumns.PORT,
+                SwitchStatusColumns.NAME,
+                SwitchStatusColumns.STATUS,
+                SwitchStatusColumns.VLAN,
+                SwitchStatusColumns.DUPLEX,
+                SwitchStatusColumns.SPEED,
+                SwitchStatusColumns.TYPE
+            );
 
             @SuppressWarnings("UnstableApiUsage")
             Table<String, String, String> table = ArrayTable.create(rowKeys, columnKeys);

@@ -3,7 +3,6 @@ package de.farue.autocut.service.accounting;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
 
 public class BankingServiceMock extends BankingService {

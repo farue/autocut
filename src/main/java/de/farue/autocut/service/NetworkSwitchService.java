@@ -1,10 +1,10 @@
 package de.farue.autocut.service;
 
+import com.google.common.collect.Table;
 import de.farue.autocut.domain.InternetAccess;
 import de.farue.autocut.domain.NetworkSwitch;
 import de.farue.autocut.repository.NetworkSwitchRepository;
 import de.farue.autocut.service.internetaccess.SwitchCommandExecutor;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -12,8 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.google.common.collect.Table;
 
 /**
  * Service Implementation for managing {@link NetworkSwitch}.
@@ -28,8 +26,10 @@ public class NetworkSwitchService {
 
     private final Map<String, SwitchCommandExecutor> switchExecutorsByHostName;
 
-    public NetworkSwitchService(NetworkSwitchRepository networkSwitchRepository,
-        Map<String, SwitchCommandExecutor> switchExecutorsByHostName) {
+    public NetworkSwitchService(
+        NetworkSwitchRepository networkSwitchRepository,
+        Map<String, SwitchCommandExecutor> switchExecutorsByHostName
+    ) {
         this.networkSwitchRepository = networkSwitchRepository;
         this.switchExecutorsByHostName = switchExecutorsByHostName;
     }

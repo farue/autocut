@@ -1,9 +1,8 @@
 package de.farue.autocut.utils;
 
+import de.farue.autocut.domain.enumeration.SemesterTerms;
 import java.time.LocalDate;
 import java.util.Arrays;
-
-import de.farue.autocut.domain.enumeration.SemesterTerms;
 
 public class DateUtil {
 

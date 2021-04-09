@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { LoggedInUserService } from '../../shared/service/logged-in-user.service';
 import { map } from 'rxjs/operators';
-import { Lease } from "app/entities/lease/lease.model";
+import { Lease } from 'app/entities/lease/lease.model';
 
 @Component({
   selector: 'jhi-service-transaction',

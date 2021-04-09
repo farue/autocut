@@ -1,7 +1,6 @@
 package de.farue.autocut.service.accounting;
 
 import java.util.Date;
-
 import org.kapott.hbci.callback.AbstractHBCICallback;
 import org.kapott.hbci.manager.HBCIUtils;
 import org.kapott.hbci.passport.HBCIPassport;

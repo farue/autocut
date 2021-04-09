@@ -1,19 +1,20 @@
 package de.farue.autocut.service.accounting;
 
-import java.util.Optional;
-
-import org.apache.commons.lang3.StringUtils;
-
 import de.farue.autocut.domain.BankTransaction;
 import de.farue.autocut.service.LeaseService;
 import de.farue.autocut.service.TenantService;
+import java.util.Optional;
+import org.apache.commons.lang3.StringUtils;
 
 public class PurposeBankTransactionMatcher extends AbstractAllTenantsBankTransactionMatcher {
 
     private static final String VERWENDUNGSZWECK = "verwendungszweck";
 
-    public PurposeBankTransactionMatcher(TenantService tenantService, LeaseService leaseService,
-        MatchCandidateProvider matchCandidateProvider) {
+    public PurposeBankTransactionMatcher(
+        TenantService tenantService,
+        LeaseService leaseService,
+        MatchCandidateProvider matchCandidateProvider
+    ) {
         super(tenantService, leaseService, matchCandidateProvider);
     }
 

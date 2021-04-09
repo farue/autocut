@@ -9,5 +9,4 @@ public class SwitchStatusColumns {
     public static final String DUPLEX = "Duplex";
     public static final String SPEED = "Speed";
     public static final String TYPE = "Type";
-
 }

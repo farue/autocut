@@ -2,7 +2,6 @@ package de.farue.autocut.service.internetaccess;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.connection.channel.direct.Session;
 
@@ -19,7 +18,7 @@ public class SshSessionStore {
     public Session getSession(String host) {
         if (sessionsByHost.containsKey(host)) {
             Session session = sessionsByHost.get(host);
-//            session.startShell()
+            //            session.startShell()
         }
         return null;
     }

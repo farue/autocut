@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import * as dayjs from "dayjs";
+import * as dayjs from 'dayjs';
 
 @Pipe({
-  name: 'i18nDate'
+  name: 'i18nDate',
 })
 export class I18nDatePipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
@@ -16,9 +16,9 @@ export class I18nDatePipe implements PipeTransform {
     locale = locale ?? this.translateService.currentLang;
     if (!format) {
       if (locale.startsWith('de')) {
-        format = 'L'
+        format = 'L';
       } else {
-        format = 'll'
+        format = 'll';
       }
     }
     return dayjs(value, { locale }).format(format);

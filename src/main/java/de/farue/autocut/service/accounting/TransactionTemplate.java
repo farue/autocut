@@ -1,9 +1,8 @@
 package de.farue.autocut.service.accounting;
 
-import java.math.BigDecimal;
-
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.domain.enumeration.TransactionType;
+import java.math.BigDecimal;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,5 +25,4 @@ public class TransactionTemplate {
     private String recipient;
 
     private TransactionBook transactionBook;
-
 }

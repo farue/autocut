@@ -2,11 +2,14 @@ package de.farue.autocut.service;
 
 import static de.farue.autocut.utils.BigDecimalUtil.compare;
 
+import de.farue.autocut.domain.Transaction;
+import de.farue.autocut.domain.TransactionBook;
+import de.farue.autocut.domain.Transaction_;
+import de.farue.autocut.repository.TransactionRepository;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -16,11 +19,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import de.farue.autocut.domain.Transaction;
-import de.farue.autocut.domain.TransactionBook;
-import de.farue.autocut.domain.Transaction_;
-import de.farue.autocut.repository.TransactionRepository;
 
 /**
  * Service Implementation for managing {@link Transaction}.
@@ -45,20 +43,31 @@ public abstract class TransactionService<T extends Transaction> {
         log.debug("Request to save Transaction : {}", transaction);
 
         // set/update balanceAfter
-        BigDecimal previousBalanceAfter = findTransactionImmediatelyBefore(transaction).map(Transaction::getBalanceAfter).orElse(BigDecimal.ZERO);
+        BigDecimal previousBalanceAfter = findTransactionImmediatelyBefore(transaction)
+            .map(Transaction::getBalanceAfter)
+            .orElse(BigDecimal.ZERO);
         BigDecimal calculatedBalanceAfter = previousBalanceAfter.add(transaction.getValue());
         if (transaction.getBalanceAfter() != null && compare(transaction.getBalanceAfter()).isNotEqualTo(calculatedBalanceAfter)) {
-            log.debug("Overwriting balanceAfter in transaction. Old value was {}, new calculated value is {}", transaction.getBalanceAfter(), calculatedBalanceAfter);
+            log.debug(
+                "Overwriting balanceAfter in transaction. Old value was {}, new calculated value is {}",
+                transaction.getBalanceAfter(),
+                calculatedBalanceAfter
+            );
         }
         transaction.setBalanceAfter(calculatedBalanceAfter);
 
         boolean update = transaction.getId() != null;
         T savedTransaction = getRepository().save(transaction);
 
-//        BigDecimal initialBalance = update ? findTransactionImmediatelyBefore(transaction).map(Transaction::getBalanceAfter).orElse(BigDecimal.ZERO)
-//            : savedTransaction.getBalanceAfter();
+        //        BigDecimal initialBalance = update ? findTransactionImmediatelyBefore(transaction).map(Transaction::getBalanceAfter).orElse(BigDecimal.ZERO)
+        //            : savedTransaction.getBalanceAfter();
         BigDecimal initialBalance = savedTransaction.getBalanceAfter();
-        updateBalanceInLaterTransactions(savedTransaction.getTransactionBook(), savedTransaction.getValueDate(), savedTransaction.getId(), initialBalance);
+        updateBalanceInLaterTransactions(
+            savedTransaction.getTransactionBook(),
+            savedTransaction.getValueDate(),
+            savedTransaction.getId(),
+            initialBalance
+        );
         return savedTransaction;
     }
 
@@ -153,8 +162,12 @@ public abstract class TransactionService<T extends Transaction> {
         getRepository().flush();
         getRepository().delete(transaction);
         getRepository().flush();
-        updateBalanceInLaterTransactions(transaction.getTransactionBook(), transaction.getValueDate(), transaction.getId(),
-            firstTransactionBefore.isPresent() ? firstTransactionBefore.get().getBalanceAfter() : BigDecimal.ZERO);
+        updateBalanceInLaterTransactions(
+            transaction.getTransactionBook(),
+            transaction.getValueDate(),
+            transaction.getId(),
+            firstTransactionBefore.isPresent() ? firstTransactionBefore.get().getBalanceAfter() : BigDecimal.ZERO
+        );
     }
 
     @Transactional(readOnly = true)
@@ -167,26 +180,50 @@ public abstract class TransactionService<T extends Transaction> {
     }
 
     protected Optional<T> findTransactionImmediatelyBefore(T transaction) {
-        return getRepository().findAllOlderThanWithLock(transaction.getTransactionBook(), transaction.getValueDate(),
-            transaction.getId() != null ? transaction.getId() : Long.MAX_VALUE,
-            PageRequest.of(0, 1, Sort.by(Order.desc(Transaction_.VALUE_DATE), Order.desc(Transaction_.ID)))).stream().findFirst();
+        return getRepository()
+            .findAllOlderThanWithLock(
+                transaction.getTransactionBook(),
+                transaction.getValueDate(),
+                transaction.getId() != null ? transaction.getId() : Long.MAX_VALUE,
+                PageRequest.of(0, 1, Sort.by(Order.desc(Transaction_.VALUE_DATE), Order.desc(Transaction_.ID)))
+            )
+            .stream()
+            .findFirst();
     }
 
     protected List<T> findAllAfter(T transaction) {
-        return findAllAfter(transaction.getTransactionBook(), transaction.getValueDate(), transaction.getId() != null ? transaction.getId() : Long.MAX_VALUE);
+        return findAllAfter(
+            transaction.getTransactionBook(),
+            transaction.getValueDate(),
+            transaction.getId() != null ? transaction.getId() : Long.MAX_VALUE
+        );
     }
 
     protected List<T> findAllAfter(TransactionBook transactionBook, Instant valueDate, long id) {
-        return getRepository().findAllNewerThanWithLock(transactionBook, valueDate, id,
-            PageRequest.of(0, Integer.MAX_VALUE, Sort.by(Order.asc(Transaction_.VALUE_DATE), Order.asc(Transaction_.ID))));
+        return getRepository()
+            .findAllNewerThanWithLock(
+                transactionBook,
+                valueDate,
+                id,
+                PageRequest.of(0, Integer.MAX_VALUE, Sort.by(Order.asc(Transaction_.VALUE_DATE), Order.asc(Transaction_.ID)))
+            );
     }
 
     protected void updateBalanceInLaterTransactions(T transaction) {
-        updateBalanceInLaterTransactions(transaction.getTransactionBook(), transaction.getValueDate(),
-            transaction.getId() != null ? transaction.getId() : Long.MAX_VALUE, transaction.getBalanceAfter());
+        updateBalanceInLaterTransactions(
+            transaction.getTransactionBook(),
+            transaction.getValueDate(),
+            transaction.getId() != null ? transaction.getId() : Long.MAX_VALUE,
+            transaction.getBalanceAfter()
+        );
     }
 
-    protected void updateBalanceInLaterTransactions(TransactionBook transactionBook, Instant valueDate, long id, BigDecimal initialBalance) {
+    protected void updateBalanceInLaterTransactions(
+        TransactionBook transactionBook,
+        Instant valueDate,
+        long id,
+        BigDecimal initialBalance
+    ) {
         List<T> laterTransactions = findAllAfter(transactionBook, valueDate, id);
         BigDecimal balance = initialBalance;
         for (T t : laterTransactions) {

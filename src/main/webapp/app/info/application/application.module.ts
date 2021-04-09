@@ -6,6 +6,6 @@ import { ApplicationComponent } from 'app/info/application/application.component
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild([APPLICATION_ROUTE])],
-  declarations: [ApplicationComponent]
+  declarations: [ApplicationComponent],
 })
 export class ApplicationModule {}

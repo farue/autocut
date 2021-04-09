@@ -1,6 +1,8 @@
 package de.farue.autocut.service;
 
 import de.farue.autocut.domain.User;
+import de.farue.autocut.email.ImapFolder;
+import de.farue.autocut.email.ImapFolderFactory;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import javax.mail.MessagingException;
@@ -10,18 +12,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Profile;
 import org.springframework.mail.MailException;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
-import tech.jhipster.config.JHipsterProperties;
-
-import de.farue.autocut.domain.User;
-import de.farue.autocut.email.ImapFolder;
-import de.farue.autocut.email.ImapFolderFactory;
 import tech.jhipster.config.JHipsterConstants;
 import tech.jhipster.config.JHipsterProperties;
 

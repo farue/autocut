@@ -1,8 +1,7 @@
 package de.farue.autocut.service.accounting;
 
-import java.util.Set;
-
 import de.farue.autocut.domain.Tenant;
+import java.util.Set;
 
 public class TenantNameMatchCandidateProvider implements MatchCandidateProvider {
 

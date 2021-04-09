@@ -2,7 +2,6 @@ package de.farue.autocut.batch.fee;
 
 import java.time.Instant;
 import java.time.YearMonth;
-
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;

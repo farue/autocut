@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SelfAdministrationComponent } from "app/self-administration/self-administration.component";
+import { SelfAdministrationComponent } from 'app/self-administration/self-administration.component';
 
 @NgModule({
   imports: [
@@ -22,7 +22,7 @@ import { SelfAdministrationComponent } from "app/self-administration/self-admini
         path: 'janitor',
         loadChildren: () => import('./janitor/janitor.module').then(m => m.JanitorModule),
       },
-    ])
+    ]),
   ],
   exports: [RouterModule],
 })

@@ -1,8 +1,7 @@
 package de.farue.autocut.domain.auditing;
 
-import org.hibernate.envers.RevisionListener;
-
 import de.farue.autocut.security.SpringSecurityAuditorAware;
+import org.hibernate.envers.RevisionListener;
 
 public class AuditorRevisionEntityListener implements RevisionListener {
 

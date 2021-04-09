@@ -43,9 +43,7 @@ public class Levenshtein {
         return distance(lhs, rhs, 1, 1, 1, 1);
     }
 
-    public static int distance(CharSequence source, CharSequence target,
-        int deleteCost, int insertCost,
-        int replaceCost, int swapCost) {
+    public static int distance(CharSequence source, CharSequence target, int deleteCost, int insertCost, int replaceCost, int swapCost) {
         /*
          * Required to facilitate the premise to the algorithm that two swaps of the
          * same character are never required for optimality.
@@ -109,5 +107,4 @@ public class Levenshtein {
         }
         return table[source.length() - 1][target.length() - 1];
     }
-
 }

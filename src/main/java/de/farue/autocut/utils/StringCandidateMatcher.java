@@ -5,10 +5,8 @@ import java.util.BitSet;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 
 public class StringCandidateMatcher {
 
@@ -31,7 +29,8 @@ public class StringCandidateMatcher {
      */
     public static MatchResult findBestMatch(Collection<String> matchCandidates, String sentence) {
         String[] tokens = tokenize(sentence);
-        return matchCandidates.stream()
+        return matchCandidates
+            .stream()
             .sorted((s1, s2) -> s2.length() - s1.length())
             .map(candidate -> match(candidate, tokens))
             .max(MatchResult::compareTo)
@@ -75,14 +74,14 @@ public class StringCandidateMatcher {
         int distance = levenshtein(candidate, joinedTokens);
 
         int length = StringUtils.length(joinedTokens);
-        double errorRatio = length == 0 ? Double.MAX_VALUE :  (double) distance / length;
+        double errorRatio = length == 0 ? Double.MAX_VALUE : (double) distance / length;
 
         return new MatchResult(candidate, tokens, errorRatio, distance);
     }
 
     private static String[] copyMasked(String[] tokens, long bitmask) {
         String[] t = new String[tokens.length];
-        BitSet bitSet = BitSet.valueOf(new long[]{bitmask});
+        BitSet bitSet = BitSet.valueOf(new long[] { bitmask });
         for (int i = bitSet.nextSetBit(0); i != -1; i = bitSet.nextSetBit(i + 1)) {
             t[i] = tokens[i];
         }
@@ -99,6 +98,7 @@ public class StringCandidateMatcher {
 
     @AllArgsConstructor
     public static class MatchResult implements Comparable<MatchResult> {
+
         public final String candidate;
         public final String[] tokens;
         public final double errorRatio;
@@ -112,12 +112,19 @@ public class StringCandidateMatcher {
 
         @Override
         public String toString() {
-            return "MatchResult{" +
-                "candidate='" + candidate + '\'' +
-                ", tokens=" + Arrays.toString(tokens) +
-                ", errorRatio=" + errorRatio +
-                ", distance=" + distance +
-                '}';
+            return (
+                "MatchResult{" +
+                "candidate='" +
+                candidate +
+                '\'' +
+                ", tokens=" +
+                Arrays.toString(tokens) +
+                ", errorRatio=" +
+                errorRatio +
+                ", distance=" +
+                distance +
+                '}'
+            );
         }
     }
 }

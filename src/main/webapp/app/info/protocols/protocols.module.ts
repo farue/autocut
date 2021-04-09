@@ -6,6 +6,6 @@ import { ProtocolsComponent } from 'app/info/protocols/protocols.component';
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild([PROTOCOLS_ROUTE])],
-  declarations: [ProtocolsComponent]
+  declarations: [ProtocolsComponent],
 })
 export class ProtocolsModule {}

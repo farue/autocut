@@ -1,15 +1,17 @@
 package de.farue.autocut.service;
 
+import de.farue.autocut.domain.Apartment;
 import de.farue.autocut.domain.Lease;
+import de.farue.autocut.domain.TransactionBook;
+import de.farue.autocut.domain.enumeration.TransactionBookType;
 import de.farue.autocut.repository.LeaseRepository;
-
+import de.farue.autocut.service.accounting.TransactionBookService;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,13 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import de.farue.autocut.domain.Apartment;
-import de.farue.autocut.domain.Lease;
-import de.farue.autocut.domain.TransactionBook;
-import de.farue.autocut.domain.enumeration.TransactionBookType;
-import de.farue.autocut.repository.LeaseRepository;
-import de.farue.autocut.service.accounting.TransactionBookService;
 
 /**
  * Service Implementation for managing {@link Lease}.
@@ -40,8 +35,7 @@ public class LeaseService {
 
     private final TransactionBookService transactionBookService;
 
-    public LeaseService(LeaseRepository leaseRepository, ApartmentService apartmentService,
-        TransactionBookService transactionBookService) {
+    public LeaseService(LeaseRepository leaseRepository, ApartmentService apartmentService, TransactionBookService transactionBookService) {
         this.leaseRepository = leaseRepository;
         this.apartmentService = apartmentService;
         this.transactionBookService = transactionBookService;
@@ -139,14 +133,11 @@ public class LeaseService {
     }
 
     public Lease createNewLease(String apartmentValue, LocalDate leaseStart, LocalDate leaseEnd) {
-        Apartment apartment = apartmentService.findByStudierendenwerkNumber(apartmentValue)
+        Apartment apartment = apartmentService
+            .findByStudierendenwerkNumber(apartmentValue)
             .orElseThrow(() -> new ApartmentNotFoundException(apartmentValue));
 
-        Lease newLease = new Lease()
-            .start(leaseStart)
-            .end(leaseEnd.plus(1, ChronoUnit.DAYS))
-            .apartment(apartment)
-            .nr(apartmentValue);
+        Lease newLease = new Lease().start(leaseStart).end(leaseEnd.plus(1, ChronoUnit.DAYS)).apartment(apartment).nr(apartmentValue);
         log.debug("Created new lease: {}", newLease);
         return newLease;
     }
@@ -156,12 +147,12 @@ public class LeaseService {
     }
 
     public Optional<Lease> findByStudierendenwerkNumber(String apartmentString, Instant date) {
-        return apartmentService.findByStudierendenwerkNumber(apartmentString)
+        return apartmentService
+            .findByStudierendenwerkNumber(apartmentString)
             .stream()
             .flatMap(apartment -> leaseRepository.findAllByApartmentAndDate(apartment, date).stream())
             .filter(lease -> StringUtils.equals(lease.getNr(), apartmentString))
             .findFirst();
-
     }
 
     public List<Lease> findByApartment(Apartment apartment) {
@@ -177,18 +168,23 @@ public class LeaseService {
             throw new IllegalStateException("Lease must be persisted first");
         }
 
-        Lease loadedLease = leaseRepository.findOneWithEagerRelationships(lease.getId())
+        Lease loadedLease = leaseRepository
+            .findOneWithEagerRelationships(lease.getId())
             .orElseThrow(() -> new IllegalArgumentException("Supplied lease does not exist"));
 
-        return loadedLease.getTransactionBooks().stream()
+        return loadedLease
+            .getTransactionBooks()
+            .stream()
             .filter(book -> book.getType() == TransactionBookType.CASH)
             .findFirst()
-            .orElseGet(() -> {
-                TransactionBook newTransactionBook = transactionBookService.save(new TransactionBook().type(TransactionBookType.CASH));
-                loadedLease.addTransactionBook(newTransactionBook);
-                save(loadedLease);
-                return newTransactionBook;
-            });
+            .orElseGet(
+                () -> {
+                    TransactionBook newTransactionBook = transactionBookService.save(new TransactionBook().type(TransactionBookType.CASH));
+                    loadedLease.addTransactionBook(newTransactionBook);
+                    save(loadedLease);
+                    return newTransactionBook;
+                }
+            );
     }
 
     public TransactionBook getDepositTransactionBook(Lease lease) {
@@ -196,18 +192,25 @@ public class LeaseService {
             throw new IllegalStateException("Lease must be persisted first");
         }
 
-        Lease loadedLease = leaseRepository.findOneWithEagerRelationships(lease.getId())
+        Lease loadedLease = leaseRepository
+            .findOneWithEagerRelationships(lease.getId())
             .orElseThrow(() -> new IllegalArgumentException("Supplied lease does not exist"));
 
-        return loadedLease.getTransactionBooks().stream()
+        return loadedLease
+            .getTransactionBooks()
+            .stream()
             .filter(book -> book.getType() == TransactionBookType.DEPOSIT)
             .findFirst()
-            .orElseGet(() -> {
-                TransactionBook newTransactionBook = transactionBookService.save(new TransactionBook().type(TransactionBookType.DEPOSIT));
-                loadedLease.addTransactionBook(newTransactionBook);
-                save(loadedLease);
-                return newTransactionBook;
-            });
+            .orElseGet(
+                () -> {
+                    TransactionBook newTransactionBook = transactionBookService.save(
+                        new TransactionBook().type(TransactionBookType.DEPOSIT)
+                    );
+                    loadedLease.addTransactionBook(newTransactionBook);
+                    save(loadedLease);
+                    return newTransactionBook;
+                }
+            );
     }
 
     // NB: Not read-only as a new transaction book is created if none exists

@@ -2,22 +2,19 @@ package de.farue.autocut.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import de.farue.autocut.AutocutApp;
+import de.farue.autocut.domain.Lease;
+import de.farue.autocut.domain.TransactionBook;
+import de.farue.autocut.domain.enumeration.TransactionBookType;
+import de.farue.autocut.service.accounting.TransactionBookService;
 import java.time.LocalDate;
-
 import javax.persistence.EntityManager;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.Lease;
-import de.farue.autocut.domain.TransactionBook;
-import de.farue.autocut.domain.enumeration.TransactionBookType;
-import de.farue.autocut.service.accounting.TransactionBookService;
 
 @SpringBootTest(classes = AutocutApp.class)
 class LeaseServiceIT {
@@ -35,10 +32,7 @@ class LeaseServiceIT {
 
     @BeforeEach
     void setUp() {
-        Lease lease = new Lease()
-            .start(LocalDate.of(2015, 10, 10))
-            .end(LocalDate.of(2020, 9, 30))
-            .nr("nr");
+        Lease lease = new Lease().start(LocalDate.of(2015, 10, 10)).end(LocalDate.of(2020, 9, 30)).nr("nr");
         this.lease = leaseService.save(lease);
     }
 
@@ -49,8 +43,7 @@ class LeaseServiceIT {
         @Test
         @Transactional
         void testExistingTransactionBook() {
-            TransactionBook transactionBook = new TransactionBook()
-                .type(TransactionBookType.CASH);
+            TransactionBook transactionBook = new TransactionBook().type(TransactionBookType.CASH);
             transactionBookService.save(transactionBook);
 
             lease.addTransactionBook(transactionBook);
@@ -89,8 +82,7 @@ class LeaseServiceIT {
         @Test
         @Transactional
         void testExistingTransactionBook() {
-            TransactionBook transactionBook = new TransactionBook()
-                .type(TransactionBookType.DEPOSIT);
+            TransactionBook transactionBook = new TransactionBook().type(TransactionBookType.DEPOSIT);
             transactionBookService.save(transactionBook);
 
             lease.addTransactionBook(transactionBook);
@@ -121,5 +113,4 @@ class LeaseServiceIT {
             assertThat(leaseService.getDepositTransactionBook(loadedLease)).isEqualTo(transactionBook);
         }
     }
-
 }

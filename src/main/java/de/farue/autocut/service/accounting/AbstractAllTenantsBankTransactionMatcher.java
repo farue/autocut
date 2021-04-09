@@ -1,19 +1,6 @@
 package de.farue.autocut.service.accounting;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.math.DoubleMath;
-
 import de.farue.autocut.domain.BankTransaction;
 import de.farue.autocut.domain.Tenant;
 import de.farue.autocut.domain.TransactionBook;
@@ -21,6 +8,16 @@ import de.farue.autocut.service.LeaseService;
 import de.farue.autocut.service.TenantService;
 import de.farue.autocut.utils.StringCandidateMatcher;
 import de.farue.autocut.utils.StringCandidateMatcher.MatchResult;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractAllTenantsBankTransactionMatcher implements BankTransactionMatcher {
 
@@ -34,8 +31,11 @@ public abstract class AbstractAllTenantsBankTransactionMatcher implements BankTr
     private final LeaseService leaseService;
     private final MatchCandidateProvider matchCandidateProvider;
 
-    protected AbstractAllTenantsBankTransactionMatcher(TenantService tenantService, LeaseService leaseService,
-        MatchCandidateProvider matchCandidateProvider) {
+    protected AbstractAllTenantsBankTransactionMatcher(
+        TenantService tenantService,
+        LeaseService leaseService,
+        MatchCandidateProvider matchCandidateProvider
+    ) {
         this.tenantService = tenantService;
         this.leaseService = leaseService;
         this.matchCandidateProvider = matchCandidateProvider;

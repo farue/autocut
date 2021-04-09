@@ -1,9 +1,9 @@
-import { formatNumber } from "@angular/common";
-import { Pipe, PipeTransform } from "@angular/core";
-import { TranslateService } from "@ngx-translate/core";
+import { formatNumber } from '@angular/common';
+import { Pipe, PipeTransform } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Pipe({
-  name: 'i18nCurrency'
+  name: 'i18nCurrency',
 })
 export class I18nCurrencyPipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}

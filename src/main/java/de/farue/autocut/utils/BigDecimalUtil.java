@@ -81,6 +81,5 @@ public class BigDecimalUtil {
         public BigDecimal positive() {
             return new Compare(d).isNegative() ? d.negate() : d;
         }
-
     }
 }

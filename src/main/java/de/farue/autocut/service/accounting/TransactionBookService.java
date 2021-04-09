@@ -1,21 +1,19 @@
 package de.farue.autocut.service.accounting;
 
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import de.farue.autocut.domain.Transaction;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.domain.enumeration.TransactionBookType;
 import de.farue.autocut.repository.TransactionBookRepository;
 import de.farue.autocut.repository.TransactionRepository;
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service Implementation for managing {@link TransactionBook}.
@@ -31,8 +29,10 @@ public class TransactionBookService {
     private final TransactionBookRepository transactionBookRepository;
     private final TransactionRepository<Transaction> transactionRepository;
 
-    public TransactionBookService(TransactionBookRepository transactionBookRepository,
-        TransactionRepository<Transaction> transactionRepository) {
+    public TransactionBookService(
+        TransactionBookRepository transactionBookRepository,
+        TransactionRepository<Transaction> transactionRepository
+    ) {
         this.transactionBookRepository = transactionBookRepository;
         this.transactionRepository = transactionRepository;
     }
@@ -85,7 +85,6 @@ public class TransactionBookService {
         return transactionBookRepository.findAll();
     }
 
-
     /**
      * Get one transactionBook by id.
      *
@@ -109,13 +108,17 @@ public class TransactionBookService {
     }
 
     public TransactionBook getOwnCashTransactionBook() {
-        return transactionBookRepository.findOneByNameAndType(OWN_ACCOUNT_NAME, TransactionBookType.CASH)
+        return transactionBookRepository
+            .findOneByNameAndType(OWN_ACCOUNT_NAME, TransactionBookType.CASH)
             .orElseGet(() -> transactionBookRepository.save(new TransactionBook().name(OWN_ACCOUNT_NAME).type(TransactionBookType.CASH)));
     }
 
     public TransactionBook getOwnRevenueTransactionBook() {
-        return transactionBookRepository.findOneByNameAndType(OWN_ACCOUNT_NAME, TransactionBookType.REVENUE)
-            .orElseGet(() -> transactionBookRepository.save(new TransactionBook().name(OWN_ACCOUNT_NAME).type(TransactionBookType.REVENUE)));
+        return transactionBookRepository
+            .findOneByNameAndType(OWN_ACCOUNT_NAME, TransactionBookType.REVENUE)
+            .orElseGet(
+                () -> transactionBookRepository.save(new TransactionBook().name(OWN_ACCOUNT_NAME).type(TransactionBookType.REVENUE))
+            );
     }
 
     @Transactional(readOnly = true)
@@ -125,7 +128,8 @@ public class TransactionBookService {
 
     @Transactional(readOnly = true)
     public BigDecimal getBalanceOn(TransactionBook transactionBook, Instant time) {
-        return transactionRepository.findFirstByTransactionBookBefore(transactionBook, time, PageRequest.of(0, 1))
+        return transactionRepository
+            .findFirstByTransactionBookBefore(transactionBook, time, PageRequest.of(0, 1))
             .stream()
             .map(Transaction::getBalanceAfter)
             .findFirst()
@@ -133,7 +137,8 @@ public class TransactionBookService {
     }
 
     private BigDecimal getBalanceOnWithLock(TransactionBook transactionBook, Instant time) {
-        return transactionRepository.findFirstByTransactionBookBeforeWithLock(transactionBook, time, PageRequest.of(0, 1))
+        return transactionRepository
+            .findFirstByTransactionBookBeforeWithLock(transactionBook, time, PageRequest.of(0, 1))
             .stream()
             .map(Transaction::getBalanceAfter)
             .findFirst()

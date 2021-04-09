@@ -15,6 +15,6 @@ import { AboutComponent } from 'app/info/about/about.component';
   declarations: [AboutComponent, TermsComponent, PrivacyComponent, CookiesComponent, ImprintComponent],
   entryComponents: [],
   providers: [],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AboutModule {}

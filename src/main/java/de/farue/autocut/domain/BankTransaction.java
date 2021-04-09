@@ -3,16 +3,14 @@ package de.farue.autocut.domain;
 import static de.farue.autocut.utils.BigDecimalUtil.compare;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
-import javax.persistence.*;
-import javax.validation.constraints.*;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * A BankTransaction.
@@ -202,6 +200,7 @@ public class BankTransaction extends Transaction {
     public void setContraBankAccount(BankAccount bankAccount) {
         this.contraBankAccount = bankAccount;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     // prettier-ignore
@@ -233,14 +232,16 @@ public class BankTransaction extends Transaction {
             return false;
         }
         BankTransaction otherBankTransaction = (BankTransaction) other;
-        return Objects.equals(getBookingDate(), otherBankTransaction.getBookingDate())
-            && Objects.equals(getValueDate(), otherBankTransaction.getValueDate())
-            && compare(getValue()).isEqualTo(otherBankTransaction.getValue())
-            && Objects.equals(getBankAccount(), otherBankTransaction.getBankAccount())
-            && Objects.equals(getContraBankAccount(), otherBankTransaction.getContraBankAccount())
-            && Objects.equals(getType(), otherBankTransaction.getType())
-            && Objects.equals(getDescription(), otherBankTransaction.getDescription())
-            && Objects.equals(getCustomerRef(), otherBankTransaction.getCustomerRef())
-            && Objects.equals(getPrimanota(), otherBankTransaction.getPrimanota());
+        return (
+            Objects.equals(getBookingDate(), otherBankTransaction.getBookingDate()) &&
+            Objects.equals(getValueDate(), otherBankTransaction.getValueDate()) &&
+            compare(getValue()).isEqualTo(otherBankTransaction.getValue()) &&
+            Objects.equals(getBankAccount(), otherBankTransaction.getBankAccount()) &&
+            Objects.equals(getContraBankAccount(), otherBankTransaction.getContraBankAccount()) &&
+            Objects.equals(getType(), otherBankTransaction.getType()) &&
+            Objects.equals(getDescription(), otherBankTransaction.getDescription()) &&
+            Objects.equals(getCustomerRef(), otherBankTransaction.getCustomerRef()) &&
+            Objects.equals(getPrimanota(), otherBankTransaction.getPrimanota())
+        );
     }
 }

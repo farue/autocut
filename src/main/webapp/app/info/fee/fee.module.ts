@@ -6,6 +6,6 @@ import { FeeComponent } from 'app/info/fee/fee.component';
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild([FEE_ROUTE])],
-  declarations: [FeeComponent]
+  declarations: [FeeComponent],
 })
 export class FeeModule {}

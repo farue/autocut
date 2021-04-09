@@ -5,7 +5,6 @@ import de.farue.autocut.domain.Apartment;
 import de.farue.autocut.domain.enumeration.ApartmentTypes;
 import de.farue.autocut.repository.ApartmentRepository;
 import de.farue.autocut.service.StwApartmentParser.StwApartment;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -110,20 +109,31 @@ public class ApartmentService {
 
         StwApartment stwApartment = StwApartmentParser.parseApartmentString(apartmentString);
         Address address = addressService.findByStudierendenwerkStreetNrIdentifier(stwApartment.getStreetNoIdentifier()).orElseThrow();
-        return apartmentRepository.findOneByNrAndAddress(String.valueOf(stwApartment.getApartmentNr()), address)
-            .map(apartment -> {
-                verifyApartmentType(apartment, stwApartment);
-                return apartment;
-            });
+        return apartmentRepository
+            .findOneByNrAndAddress(String.valueOf(stwApartment.getApartmentNr()), address)
+            .map(
+                apartment -> {
+                    verifyApartmentType(apartment, stwApartment);
+                    return apartment;
+                }
+            );
     }
 
     private void verifyApartmentType(Apartment apartment, StwApartment stwApartment) {
-        boolean ok = (apartment.getType() == ApartmentTypes.SINGLE && stwApartment.getApartmentTypeIdentifier() == 0) || (
-            (apartment.getType() == ApartmentTypes.SHARED || apartment.getType() == ApartmentTypes.SHORT_TERM || apartment.getType() == ApartmentTypes.BACKUP)
-                && (stwApartment.getApartmentTypeIdentifier() == 1 || stwApartment.getApartmentTypeIdentifier() == 2));
+        boolean ok =
+            (apartment.getType() == ApartmentTypes.SINGLE && stwApartment.getApartmentTypeIdentifier() == 0) ||
+            (
+                (
+                    apartment.getType() == ApartmentTypes.SHARED ||
+                    apartment.getType() == ApartmentTypes.SHORT_TERM ||
+                    apartment.getType() == ApartmentTypes.BACKUP
+                ) &&
+                (stwApartment.getApartmentTypeIdentifier() == 1 || stwApartment.getApartmentTypeIdentifier() == 2)
+            );
         if (!ok) {
             throw new IllegalArgumentException(
-                "Apartment type is not correct. Expected " + apartment.getType() + ", but was " + stwApartment.getApartmentTypeIdentifier());
+                "Apartment type is not correct. Expected " + apartment.getType() + ", but was " + stwApartment.getApartmentTypeIdentifier()
+            );
         }
     }
 }

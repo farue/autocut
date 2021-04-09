@@ -2,7 +2,6 @@ package de.farue.autocut.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasItems;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -12,7 +11,6 @@ import de.farue.autocut.domain.User;
 import de.farue.autocut.repository.UserRepository;
 import de.farue.autocut.security.AuthoritiesConstants;
 import de.farue.autocut.service.dto.AdminUserDTO;
-import de.farue.autocut.service.dto.UserDTO;
 import de.farue.autocut.service.mapper.UserMapper;
 import de.farue.autocut.web.rest.vm.ManagedUserVM;
 import java.time.Instant;

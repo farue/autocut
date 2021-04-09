@@ -8,7 +8,7 @@ export const PRIVACY_ROUTE: Route = {
   component: PrivacyComponent,
   data: {
     authorities: [],
-    pageTitle: 'about.privacy.title'
+    pageTitle: 'about.privacy.title',
   },
-  canActivate: [UserRouteAccessService]
+  canActivate: [UserRouteAccessService],
 };

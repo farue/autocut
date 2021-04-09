@@ -6,6 +6,6 @@ export const APPLICATION_ROUTE: Route = {
   path: '',
   component: ApplicationComponent,
   data: {
-    pageTitle: 'application.title'
-  }
+    pageTitle: 'application.title',
+  },
 };

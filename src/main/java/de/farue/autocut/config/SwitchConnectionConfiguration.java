@@ -1,15 +1,13 @@
 package de.farue.autocut.config;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 import de.farue.autocut.service.internetaccess.AutoReconnectingSshShell;
 import de.farue.autocut.service.internetaccess.SshConnection;
 import de.farue.autocut.service.internetaccess.SwitchCommandExecutor;
+import java.util.HashMap;
+import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwitchConnectionConfiguration {

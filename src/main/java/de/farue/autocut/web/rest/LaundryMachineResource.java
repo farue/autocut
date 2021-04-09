@@ -45,9 +45,13 @@ public class LaundryMachineResource {
     private final UserRepository userRepository;
     private final TenantService tenantService;
 
-    public LaundryMachineResource(LaundryMachineService laundryMachineService,
-        LaundryMachineRepository laundryMachineRepository, LaundryMachineProgramRepository laundryMachineProgramRepository,
-        UserRepository userRepository, TenantService tenantService) {
+    public LaundryMachineResource(
+        LaundryMachineService laundryMachineService,
+        LaundryMachineRepository laundryMachineRepository,
+        LaundryMachineProgramRepository laundryMachineProgramRepository,
+        UserRepository userRepository,
+        TenantService tenantService
+    ) {
         this.laundryMachineService = laundryMachineService;
         this.laundryMachineRepository = laundryMachineRepository;
         this.laundryMachineProgramRepository = laundryMachineProgramRepository;
@@ -188,18 +192,25 @@ public class LaundryMachineResource {
 
     @PostMapping("/laundry-machines/{id}/unlock")
     public void unlock(@PathVariable("id") Long machineId, @RequestParam Long programId) {
-        LaundryMachineProgram program = laundryMachineProgramRepository.findById(programId)
-            .orElseThrow(IllegalArgumentException::new);
+        LaundryMachineProgram program = laundryMachineProgramRepository.findById(programId).orElseThrow(IllegalArgumentException::new);
         if (!program.getLaundryMachine().getId().equals(machineId)) {
             throw new IllegalArgumentException(
-                "Supplied LaundryMachineProgram does not belong to LaundryMachine. program=[" + program + "], machine id=[" + machineId + "]");
+                "Supplied LaundryMachineProgram does not belong to LaundryMachine. program=[" +
+                program +
+                "], machine id=[" +
+                machineId +
+                "]"
+            );
         }
-        SecurityUtils.getCurrentUserLogin()
+        SecurityUtils
+            .getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
             .flatMap(tenantService::findOneByUser)
-            .ifPresent(tenant -> {
-                laundryMachineService.purchaseAndUnlock(tenant, program.getLaundryMachine(), program);
-            });
+            .ifPresent(
+                tenant -> {
+                    laundryMachineService.purchaseAndUnlock(tenant, program.getLaundryMachine(), program);
+                }
+            );
     }
 
     @PostMapping("/laundry-machines/{id}/disable")

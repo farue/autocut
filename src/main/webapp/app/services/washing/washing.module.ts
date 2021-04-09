@@ -8,6 +8,6 @@ import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild([WASHING_ROUTE]), NgSelectModule, FormsModule],
-  declarations: [WashingComponent]
+  declarations: [WashingComponent],
 })
 export class WashingModule {}

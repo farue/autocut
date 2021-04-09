@@ -4,7 +4,6 @@ import static de.farue.autocut.utils.BigDecimalUtil.compare;
 import static de.farue.autocut.utils.BigDecimalUtil.modify;
 
 import java.math.BigDecimal;
-
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

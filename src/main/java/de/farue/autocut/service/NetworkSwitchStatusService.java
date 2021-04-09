@@ -1,11 +1,11 @@
 package de.farue.autocut.service;
 
+import com.google.common.collect.Table;
 import de.farue.autocut.domain.InternetAccess;
 import de.farue.autocut.domain.NetworkSwitch;
 import de.farue.autocut.domain.NetworkSwitchStatus;
 import de.farue.autocut.repository.NetworkSwitchStatusRepository;
 import de.farue.autocut.service.internetaccess.SwitchStatusColumns;
-
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.TemporalAmount;
@@ -15,14 +15,11 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.google.common.collect.Table;
 
 /**
  * Service Implementation for managing {@link NetworkSwitchStatus}.
@@ -38,8 +35,10 @@ public class NetworkSwitchStatusService {
     private final NetworkSwitchStatusRepository networkSwitchStatusRepository;
     private final NetworkSwitchService networkSwitchService;
 
-    public NetworkSwitchStatusService(NetworkSwitchStatusRepository networkSwitchStatusRepository,
-        NetworkSwitchService networkSwitchService) {
+    public NetworkSwitchStatusService(
+        NetworkSwitchStatusRepository networkSwitchStatusRepository,
+        NetworkSwitchService networkSwitchService
+    ) {
         this.networkSwitchStatusRepository = networkSwitchStatusRepository;
         this.networkSwitchService = networkSwitchService;
     }
@@ -130,7 +129,8 @@ public class NetworkSwitchStatusService {
     }
 
     public NetworkSwitchStatus getSwitchInterfaceStatus(InternetAccess internetAccess) {
-        return getSwitchStatus(internetAccess.getNetworkSwitch()).stream()
+        return getSwitchStatus(internetAccess.getNetworkSwitch())
+            .stream()
             .filter(status -> StringUtils.equals(status.getPort(), internetAccess.getSwitchPortName()))
             .findFirst()
             .orElseThrow();
@@ -141,16 +141,24 @@ public class NetworkSwitchStatusService {
         Instant timestamp = Instant.now();
 
         if (!switchStatus.isEmpty()) {
-            boolean outdated = switchStatus.stream()
-                .anyMatch(status -> status.getTimestamp().plus(OUTDATED_DURATION).isBefore(timestamp));
+            boolean outdated = switchStatus.stream().anyMatch(status -> status.getTimestamp().plus(OUTDATED_DURATION).isBefore(timestamp));
             if (!outdated) {
                 return switchStatus;
             }
         }
 
         Table<String, String, String> status = networkSwitchService.getStatus(networkSwitch);
-        Map<String, NetworkSwitchStatus> switchStatusByInterface = switchStatus.stream().collect(Collectors.toMap(NetworkSwitchStatus::getPort,
-            Function.identity(), (s1, s2) -> {throw new RuntimeException("");}));
+        Map<String, NetworkSwitchStatus> switchStatusByInterface = switchStatus
+            .stream()
+            .collect(
+                Collectors.toMap(
+                    NetworkSwitchStatus::getPort,
+                    Function.identity(),
+                    (s1, s2) -> {
+                        throw new RuntimeException("");
+                    }
+                )
+            );
         for (Entry<String, Map<String, String>> entry : status.rowMap().entrySet()) {
             Map<String, String> row = entry.getValue();
             String interfaceName = row.get(SwitchStatusColumns.PORT);

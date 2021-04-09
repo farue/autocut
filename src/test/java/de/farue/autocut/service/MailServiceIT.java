@@ -1,12 +1,13 @@
 package de.farue.autocut.service;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import de.farue.autocut.IntegrationTest;
 import de.farue.autocut.config.Constants;
 import de.farue.autocut.domain.User;
+import de.farue.autocut.email.ImapFolder;
+import de.farue.autocut.email.ImapFolderFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,9 +33,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.thymeleaf.spring5.SpringTemplateEngine;
-
-import de.farue.autocut.email.ImapFolder;
-import de.farue.autocut.email.ImapFolderFactory;
 import tech.jhipster.config.JHipsterProperties;
 
 /**

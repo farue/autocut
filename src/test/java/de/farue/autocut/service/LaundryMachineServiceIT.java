@@ -4,21 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.verify;
 
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.List;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
-import org.springframework.transaction.annotation.Transactional;
-
 import de.farue.autocut.AutocutApp;
 import de.farue.autocut.domain.InternalTransaction;
 import de.farue.autocut.domain.LaundryMachine;
@@ -31,6 +16,19 @@ import de.farue.autocut.domain.enumeration.LaundryMachineType;
 import de.farue.autocut.domain.enumeration.TransactionType;
 import de.farue.autocut.repository.LaundryMachineProgramRepository;
 import de.farue.autocut.service.accounting.InternalTransactionService;
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(classes = AutocutApp.class)
 class LaundryMachineServiceIT {
@@ -79,16 +77,10 @@ class LaundryMachineServiceIT {
             .preWash(false);
         this.program = laundryMachineProgramRepository.save(program);
 
-        Lease lease = new Lease()
-            .nr("no")
-            .start(LocalDate.now())
-            .end(LocalDate.now());
+        Lease lease = new Lease().nr("no").start(LocalDate.now()).end(LocalDate.now());
         this.lease = leaseService.save(lease);
 
-        Tenant tenant = new Tenant()
-            .firstName("Bob")
-            .lastName("Miller")
-            .lease(lease);
+        Tenant tenant = new Tenant().firstName("Bob").lastName("Miller").lease(lease);
         this.tenant = tenantService.save(tenant);
     }
 
@@ -109,7 +101,10 @@ class LaundryMachineServiceIT {
         laundryMachineService.purchaseAndUnlock(tenant, machine, program);
 
         List<InternalTransaction> transactions = internalTransactionService
-            .findAllForTransactionBook(transactionBook, PageRequest.of(0, 1, Sort.by(Order.desc(Transaction_.VALUE_DATE), Order.desc(Transaction_.ID))))
+            .findAllForTransactionBook(
+                transactionBook,
+                PageRequest.of(0, 1, Sort.by(Order.desc(Transaction_.VALUE_DATE), Order.desc(Transaction_.ID)))
+            )
             .getContent();
         InternalTransaction washTransaction = transactions.get(0);
 
@@ -121,7 +116,8 @@ class LaundryMachineServiceIT {
     @Test
     @Transactional
     void testInsufficientFunds() {
-        assertThatExceptionOfType(InsufficientFundsException.class).isThrownBy(() -> laundryMachineService.purchaseAndUnlock(tenant, machine, program));
+        assertThatExceptionOfType(InsufficientFundsException.class)
+            .isThrownBy(() -> laundryMachineService.purchaseAndUnlock(tenant, machine, program));
     }
 
     @Test
@@ -141,6 +137,7 @@ class LaundryMachineServiceIT {
             .description("test");
         internalTransactionService.save(transaction);
 
-        assertThatExceptionOfType(LaundryMachineUnavailableException.class).isThrownBy(() -> laundryMachineService.purchaseAndUnlock(tenant, machine, program));
+        assertThatExceptionOfType(LaundryMachineUnavailableException.class)
+            .isThrownBy(() -> laundryMachineService.purchaseAndUnlock(tenant, machine, program));
     }
 }

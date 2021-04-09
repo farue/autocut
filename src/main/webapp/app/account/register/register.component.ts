@@ -67,10 +67,12 @@ export class RegisterComponent implements AfterViewInit {
       const end = this.registerForm.get(['end'])!.value;
       const login = this.registerForm.get(['login'])!.value;
       const email = this.registerForm.get(['email'])!.value;
-      this.registerService.save({ login, firstName, lastName, apartment, start, end, email, password, langKey: this.translateService.currentLang }).subscribe(
-        () => (this.success = true),
-        response => this.processError(response)
-      );
+      this.registerService
+        .save({ login, firstName, lastName, apartment, start, end, email, password, langKey: this.translateService.currentLang })
+        .subscribe(
+          () => (this.success = true),
+          response => this.processError(response)
+        );
     }
   }
 

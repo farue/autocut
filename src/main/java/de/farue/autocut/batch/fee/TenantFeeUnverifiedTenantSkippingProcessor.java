@@ -1,9 +1,8 @@
 package de.farue.autocut.batch.fee;
 
-import org.springframework.batch.item.ItemProcessor;
-
 import de.farue.autocut.domain.Lease;
 import de.farue.autocut.domain.Tenant;
+import org.springframework.batch.item.ItemProcessor;
 
 public class TenantFeeUnverifiedTenantSkippingProcessor implements ItemProcessor<Lease, Lease> {
 

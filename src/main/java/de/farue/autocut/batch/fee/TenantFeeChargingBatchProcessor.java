@@ -1,19 +1,5 @@
 package de.farue.autocut.batch.fee;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.YearMonth;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
-
 import de.farue.autocut.domain.InternalTransaction;
 import de.farue.autocut.domain.Lease;
 import de.farue.autocut.domain.TransactionBook;
@@ -25,14 +11,30 @@ import de.farue.autocut.service.LeaseService;
 import de.farue.autocut.service.accounting.BookingBuilder;
 import de.farue.autocut.service.accounting.BookingTemplate;
 import de.farue.autocut.utils.DateUtil;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.YearMonth;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 
 public class TenantFeeChargingBatchProcessor extends AbstractTenantFeeBatchProcessor {
 
     private InternalTransactionRepository transactionRepository;
     private ActivityService activityService;
 
-    public TenantFeeChargingBatchProcessor(InternalTransactionRepository transactionRepository, LeaseService leaseService, ActivityService activityService,
-        TenantFeeServiceQualifierDataMapper serviceQualifierDataMapper) {
+    public TenantFeeChargingBatchProcessor(
+        InternalTransactionRepository transactionRepository,
+        LeaseService leaseService,
+        ActivityService activityService,
+        TenantFeeServiceQualifierDataMapper serviceQualifierDataMapper
+    ) {
         super(leaseService, serviceQualifierDataMapper);
         this.transactionRepository = transactionRepository;
         this.activityService = activityService;
@@ -76,11 +78,13 @@ public class TenantFeeChargingBatchProcessor extends AbstractTenantFeeBatchProce
     @Override
     protected List<BookingTemplate> doProcess(Lease lease, TransactionBook transactionBook) {
         LocalDate firstDateToCharge = findFirstDateToCharge(transactionBook)
-            .orElseGet(() -> {
-                LocalDate leaseStart = lease.getStart();
-                LocalDate systemStart = LocalDate.of(2020, 4, 1);
-                return DateUtil.max(leaseStart, systemStart);
-            });
+            .orElseGet(
+                () -> {
+                    LocalDate leaseStart = lease.getStart();
+                    LocalDate systemStart = LocalDate.of(2020, 4, 1);
+                    return DateUtil.max(leaseStart, systemStart);
+                }
+            );
 
         LocalDate currentDateToCharge = chargePeriod.atDay(firstDateToCharge.getDayOfMonth());
         LocalDate leaseEnd = lease.getEnd();
@@ -91,20 +95,29 @@ public class TenantFeeChargingBatchProcessor extends AbstractTenantFeeBatchProce
         }
 
         // since the "until date" in datesUntil is exclusive, add a day
-        return firstDateToCharge.datesUntil(lastDateToCharge.plusDays(1), Period.ofMonths(1))
-            .map(chargeDate ->
-                BookingBuilder.bookingTemplate()
-                    .bookingDate(bookingDate)
-                    .valueDate(valueDate)
-                    .transactionTemplate(BookingBuilder.transactionTemplate()
-                        .type(TransactionType.FEE)
-                        .transactionBook(transactionBook)
-                        .description(createDescription(chargeDate))
-                        .issuer(ISSUER)
-                        .serviceQualifier(createServiceQualifierData(chargeDate, activityService.isEligibleForDiscount(lease, chargeDate)))
-                        .value(activityService.getFeeValue(lease, chargeDate))
-                        .build())
-                    .build())
+        return firstDateToCharge
+            .datesUntil(lastDateToCharge.plusDays(1), Period.ofMonths(1))
+            .map(
+                chargeDate ->
+                    BookingBuilder
+                        .bookingTemplate()
+                        .bookingDate(bookingDate)
+                        .valueDate(valueDate)
+                        .transactionTemplate(
+                            BookingBuilder
+                                .transactionTemplate()
+                                .type(TransactionType.FEE)
+                                .transactionBook(transactionBook)
+                                .description(createDescription(chargeDate))
+                                .issuer(ISSUER)
+                                .serviceQualifier(
+                                    createServiceQualifierData(chargeDate, activityService.isEligibleForDiscount(lease, chargeDate))
+                                )
+                                .value(activityService.getFeeValue(lease, chargeDate))
+                                .build()
+                        )
+                        .build()
+            )
             .collect(Collectors.toList());
     }
 
@@ -117,7 +130,12 @@ public class TenantFeeChargingBatchProcessor extends AbstractTenantFeeBatchProce
 
     private Optional<InternalTransaction> findLastFeeCharge(TransactionBook transactionBook) {
         return transactionRepository
-            .findAllByTransactionBookAndIssuer(transactionBook, ISSUER, PageRequest.of(0, 1, Sort.by(Order.desc(Transaction_.SERVICE_QULIFIER)))).stream()
+            .findAllByTransactionBookAndIssuer(
+                transactionBook,
+                ISSUER,
+                PageRequest.of(0, 1, Sort.by(Order.desc(Transaction_.SERVICE_QULIFIER)))
+            )
+            .stream()
             .findFirst();
     }
 }

@@ -2,15 +2,6 @@ package de.farue.autocut.service.accounting;
 
 import static de.farue.autocut.utils.BigDecimalUtil.compare;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import de.farue.autocut.domain.InternalTransaction;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.domain.enumeration.TransactionType;
@@ -18,6 +9,13 @@ import de.farue.autocut.repository.InternalTransactionRepository;
 import de.farue.autocut.repository.TransactionRepository;
 import de.farue.autocut.service.InsufficientFundsException;
 import de.farue.autocut.service.TransactionService;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
@@ -27,9 +25,11 @@ public class InternalTransactionService extends TransactionService<InternalTrans
     private final TransactionBookService transactionBookService;
     private final InternalBookingContraTransactionProvider internalBookingContraTransactionProvider;
 
-    public InternalTransactionService(InternalTransactionRepository transactionRepository,
+    public InternalTransactionService(
+        InternalTransactionRepository transactionRepository,
         TransactionBookService transactionBookService,
-        InternalBookingContraTransactionProvider internalBookingContraTransactionProvider) {
+        InternalBookingContraTransactionProvider internalBookingContraTransactionProvider
+    ) {
         this.transactionRepository = transactionRepository;
         this.transactionBookService = transactionBookService;
         this.internalBookingContraTransactionProvider = internalBookingContraTransactionProvider;
@@ -64,8 +64,11 @@ public class InternalTransactionService extends TransactionService<InternalTrans
         validate(bookingTemplate);
 
         List<InternalTransaction> bookingTransactions = mapToTransactions(bookingTemplate);
-        List<InternalTransaction> contraTransactions = contraTransactionsProvider
-            .calculateContraTransactions(bookingTransactions, bookingTemplate.getBookingDate(), bookingTemplate.getValueDate());
+        List<InternalTransaction> contraTransactions = contraTransactionsProvider.calculateContraTransactions(
+            bookingTransactions,
+            bookingTemplate.getBookingDate(),
+            bookingTemplate.getValueDate()
+        );
 
         List<InternalTransaction> transactions = new ArrayList<>();
         transactions.addAll(bookingTransactions);
@@ -85,10 +88,12 @@ public class InternalTransactionService extends TransactionService<InternalTrans
     }
 
     private void checkBalances(InternalTransaction transaction) {
-        boolean illegalBalance = switch (transaction.getTransactionType()) {
-            case DEBIT, PURCHASE, TRANSFER -> compare(transaction.getValue()).isNegative() && compare(transaction.getBalanceAfter()).isNegative();
-            default -> false;
-        };
+        boolean illegalBalance =
+            switch (transaction.getTransactionType()) {
+                case DEBIT, PURCHASE, TRANSFER -> compare(transaction.getValue()).isNegative() &&
+                compare(transaction.getBalanceAfter()).isNegative();
+                default -> false;
+            };
         if (illegalBalance) {
             throw new InsufficientFundsException();
         }
@@ -99,17 +104,22 @@ public class InternalTransactionService extends TransactionService<InternalTrans
     }
 
     private List<InternalTransaction> mapToTransactions(BookingTemplate bookingTemplate) {
-        return bookingTemplate.getTransactionTemplates().stream()
-            .map(transactionTemplate -> new InternalTransaction()
-                .transactionType(transactionTemplate.getType())
-                .bookingDate(bookingTemplate.getBookingDate())
-                .valueDate(bookingTemplate.getValueDate())
-                .value(transactionTemplate.getValue())
-                .transactionBook(transactionTemplate.getTransactionBook())
-                .description(transactionTemplate.getDescription())
-                .issuer(transactionTemplate.getIssuer())
-                .serviceQulifier(transactionTemplate.getServiceQualifier())
-                .recipient(transactionTemplate.getRecipient()))
+        return bookingTemplate
+            .getTransactionTemplates()
+            .stream()
+            .map(
+                transactionTemplate ->
+                    new InternalTransaction()
+                        .transactionType(transactionTemplate.getType())
+                        .bookingDate(bookingTemplate.getBookingDate())
+                        .valueDate(bookingTemplate.getValueDate())
+                        .value(transactionTemplate.getValue())
+                        .transactionBook(transactionTemplate.getTransactionBook())
+                        .description(transactionTemplate.getDescription())
+                        .issuer(transactionTemplate.getIssuer())
+                        .serviceQulifier(transactionTemplate.getServiceQualifier())
+                        .recipient(transactionTemplate.getRecipient())
+            )
             .collect(Collectors.toList());
     }
 
@@ -117,16 +127,26 @@ public class InternalTransactionService extends TransactionService<InternalTrans
         if (transaction.getTransactionType() == TransactionType.CREDIT) {
             if (compare(transaction.getValue()).isNegative()) {
                 throw new IllegalArgumentException(
-                    String.format("InternalTransaction type %s requires the value not to be negative, but was %s", transaction.getTransactionType(),
-                        transaction.getValue()));
+                    String.format(
+                        "InternalTransaction type %s requires the value not to be negative, but was %s",
+                        transaction.getTransactionType(),
+                        transaction.getValue()
+                    )
+                );
             }
-        } else if (transaction.getTransactionType() == TransactionType.DEBIT
-            || transaction.getTransactionType() == TransactionType.FEE
-            || transaction.getTransactionType() == TransactionType.PURCHASE) {
+        } else if (
+            transaction.getTransactionType() == TransactionType.DEBIT ||
+            transaction.getTransactionType() == TransactionType.FEE ||
+            transaction.getTransactionType() == TransactionType.PURCHASE
+        ) {
             if (compare(transaction.getValue()).isPositive()) {
                 throw new IllegalArgumentException(
-                    String.format("InternalTransaction type %s requires the value not to be positive, but was %s", transaction.getTransactionType(),
-                        transaction.getValue()));
+                    String.format(
+                        "InternalTransaction type %s requires the value not to be positive, but was %s",
+                        transaction.getTransactionType(),
+                        transaction.getValue()
+                    )
+                );
             }
         }
     }
@@ -137,7 +157,8 @@ public class InternalTransactionService extends TransactionService<InternalTrans
         for (TransactionTemplate transactionTemplate : bookingTemplate.getTransactionTemplates()) {
             if (!transactionTemplateSet.add(transactionTemplate.getTransactionBook())) {
                 throw new IllegalArgumentException(
-                    "Booking template contains multiple transactions for transaction book " + transactionTemplate.getTransactionBook());
+                    "Booking template contains multiple transactions for transaction book " + transactionTemplate.getTransactionBook()
+                );
             }
         }
 
@@ -146,16 +167,26 @@ public class InternalTransactionService extends TransactionService<InternalTrans
             if (transactionTemplate.getType() == TransactionType.CREDIT) {
                 if (compare(transactionTemplate.getValue()).isNegative()) {
                     throw new IllegalArgumentException(
-                        String.format("InternalTransaction type %s requires the value not to be negative, but was %s", transactionTemplate.getType(),
-                            transactionTemplate.getValue()));
+                        String.format(
+                            "InternalTransaction type %s requires the value not to be negative, but was %s",
+                            transactionTemplate.getType(),
+                            transactionTemplate.getValue()
+                        )
+                    );
                 }
-            } else if (transactionTemplate.getType() == TransactionType.DEBIT
-                || transactionTemplate.getType() == TransactionType.FEE
-                || transactionTemplate.getType() == TransactionType.PURCHASE) {
+            } else if (
+                transactionTemplate.getType() == TransactionType.DEBIT ||
+                transactionTemplate.getType() == TransactionType.FEE ||
+                transactionTemplate.getType() == TransactionType.PURCHASE
+            ) {
                 if (compare(transactionTemplate.getValue()).isPositive()) {
                     throw new IllegalArgumentException(
-                        String.format("InternalTransaction type %s requires the value not to be positive, but was %s", transactionTemplate.getType(),
-                            transactionTemplate.getValue()));
+                        String.format(
+                            "InternalTransaction type %s requires the value not to be positive, but was %s",
+                            transactionTemplate.getType(),
+                            transactionTemplate.getValue()
+                        )
+                    );
                 }
             }
         }

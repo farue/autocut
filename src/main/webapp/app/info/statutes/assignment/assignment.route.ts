@@ -7,6 +7,6 @@ export const ASSIGNMENT_ROUTE: Route = {
   component: AssignmentComponent,
   data: {
     authorities: [],
-    pageTitle: 'statutes.assignment.title'
+    pageTitle: 'statutes.assignment.title',
   },
 };

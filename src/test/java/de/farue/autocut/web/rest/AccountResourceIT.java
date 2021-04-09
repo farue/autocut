@@ -288,10 +288,8 @@ class AccountResourceIT {
             .andExpect(status().isCreated());
 
         // Second (non activated) user
-        restAccountMockMvc.perform(
-            post("/api/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(TestUtil.convertObjectToJsonBytes(secondUser)))
+        restAccountMockMvc
+            .perform(post("/api/register").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(secondUser)))
             .andExpect(status().is4xxClientError());
 
         Optional<User> testUser = userRepository.findOneByEmailIgnoreCase("alice@example.com");

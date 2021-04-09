@@ -31,7 +31,8 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
         },
         {
           path: 'self-administration',
-          loadChildren: () => import('./self-administration/self-administration-routing.module').then(m => m.SelfAdministrationRoutingModule),
+          loadChildren: () =>
+            import('./self-administration/self-administration-routing.module').then(m => m.SelfAdministrationRoutingModule),
         },
         {
           path: 'teams',

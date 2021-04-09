@@ -1,11 +1,9 @@
 package de.farue.autocut.config;
 
+import de.farue.autocut.service.internetaccess.SshConnection;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
-
-import de.farue.autocut.service.internetaccess.SshConnection;
 
 /**
  * Properties specific to Autocut.
