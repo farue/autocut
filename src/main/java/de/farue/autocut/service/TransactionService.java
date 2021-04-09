@@ -125,6 +125,18 @@ public abstract class TransactionService<T extends Transaction> {
     }
 
     /**
+     * Get all the internalTransactions.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    @Transactional(readOnly = true)
+    public Page<T> findAll(Pageable pageable) {
+        log.debug("Request to get all InternalTransactions");
+        return getRepository().findAll(pageable);
+    }
+
+    /**
      * Get all the transactions with eager load of many-to-many relationships.
      *
      * @return the list of entities.

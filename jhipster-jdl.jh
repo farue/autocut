@@ -16,6 +16,7 @@ application {
         clientThemeVariant light
     }
     entities *
+    paginate InternalTransaction with pagination
 }
 
 // ****************************************************

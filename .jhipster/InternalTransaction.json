@@ -70,7 +70,7 @@
   "changelogDate": "20191117011752",
   "entityTableName": "internal_transaction",
   "dto": "no",
-  "pagination": "no",
+  "pagination": "pagination",
   "service": "serviceClass",
   "jpaMetamodelFiltering": false,
   "fluentMethods": true,

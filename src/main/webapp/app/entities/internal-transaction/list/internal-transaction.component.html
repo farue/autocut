@@ -3,7 +3,7 @@
     <span jhiTranslate="autocutApp.internalTransaction.home.title">Internal Transactions</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
+      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="autocutApp.internalTransaction.home.refreshListLabel">Refresh List</span>
       </button>
@@ -31,19 +31,38 @@
   <div class="table-responsive" id="entities" *ngIf="internalTransactions && internalTransactions.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
-        <tr>
-          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="autocutApp.internalTransaction.type">Type</span></th>
-          <th scope="col"><span jhiTranslate="autocutApp.internalTransaction.bookingDate">Booking Date</span></th>
-          <th scope="col"><span jhiTranslate="autocutApp.internalTransaction.valueDate">Value Date</span></th>
-          <th scope="col"><span jhiTranslate="autocutApp.internalTransaction.value">Value</span></th>
-          <th scope="col"><span jhiTranslate="autocutApp.internalTransaction.balanceAfter">Balance After</span></th>
-          <th scope="col"><span jhiTranslate="autocutApp.internalTransaction.description">Description</span></th>
-          <th scope="col"><span jhiTranslate="autocutApp.internalTransaction.serviceQulifier">Service Qulifier</span></th>
-          <th scope="col"><span jhiTranslate="autocutApp.internalTransaction.issuer">Issuer</span></th>
-          <th scope="col"><span jhiTranslate="autocutApp.internalTransaction.recipient">Recipient</span></th>
-          <th scope="col"><span jhiTranslate="autocutApp.internalTransaction.left">Left</span></th>
-          <th scope="col"><span jhiTranslate="autocutApp.internalTransaction.transactionBook">Transaction Book</span></th>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="type">
+            <span jhiTranslate="autocutApp.internalTransaction.type">Type</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="bookingDate">
+            <span jhiTranslate="autocutApp.internalTransaction.bookingDate">Booking Date</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="valueDate">
+            <span jhiTranslate="autocutApp.internalTransaction.valueDate">Value Date</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="value">
+            <span jhiTranslate="autocutApp.internalTransaction.value">Value</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="balanceAfter">
+            <span jhiTranslate="autocutApp.internalTransaction.balanceAfter">Balance After</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="description">
+            <span jhiTranslate="autocutApp.internalTransaction.description">Description</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="serviceQulifier">
+            <span jhiTranslate="autocutApp.internalTransaction.serviceQulifier">Service Qulifier</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="issuer">
+            <span jhiTranslate="autocutApp.internalTransaction.issuer">Issuer</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="recipient">
+            <span jhiTranslate="autocutApp.internalTransaction.recipient">Recipient</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="transactionBook.id">
+            <span jhiTranslate="autocutApp.internalTransaction.transactionBook">Transaction Book</span> <fa-icon icon="sort"></fa-icon>
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -61,12 +80,6 @@
           <td>{{ internalTransaction.serviceQulifier }}</td>
           <td>{{ internalTransaction.issuer }}</td>
           <td>{{ internalTransaction.recipient }}</td>
-          <td>
-            <span *ngFor="let left of internalTransaction.lefts; let last = last">
-              <a class="form-control-static" [routerLink]="['/internal-transaction', left.id, 'view']">{{ left.id }}</a
-              >{{ last ? '' : ', ' }}
-            </span>
-          </td>
           <td>
             <div *ngIf="internalTransaction.transactionBook">
               <a [routerLink]="['/transaction-book', internalTransaction.transactionBook?.id, 'view']">{{
@@ -105,5 +118,23 @@
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <div *ngIf="internalTransactions && internalTransactions.length > 0">
+    <div class="row justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="row justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
   </div>
 </div>
