@@ -37,7 +37,7 @@ nohttp:
 gradle-compile:
   stage: build
   script:
-    - gradle compileJava -x webpack
+    - gradle compileJava -x webapp
   artifacts:
     paths:
       - build/
@@ -50,7 +50,7 @@ frontend-compile:
     - export NG_CLI_ANALYTICS="false"
     - gradle npmSetup -PnodeInstall
   script:
-    - gradle webpack -PnodeInstall
+    - gradle webapp -PnodeInstall
   cache:
     key: 'frontend-$CI_COMMIT_REF_SLUG'
     paths:
@@ -65,7 +65,7 @@ frontend-compile:
 gradle-test:
   stage: test
   script:
-    - gradle test -x webpack
+    - gradle test -x webapp
   artifacts:
     reports:
       junit: build/test-results/test/TEST-*.xml
@@ -87,7 +87,7 @@ gradle-integration-test:
     DOCKER_HOST: 'tcp://docker:2376'
   stage: test
   script:
-    - gradle integrationTest -Ptestcontainers -x webpack
+    - gradle integrationTest -Ptestcontainers -x webapp
   artifacts:
     reports:
       junit: build/test-results/integrationTest/TEST-*.xml
@@ -161,9 +161,9 @@ docker-push:
   dependencies:
     - gradle-package
   script:
-    # -x webpack relies on this job getting the build artifacts from gradle-package
+    # -x webapp relies on this job getting the build artifacts from gradle-package
     # alternatively we could add -PnodeInstall
-    - gradle jib -Pprod -x webpack -Djib.to.image=$CI_REGISTRY_IMAGE -Djib.to.tags=$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA -Djib.to.auth.username=gitlab-ci-token -Djib.to.auth.password=$CI_BUILD_TOKEN
+    - gradle jib -Pprod -x webapp -Djib.to.image=$CI_REGISTRY_IMAGE -Djib.to.tags=$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA -Djib.to.auth.username=gitlab-ci-token -Djib.to.auth.password=$CI_BUILD_TOKEN
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
 
