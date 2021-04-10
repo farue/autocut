@@ -1,10 +1,5 @@
-:host {
-  ::ng-deep .ui-panel-images {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: contain !important;
-  }
-  ::ng-deep .p-galleria-thumbnails-bottom {
-    margin: 0 auto;
-  }
+// override bootstrap carousel properties that interfere with material design carousel
+:host ::ng-deep .carousel-indicators {
+  margin-left: 0;
+  margin-right: 0;
 }
