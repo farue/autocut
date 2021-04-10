@@ -75,4 +75,12 @@ export class NavbarComponent implements OnInit {
   getUserName(): string {
     return this.isAuthenticated() ? this.accountService.getUserName() : '';
   }
+
+  getCurrentLanguageImg(): string {
+    return this.getLanguageImg(this.translateService.currentLang);
+  }
+
+  getLanguageImg(lang: string): string {
+    return `content/images/${lang}.svg`;
+  }
 }
