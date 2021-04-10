@@ -506,11 +506,19 @@
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
       >
-        <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu" data-cy="accountMenu">
+        <a *ngIf="!isAuthenticated()" routerLink="/login" class="nav-link" href="javascript:void(0);" id="login-menu" data-cy="loginMenu">
+          <fa-icon icon="user" [fixedWidth]="true"></fa-icon>
+        </a>
+        <a
+          *ngIf="isAuthenticated()"
+          class="nav-link dropdown-toggle"
+          ngbDropdownToggle
+          href="javascript:void(0);"
+          id="account-menu"
+          data-cy="accountMenu"
+        >
           <span *ngIf="!getImageUrl()">
             <fa-icon icon="user" [fixedWidth]="true"></fa-icon>
-            <span *ngIf="!getUserName()" jhiTranslate="global.menu.account.main">Account</span>
-            <span *ngIf="getUserName()" class="d-md-inline-block d-lg-none d-xl-inline-block">{{ getUserName() }}</span>
           </span>
           <span *ngIf="getImageUrl()">
             <img [src]="getImageUrl()" class="profile-image rounded-circle" alt="Avatar" />
