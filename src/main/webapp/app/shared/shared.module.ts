@@ -13,9 +13,10 @@ import { SortDirective } from './sort/sort.directive';
 import { ItemCountComponent } from './pagination/item-count.component';
 import { I18nDatePipe } from 'app/shared/pipes/i18n-date.pipe';
 import { I18nCurrencyPipe } from 'app/shared/pipes/i18n-currency.pipe';
+import { MaterialModule } from 'app/shared/material.module';
 
 @NgModule({
-  imports: [SharedLibsModule],
+  imports: [SharedLibsModule, MaterialModule],
   declarations: [
     FindLanguageFromKeyPipe,
     TranslateDirective,
@@ -46,6 +47,7 @@ import { I18nCurrencyPipe } from 'app/shared/pipes/i18n-currency.pipe';
     SortDirective,
     ItemCountComponent,
     // Autocut
+    MaterialModule,
     I18nDatePipe,
     I18nCurrencyPipe,
   ],

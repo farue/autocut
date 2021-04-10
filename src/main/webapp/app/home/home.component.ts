@@ -1,11 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
-import { PhotoService } from 'app/home/photo.service';
-import { Photo } from 'app/home/photo.model';
 
 @Component({
   selector: 'jhi-home',
@@ -16,37 +13,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   account: Account | null = null;
   authSubscription?: Subscription;
 
-  images: Photo[] = [];
-
-  responsiveOptions: any[] = [
-    {
-      breakpoint: '1024px',
-      numVisible: 5,
-    },
-    {
-      breakpoint: '768px',
-      numVisible: 3,
-    },
-    {
-      breakpoint: '560px',
-      numVisible: 1,
-    },
-  ];
-
-  constructor(private accountService: AccountService, private router: Router, private photoService: PhotoService) {}
+  constructor(private accountService: AccountService) {}
 
   ngOnInit(): void {
     this.authSubscription = this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
-    this.photoService.getPhotoContainers().subscribe(images => (this.images = images));
-    // this.photoService.getPhotoContainers2().then(images => (this.images = images));
   }
 
   isAuthenticated(): boolean {
     return this.accountService.isAuthenticated();
-  }
-
-  login(): void {
-    this.router.navigate(['/login']);
   }
 
   ngOnDestroy(): void {

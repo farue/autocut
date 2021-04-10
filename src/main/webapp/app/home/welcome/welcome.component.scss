@@ -1,0 +1,10 @@
+:host {
+  ::ng-deep .ui-panel-images {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+  }
+  ::ng-deep .p-galleria-thumbnails-bottom {
+    margin: 0 auto;
+  }
+}
