@@ -506,7 +506,15 @@
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
       >
-        <a *ngIf="!isAuthenticated()" routerLink="/login" class="nav-link" href="javascript:void(0);" id="login-menu" data-cy="loginMenu">
+        <a
+          *ngIf="!isAuthenticated()"
+          routerLink="/login"
+          class="nav-link"
+          href="javascript:void(0);"
+          id="login-menu"
+          (click)="collapseNavbar()"
+          data-cy="loginMenu"
+        >
           <fa-icon icon="user" [fixedWidth]="true"></fa-icon>
         </a>
         <a
