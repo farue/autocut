@@ -32,6 +32,8 @@ import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
 import { SelfAdministrationModule } from 'app/self-administration/self-administration.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DateAdapter } from '@angular/material/core';
+// import { ApartmentInputComponent } from './ui/apartment-input/apartment-input.component';
 
 @NgModule({
   imports: [
@@ -67,7 +69,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
     httpInterceptorProviders,
   ],
-  declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
+  declarations: [
+    MainComponent,
+    NavbarComponent,
+    ErrorComponent,
+    PageRibbonComponent,
+    ActiveMenuDirective,
+    FooterComponent,
+    // ApartmentInputComponent,
+  ],
   bootstrap: [MainComponent],
 })
 export class AppModule {
@@ -75,7 +85,8 @@ export class AppModule {
     applicationConfigService: ApplicationConfigService,
     iconLibrary: FaIconLibrary,
     dpConfig: NgbDatepickerConfig,
-    translateService: TranslateService
+    translateService: TranslateService,
+    dateAdapter: DateAdapter<dayjs.Dayjs>
   ) {
     applicationConfigService.setEndpointPrefix(SERVER_API_URL);
     registerLocaleData(locale);
@@ -84,5 +95,7 @@ export class AppModule {
     dpConfig.minDate = { year: dayjs().subtract(100, 'year').year(), month: 1, day: 1 };
     translateService.setDefaultLang('de');
     translateService.use('de');
+    console.log(dayjs.locale());
+    dateAdapter.setLocale('de');
   }
 }

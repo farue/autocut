@@ -64,4 +64,8 @@ export class ApartmentService {
     }
     return apartmentCollection;
   }
+
+  getByNr(nr: string): Observable<EntityResponseType> {
+    return this.http.get<IApartment>(`${this.resourceUrl}/nr=${nr}`, { observe: 'response' });
+  }
 }

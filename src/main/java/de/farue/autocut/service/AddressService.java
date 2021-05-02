@@ -103,22 +103,14 @@ public class AddressService {
         addressRepository.deleteById(id);
     }
 
-    public Optional<Address> findByStudierendenwerkStreetNrIdentifier(int streetNrIdentifier) {
+    public Address findByStudierendenwerkStreetNrIdentifier(int streetNrIdentifier) {
         return switch (streetNrIdentifier) {
-            case 3 -> addressRepository.findOneByStreetAndStreetNumberAndZipAndCityAndCountry(
-                "Rütscher Str.",
-                "123",
-                "52072",
-                "Aachen",
-                "Germany"
-            );
-            case 5 -> addressRepository.findOneByStreetAndStreetNumberAndZipAndCityAndCountry(
-                "Rütscher Str.",
-                "125",
-                "52072",
-                "Aachen",
-                "Germany"
-            );
+            case 3 -> addressRepository
+                .findOneByStreetAndStreetNumberAndZipAndCityAndCountry("Rütscher Str.", "123", "52072", "Aachen", "Germany")
+                .orElseThrow(() -> new RuntimeException("The address was not found in the database."));
+            case 5 -> addressRepository
+                .findOneByStreetAndStreetNumberAndZipAndCityAndCountry("Rütscher Str.", "125", "52072", "Aachen", "Germany")
+                .orElseThrow(() -> new RuntimeException("The address was not found in the database."));
             default -> throw new IllegalArgumentException("Street no identifier needs to be 3 or 5, but was " + streetNrIdentifier);
         };
     }

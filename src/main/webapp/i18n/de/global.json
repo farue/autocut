@@ -116,13 +116,16 @@
         "confirmpassword": {
           "required": "Sie müssen das Passwort bestätigen.",
           "minlength": "Das bestätigte Passwort muss mindestens 4 Zeichen lang sein",
-          "maxlength": "Das bestätigte Passwort darf nicht länger als 50 Zeichen sein"
+          "maxlength": "Das bestätigte Passwort darf nicht länger als 50 Zeichen sein",
+          "mismatch": "Die Passwörter stimmen nicht überein."
         },
         "email": {
           "required": "Ihre Email Adresse wird benötigt.",
           "invalid": "Ihre Email Adresse ist ungültig.",
           "minlength": "Ihre Email Adresse muss mindestens 5 Zeichen lang sein",
-          "maxlength": "Ihre Email Adresse darf nicht länger als 50 Zeichen sein"
+          "maxlength": "Ihre Email Adresse darf nicht länger als 50 Zeichen sein",
+          "university": "Benutze möglichst eine RWTH oder FH Aachen Email Adresse. Ansonsten benötigen wir von dir ein Foto eines Ausweises.",
+          "alreadyExists": "Ein Benutzeraccount mit dieser Email Adresse existiert bereits."
         }
       }
     },

@@ -1,0 +1,34 @@
+.register-container {
+  width: 100%;
+  max-width: 800px;
+}
+
+// adds breaks to the mat-checkboxes with long labels
+::ng-deep .mat-checkbox-layout {
+  white-space: normal !important;
+}
+
+// rather than center the checkbox, put the checkbox in the first line
+::ng-deep .mat-checkbox-inner-container {
+  margin-top: 3px !important;
+}
+
+// undo Bootswatch styles
+textarea,
+textarea.form-control,
+input.form-control,
+input[type='text'],
+input[type='password'],
+input[type='email'],
+input[type='number'],
+[type='text'].form-control,
+[type='password'].form-control,
+[type='email'].form-control,
+[type='tel'].form-control,
+[contenteditable].form-control {
+  box-shadow: none;
+}
+
+.warn-icon {
+  color: orange;
+}

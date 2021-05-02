@@ -1,5 +1,6 @@
 package de.farue.autocut.web.rest;
 
+import de.farue.autocut.repository.UserRepository;
 import de.farue.autocut.service.UserService;
 import de.farue.autocut.service.dto.UserDTO;
 import java.util.*;
@@ -26,9 +27,11 @@ public class PublicUserResource {
     private final Logger log = LoggerFactory.getLogger(PublicUserResource.class);
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
-    public PublicUserResource(UserService userService) {
+    public PublicUserResource(UserService userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -60,5 +63,17 @@ public class PublicUserResource {
     @GetMapping("/authorities")
     public List<String> getAuthorities() {
         return userService.getAuthorities();
+    }
+
+    @GetMapping("/users/username={username}")
+    public ResponseEntity<Void> getUserExists(@PathVariable String username) {
+        return userRepository.findOneByLogin(username.toLowerCase()).isPresent()
+            ? ResponseEntity.ok().build()
+            : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/users/email={email}")
+    public ResponseEntity<Void> getEmailExists(@PathVariable String email) {
+        return userRepository.findOneByEmailIgnoreCase(email).isPresent() ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 }

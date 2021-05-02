@@ -11,6 +11,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRippleModule } from '@angular/material/core';
 import { MatPasswordStrengthModule } from '@angular-material-extensions/password-strength';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDayjsDateModule } from './material/dayjs-date.module';
 
 @NgModule({
   exports: [
@@ -26,6 +30,10 @@ import { MatPasswordStrengthModule } from '@angular-material-extensions/password
     MatIconModule,
     MatRippleModule,
     MatPasswordStrengthModule,
+    MatStepperModule,
+    MatProgressSpinnerModule,
+    MatDatepickerModule,
+    MatDayjsDateModule,
   ],
 })
 export class MaterialModule {}

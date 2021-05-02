@@ -108,7 +108,7 @@ public class ApartmentService {
         Objects.requireNonNull(apartmentString);
 
         StwApartment stwApartment = StwApartmentParser.parseApartmentString(apartmentString);
-        Address address = addressService.findByStudierendenwerkStreetNrIdentifier(stwApartment.getStreetNoIdentifier()).orElseThrow();
+        Address address = addressService.findByStudierendenwerkStreetNrIdentifier(stwApartment.getStreetNoIdentifier());
         return apartmentRepository
             .findOneByNrAndAddress(String.valueOf(stwApartment.getApartmentNr()), address)
             .map(

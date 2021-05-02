@@ -1,48 +1,129 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-
-import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/config/error.constants';
 import { RegisterService } from './register.service';
+import { IApartment } from 'app/entities/apartment/apartment.model';
+import { ApartmentValidator } from 'app/account/register/apartment-validator';
+import { ImmediateErrorStateMatcher } from 'app/shared/material/immediate-error-state-matcher';
+import * as dayjs from 'dayjs';
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
+import { heartBeatAnimation } from 'angular-animations';
+import { MatStepper } from '@angular/material/stepper';
+import { ErrorStateMatcher } from '@angular/material/core';
+import { UsernameValidator } from 'app/account/register/username-validator';
+import { EmailValidator } from 'app/account/register/email-validator';
+
+export function dateNotAfter(maxDate: dayjs.Dayjs): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const date: dayjs.Dayjs | string | null = control.value;
+    if (!date || typeof date === 'string') {
+      // if date is of type string, it could not be parsed so other errors will be shown
+      return null;
+    }
+    if (date.isAfter(maxDate)) {
+      return { invalidMaxDate: true };
+    }
+    return null;
+  };
+}
+
+export function passwordsMatchValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const password = control.get('password');
+    const confirmPassword = control.get('confirmPassword');
+    return password && confirmPassword && password.value !== confirmPassword.value ? { passwordMismatch: true } : null;
+  };
+}
+
+export class PasswordMismatchErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null): boolean {
+    return !!control?.touched && !!control.parent && control.parent.hasError('passwordMismatch');
+  }
+}
 
 @Component({
   selector: 'jhi-register',
   templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss'],
+  animations: [heartBeatAnimation({ anchor: 'heartBeat', direction: '=>' })],
 })
-export class RegisterComponent implements AfterViewInit {
-  @ViewChild('firstName', { static: false })
+export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('username', { static: false })
   firstName?: ElementRef;
+  @ViewChild('stepper')
+  stepper?: MatStepper;
 
-  doNotMatch = false;
-  error = false;
-  errorEmailExists = false;
-  errorUserExists = false;
-  success = false;
+  onDestroy$ = new Subject<void>();
 
-  registerForm = this.fb.group({
+  verticalStepper = false;
+  selectedIndex = 0;
+  animationEnd = false;
+  loading = false;
+
+  immediateErrorStateMatcher = new ImmediateErrorStateMatcher();
+  passwordMismatchErrorStateMatcher = new PasswordMismatchErrorStateMatcher();
+  maxStartDate!: dayjs.Dayjs;
+  // success = false;
+  success = this.selectedIndex === 3;
+  apartment: IApartment | null = null;
+
+  userForm = this.fb.group(
+    {
+      login: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(50),
+          Validators.pattern('^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^[_.@A-Za-z0-9-]+$'),
+        ],
+        [this.usernameValidator.validate.bind(this.usernameValidator)],
+      ],
+      email: [
+        '',
+        [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email],
+        [this.emailValidator.validate.bind(this.emailValidator)],
+      ],
+      password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+      networkTerms: [false, [Validators.requiredTrue]],
+      generalTerms: [false, [Validators.requiredTrue]],
+    },
+    { validators: passwordsMatchValidator() }
+  );
+
+  personForm = this.fb.group({
     firstName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
     lastName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
-    apartment: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(5), Validators.pattern('\\d{2}-\\d{2}')]],
-    start: ['', [Validators.required]],
-    end: ['', [Validators.required]],
-    login: [
+    apartment: [
       '',
-      [
-        Validators.required,
-        Validators.minLength(1),
-        Validators.maxLength(50),
-        Validators.pattern('^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^[_.@A-Za-z0-9-]+$'),
-      ],
+      [Validators.required, Validators.pattern('\\d{2}-\\d{2}')],
+      [this.apartmentValidator.validate.bind(this.apartmentValidator)],
     ],
-    email: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
-    confirmPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
-    networkTerms: [false, [Validators.requiredTrue]],
-    generalTerms: [false, [Validators.requiredTrue]],
+    start: ['', [Validators.required, dateNotAfter(this.maxStartDate)]],
+    end: ['', [Validators.required]],
   });
 
-  constructor(private translateService: TranslateService, private registerService: RegisterService, private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private translateService: TranslateService,
+    private registerService: RegisterService,
+    public usernameValidator: UsernameValidator,
+    public emailValidator: EmailValidator,
+    public apartmentValidator: ApartmentValidator,
+    private bpObserver: BreakpointObserver
+  ) {}
+
+  ngOnInit(): void {
+    this.maxStartDate = dayjs().add(1, 'month');
+    this.bpObserver
+      .observe(['(max-width: 959px)'])
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((state: BreakpointState) => (this.verticalStepper = state.matches));
+  }
 
   ngAfterViewInit(): void {
     if (this.firstName) {
@@ -50,39 +131,42 @@ export class RegisterComponent implements AfterViewInit {
     }
   }
 
-  register(): void {
-    this.doNotMatch = false;
-    this.error = false;
-    this.errorEmailExists = false;
-    this.errorUserExists = false;
-
-    const password = this.registerForm.get(['password'])!.value;
-    if (password !== this.registerForm.get(['confirmPassword'])!.value) {
-      this.doNotMatch = true;
-    } else {
-      const firstName = this.registerForm.get(['firstName'])!.value;
-      const lastName = this.registerForm.get(['lastName'])!.value;
-      const apartment = this.registerForm.get(['apartment'])!.value;
-      const start = this.registerForm.get(['start'])!.value;
-      const end = this.registerForm.get(['end'])!.value;
-      const login = this.registerForm.get(['login'])!.value;
-      const email = this.registerForm.get(['email'])!.value;
-      this.registerService
-        .save({ login, firstName, lastName, apartment, start, end, email, password, langKey: this.translateService.currentLang })
-        .subscribe(
-          () => (this.success = true),
-          response => this.processError(response)
-        );
-    }
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 
-  private processError(response: HttpErrorResponse): void {
-    if (response.status === 400 && response.error.type === LOGIN_ALREADY_USED_TYPE) {
-      this.errorUserExists = true;
-    } else if (response.status === 400 && response.error.type === EMAIL_ALREADY_USED_TYPE) {
-      this.errorEmailExists = true;
-    } else {
-      this.error = true;
+  selectionChanged(event: StepperSelectionEvent): void {
+    this.selectedIndex = event.selectedIndex;
+    this.animationEnd = false;
+  }
+
+  register(): void {
+    this.loading = true;
+    const userData = this.userForm.getRawValue();
+    const personData = this.personForm.getRawValue();
+    this.registerService.save({ ...userData, ...personData, langKey: this.translateService.currentLang }).subscribe(
+      () => {
+        this.loading = false;
+        this.stepper?.next();
+      },
+      () => {
+        this.loading = false;
+      }
+    );
+  }
+
+  isUniversityEmail(email: string): boolean {
+    if (!email) {
+      return false;
     }
+    return /[.@]rwth-aachen\.de$/.test(email) || /[.@]fh-aachen\.de$/.test(email);
+  }
+
+  getApartmentString(apartment: IApartment): string {
+    if (apartment.address?.street && apartment.address.streetNumber && apartment.nr) {
+      return `${apartment.address.street} ${apartment.address.streetNumber} Whg. ${apartment.nr}`;
+    }
+    return '';
   }
 }

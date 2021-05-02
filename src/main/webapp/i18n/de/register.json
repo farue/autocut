@@ -2,43 +2,66 @@
   "register": {
     "title": "Registrierung",
     "form": {
+      "steps": {
+        "user": "Erstelle ein Benutzerkonto",
+        "person": "Über dich",
+        "documents": "Dokumente hochladen",
+        "done": "Fertig"
+      },
+      "buttons": {
+        "back": "Zurück",
+        "next": "Weiter",
+        "submit": "Absenden"
+      },
       "button": "Registrieren",
-      "start": "Mietbeginn laut Vertrag",
-      "end": "Mietende laut Vertrag",
+      "address": "Adresse",
+      "duration": "Mietdauer laut Vertrag",
+      "start": "Mietbeginn",
+      "end": "Mietende",
       "networkTerms": "Ich stimme den <a target=\"_blank\" href=\"/info/statutes/network\" [routerLink]=\"['/info', 'statutes', 'network']\">FaRueNet Nutzungsbedingungen</a> zu.",
       "generalTerms": "Ich stimme den <a target=\"_blank\" href=\"/info/about/terms\" [routerLink]=\"['/info', 'about', 'terms']\">Nutzungsbedingungen</a>, der <a target=\"_blank\" href=\"/info/about/privacy\" [routerLink]=\"['/info', 'about', 'privacy']\">Datenschutzerklärung</a> und der <a target=\"_blank\" href=\"/info/about/cookies\" [routerLink]=\"['/info', 'about', 'cookies']\">Cookie Richtlinie</a> zu."
     },
     "messages": {
       "validate": {
         "firstName": {
-          "required": "Ihr Vorname wird benötigt.",
+          "required": "Dein Vorname wird benötigt.",
           "minlength": "min. 1 Zeichen",
           "maxlength": "max. 50 Zeichen"
         },
         "lastName": {
-          "required": "Ihr Nachname wird benötigt.",
+          "required": "Dein Nachname wird benötigt.",
           "minlength": "min. 1 Zeichen",
           "maxlength": "max. 50 Zeichen"
         },
         "apartment": {
-          "required": "Ihre Wohnungsnr. wird benötigt.",
+          "required": "Deine Wohnungsnr. wird benötigt.",
           "minlength": "5 Zeichen (z.B. 30-41)",
           "maxlength": "5 Zeichen (z.B. 30-41)",
-          "pattern": "Format xx-xx (s. Mietvertrag)"
+          "pattern": "Format xx-xx (s. Mietvertrag)",
+          "invalid": "Die Wohnungsnr. gibt es nicht."
         },
         "login": {
-          "required": "Ihr Benutzername wird benötigt.",
-          "minlength": "Ihr Benutzername muss mindestens ein Zeichen lang sein.",
-          "maxlength": "Ihr Benutzername darf nicht länger als 50 Zeichen sein.",
-          "pattern": "Ihr Benutzername ist ungültig."
+          "required": "Dein Benutzername wird benötigt.",
+          "minlength": "Dein Benutzername muss mindestens ein Zeichen lang sein.",
+          "maxlength": "Dein Benutzername darf nicht länger als 50 Zeichen sein.",
+          "pattern": "Dein Benutzername ist ungültig.",
+          "alreadyExists": "Dieser Benutzername ist bereits vergeben."
+        },
+        "start": {
+          "required": "Der Mietbeginn wird benötigt.",
+          "invalidMaxDate": "Der Mietbeginn darf maximal einen Monat in der Zukunft liegen."
+        },
+        "end": {
+          "required": "Das Mietende wird benötigt.",
+          "invalid": "Das Mietende muss nach dem Mietbeginn liegen."
         }
       },
-      "success": "<strong>Registrierung gespeichert!</strong> Bitte überprüfen Sie Ihre E-Mails für die Bestätigung.",
-      "error": {
-        "fail": "<strong>Registrierung fehlgeschlagen!</strong> Bitte versuchen Sie es später nochmal.",
-        "userexists": "<strong>Benutzername bereits vergeben!</strong> Bitte wählen Sie einen anderen aus.",
-        "emailexists": "<strong>E-Mail-Adresse wird bereits verwendet!</strong> Bitte wählen Sie eine andere aus."
+      "success": {
+        "done": "Registrierung abgeschlossen!",
+        "confimationEmail": "Eine Bestätigungsmail wurde an <b>{{email}}</b> verschickt.",
+        "verificationNotice": "Beachte, dass du dich erst anmelden kannst, sobald wir deine Daten verifiziert und deinen Account manuell freigeschaltet haben. Dies kann bis zu zwei Tage in Anspruch nehmen."
       }
-    }
+    },
+    "login": "Du hast schon ein Konto?"
   }
 }
