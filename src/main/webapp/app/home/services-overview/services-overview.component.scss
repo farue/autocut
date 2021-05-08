@@ -1,5 +1,5 @@
-.card {
-  max-width: 200px;
+.service-item:hover {
+  text-decoration: none;
 }
 
 .card-header {
@@ -8,10 +8,6 @@
 
 .card-img {
   max-width: 200px;
-}
-
-.clickable {
-  cursor: pointer;
 }
 
 // reduce font size on small screens
