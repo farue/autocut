@@ -16,6 +16,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDayjsDateModule } from './material/dayjs-date.module';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   exports: [
@@ -36,6 +37,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatRippleModule,
     MatSelectModule,
     MatStepperModule,
+    MatTableModule,
   ],
 })
 export class MaterialModule {}
