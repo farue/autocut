@@ -8,6 +8,7 @@ import de.farue.autocut.repository.UserRepository;
 import de.farue.autocut.security.SecurityUtils;
 import de.farue.autocut.service.LaundryMachineService;
 import de.farue.autocut.service.TenantService;
+import de.farue.autocut.service.dto.WashitActivateDTO;
 import de.farue.autocut.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -19,8 +20,10 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
@@ -191,26 +194,31 @@ public class LaundryMachineResource {
     }
 
     @PostMapping("/laundry-machines/{id}/unlock")
-    public void unlock(@PathVariable("id") Long machineId, @RequestParam Long programId) {
-        LaundryMachineProgram program = laundryMachineProgramRepository.findById(programId).orElseThrow(IllegalArgumentException::new);
-        if (!program.getLaundryMachine().getId().equals(machineId)) {
-            throw new IllegalArgumentException(
-                "Supplied LaundryMachineProgram does not belong to LaundryMachine. program=[" +
-                program +
-                "], machine id=[" +
-                machineId +
-                "]"
+    public ResponseEntity<WashitActivateDTO> unlock(@PathVariable("id") Long machineId, @RequestParam Long programId) {
+        LaundryMachine laundryMachine = laundryMachineService
+            .findOne(machineId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        LaundryMachineProgram program = laundryMachineProgramRepository
+            .findById(programId)
+            .orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Supplied LaundryMachineProgram does not exist.")
+            );
+        if (!program.getLaundryMachine().equals(laundryMachine)) {
+            throw new ResponseStatusException(
+                HttpStatus.UNPROCESSABLE_ENTITY,
+                "Supplied LaundryMachineProgram does not belong to LaundryMachine."
             );
         }
-        SecurityUtils
+
+        Optional<WashitActivateDTO> responseOptional = SecurityUtils
             .getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
             .flatMap(tenantService::findOneByUser)
-            .ifPresent(
-                tenant -> {
-                    laundryMachineService.purchaseAndUnlock(tenant, program.getLaundryMachine(), program);
-                }
-            );
+            .map(tenant -> laundryMachineService.purchaseAndUnlock(tenant, program.getLaundryMachine(), program));
+        if (responseOptional.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok().body(responseOptional.get());
     }
 
     @PostMapping("/laundry-machines/{id}/disable")

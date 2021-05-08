@@ -46,14 +46,16 @@ export class ButtonLoadingDirective implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.loading.currentValue) {
-      this.nativeElement.classList.add('mat-loading');
-      this.matButton.disabled = true;
-      this.createSpinner();
-    } else if (!changes.loading.firstChange) {
-      this.nativeElement.classList.remove('mat-loading');
-      this.matButton.disabled = this.disabled;
-      this.destroySpinner();
+    if ('loading' in changes) {
+      if (changes.loading.currentValue) {
+        this.nativeElement.classList.add('mat-loading');
+        this.matButton.disabled = true;
+        this.createSpinner();
+      } else if (!changes.loading.firstChange) {
+        this.nativeElement.classList.remove('mat-loading');
+        this.matButton.disabled = this.disabled;
+        this.destroySpinner();
+      }
     }
   }
 

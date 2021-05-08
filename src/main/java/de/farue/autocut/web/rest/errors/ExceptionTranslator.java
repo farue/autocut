@@ -16,6 +16,7 @@ import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -219,5 +220,52 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     private boolean containsPackageName(String message) {
         // This list is for sure not complete
         return StringUtils.containsAny(message, "org.", "java.", "net.", "javax.", "com.", "io.", "de.", "de.farue.autocut");
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleInsufficientFundsException(
+        de.farue.autocut.service.InsufficientFundsException ex,
+        NativeWebRequest request
+    ) {
+        InsufficientFundsException problem = new InsufficientFundsException();
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleLaundryMachineUnavailableException(
+        de.farue.autocut.service.LaundryMachineUnavailableException ex,
+        NativeWebRequest request
+    ) {
+        LaundryMachineUnavailableException problem = new LaundryMachineUnavailableException();
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @Override
+    public ResponseEntity<Problem> handleAuthentication(AuthenticationException e, NativeWebRequest request) {
+        if (e.getCause() instanceof de.farue.autocut.security.UserNotActivatedException) {
+            return handleUserNotActivatedException(request);
+        } else if (e.getCause() instanceof de.farue.autocut.security.UserNotVerifiedException) {
+            return handleUserNotVerifiedException(request);
+        } else {
+            return SecurityAdviceTrait.super.handleAuthentication(e, request);
+        }
+    }
+
+    private ResponseEntity<Problem> handleUserNotActivatedException(NativeWebRequest request) {
+        UserNotActivatedException problem = new UserNotActivatedException();
+        return create(problem, request, HeaderUtil.createAlert(applicationName, problem.getMessage(), "userManagement"));
+    }
+
+    private ResponseEntity<Problem> handleUserNotVerifiedException(NativeWebRequest request) {
+        UserNotVerifiedException problem = new UserNotVerifiedException();
+        return create(problem, request, HeaderUtil.createAlert(applicationName, problem.getMessage(), "userManagement"));
     }
 }

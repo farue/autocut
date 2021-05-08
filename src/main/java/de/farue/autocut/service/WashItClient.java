@@ -1,5 +1,6 @@
 package de.farue.autocut.service;
 
+import de.farue.autocut.service.dto.WashitActivateDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,7 +11,7 @@ import tech.jhipster.config.JHipsterConstants;
 @Profile(JHipsterConstants.SPRING_PROFILE_PRODUCTION)
 public interface WashItClient {
     @PostMapping("/activate/{id}")
-    void activate(@PathVariable("id") Integer id);
+    WashitActivateDTO activate(@PathVariable("id") Integer id);
 
     @PostMapping("/enable-permanently/{id}")
     void enablePermanently(@PathVariable("id") Integer id);

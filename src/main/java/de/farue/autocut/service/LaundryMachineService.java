@@ -16,6 +16,7 @@ import de.farue.autocut.repository.UserRepository;
 import de.farue.autocut.service.accounting.BookingBuilder;
 import de.farue.autocut.service.accounting.BookingTemplate;
 import de.farue.autocut.service.accounting.InternalTransactionService;
+import de.farue.autocut.service.dto.WashitActivateDTO;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
@@ -148,7 +149,7 @@ public class LaundryMachineService {
         return laundryMachineRepository.findAllWithEagerRelationshipsAndStatus(enabled);
     }
 
-    public void purchaseAndUnlock(Tenant tenant, LaundryMachine machine, LaundryMachineProgram program) {
+    public WashitActivateDTO purchaseAndUnlock(Tenant tenant, LaundryMachine machine, LaundryMachineProgram program) {
         if (!machine.equals(program.getLaundryMachine())) {
             throw new IllegalArgumentException(
                 "Supplied LaundryMachineProgram does not belong to LaundryMachine. " + machine + ", " + program
@@ -188,9 +189,10 @@ public class LaundryMachineService {
 
         transactionService.saveWithContraTransaction(bookingTemplate);
         washHistoryService.save(washHistory);
-        washItClient.activate(Integer.valueOf(machine.getIdentifier()));
+        WashitActivateDTO response = washItClient.activate(Integer.valueOf(machine.getIdentifier()));
 
-        log.debug("{} unlocked by {}", machine.getName(), tenant);
+        log.debug("{} unlocked by {}: {}", machine.getName(), tenant, response);
+        return response;
     }
 
     public void disableMachine(Long id) {

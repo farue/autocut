@@ -1,0 +1,6 @@
+<div class="position-relative">
+  <mat-progress-spinner [value]="progressbarValue" [diameter]="size"></mat-progress-spinner>
+  <div class="timer-string" [ngStyle]="{ width: size + 'px', height: size + 'px' }">
+    <div>{{ secondsLeftString() }}</div>
+  </div>
+</div>
