@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivateResponse, WashingService } from 'app/services/washing/washing.service';
 import { LaundryMachine } from 'app/entities/laundry-machine/laundry-machine.model';
 import { LaundryMachineProgram } from 'app/entities/laundry-machine-program/laundry-machine-program.model';
@@ -63,7 +63,12 @@ export class WashingComponent implements OnInit {
     [FormProperties.PROTECT]: [{ value: null, disabled: true }],
   });
 
-  constructor(private fb: FormBuilder, private washingService: WashingService, private translateService: TranslateService) {
+  constructor(
+    private fb: FormBuilder,
+    private washingService: WashingService,
+    private translateService: TranslateService,
+    private cd: ChangeDetectorRef
+  ) {
     this.loadingMachines = true;
     this.washingService
       .getAllLaundryMachines()
@@ -286,6 +291,9 @@ export class WashingComponent implements OnInit {
     );
     this.setFormControlStatus(FormProperties.PREWASH, this.isShowPreWashCheckbox(), null, !!this.selectedPreWash);
     this.setFormControlStatus(FormProperties.PROTECT, this.isShowProtectCheckbox(), null, !!this.selectedProtect);
+
+    // TODO: Otherwise changed after checked error
+    this.cd.detectChanges();
   }
 
   updatePossibleValues(): void {
