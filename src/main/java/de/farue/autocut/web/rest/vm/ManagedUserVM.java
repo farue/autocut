@@ -2,7 +2,9 @@ package de.farue.autocut.web.rest.vm;
 
 import de.farue.autocut.service.StwApartmentParser;
 import de.farue.autocut.service.dto.AdminUserDTO;
+import de.farue.autocut.validation.MaxFuture;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
@@ -23,7 +25,7 @@ public class ManagedUserVM extends AdminUserDTO {
     @Pattern(regexp = StwApartmentParser.APARTMENT_REGEX)
     private String apartment;
 
-    @PastOrPresent
+    @MaxFuture(amount = 1L, unit = ChronoUnit.MONTHS)
     private LocalDate start;
 
     @FutureOrPresent
