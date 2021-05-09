@@ -26,6 +26,10 @@
       "error": {
         "loadingTransactionsFailed": "Loading the transactions failed."
       }
+    },
+    "descriptions": {
+      "tenantFee": "Tenant fee",
+      "signupFee": "Signup fee"
     }
   }
 }

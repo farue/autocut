@@ -4,6 +4,7 @@ import * as dayjs from 'dayjs';
 
 @Pipe({
   name: 'i18nDate',
+  pure: false,
 })
 export class I18nDatePipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}

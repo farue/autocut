@@ -1,0 +1,23 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet id="update-laundry_machine-i18n-names" author="brunecker">
+        <update tableName="laundry_machine">
+            <column name="name" type="varchar(255)" valueComputed="REPLACE(name, 'Washing Machine', 'i18n{autocutApp.LaundryMachineType.WASHING_MACHINE}')"/>
+            <where>name like '%Washing Machine%'</where>
+        </update>
+        <update tableName="laundry_machine">
+            <column name="name" type="varchar(255)" valueComputed="REPLACE(name, 'Dryer', 'i18n{autocutApp.LaundryMachineType.DRYER}')"/>
+            <where>name like '%Dryer%'</where>
+        </update>
+
+        <update tableName="transaction">
+            <column name="description" type="varchar(255)" valueComputed="REPLACE(description, 'Washing Machine', 'i18n{autocutApp.LaundryMachineType.WASHING_MACHINE}')"/>
+            <where>description like '%Washing Machine%'</where>
+        </update>
+        <update tableName="transaction">
+            <column name="description" type="varchar(255)" valueComputed="REPLACE(description, 'Dryer', 'i18n{autocutApp.LaundryMachineType.DRYER}')"/>
+            <where>description like '%Dryer%'</where>
+        </update>
+    </changeSet>
+</databaseChangeLog>

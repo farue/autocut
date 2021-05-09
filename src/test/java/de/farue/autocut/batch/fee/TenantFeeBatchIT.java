@@ -154,21 +154,21 @@ class TenantFeeBatchIT {
                 Transaction chargeApr = transactions.get(1);
                 assertThat(chargeApr.getValue()).isEqualByComparingTo("-5");
                 assertThat(chargeApr.getBalanceAfter()).isEqualByComparingTo("45");
-                assertThat(chargeApr.getDescription()).isEqualTo("4/2020");
+                assertThat(chargeApr.getDescription()).isEqualTo("i18n{transaction.descriptions.tenantFee} 4/2020");
                 assertThat(chargeApr.getBookingDate()).isBefore(chargeApr.getValueDate());
                 assertThat(chargeApr.getServiceQulifier()).isEqualTo("2020-04-10;false");
 
                 Transaction chargeMay = transactions.get(2);
                 assertThat(chargeMay.getValue()).isEqualByComparingTo("-5");
                 assertThat(chargeMay.getBalanceAfter()).isEqualByComparingTo("40");
-                assertThat(chargeMay.getDescription()).isEqualTo("5/2020");
+                assertThat(chargeMay.getDescription()).isEqualTo("i18n{transaction.descriptions.tenantFee} 5/2020");
                 assertThat(chargeMay.getBookingDate()).isBefore(chargeApr.getValueDate());
                 assertThat(chargeMay.getServiceQulifier()).isEqualTo("2020-05-10;false");
 
                 Transaction chargeJun = transactions.get(3);
                 assertThat(chargeJun.getValue()).isEqualByComparingTo("-5");
                 assertThat(chargeJun.getBalanceAfter()).isEqualByComparingTo("35");
-                assertThat(chargeJun.getDescription()).isEqualTo("6/2020");
+                assertThat(chargeJun.getDescription()).isEqualTo("i18n{transaction.descriptions.tenantFee} 6/2020");
                 assertThat(chargeJun.getBookingDate()).isBefore(chargeApr.getValueDate());
                 assertThat(chargeJun.getServiceQulifier()).isEqualTo("2020-06-10;false");
 
@@ -210,21 +210,21 @@ class TenantFeeBatchIT {
                 Transaction chargeApr = transactions.get(2);
                 assertThat(chargeApr.getValue()).isEqualByComparingTo("-5");
                 assertThat(chargeApr.getBalanceAfter()).isEqualByComparingTo("-25");
-                assertThat(chargeApr.getDescription()).isEqualTo("4/2020");
+                assertThat(chargeApr.getDescription()).isEqualTo("i18n{transaction.descriptions.tenantFee} 4/2020");
                 assertThat(chargeApr.getBookingDate()).isBefore(chargeApr.getValueDate());
                 assertThat(chargeApr.getServiceQulifier()).isEqualTo("2020-04-10;false");
 
                 Transaction chargeMay = transactions.get(3);
                 assertThat(chargeMay.getValue()).isEqualByComparingTo("-5");
                 assertThat(chargeMay.getBalanceAfter()).isEqualByComparingTo("-30");
-                assertThat(chargeMay.getDescription()).isEqualTo("5/2020");
+                assertThat(chargeMay.getDescription()).isEqualTo("i18n{transaction.descriptions.tenantFee} 5/2020");
                 assertThat(chargeMay.getBookingDate()).isBefore(chargeApr.getValueDate());
                 assertThat(chargeMay.getServiceQulifier()).isEqualTo("2020-05-10;false");
 
                 Transaction chargeJun = transactions.get(4);
                 assertThat(chargeJun.getValue()).isEqualByComparingTo("-5");
                 assertThat(chargeJun.getBalanceAfter()).isEqualByComparingTo("-35");
-                assertThat(chargeJun.getDescription()).isEqualTo("6/2020");
+                assertThat(chargeJun.getDescription()).isEqualTo("i18n{transaction.descriptions.tenantFee} 6/2020");
                 assertThat(chargeJun.getBookingDate()).isBefore(chargeApr.getValueDate());
                 assertThat(chargeJun.getServiceQulifier()).isEqualTo("2020-06-10;false");
 
@@ -262,7 +262,7 @@ class TenantFeeBatchIT {
                     .valueDate(LocalDate.of(2020, 4, 20).atStartOfDay(ZoneId.systemDefault()).toInstant())
                     .value(new BigDecimal("-2.5"))
                     .balanceAfter(new BigDecimal("47.5"))
-                    .description("4/2020")
+                    .description("i18n{transaction.descriptions.tenantFee} 4/2020")
                     .serviceQulifier("2020-04-10;true");
                 transactionService.save(chargeApr);
 
@@ -274,7 +274,7 @@ class TenantFeeBatchIT {
                     .valueDate(LocalDate.of(2020, 5, 20).atStartOfDay(ZoneId.systemDefault()).toInstant())
                     .value(new BigDecimal("-2.5"))
                     .balanceAfter(new BigDecimal("45"))
-                    .description("5/2020")
+                    .description("i18n{transaction.descriptions.tenantFee} 5/2020")
                     .serviceQulifier("2020-05-10;true");
                 transactionService.save(chargeMay);
 
@@ -299,21 +299,21 @@ class TenantFeeBatchIT {
                 chargeApr = transactions.get(1);
                 assertThat(chargeApr.getValue()).isEqualByComparingTo("-2.5");
                 assertThat(chargeApr.getBalanceAfter()).isEqualByComparingTo("47.5");
-                assertThat(chargeApr.getDescription()).isEqualTo("4/2020");
+                assertThat(chargeApr.getDescription()).isEqualTo("i18n{transaction.descriptions.tenantFee} 4/2020");
                 assertThat(chargeApr.getBookingDate()).isBefore(chargeApr.getValueDate());
                 assertThat(chargeApr.getServiceQulifier()).isEqualTo("2020-04-10;true");
 
                 chargeMay = transactions.get(2);
                 assertThat(chargeMay.getValue()).isEqualByComparingTo("-2.5");
                 assertThat(chargeMay.getBalanceAfter()).isEqualByComparingTo("45");
-                assertThat(chargeMay.getDescription()).isEqualTo("5/2020");
+                assertThat(chargeMay.getDescription()).isEqualTo("i18n{transaction.descriptions.tenantFee} 5/2020");
                 assertThat(chargeMay.getBookingDate()).isBefore(chargeMay.getValueDate());
                 assertThat(chargeMay.getServiceQulifier()).isEqualTo("2020-05-10;true");
 
                 Transaction chargeJun = transactions.get(3);
                 assertThat(chargeJun.getValue()).isEqualByComparingTo("-2.5");
                 assertThat(chargeJun.getBalanceAfter()).isEqualByComparingTo("42.5");
-                assertThat(chargeJun.getDescription()).isEqualTo("6/2020");
+                assertThat(chargeJun.getDescription()).isEqualTo("i18n{transaction.descriptions.tenantFee} 6/2020");
                 assertThat(chargeJun.getBookingDate()).isBefore(chargeJun.getValueDate());
                 assertThat(chargeJun.getServiceQulifier()).isEqualTo("2020-06-10;true");
 
@@ -332,7 +332,7 @@ class TenantFeeBatchIT {
                     .valueDate(LocalDate.of(2020, 4, 20).atStartOfDay(ZoneId.systemDefault()).toInstant())
                     .value(new BigDecimal("-2.5"))
                     .balanceAfter(new BigDecimal("47.5"))
-                    .description("4/2020")
+                    .description("i18n{transaction.descriptions.tenantFee} 4/2020")
                     .serviceQulifier("2020-04-10;true");
                 transactionService.save(chargeApr);
 
@@ -344,7 +344,7 @@ class TenantFeeBatchIT {
                     .valueDate(LocalDate.of(2020, 5, 20).atStartOfDay(ZoneId.systemDefault()).toInstant())
                     .value(new BigDecimal("-3"))
                     .balanceAfter(new BigDecimal("44.5"))
-                    .description("5/2020")
+                    .description("i18n{transaction.descriptions.tenantFee} 5/2020")
                     .serviceQulifier("2020-05-10;false");
                 transactionService.save(chargeMay1);
 
@@ -356,7 +356,7 @@ class TenantFeeBatchIT {
                     .valueDate(LocalDate.of(2020, 5, 21).atStartOfDay(ZoneId.systemDefault()).toInstant())
                     .value(new BigDecimal("-5"))
                     .balanceAfter(new BigDecimal("39.5"))
-                    .description("5/2020")
+                    .description("i18n{transaction.descriptions.tenantFee} 5/2020")
                     .serviceQulifier("2020-05-10;false");
                 transactionService.save(chargeMay2);
 
@@ -394,7 +394,7 @@ class TenantFeeBatchIT {
                 assertThat(chargeMayCorrection.getTransactionType()).isEqualTo(TransactionType.CORRECTION);
                 assertThat(chargeMayCorrection.getValue()).isEqualByComparingTo("3");
                 assertThat(chargeMayCorrection.getBalanceAfter()).isEqualByComparingTo("42.5");
-                assertThat(chargeMayCorrection.getDescription()).isEqualTo("5/2020");
+                assertThat(chargeMayCorrection.getDescription()).isEqualTo("i18n{transaction.descriptions.tenantFee} 5/2020");
                 assertThat(chargeMayCorrection.getBookingDate()).isEqualTo(chargeMayCorrection.getValueDate()); // credit immediately
                 assertThat(chargeMayCorrection.getServiceQulifier()).isEqualTo("2020-05-10;false");
 
@@ -402,14 +402,14 @@ class TenantFeeBatchIT {
                 assertThat(chargeMayCorrection.getTransactionType()).isEqualTo(TransactionType.CORRECTION);
                 assertThat(chargeAprCorrection.getValue()).isEqualByComparingTo("-2.5");
                 assertThat(chargeAprCorrection.getBalanceAfter()).isEqualByComparingTo("40");
-                assertThat(chargeAprCorrection.getDescription()).isEqualTo("4/2020");
+                assertThat(chargeAprCorrection.getDescription()).isEqualTo("i18n{transaction.descriptions.tenantFee} 4/2020");
                 assertThat(chargeAprCorrection.getBookingDate()).isBefore(chargeAprCorrection.getValueDate()); // additional charge delayed
                 assertThat(chargeAprCorrection.getServiceQulifier()).isEqualTo("2020-04-10;false");
 
                 InternalTransaction chargeJun = transactions.get(6);
                 assertThat(chargeJun.getValue()).isEqualByComparingTo("-5");
                 assertThat(chargeJun.getBalanceAfter()).isEqualByComparingTo("35");
-                assertThat(chargeJun.getDescription()).isEqualTo("6/2020");
+                assertThat(chargeJun.getDescription()).isEqualTo("i18n{transaction.descriptions.tenantFee} 6/2020");
                 assertThat(chargeJun.getBookingDate()).isBefore(chargeJun.getValueDate());
                 assertThat(chargeJun.getServiceQulifier()).isEqualTo("2020-06-10;false");
 
@@ -446,7 +446,7 @@ class TenantFeeBatchIT {
                 .valueDate(LocalDate.of(2020, 4, 20).atStartOfDay(ZoneId.systemDefault()).toInstant())
                 .value(new BigDecimal("-2.5"))
                 .balanceAfter(new BigDecimal("47.5"))
-                .description("4/2020")
+                .description("i18n{transaction.descriptions.tenantFee} 4/2020")
                 .serviceQulifier("2020-04-10;true");
             transactionService.save(chargeApr);
 
@@ -458,7 +458,7 @@ class TenantFeeBatchIT {
                 .valueDate(LocalDate.of(2020, 5, 20).atStartOfDay(ZoneId.systemDefault()).toInstant())
                 .value(new BigDecimal("-3"))
                 .balanceAfter(new BigDecimal("44.5"))
-                .description("5/2020")
+                .description("i18n{transaction.descriptions.tenantFee} 5/2020")
                 .serviceQulifier("2020-05-10;false");
             transactionService.save(chargeMay1);
 
@@ -493,7 +493,7 @@ class TenantFeeBatchIT {
             assertThat(chargeAprCorrection.getTransactionType()).isEqualTo(TransactionType.CORRECTION);
             assertThat(chargeAprCorrection.getValue()).isEqualByComparingTo("-2.5");
             assertThat(chargeAprCorrection.getBalanceAfter()).isEqualByComparingTo("42");
-            assertThat(chargeAprCorrection.getDescription()).isEqualTo("4/2020");
+            assertThat(chargeAprCorrection.getDescription()).isEqualTo("i18n{transaction.descriptions.tenantFee} 4/2020");
             assertThat(chargeAprCorrection.getBookingDate()).isBefore(chargeAprCorrection.getValueDate());
             assertThat(chargeAprCorrection.getServiceQulifier()).isEqualTo("2020-04-10;false");
 
@@ -501,7 +501,7 @@ class TenantFeeBatchIT {
             assertThat(chargeMayCorrection.getTransactionType()).isEqualTo(TransactionType.CORRECTION);
             assertThat(chargeMayCorrection.getValue()).isEqualByComparingTo("-2");
             assertThat(chargeMayCorrection.getBalanceAfter()).isEqualByComparingTo("40");
-            assertThat(chargeMayCorrection.getDescription()).isEqualTo("5/2020");
+            assertThat(chargeMayCorrection.getDescription()).isEqualTo("i18n{transaction.descriptions.tenantFee} 5/2020");
             assertThat(chargeMayCorrection.getBookingDate()).isBefore(chargeMayCorrection.getValueDate());
             assertThat(chargeMayCorrection.getServiceQulifier()).isEqualTo("2020-05-10;false");
 

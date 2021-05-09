@@ -6,7 +6,7 @@
         <p>
           {{
             'washing.messages.info.success'
-              | translate: { machine: translateMachineName(response.machineId!), seconds: response.activationDurationMs! / 1000 }
+              | translate: { machine: findMachineById(response.machineId!)?.name | i18n, seconds: response.activationDurationMs! / 1000 }
           }}
         </p>
         <jhi-countdown
@@ -22,15 +22,17 @@
         <span translate>washing.messages.error.init</span>
       </div>
       <div *ngIf="response.genericError" class="alert alert-danger">
-        <span translate [translateParams]="{ machine: translateMachineName(response.machineId!) }">washing.messages.error.fail</span>
+        <span translate [translateParams]="{ machine: findMachineById(response.machineId!)?.name | i18n }"
+          >washing.messages.error.fail</span
+        >
       </div>
       <div *ngIf="response.errorInsufficientFunds" class="alert alert-danger">
-        <span translate [translateParams]="{ machine: translateMachineName(response.machineId!) }"
+        <span translate [translateParams]="{ machine: findMachineById(response.machineId!)?.name | i18n }"
           >washing.messages.error.insufficientfunds</span
         >
       </div>
       <div *ngIf="response.errorMachineUnavailable" class="alert alert-danger">
-        <span translate [translateParams]="{ machine: translateMachineName(response.machineId!) }"
+        <span translate [translateParams]="{ machine: findMachineById(response.machineId!)?.name | i18n }"
           >washing.messages.error.machinenotavailable</span
         >
       </div>
@@ -46,7 +48,7 @@
         <mat-label translate>washing.selectMachine</mat-label>
         <mat-select [formControlName]="FormProperties.LAUNDRY_MACHINE">
           <mat-option *ngFor="let machine of machines" [value]="machine" [disabled]="!machine.enabled">{{
-            translateMachineName(machine)
+            machine.name | i18n
           }}</mat-option>
         </mat-select>
       </mat-form-field>

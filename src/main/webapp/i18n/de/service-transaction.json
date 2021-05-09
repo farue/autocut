@@ -26,6 +26,10 @@
       "error": {
         "loadingTransactionsFailed": "Beim Laden der Transaktionen ist ein Fehler aufgetreten."
       }
+    },
+    "descriptions": {
+      "tenantFee": "Bewohnerbeitrag",
+      "signupFee": "Anmeldegebühr"
     }
   }
 }

@@ -15,7 +15,7 @@
     <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="32px">
       <div fxLayout="column" fxFlexOffset="5%" class="flex-child">
         <div class="mat-h4 flex-child">{{ transaction.issuer }}</div>
-        <div *ngIf="transaction.description" class="mat-h2 flex-child">{{ transaction.description }}</div>
+        <div *ngIf="transaction.description" class="mat-h2 flex-child">{{ transaction.description | i18n }}</div>
       </div>
       <div
         fxFlexAlign="center"

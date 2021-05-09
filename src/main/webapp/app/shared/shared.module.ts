@@ -14,6 +14,7 @@ import { ItemCountComponent } from './pagination/item-count.component';
 import { I18nDatePipe } from 'app/shared/pipes/i18n-date.pipe';
 import { I18nCurrencyPipe } from 'app/shared/pipes/i18n-currency.pipe';
 import { MaterialModule } from 'app/shared/material.module';
+import { I18nPipe } from 'app/shared/pipes/i18n.pipe';
 
 @NgModule({
   imports: [SharedLibsModule, MaterialModule],
@@ -30,6 +31,7 @@ import { MaterialModule } from 'app/shared/material.module';
     SortDirective,
     ItemCountComponent,
     // Autocut
+    I18nPipe,
     I18nDatePipe,
     I18nCurrencyPipe,
   ],
@@ -48,6 +50,7 @@ import { MaterialModule } from 'app/shared/material.module';
     ItemCountComponent,
     // Autocut
     MaterialModule,
+    I18nPipe,
     I18nDatePipe,
     I18nCurrencyPipe,
   ],

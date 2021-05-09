@@ -56,4 +56,5 @@
     <include file="config/liquibase/changelog/ac43.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/ac18.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/ac_jhipster-v7.0.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/ac33.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

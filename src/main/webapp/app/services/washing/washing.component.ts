@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ActivateResponse, WashingService } from 'app/services/washing/washing.service';
 import { LaundryMachine } from 'app/entities/laundry-machine/laundry-machine.model';
 import { LaundryMachineProgram } from 'app/entities/laundry-machine-program/laundry-machine-program.model';
@@ -7,10 +7,10 @@ import { INSUFFICIENT_FUNDS_TYPE, LAUNDRY_MACHINE_UNAVAILABLE_TYPE } from 'app/c
 import { LaundryMachineType } from 'app/entities/enumerations/laundry-machine-type.model';
 import { FormBuilder, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
-import * as _ from 'lodash';
 import * as dayjs from 'dayjs';
 import { TranslateService } from '@ngx-translate/core';
 import { bounceOnEnterAnimation } from 'angular-animations';
+import { isNil, uniq } from 'lodash-es';
 
 enum FormProperties {
   LAUNDRY_MACHINE = 'laundryMachine',
@@ -39,7 +39,7 @@ interface WashingResponse {
   styleUrls: ['./washing.component.scss'],
   animations: [bounceOnEnterAnimation()],
 })
-export class WashingComponent implements OnInit {
+export class WashingComponent {
   FormProperties = FormProperties;
 
   machines: LaundryMachine[] = [];
@@ -115,9 +115,6 @@ export class WashingComponent implements OnInit {
   get selectedProtect(): boolean | null {
     return this.formGroup.get(FormProperties.PROTECT)!.value as boolean | null;
   }
-
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method,@typescript-eslint/no-empty-function
-  ngOnInit(): void {}
 
   unlockAction(): void {
     const selectedProgram = this.getSelectedProgram();
@@ -299,46 +296,25 @@ export class WashingComponent implements OnInit {
   updatePossibleValues(): void {
     this.programs = this.filterPrograms(this.selectedMachine)
       .map((laundryMachineProgram: LaundryMachineProgram) => laundryMachineProgram.name)
-      .filter(name => !_.isNil(name)) as string[];
-    this.programs = _.uniq(this.programs);
+      .filter(name => !isNil(name)) as string[];
+    this.programs = uniq(this.programs);
     this.subprograms = this.filterPrograms(this.selectedMachine, this.selectedProgram)
       .map((laundryMachineProgram: LaundryMachineProgram) => laundryMachineProgram.subprogram)
-      .filter(name => !_.isNil(name)) as string[];
-    this.subprograms = _.uniq(this.subprograms).sort();
+      .filter(name => !isNil(name)) as string[];
+    this.subprograms = uniq(this.subprograms).sort();
     this.spins = this.filterPrograms(this.selectedMachine, this.selectedProgram, this.selectedSubprogram)
       .map((laundryMachineProgram: LaundryMachineProgram) => laundryMachineProgram.spin)
-      .filter(name => !_.isNil(name)) as number[];
-    this.spins = _.uniq(this.spins).sort();
+      .filter(name => !isNil(name)) as number[];
+    this.spins = uniq(this.spins).sort();
   }
 
-  translateMachineName(value: LaundryMachine | number): string | null {
-    if (typeof value === 'number') {
-      let machine;
-      for (const m of this.machines) {
-        if (m.id === value) {
-          machine = m;
-          break;
-        }
+  findMachineById(id: number): LaundryMachine | null {
+    for (const machine of this.machines) {
+      if (machine.id === id) {
+        return machine;
       }
-      if (machine === undefined) {
-        return null;
-      }
-      value = machine;
     }
-
-    const machineType: string = this.translateService.instant('washing.machineTypes.' + value.type!);
-    return `${machineType} ${Number(value.id!)}`;
-  }
-
-  private getSubprogramsForProgram(program: string): string[] {
-    if (this.selectedMachine == null) {
-      return [];
-    }
-    return this.selectedMachine
-      .programs!.filter(p => p.name === program)
-      .map(p => p.subprogram)
-      .filter(WashingComponent.notEmpty)
-      .filter(WashingComponent.onlyUnique);
+    return null;
   }
 
   private setFormControlStatus(propertyName: FormProperties, visible: boolean, valueOnDisable?: any, valueOnEnable?: any): void {

@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Pipe({
   name: 'i18nCurrency',
+  pure: false,
 })
 export class I18nCurrencyPipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}

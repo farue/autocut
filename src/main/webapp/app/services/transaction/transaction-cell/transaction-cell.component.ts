@@ -1,5 +1,4 @@
-/* eslint-disable */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { IInternalTransaction } from 'app/entities/internal-transaction/internal-transaction.model';
 import * as dayjs from 'dayjs';
 
@@ -8,13 +7,9 @@ import * as dayjs from 'dayjs';
   templateUrl: './transaction-cell.component.html',
   styleUrls: ['./transaction-cell.component.scss'],
 })
-export class TransactionCellComponent implements OnInit {
+export class TransactionCellComponent {
   @Input()
   transaction!: IInternalTransaction;
-
-  constructor() {}
-
-  ngOnInit(): void {}
 
   isFuture(date: dayjs.Dayjs): boolean {
     return date.isAfter(dayjs());

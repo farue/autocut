@@ -29,7 +29,7 @@ public abstract class AbstractTenantFeeBatchProcessor implements ItemProcessor<L
     protected abstract List<BookingTemplate> doProcess(Lease lease, TransactionBook transactionBook) throws Exception;
 
     protected String createDescription(LocalDate chargeDate) {
-        return "" + chargeDate.getMonthValue() + "/" + chargeDate.getYear();
+        return "i18n{transaction.descriptions.tenantFee} " + chargeDate.getMonthValue() + "/" + chargeDate.getYear();
     }
 
     protected String createServiceQualifierData(LocalDate chargeDate, boolean discount) {
