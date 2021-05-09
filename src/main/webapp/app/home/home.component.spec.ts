@@ -14,7 +14,6 @@ describe('Component Tests', () => {
     let comp: HomeComponent;
     let fixture: ComponentFixture<HomeComponent>;
     let mockAccountService: AccountService;
-    let mockRouter: Router;
 
     beforeEach(
       waitForAsync(() => {
@@ -33,7 +32,6 @@ describe('Component Tests', () => {
       mockAccountService = TestBed.inject(AccountService);
       mockAccountService.identity = jest.fn(() => of(null));
       mockAccountService.getAuthenticationState = jest.fn(() => of(null));
-      mockRouter = TestBed.inject(Router);
     });
 
     it('Should call accountService.getAuthenticationState on init', () => {
@@ -50,14 +48,6 @@ describe('Component Tests', () => {
 
       // THEN
       expect(mockAccountService.isAuthenticated).toHaveBeenCalled();
-    });
-
-    it('Should navigate to /login on login', () => {
-      // WHEN
-      comp.login();
-
-      // THEN
-      expect(mockRouter.navigate).toHaveBeenCalledWith(['/login']);
     });
   });
 });

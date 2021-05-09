@@ -482,8 +482,7 @@
       <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">
         <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="languagesnavBarDropdown">
           <span>
-            <fa-icon icon="flag"></fa-icon>
-            <span jhiTranslate="global.menu.language">Language</span>
+            <img height="14px" [src]="getCurrentLanguageImg()" alt="flag" />
           </span>
         </a>
         <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="languagesnavBarDropdown">
@@ -493,8 +492,10 @@
               [jhiActiveMenu]="language"
               href="javascript:void(0);"
               (click)="changeLanguage(language); collapseNavbar()"
-              >{{ language | findLanguageFromKey }}</a
             >
+              <span><img height="14px" width="30px" [src]="getLanguageImg(language)" alt="flag" /></span>
+              <span>{{ language | findLanguageFromKey }}</span>
+            </a>
           </li>
         </ul>
       </li>
@@ -505,11 +506,27 @@
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
       >
-        <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu" data-cy="accountMenu">
+        <a
+          *ngIf="!isAuthenticated()"
+          routerLink="/login"
+          class="nav-link"
+          href="javascript:void(0);"
+          id="login-menu"
+          (click)="collapseNavbar()"
+          data-cy="loginMenu"
+        >
+          <fa-icon icon="user" [fixedWidth]="true"></fa-icon>
+        </a>
+        <a
+          *ngIf="isAuthenticated()"
+          class="nav-link dropdown-toggle"
+          ngbDropdownToggle
+          href="javascript:void(0);"
+          id="account-menu"
+          data-cy="accountMenu"
+        >
           <span *ngIf="!getImageUrl()">
             <fa-icon icon="user" [fixedWidth]="true"></fa-icon>
-            <span *ngIf="!getUserName()" jhiTranslate="global.menu.account.main">Account</span>
-            <span *ngIf="getUserName()" class="d-md-inline-block d-lg-none d-xl-inline-block">{{ getUserName() }}</span>
           </span>
           <span *ngIf="getImageUrl()">
             <img [src]="getImageUrl()" class="profile-image rounded-circle" alt="Avatar" />

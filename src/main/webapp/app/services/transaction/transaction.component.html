@@ -26,63 +26,32 @@
       </table>
     </div>
   </div>
-  <div class="row">
-    <div class="col">
-      <h2>
-        <span jhiTranslate="transaction.balance"></span><span>:</span>
-        <span [className]="balance >= 0 ? 'col-green' : 'col-red'">{{ balance | i18nCurrency: translateService.currentLang }}</span>
-      </h2>
-    </div>
-    <div class="col">
-      <h2>
-        <span jhiTranslate="transaction.deposit"></span><span>:</span>
-        <span [className]="balance >= 0 ? 'col-blue' : 'col-red'">{{ deposit | i18nCurrency: translateService.currentLang }}</span>
-      </h2>
+
+  <div *ngIf="error" class="alert alert-danger">
+    <span translate>transaction.messages.error.loadingTransactionsFailed</span>
+  </div>
+
+  <div fxLayout="row" fxLayoutAlign="end" class="data-container">
+    <div fxLayout="column" fxFlexOffset="5%">
+      <div class="mat-h4 data-head" translate>transaction.balance</div>
+      <div
+        *ngIf="result && result.balanceNow"
+        class="mat-display-2 data-value"
+        [ngClass]="{ 'value-normal': result.balanceNow >= 0, 'value-negative': result.balanceNow < 0 }"
+      >
+        {{ result.balanceNow | i18nCurrency }}
+      </div>
     </div>
   </div>
 
-  <div class="table-responsive">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr>
-          <th scope="col"><span jhiTranslate="transaction.table.kind">Kind</span></th>
-          <th scope="col"><span jhiTranslate="transaction.table.bookingDate">Booking Date</span></th>
-          <th scope="col"><span jhiTranslate="transaction.table.valueDate">Value Date</span></th>
-          <th scope="col"><span jhiTranslate="transaction.table.value">Value</span></th>
-          <th scope="col"><span jhiTranslate="transaction.table.balanceAfter">Balance After</span></th>
-          <th scope="col"><span jhiTranslate="transaction.table.description">Description</span></th>
-          <th scope="col"><span jhiTranslate="transaction.table.issuer">Issuer</span></th>
-        </tr>
-      </thead>
-      <tbody *ngIf="transactions">
-        <tr *ngFor="let transaction of transactions">
-          <td jhiTranslate="{{ 'autocutApp.TransactionKind.' + transaction.type }}">{{ transaction.type }}</td>
-          <td>{{ transaction.bookingDate | i18nDate: translateService.currentLang }}</td>
-          <td>{{ transaction.valueDate | i18nDate: translateService.currentLang }}</td>
-          <td>{{ transaction.value | i18nCurrency: translateService.currentLang }}</td>
-          <td>{{ transaction.balanceAfter | i18nCurrency: translateService.currentLang }}</td>
-          <td>{{ transaction.description }}</td>
-          <td>{{ transaction.issuer }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div *ngIf="transactions">
-    <div class="row justify-content-center">
-      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
-    </div>
-
-    <div class="row justify-content-center">
-      <ngb-pagination
-        [collectionSize]="totalItems"
-        [(page)]="page"
-        [pageSize]="itemsPerPage"
-        [maxSize]="5"
-        [rotate]="true"
-        [boundaryLinks]="true"
-        (pageChange)="transition()"
-      ></ngb-pagination>
-    </div>
+  <div *ngIf="result && result.transactions" class="position-relative">
+    <jhi-loading-overlay *ngIf="isLoading"></jhi-loading-overlay>
+    <jhi-transaction-cell *ngFor="let transaction of result.transactions!" [transaction]="transaction"></jhi-transaction-cell>
+    <mat-paginator
+      (page)="onPageEvent($event)"
+      [length]="totalItems"
+      [pageSize]="itemsPerPage"
+      [pageSizeOptions]="pageSizeOptions"
+    ></mat-paginator>
   </div>
 </div>

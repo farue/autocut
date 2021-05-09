@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
 
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { isPresent } from 'app/core/util/operators';
 import { Pagination } from 'app/core/request/request.model';
 import { IUser, getUserIdentifier } from './user.model';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -34,5 +35,29 @@ export class UserService {
       return [...usersToAdd, ...userCollection];
     }
     return userCollection;
+  }
+
+  usernameExists(username: string): Observable<boolean> {
+    return this.http.get<{}>(`${this.resourceUrl}/username=${username}`).pipe(
+      map(() => true),
+      catchError((err: HttpErrorResponse) => {
+        if (err.status === 404) {
+          return of(false);
+        }
+        throw new Error('Unexpected server error during username validation.');
+      })
+    );
+  }
+
+  emailExists(email: string): Observable<boolean> {
+    return this.http.get<{}>(`${this.resourceUrl}/email=${email}`).pipe(
+      map(() => true),
+      catchError((err: HttpErrorResponse) => {
+        if (err.status === 404) {
+          return of(false);
+        }
+        throw new Error('Unexpected server error during email validation.');
+      })
+    );
   }
 }

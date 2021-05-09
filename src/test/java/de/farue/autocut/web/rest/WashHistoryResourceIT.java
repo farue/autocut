@@ -9,6 +9,7 @@ import de.farue.autocut.IntegrationTest;
 import de.farue.autocut.domain.WashHistory;
 import de.farue.autocut.domain.enumeration.WashHistoryStatus;
 import de.farue.autocut.repository.WashHistoryRepository;
+import de.farue.autocut.security.AuthoritiesConstants;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -29,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @IntegrationTest
 @AutoConfigureMockMvc
-@WithMockUser
+@WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 class WashHistoryResourceIT {
 
     private static final Instant DEFAULT_USING_DATE = Instant.ofEpochMilli(0L);

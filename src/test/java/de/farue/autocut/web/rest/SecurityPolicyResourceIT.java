@@ -10,6 +10,7 @@ import de.farue.autocut.domain.SecurityPolicy;
 import de.farue.autocut.domain.enumeration.Access;
 import de.farue.autocut.domain.enumeration.ProtectionUnits;
 import de.farue.autocut.repository.SecurityPolicyRepository;
+import de.farue.autocut.security.AuthoritiesConstants;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -28,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @IntegrationTest
 @AutoConfigureMockMvc
-@WithMockUser
+@WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 class SecurityPolicyResourceIT {
 
     private static final ProtectionUnits DEFAULT_PROTECTION_UNIT = ProtectionUnits.BANK_TRANSACTIONS;

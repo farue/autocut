@@ -1,0 +1,16 @@
+{
+  "services-overview": {
+    "washing-system": {
+      "title": "Waschsystem",
+      "subtitle": "Schalte bequem die Waschmaschinen und Trockner frei."
+    },
+    "transactions": {
+      "title": "Transaktionen",
+      "subtitle": "Zeige deinen Kontostand und deine Transaktionen an."
+    },
+    "internet": {
+      "title": "Internet",
+      "subtitle": "Überprüfe deinen Internetstatus und finde Hilfe bei der Einrichtung und Fehlerbehandlung."
+    }
+  }
+}

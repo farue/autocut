@@ -22,6 +22,11 @@
       "step4": "Stelle sicher, dass das Kabel in Ordnung ist (teste mit einem anderen Kabel falls vorhanden)",
       "step5": "Setze den Router auf Werkseinstellungen zurück und konfiguriere die statische IP neu",
       "step6": "Versuche, einen PC ohne Router direkt zu verbinden (hierfür muss die statische IP im PC konfiguriert werden)"
+    },
+    "messages": {
+      "error": {
+        "loadingIpFailed": "Beim Laden der IP Adresse ist ein Fehler aufgetreten."
+      }
     }
   }
 }

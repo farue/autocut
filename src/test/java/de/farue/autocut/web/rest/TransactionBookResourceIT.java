@@ -9,6 +9,7 @@ import de.farue.autocut.IntegrationTest;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.domain.enumeration.TransactionBookType;
 import de.farue.autocut.repository.TransactionBookRepository;
+import de.farue.autocut.security.AuthoritiesConstants;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -27,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @IntegrationTest
 @AutoConfigureMockMvc
-@WithMockUser
+@WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 class TransactionBookResourceIT {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";

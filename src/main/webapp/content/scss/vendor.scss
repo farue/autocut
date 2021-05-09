@@ -12,3 +12,6 @@ eg $input-color: red;
 @import '~bootswatch/dist/materia/bootswatch';
 
 /* jhipster-needle-scss-add-vendor JHipster will add new css style */
+
+// Autocut: Material Design
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';

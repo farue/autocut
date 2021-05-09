@@ -1,14 +1,18 @@
 package de.farue.autocut.web.rest;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import de.farue.autocut.domain.Apartment;
 import de.farue.autocut.repository.ApartmentRepository;
 import de.farue.autocut.service.ApartmentService;
+import de.farue.autocut.service.dto.PublicApartmentDTO;
+import de.farue.autocut.service.mapper.PublicApartmentMapper;
 import de.farue.autocut.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -34,12 +38,17 @@ public class ApartmentResource {
     private String applicationName;
 
     private final ApartmentService apartmentService;
-
     private final ApartmentRepository apartmentRepository;
+    private final PublicApartmentMapper publicApartmentMapper;
 
-    public ApartmentResource(ApartmentService apartmentService, ApartmentRepository apartmentRepository) {
+    public ApartmentResource(
+        ApartmentService apartmentService,
+        ApartmentRepository apartmentRepository,
+        PublicApartmentMapper publicApartmentMapper
+    ) {
         this.apartmentService = apartmentService;
         this.apartmentRepository = apartmentRepository;
+        this.publicApartmentMapper = publicApartmentMapper;
     }
 
     /**
@@ -170,5 +179,22 @@ public class ApartmentResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/apartments/nr={nr}")
+    public ResponseEntity<PublicApartmentDTO> getApartment(@PathVariable String nr) {
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        log.debug("REST request to get Apartment by nr : {}", nr);
+        Optional<PublicApartmentDTO> apartment;
+        try {
+            apartment = apartmentService.findByStudierendenwerkNumber(nr).map(this.publicApartmentMapper::apartmentToPublicApartment);
+        } catch (IllegalArgumentException e) {
+            apartment = Optional.empty();
+        }
+        return ResponseUtil.wrapOrNotFound(apartment);
     }
 }

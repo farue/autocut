@@ -11,6 +11,7 @@
     },
     "balance": "Balance",
     "deposit": "Deposit",
+    "booked": "Booked:",
     "table": {
       "kind": "Kind",
       "bookingDate": "Booking date",
@@ -20,6 +21,11 @@
       "description": "Description",
       "issuer": "Issuer",
       "recipient": "Recipient"
+    },
+    "messages": {
+      "error": {
+        "loadingTransactionsFailed": "Loading the transactions failed."
+      }
     }
   }
 }

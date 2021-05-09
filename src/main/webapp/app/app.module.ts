@@ -31,6 +31,11 @@ import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
 import { SelfAdministrationModule } from 'app/self-administration/self-administration.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DateAdapter } from '@angular/material/core';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { PaginatorIntlService } from 'app/shared/pagination/paginator-intl.service';
+// import { ApartmentInputComponent } from './ui/apartment-input/apartment-input.component';
 
 @NgModule({
   imports: [
@@ -57,6 +62,7 @@ import { SelfAdministrationModule } from 'app/self-administration/self-administr
     }),
 
     // Autocut
+    BrowserAnimationsModule,
     SelfAdministrationModule,
   ],
   providers: [
@@ -64,8 +70,23 @@ import { SelfAdministrationModule } from 'app/self-administration/self-administr
     { provide: LOCALE_ID, useValue: 'de' },
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
     httpInterceptorProviders,
+
+    // Autocut
+    {
+      provide: MatPaginatorIntl,
+      useFactory: (translateService: TranslateService) => new PaginatorIntlService(translateService),
+      deps: [TranslateService],
+    },
   ],
-  declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
+  declarations: [
+    MainComponent,
+    NavbarComponent,
+    ErrorComponent,
+    PageRibbonComponent,
+    ActiveMenuDirective,
+    FooterComponent,
+    // ApartmentInputComponent,
+  ],
   bootstrap: [MainComponent],
 })
 export class AppModule {
@@ -73,7 +94,8 @@ export class AppModule {
     applicationConfigService: ApplicationConfigService,
     iconLibrary: FaIconLibrary,
     dpConfig: NgbDatepickerConfig,
-    translateService: TranslateService
+    translateService: TranslateService,
+    dateAdapter: DateAdapter<dayjs.Dayjs>
   ) {
     applicationConfigService.setEndpointPrefix(SERVER_API_URL);
     registerLocaleData(locale);
@@ -82,5 +104,6 @@ export class AppModule {
     dpConfig.minDate = { year: dayjs().subtract(100, 'year').year(), month: 1, day: 1 };
     translateService.setDefaultLang('de');
     translateService.use('de');
+    dateAdapter.setLocale('de');
   }
 }

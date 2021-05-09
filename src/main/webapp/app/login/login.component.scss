@@ -1,0 +1,30 @@
+.login-container {
+  width: 100%;
+  max-width: 350px;
+}
+
+.login-register-divider {
+  margin-top: 32px;
+  margin-bottom: 24px;
+}
+
+// align button with left side
+.btn-left {
+  transform: translateX(-16px);
+}
+
+// undo Bootswatch styles
+textarea,
+textarea.form-control,
+input.form-control,
+input[type='text'],
+input[type='password'],
+input[type='email'],
+input[type='number'],
+[type='text'].form-control,
+[type='password'].form-control,
+[type='email'].form-control,
+[type='tel'].form-control,
+[contenteditable].form-control {
+  box-shadow: none;
+}

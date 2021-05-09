@@ -1,7 +1,7 @@
 <div class="row justify-content-center">
   <div class="col-md-8">
     <div>
-      <h4 jhiTranslate="internet.description.title">We use static IPs</h4>
+      <h2 jhiTranslate="internet.description.title">We use static IPs</h2>
       <p jhiTranslate="internet.description.text">
         You are probably used to simply plugging one end of an ethernet cable into your router and the other end into the ethernet jack and
         just like that you can browse the internet. This relies on a protocol called DHCP that automatically provides an IP address and
@@ -11,38 +11,25 @@
       </p>
     </div>
     <div>
-      <h4 jhiTranslate="internet.ipData.title">Your IP</h4>
-      <div class="table-responsive">
-        <table class="table table-striped" aria-describedby="page-heading">
-          <tr>
-            <td jhiTranslate="internet.ipData.ip">IP</td>
-            <td>{{ ip$ | async }}</td>
-          </tr>
-          <tr>
-            <td jhiTranslate="internet.ipData.subnetMask">Subnet mask</td>
-            <td>255.255.255.0</td>
-          </tr>
-          <tr>
-            <td jhiTranslate="internet.ipData.gateway">Gateway</td>
-            <td>137.226.153.1</td>
-          </tr>
-          <tr>
-            <td jhiTranslate="internet.ipData.dns1">DNS 1</td>
-            <td>134.130.4.1</td>
-          </tr>
-          <tr>
-            <td jhiTranslate="internet.ipData.dns2">DNS 2</td>
-            <td>134.130.5.1</td>
-          </tr>
-          <tr>
-            <td jhiTranslate="internet.ipData.dns3">DNS 3</td>
-            <td>8.8.8.8</td>
-          </tr>
-        </table>
+      <h2 jhiTranslate="internet.ipData.title">Your IP</h2>
+
+      <div *ngIf="error" class="alert alert-danger">
+        <span translate>internet.messages.error.loadingIpFailed</span>
       </div>
+
+      <table mat-table [dataSource]="dataSource1" fxFill>
+        <ng-container matColumnDef="key">
+          <td mat-cell *matCellDef="let element">{{ element.key | translate }}</td>
+        </ng-container>
+        <ng-container matColumnDef="value">
+          <td mat-cell *matCellDef="let element">{{ element.value }}</td>
+        </ng-container>
+
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
     </div>
     <div>
-      <h4 jhiTranslate="internet.troubleshooting.title">Troubleshooting</h4>
+      <h2 jhiTranslate="internet.troubleshooting.title">Troubleshooting</h2>
       <p jhiTranslate="internet.troubleshooting.p1">
         If your internet was working before and suddenly stopped working, troubleshoot the problem with the following steps:
       </p>

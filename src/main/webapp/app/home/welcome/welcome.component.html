@@ -1,0 +1,30 @@
+<div class="d-flex flex-column align-items-center">
+  <div class="row">
+    <h1 class="text-center" jhiTranslate="home.title">Welcome to Familienwohnheim Rütscher Straße!</h1>
+  </div>
+  <div class="col-12 m-3">
+    <div class="row justify-content-center">
+      <div class="alert alert-primary">
+        <p jhiTranslate="home.message.development">This website is under active development.</p>
+        <span jhiTranslate="home.message.oldwebsite">Follow this link to the wordpress website:</span>
+        <a (click)="redirectToWpWebsite()">https://www.wp.farue.rwth-aachen.de</a>
+      </div>
+    </div>
+
+    <div>
+      <mat-carousel
+        [slides]="images.length"
+        [interval]="2000"
+        [maxWidth]="'1000px'"
+        [proportion]="50"
+        [hideIndicators]="false"
+        [hideArrows]="false"
+        [useKeyboard]="true"
+        fxFlex
+        fxLayoutAlign="center"
+      >
+        <mat-carousel-slide *ngFor="let item of images" [image]="item.previewImageSrc"> </mat-carousel-slide>
+      </mat-carousel>
+    </div>
+  </div>
+</div>

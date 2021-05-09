@@ -1,0 +1,53 @@
+.table-item {
+  padding-left: 24px;
+  padding-right: 24px;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: rgba(0, 0, 0, 0.12);
+}
+
+.future-transaction {
+  opacity: 0.45;
+}
+
+.balance-negative {
+  color: rgba(226, 15, 15, 0.6);
+}
+
+.balance-normal {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.value-negative {
+  color: rgba(226, 15, 15, 1);
+}
+
+.value-normal {
+  color: rgb(91, 191, 13);
+}
+
+.font-size-primary {
+  font-size: 1.5em;
+}
+
+.font-size-normal {
+  font-size: 1em;
+}
+
+.mat-h1,
+.mat-h2,
+.mat-h3,
+.mat-h4 {
+  margin: 0;
+}
+
+.flex-child {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.text-md-emph {
+  color: rgba(0, 0, 0, 0.55);
+}

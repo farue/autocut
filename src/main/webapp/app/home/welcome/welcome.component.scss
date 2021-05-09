@@ -1,0 +1,5 @@
+// override bootstrap carousel properties that interfere with material design carousel
+:host ::ng-deep .carousel-indicators {
+  margin-left: 0;
+  margin-right: 0;
+}

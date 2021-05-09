@@ -9,6 +9,7 @@ import de.farue.autocut.IntegrationTest;
 import de.farue.autocut.domain.LaundryMachine;
 import de.farue.autocut.domain.enumeration.LaundryMachineType;
 import de.farue.autocut.repository.LaundryMachineRepository;
+import de.farue.autocut.security.AuthoritiesConstants;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -27,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @IntegrationTest
 @AutoConfigureMockMvc
-@WithMockUser
+@WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 class LaundryMachineResourceIT {
 
     private static final String DEFAULT_IDENTIFIER = "AAAAAAAAAA";
@@ -213,6 +214,7 @@ class LaundryMachineResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser
     void getAllLaundryMachines() throws Exception {
         // Initialize the database
         laundryMachineRepository.saveAndFlush(laundryMachine);

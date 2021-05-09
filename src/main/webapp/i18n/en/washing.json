@@ -8,9 +8,13 @@
     "selectSpin": "Schleudern",
     "preWashCheckbox": "Vorwäsche",
     "protectCheckbox": "Schonen",
+    "machineTypes": {
+      "WASHING_MACHINE": "Washing machine",
+      "DRYER": "Dryer"
+    },
     "messages": {
       "info": {
-        "success": "{{machine}} was unlocked successfully"
+        "success": "{{machine}} was unlocked successfully for {{seconds}}s."
       },
       "error": {
         "init": "Error during initialization. Please try again later.",
@@ -18,6 +22,10 @@
         "insufficientfunds": "You have not enough funds.",
         "machinenotavailable": "Unfortunately, {{machine}} is temporarily not available."
       }
+    },
+    "text": {
+      "p1": "Please first place your laundry in the machine, close the door, and dial the desired washing or drying program at the machine. Fill the selected program in the form below and unlock the machine.",
+      "p2": "The machine stays unlocked for two minutes. Make sure that the machine is switched on, the door is closed, and a program is selected."
     }
   }
 }

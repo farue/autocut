@@ -1,427 +1,314 @@
 <div>
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <h1 jhiTranslate="register.title" data-cy="registerTitle">Registration</h1>
+  <div fxFlex fxLayoutAlign="center">
+    <div fxLayout="column" class="register-container">
+      <button mat-button color="primary" routerLink="/login" type="button" fxFlexAlign="end">
+        <span translate>register.login</span>
+      </button>
+      <h1 data-cy="registerTitle">{{ 'register.title' | translate }}</h1>
 
-      <div class="alert alert-success" *ngIf="success" jhiTranslate="register.messages.success">
-        <strong>Registration saved!</strong> Please check your email for confirmation.
-      </div>
-
-      <div class="alert alert-danger" *ngIf="error" jhiTranslate="register.messages.error.fail">
-        <strong>Registration failed!</strong> Please try again later.
-      </div>
-
-      <div class="alert alert-danger" *ngIf="errorUserExists" jhiTranslate="register.messages.error.userexists">
-        <strong>Login name already registered!</strong> Please choose another one.
-      </div>
-
-      <div class="alert alert-danger" *ngIf="errorEmailExists" jhiTranslate="register.messages.error.emailexists">
-        <strong>Email is already in use!</strong> Please choose another one.
-      </div>
-
-      <div class="alert alert-danger" *ngIf="doNotMatch" jhiTranslate="global.messages.error.dontmatch">
-        The password and its confirmation do not match!
-      </div>
-    </div>
-  </div>
-
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <form name="form" role="form" (ngSubmit)="register()" [formGroup]="registerForm" *ngIf="!success">
-        <div class="form-group">
-          <div class="row">
-            <div class="col-md-4">
-              <label class="form-control-label" for="firstName" jhiTranslate="global.form.firstname.label">First Name</label>
-              <input
-                type="text"
-                class="form-control"
-                id="firstName"
-                name="firstName"
-                placeholder="{{ 'global.form.firstname.placeholder' | translate }}"
-                formControlName="firstName"
-                #firstName
-              />
-
-              <div
-                *ngIf="
-                  registerForm.get('firstName')!.invalid && (registerForm.get('firstName')!.dirty || registerForm.get('firstName')!.touched)
-                "
-              >
-                <small
-                  class="form-text text-danger"
-                  *ngIf="registerForm.get('firstName')?.errors?.required"
-                  jhiTranslate="register.messages.validate.firstName.required"
-                >
-                  Your first name is required.
-                </small>
-
-                <small
-                  class="form-text text-danger"
-                  *ngIf="registerForm.get('firstName')?.errors?.minlength"
-                  jhiTranslate="register.messages.validate.firstName.minlength"
-                >
-                  min. 1 character.
-                </small>
-
-                <small
-                  class="form-text text-danger"
-                  *ngIf="registerForm.get('firstName')?.errors?.maxlength"
-                  jhiTranslate="register.messages.validate.firstName.maxlength"
-                >
-                  max. 50 characters.
-                </small>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <label class="form-control-label" for="lastName" jhiTranslate="global.form.lastname.label">Last Name</label>
-              <input
-                type="text"
-                class="form-control"
-                id="lastName"
-                name="lastName"
-                placeholder="{{ 'global.form.lastname.placeholder' | translate }}"
-                formControlName="lastName"
-              />
-
-              <div
-                *ngIf="
-                  registerForm.get('lastName')!.invalid && (registerForm.get('lastName')!.dirty || registerForm.get('lastName')!.touched)
-                "
-              >
-                <small
-                  class="form-text text-danger"
-                  *ngIf="registerForm.get('lastName')?.errors?.required"
-                  jhiTranslate="register.messages.validate.lastName.required"
-                >
-                  Your last name is required.
-                </small>
-
-                <small
-                  class="form-text text-danger"
-                  *ngIf="registerForm.get('lastName')?.errors?.minlength"
-                  jhiTranslate="register.messages.validate.lastName.minlength"
-                >
-                  min. 1 character.
-                </small>
-
-                <small
-                  class="form-text text-danger"
-                  *ngIf="registerForm.get('lastName')?.errors?.maxlength"
-                  jhiTranslate="register.messages.validate.lastName.maxlength"
-                >
-                  max. 50 characters.
-                </small>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <label class="form-control-label" for="apartment" jhiTranslate="global.form.apartment.label">Last Name</label>
-              <input
-                type="text"
-                class="form-control"
-                id="apartment"
-                name="apartment"
-                placeholder="{{ 'global.form.apartment.placeholder' | translate }}"
-                formControlName="apartment"
-              />
-
-              <div
-                *ngIf="
-                  registerForm.get('apartment')!.invalid && (registerForm.get('apartment')!.dirty || registerForm.get('apartment')!.touched)
-                "
-              >
-                <small
-                  class="form-text text-danger"
-                  *ngIf="registerForm.get('apartment')?.errors?.required"
-                  jhiTranslate="register.messages.validate.apartment.required"
-                >
-                  Your apartment no is required.
-                </small>
-
-                <small
-                  class="form-text text-danger"
-                  *ngIf="registerForm.get('apartment')?.errors?.minlength"
-                  jhiTranslate="register.messages.validate.apartment.minlength"
-                >
-                  min. 5 character.
-                </small>
-
-                <small
-                  class="form-text text-danger"
-                  *ngIf="registerForm.get('apartment')?.errors?.maxlength"
-                  jhiTranslate="register.messages.validate.apartment.maxlength"
-                >
-                  max. 5 characters.
-                </small>
-
-                <small
-                  class="form-text text-danger"
-                  *ngIf="registerForm.get('apartment')?.errors?.pattern"
-                  jhiTranslate="register.messages.validate.apartment.pattern"
-                >
-                  Required format: xx-xx (cf. rental agreement)
-                </small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <div class="row">
-            <div class="col-md-6">
-              <label class="form-control-label" jhiTranslate="register.form.start" for="start">Start</label>
-              <div class="d-flex">
-                <input
-                  id="start"
-                  type="date"
-                  class="form-control"
-                  name="start"
-                  formControlName="start"
-                  placeholder="YYYY-MM-DD"
-                  [max]="registerForm.get('end')!.valid ? registerForm.get('end')!.value : ''"
-                />
-              </div>
-              <div *ngIf="registerForm.get('start')!.invalid && (registerForm.get('start')!.dirty || registerForm.get('start')!.touched)">
-                <small
-                  class="form-text text-danger"
-                  *ngIf="registerForm.get('start')?.errors?.required"
-                  jhiTranslate="entity.validation.required"
-                >
-                  This field is required.
-                </small>
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-control-label" jhiTranslate="register.form.end" for="end">End</label>
-              <div class="d-flex">
-                <input
-                  id="end"
-                  type="date"
-                  class="form-control"
-                  name="end"
-                  formControlName="end"
-                  placeholder="YYYY-MM-DD"
-                  [min]="registerForm.get('start')!.valid ? registerForm.get('start')!.value : ''"
-                />
-              </div>
-              <div *ngIf="registerForm.get('end')!.invalid && (registerForm.get('end')!.dirty || registerForm.get('end')!.touched)">
-                <small
-                  class="form-text text-danger"
-                  *ngIf="registerForm.get('end')?.errors?.required"
-                  jhiTranslate="entity.validation.required"
-                >
-                  This field is required.
-                </small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" for="login" jhiTranslate="global.form.username.label">Username</label>
-          <input
-            type="text"
-            class="form-control"
-            id="login"
-            name="login"
-            placeholder="{{ 'global.form.username.placeholder' | translate }}"
-            formControlName="login"
-          />
-
-          <div *ngIf="registerForm.get('login')!.invalid && (registerForm.get('login')!.dirty || registerForm.get('login')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="registerForm.get('login')?.errors?.required"
-              jhiTranslate="register.messages.validate.login.required"
-            >
-              Your username is required.
-            </small>
-
-            <small
-              class="form-text text-danger"
-              *ngIf="registerForm.get('login')?.errors?.minlength"
-              jhiTranslate="register.messages.validate.login.minlength"
-            >
-              Your username is required to be at least 1 character.
-            </small>
-
-            <small
-              class="form-text text-danger"
-              *ngIf="registerForm.get('login')?.errors?.maxlength"
-              jhiTranslate="register.messages.validate.login.maxlength"
-            >
-              Your username cannot be longer than 50 characters.
-            </small>
-
-            <small
-              class="form-text text-danger"
-              *ngIf="registerForm.get('login')?.errors?.pattern"
-              jhiTranslate="register.messages.validate.login.pattern"
-            >
-              Your username can only contain letters and digits.
-            </small>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" for="email" jhiTranslate="global.form.email.label">Email</label>
-          <input
-            type="email"
-            class="form-control"
-            id="email"
-            name="email"
-            placeholder="{{ 'global.form.email.placeholder' | translate }}"
-            formControlName="email"
-            data-cy="email"
-          />
-
-          <div *ngIf="registerForm.get('email')!.invalid && (registerForm.get('email')!.dirty || registerForm.get('email')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="registerForm.get('email')?.errors?.required"
-              jhiTranslate="global.messages.validate.email.required"
-            >
-              Your email is required.
-            </small>
-
-            <small
-              class="form-text text-danger"
-              *ngIf="registerForm.get('email')?.errors?.invalid"
-              jhiTranslate="global.messages.validate.email.invalid"
-            >
-              Your email is invalid.
-            </small>
-
-            <small
-              class="form-text text-danger"
-              *ngIf="registerForm.get('email')?.errors?.minlength"
-              jhiTranslate="global.messages.validate.email.minlength"
-            >
-              Your email is required to be at least 5 characters.
-            </small>
-
-            <small
-              class="form-text text-danger"
-              *ngIf="registerForm.get('email')?.errors?.maxlength"
-              jhiTranslate="global.messages.validate.email.maxlength"
-            >
-              Your email cannot be longer than 100 characters.
-            </small>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" for="password" jhiTranslate="global.form.newpassword.label">New password</label>
-          <input
-            type="password"
-            class="form-control"
-            id="password"
-            name="password"
-            placeholder="{{ 'global.form.newpassword.placeholder' | translate }}"
-            formControlName="password"
-            data-cy="firstPassword"
-          />
-
-          <div
-            *ngIf="registerForm.get('password')!.invalid && (registerForm.get('password')!.dirty || registerForm.get('password')!.touched)"
-          >
-            <small
-              class="form-text text-danger"
-              *ngIf="registerForm.get('password')?.errors?.required"
-              jhiTranslate="global.messages.validate.newpassword.required"
-            >
-              Your password is required.
-            </small>
-
-            <small
-              class="form-text text-danger"
-              *ngIf="registerForm.get('password')?.errors?.minlength"
-              jhiTranslate="global.messages.validate.newpassword.minlength"
-            >
-              Your password is required to be at least 4 characters.
-            </small>
-
-            <small
-              class="form-text text-danger"
-              *ngIf="registerForm.get('password')?.errors?.maxlength"
-              jhiTranslate="global.messages.validate.newpassword.maxlength"
-            >
-              Your password cannot be longer than 50 characters.
-            </small>
-          </div>
-
-          <jhi-password-strength-bar [passwordToCheck]="registerForm.get('password')!.value"></jhi-password-strength-bar>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" for="confirmPassword" jhiTranslate="global.form.confirmpassword.label"
-            >New password confirmation</label
-          >
-          <input
-            type="password"
-            class="form-control"
-            id="confirmPassword"
-            name="confirmPassword"
-            placeholder="{{ 'global.form.confirmpassword.placeholder' | translate }}"
-            formControlName="confirmPassword"
-            data-cy="secondPassword"
-          />
-
-          <div
-            *ngIf="
-              registerForm.get('confirmPassword')!.invalid &&
-              (registerForm.get('confirmPassword')!.dirty || registerForm.get('confirmPassword')!.touched)
-            "
-          >
-            <small
-              class="form-text text-danger"
-              *ngIf="registerForm.get('confirmPassword')?.errors?.required"
-              jhiTranslate="global.messages.validate.confirmpassword.required"
-            >
-              Your confirmation password is required.
-            </small>
-
-            <small
-              class="form-text text-danger"
-              *ngIf="registerForm.get('confirmPassword')?.errors?.minlength"
-              jhiTranslate="global.messages.validate.confirmpassword.minlength"
-            >
-              Your confirmation password is required to be at least 4 characters.
-            </small>
-
-            <small
-              class="form-text text-danger"
-              *ngIf="registerForm.get('confirmPassword')?.errors?.maxlength"
-              jhiTranslate="global.messages.validate.confirmpassword.maxlength"
-            >
-              Your confirmation password cannot be longer than 50 characters.
-            </small>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="networkTerms" name="networkTerms" formControlName="networkTerms" />
-            <label class="form-check-label" for="networkTerms" jhiTranslate="register.form.networkTerms">FaRueNet Terms</label>
-          </div>
-          <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="generalTerms" name="generalTerms" formControlName="generalTerms" />
-            <label class="form-check-label" for="generalTerms" jhiTranslate="register.form.generalTerms"></label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <button
-            type="submit"
-            [disabled]="registerForm.invalid"
-            class="btn btn-primary"
-            jhiTranslate="register.form.button"
-            data-cy="submit"
-          >
-            Register
+      <!-- Switching between vertical and horizontal stepper has to be done by completely removing it from the DOM -->
+      <!-- so that inputs in the form fields are correctly updated. Using "fxHide fxShow.lt-md" does not work as  -->
+      <!-- form inputs will not show up in the form fields after resize. -->
+      <mat-horizontal-stepper
+        #stepper
+        *ngIf="!verticalStepper"
+        (selectionChange)="selectionChanged($event)"
+        (animationDone)="animationEnd = true"
+        [selectedIndex]="selectedIndex"
+        labelPosition="bottom"
+        linear
+      >
+        <mat-step [stepControl]="userForm" [editable]="!success" [label]="'register.form.steps.user' | translate">
+          <ng-container [ngTemplateOutlet]="stepOne"></ng-container>
+          <button #nextButton mat-button matStepperNext [disabled]="userForm.invalid" type="button" [@heartBeat]="!nextButton.disabled">
+            <span translate>register.form.buttons.next</span>
           </button>
-        </div>
-      </form>
+        </mat-step>
+        <mat-step [stepControl]="personForm" [editable]="!success" [label]="'register.form.steps.person' | translate">
+          <ng-container [ngTemplateOutlet]="stepTwo"></ng-container>
+          <button mat-button matStepperPrevious type="button"><span translate>register.form.buttons.back</span></button>
+          <button #nextButton mat-button matStepperNext [disabled]="personForm.invalid" type="button" [@heartBeat]="!nextButton.disabled">
+            <span translate>register.form.buttons.next</span>
+          </button>
+        </mat-step>
+        <mat-step [editable]="!success" [label]="'register.form.steps.documents.title' | translate">
+          <ng-container [ngTemplateOutlet]="stepThree"></ng-container>
+          <button mat-button matStepperPrevious type="button"><span translate>register.form.buttons.back</span></button>
+          <button #nextButton mat-button type="button" [loading]="loading" (click)="register()" [@heartBeat]="!nextButton.disabled">
+            <span translate>register.form.buttons.submit</span>
+          </button>
+        </mat-step>
+        <mat-step [label]="'register.form.steps.done' | translate">
+          <ng-container [ngTemplateOutlet]="stepFour"></ng-container>
+        </mat-step>
+      </mat-horizontal-stepper>
+
+      <mat-vertical-stepper
+        #stepper
+        *ngIf="verticalStepper"
+        (selectionChange)="selectionChanged($event)"
+        (animationDone)="animationEnd = true"
+        [selectedIndex]="selectedIndex"
+        linear
+      >
+        <mat-step [stepControl]="userForm" [editable]="!success" [label]="'register.form.steps.user' | translate">
+          <ng-container [ngTemplateOutlet]="stepOne"></ng-container>
+          <button #nextButton mat-button matStepperNext [disabled]="userForm.invalid" type="button" [@heartBeat]="!nextButton.disabled">
+            <span translate>register.form.buttons.next</span>
+          </button>
+        </mat-step>
+        <mat-step [stepControl]="personForm" [editable]="!success" [label]="'register.form.steps.person' | translate">
+          <ng-container [ngTemplateOutlet]="stepTwo"></ng-container>
+          <button mat-button matStepperPrevious type="button"><span translate>register.form.buttons.back</span></button>
+          <button #nextButton mat-button matStepperNext [disabled]="personForm.invalid" type="button" [@heartBeat]="!nextButton.disabled">
+            <span translate>register.form.buttons.next</span>
+          </button>
+        </mat-step>
+        <mat-step [editable]="!success" [label]="'register.form.steps.documents.title' | translate">
+          <ng-container [ngTemplateOutlet]="stepThree"></ng-container>
+          <button mat-button matStepperPrevious type="button"><span translate>register.form.buttons.back</span></button>
+          <button #nextButton mat-button type="button" [loading]="loading" (click)="register()" [@heartBeat]="!nextButton.disabled">
+            <span translate>register.form.buttons.submit</span>
+          </button>
+        </mat-step>
+        <mat-step [editable]="!success" [label]="'register.form.steps.done' | translate">
+          <ng-container [ngTemplateOutlet]="stepFour"></ng-container>
+        </mat-step>
+      </mat-vertical-stepper>
     </div>
   </div>
 </div>
+
+<ng-template #stepOne>
+  <form name="form" role="form" (ngSubmit)="register()" [formGroup]="userForm">
+    <div fxLayout="column" fxLayoutGap="16px grid">
+      <mat-form-field appearance="outline" fxFlex>
+        <mat-label>{{ 'global.form.username.label' | translate }}</mat-label>
+        <input #login type="text" matInput formControlName="login" autocomplete="username" data-cy="username" />
+        <mat-hint align="end">{{ login.value?.length || 0 }} / 50</mat-hint>
+        <mat-error *ngIf="userForm.get('login')?.hasError('required')">{{
+          'register.messages.validate.login.required' | translate
+        }}</mat-error>
+        <mat-error *ngIf="userForm.get('login')?.hasError('minlength')">{{
+          'register.messages.validate.login.minlength' | translate
+        }}</mat-error>
+        <mat-error *ngIf="userForm.get('login')?.hasError('maxlength')">{{
+          'register.messages.validate.login.maxlength' | translate
+        }}</mat-error>
+        <mat-error *ngIf="userForm.get('login')?.hasError('pattern')">{{
+          'register.messages.validate.login.pattern' | translate
+        }}</mat-error>
+        <mat-error *ngIf="userForm.get('login')?.hasError('usernameExists')">{{
+          'register.messages.validate.login.alreadyExists' | translate
+        }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" fxFlex>
+        <mat-label>{{ 'global.form.email.label' | translate }}</mat-label>
+        <input #email type="text" matInput formControlName="email" autocomplete="email" data-cy="username" />
+        <mat-error *ngIf="userForm.get('email')?.hasError('required')">{{
+          'global.messages.validate.email.required' | translate
+        }}</mat-error>
+        <mat-error *ngIf="userForm.get('email')?.hasError('email')">{{ 'global.messages.validate.email.invalid' | translate }}</mat-error>
+        <mat-error *ngIf="userForm.get('email')?.hasError('minlength')">{{
+          'global.messages.validate.email.minlength' | translate
+        }}</mat-error>
+        <mat-error *ngIf="userForm.get('email')?.hasError('maxlength')">{{
+          'global.messages.validate.email.maxlength' | translate
+        }}</mat-error>
+        <mat-error *ngIf="userForm.get('email')?.hasError('emailExists')">{{
+          'global.messages.validate.email.alreadyExists' | translate
+        }}</mat-error>
+        <mat-hint *ngIf="userForm.get('email')?.valid && !isUniversityEmail(email.value)"
+          ><mat-icon class="warn-icon">error</mat-icon> <span translate>global.messages.validate.email.university</span></mat-hint
+        >
+      </mat-form-field>
+
+      <div fxLayout="column">
+        <mat-form-field appearance="outline" [color]="passwordStrength.color" fxFlex>
+          <mat-label>{{ 'global.form.newpassword.label' | translate }}</mat-label>
+          <mat-pass-toggle-visibility #passwordVisiblity [tabindex]="'-1'" matSuffix></mat-pass-toggle-visibility>
+          <input
+            #password
+            [type]="passwordVisiblity.type"
+            matInput
+            formControlName="password"
+            autocomplete="new-password"
+            data-cy="username"
+          />
+          <mat-hint align="end">{{ password.value?.length || 0 }} / 50</mat-hint>
+          <mat-error *ngIf="userForm.get('password')?.hasError('required')">{{
+            'global.messages.validate.newpassword.required' | translate
+          }}</mat-error>
+          <mat-error *ngIf="userForm.get('password')?.hasError('minlength')">{{
+            'global.messages.validate.newpassword.minlength' | translate
+          }}</mat-error>
+          <mat-error *ngIf="userForm.get('password')?.hasError('maxlength')">{{
+            'global.messages.validate.newpassword.maxlength' | translate
+          }}</mat-error>
+        </mat-form-field>
+
+        <mat-password-strength #passwordStrength [password]="password.value" fxFlex></mat-password-strength>
+      </div>
+
+      <mat-form-field appearance="outline" fxFlex>
+        <mat-label>{{ 'global.form.confirmpassword.label' | translate }}</mat-label>
+        <mat-pass-toggle-visibility #confirmPasswordVisiblity [tabindex]="'-1'" matSuffix></mat-pass-toggle-visibility>
+        <input
+          #confirmPassword
+          [type]="confirmPasswordVisiblity.type"
+          [errorStateMatcher]="passwordMismatchErrorStateMatcher"
+          matInput
+          formControlName="confirmPassword"
+          autocomplete="new-password"
+          data-cy="username"
+        />
+        <mat-hint align="end">{{ confirmPassword.value?.length || 0 }} / 50</mat-hint>
+        <mat-error *ngIf="userForm.get('confirmPassword')?.hasError('required')">{{
+          'global.messages.validate.confirmpassword.required' | translate
+        }}</mat-error>
+        <mat-error *ngIf="userForm.get('confirmPassword')?.hasError('minlength')">{{
+          'global.messages.validate.confirmpassword.minlength' | translate
+        }}</mat-error>
+        <mat-error *ngIf="userForm.get('confirmPassword')?.hasError('maxlength')">{{
+          'global.messages.validate.confirmpassword.maxlength' | translate
+        }}</mat-error>
+        <mat-error *ngIf="userForm.hasError('passwordMismatch')">{{
+          'global.messages.validate.confirmpassword.mismatch' | translate
+        }}</mat-error>
+      </mat-form-field>
+
+      <mat-checkbox formControlName="networkTerms">
+        <span [innerHTML]="'register.form.networkTerms' | translate"></span>
+      </mat-checkbox>
+      <mat-checkbox formControlName="generalTerms">
+        <span [innerHTML]="'register.form.generalTerms' | translate"></span>
+      </mat-checkbox>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #stepTwo>
+  <form name="form" role="form" (ngSubmit)="register()" [formGroup]="personForm">
+    <div fxLayout="column" fxLayoutGap="16px grid">
+      <div fxLayout="row wrap" fxLayoutGap="16px grid">
+        <mat-form-field appearance="outline" fxFlex fxFlex.lt-sm="100%">
+          <mat-label>{{ 'global.form.firstname.label' | translate }}</mat-label>
+          <input type="text" matInput formControlName="firstName" autocomplete="given-name" data-cy="username" />
+          <mat-error *ngIf="personForm.get('firstName')?.hasError('required')">{{
+            'register.messages.validate.firstName.required' | translate
+          }}</mat-error>
+          <mat-error *ngIf="personForm.get('firstName')?.hasError('minlength')">{{
+            'register.messages.validate.firstName.minlength' | translate
+          }}</mat-error>
+          <mat-error *ngIf="personForm.get('firstName')?.hasError('maxlength')">{{
+            'register.messages.validate.firstName.maxlength' | translate
+          }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" fxFlex fxFlex.lt-sm="100%">
+          <mat-label>{{ 'global.form.lastname.label' | translate }}</mat-label>
+          <input type="text" matInput formControlName="lastName" autocomplete="family-name" data-cy="username" />
+          <mat-error *ngIf="personForm.get('lastName')?.hasError('required')">{{
+            'register.messages.validate.lastName.required' | translate
+          }}</mat-error>
+          <mat-error *ngIf="personForm.get('lastName')?.hasError('minlength')">{{
+            'register.messages.validate.lastName.minlength' | translate
+          }}</mat-error>
+          <mat-error *ngIf="personForm.get('lastName')?.hasError('maxlength')">{{
+            'register.messages.validate.lastName.maxlength' | translate
+          }}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row wrap" fxLayoutGap="16px grid">
+        <mat-form-field appearance="outline" fxFlex="33%" fxFlex.lt-sm="100%">
+          <mat-label>{{ 'global.form.apartment.label' | translate }}</mat-label>
+          <input
+            #apartment
+            type="text"
+            matInput
+            [errorStateMatcher]="immediateErrorStateMatcher"
+            placeholder="xx-xx"
+            formControlName="apartment"
+            data-cy="apartment"
+          />
+          <mat-spinner *ngIf="personForm.get('apartment')?.pending" matSuffix [diameter]="18"></mat-spinner>
+          <mat-error *ngIf="personForm.get('apartment')?.hasError('required')">{{
+            'register.messages.validate.apartment.required' | translate
+          }}</mat-error>
+          <mat-error *ngIf="personForm.get('apartment')?.hasError('pattern')">{{
+            'register.messages.validate.apartment.pattern' | translate
+          }}</mat-error>
+          <mat-error *ngIf="personForm.get('apartment')?.hasError('invalidApartment')">{{
+            'register.messages.validate.apartment.invalid' | translate
+          }}</mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex fxFlex.lt-sm="100%">
+          <mat-label>{{ 'register.form.address' | translate }}</mat-label>
+          <input
+            matInput
+            disabled
+            placeholder="Rütscher Str."
+            [value]="
+              personForm.get('apartment')?.valid && apartmentValidator.apartment ? getApartmentString(apartmentValidator.apartment) : ''
+            "
+          />
+        </mat-form-field>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="16px grid">
+        <mat-form-field appearance="outline" fxFlex="0 1 320px" fxFlex.lt-sm="100%">
+          <mat-label>{{ 'register.form.duration' | translate }}</mat-label>
+          <mat-date-range-input [rangePicker]="picker">
+            <input matStartDate formControlName="start" [placeholder]="'register.form.start' | translate" />
+            <input matEndDate formControlName="end" [placeholder]="'register.form.end' | translate" />
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+          <mat-error *ngIf="personForm.get('start')?.hasError('required')">{{
+            'register.messages.validate.start.required' | translate
+          }}</mat-error>
+          <mat-error *ngIf="personForm.get('start')?.hasError('invalidMaxDate')">{{
+            'register.messages.validate.start.invalidMaxDate' | translate
+          }}</mat-error>
+          <mat-error *ngIf="personForm.get('end')?.hasError('required')">{{
+            'register.messages.validate.end.required' | translate
+          }}</mat-error>
+          <mat-error *ngIf="personForm.get('end')?.hasError('matEndDateInvalid')">{{
+            'register.messages.validate.end.invalid' | translate
+          }}</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #stepThree [formGroup]="userForm">
+  <div class="position-relative">
+    <p translate>register.form.steps.documents.p1</p>
+    <p translate>register.form.steps.documents.p2</p>
+    <p class="mat-h3" translate>register.form.steps.documents.list.title</p>
+    <ul>
+      <li>
+        <div class="mat-body-strong" translate>register.form.steps.documents.list.rentalContract</div>
+        <div translate>register.form.steps.documents.list.rentalContractExplanation</div>
+      </li>
+      <li *ngIf="!isUniversityEmail(userForm.get('email')!.value)">
+        <div class="mat-body-strong" translate>register.form.steps.documents.list.id</div>
+        <div translate>register.form.steps.documents.list.idExplanation</div>
+      </li>
+    </ul>
+  </div>
+</ng-template>
+
+<ng-template #stepFour [formGroup]="userForm">
+  <div fxLayout="column" fxLayoutAlign="center center" class="mx-4">
+    <jhi-checkmark [visible]="selectedIndex === 3 && animationEnd"></jhi-checkmark>
+    <div class="mat-h2 text-center" translate>register.messages.success.done</div>
+    <p
+      [innerHTML]="'register.messages.success.confimationEmail' | translate: { email: userForm.get('email')?.value }"
+      class="text-center"
+    ></p>
+    <p class="text-center" translate>register.messages.success.verificationNotice</p>
+  </div>
+</ng-template>

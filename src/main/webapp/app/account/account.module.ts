@@ -10,9 +10,10 @@ import { PasswordResetInitComponent } from './password-reset/init/password-reset
 import { PasswordResetFinishComponent } from './password-reset/finish/password-reset-finish.component';
 import { SettingsComponent } from './settings/settings.component';
 import { accountState } from './account.route';
+import { UiModule } from 'app/ui/ui.module';
 
 @NgModule({
-  imports: [SharedModule, RouterModule.forChild(accountState)],
+  imports: [SharedModule, UiModule, RouterModule.forChild(accountState)],
   declarations: [
     ActivateComponent,
     RegisterComponent,

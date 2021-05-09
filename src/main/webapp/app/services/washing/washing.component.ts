@@ -1,41 +1,87 @@
-import { Component, OnInit } from '@angular/core';
-import { WashingService } from 'app/services/washing/washing.service';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ActivateResponse, WashingService } from 'app/services/washing/washing.service';
 import { LaundryMachine } from 'app/entities/laundry-machine/laundry-machine.model';
 import { LaundryMachineProgram } from 'app/entities/laundry-machine-program/laundry-machine-program.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { INSUFFICIENT_FUNDS_TYPE, LAUNDRY_MACHINE_UNAVAILABLE_TYPE } from 'app/config/error.constants';
 import { LaundryMachineType } from 'app/entities/enumerations/laundry-machine-type.model';
+import { FormBuilder, Validators } from '@angular/forms';
+import { finalize } from 'rxjs/operators';
+import * as _ from 'lodash';
+import * as dayjs from 'dayjs';
+import { TranslateService } from '@ngx-translate/core';
+import { bounceOnEnterAnimation } from 'angular-animations';
+
+enum FormProperties {
+  LAUNDRY_MACHINE = 'laundryMachine',
+  PROGRAM = 'program',
+  SUBPROGRAM = 'subprogram',
+  SPIN = 'spin',
+  PREWASH = 'preWash',
+  PROTECT = 'protect',
+}
+
+interface WashingResponse {
+  machineId?: number;
+  activationTimestamp?: dayjs.Dayjs;
+  endActivationTime?: dayjs.Dayjs;
+  activationDurationMs?: number;
+  countdownSeconds?: number;
+  success?: boolean;
+  genericError?: boolean;
+  errorInsufficientFunds?: boolean;
+  errorMachineUnavailable?: boolean;
+}
 
 @Component({
   selector: 'jhi-application',
   templateUrl: './washing.component.html',
   styleUrls: ['./washing.component.scss'],
+  animations: [bounceOnEnterAnimation()],
 })
 export class WashingComponent implements OnInit {
-  message: string;
+  FormProperties = FormProperties;
 
   machines: LaundryMachine[] = [];
   programs: string[] = [];
   subprograms: string[] = [];
   spins: number[] = [];
 
-  selectedMachine?: LaundryMachine;
-  selectedProgram?: string;
-  selectedSubprogram?: string;
-  selectedSpin?: number;
-  selectedPreWash?: boolean;
-  selectedProtect?: boolean;
-
   initError = false;
-  error = false;
-  success = false;
-  errorInsufficientFunds = false;
-  errorMachineUnavailable = false;
 
-  disabled = false;
+  loadingMachines: boolean;
+  loadingActivate = false;
 
-  constructor(private washingService: WashingService) {
-    this.message = 'Washing message';
+  response?: WashingResponse;
+
+  formGroup = this.fb.group({
+    [FormProperties.LAUNDRY_MACHINE]: [{ value: null, disabled: false }, Validators.required],
+    [FormProperties.PROGRAM]: [{ value: null, disabled: true }, Validators.required],
+    [FormProperties.SUBPROGRAM]: [{ value: null, disabled: true }, Validators.required],
+    [FormProperties.SPIN]: [{ value: null, disabled: true }, Validators.required],
+    [FormProperties.PREWASH]: [{ value: null, disabled: true }],
+    [FormProperties.PROTECT]: [{ value: null, disabled: true }],
+  });
+
+  constructor(
+    private fb: FormBuilder,
+    private washingService: WashingService,
+    private translateService: TranslateService,
+    private cd: ChangeDetectorRef
+  ) {
+    this.loadingMachines = true;
+    this.washingService
+      .getAllLaundryMachines()
+      .pipe(finalize(() => (this.loadingMachines = false)))
+      .subscribe(
+        (machines: LaundryMachine[]) => {
+          this.initError = false;
+          this.machines = machines;
+        },
+        () => (this.initError = true)
+      );
+
+    this.formGroup.valueChanges.subscribe(() => this.update());
   }
 
   private static notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
@@ -46,98 +92,175 @@ export class WashingComponent implements OnInit {
     return self.indexOf(value) === index;
   }
 
-  ngOnInit(): void {
-    this.washingService.getAllLaundryMachines().subscribe(
-      (machines: LaundryMachine[]) => {
-        this.initError = false;
-        this.machines = machines;
-      },
-      () => (this.initError = true)
-    );
+  get selectedMachine(): LaundryMachine | null {
+    return this.formGroup.get(FormProperties.LAUNDRY_MACHINE)!.value as LaundryMachine | null;
   }
+
+  get selectedProgram(): string | null {
+    return this.formGroup.get(FormProperties.PROGRAM)!.value as string | null;
+  }
+
+  get selectedSubprogram(): string | null {
+    return this.formGroup.get(FormProperties.SUBPROGRAM)!.value as string | null;
+  }
+
+  get selectedSpin(): number | null {
+    return this.formGroup.get(FormProperties.SPIN)!.value as number | null;
+  }
+
+  get selectedPreWash(): boolean | null {
+    return this.formGroup.get(FormProperties.PREWASH)!.value as boolean | null;
+  }
+
+  get selectedProtect(): boolean | null {
+    return this.formGroup.get(FormProperties.PROTECT)!.value as boolean | null;
+  }
+
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method,@typescript-eslint/no-empty-function
+  ngOnInit(): void {}
 
   unlockAction(): void {
     const selectedProgram = this.getSelectedProgram();
-    if (this.selectedMachine != null && selectedProgram != null) {
+    if (this.selectedMachine != null) {
       this.unlock(this.selectedMachine, selectedProgram);
     }
   }
 
   unlock(laundryMachine: LaundryMachine, laundryMachineProgram: LaundryMachineProgram): void {
-    this.error = false;
-    this.errorInsufficientFunds = false;
-    this.errorMachineUnavailable = false;
+    this.loadingActivate = true;
+    this.response = undefined;
 
-    this.washingService.unlock(laundryMachine, laundryMachineProgram).subscribe(
-      () => {
-        this.success = true;
-
-        // Disable unlock button for 5 seconds to prevent multiple accidental clicks
-        this.disabled = true;
-        setTimeout(() => (this.disabled = false), 5000);
-      },
-      response => this.processError(response)
-    );
+    this.washingService
+      .unlock(laundryMachine, laundryMachineProgram)
+      .pipe(finalize(() => (this.loadingActivate = false)))
+      .subscribe(
+        (response: ActivateResponse) => {
+          this.response = {
+            ...response,
+            countdownSeconds: response.endActivationTime.diff(dayjs(), 'seconds'),
+            success: true,
+          };
+        },
+        (err: HttpErrorResponse) => {
+          this.response = { success: false, machineId: laundryMachine.id! };
+          if (err.status === 400 && err.error.type === INSUFFICIENT_FUNDS_TYPE) {
+            this.response.errorInsufficientFunds = true;
+          } else if (err.status === 400 && err.error.type === LAUNDRY_MACHINE_UNAVAILABLE_TYPE) {
+            this.response.errorMachineUnavailable = true;
+          } else {
+            this.response.genericError = true;
+          }
+        }
+      );
   }
 
-  invalid(): boolean {
-    return this.getSelectedProgram() == null;
+  onCountdownFinished(): void {
+    if (this.response?.countdownSeconds) {
+      this.response.countdownSeconds = undefined;
+    }
   }
 
-  getSelectedProgram(): LaundryMachineProgram | null {
-    const programs: LaundryMachineProgram[] = this.filterPrograms(
+  getSelectedProgram(): LaundryMachineProgram {
+    return this.findSingleMatchingProgram(
       this.selectedProgram,
       this.selectedSubprogram,
       this.selectedSpin,
       this.selectedPreWash,
       this.selectedProtect
     );
-    if (programs.length === 1) {
-      return programs[0];
-    } else {
-      return null;
-    }
   }
 
-  filterPrograms(program?: string, subprogram?: string, spin?: number, preWash?: boolean, protect?: boolean): LaundryMachineProgram[] {
-    if (this.selectedMachine == null) {
+  filterPrograms(
+    machine?: LaundryMachine | null,
+    program?: string | null,
+    subprogram?: string | null,
+    spin?: number | null,
+    preWash?: boolean | null,
+    protect?: boolean | null
+  ): LaundryMachineProgram[] {
+    if (machine == null || machine.programs == null) {
       return [];
     }
-    return this.selectedMachine
-      .programs!.filter(p => (p.name == null && program == null) || p.name === program)
-      .filter(p => (p.subprogram == null && subprogram == null) || p.subprogram === subprogram)
-      .filter(p => (p.spin == null && spin == null) || p.spin === spin)
-      .filter(p => (p.preWash == null && !preWash) || p.preWash === preWash)
-      .filter(p => (p.protect == null && !protect) || p.protect === protect);
+    return machine.programs.filter(
+      p =>
+        (program == null || p.name === program) &&
+        (subprogram == null || p.subprogram === subprogram) &&
+        (spin == null || p.spin === spin) &&
+        (preWash == null || p.preWash === preWash) &&
+        (protect == null || p.protect === protect)
+    );
+  }
+
+  findSingleMatchingProgram(
+    program?: string | null,
+    subprogram?: string | null,
+    spin?: number | null,
+    preWash?: boolean | null,
+    protect?: boolean | null
+  ): LaundryMachineProgram {
+    if (this.selectedMachine == null) {
+      throw new Error('no_machine_selected');
+    }
+    const programs: LaundryMachineProgram[] = this.selectedMachine.programs!.filter(
+      p =>
+        (p.name == null && program == null) ||
+        (p.name === program &&
+          ((p.subprogram == null && subprogram == null) || p.subprogram === subprogram) &&
+          ((p.spin == null && spin == null) || p.spin === spin) &&
+          ((p.preWash == null && !preWash) || p.preWash === preWash) &&
+          ((p.protect == null && !protect) || p.protect === protect))
+    );
+    if (programs.length === 0) {
+      throw new Error('no_matchin_program');
+    }
+    if (programs.length > 1) {
+      throw new Error('multiple_matching_programs');
+    }
+    return programs[0];
   }
 
   isShowProgramSelect(): boolean {
-    return this.selectedMachine != null;
+    return this.formGroup.get(FormProperties.LAUNDRY_MACHINE)!.valid;
   }
 
   isShowSubprogramSelect(): boolean {
-    return this.isShowProgramSelect() && this.selectedProgram != null && this.getSubprogramsForProgram(this.selectedProgram).length > 0;
+    return this.isShowProgramSelect() && this.formGroup.get(FormProperties.PROGRAM)!.valid && this.subprograms.length > 0;
   }
 
   isShowSpinSelect(): boolean {
-    if (this.selectedMachine != null && this.selectedMachine.type === LaundryMachineType.WASHING_MACHINE && this.selectedProgram != null) {
-      return !this.isShowSubprogramSelect() || this.selectedSubprogram != null;
+    if (
+      this.formGroup.get(FormProperties.LAUNDRY_MACHINE)!.valid &&
+      this.formGroup.get(FormProperties.LAUNDRY_MACHINE)!.value.type === LaundryMachineType.WASHING_MACHINE &&
+      this.formGroup.get(FormProperties.PROGRAM)!.valid
+    ) {
+      return (!this.isShowSubprogramSelect() || this.formGroup.get(FormProperties.SUBPROGRAM)!.valid) && this.spins.length > 0;
     }
     return false;
   }
 
   isShowPreWashCheckbox(): boolean {
-    if (this.selectedMachine != null && this.selectedMachine.type === LaundryMachineType.WASHING_MACHINE && this.selectedProgram != null) {
-      return !this.isShowSubprogramSelect() || this.selectedSubprogram != null;
+    if (
+      this.formGroup.get(FormProperties.LAUNDRY_MACHINE)!.valid &&
+      this.formGroup.get(FormProperties.LAUNDRY_MACHINE)!.value.type === LaundryMachineType.WASHING_MACHINE &&
+      this.formGroup.get(FormProperties.PROGRAM)!.valid
+    ) {
+      return (
+        (!this.isShowSubprogramSelect() || this.formGroup.get(FormProperties.SUBPROGRAM)!.valid) &&
+        (!this.isShowSpinSelect() || this.formGroup.get(FormProperties.SPIN)!.valid)
+      );
     }
     return false;
   }
 
   isShowProtectCheckbox(): boolean {
-    if (this.selectedMachine != null && this.selectedMachine.type === LaundryMachineType.DRYER && this.selectedProgram != null) {
-      if (!this.isShowSubprogramSelect() || this.selectedSubprogram != null) {
+    if (
+      this.formGroup.get(FormProperties.LAUNDRY_MACHINE)!.valid &&
+      this.formGroup.get(FormProperties.LAUNDRY_MACHINE)!.value.type === LaundryMachineType.DRYER &&
+      this.formGroup.get(FormProperties.PROGRAM)!.valid
+    ) {
+      if (!this.isShowSubprogramSelect() || this.formGroup.get(FormProperties.SUBPROGRAM)!.valid) {
         return (
-          this.getProgramsFilteredByProgramNameAndSubprogram(this.selectedProgram, this.selectedSubprogram).filter(p =>
+          this.filterPrograms(this.selectedMachine, this.selectedProgram, this.selectedSubprogram).filter(p =>
             WashingComponent.notEmpty(p.protect)
           ).length > 0
         );
@@ -146,70 +269,65 @@ export class WashingComponent implements OnInit {
     return false;
   }
 
-  getPrograms(): string[] {
-    if (this.selectedMachine == null) {
-      return [];
-    }
-    return this.selectedMachine.programs!.map(p => p.name!).filter(WashingComponent.onlyUnique);
-  }
-
-  getSubprograms(): string[] {
-    if (this.selectedProgram == null) {
-      return [];
-    }
-    return this.getSubprogramsForProgram(this.selectedProgram).sort();
-  }
-
-  getSpins(): number[] {
-    if (!this.isShowSpinSelect()) {
-      return [];
-    }
-    return this.getProgramsFilteredByProgramNameAndSubprogram(this.selectedProgram!, this.selectedSubprogram)
-      .map(p => p.spin)
-      .filter(WashingComponent.notEmpty)
-      .filter(WashingComponent.onlyUnique)
-      .sort((a, b) => Number(a) - Number(b))
-      .reverse();
-  }
-
   update(): void {
-    this.success = false;
-    if (!this.isShowProgramSelect()) {
-      this.selectedProgram = undefined;
-    }
-    if (!this.isShowSubprogramSelect()) {
-      this.selectedSubprogram = undefined;
-    }
-    if (!this.isShowSpinSelect()) {
-      this.selectedSpin = undefined;
-    }
-    if (!this.isShowPreWashCheckbox()) {
-      this.selectedPreWash = undefined;
-    }
-    if (!this.isShowProtectCheckbox()) {
-      this.selectedProtect = undefined;
-    }
-    if (this.isShowPreWashCheckbox() && !this.selectedPreWash) {
-      this.selectedPreWash = false;
-    }
-    if (this.isShowProtectCheckbox() && !this.selectedProtect) {
-      this.selectedProtect = false;
-    }
-    this.updatePrograms();
-    this.updateSubprograms();
-    this.updateSpins();
+    this.updatePossibleValues();
+
+    this.setFormControlStatus(
+      FormProperties.PROGRAM,
+      this.isShowProgramSelect(),
+      null,
+      this.selectedProgram != null && this.programs.includes(this.selectedProgram) ? this.selectedProgram : null
+    );
+    this.setFormControlStatus(
+      FormProperties.SUBPROGRAM,
+      this.isShowSubprogramSelect(),
+      null,
+      this.selectedSubprogram != null && this.subprograms.includes(this.selectedSubprogram) ? this.selectedSubprogram : null
+    );
+    this.setFormControlStatus(
+      FormProperties.SPIN,
+      this.isShowSpinSelect(),
+      this.selectedSpin != null && this.spins.includes(this.selectedSpin) ? this.selectedSpin : null
+    );
+    this.setFormControlStatus(FormProperties.PREWASH, this.isShowPreWashCheckbox(), null, !!this.selectedPreWash);
+    this.setFormControlStatus(FormProperties.PROTECT, this.isShowProtectCheckbox(), null, !!this.selectedProtect);
+
+    // TODO: Otherwise changed after checked error
+    this.cd.detectChanges();
   }
 
-  updatePrograms(): void {
-    this.programs = this.getPrograms();
+  updatePossibleValues(): void {
+    this.programs = this.filterPrograms(this.selectedMachine)
+      .map((laundryMachineProgram: LaundryMachineProgram) => laundryMachineProgram.name)
+      .filter(name => !_.isNil(name)) as string[];
+    this.programs = _.uniq(this.programs);
+    this.subprograms = this.filterPrograms(this.selectedMachine, this.selectedProgram)
+      .map((laundryMachineProgram: LaundryMachineProgram) => laundryMachineProgram.subprogram)
+      .filter(name => !_.isNil(name)) as string[];
+    this.subprograms = _.uniq(this.subprograms).sort();
+    this.spins = this.filterPrograms(this.selectedMachine, this.selectedProgram, this.selectedSubprogram)
+      .map((laundryMachineProgram: LaundryMachineProgram) => laundryMachineProgram.spin)
+      .filter(name => !_.isNil(name)) as number[];
+    this.spins = _.uniq(this.spins).sort();
   }
 
-  updateSubprograms(): void {
-    this.subprograms = this.getSubprograms();
-  }
+  translateMachineName(value: LaundryMachine | number): string | null {
+    if (typeof value === 'number') {
+      let machine;
+      for (const m of this.machines) {
+        if (m.id === value) {
+          machine = m;
+          break;
+        }
+      }
+      if (machine === undefined) {
+        return null;
+      }
+      value = machine;
+    }
 
-  updateSpins(): void {
-    this.spins = this.getSpins();
+    const machineType: string = this.translateService.instant('washing.machineTypes.' + value.type!);
+    return `${machineType} ${Number(value.id!)}`;
   }
 
   private getSubprogramsForProgram(program: string): string[] {
@@ -223,26 +341,18 @@ export class WashingComponent implements OnInit {
       .filter(WashingComponent.onlyUnique);
   }
 
-  private getProgramsFilteredByProgramNameAndSubprogram(program: string, subprogram?: string): LaundryMachineProgram[] {
-    if (this.selectedMachine == null) {
-      return [];
-    }
-    return this.selectedMachine.programs!.filter(p => {
-      if (subprogram != null) {
-        return p.name === program && p.subprogram === subprogram;
-      } else {
-        return p.name === program;
+  private setFormControlStatus(propertyName: FormProperties, visible: boolean, valueOnDisable?: any, valueOnEnable?: any): void {
+    const control = this.formGroup.get(propertyName);
+    if (visible) {
+      control?.enable({ emitEvent: false, onlySelf: true });
+      if (valueOnEnable !== undefined) {
+        control?.patchValue(valueOnEnable, { emitEvent: false, onlySelf: true });
       }
-    });
-  }
-
-  private processError(response: HttpErrorResponse): void {
-    if (response.status === 400 && response.error.type === INSUFFICIENT_FUNDS_TYPE) {
-      this.errorInsufficientFunds = true;
-    } else if (response.status === 400 && response.error.type === LAUNDRY_MACHINE_UNAVAILABLE_TYPE) {
-      this.errorMachineUnavailable = true;
     } else {
-      this.error = true;
+      control?.disable({ emitEvent: false, onlySelf: true });
+      if (valueOnDisable !== undefined) {
+        control?.patchValue(valueOnDisable, { emitEvent: false, onlySelf: true });
+      }
     }
   }
 }

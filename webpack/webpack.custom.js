@@ -21,7 +21,7 @@ module.exports = (config, options) => {
       new FriendlyErrorsWebpackPlugin(),
       new WebpackNotifierPlugin({
         title: 'Autocut',
-        contentImage: path.join(__dirname, 'logo-jhipster.png'),
+        contentImage: path.join(__dirname, 'logo.svg'),
       }),
       new BrowserSyncPlugin(
         {

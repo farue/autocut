@@ -11,6 +11,7 @@ import de.farue.autocut.domain.InternalTransaction;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.domain.enumeration.TransactionType;
 import de.farue.autocut.repository.InternalTransactionRepository;
+import de.farue.autocut.security.AuthoritiesConstants;
 import de.farue.autocut.service.accounting.InternalTransactionService;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -39,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 @IntegrationTest
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
-@WithMockUser
+@WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 class InternalTransactionResourceIT {
 
     private static final TransactionType DEFAULT_TYPE = TransactionType.TRANSFER;

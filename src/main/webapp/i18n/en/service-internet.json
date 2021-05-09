@@ -22,6 +22,11 @@
       "step4": "Verify the cable is okay (try a different one if available)",
       "step5": "Reset the router and enter the static IP configuration again",
       "step6": "Try connecting a computer directly (make sure to configure the static IP on the computer)"
+    },
+    "messages": {
+      "error": {
+        "loadingIpFailed": "Loading the IP address failed."
+      }
     }
   }
 }

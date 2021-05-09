@@ -10,6 +10,7 @@ import de.farue.autocut.domain.Team;
 import de.farue.autocut.domain.TeamMembership;
 import de.farue.autocut.domain.enumeration.TeamRole;
 import de.farue.autocut.repository.TeamMembershipRepository;
+import de.farue.autocut.security.AuthoritiesConstants;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
@@ -30,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @IntegrationTest
 @AutoConfigureMockMvc
-@WithMockUser
+@WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 class TeamMembershipResourceIT {
 
     private static final TeamRole DEFAULT_ROLE = TeamRole.SPOKESPERSON;

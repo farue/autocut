@@ -116,13 +116,16 @@
         "confirmpassword": {
           "required": "Your confirmation password is required.",
           "minlength": "Your confirmation password is required to be at least 4 characters.",
-          "maxlength": "Your confirmation password cannot be longer than 50 characters."
+          "maxlength": "Your confirmation password cannot be longer than 50 characters.",
+          "mismatch": "Your passwords do not match."
         },
         "email": {
           "required": "Your email is required.",
           "invalid": "Your email is invalid.",
           "minlength": "Your email is required to be at least 5 characters.",
-          "maxlength": "Your email cannot be longer than 50 characters."
+          "maxlength": "Your email cannot be longer than 50 characters.",
+          "university": "If possible, use a RWTH or FH Aachen email. Otherwise you will have to provide a picture of an ID.",
+          "alreadyExists": "A user account with this email already exists."
         }
       }
     },
@@ -132,7 +135,13 @@
     "ribbon": {
       "dev": "Development"
     },
-    "item-count": "Showing {{first}} - {{second}} of {{total}} items."
+    "item-count": "Showing {{first}} - {{second}} of {{total}} items.",
+    "pagination": {
+      "of": "of",
+      "items_per_page": "Items per page",
+      "next_page": "Next page",
+      "previous_page": "Previous page"
+    }
   },
   "entity": {
     "action": {

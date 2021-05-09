@@ -2,12 +2,21 @@
   "login": {
     "title": "Anmeldung",
     "form": {
+      "username": "Benutzername oder E-Mail",
       "password": "Passwort",
       "password.placeholder": "Ihr Passwort",
       "rememberme": "Automatische Anmeldung",
       "button": "Anmelden"
     },
     "messages": {
+      "validate": {
+        "username": {
+          "required": "Dein Benutzername oder E-Mail wird benötigt."
+        },
+        "password": {
+          "required": "Dein Passwort wird benötigt."
+        }
+      },
       "error": {
         "authentication": "<strong>Anmeldung fehlgeschlagen!</strong> Überprüfen Sie bitte Ihre Angaben und versuchen Sie es erneut."
       },
@@ -17,7 +26,11 @@
       }
     },
     "password": {
-      "forgot": "Passwort zurücksetzen"
+      "forgot": "Passwort vergessen?"
+    },
+    "register": {
+      "title": "Noch nicht registriert?",
+      "button": "Erstelle ein neues Benutzerkonto"
     }
   }
 }

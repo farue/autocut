@@ -12,6 +12,7 @@ import de.farue.autocut.domain.BankAccount;
 import de.farue.autocut.domain.BankTransaction;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.repository.BankTransactionRepository;
+import de.farue.autocut.security.AuthoritiesConstants;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -39,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 @IntegrationTest
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
-@WithMockUser
+@WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 class BankTransactionResourceIT {
 
     private static final Instant DEFAULT_BOOKING_DATE = Instant.ofEpochMilli(0L);
