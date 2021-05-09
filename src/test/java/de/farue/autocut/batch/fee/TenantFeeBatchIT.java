@@ -511,6 +511,69 @@ class TenantFeeBatchIT {
         }
 
         @Test
+        void testLeaseEndOnDayOfCharge() throws Exception {
+            InternalTransaction chargeApr = new InternalTransaction()
+                .transactionBook(transactionBook)
+                .transactionType(TransactionType.FEE)
+                .issuer(AbstractTenantFeeBatchProcessor.ISSUER)
+                .bookingDate(LocalDate.of(2020, 4, 1).atStartOfDay(ZoneId.systemDefault()).toInstant())
+                .valueDate(LocalDate.of(2020, 4, 1).atStartOfDay(ZoneId.systemDefault()).toInstant())
+                .value(new BigDecimal("-5"))
+                .balanceAfter(new BigDecimal("45"))
+                .description("i18n{transaction.descriptions.tenantFee} 4/2020")
+                .serviceQulifier("2020-04-01;false");
+            transactionService.save(chargeApr);
+
+            InternalTransaction chargeMay1 = new InternalTransaction()
+                .transactionBook(transactionBook)
+                .transactionType(TransactionType.FEE)
+                .issuer(AbstractTenantFeeBatchProcessor.ISSUER)
+                .bookingDate(LocalDate.of(2020, 5, 1).atStartOfDay(ZoneId.systemDefault()).toInstant())
+                .valueDate(LocalDate.of(2020, 5, 1).atStartOfDay(ZoneId.systemDefault()).toInstant())
+                .value(new BigDecimal("-5"))
+                .balanceAfter(new BigDecimal("40"))
+                .description("i18n{transaction.descriptions.tenantFee} 5/2020")
+                .serviceQulifier("2020-05-01;false");
+            transactionService.save(chargeMay1);
+
+            Lease lease = leaseService.findOne(TenantFeeBatchIT.this.lease.getId()).get();
+            lease.setEnd(LocalDate.of(2020, 6, 1));
+            leaseService.save(lease);
+
+            batchScheduler.setChargePeriod(CHARGE_PERIOD);
+            batchScheduler.launchJob();
+
+            List<InternalTransaction> transactions = transactionService
+                .findAllForTransactionBook(
+                    transactionBook,
+                    PageRequest.of(0, Integer.MAX_VALUE, Sort.by(Order.asc(Transaction_.VALUE_DATE), Order.asc(Transaction_.ID)))
+                )
+                .getContent();
+
+            assertThat(transactions).hasSize(4);
+
+            // Previous existing transaction
+            InternalTransaction transactionBeforeCharges = transactions.get(0);
+            assertThat(transactionBeforeCharges.getValue()).isEqualByComparingTo("50");
+            assertThat(transactionBeforeCharges.getBalanceAfter()).isEqualByComparingTo("50");
+
+            // Previous existing fee 04/2020
+            InternalTransaction originalChargeApr = transactions.get(1);
+            assertThat(originalChargeApr.getValue()).isEqualByComparingTo("-5");
+            assertThat(originalChargeApr.getBalanceAfter()).isEqualByComparingTo("45");
+
+            // Previous existing fee 05/2020
+            InternalTransaction originalChargeMay = transactions.get(2);
+            assertThat(originalChargeMay.getValue()).isEqualByComparingTo("-5");
+            assertThat(originalChargeMay.getBalanceAfter()).isEqualByComparingTo("40");
+
+            // Previous existing transaction with value date in the future
+            InternalTransaction transactionAfterCharges = transactions.get(3);
+            assertThat(transactionAfterCharges.getValue()).isEqualByComparingTo("-7.5");
+            assertThat(transactionAfterCharges.getBalanceAfter()).isEqualByComparingTo("32.5");
+        }
+
+        @Test
         void testTenantNotVerified() throws Exception {
             Tenant tenant = tenantService.findOne(TenantFeeBatchIT.this.tenant.getId()).get();
             tenant.setVerified(false);

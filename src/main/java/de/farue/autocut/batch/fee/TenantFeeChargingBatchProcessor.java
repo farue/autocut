@@ -88,8 +88,12 @@ public class TenantFeeChargingBatchProcessor extends AbstractTenantFeeBatchProce
 
         LocalDate currentDateToCharge = chargePeriod.atDay(firstDateToCharge.getDayOfMonth());
         LocalDate leaseEnd = lease.getEnd();
-        LocalDate lastDateToCharge = DateUtil.min(currentDateToCharge, leaseEnd);
+        // #83: Don't charge if e.g. currentDateToCharge=01.05.2020 and leaseEnd=01.05.2020
+        if (!currentDateToCharge.isBefore(leaseEnd)) {
+            return null;
+        }
 
+        LocalDate lastDateToCharge = DateUtil.min(currentDateToCharge, leaseEnd);
         if (firstDateToCharge.isAfter(lastDateToCharge)) {
             return null;
         }
