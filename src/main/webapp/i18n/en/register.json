@@ -5,7 +5,18 @@
       "steps": {
         "user": "Create a user account",
         "person": "About yourself",
-        "documents": "Upload documents",
+        "documents": {
+          "title": "Upload documents",
+          "p1": "We have to make sure that you actually are who you claim to be and that you actually live here. This is why we need a few documents from you that confirm your data.",
+          "p2": "It is not yet possible to upload the documents here. Please send them to net@farue.rwth-aachen.de. We cannot enable your account without these documents.",
+          "list": {
+            "title": "Required dokuments:",
+            "rentalContract": "First page of the rental contract or confirmation mail from Studierendenwerk",
+            "rentalContractExplanation": "It is important that the document shows the apartment number as well as the rental start and rental end date.",
+            "id": "ID",
+            "idExplanation": "e.g. passport, national ID card, RWTH BlueCard"
+          }
+        },
         "done": "Done"
       },
       "buttons": {

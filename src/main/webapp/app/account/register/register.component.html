@@ -31,7 +31,7 @@
             <span translate>register.form.buttons.next</span>
           </button>
         </mat-step>
-        <mat-step [editable]="!success" [label]="'register.form.steps.documents' | translate">
+        <mat-step [editable]="!success" [label]="'register.form.steps.documents.title' | translate">
           <ng-container [ngTemplateOutlet]="stepThree"></ng-container>
           <button mat-button matStepperPrevious type="button"><span translate>register.form.buttons.back</span></button>
           <button #nextButton mat-button type="button" [loading]="loading" (click)="register()" [@heartBeat]="!nextButton.disabled">
@@ -64,7 +64,7 @@
             <span translate>register.form.buttons.next</span>
           </button>
         </mat-step>
-        <mat-step [editable]="!success" [label]="'register.form.steps.documents' | translate">
+        <mat-step [editable]="!success" [label]="'register.form.steps.documents.title' | translate">
           <ng-container [ngTemplateOutlet]="stepThree"></ng-container>
           <button mat-button matStepperPrevious type="button"><span translate>register.form.buttons.back</span></button>
           <button #nextButton mat-button type="button" [loading]="loading" (click)="register()" [@heartBeat]="!nextButton.disabled">
@@ -285,15 +285,30 @@
 
 <ng-template #stepThree [formGroup]="userForm">
   <div class="position-relative">
-    <!-- TODO: #20 -->
+    <p translate>register.form.steps.documents.p1</p>
+    <p translate>register.form.steps.documents.p2</p>
+    <p class="mat-h3" translate>register.form.steps.documents.list.title</p>
+    <ul>
+      <li>
+        <div class="mat-body-strong" translate>register.form.steps.documents.list.rentalContract</div>
+        <div translate>register.form.steps.documents.list.rentalContractExplanation</div>
+      </li>
+      <li *ngIf="!isUniversityEmail(userForm.get('email')!.value)">
+        <div class="mat-body-strong" translate>register.form.steps.documents.list.id</div>
+        <div translate>register.form.steps.documents.list.idExplanation</div>
+      </li>
+    </ul>
   </div>
 </ng-template>
 
 <ng-template #stepFour [formGroup]="userForm">
-  <div fxLayout="column" fxLayoutAlign="center" class="mx-4">
+  <div fxLayout="column" fxLayoutAlign="center center" class="mx-4">
     <jhi-checkmark [visible]="selectedIndex === 3 && animationEnd"></jhi-checkmark>
-    <p translate>register.messages.success.done</p>
-    <p [innerHTML]="'register.messages.success.confimationEmail' | translate: { email: userForm.get('email')?.value }"></p>
-    <p translate>register.messages.success.verificationNotice</p>
+    <div class="mat-h2 text-center" translate>register.messages.success.done</div>
+    <p
+      [innerHTML]="'register.messages.success.confimationEmail' | translate: { email: userForm.get('email')?.value }"
+      class="text-center"
+    ></p>
+    <p class="text-center" translate>register.messages.success.verificationNotice</p>
   </div>
 </ng-template>

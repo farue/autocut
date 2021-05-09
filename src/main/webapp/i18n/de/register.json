@@ -5,7 +5,18 @@
       "steps": {
         "user": "Erstelle ein Benutzerkonto",
         "person": "Über dich",
-        "documents": "Dokumente hochladen",
+        "documents": {
+          "title": "Dokumente hochladen",
+          "p1": "Um sicherzustellen, dass du auch derjenige bist, der sich hier anmeldet und dass du auch tatsächlich in unserem Wohnheim wohnst, brauchen wir Dokumente, die deine Angaben bestätigen.",
+          "p2": "Die Dokumente können aktuell noch nicht an dieser Stelle hochgeladen werden. Bitte schicke sie an net@farue.rwth-aachen.de. Ohne die Dokumente können wir deinen Account nicht freischalten.",
+          "list": {
+            "title": "Erforderliche Dokumente:",
+            "rentalContract": "Erste Seite des Mietvertrags oder Bestätigungsmail des Studierendenwerks",
+            "rentalContractExplanation": "Es ist wichtig, dass aus dem Dokument Wohnungsnummer und Ein- und Auszugsdatum hervorgeht.",
+            "id": "Ausweis",
+            "idExplanation": "z.B. Reisepass, Personalausweis, RWTH BlueCard"
+          }
+        },
         "done": "Fertig"
       },
       "buttons": {
