@@ -18,7 +18,8 @@
         }
       },
       "error": {
-        "authentication": "<strong>Anmeldung fehlgeschlagen!</strong> Überprüfen Sie bitte Ihre Angaben und versuchen Sie es erneut."
+        "authentication": "<strong>Anmeldung fehlgeschlagen!</strong> Prüfe bitte ob du deinen Benutzernamen und dein Passwort richtig eingegeben hast.",
+        "notVerified": "Account noch nicht verifiziert."
       },
       "warning": {
         "userNotActivated": "Du musst deinen Account erst aktivieren. Prüfe deine Emails.",

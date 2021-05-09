@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginService } from 'app/login/login.service';
 import { AccountService } from 'app/core/auth/account.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'jhi-login',
@@ -14,6 +15,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   username?: ElementRef;
 
   authenticationError = false;
+  accountNotVerified = false;
 
   loginForm = this.fb.group({
     username: [null, [Validators.required]],
@@ -44,6 +46,9 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   login(): void {
+    this.authenticationError = false;
+    this.accountNotVerified = false;
+
     this.loginService
       .login({
         username: this.loginForm.get('username')!.value,
@@ -52,13 +57,18 @@ export class LoginComponent implements OnInit, AfterViewInit {
       })
       .subscribe(
         () => {
-          this.authenticationError = false;
           if (!this.router.getCurrentNavigation()) {
             // There were no routing during login (eg from navigationToStoredUrl)
             this.router.navigate(['']);
           }
         },
-        () => (this.authenticationError = true)
+        (err: HttpErrorResponse) => {
+          if (err.error.status === 401 && err.error.type === 'https://www.jhipster.tech/problem/user-not-verified') {
+            this.accountNotVerified = true;
+          } else {
+            this.authenticationError = true;
+          }
+        }
       );
   }
 }

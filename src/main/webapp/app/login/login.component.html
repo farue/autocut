@@ -1,8 +1,14 @@
 <div fxFlex fxLayoutAlign="center">
   <div fxLayout="column" class="login-container">
     <h1 data-cy="loginTitle">{{ 'login.title' | translate }}</h1>
-    <div class="alert alert-danger" *ngIf="authenticationError" data-cy="loginError">
-      {{ 'login.messages.error.authentication' | translate }}
+    <div
+      class="alert alert-danger"
+      *ngIf="authenticationError"
+      data-cy="loginError"
+      [innerHTML]="'login.messages.error.authentication' | translate"
+    ></div>
+    <div class="alert alert-warning" *ngIf="accountNotVerified" data-cy="notVerifiedWarning">
+      {{ 'login.messages.warning.userNotVerified' | translate }}
     </div>
     <form [formGroup]="loginForm" (ngSubmit)="login()" fxLayout="column">
       <div fxLayout="column" fxLayoutGap="16px">
