@@ -9,6 +9,7 @@ import de.farue.autocut.IntegrationTest;
 import de.farue.autocut.domain.Apartment;
 import de.farue.autocut.domain.enumeration.ApartmentTypes;
 import de.farue.autocut.repository.ApartmentRepository;
+import de.farue.autocut.security.AuthoritiesConstants;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -27,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @IntegrationTest
 @AutoConfigureMockMvc
-@WithMockUser
+@WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 class ApartmentResourceIT {
 
     private static final String DEFAULT_NR = "AAAAAAAAAA";

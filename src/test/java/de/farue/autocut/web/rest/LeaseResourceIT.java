@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import de.farue.autocut.IntegrationTest;
 import de.farue.autocut.domain.Lease;
 import de.farue.autocut.repository.LeaseRepository;
+import de.farue.autocut.security.AuthoritiesConstants;
 import de.farue.autocut.service.LeaseService;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -37,7 +38,7 @@ import org.springframework.util.Base64Utils;
 @IntegrationTest
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
-@WithMockUser
+@WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 class LeaseResourceIT {
 
     private static final String DEFAULT_NR = "AAAAAAAAAA";

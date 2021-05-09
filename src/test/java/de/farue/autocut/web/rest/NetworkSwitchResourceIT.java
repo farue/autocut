@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import de.farue.autocut.IntegrationTest;
 import de.farue.autocut.domain.NetworkSwitch;
 import de.farue.autocut.repository.NetworkSwitchRepository;
+import de.farue.autocut.security.AuthoritiesConstants;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -26,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @IntegrationTest
 @AutoConfigureMockMvc
-@WithMockUser
+@WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 class NetworkSwitchResourceIT {
 
     private static final String DEFAULT_INTERFACE_NAME = "AAAAAAAAAA";

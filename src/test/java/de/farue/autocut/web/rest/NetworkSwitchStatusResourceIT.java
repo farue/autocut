@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import de.farue.autocut.IntegrationTest;
 import de.farue.autocut.domain.NetworkSwitchStatus;
 import de.farue.autocut.repository.NetworkSwitchStatusRepository;
+import de.farue.autocut.security.AuthoritiesConstants;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -28,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @IntegrationTest
 @AutoConfigureMockMvc
-@WithMockUser
+@WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 class NetworkSwitchStatusResourceIT {
 
     private static final String DEFAULT_PORT = "AAAAAAAAAA";

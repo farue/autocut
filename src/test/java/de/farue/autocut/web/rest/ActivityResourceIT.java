@@ -9,6 +9,7 @@ import de.farue.autocut.IntegrationTest;
 import de.farue.autocut.domain.Activity;
 import de.farue.autocut.domain.enumeration.SemesterTerms;
 import de.farue.autocut.repository.ActivityRepository;
+import de.farue.autocut.security.AuthoritiesConstants;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
@@ -29,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @IntegrationTest
 @AutoConfigureMockMvc
-@WithMockUser
+@WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 class ActivityResourceIT {
 
     private static final Integer DEFAULT_YEAR = 1;
