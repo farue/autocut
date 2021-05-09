@@ -1,11 +1,22 @@
-.col-red {
-  color: #e20f0f;
+.value-negative {
+  color: rgba(226, 15, 15, 1);
 }
 
-.col-green {
-  color: #66cd0f;
+.value-normal {
+  color: rgb(91, 191, 13);
 }
 
-.col-blue {
-  color: #2460ff;
+.data-container {
+  margin-left: 24px;
+  margin-right: 24px;
+  margin-bottom: 32px;
+}
+
+.data-head {
+  margin-bottom: 4px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.data-value {
+  margin-bottom: 0;
 }

@@ -11,6 +11,7 @@
     },
     "balance": "Kontostand",
     "deposit": "Kaution",
+    "booked": "Gebucht:",
     "table": {
       "kind": "Art",
       "bookingDate": "Buchungsdatum",
@@ -20,6 +21,11 @@
       "description": "Beschreibung",
       "issuer": "Sender",
       "recipient": "Empfänger"
+    },
+    "messages": {
+      "error": {
+        "loadingTransactionsFailed": "Beim Laden der Transaktionen ist ein Fehler aufgetreten."
+      }
     }
   }
 }

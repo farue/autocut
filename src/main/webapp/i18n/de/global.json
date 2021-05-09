@@ -135,7 +135,13 @@
     "ribbon": {
       "dev": "Entwicklung"
     },
-    "item-count": "Ergebnis {{first}} - {{second}} von {{total}} Elemente."
+    "item-count": "Ergebnis {{first}} - {{second}} von {{total}} Elemente.",
+    "pagination": {
+      "of": "von",
+      "items_per_page": "Einträge pro Seite",
+      "next_page": "Nächste Seite",
+      "previous_page": "Vorherige Seite"
+    }
   },
   "entity": {
     "action": {

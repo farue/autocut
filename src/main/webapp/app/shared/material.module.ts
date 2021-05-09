@@ -17,6 +17,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDayjsDateModule } from './material/dayjs-date.module';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   exports: [
@@ -32,10 +34,12 @@ import { MatTableModule } from '@angular/material/table';
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatPaginatorModule,
     MatPasswordStrengthModule,
     MatProgressSpinnerModule,
     MatRippleModule,
     MatSelectModule,
+    MatSortModule,
     MatStepperModule,
     MatTableModule,
   ],

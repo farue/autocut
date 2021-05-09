@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
+import { PAGE_SIZE_OPTIONS } from 'app/config/pagination.constants';
 import { TransactionService } from './transaction.service';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
-import { combineLatest, Observable } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { ITransactionOverview } from './transaction-overview.model';
-import { IInternalTransaction } from 'app/entities/internal-transaction/internal-transaction.model';
 import { TranslateService } from '@ngx-translate/core';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'jhi-service-transaction',
@@ -14,13 +14,14 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./transaction.component.scss'],
 })
 export class TransactionComponent implements OnInit {
-  balance = 0;
-  deposit = 0;
-  transactions: IInternalTransaction[] | null | undefined = null;
+  result?: ITransactionOverview | null;
 
+  isLoading = false;
+  error = false;
   totalItems = 0;
-  itemsPerPage = ITEMS_PER_PAGE;
-  page!: number;
+  itemsPerPage = 10;
+  pageSizeOptions = PAGE_SIZE_OPTIONS;
+  page?: number;
 
   purpose$: Observable<string> = this.transactionService.loadPurpose();
 
@@ -33,39 +34,62 @@ export class TransactionComponent implements OnInit {
 
   ngOnInit(): void {
     this.handleNavigation();
-    this.loadTransactionOverview();
   }
 
-  loadTransactionOverview(): void {
+  onPageEvent(ev: PageEvent): void {
+    this.loadPage(ev.pageIndex, ev.pageSize);
+  }
+
+  loadPage(page: number, size: number, dontNavigate?: boolean): void {
+    this.isLoading = true;
+    this.error = false;
+
     this.transactionService
       .query({
-        page: this.page - 1,
-        size: this.itemsPerPage,
+        page,
+        size,
         sort: ['valueDate,desc', 'id,desc'],
       })
-      .subscribe((res: HttpResponse<ITransactionOverview>) => this.onSuccess(res.body, res.headers));
+      .subscribe(
+        (res: HttpResponse<ITransactionOverview>) => {
+          this.isLoading = false;
+          this.onSuccess(res.body, res.headers, page, size, !dontNavigate);
+        },
+        () => {
+          this.isLoading = false;
+          this.onError();
+        }
+      );
   }
 
-  transition(): void {
-    this.router.navigate(['./'], {
-      relativeTo: this.activatedRoute.parent,
-      queryParams: {
-        page: this.page,
-      },
+  protected handleNavigation(): void {
+    this.activatedRoute.queryParamMap.subscribe(params => {
+      const page = params.get('page');
+      const size = params.get('size');
+      const pageNumber = page !== null ? Number(page) : 0;
+      const sizeNumber = size !== null ? Number(size) : this.itemsPerPage;
+      if (pageNumber !== this.page || sizeNumber !== this.itemsPerPage) {
+        this.loadPage(pageNumber, sizeNumber, true);
+      }
     });
   }
 
-  private handleNavigation(): void {
-    combineLatest(this.activatedRoute.data, this.activatedRoute.queryParamMap, (data: Data, params: ParamMap) => {
-      const page = params.get('page');
-      this.page = page !== null ? +page : 1;
-    }).subscribe();
+  protected onSuccess(data: ITransactionOverview | null, headers: HttpHeaders, page: number, size: number, navigate: boolean): void {
+    this.totalItems = Number(headers.get('X-Total-Count'));
+    this.page = page;
+    this.itemsPerPage = size;
+    if (navigate) {
+      this.router.navigate(['/services', 'transactions'], {
+        queryParams: {
+          page: this.page,
+          size: this.itemsPerPage,
+        },
+      });
+    }
+    this.result = data;
   }
 
-  private onSuccess(transactionOverview: ITransactionOverview | null, headers: HttpHeaders): void {
-    this.totalItems = Number(headers.get('X-Total-Count'));
-    this.balance = transactionOverview?.balanceNow ?? 0;
-    this.deposit = transactionOverview?.deposit ?? 0;
-    this.transactions = transactionOverview?.transactions;
+  protected onError(): void {
+    this.error = true;
   }
 }
