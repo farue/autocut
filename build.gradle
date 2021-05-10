@@ -286,6 +286,12 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-batch"
     implementation "com.google.guava:guava:30.1.1-jre"
     liquibaseRuntime "org.springframework.boot:spring-boot-starter-batch" // so liquibase finds the setup schemas
+    implementation("io.prometheus:simpleclient") {
+        // TODO: Remove with newer JHipster version (https://github.com/jhipster/generator-jhipster/issues/14620)
+        version {
+            strictly '0.9.0'
+        }
+    }
 }
 
 if (project.hasProperty("gae")) {
