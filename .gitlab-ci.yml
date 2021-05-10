@@ -163,7 +163,7 @@ docker-push:
   script:
     # -x webapp relies on this job getting the build artifacts from gradle-package
     # alternatively we could add -PnodeInstall
-    - gradle jib -Pprod -x webapp -Djib.to.image=$CI_REGISTRY_IMAGE -Djib.to.tags=$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA -Djib.to.auth.username=gitlab-ci-token -Djib.to.auth.password=$CI_BUILD_TOKEN
+    - gradle jib -Pprod -x webapp -Djib.to.image=$CI_REGISTRY_IMAGE -Djib.to.tags=$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA -Djib.to.auth.username=gitlab-ci-token -Djib.to.auth.password=$CI_BUILD_TOKEN -Djib.httpTimeout=120000
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
 
