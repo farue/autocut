@@ -1,5 +1,6 @@
 package de.farue.autocut.repository;
 
+import de.farue.autocut.domain.InternalTransaction;
 import de.farue.autocut.domain.Transaction;
 import de.farue.autocut.domain.TransactionBook;
 import java.time.Instant;
@@ -68,4 +69,10 @@ public interface TransactionRepository<T extends Transaction> extends JpaReposit
     @Lock(LockModeType.PESSIMISTIC_READ)
     @Query("select transaction from #{#entityName} transaction left join fetch transaction.lefts where transaction.id =:id")
     Optional<T> findOneWithEagerRelationships(@Param("id") Long id);
+
+    @Lock(LockModeType.PESSIMISTIC_READ)
+    @Query(
+        "select t from #{#entityName} t left join fetch t.lefts where t.valueDate > :fromExclusive and t.valueDate <= :untilInclusive order by t.valueDate asc, t.id asc"
+    )
+    List<InternalTransaction> findAllByValueDateBetween(Instant fromExclusive, Instant untilInclusive);
 }

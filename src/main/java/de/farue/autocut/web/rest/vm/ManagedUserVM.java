@@ -6,7 +6,6 @@ import de.farue.autocut.validation.MaxFuture;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 

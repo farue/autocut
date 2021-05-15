@@ -14,9 +14,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
 
+    private final Scheduling scheduling = new Scheduling();
     private final Washit washit = new Washit();
     private final Banking banking = new Banking();
     private final List<SshConnection> switchConnections = new ArrayList<>();
+
+    public Scheduling getScheduling() {
+        return scheduling;
+    }
 
     public Washit getWashit() {
         return washit;
@@ -28,6 +33,19 @@ public class ApplicationProperties {
 
     public List<SshConnection> getSwitchConnections() {
         return switchConnections;
+    }
+
+    public static class Scheduling {
+
+        private boolean enable;
+
+        public boolean isEnable() {
+            return enable;
+        }
+
+        public void setEnable(boolean enable) {
+            this.enable = enable;
+        }
     }
 
     public static class Washit {

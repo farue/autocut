@@ -1,6 +1,5 @@
 package de.farue.autocut.web.rest;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import de.farue.autocut.domain.Apartment;
 import de.farue.autocut.repository.ApartmentRepository;
 import de.farue.autocut.service.ApartmentService;

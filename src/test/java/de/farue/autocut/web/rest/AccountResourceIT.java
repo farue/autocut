@@ -18,7 +18,6 @@ import de.farue.autocut.service.TenantService;
 import de.farue.autocut.service.UserService;
 import de.farue.autocut.service.dto.AdminUserDTO;
 import de.farue.autocut.service.dto.PasswordChangeDTO;
-import de.farue.autocut.service.dto.UserDTO;
 import de.farue.autocut.web.rest.vm.KeyAndPasswordVM;
 import de.farue.autocut.web.rest.vm.ManagedUserVM;
 import java.time.Instant;

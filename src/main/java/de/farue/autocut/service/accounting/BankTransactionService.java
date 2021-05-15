@@ -1,10 +1,13 @@
 package de.farue.autocut.service.accounting;
 
 import de.farue.autocut.domain.BankTransaction;
+import de.farue.autocut.domain.event.BankTransactionCreatedEvent;
+import de.farue.autocut.domain.event.InternalTransactionCreatedEvent;
 import de.farue.autocut.repository.BankTransactionRepository;
 import de.farue.autocut.repository.TransactionRepository;
 import de.farue.autocut.service.TransactionService;
 import java.util.List;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,15 +18,18 @@ public class BankTransactionService extends TransactionService<BankTransaction> 
     private final BankTransactionRepository transactionRepository;
     private final InternalTransactionService internalTransactionService;
     private final BankTransactionContraTransactionProvider bankTransactionContraTransactionProvider;
+    private final ApplicationEventPublisher publisher;
 
     public BankTransactionService(
         BankTransactionRepository transactionRepository,
         InternalTransactionService internalTransactionService,
-        BankTransactionContraTransactionProvider bankTransactionContraTransactionProvider
+        BankTransactionContraTransactionProvider bankTransactionContraTransactionProvider,
+        ApplicationEventPublisher publisher
     ) {
         this.transactionRepository = transactionRepository;
         this.internalTransactionService = internalTransactionService;
         this.bankTransactionContraTransactionProvider = bankTransactionContraTransactionProvider;
+        this.publisher = publisher;
     }
 
     @Override
@@ -60,9 +66,11 @@ public class BankTransactionService extends TransactionService<BankTransaction> 
                 contraTransaction -> {
                     contraTransaction.link(transaction);
                     internalTransactionService.save(contraTransaction);
+                    publisher.publishEvent(new InternalTransactionCreatedEvent(contraTransaction));
                 }
             );
         transactionRepository.save(transaction);
+        publisher.publishEvent(new BankTransactionCreatedEvent(transaction));
     }
 
     /**

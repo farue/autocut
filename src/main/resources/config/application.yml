@@ -181,6 +181,8 @@ jhipster:
 # ===================================================================
 
 application:
+  scheduling:
+    enable: true
   washit:
     url: http://137.226.153.3:8080
   banking:

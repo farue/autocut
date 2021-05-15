@@ -3,11 +3,15 @@ package de.farue.autocut.service;
 import de.farue.autocut.domain.Lease;
 import de.farue.autocut.domain.Tenant;
 import de.farue.autocut.domain.User;
+import de.farue.autocut.domain.event.TenantCreatedEvent;
+import de.farue.autocut.domain.event.TenantVerifiedEvent;
 import de.farue.autocut.repository.TenantRepository;
 import java.util.List;
 import java.util.Optional;
+import org.apache.commons.lang3.BooleanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,10 +26,12 @@ public class TenantService {
 
     private final TenantRepository tenantRepository;
     private final LeaseService leaseService;
+    private final ApplicationEventPublisher publisher;
 
-    public TenantService(TenantRepository tenantRepository, LeaseService leaseService) {
+    public TenantService(TenantRepository tenantRepository, LeaseService leaseService, ApplicationEventPublisher publisher) {
         this.tenantRepository = tenantRepository;
         this.leaseService = leaseService;
+        this.publisher = publisher;
     }
 
     /**
@@ -36,7 +42,20 @@ public class TenantService {
      */
     public Tenant save(Tenant tenant) {
         log.debug("Request to save Tenant : {}", tenant);
-        return tenantRepository.save(tenant);
+
+        boolean wasVerified = Optional.ofNullable(tenant.getId()).flatMap(this::findOne).map(Tenant::getVerified).orElse(false);
+
+        boolean newEntity = tenant.getId() == null;
+        tenant = tenantRepository.save(tenant);
+
+        if (newEntity) {
+            publisher.publishEvent(new TenantCreatedEvent(tenant));
+        }
+        if (!wasVerified && BooleanUtils.isTrue(tenant.getVerified())) {
+            publisher.publishEvent(new TenantVerifiedEvent(tenant));
+        }
+
+        return tenant;
     }
 
     /**

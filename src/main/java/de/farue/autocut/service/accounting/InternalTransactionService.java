@@ -3,17 +3,32 @@ package de.farue.autocut.service.accounting;
 import static de.farue.autocut.utils.BigDecimalUtil.compare;
 
 import de.farue.autocut.domain.InternalTransaction;
+import de.farue.autocut.domain.ScheduledJob;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.domain.enumeration.TransactionType;
+import de.farue.autocut.domain.event.BalanceChangeToNegativeEvent;
+import de.farue.autocut.domain.event.BalanceChangeToPositiveEvent;
+import de.farue.autocut.domain.event.InternalTransactionCreatedEvent;
+import de.farue.autocut.domain.event.InternalTransactionEffectiveEvent;
 import de.farue.autocut.repository.InternalTransactionRepository;
 import de.farue.autocut.repository.TransactionRepository;
 import de.farue.autocut.service.InsufficientFundsException;
+import de.farue.autocut.service.ScheduledJobService;
 import de.farue.autocut.service.TransactionService;
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,18 +36,29 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class InternalTransactionService extends TransactionService<InternalTransaction> {
 
+    private static final String TRANSACTION_EFFECTIVE_JOB_NAME = "transactionEffectiveSchedule";
+    private static final LocalDate MIN_DATE = LocalDate.of(1970, 1, 1);
+
+    private final Logger log = LoggerFactory.getLogger(InternalTransactionService.class);
+
     private final InternalTransactionRepository transactionRepository;
     private final TransactionBookService transactionBookService;
     private final InternalBookingContraTransactionProvider internalBookingContraTransactionProvider;
+    private final ApplicationEventPublisher publisher;
+    private final ScheduledJobService scheduledJobService;
 
     public InternalTransactionService(
         InternalTransactionRepository transactionRepository,
         TransactionBookService transactionBookService,
-        InternalBookingContraTransactionProvider internalBookingContraTransactionProvider
+        InternalBookingContraTransactionProvider internalBookingContraTransactionProvider,
+        ApplicationEventPublisher publisher,
+        ScheduledJobService scheduledJobService
     ) {
         this.transactionRepository = transactionRepository;
         this.transactionBookService = transactionBookService;
         this.internalBookingContraTransactionProvider = internalBookingContraTransactionProvider;
+        this.publisher = publisher;
+        this.scheduledJobService = scheduledJobService;
     }
 
     @Override
@@ -48,6 +74,57 @@ public class InternalTransactionService extends TransactionService<InternalTrans
 
     public void saveWithContraTransaction(BookingTemplate bookingTemplate) {
         saveBooking(bookingTemplate, internalBookingContraTransactionProvider);
+    }
+
+    // Fired every 10 minutes
+    @Scheduled(cron = "0 */10 * * * ?")
+    public void transactionEffectiveSchedule() {
+        long jobId = this.scheduledJobService.createNewScheduledJob(TRANSACTION_EFFECTIVE_JOB_NAME);
+        Instant dataStartTime =
+            this.scheduledJobService.findLastCompletedScheduledJob(TRANSACTION_EFFECTIVE_JOB_NAME)
+                .map(ScheduledJob::getDataEndTime)
+                .orElse(MIN_DATE.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Instant dataEndTime = Instant.now();
+        this.scheduledJobService.setDataStartTime(jobId, dataStartTime);
+        this.scheduledJobService.setDataEndTime(jobId, dataEndTime);
+
+        List<InternalTransaction> newEffectiveTransactions = this.getRepository().findAllByValueDateBetween(dataStartTime, dataEndTime);
+        if (!newEffectiveTransactions.isEmpty()) {
+            log.debug("Found new effective transactions. Firing InternalTransactionEffectiveEvent for: {}", newEffectiveTransactions);
+        } else {
+            log.debug("Found no new effective transactions.");
+        }
+
+        this.scheduledJobService.setJobRunning(jobId);
+        newEffectiveTransactions.stream().map(InternalTransactionEffectiveEvent::new).forEach(this.publisher::publishEvent);
+        this.scheduledJobService.setJobCompleted(jobId);
+    }
+
+    @EventListener
+    public void fireBalanceChangeSignEvent(InternalTransactionEffectiveEvent event) {
+        InternalTransaction transaction = event.getTransaction();
+        BigDecimal balance = transaction.getBalanceAfter();
+        this.findTransactionImmediatelyBefore(transaction)
+            .ifPresent(
+                previousTransaction -> {
+                    BigDecimal previousBalance = previousTransaction.getBalanceAfter();
+                    if (compare(previousBalance).isNegative() && compare(balance).isPositive()) {
+                        log.debug(
+                            "Balance changed to positive. Firing BalanceChangeToPositiveEvent. Previous: {}, Current: {}",
+                            previousTransaction,
+                            transaction
+                        );
+                        this.publisher.publishEvent(new BalanceChangeToPositiveEvent(previousTransaction, transaction));
+                    } else if (compare(previousBalance).isPositive() && compare(balance).isNegative()) {
+                        log.debug(
+                            "Balance changed to negative. Firing BalanceChangeToNegativeEvent. Previous: {}, Current: {}",
+                            previousTransaction,
+                            transaction
+                        );
+                        this.publisher.publishEvent(new BalanceChangeToNegativeEvent(previousTransaction, transaction));
+                    }
+                }
+            );
     }
 
     @Override
@@ -85,6 +162,8 @@ public class InternalTransactionService extends TransactionService<InternalTrans
         transactions.forEach(this::updateBalanceInLaterTransactions);
 
         transactionRepository.saveAll(transactions);
+
+        transactions.stream().map(InternalTransactionCreatedEvent::new).forEach(publisher::publishEvent);
     }
 
     private void checkBalances(InternalTransaction transaction) {

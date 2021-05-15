@@ -2,7 +2,6 @@ package de.farue.autocut.web.rest;
 
 import de.farue.autocut.domain.Tenant;
 import de.farue.autocut.repository.TenantRepository;
-import de.farue.autocut.service.MailService;
 import de.farue.autocut.service.TenantService;
 import de.farue.autocut.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -38,12 +37,9 @@ public class TenantResource {
 
     private final TenantRepository tenantRepository;
 
-    private final MailService mailService;
-
-    public TenantResource(TenantService tenantService, TenantRepository tenantRepository, MailService mailService) {
+    public TenantResource(TenantService tenantService, TenantRepository tenantRepository) {
         this.tenantService = tenantService;
         this.tenantRepository = tenantRepository;
-        this.mailService = mailService;
     }
 
     /**
@@ -93,14 +89,7 @@ public class TenantResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        // Send verification email if old tenant entity is not verified and new entity is
-        boolean sendVerificationMail = !tenantService.findOne(tenant.getId()).map(Tenant::getVerified).orElse(true) && tenant.getVerified();
-
         Tenant result = tenantService.save(tenant);
-
-        if (sendVerificationMail && result.getUser() != null) {
-            mailService.sendVerificationEmail(result.getUser());
-        }
 
         return ResponseEntity
             .ok()

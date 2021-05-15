@@ -4,6 +4,7 @@ import de.farue.autocut.domain.Apartment;
 import de.farue.autocut.domain.Lease;
 import de.farue.autocut.domain.Tenant;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -35,4 +36,6 @@ public interface LeaseRepository extends JpaRepository<Lease, Long> {
     // Not "findFirst" because there should only be one at most
     @Query("select l from Lease l where l.apartment = :apartment and l.start <= :date and (l.end is null or l.end > :date)")
     List<Lease> findAllByApartmentAndDate(Apartment apartment, Instant date);
+
+    List<Lease> findAllByEndGreaterThanAndEndLessThanEqual(LocalDate fromExclusive, LocalDate untilInclusive);
 }
