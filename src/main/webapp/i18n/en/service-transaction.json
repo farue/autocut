@@ -29,7 +29,8 @@
     },
     "descriptions": {
       "tenantFee": "Tenant fee",
-      "signupFee": "Signup fee"
+      "signupFee": "Signup fee",
+      "bankTransfer": "Bank transfer"
     }
   }
 }

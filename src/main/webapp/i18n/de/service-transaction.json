@@ -29,7 +29,8 @@
     },
     "descriptions": {
       "tenantFee": "Bewohnerbeitrag",
-      "signupFee": "Anmeldegebühr"
+      "signupFee": "Anmeldegebühr",
+      "bankTransfer": "Überweisung"
     }
   }
 }

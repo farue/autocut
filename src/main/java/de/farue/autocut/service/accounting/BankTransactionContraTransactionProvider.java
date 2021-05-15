@@ -52,6 +52,8 @@ public class BankTransactionContraTransactionProvider {
     }
 
     private String getDescription(BankTransaction bankTransaction) {
-        return "Bank transfer " + LocalDate.ofInstant(bankTransaction.getBookingDate(), ZoneId.systemDefault());
+        return (
+            "i18n{transaction.descriptions.bankTransfer} " + LocalDate.ofInstant(bankTransaction.getBookingDate(), ZoneId.systemDefault())
+        );
     }
 }
