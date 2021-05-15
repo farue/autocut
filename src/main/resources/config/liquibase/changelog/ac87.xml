@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+
+    <changeSet id="insert-signup-fee-value" author="brunecker">
+        <loadData
+            file="config/liquibase/data/ac87-global_setting.csv"
+            separator=";"
+            tableName="global_setting">
+            <column name="setting_key" type="string"/>
+            <column name="setting_value" type="string"/>
+            <column name="setting_type" type="string"/>
+        </loadData>
+    </changeSet>
+
+</databaseChangeLog>

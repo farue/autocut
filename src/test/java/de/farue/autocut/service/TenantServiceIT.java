@@ -1,11 +1,15 @@
 package de.farue.autocut.service;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import de.farue.autocut.AutocutApp;
+import de.farue.autocut.domain.Apartment;
+import de.farue.autocut.domain.Lease;
 import de.farue.autocut.domain.Tenant;
+import de.farue.autocut.domain.enumeration.ApartmentTypes;
 import de.farue.autocut.domain.event.TenantCreatedEvent;
 import de.farue.autocut.domain.event.TenantVerifiedEvent;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
@@ -29,6 +33,12 @@ class TenantServiceIT {
     private TenantService tenantService;
 
     @Autowired
+    private LeaseService leaseService;
+
+    @Autowired
+    private ApartmentService apartmentService;
+
+    @Autowired
     private EntityManager entityManager;
 
     @Nested
@@ -39,14 +49,22 @@ class TenantServiceIT {
         @Autowired
         private ApplicationEvents applicationEvents;
 
+        Lease lease;
+
         @BeforeEach
         void setUp() {
+            Apartment apartment = apartmentService.save(new Apartment().nr("nr").type(ApartmentTypes.SINGLE).maxNumberOfLeases(1));
+            this.lease =
+                leaseService.save(
+                    new Lease().start(LocalDate.of(2015, 10, 10)).end(LocalDate.of(2020, 9, 30)).nr("nr").apartment(apartment)
+                );
+
             applicationEvents.clear();
         }
 
         @Test
         void testCreationShouldPublishEvent() {
-            Tenant newTenant = tenantService.save(new Tenant().firstName(FIRST_NAME).lastName(LAST_NAME).verified(false));
+            Tenant newTenant = tenantService.save(new Tenant().firstName(FIRST_NAME).lastName(LAST_NAME).verified(false).lease(lease));
 
             List<TenantCreatedEvent> events = applicationEvents.stream(TenantCreatedEvent.class).collect(Collectors.toList());
             assertThat(events).hasSize(1);
@@ -56,7 +74,7 @@ class TenantServiceIT {
 
         @Test
         void testModificationShouldNotPublishCreationEvent() {
-            Tenant newTenant = tenantService.save(new Tenant().firstName(FIRST_NAME).lastName(LAST_NAME).verified(false));
+            Tenant newTenant = tenantService.save(new Tenant().firstName(FIRST_NAME).lastName(LAST_NAME).verified(false).lease(lease));
             // Disconnect from session so that the updates on updatedTenant are not directly saved in db
             entityManager.detach(newTenant);
             newTenant.setFirstName(OTHER_FIRST_NAME);
@@ -69,7 +87,7 @@ class TenantServiceIT {
 
         @Test
         void testVerifyingShouldPublishEvent() {
-            Tenant newTenant = tenantService.save(new Tenant().firstName(FIRST_NAME).lastName(LAST_NAME).verified(false));
+            Tenant newTenant = tenantService.save(new Tenant().firstName(FIRST_NAME).lastName(LAST_NAME).verified(false).lease(lease));
             // Disconnect from session so that the updates on updatedTenant are not directly saved in db
             entityManager.detach(newTenant);
             newTenant.setVerified(true);

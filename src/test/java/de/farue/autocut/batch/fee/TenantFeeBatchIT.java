@@ -3,15 +3,10 @@ package de.farue.autocut.batch.fee;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.Activity;
-import de.farue.autocut.domain.InternalTransaction;
-import de.farue.autocut.domain.Lease;
-import de.farue.autocut.domain.Tenant;
-import de.farue.autocut.domain.Transaction;
-import de.farue.autocut.domain.TransactionBook;
-import de.farue.autocut.domain.Transaction_;
+import de.farue.autocut.domain.*;
 import de.farue.autocut.domain.enumeration.SemesterTerms;
 import de.farue.autocut.domain.enumeration.TransactionType;
+import de.farue.autocut.repository.TenantRepository;
 import de.farue.autocut.service.ActivityService;
 import de.farue.autocut.service.LeaseService;
 import de.farue.autocut.service.TenantService;
@@ -50,6 +45,9 @@ class TenantFeeBatchIT {
     private TenantService tenantService;
 
     @Autowired
+    private TenantRepository tenantRepository;
+
+    @Autowired
     private ActivityService activityService;
 
     @Autowired
@@ -74,7 +72,7 @@ class TenantFeeBatchIT {
         this.lease = leaseService.save(lease);
 
         Tenant tenant = new Tenant().firstName(TENANT_FIRST_NAME).lastName(TENANT_LAST_NAME).lease(lease).verified(true);
-        this.tenant = tenantService.save(tenant);
+        this.tenant = tenantRepository.save(tenant); // Avoid events in TenantService
 
         this.transactionBook = leaseService.getCashTransactionBook(lease);
 

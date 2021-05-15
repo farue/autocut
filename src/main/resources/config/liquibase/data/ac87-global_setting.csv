@@ -1,0 +1,5 @@
+setting_key;setting_value;setting_type
+signup-fee.SINGLE;50;java.math.BigDecimal
+signup-fee.SHARED;25;java.math.BigDecimal
+signup-fee.SHORT_TERM;10;java.math.BigDecimal
+signup-fee.BACKUP;0;java.math.BigDecimal

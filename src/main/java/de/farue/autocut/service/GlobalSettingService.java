@@ -22,7 +22,9 @@ public class GlobalSettingService {
     @SneakyThrows(ClassNotFoundException.class)
     @SuppressWarnings("unchecked")
     public <T> T getValue(String key) {
-        GlobalSetting globalSetting = globalSettingRepository.getByKey(key).orElseThrow(IllegalArgumentException::new);
+        GlobalSetting globalSetting = globalSettingRepository
+            .getByKey(key)
+            .orElseThrow(() -> new IllegalArgumentException("Key " + key + " is not available in global settings."));
         Class<?> type = Class.forName(globalSetting.getValueType());
         return (T) conversionService.convert(globalSetting.getValue(), type);
     }
