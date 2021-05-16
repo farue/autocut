@@ -3,12 +3,8 @@ package de.farue.autocut.service.accounting;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.BankAccount;
-import de.farue.autocut.domain.BankTransaction;
-import de.farue.autocut.domain.Lease;
-import de.farue.autocut.domain.Tenant;
-import de.farue.autocut.domain.TransactionBook;
+import de.farue.autocut.IntegrationTest;
+import de.farue.autocut.domain.*;
 import de.farue.autocut.service.LeaseService;
 import de.farue.autocut.service.TenantService;
 import java.math.BigDecimal;
@@ -20,12 +16,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings({ "FieldCanBeLocal", "unused" })
-@SpringBootTest(classes = AutocutApp.class)
+@Transactional
+@IntegrationTest
 public class PurposeBankTransactionMatcherIT {
 
     private static final LocalDate ANY_START = LocalDate.now().minusMonths(1);
@@ -111,7 +107,6 @@ public class PurposeBankTransactionMatcherIT {
     }
 
     @Test
-    @Transactional
     void testNameMatchInDescription() {
         BankTransaction bankTransaction = new BankTransaction()
             .type(ANY_TYPE)
@@ -130,7 +125,6 @@ public class PurposeBankTransactionMatcherIT {
     }
 
     @Test
-    @Transactional
     void testNoTenantNameMatch() {
         BankTransaction bankTransaction = new BankTransaction()
             .type(ANY_TYPE)
@@ -149,7 +143,6 @@ public class PurposeBankTransactionMatcherIT {
     }
 
     @Test
-    @Transactional
     void testMultipleTenantNamesMatch() {
         BankTransaction bankTransaction = new BankTransaction()
             .type(ANY_TYPE)

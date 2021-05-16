@@ -233,7 +233,6 @@ class TenantFeeBatchIT {
         }
 
         @Nested
-        @SpringBootTest(classes = AutocutApp.class)
         class PreviousCharges {
 
             private Activity activity;
@@ -419,7 +418,6 @@ class TenantFeeBatchIT {
     }
 
     @Nested
-    @SpringBootTest(classes = AutocutApp.class)
     class ShouldNotChargeAccount {
 
         @Test

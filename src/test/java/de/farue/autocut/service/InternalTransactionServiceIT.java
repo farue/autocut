@@ -3,7 +3,7 @@ package de.farue.autocut.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-import de.farue.autocut.AutocutApp;
+import de.farue.autocut.IntegrationTest;
 import de.farue.autocut.domain.InternalTransaction;
 import de.farue.autocut.domain.Transaction;
 import de.farue.autocut.domain.TransactionBook;
@@ -23,15 +23,14 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest(classes = AutocutApp.class)
 @Transactional
+@IntegrationTest
 public class InternalTransactionServiceIT {
 
     public static final String ANY_ISSUER = "issuer";
@@ -49,11 +48,9 @@ public class InternalTransactionServiceIT {
     class Save {
 
         @Nested
-        @SpringBootTest(classes = AutocutApp.class)
         class GivenMultipleTransactions {
 
             @Nested
-            @SpringBootTest(classes = AutocutApp.class)
             class GivenTransactionWithSameValueDateAsExistingTransaction {
 
                 @Test
@@ -184,7 +181,6 @@ public class InternalTransactionServiceIT {
     class SaveBooking {
 
         @Nested
-        @SpringBootTest(classes = AutocutApp.class)
         class ShouldCreateCorrectContraBooking {
 
             @Test
@@ -543,7 +539,6 @@ public class InternalTransactionServiceIT {
     class UpdateBalanceInLaterTransactions {
 
         @Nested
-        @SpringBootTest(classes = AutocutApp.class)
         class TransactionsWithSameValueDate {
 
             @Test
@@ -595,7 +590,6 @@ public class InternalTransactionServiceIT {
     }
 
     @Nested
-    @SpringBootTest(classes = AutocutApp.class)
     class Delete {
 
         @Test

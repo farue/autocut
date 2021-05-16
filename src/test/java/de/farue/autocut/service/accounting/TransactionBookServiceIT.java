@@ -2,7 +2,7 @@ package de.farue.autocut.service.accounting;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.farue.autocut.AutocutApp;
+import de.farue.autocut.IntegrationTest;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.domain.enumeration.TransactionBookType;
 import de.farue.autocut.domain.enumeration.TransactionType;
@@ -14,11 +14,10 @@ import java.time.temporal.ChronoUnit;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest(classes = AutocutApp.class)
 @Transactional
+@IntegrationTest
 class TransactionBookServiceIT {
 
     @Autowired
@@ -31,11 +30,9 @@ class TransactionBookServiceIT {
     class GetCurrentBalance {
 
         @Nested
-        @SpringBootTest(classes = AutocutApp.class)
         class GivenNoTransactions {
 
             @Test
-            @Transactional
             void shouldBalanceBeZero() {
                 TransactionBook transactionBook = new TransactionBook().type(TransactionBookType.CASH);
                 transactionBookService.save(transactionBook);
@@ -45,11 +42,9 @@ class TransactionBookServiceIT {
         }
 
         @Nested
-        @SpringBootTest(classes = AutocutApp.class)
         class GivenTransactionWithValueDateInThePast {
 
             @Test
-            @Transactional
             void shouldBalanceHaveCorrectValue() {
                 TransactionBook transactionBook = new TransactionBook().type(TransactionBookType.CASH);
                 transactionBookService.save(transactionBook);
@@ -77,11 +72,9 @@ class TransactionBookServiceIT {
         }
 
         @Nested
-        @SpringBootTest(classes = AutocutApp.class)
         class GivenTransactionWithValueDateNow {
 
             @Test
-            @Transactional
             void shouldBalanceHaveCorrectValue() {
                 TransactionBook transactionBook = new TransactionBook().type(TransactionBookType.CASH);
                 transactionBookService.save(transactionBook);
@@ -109,11 +102,9 @@ class TransactionBookServiceIT {
         }
 
         @Nested
-        @SpringBootTest(classes = AutocutApp.class)
         class GivenTransactionWithValueDateInFuture {
 
             @Test
-            @Transactional
             void shouldBalanceBeZero() {
                 TransactionBook transactionBook = new TransactionBook().type(TransactionBookType.CASH);
                 transactionBookService.save(transactionBook);
@@ -141,11 +132,9 @@ class TransactionBookServiceIT {
         }
 
         @Nested
-        @SpringBootTest(classes = AutocutApp.class)
         class GivenMultipleTransactionBooks {
 
             @Test
-            @Transactional
             void shouldBalanceBeDifferentForTransactionBooks() {
                 TransactionBook transactionBook1 = new TransactionBook().type(TransactionBookType.CASH);
                 transactionBookService.save(transactionBook1);
@@ -199,11 +188,9 @@ class TransactionBookServiceIT {
     class GetBalanceOn {
 
         @Nested
-        @SpringBootTest(classes = AutocutApp.class)
         class GivenTransactionsWithFixedValueDate {
 
             @Test
-            @Transactional
             void shouldDetermineCorrectBalanceOnDate() {
                 TransactionBook transactionBook = new TransactionBook().type(TransactionBookType.CASH);
                 transactionBookService.save(transactionBook);

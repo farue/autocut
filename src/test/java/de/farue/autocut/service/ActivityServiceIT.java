@@ -2,7 +2,7 @@ package de.farue.autocut.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.farue.autocut.AutocutApp;
+import de.farue.autocut.IntegrationTest;
 import de.farue.autocut.domain.Activity;
 import de.farue.autocut.domain.Lease;
 import de.farue.autocut.domain.Tenant;
@@ -12,10 +12,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest(classes = AutocutApp.class)
+@Transactional
+@IntegrationTest
 public class ActivityServiceIT {
 
     private static final String ANY_NR = "nr";
@@ -59,17 +59,14 @@ public class ActivityServiceIT {
         }
 
         @Nested
-        @SpringBootTest(classes = AutocutApp.class)
         class ShouldNotFindAnyActivity {
 
             @Test
-            @Transactional
             void noActivity() {
                 assertThat(activityService.findActivityOn(lease, DATE_DURING_ACTIVITY)).isEmpty();
             }
 
             @Test
-            @Transactional
             void activityInPast() {
                 Activity activity = new Activity().tenant(tenant1).year(2018).term(SemesterTerms.WINTER_TERM);
                 activityService.save(activity);
@@ -78,7 +75,6 @@ public class ActivityServiceIT {
             }
 
             @Test
-            @Transactional
             void activityInFuture() {
                 Activity activity = new Activity().tenant(tenant1).year(2018).term(SemesterTerms.WINTER_TERM);
                 activityService.save(activity);
@@ -87,7 +83,6 @@ public class ActivityServiceIT {
             }
 
             @Test
-            @Transactional
             void activityOfUnrelatedTenants() {
                 Tenant unrelatedTenant = new Tenant().firstName(TENANT1_FIRST_NAME).lastName(TENANT1_LAST_NAME);
                 Lease unrelatedLease = new Lease().nr("other nr").start(ANY_START_DATE).end(ANY_END_DATE).addTenants(unrelatedTenant);
@@ -103,11 +98,9 @@ public class ActivityServiceIT {
         }
 
         @Nested
-        @SpringBootTest(classes = AutocutApp.class)
         class ShouldFindActivity {
 
             @Test
-            @Transactional
             void activityDuringSemesterTerm() {
                 Activity activity = new Activity().tenant(tenant1).year(2018).term(SemesterTerms.WINTER_TERM);
                 activityService.save(activity);
@@ -116,7 +109,6 @@ public class ActivityServiceIT {
             }
 
             @Test
-            @Transactional
             void activityOfMultipleTenantsInLease() {
                 Activity activity1Tenant1 = new Activity().tenant(tenant1).year(2018).term(SemesterTerms.WINTER_TERM);
                 Activity activity2Tenant1 = new Activity().tenant(tenant1).year(2018).term(SemesterTerms.WINTER_TERM);

@@ -2,7 +2,7 @@ package de.farue.autocut.service.accounting;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.farue.autocut.AutocutApp;
+import de.farue.autocut.IntegrationTest;
 import de.farue.autocut.domain.*;
 import de.farue.autocut.domain.enumeration.ApartmentTypes;
 import de.farue.autocut.domain.enumeration.TransactionType;
@@ -17,10 +17,11 @@ import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest(classes = AutocutApp.class)
+@Transactional
+@IntegrationTest
 class SignUpFeeServiceIT {
 
     @Autowired
@@ -39,7 +40,6 @@ class SignUpFeeServiceIT {
     private EntityManager entityManager;
 
     @Nested
-    @SpringBootTest(classes = AutocutApp.class)
     class ShouldChargeSignupFee {
 
         @Test
@@ -94,7 +94,6 @@ class SignUpFeeServiceIT {
     }
 
     @Nested
-    @SpringBootTest(classes = AutocutApp.class)
     class ShouldNotChargeSignupFee {
 
         @Test

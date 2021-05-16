@@ -2,7 +2,7 @@ package de.farue.autocut.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.farue.autocut.AutocutApp;
+import de.farue.autocut.IntegrationTest;
 import de.farue.autocut.domain.Lease;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.domain.enumeration.TransactionBookType;
@@ -19,12 +19,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.event.ApplicationEvents;
 import org.springframework.test.context.event.RecordApplicationEvents;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest(classes = AutocutApp.class)
+@Transactional
+@IntegrationTest
 class LeaseServiceIT {
 
     @Autowired
@@ -45,11 +45,9 @@ class LeaseServiceIT {
     }
 
     @Nested
-    @SpringBootTest(classes = AutocutApp.class)
     class GetCashTransactionBook {
 
         @Test
-        @Transactional
         void testExistingTransactionBook() {
             TransactionBook transactionBook = new TransactionBook().type(TransactionBookType.CASH);
             transactionBookService.save(transactionBook);
@@ -69,7 +67,6 @@ class LeaseServiceIT {
         }
 
         @Test
-        @Transactional
         void testNoExistingTransactionBook() {
             TransactionBook transactionBook = leaseService.getCashTransactionBook(lease);
             assertThat(transactionBook.getType()).isEqualTo(TransactionBookType.CASH);
@@ -84,11 +81,9 @@ class LeaseServiceIT {
     }
 
     @Nested
-    @SpringBootTest(classes = AutocutApp.class)
     class GetDepositTransactionBook {
 
         @Test
-        @Transactional
         void testExistingTransactionBook() {
             TransactionBook transactionBook = new TransactionBook().type(TransactionBookType.DEPOSIT);
             transactionBookService.save(transactionBook);
@@ -108,7 +103,6 @@ class LeaseServiceIT {
         }
 
         @Test
-        @Transactional
         void testNoExistingTransactionBook() {
             TransactionBook transactionBook = leaseService.getDepositTransactionBook(lease);
             assertThat(transactionBook.getType()).isEqualTo(TransactionBookType.DEPOSIT);
@@ -123,7 +117,6 @@ class LeaseServiceIT {
     }
 
     @Nested
-    @SpringBootTest(classes = AutocutApp.class)
     @RecordApplicationEvents
     class Events {
 

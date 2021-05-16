@@ -2,13 +2,8 @@ package de.farue.autocut.service.accounting;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.BankAccount;
-import de.farue.autocut.domain.BankTransaction;
-import de.farue.autocut.domain.InternalTransaction;
-import de.farue.autocut.domain.Lease;
-import de.farue.autocut.domain.Tenant;
-import de.farue.autocut.domain.TransactionBook;
+import de.farue.autocut.IntegrationTest;
+import de.farue.autocut.domain.*;
 import de.farue.autocut.domain.enumeration.TransactionType;
 import de.farue.autocut.repository.BankAccountRepository;
 import de.farue.autocut.repository.BankTransactionRepository;
@@ -23,11 +18,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings({ "FieldCanBeLocal", "unused" })
-@SpringBootTest(classes = AutocutApp.class)
+@Transactional
+@IntegrationTest
 class ContraAccountPreviousBookingBankTransactionMatcherIT {
 
     private static final LocalDate ANY_START = LocalDate.now().minusMonths(1);
@@ -80,7 +75,6 @@ class ContraAccountPreviousBookingBankTransactionMatcherIT {
     }
 
     @Test
-    @Transactional
     void testNoPreviousBooking() {
         BankAccount contraBankAccount = new BankAccount().bic("MALADE51KOB").iban("DE13570501204826655542").name("Bob Miller");
         BankTransaction bankTransaction = new BankTransaction()
@@ -100,7 +94,6 @@ class ContraAccountPreviousBookingBankTransactionMatcherIT {
     }
 
     @Test
-    @Transactional
     void testPreviousBookingsLinkedToSingleTenant() {
         BankAccount contraBankAccount = new BankAccount().bic("MALADE51KOB").iban("DE13570501204826655542").name("Bob Miller");
         contraBankAccount = bankAccountRepository.save(contraBankAccount);
@@ -147,7 +140,6 @@ class ContraAccountPreviousBookingBankTransactionMatcherIT {
     }
 
     @Test
-    @Transactional
     void testPreviousBookingsLinkedToMultipleTenants() {
         BankAccount contraBankAccount = new BankAccount().bic("MALADE51KOB").iban("DE13570501204826655542").name("Bob Miller");
         contraBankAccount = bankAccountRepository.save(contraBankAccount);

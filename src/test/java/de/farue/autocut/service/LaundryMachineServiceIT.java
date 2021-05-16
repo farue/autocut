@@ -4,14 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.verify;
 
-import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.InternalTransaction;
-import de.farue.autocut.domain.LaundryMachine;
-import de.farue.autocut.domain.LaundryMachineProgram;
-import de.farue.autocut.domain.Lease;
-import de.farue.autocut.domain.Tenant;
-import de.farue.autocut.domain.TransactionBook;
-import de.farue.autocut.domain.Transaction_;
+import de.farue.autocut.IntegrationTest;
+import de.farue.autocut.domain.*;
 import de.farue.autocut.domain.enumeration.LaundryMachineType;
 import de.farue.autocut.domain.enumeration.TransactionType;
 import de.farue.autocut.repository.LaundryMachineProgramRepository;
@@ -23,14 +17,14 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest(classes = AutocutApp.class)
+@Transactional
+@IntegrationTest
 class LaundryMachineServiceIT {
 
     private static final String ANY_MACHINE_NAME = "Any Machine 11";
@@ -85,7 +79,6 @@ class LaundryMachineServiceIT {
     }
 
     @Test
-    @Transactional
     void testSufficientFunds() {
         TransactionBook transactionBook = leaseService.getCashTransactionBook(lease);
         InternalTransaction transaction = new InternalTransaction()
@@ -114,14 +107,12 @@ class LaundryMachineServiceIT {
     }
 
     @Test
-    @Transactional
     void testInsufficientFunds() {
         assertThatExceptionOfType(InsufficientFundsException.class)
             .isThrownBy(() -> laundryMachineService.purchaseAndUnlock(tenant, machine, program));
     }
 
     @Test
-    @Transactional
     void testMachineDisabled() {
         machine.setEnabled(false);
         laundryMachineService.save(machine);

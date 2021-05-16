@@ -2,7 +2,7 @@ package de.farue.autocut.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.farue.autocut.AutocutApp;
+import de.farue.autocut.IntegrationTest;
 import de.farue.autocut.domain.Apartment;
 import de.farue.autocut.domain.Lease;
 import de.farue.autocut.domain.Tenant;
@@ -17,11 +17,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.event.ApplicationEvents;
 import org.springframework.test.context.event.RecordApplicationEvents;
+import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest(classes = AutocutApp.class)
+@Transactional
+@IntegrationTest
 class TenantServiceIT {
 
     private static final String FIRST_NAME = "Alice";
@@ -42,7 +43,6 @@ class TenantServiceIT {
     private EntityManager entityManager;
 
     @Nested
-    @SpringBootTest(classes = AutocutApp.class)
     @RecordApplicationEvents
     class Events {
 
