@@ -1,9 +1,10 @@
 image: gradle:6.8-jre15
 
 cache:
-  key: '$CI_COMMIT_REF_SLUG'
+  key: 'main-cache'
   paths:
     - .gradle/
+    - build/
 
 variables:
   # Docker
@@ -38,10 +39,6 @@ gradle-compile:
   stage: build
   script:
     - gradle compileJava -x webapp
-  artifacts:
-    paths:
-      - build/
-    expire_in: 1 day
   needs: []
 
 frontend-compile:
@@ -52,15 +49,10 @@ frontend-compile:
   script:
     - gradle webapp -PnodeInstall
   cache:
-    key: 'frontend-$CI_COMMIT_REF_SLUG'
+    key: 'frontend-cache'
     paths:
       - .gradle/
       - node_modules/
-  artifacts:
-    paths:
-      - build/
-    expire_in: 1 day
-  needs: []
 
 gradle-test:
   stage: test
@@ -108,7 +100,7 @@ frontend-test:
   script:
     - gradle npm_run_test -PnodeInstall
   cache:
-    key: 'frontend-$CI_COMMIT_REF_SLUG'
+    key: 'frontend-cache'
     paths:
       - .gradle/
       - node_modules/
@@ -148,10 +140,6 @@ gradle-package:
     - gradle npm_install -PnodeInstall
   script:
     - gradle bootJar -PnodeInstall -Pprod -x check
-  artifacts:
-    paths:
-      - build/
-    expire_in: 1 day
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
 
