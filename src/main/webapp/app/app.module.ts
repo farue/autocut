@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { NgModule, LOCALE_ID } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import locale from '@angular/common/locales/en';
@@ -7,7 +7,7 @@ import localeDe from '@angular/common/locales/de';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { TranslateModule, TranslateService, TranslateLoader, MissingTranslationHandler, LangChangeEvent } from '@ngx-translate/core';
+import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import * as dayjs from 'dayjs';
 import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -23,7 +23,7 @@ import { EntityRoutingModule } from './entities/entity-routing.module';
 import { NgbDateDayjsAdapter } from './config/datepicker-adapter';
 import { fontAwesomeIcons } from './config/font-awesome-icons';
 import { httpInterceptorProviders } from 'app/core/interceptor/index';
-import { translatePartialLoader, missingTranslationHandler } from './config/translation.config';
+import { missingTranslationHandler, translatePartialLoader } from './config/translation.config';
 import { MainComponent } from './layouts/main/main.component';
 import { NavbarComponent } from './layouts/navbar/navbar.component';
 import { FooterComponent } from './layouts/footer/footer.component';
@@ -35,6 +35,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DateAdapter } from '@angular/material/core';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { PaginatorIntlService } from 'app/shared/pagination/paginator-intl.service';
+
 // import { ApartmentInputComponent } from './ui/apartment-input/apartment-input.component';
 
 @NgModule({
@@ -46,7 +47,7 @@ import { PaginatorIntlService } from 'app/shared/pagination/paginator-intl.servi
     EntityRoutingModule,
     AppRoutingModule,
     // Set this to true to enable service worker (PWA)
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: false }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: true }),
     HttpClientModule,
     NgxWebstorageModule.forRoot({ prefix: 'jhi', separator: '-' }),
     TranslateModule.forRoot({
