@@ -1,6 +1,9 @@
 <div fxLayout="column" fxLayoutAlign=" center">
   <div class="width-600">
     <h1 class="text-center" translate>washing.title</h1>
+    <div *ngIf="initError" class="alert alert-danger">
+      <span translate>washing.messages.error.init</span>
+    </div>
     <div *ngIf="response" class="mb-4">
       <div *ngIf="response.success" fxLayout="column" fxLayoutAlign=" center" class="alert alert-success">
         <p>
@@ -18,9 +21,6 @@
         <mat-icon *ngIf="!response.countdownSeconds" [@bounceOnEnter] class="lock-icon mat-primary">lock</mat-icon>
       </div>
 
-      <div *ngIf="initError" class="alert alert-danger">
-        <span translate>washing.messages.error.init</span>
-      </div>
       <div *ngIf="response.genericError" class="alert alert-danger">
         <span translate [translateParams]="{ machine: findMachineById(response.machineId!)?.name | i18n }"
           >washing.messages.error.fail</span

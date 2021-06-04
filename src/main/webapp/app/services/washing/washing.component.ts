@@ -5,12 +5,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { INSUFFICIENT_FUNDS_TYPE, LAUNDRY_MACHINE_UNAVAILABLE_TYPE } from 'app/config/error.constants';
 import { LaundryMachineType } from 'app/entities/enumerations/laundry-machine-type.model';
 import { FormBuilder, Validators } from '@angular/forms';
-import { catchError, finalize, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, finalize, switchMap, takeUntil, tap } from 'rxjs/operators';
 import * as dayjs from 'dayjs';
 import { TranslateService } from '@ngx-translate/core';
 import { bounceOnEnterAnimation, rotateAnimation } from 'angular-animations';
-import { isNil, uniq } from 'lodash-es';
-import { of, Subject, throwError } from 'rxjs';
+import { isEqual, isNil, uniq } from 'lodash-es';
+import { of, Subject, throwError, timer } from 'rxjs';
 import { Machine, Program } from 'app/entities/washing/washing.model';
 
 enum FormProperties {
@@ -88,16 +88,26 @@ export class WashingComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadingMachines = true;
-    this.washingService
-      .getAllMachines()
-      .pipe(finalize(() => (this.loadingMachines = false)))
-      .subscribe(
-        (machines: Machine[]) => {
-          this.initError = false;
-          this.machines = machines;
-        },
-        () => (this.initError = true)
-      );
+    timer(0, 3000)
+      .pipe(
+        takeUntil(this.onDestroy$),
+        switchMap(v =>
+          // create inner observable to continue outer observable on errors
+          of(v).pipe(
+            tap(() => (this.initError = false)),
+            switchMap(() => this.washingService.getAllMachines()),
+            catchError(err => {
+              this.initError = true;
+              console.error(err);
+              return of(this.machines);
+            }),
+            finalize(() => (this.loadingMachines = false))
+          )
+        ),
+        distinctUntilChanged(isEqual),
+        tap((machines: Machine[]) => (this.machines = machines))
+      )
+      .subscribe();
 
     this.formGroup
       .get(FormProperties.LAUNDRY_MACHINE)!
