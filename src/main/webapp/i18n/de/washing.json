@@ -1,6 +1,10 @@
 {
   "washing": {
-    "title": "Waschmaschine / Trockner freischalten",
+    "title": {
+      "page": "Waschmaschine / Trockner freischalten",
+      "quickSelect": "Schnellauswahl",
+      "manualSelect": "Manuelle Auswahl"
+    },
     "selectMachine": "Maschine",
     "selectProgram": "Programm",
     "buyAndUnlock": "Maschine freischalten (0,80 €)",

@@ -6,10 +6,14 @@ import de.farue.autocut.domain.Tenant;
 import de.farue.autocut.domain.WashHistory;
 import de.farue.autocut.domain.enumeration.WashHistoryStatus;
 import java.time.Instant;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -58,4 +62,14 @@ public interface WashHistoryRepository extends JpaRepository<WashHistory, Long> 
         LaundryMachine machine,
         WashHistoryStatus status
     );
+
+    @Query(
+        "select h from WashHistory h where h.usingTenant in :tenants and h.status = de.farue.autocut.domain.enumeration.WashHistoryStatus.COMPLETED"
+    )
+    Page<WashHistory> findWashHistory(Collection<Tenant> tenants, Pageable pageable);
+
+    @Query(
+        "select h from WashHistory h where h.usingTenant in :tenants and h.machine = :machine and h.status = de.farue.autocut.domain.enumeration.WashHistoryStatus.COMPLETED"
+    )
+    Page<WashHistory> findWashHistory(Collection<Tenant> tenants, LaundryMachine machine, Pageable pageable);
 }

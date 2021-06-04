@@ -2,16 +2,16 @@ package de.farue.autocut.service;
 
 import de.farue.autocut.domain.*;
 import de.farue.autocut.domain.enumeration.WashHistoryStatus;
+import de.farue.autocut.repository.LaundryProgramRepository;
 import de.farue.autocut.repository.WashHistoryRepository;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,10 +27,17 @@ public class WashHistoryService {
     private final WashHistoryRepository washHistoryRepository;
     private final LeaseService leaseService;
 
+    private final LaundryProgramRepository laundryProgramRepository;
+
     @Autowired
-    public WashHistoryService(WashHistoryRepository washHistoryRepository, LeaseService leaseService) {
+    public WashHistoryService(
+        WashHistoryRepository washHistoryRepository,
+        LeaseService leaseService,
+        LaundryProgramRepository laundryProgramRepository
+    ) {
         this.washHistoryRepository = washHistoryRepository;
         this.leaseService = leaseService;
+        this.laundryProgramRepository = laundryProgramRepository;
     }
 
     public WashHistory save(WashHistory washHistory) {
@@ -117,6 +124,18 @@ public class WashHistoryService {
             machine,
             WashHistoryStatus.COMPLETED
         );
+    }
+
+    public Page<WashHistory> getWashHistory(Collection<Tenant> tenants, Pageable pageable) {
+        return washHistoryRepository.findWashHistory(tenants, pageable);
+    }
+
+    public Page<WashHistory> getWashHistory(Collection<Tenant> tenants, LaundryMachine machine, Pageable pageable) {
+        return washHistoryRepository.findWashHistory(tenants, machine, pageable);
+    }
+
+    public List<LaundryProgram> findSuggestions(Collection<Tenant> tenants, LaundryMachine machine) {
+        return laundryProgramRepository.findSuggestions(tenants, machine);
     }
 
     /**

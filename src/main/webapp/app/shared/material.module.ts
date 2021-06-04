@@ -21,6 +21,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   exports: [
@@ -38,6 +39,7 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatListModule,
     MatPaginatorModule,
     MatPasswordStrengthModule,
     MatProgressSpinnerModule,

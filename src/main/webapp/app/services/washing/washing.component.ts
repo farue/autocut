@@ -4,7 +4,7 @@ import { LaundryMachine } from 'app/entities/laundry-machine/laundry-machine.mod
 import { HttpErrorResponse } from '@angular/common/http';
 import { INSUFFICIENT_FUNDS_TYPE, LAUNDRY_MACHINE_UNAVAILABLE_TYPE } from 'app/config/error.constants';
 import { LaundryMachineType } from 'app/entities/enumerations/laundry-machine-type.model';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { catchError, distinctUntilChanged, finalize, switchMap, takeUntil, tap } from 'rxjs/operators';
 import * as dayjs from 'dayjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -12,6 +12,7 @@ import { bounceOnEnterAnimation, rotateAnimation } from 'angular-animations';
 import { isEqual, isNil, uniq } from 'lodash-es';
 import { of, Subject, throwError, timer } from 'rxjs';
 import { Machine, Program } from 'app/entities/washing/washing.model';
+import { LoggedInUserService } from 'app/shared/service/logged-in-user.service';
 
 enum FormProperties {
   LAUNDRY_MACHINE = 'laundryMachine',
@@ -47,6 +48,7 @@ export class WashingComponent implements OnInit, OnDestroy {
 
   machines: Machine[] = [];
   machinePrograms: Program[] = [];
+  suggestions: Program[] = [];
 
   // filtered values based on form inputs
   programs: string[] = [];
@@ -68,12 +70,14 @@ export class WashingComponent implements OnInit, OnDestroy {
     [FormProperties.PREWASH]: [{ value: null, disabled: true }],
     [FormProperties.PROTECT]: [{ value: null, disabled: true }],
   });
+  quickSelectControl = new FormControl([]);
 
   rotateMachines = false;
 
   constructor(
     private fb: FormBuilder,
     private washingService: WashingService,
+    private loggedInUserService: LoggedInUserService,
     private translateService: TranslateService,
     private cd: ChangeDetectorRef
   ) {}
@@ -113,12 +117,34 @@ export class WashingComponent implements OnInit, OnDestroy {
       .get(FormProperties.LAUNDRY_MACHINE)!
       .valueChanges.pipe(
         takeUntil(this.onDestroy$),
+        switchMap((machine: Machine) => this.loggedInUserService.washProgramSuggestions(machine.id)),
+        tap((programs: Program[]) => (this.suggestions = programs))
+      )
+      .subscribe();
+    this.formGroup
+      .get(FormProperties.LAUNDRY_MACHINE)!
+      .valueChanges.pipe(
+        takeUntil(this.onDestroy$),
         switchMap(machine => (machine ? this.washingService.getPrograms(machine) : of([]))),
         tap((programs: Program[]) => (this.machinePrograms = programs)),
         tap(() => this.update())
       )
       .subscribe();
     this.formGroup.valueChanges.subscribe(() => this.update());
+
+    this.quickSelectControl.valueChanges.subscribe((programs: Program[]) => {
+      if (programs.length > 0) {
+        const program = programs[0];
+        this.formGroup.patchValue({
+          [FormProperties.PROGRAM]: program.name,
+          [FormProperties.SUBPROGRAM]: program.subprogram,
+          [FormProperties.SPIN]: program.spin,
+          [FormProperties.PREWASH]: program.preWash,
+          [FormProperties.PROTECT]: program.protect,
+        });
+      }
+    });
+    this.formGroup.valueChanges.subscribe(() => this.quickSelectControl.setValue([]));
   }
 
   ngOnDestroy(): void {
@@ -347,17 +373,6 @@ export class WashingComponent implements OnInit, OnDestroy {
       }
     }
     return null;
-  }
-
-  timeRemaining(inUseUntil?: dayjs.Dayjs): number | null {
-    if (!inUseUntil) {
-      return null;
-    }
-    const timeRemaining = inUseUntil.diff(dayjs(), 'minutes');
-    if (timeRemaining < 0) {
-      return null;
-    }
-    return timeRemaining;
   }
 
   private setFormControlStatus(propertyName: FormProperties, visible: boolean, valueOnDisable?: any, valueOnEnable?: any): void {

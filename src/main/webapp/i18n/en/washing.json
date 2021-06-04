@@ -1,6 +1,10 @@
 {
   "washing": {
-    "title": "Unlock washing machine / dryer",
+    "title": {
+      "page": "Unlock washing machine / dryer",
+      "quickSelect": "Quick Select",
+      "manualSelect": "Manual Select"
+    },
     "selectMachine": "Machine",
     "selectProgram": "Program",
     "buyAndUnlock": "Unlock Machine (0.80 €)",

@@ -1,6 +1,6 @@
 <div fxLayout="column" fxLayoutAlign=" center">
   <div class="width-600">
-    <h1 class="text-center" translate>washing.title</h1>
+    <h1 class="text-center" translate>washing.title.page</h1>
     <div *ngIf="initError" class="alert alert-danger">
       <span translate>washing.messages.error.init</span>
     </div>
@@ -41,10 +41,10 @@
     <p translate>washing.text.p1</p>
     <p translate>washing.text.p2</p>
   </div>
-  <div fxLayout="column" fxLayoutAlign=" center" class="width-400 mt-4">
+  <div fxLayout="column" fxLayoutAlign=" center" class="mt-4">
     <jhi-loading-overlay *ngIf="loadingMachines"></jhi-loading-overlay>
-    <form [formGroup]="formGroup" (ngSubmit)="unlockAction()" fxLayout="column" fxLayoutGap="16x" class="w-100">
-      <div class="position-relative">
+    <form [formGroup]="formGroup" (ngSubmit)="unlockAction()" fxLayout="column" fxLayoutAlign=" center" class="w-100">
+      <div class="position-relative width-400">
         <jhi-washing-laundry-machines
           [machines]="machines"
           [reverse]="rotateMachines"
@@ -54,33 +54,51 @@
           <mat-icon>loop</mat-icon>
         </button>
       </div>
-      <mat-form-field *ngIf="formGroup.get(FormProperties.PROGRAM)!.enabled" appearance="outline">
-        <mat-label translate>washing.selectProgram</mat-label>
-        <mat-select [formControlName]="FormProperties.PROGRAM">
-          <mat-option *ngFor="let program of programs" [value]="program">{{ program }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field *ngIf="formGroup.get(FormProperties.SUBPROGRAM)!.enabled" appearance="outline">
-        <mat-label translate>washing.selectSubprogram</mat-label>
-        <mat-select [formControlName]="FormProperties.SUBPROGRAM">
-          <mat-option *ngFor="let subprogram of subprograms" [value]="subprogram">{{ subprogram }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field *ngIf="formGroup.get(FormProperties.SPIN)!.enabled" appearance="outline">
-        <mat-label translate>washing.selectSpin</mat-label>
-        <mat-select [formControlName]="FormProperties.SPIN">
-          <mat-option *ngFor="let spin of spins" [value]="spin">{{ spin }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-checkbox *ngIf="formGroup.get(FormProperties.PREWASH)!.enabled" [formControlName]="FormProperties.PREWASH">
-        <span translate>washing.preWashCheckbox</span>
-      </mat-checkbox>
-      <mat-checkbox *ngIf="formGroup.get(FormProperties.PROTECT)!.enabled" [formControlName]="FormProperties.PROTECT">
-        <span translate>washing.protectCheckbox</span>
-      </mat-checkbox>
-      <button mat-flat-button [disabled]="formGroup.invalid" [loading]="loadingActivate" color="primary" type="submit">
-        {{ 'washing.buyAndUnlock' | translate }}
-      </button>
+
+      <div *ngIf="suggestions.length > 0" class="quick-select-component">
+        <h3 class="text-center" translate>washing.title.quickSelect</h3>
+        <div class="quick-select-container">
+          <mat-selection-list [formControl]="quickSelectControl" [multiple]="false" class="quick-select-list">
+            <mat-list-option *ngFor="let s of suggestions" [value]="s" class="quick-select-option">
+              <div class="text-center">{{ s.name }} {{ s.subprogram }}</div>
+              <div *ngIf="s.spin != null" class="text-center"><span translate>washing.selectSpin</span> {{ s.spin }}</div>
+              <div *ngIf="s.preWash" class="text-center" translate>washing.preWashCheckbox</div>
+              <div *ngIf="s.protect" class="text-center" translate>washing.protectCheckbox</div>
+            </mat-list-option>
+          </mat-selection-list>
+        </div>
+      </div>
+
+      <div fxLayout="column" class="width-400">
+        <h3 *ngIf="formGroup.get(FormProperties.PROGRAM)!.enabled" class="text-center" translate>washing.title.manualSelect</h3>
+        <mat-form-field *ngIf="formGroup.get(FormProperties.PROGRAM)!.enabled" appearance="outline">
+          <mat-label translate>washing.selectProgram</mat-label>
+          <mat-select [formControlName]="FormProperties.PROGRAM">
+            <mat-option *ngFor="let program of programs" [value]="program">{{ program }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field *ngIf="formGroup.get(FormProperties.SUBPROGRAM)!.enabled" appearance="outline">
+          <mat-label translate>washing.selectSubprogram</mat-label>
+          <mat-select [formControlName]="FormProperties.SUBPROGRAM">
+            <mat-option *ngFor="let subprogram of subprograms" [value]="subprogram">{{ subprogram }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field *ngIf="formGroup.get(FormProperties.SPIN)!.enabled" appearance="outline">
+          <mat-label translate>washing.selectSpin</mat-label>
+          <mat-select [formControlName]="FormProperties.SPIN">
+            <mat-option *ngFor="let spin of spins" [value]="spin">{{ spin }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-checkbox *ngIf="formGroup.get(FormProperties.PREWASH)!.enabled" [formControlName]="FormProperties.PREWASH">
+          <span translate>washing.preWashCheckbox</span>
+        </mat-checkbox>
+        <mat-checkbox *ngIf="formGroup.get(FormProperties.PROTECT)!.enabled" [formControlName]="FormProperties.PROTECT">
+          <span translate>washing.protectCheckbox</span>
+        </mat-checkbox>
+        <button mat-flat-button [disabled]="formGroup.invalid" [loading]="loadingActivate" color="primary" type="submit">
+          {{ 'washing.buyAndUnlock' | translate }}
+        </button>
+      </div>
     </form>
   </div>
 </div>

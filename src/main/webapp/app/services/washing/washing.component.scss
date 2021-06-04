@@ -15,39 +15,32 @@
   color: #004d98;
 }
 
-.toggle-label {
-  word-break: break-word;
-  word-wrap: break-word;
-  white-space: normal;
-  line-height: initial;
+.quick-select-component {
+  display: inline-grid;
+}
+
+.quick-select-container {
+  overflow: auto;
+  padding-bottom: 13px;
+  margin-bottom: 1.34375em;
+}
+
+.quick-select-list {
+  display: grid;
+  grid: minmax(100px, 100%) / auto-flow 200px;
+  column-gap: 8px;
+}
+
+.quick-select-option {
+  border: solid 1px rgba(0, 0, 0, 0.12);
+}
+
+.mat-list-base .mat-list-option.quick-select-option {
+  height: 100%;
 }
 
 .button-rotate {
   position: absolute;
   left: calc(100% - 20px);
   top: -20px;
-
-  //display: flex;
-  //align-items: center;
-  //justify-content: center;
-}
-
-.button-group-laundry-machines {
-  row-gap: 40px;
-}
-
-.button-toggle-no-border-left {
-  border-left: none !important;
-}
-
-.button-toggle-border-top {
-  border-top: solid 1px rgba(0, 0, 0, 0.12);
-}
-
-.button-toggle-border-bottom {
-  border-bottom: solid 1px rgba(0, 0, 0, 0.12);
-}
-
-.button-toggle-border-right {
-  border-right: solid 1px rgba(0, 0, 0, 0.12);
 }
