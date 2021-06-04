@@ -1,14 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { WashingService } from 'app/services/washing/washing.service';
+import { isEqual } from 'lodash-es';
+import { Observable, of, timer } from 'rxjs';
+import { catchError, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { Machine } from 'app/entities/washing/washing.model';
 
 @Component({
   selector: 'jhi-services-overview',
   templateUrl: './services-overview.component.html',
   styleUrls: ['./services-overview.component.scss'],
 })
-export class ServicesOverviewComponent implements OnInit {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  constructor() {}
+export class ServicesOverviewComponent {
+  machines: Machine[] = [];
+  machines$: Observable<Machine[]> = timer(0, 60000).pipe(
+    switchMap(v =>
+      // create inner observable to continue outer observable on errors
+      of(v).pipe(
+        switchMap(() => this.washingService.getAllMachines()),
+        catchError(err => {
+          console.error(err);
+          return of(this.machines);
+        })
+      )
+    ),
+    distinctUntilChanged(isEqual)
+  );
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method,@typescript-eslint/no-empty-function
-  ngOnInit(): void {}
+  constructor(private washingService: WashingService) {}
 }

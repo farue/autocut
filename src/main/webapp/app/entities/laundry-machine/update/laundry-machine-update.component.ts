@@ -21,6 +21,8 @@ export class LaundryMachineUpdateComponent implements OnInit {
     name: [null, [Validators.required]],
     type: [null, [Validators.required]],
     enabled: [null, [Validators.required]],
+    positionX: [null, [Validators.required]],
+    positionY: [null, [Validators.required]],
   });
 
   constructor(
@@ -75,6 +77,8 @@ export class LaundryMachineUpdateComponent implements OnInit {
       name: laundryMachine.name,
       type: laundryMachine.type,
       enabled: laundryMachine.enabled,
+      positionX: laundryMachine.positionX,
+      positionY: laundryMachine.positionY,
     });
   }
 
@@ -86,6 +90,8 @@ export class LaundryMachineUpdateComponent implements OnInit {
       name: this.editForm.get(['name'])!.value,
       type: this.editForm.get(['type'])!.value,
       enabled: this.editForm.get(['enabled'])!.value,
+      positionX: this.editForm.get(['positionX'])!.value,
+      positionY: this.editForm.get(['positionY'])!.value,
     };
   }
 }

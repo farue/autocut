@@ -75,6 +75,48 @@
             </small>
           </div>
         </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autocutApp.laundryMachine.positionX" for="field_positionX">Position X</label>
+          <input type="number" class="form-control" name="positionX" id="field_positionX" data-cy="positionX" formControlName="positionX" />
+          <div *ngIf="editForm.get('positionX')!.invalid && (editForm.get('positionX')!.dirty || editForm.get('positionX')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('positionX')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('positionX')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autocutApp.laundryMachine.positionY" for="field_positionY">Position Y</label>
+          <input type="number" class="form-control" name="positionY" id="field_positionY" data-cy="positionY" formControlName="positionY" />
+          <div *ngIf="editForm.get('positionY')!.invalid && (editForm.get('positionY')!.dirty || editForm.get('positionY')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('positionY')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('positionY')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
       </div>
 
       <div>

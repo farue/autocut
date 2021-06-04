@@ -6,9 +6,10 @@ import { HOME_ROUTE } from './home.route';
 import { HomeComponent } from './home.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { ServicesOverviewComponent } from './services-overview/services-overview.component';
+import { WashingModule } from 'app/services/washing/washing.module';
 
 @NgModule({
-  imports: [SharedModule, RouterModule.forChild([HOME_ROUTE])],
+  imports: [SharedModule, RouterModule.forChild([HOME_ROUTE]), WashingModule],
   declarations: [HomeComponent, WelcomeComponent, ServicesOverviewComponent],
 })
 export class HomeModule {}

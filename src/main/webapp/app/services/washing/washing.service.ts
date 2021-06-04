@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { LaundryMachine } from 'app/entities/laundry-machine/laundry-machine.model';
 import { SERVER_API_URL } from 'app/app.constants';
-import { LaundryMachineProgram } from 'app/entities/laundry-machine-program/laundry-machine-program.model';
 import { Injectable } from '@angular/core';
 import * as dayjs from 'dayjs';
 import { tap } from 'rxjs/operators';
+import { toDate } from 'app/core/util/date-util';
+import { Machine, Program } from 'app/entities/washing/washing.model';
 
 export interface ActivateResponse {
   machineId: number;
@@ -16,17 +16,23 @@ export interface ActivateResponse {
 
 @Injectable({ providedIn: 'root' })
 export class WashingService {
-  public resourceUrl = SERVER_API_URL + 'api/laundry-machines';
+  public resourceUrl = SERVER_API_URL + 'api/washing/laundry-machines';
 
   constructor(private http: HttpClient) {}
 
-  getAllLaundryMachines(): Observable<LaundryMachine[]> {
-    return this.http.get<LaundryMachine[]>(this.resourceUrl);
+  getAllMachines(): Observable<Machine[]> {
+    return this.http
+      .get<Machine[]>(this.resourceUrl)
+      .pipe(tap((machines: Machine[]) => machines.forEach(machine => (machine.inUseUntil = toDate(machine.inUseUntil)))));
   }
 
-  unlock(laundryMachine: LaundryMachine, laundryMachineProgram: LaundryMachineProgram): Observable<ActivateResponse> {
-    const machineId = laundryMachine.id!;
-    const programId = laundryMachineProgram.id!;
+  getPrograms(machine: Machine): Observable<Program[]> {
+    return this.http.get<Program[]>(`${this.resourceUrl}/${machine.id}/programs`);
+  }
+
+  unlock(machine: Machine, program: Program): Observable<ActivateResponse> {
+    const machineId = machine.id;
+    const programId = program.id;
     const params = { programId: String(programId) };
     return this.http.post<ActivateResponse>(`${this.resourceUrl}/${machineId}/unlock`, {}, { params }).pipe(
       tap(response => {

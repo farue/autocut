@@ -22,6 +22,8 @@
       "name": "Name",
       "type": "Type",
       "enabled": "Enabled",
+      "positionX": "Position X",
+      "positionY": "Position Y",
       "programs": "Programs"
     }
   }

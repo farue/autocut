@@ -1,17 +1,10 @@
 # This configuration is intended for development purpose, it's **your** responsibility to harden it for production
 version: '3.8'
-
-networks:
-  traefik:
-    external: true
-
 services:
   autocut-mysql:
     image: mysql:8.0.23
-    volumes:
-      - ~/volumes/autocut/mysql/:/var/lib/mysql/
-    networks:
-      - 'traefik'
+    # volumes:
+    #   - ~/volumes/jhipster/autocut/mysql/:/var/lib/mysql/
     environment:
       - TZ=Europe/Berlin
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes

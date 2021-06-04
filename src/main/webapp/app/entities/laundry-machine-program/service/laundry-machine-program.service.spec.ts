@@ -22,12 +22,7 @@ describe('Service Tests', () => {
 
       elemDefault = {
         id: 0,
-        name: 'AAAAAAA',
-        subprogram: 'AAAAAAA',
         time: 0,
-        spin: 0,
-        preWash: false,
-        protect: false,
       };
     });
 
@@ -63,12 +58,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 1,
-            name: 'BBBBBB',
-            subprogram: 'BBBBBB',
             time: 1,
-            spin: 1,
-            preWash: true,
-            protect: true,
           },
           elemDefault
         );
@@ -83,13 +73,7 @@ describe('Service Tests', () => {
       });
 
       it('should partial update a LaundryMachineProgram', () => {
-        const patchObject = Object.assign(
-          {
-            spin: 1,
-            protect: true,
-          },
-          new LaundryMachineProgram()
-        );
+        const patchObject = Object.assign({}, new LaundryMachineProgram());
 
         const returnedFromService = Object.assign(patchObject, elemDefault);
 
@@ -106,12 +90,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 1,
-            name: 'BBBBBB',
-            subprogram: 'BBBBBB',
             time: 1,
-            spin: 1,
-            preWash: true,
-            protect: true,
           },
           elemDefault
         );
@@ -163,7 +142,7 @@ describe('Service Tests', () => {
         });
 
         it('should add only unique LaundryMachineProgram to an array', () => {
-          const laundryMachineProgramArray: ILaundryMachineProgram[] = [{ id: 123 }, { id: 456 }, { id: 43569 }];
+          const laundryMachineProgramArray: ILaundryMachineProgram[] = [{ id: 123 }, { id: 456 }, { id: 24797 }];
           const laundryMachineProgramCollection: ILaundryMachineProgram[] = [{ id: 123 }];
           expectedResult = service.addLaundryMachineProgramToCollectionIfMissing(
             laundryMachineProgramCollection,

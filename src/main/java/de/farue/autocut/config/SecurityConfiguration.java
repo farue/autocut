@@ -1,7 +1,8 @@
 package de.farue.autocut.config;
 
-import de.farue.autocut.security.*;
-import de.farue.autocut.security.jwt.*;
+import de.farue.autocut.security.AuthoritiesConstants;
+import de.farue.autocut.security.jwt.JWTConfigurer;
+import de.farue.autocut.security.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
@@ -84,13 +85,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/account/reset-password/finish").permitAll()
             .antMatchers("/api/account/**").authenticated()
             .antMatchers("/api/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/api/washing/**").authenticated()
             .antMatchers(HttpMethod.GET, "/api/users/username=*").permitAll()
             .antMatchers(HttpMethod.GET, "/api/users/email=*").permitAll()
             .antMatchers(HttpMethod.GET, "/api/apartments/nr=*").permitAll()
-            .antMatchers(HttpMethod.GET, "/api/laundry-machines").authenticated()
             .antMatchers(HttpMethod.GET, "/api/transaction-books/overview").authenticated()
             .antMatchers(HttpMethod.GET, "/api/transaction-books/purpose").authenticated()
-            .antMatchers(HttpMethod.POST, "/api/laundry-machines/*/unlock").authenticated()
             .antMatchers("/api/me/**").authenticated()
             .antMatchers("/api/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/management/health").permitAll()

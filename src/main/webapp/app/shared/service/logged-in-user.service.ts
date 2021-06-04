@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from 'app/admin/user-management/user-management.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { SERVER_API_URL } from 'app/app.constants';
 import { Tenant } from 'app/entities/tenant/tenant.model';
 import { Lease } from 'app/entities/lease/lease.model';
 import { TransactionBook } from 'app/entities/transaction-book/transaction-book.model';
+import { WashHistory } from 'app/entities/wash-history/wash-history.model';
+import { createRequestOption } from 'app/core/request/request-util';
+import { Pagination } from 'app/core/request/request.model';
+import { Program } from 'app/entities/washing/washing.model';
 
 @Injectable({ providedIn: 'root' })
 export class LoggedInUserService {
@@ -27,5 +31,15 @@ export class LoggedInUserService {
 
   transactionBooks(): Observable<TransactionBook[]> {
     return this.http.get<TransactionBook[]>(`${this.resourceUrl}/transaction-books`);
+  }
+
+  washHistory(id?: number, req?: Pagination): Observable<HttpResponse<WashHistory[]>> {
+    const options = createRequestOption(req);
+    const url = `${this.resourceUrl}/laundry-machines/${id ? String(id) + '/' : ''}history`;
+    return this.http.get<WashHistory[]>(url, { params: options, observe: 'response' });
+  }
+
+  washProgramSuggestions(id: number): Observable<Program[]> {
+    return this.http.get<Program[]>(`${this.resourceUrl}/laundry-machines/${String(id)}/suggestions`);
   }
 }

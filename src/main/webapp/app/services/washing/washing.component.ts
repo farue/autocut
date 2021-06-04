@@ -1,16 +1,18 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivateResponse, WashingService } from 'app/services/washing/washing.service';
 import { LaundryMachine } from 'app/entities/laundry-machine/laundry-machine.model';
-import { LaundryMachineProgram } from 'app/entities/laundry-machine-program/laundry-machine-program.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { INSUFFICIENT_FUNDS_TYPE, LAUNDRY_MACHINE_UNAVAILABLE_TYPE } from 'app/config/error.constants';
 import { LaundryMachineType } from 'app/entities/enumerations/laundry-machine-type.model';
-import { FormBuilder, Validators } from '@angular/forms';
-import { finalize } from 'rxjs/operators';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { catchError, distinctUntilChanged, finalize, switchMap, takeUntil, tap } from 'rxjs/operators';
 import * as dayjs from 'dayjs';
 import { TranslateService } from '@ngx-translate/core';
-import { bounceOnEnterAnimation } from 'angular-animations';
-import { isNil, uniq } from 'lodash-es';
+import { bounceOnEnterAnimation, rotateAnimation } from 'angular-animations';
+import { isEqual, isNil, uniq } from 'lodash-es';
+import { of, Subject, throwError, timer } from 'rxjs';
+import { Machine, Program } from 'app/entities/washing/washing.model';
+import { LoggedInUserService } from 'app/shared/service/logged-in-user.service';
 
 enum FormProperties {
   LAUNDRY_MACHINE = 'laundryMachine',
@@ -37,19 +39,25 @@ interface WashingResponse {
   selector: 'jhi-application',
   templateUrl: './washing.component.html',
   styleUrls: ['./washing.component.scss'],
-  animations: [bounceOnEnterAnimation()],
+  animations: [bounceOnEnterAnimation(), rotateAnimation()],
 })
-export class WashingComponent {
+export class WashingComponent implements OnInit, OnDestroy {
+  onDestroy$ = new Subject<void>();
+
   FormProperties = FormProperties;
 
-  machines: LaundryMachine[] = [];
+  machines: Machine[] = [];
+  machinePrograms: Program[] = [];
+  suggestions: Program[] = [];
+
+  // filtered values based on form inputs
   programs: string[] = [];
   subprograms: string[] = [];
   spins: number[] = [];
 
   initError = false;
 
-  loadingMachines: boolean;
+  loadingMachines = false;
   loadingActivate = false;
 
   response?: WashingResponse;
@@ -62,27 +70,17 @@ export class WashingComponent {
     [FormProperties.PREWASH]: [{ value: null, disabled: true }],
     [FormProperties.PROTECT]: [{ value: null, disabled: true }],
   });
+  quickSelectControl = new FormControl([]);
+
+  rotateMachines = false;
 
   constructor(
     private fb: FormBuilder,
     private washingService: WashingService,
+    private loggedInUserService: LoggedInUserService,
     private translateService: TranslateService,
     private cd: ChangeDetectorRef
-  ) {
-    this.loadingMachines = true;
-    this.washingService
-      .getAllLaundryMachines()
-      .pipe(finalize(() => (this.loadingMachines = false)))
-      .subscribe(
-        (machines: LaundryMachine[]) => {
-          this.initError = false;
-          this.machines = machines;
-        },
-        () => (this.initError = true)
-      );
-
-    this.formGroup.valueChanges.subscribe(() => this.update());
-  }
+  ) {}
 
   private static notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
     return value !== null && value !== undefined;
@@ -92,8 +90,70 @@ export class WashingComponent {
     return self.indexOf(value) === index;
   }
 
-  get selectedMachine(): LaundryMachine | null {
-    return this.formGroup.get(FormProperties.LAUNDRY_MACHINE)!.value as LaundryMachine | null;
+  ngOnInit(): void {
+    this.loadingMachines = true;
+    timer(0, 3000)
+      .pipe(
+        takeUntil(this.onDestroy$),
+        switchMap(v =>
+          // create inner observable to continue outer observable on errors
+          of(v).pipe(
+            tap(() => (this.initError = false)),
+            switchMap(() => this.washingService.getAllMachines()),
+            catchError(err => {
+              this.initError = true;
+              console.error(err);
+              return of(this.machines);
+            }),
+            finalize(() => (this.loadingMachines = false))
+          )
+        ),
+        distinctUntilChanged(isEqual),
+        tap((machines: Machine[]) => (this.machines = machines))
+      )
+      .subscribe();
+
+    this.formGroup
+      .get(FormProperties.LAUNDRY_MACHINE)!
+      .valueChanges.pipe(
+        takeUntil(this.onDestroy$),
+        switchMap((machine: Machine) => this.loggedInUserService.washProgramSuggestions(machine.id)),
+        tap((programs: Program[]) => (this.suggestions = programs))
+      )
+      .subscribe();
+    this.formGroup
+      .get(FormProperties.LAUNDRY_MACHINE)!
+      .valueChanges.pipe(
+        takeUntil(this.onDestroy$),
+        switchMap(machine => (machine ? this.washingService.getPrograms(machine) : of([]))),
+        tap((programs: Program[]) => (this.machinePrograms = programs)),
+        tap(() => this.update())
+      )
+      .subscribe();
+    this.formGroup.valueChanges.subscribe(() => this.update());
+
+    this.quickSelectControl.valueChanges.subscribe((programs: Program[]) => {
+      if (programs.length > 0) {
+        const program = programs[0];
+        this.formGroup.patchValue({
+          [FormProperties.PROGRAM]: program.name,
+          [FormProperties.SUBPROGRAM]: program.subprogram,
+          [FormProperties.SPIN]: program.spin,
+          [FormProperties.PREWASH]: program.preWash,
+          [FormProperties.PROTECT]: program.protect,
+        });
+      }
+    });
+    this.formGroup.valueChanges.subscribe(() => this.quickSelectControl.setValue([]));
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+  }
+
+  get selectedMachine(): Machine | null {
+    return this.formGroup.get(FormProperties.LAUNDRY_MACHINE)!.value as Machine | null;
   }
 
   get selectedProgram(): string | null {
@@ -123,23 +183,25 @@ export class WashingComponent {
     }
   }
 
-  unlock(laundryMachine: LaundryMachine, laundryMachineProgram: LaundryMachineProgram): void {
+  unlock(machine: Machine, program: Program): void {
     this.loadingActivate = true;
     this.response = undefined;
 
     this.washingService
-      .unlock(laundryMachine, laundryMachineProgram)
-      .pipe(finalize(() => (this.loadingActivate = false)))
-      .subscribe(
-        (response: ActivateResponse) => {
+      .unlock(machine, program)
+      .pipe(
+        tap((response: ActivateResponse) => {
           this.response = {
             ...response,
             countdownSeconds: response.endActivationTime.diff(dayjs(), 'seconds'),
             success: true,
           };
-        },
-        (err: HttpErrorResponse) => {
-          this.response = { success: false, machineId: laundryMachine.id! };
+        }),
+        switchMap(() => this.washingService.getAllMachines()),
+        tap((machines: Machine[]) => (this.machines = machines)),
+        finalize(() => (this.loadingActivate = false)),
+        catchError((err: HttpErrorResponse) => {
+          this.response = { success: false, machineId: machine.id };
           if (err.status === 400 && err.error.type === INSUFFICIENT_FUNDS_TYPE) {
             this.response.errorInsufficientFunds = true;
           } else if (err.status === 400 && err.error.type === LAUNDRY_MACHINE_UNAVAILABLE_TYPE) {
@@ -147,8 +209,10 @@ export class WashingComponent {
           } else {
             this.response.genericError = true;
           }
-        }
-      );
+          return throwError(err);
+        })
+      )
+      .subscribe();
   }
 
   onCountdownFinished(): void {
@@ -157,7 +221,7 @@ export class WashingComponent {
     }
   }
 
-  getSelectedProgram(): LaundryMachineProgram {
+  getSelectedProgram(): Program {
     return this.findSingleMatchingProgram(
       this.selectedProgram,
       this.selectedSubprogram,
@@ -168,17 +232,14 @@ export class WashingComponent {
   }
 
   filterPrograms(
-    machine?: LaundryMachine | null,
+    machine?: Machine | null,
     program?: string | null,
     subprogram?: string | null,
     spin?: number | null,
     preWash?: boolean | null,
     protect?: boolean | null
-  ): LaundryMachineProgram[] {
-    if (machine == null || machine.programs == null) {
-      return [];
-    }
-    return machine.programs.filter(
+  ): Program[] {
+    return this.machinePrograms.filter(
       p =>
         (program == null || p.name === program) &&
         (subprogram == null || p.subprogram === subprogram) &&
@@ -194,18 +255,17 @@ export class WashingComponent {
     spin?: number | null,
     preWash?: boolean | null,
     protect?: boolean | null
-  ): LaundryMachineProgram {
+  ): Program {
     if (this.selectedMachine == null) {
       throw new Error('no_machine_selected');
     }
-    const programs: LaundryMachineProgram[] = this.selectedMachine.programs!.filter(
+    const programs: Program[] = this.machinePrograms.filter(
       p =>
-        (p.name == null && program == null) ||
-        (p.name === program &&
-          ((p.subprogram == null && subprogram == null) || p.subprogram === subprogram) &&
-          ((p.spin == null && spin == null) || p.spin === spin) &&
-          ((p.preWash == null && !preWash) || p.preWash === preWash) &&
-          ((p.protect == null && !protect) || p.protect === protect))
+        p.name === program &&
+        ((p.subprogram == null && subprogram == null) || p.subprogram === subprogram) &&
+        ((p.spin == null && spin == null) || p.spin === spin) &&
+        ((p.preWash == null && !preWash) || p.preWash === preWash) &&
+        ((p.protect == null && !protect) || p.protect === protect)
     );
     if (programs.length === 0) {
       throw new Error('no_matchin_program');
@@ -294,16 +354,14 @@ export class WashingComponent {
   }
 
   updatePossibleValues(): void {
-    this.programs = this.filterPrograms(this.selectedMachine)
-      .map((laundryMachineProgram: LaundryMachineProgram) => laundryMachineProgram.name)
-      .filter(name => !isNil(name)) as string[];
+    this.programs = this.filterPrograms(this.selectedMachine).map((program: Program) => program.name);
     this.programs = uniq(this.programs);
     this.subprograms = this.filterPrograms(this.selectedMachine, this.selectedProgram)
-      .map((laundryMachineProgram: LaundryMachineProgram) => laundryMachineProgram.subprogram)
+      .map((program: Program) => program.subprogram)
       .filter(name => !isNil(name)) as string[];
     this.subprograms = uniq(this.subprograms).sort();
     this.spins = this.filterPrograms(this.selectedMachine, this.selectedProgram, this.selectedSubprogram)
-      .map((laundryMachineProgram: LaundryMachineProgram) => laundryMachineProgram.spin)
+      .map((program: Program) => program.spin)
       .filter(name => !isNil(name)) as number[];
     this.spins = uniq(this.spins).sort();
   }

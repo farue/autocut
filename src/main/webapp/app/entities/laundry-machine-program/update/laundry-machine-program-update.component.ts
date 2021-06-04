@@ -7,6 +7,8 @@ import { finalize, map } from 'rxjs/operators';
 
 import { ILaundryMachineProgram, LaundryMachineProgram } from '../laundry-machine-program.model';
 import { LaundryMachineProgramService } from '../service/laundry-machine-program.service';
+import { ILaundryProgram } from 'app/entities/laundry-program/laundry-program.model';
+import { LaundryProgramService } from 'app/entities/laundry-program/service/laundry-program.service';
 import { ILaundryMachine } from 'app/entities/laundry-machine/laundry-machine.model';
 import { LaundryMachineService } from 'app/entities/laundry-machine/service/laundry-machine.service';
 
@@ -17,21 +19,19 @@ import { LaundryMachineService } from 'app/entities/laundry-machine/service/laun
 export class LaundryMachineProgramUpdateComponent implements OnInit {
   isSaving = false;
 
+  laundryProgramsSharedCollection: ILaundryProgram[] = [];
   laundryMachinesSharedCollection: ILaundryMachine[] = [];
 
   editForm = this.fb.group({
     id: [],
-    name: [null, [Validators.required]],
-    subprogram: [],
     time: [null, [Validators.required]],
-    spin: [],
-    preWash: [],
-    protect: [],
-    laundryMachine: [],
+    program: [null, Validators.required],
+    machine: [null, Validators.required],
   });
 
   constructor(
     protected laundryMachineProgramService: LaundryMachineProgramService,
+    protected laundryProgramService: LaundryProgramService,
     protected laundryMachineService: LaundryMachineService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
@@ -57,6 +57,10 @@ export class LaundryMachineProgramUpdateComponent implements OnInit {
     } else {
       this.subscribeToSaveResponse(this.laundryMachineProgramService.create(laundryMachineProgram));
     }
+  }
+
+  trackLaundryProgramById(index: number, item: ILaundryProgram): number {
+    return item.id!;
   }
 
   trackLaundryMachineById(index: number, item: ILaundryMachine): number {
@@ -85,28 +89,38 @@ export class LaundryMachineProgramUpdateComponent implements OnInit {
   protected updateForm(laundryMachineProgram: ILaundryMachineProgram): void {
     this.editForm.patchValue({
       id: laundryMachineProgram.id,
-      name: laundryMachineProgram.name,
-      subprogram: laundryMachineProgram.subprogram,
       time: laundryMachineProgram.time,
-      spin: laundryMachineProgram.spin,
-      preWash: laundryMachineProgram.preWash,
-      protect: laundryMachineProgram.protect,
-      laundryMachine: laundryMachineProgram.laundryMachine,
+      program: laundryMachineProgram.program,
+      machine: laundryMachineProgram.machine,
     });
 
+    this.laundryProgramsSharedCollection = this.laundryProgramService.addLaundryProgramToCollectionIfMissing(
+      this.laundryProgramsSharedCollection,
+      laundryMachineProgram.program
+    );
     this.laundryMachinesSharedCollection = this.laundryMachineService.addLaundryMachineToCollectionIfMissing(
       this.laundryMachinesSharedCollection,
-      laundryMachineProgram.laundryMachine
+      laundryMachineProgram.machine
     );
   }
 
   protected loadRelationshipsOptions(): void {
+    this.laundryProgramService
+      .query()
+      .pipe(map((res: HttpResponse<ILaundryProgram[]>) => res.body ?? []))
+      .pipe(
+        map((laundryPrograms: ILaundryProgram[]) =>
+          this.laundryProgramService.addLaundryProgramToCollectionIfMissing(laundryPrograms, this.editForm.get('program')!.value)
+        )
+      )
+      .subscribe((laundryPrograms: ILaundryProgram[]) => (this.laundryProgramsSharedCollection = laundryPrograms));
+
     this.laundryMachineService
       .query()
       .pipe(map((res: HttpResponse<ILaundryMachine[]>) => res.body ?? []))
       .pipe(
         map((laundryMachines: ILaundryMachine[]) =>
-          this.laundryMachineService.addLaundryMachineToCollectionIfMissing(laundryMachines, this.editForm.get('laundryMachine')!.value)
+          this.laundryMachineService.addLaundryMachineToCollectionIfMissing(laundryMachines, this.editForm.get('machine')!.value)
         )
       )
       .subscribe((laundryMachines: ILaundryMachine[]) => (this.laundryMachinesSharedCollection = laundryMachines));
@@ -116,13 +130,9 @@ export class LaundryMachineProgramUpdateComponent implements OnInit {
     return {
       ...new LaundryMachineProgram(),
       id: this.editForm.get(['id'])!.value,
-      name: this.editForm.get(['name'])!.value,
-      subprogram: this.editForm.get(['subprogram'])!.value,
       time: this.editForm.get(['time'])!.value,
-      spin: this.editForm.get(['spin'])!.value,
-      preWash: this.editForm.get(['preWash'])!.value,
-      protect: this.editForm.get(['protect'])!.value,
-      laundryMachine: this.editForm.get(['laundryMachine'])!.value,
+      program: this.editForm.get(['program'])!.value,
+      machine: this.editForm.get(['machine'])!.value,
     };
   }
 }

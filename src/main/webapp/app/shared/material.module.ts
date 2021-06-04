@@ -19,10 +19,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   exports: [
     FlexLayoutModule,
+    MatBadgeModule,
     MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,
@@ -31,9 +35,11 @@ import { MatSortModule } from '@angular/material/sort';
     MatDatepickerModule,
     MatDayjsDateModule,
     MatDividerModule,
+    MatExpansionModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatListModule,
     MatPaginatorModule,
     MatPasswordStrengthModule,
     MatProgressSpinnerModule,

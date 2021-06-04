@@ -9,6 +9,7 @@ import de.farue.autocut.domain.*;
 import de.farue.autocut.domain.enumeration.LaundryMachineType;
 import de.farue.autocut.domain.enumeration.TransactionType;
 import de.farue.autocut.repository.LaundryMachineProgramRepository;
+import de.farue.autocut.repository.LaundryProgramRepository;
 import de.farue.autocut.service.accounting.InternalTransactionService;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -25,13 +26,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @IntegrationTest
-class LaundryMachineServiceIT {
+class WashingServiceIT {
 
     private static final String ANY_MACHINE_NAME = "Any Machine 11";
     private static final int ANY_MACHINE_IDENTIFIER = 11;
 
     @Autowired
+    private WashingService washingService;
+
+    @Autowired
     private LaundryMachineService laundryMachineService;
+
+    @Autowired
+    private LaundryProgramRepository laundryProgramRepository;
 
     @Autowired
     private LaundryMachineProgramRepository laundryMachineProgramRepository;
@@ -49,7 +56,7 @@ class LaundryMachineServiceIT {
     private WashItClientMock washItClientMock;
 
     private LaundryMachine machine;
-    private LaundryMachineProgram program;
+    private LaundryProgram program;
     private Lease lease;
     private Tenant tenant;
 
@@ -59,17 +66,16 @@ class LaundryMachineServiceIT {
             .type(LaundryMachineType.WASHING_MACHINE)
             .enabled(true)
             .identifier("" + ANY_MACHINE_IDENTIFIER)
-            .name(ANY_MACHINE_NAME);
+            .name(ANY_MACHINE_NAME)
+            .positionX(1)
+            .positionY(1);
         this.machine = laundryMachineService.save(machine);
 
-        LaundryMachineProgram program = new LaundryMachineProgram()
-            .laundryMachine(machine)
-            .name("Program")
-            .subprogram("Subprogram")
-            .time(10)
-            .spin(1000)
-            .preWash(false);
-        this.program = laundryMachineProgramRepository.save(program);
+        LaundryProgram prog = new LaundryProgram().name("Program").subprogram("Subprogram").spin(1000).preWash(false);
+        this.program = laundryProgramRepository.save(prog);
+
+        LaundryMachineProgram program = new LaundryMachineProgram().machine(machine).program(prog).time(10);
+        laundryMachineProgramRepository.save(program);
 
         Lease lease = new Lease().nr("no").start(LocalDate.now()).end(LocalDate.now());
         this.lease = leaseService.save(lease);
@@ -91,7 +97,7 @@ class LaundryMachineServiceIT {
             .description("test");
         internalTransactionService.save(transaction);
 
-        laundryMachineService.purchaseAndUnlock(tenant, machine, program);
+        washingService.purchaseAndUnlock(tenant, machine, program);
 
         List<InternalTransaction> transactions = internalTransactionService
             .findAllForTransactionBook(
@@ -109,7 +115,7 @@ class LaundryMachineServiceIT {
     @Test
     void testInsufficientFunds() {
         assertThatExceptionOfType(InsufficientFundsException.class)
-            .isThrownBy(() -> laundryMachineService.purchaseAndUnlock(tenant, machine, program));
+            .isThrownBy(() -> washingService.purchaseAndUnlock(tenant, machine, program));
     }
 
     @Test
@@ -129,6 +135,6 @@ class LaundryMachineServiceIT {
         internalTransactionService.save(transaction);
 
         assertThatExceptionOfType(LaundryMachineUnavailableException.class)
-            .isThrownBy(() -> laundryMachineService.purchaseAndUnlock(tenant, machine, program));
+            .isThrownBy(() -> washingService.purchaseAndUnlock(tenant, machine, program));
     }
 }

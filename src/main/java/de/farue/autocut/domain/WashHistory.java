@@ -52,7 +52,7 @@ public class WashHistory implements Serializable {
     private LaundryMachine machine;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "laundryMachine" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "program", "machine" }, allowSetters = true)
     private LaundryMachineProgram program;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
