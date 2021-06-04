@@ -1,10 +1,6 @@
 package de.farue.autocut.service;
 
-import de.farue.autocut.domain.LaundryMachine;
-import de.farue.autocut.domain.LaundryMachineProgram;
-import de.farue.autocut.domain.Lease;
-import de.farue.autocut.domain.Tenant;
-import de.farue.autocut.domain.WashHistory;
+import de.farue.autocut.domain.*;
 import de.farue.autocut.domain.enumeration.WashHistoryStatus;
 import de.farue.autocut.repository.WashHistoryRepository;
 import java.time.Instant;
@@ -114,6 +110,13 @@ public class WashHistoryService {
                 }
             );
         washHistoryRepository.flush();
+    }
+
+    public Optional<WashHistory> getLastWashHistory(LaundryMachine machine) {
+        return washHistoryRepository.findFirstByMachineAndStatusAndUsingDateIsNotNullOrderByUsingDateDesc(
+            machine,
+            WashHistoryStatus.COMPLETED
+        );
     }
 
     /**

@@ -311,17 +311,18 @@ relationship ManyToOne {
 // ****************************************************
 
 @service(serviceClass)
-entity LaundryMachine {
+entity LaundryMachine (wash_machine) {
     identifier String required
 	name String required
     type LaundryMachineType required
     enabled Boolean required
+    positionX Integer required
+    positionY Integer required
 }
 
-entity LaundryMachineProgram {
+entity LaundryProgram (wash_program) {
 	name String required
     subprogram String
-    time Integer required
     // washing machine
     spin Integer
     preWash Boolean
@@ -329,7 +330,11 @@ entity LaundryMachineProgram {
     protect Boolean
 }
 
-entity WashHistory {
+entity LaundryMachineProgram (wash_machine_program) {
+    time Integer required
+}
+
+entity WashHistory (wash_history) {
 	usingDate Instant
     reservationDate Instant
     lastModifiedDate Instant
@@ -350,10 +355,11 @@ enum LaundryMachineType {
 }
 
 relationship OneToMany {
-	LaundryMachine{programs} to LaundryMachineProgram{laundryMachine}
+	LaundryMachine{programs} to LaundryMachineProgram{machine required}
 }
 
 relationship ManyToOne {
+    LaundryMachineProgram{program required} to LaundryProgram
 	WashHistory{reservationTenant} to Tenant
     WashHistory{usingTenant} to Tenant
 	WashHistory{machine} to LaundryMachine

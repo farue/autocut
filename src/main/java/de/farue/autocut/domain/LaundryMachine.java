@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -14,7 +14,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * A LaundryMachine.
  */
 @Entity
-@Table(name = "laundry_machine")
+@Table(name = "wash_machine")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class LaundryMachine implements Serializable {
 
@@ -41,9 +41,17 @@ public class LaundryMachine implements Serializable {
     @Column(name = "enabled", nullable = false)
     private Boolean enabled;
 
-    @OneToMany(mappedBy = "laundryMachine")
+    @NotNull
+    @Column(name = "position_x", nullable = false)
+    private Integer positionX;
+
+    @NotNull
+    @Column(name = "position_y", nullable = false)
+    private Integer positionY;
+
+    @OneToMany(mappedBy = "machine")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "laundryMachine" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "program", "machine" }, allowSetters = true)
     private Set<LaundryMachineProgram> programs = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -112,6 +120,32 @@ public class LaundryMachine implements Serializable {
         this.enabled = enabled;
     }
 
+    public Integer getPositionX() {
+        return this.positionX;
+    }
+
+    public LaundryMachine positionX(Integer positionX) {
+        this.positionX = positionX;
+        return this;
+    }
+
+    public void setPositionX(Integer positionX) {
+        this.positionX = positionX;
+    }
+
+    public Integer getPositionY() {
+        return this.positionY;
+    }
+
+    public LaundryMachine positionY(Integer positionY) {
+        this.positionY = positionY;
+        return this;
+    }
+
+    public void setPositionY(Integer positionY) {
+        this.positionY = positionY;
+    }
+
     public Set<LaundryMachineProgram> getPrograms() {
         return this.programs;
     }
@@ -123,22 +157,22 @@ public class LaundryMachine implements Serializable {
 
     public LaundryMachine addPrograms(LaundryMachineProgram laundryMachineProgram) {
         this.programs.add(laundryMachineProgram);
-        laundryMachineProgram.setLaundryMachine(this);
+        laundryMachineProgram.setMachine(this);
         return this;
     }
 
     public LaundryMachine removePrograms(LaundryMachineProgram laundryMachineProgram) {
         this.programs.remove(laundryMachineProgram);
-        laundryMachineProgram.setLaundryMachine(null);
+        laundryMachineProgram.setMachine(null);
         return this;
     }
 
     public void setPrograms(Set<LaundryMachineProgram> laundryMachinePrograms) {
         if (this.programs != null) {
-            this.programs.forEach(i -> i.setLaundryMachine(null));
+            this.programs.forEach(i -> i.setMachine(null));
         }
         if (laundryMachinePrograms != null) {
-            laundryMachinePrograms.forEach(i -> i.setLaundryMachine(this));
+            laundryMachinePrograms.forEach(i -> i.setMachine(this));
         }
         this.programs = laundryMachinePrograms;
     }
@@ -171,6 +205,8 @@ public class LaundryMachine implements Serializable {
             ", name='" + getName() + "'" +
             ", type='" + getType() + "'" +
             ", enabled='" + getEnabled() + "'" +
+            ", positionX=" + getPositionX() +
+            ", positionY=" + getPositionY() +
             "}";
     }
 }

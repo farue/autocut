@@ -3,7 +3,7 @@ package de.farue.autocut.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -11,7 +11,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * A LaundryMachineProgram.
  */
 @Entity
-@Table(name = "laundry_machine_program")
+@Table(name = "wash_machine_program")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class LaundryMachineProgram implements Serializable {
 
@@ -22,28 +22,17 @@ public class LaundryMachineProgram implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "name", nullable = false)
-    private String name;
-
-    @Column(name = "subprogram")
-    private String subprogram;
-
-    @NotNull
     @Column(name = "time", nullable = false)
     private Integer time;
 
-    @Column(name = "spin")
-    private Integer spin;
+    @ManyToOne(optional = false)
+    @NotNull
+    private LaundryProgram program;
 
-    @Column(name = "pre_wash")
-    private Boolean preWash;
-
-    @Column(name = "protect")
-    private Boolean protect;
-
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "programs" }, allowSetters = true)
-    private LaundryMachine laundryMachine;
+    private LaundryMachine machine;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -59,32 +48,6 @@ public class LaundryMachineProgram implements Serializable {
         return this;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public LaundryMachineProgram name(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSubprogram() {
-        return this.subprogram;
-    }
-
-    public LaundryMachineProgram subprogram(String subprogram) {
-        this.subprogram = subprogram;
-        return this;
-    }
-
-    public void setSubprogram(String subprogram) {
-        this.subprogram = subprogram;
-    }
-
     public Integer getTime() {
         return this.time;
     }
@@ -98,56 +61,30 @@ public class LaundryMachineProgram implements Serializable {
         this.time = time;
     }
 
-    public Integer getSpin() {
-        return this.spin;
+    public LaundryProgram getProgram() {
+        return this.program;
     }
 
-    public LaundryMachineProgram spin(Integer spin) {
-        this.spin = spin;
+    public LaundryMachineProgram program(LaundryProgram laundryProgram) {
+        this.setProgram(laundryProgram);
         return this;
     }
 
-    public void setSpin(Integer spin) {
-        this.spin = spin;
+    public void setProgram(LaundryProgram laundryProgram) {
+        this.program = laundryProgram;
     }
 
-    public Boolean getPreWash() {
-        return this.preWash;
+    public LaundryMachine getMachine() {
+        return this.machine;
     }
 
-    public LaundryMachineProgram preWash(Boolean preWash) {
-        this.preWash = preWash;
+    public LaundryMachineProgram machine(LaundryMachine laundryMachine) {
+        this.setMachine(laundryMachine);
         return this;
     }
 
-    public void setPreWash(Boolean preWash) {
-        this.preWash = preWash;
-    }
-
-    public Boolean getProtect() {
-        return this.protect;
-    }
-
-    public LaundryMachineProgram protect(Boolean protect) {
-        this.protect = protect;
-        return this;
-    }
-
-    public void setProtect(Boolean protect) {
-        this.protect = protect;
-    }
-
-    public LaundryMachine getLaundryMachine() {
-        return this.laundryMachine;
-    }
-
-    public LaundryMachineProgram laundryMachine(LaundryMachine laundryMachine) {
-        this.setLaundryMachine(laundryMachine);
-        return this;
-    }
-
-    public void setLaundryMachine(LaundryMachine laundryMachine) {
-        this.laundryMachine = laundryMachine;
+    public void setMachine(LaundryMachine laundryMachine) {
+        this.machine = laundryMachine;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -174,12 +111,7 @@ public class LaundryMachineProgram implements Serializable {
     public String toString() {
         return "LaundryMachineProgram{" +
             "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", subprogram='" + getSubprogram() + "'" +
             ", time=" + getTime() +
-            ", spin=" + getSpin() +
-            ", preWash='" + getPreWash() + "'" +
-            ", protect='" + getProtect() + "'" +
             "}";
     }
 }

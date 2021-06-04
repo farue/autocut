@@ -1,0 +1,28 @@
+{
+  "autocutApp": {
+    "laundryProgram": {
+      "home": {
+        "title": "Laundry Programs",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Laundry Program",
+        "createOrEditLabel": "Create or edit a Laundry Program",
+        "notFound": "No Laundry Programs found"
+      },
+      "created": "A new Laundry Program is created with identifier {{ param }}",
+      "updated": "A Laundry Program is updated with identifier {{ param }}",
+      "deleted": "A Laundry Program is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Laundry Program {{ id }}?"
+      },
+      "detail": {
+        "title": "Laundry Program"
+      },
+      "id": "ID",
+      "name": "Name",
+      "subprogram": "Subprogram",
+      "spin": "Spin",
+      "preWash": "Pre Wash",
+      "protect": "Protect"
+    }
+  }
+}

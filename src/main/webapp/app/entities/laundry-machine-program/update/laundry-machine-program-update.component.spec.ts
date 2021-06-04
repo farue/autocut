@@ -9,6 +9,8 @@ import { of, Subject } from 'rxjs';
 
 import { LaundryMachineProgramService } from '../service/laundry-machine-program.service';
 import { ILaundryMachineProgram, LaundryMachineProgram } from '../laundry-machine-program.model';
+import { ILaundryProgram } from 'app/entities/laundry-program/laundry-program.model';
+import { LaundryProgramService } from 'app/entities/laundry-program/service/laundry-program.service';
 import { ILaundryMachine } from 'app/entities/laundry-machine/laundry-machine.model';
 import { LaundryMachineService } from 'app/entities/laundry-machine/service/laundry-machine.service';
 
@@ -20,6 +22,7 @@ describe('Component Tests', () => {
     let fixture: ComponentFixture<LaundryMachineProgramUpdateComponent>;
     let activatedRoute: ActivatedRoute;
     let laundryMachineProgramService: LaundryMachineProgramService;
+    let laundryProgramService: LaundryProgramService;
     let laundryMachineService: LaundryMachineService;
 
     beforeEach(() => {
@@ -34,20 +37,43 @@ describe('Component Tests', () => {
       fixture = TestBed.createComponent(LaundryMachineProgramUpdateComponent);
       activatedRoute = TestBed.inject(ActivatedRoute);
       laundryMachineProgramService = TestBed.inject(LaundryMachineProgramService);
+      laundryProgramService = TestBed.inject(LaundryProgramService);
       laundryMachineService = TestBed.inject(LaundryMachineService);
 
       comp = fixture.componentInstance;
     });
 
     describe('ngOnInit', () => {
+      it('Should call LaundryProgram query and add missing value', () => {
+        const laundryMachineProgram: ILaundryMachineProgram = { id: 456 };
+        const program: ILaundryProgram = { id: 43548 };
+        laundryMachineProgram.program = program;
+
+        const laundryProgramCollection: ILaundryProgram[] = [{ id: 75902 }];
+        spyOn(laundryProgramService, 'query').and.returnValue(of(new HttpResponse({ body: laundryProgramCollection })));
+        const additionalLaundryPrograms = [program];
+        const expectedCollection: ILaundryProgram[] = [...additionalLaundryPrograms, ...laundryProgramCollection];
+        spyOn(laundryProgramService, 'addLaundryProgramToCollectionIfMissing').and.returnValue(expectedCollection);
+
+        activatedRoute.data = of({ laundryMachineProgram });
+        comp.ngOnInit();
+
+        expect(laundryProgramService.query).toHaveBeenCalled();
+        expect(laundryProgramService.addLaundryProgramToCollectionIfMissing).toHaveBeenCalledWith(
+          laundryProgramCollection,
+          ...additionalLaundryPrograms
+        );
+        expect(comp.laundryProgramsSharedCollection).toEqual(expectedCollection);
+      });
+
       it('Should call LaundryMachine query and add missing value', () => {
         const laundryMachineProgram: ILaundryMachineProgram = { id: 456 };
-        const laundryMachine: ILaundryMachine = { id: 53251 };
-        laundryMachineProgram.laundryMachine = laundryMachine;
+        const machine: ILaundryMachine = { id: 49974 };
+        laundryMachineProgram.machine = machine;
 
-        const laundryMachineCollection: ILaundryMachine[] = [{ id: 96702 }];
+        const laundryMachineCollection: ILaundryMachine[] = [{ id: 70602 }];
         spyOn(laundryMachineService, 'query').and.returnValue(of(new HttpResponse({ body: laundryMachineCollection })));
-        const additionalLaundryMachines = [laundryMachine];
+        const additionalLaundryMachines = [machine];
         const expectedCollection: ILaundryMachine[] = [...additionalLaundryMachines, ...laundryMachineCollection];
         spyOn(laundryMachineService, 'addLaundryMachineToCollectionIfMissing').and.returnValue(expectedCollection);
 
@@ -64,14 +90,17 @@ describe('Component Tests', () => {
 
       it('Should update editForm', () => {
         const laundryMachineProgram: ILaundryMachineProgram = { id: 456 };
-        const laundryMachine: ILaundryMachine = { id: 63927 };
-        laundryMachineProgram.laundryMachine = laundryMachine;
+        const program: ILaundryProgram = { id: 43569 };
+        laundryMachineProgram.program = program;
+        const machine: ILaundryMachine = { id: 53251 };
+        laundryMachineProgram.machine = machine;
 
         activatedRoute.data = of({ laundryMachineProgram });
         comp.ngOnInit();
 
         expect(comp.editForm.value).toEqual(expect.objectContaining(laundryMachineProgram));
-        expect(comp.laundryMachinesSharedCollection).toContain(laundryMachine);
+        expect(comp.laundryProgramsSharedCollection).toContain(program);
+        expect(comp.laundryMachinesSharedCollection).toContain(machine);
       });
     });
 
@@ -140,6 +169,14 @@ describe('Component Tests', () => {
     });
 
     describe('Tracking relationships identifiers', () => {
+      describe('trackLaundryProgramById', () => {
+        it('Should return tracked LaundryProgram primary key', () => {
+          const entity = { id: 123 };
+          const trackResult = comp.trackLaundryProgramById(0, entity);
+          expect(trackResult).toEqual(entity.id);
+        });
+      });
+
       describe('trackLaundryMachineById', () => {
         it('Should return tracked LaundryMachine primary key', () => {
           const entity = { id: 123 };

@@ -1,0 +1,21 @@
+<div class="mat-form-field-wrapper">
+  <mat-button-toggle-group [formControl]="buttonGroupControl" [gdColumns]="'repeat(' + x + ', 1fr)'" class="button-group-laundry-machines">
+    <ng-container *ngFor="let machine of machinesVM; index as i; last as isLast">
+      <mat-button-toggle
+        *ngIf="machine"
+        [value]="machine"
+        [disabled]="!machine.enabled"
+        [ngClass]="{
+          'button-toggle-border-bottom': i < 3,
+          'button-toggle-border-top': i >= 3,
+          'button-toggle-no-border-left': i % 3 === 0,
+          'button-toggle-border-right': isLast && i % 3 !== 2
+        }"
+      >
+        <mat-icon [matBadge]="timeRemaining(machine.inUseUntil)" [matBadgeColor]="'warn'"> local_laundry_service </mat-icon>
+        <div *ngIf="showLabels" class="toggle-label">{{ machine.name | i18n }}</div>
+      </mat-button-toggle>
+      <div *ngIf="!machine" class="placeholder"></div>
+    </ng-container>
+  </mat-button-toggle-group>
+</div>

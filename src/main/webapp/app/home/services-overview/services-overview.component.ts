@@ -1,14 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { WashingService } from 'app/services/washing/washing.service';
 
 @Component({
   selector: 'jhi-services-overview',
   templateUrl: './services-overview.component.html',
   styleUrls: ['./services-overview.component.scss'],
 })
-export class ServicesOverviewComponent implements OnInit {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  constructor() {}
+export class ServicesOverviewComponent {
+  machines$ = this.washingService.getAllMachines();
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method,@typescript-eslint/no-empty-function
-  ngOnInit(): void {}
+  constructor(private washingService: WashingService) {}
 }

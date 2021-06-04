@@ -1,0 +1,6 @@
+id;identifier;name;type;enabled;position_x;position_y
+1;1;Washing Machine 1;WASHING_MACHINE;true;0;0
+2;2;Washing Machine 2;WASHING_MACHINE;true;1;0
+3;3;Washing Machine 3;WASHING_MACHINE;true;2;0
+4;4;Dryer 1;DRYER;true;0;1
+5;5;Dryer 2;DRYER;true;1;1

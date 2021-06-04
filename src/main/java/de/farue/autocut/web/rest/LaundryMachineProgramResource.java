@@ -128,23 +128,8 @@ public class LaundryMachineProgramResource {
             .findById(laundryMachineProgram.getId())
             .map(
                 existingLaundryMachineProgram -> {
-                    if (laundryMachineProgram.getName() != null) {
-                        existingLaundryMachineProgram.setName(laundryMachineProgram.getName());
-                    }
-                    if (laundryMachineProgram.getSubprogram() != null) {
-                        existingLaundryMachineProgram.setSubprogram(laundryMachineProgram.getSubprogram());
-                    }
                     if (laundryMachineProgram.getTime() != null) {
                         existingLaundryMachineProgram.setTime(laundryMachineProgram.getTime());
-                    }
-                    if (laundryMachineProgram.getSpin() != null) {
-                        existingLaundryMachineProgram.setSpin(laundryMachineProgram.getSpin());
-                    }
-                    if (laundryMachineProgram.getPreWash() != null) {
-                        existingLaundryMachineProgram.setPreWash(laundryMachineProgram.getPreWash());
-                    }
-                    if (laundryMachineProgram.getProtect() != null) {
-                        existingLaundryMachineProgram.setProtect(laundryMachineProgram.getProtect());
                     }
 
                     return existingLaundryMachineProgram;
