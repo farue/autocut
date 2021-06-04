@@ -53,4 +53,9 @@ public interface WashHistoryRepository extends JpaRepository<WashHistory, Long> 
     List<WashHistory> findAllByStatusAndReservationDateIsBefore(WashHistoryStatus status, Instant time);
 
     List<WashHistory> findAllByMachineAndStatusAndReservationDateIsNotNull(LaundryMachine machine, WashHistoryStatus status);
+
+    Optional<WashHistory> findFirstByMachineAndStatusAndUsingDateIsNotNullOrderByUsingDateDesc(
+        LaundryMachine machine,
+        WashHistoryStatus status
+    );
 }

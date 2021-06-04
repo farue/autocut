@@ -44,14 +44,16 @@
   <div fxLayout="column" fxLayoutAlign=" center" class="width-400 mt-4">
     <jhi-loading-overlay *ngIf="loadingMachines"></jhi-loading-overlay>
     <form [formGroup]="formGroup" (ngSubmit)="unlockAction()" fxLayout="column" fxLayoutGap="16x" class="w-100">
-      <mat-form-field appearance="outline">
-        <mat-label translate>washing.selectMachine</mat-label>
-        <mat-select [formControlName]="FormProperties.LAUNDRY_MACHINE">
-          <mat-option *ngFor="let machine of machines" [value]="machine" [disabled]="!machine.enabled">{{
-            machine.name | i18n
-          }}</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div class="position-relative">
+        <jhi-washing-laundry-machines
+          [machines]="machines"
+          [reverse]="rotateMachines"
+          [formControlName]="FormProperties.LAUNDRY_MACHINE"
+        ></jhi-washing-laundry-machines>
+        <button mat-mini-fab (click)="rotateMachines = !rotateMachines" type="button" class="button-rotate" [@rotate]="rotateMachines">
+          <mat-icon>loop</mat-icon>
+        </button>
+      </div>
       <mat-form-field *ngIf="formGroup.get(FormProperties.PROGRAM)!.enabled" appearance="outline">
         <mat-label translate>washing.selectProgram</mat-label>
         <mat-select [formControlName]="FormProperties.PROGRAM">

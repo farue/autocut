@@ -39,7 +39,7 @@
     "embeddableLaunchScript": false,
     "blueprints": [],
     "creationTimestamp": 1578829876752,
-    "lastLiquibaseTimestamp": 1610886789000,
+    "lastLiquibaseTimestamp": 1622730741000,
     "skipClient": false,
     "skipServer": false,
     "skipUserManagement": false,
@@ -69,7 +69,8 @@
       "Tenant",
       "TenantCommunication",
       "TransactionBook",
-      "WashHistory"
+      "WashHistory",
+      "LaundryProgram"
     ]
   }
 }

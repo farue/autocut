@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
     RouterModule.forChild([
       {
         path: 'washing',
-        loadChildren: () => import('./washing/washing.module').then(m => m.WashingModule),
+        loadChildren: () => import('./washing/washing-routing.module').then(m => m.WashingRoutingModule),
       },
       {
         path: 'transactions',

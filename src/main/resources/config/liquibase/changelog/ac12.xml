@@ -1,0 +1,122 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+
+    <changeSet id="table-laundry_machine-position" author="brunecker">
+        <addColumn tableName="laundry_machine">
+            <column name="position_x" type="integer" />
+            <column name="position_y" type="integer" />
+        </addColumn>
+
+        <loadUpdateData
+            file="config/liquibase/data/ac12-laundry_machine.csv"
+            separator=";"
+            tableName="laundry_machine"
+            primaryKey="id" />
+
+        <addNotNullConstraint tableName="laundry_machine" columnName="position_x" columnDataType="integer" />
+        <addNotNullConstraint tableName="laundry_machine" columnName="position_y" columnDataType="integer" />
+    </changeSet>
+
+    <changeSet id="rename-table-laundry_machine" author="brunecker">
+        <renameTable oldTableName="laundry_machine" newTableName="wash_machine" />
+    </changeSet>
+
+    <changeSet id="table-wash_program" author="brunecker">
+        <createTable tableName="wash_program">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="subprogram" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="spin" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="pre_wash" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="protect" type="boolean">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+
+        <sql>
+            insert into wash_program(name, subprogram, spin, pre_wash, protect)
+            select distinct name, subprogram, spin, pre_wash, protect
+            from laundry_machine_program;
+        </sql>
+    </changeSet>
+
+    <changeSet id="table-wasch_machine_program" author="brunecker">
+        <createTable tableName="wash_machine_program">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="time" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="program_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="machine_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <addColumn tableName="wash_machine_program">
+            <column name="lmp_id" type="bigint">
+                <constraints unique="true" />
+            </column>
+        </addColumn>
+
+        <sql>
+            insert into wash_machine_program(time, program_id, machine_id, lmp_id)
+            select lmp.time, wp.id, lmp.laundry_machine_id, lmp.id
+            from laundry_machine_program lmp
+                     left join wash_program wp
+                         on lmp.name = wp.name
+                                and ((lmp.subprogram = wp.subprogram) or (lmp.subprogram is null and wp.subprogram is null))
+                                and ((lmp.spin = wp.spin) or (lmp.spin is null and wp.spin is null))
+                                and ((lmp.pre_wash = wp.pre_wash) or (lmp.pre_wash is null and wp.pre_wash is null))
+                                and ((lmp.protect = wp.protect) or (lmp.protect is null and wp.protect is null))
+            ;
+        </sql>
+
+        <addForeignKeyConstraint
+            baseTableName="wash_machine_program"
+            baseColumnNames="program_id"
+            constraintName="fk_wash_machine_program_program_id"
+            referencedTableName="wash_program"
+            referencedColumnNames="id" />
+        <addForeignKeyConstraint
+            baseTableName="wash_machine_program"
+            baseColumnNames="machine_id"
+            constraintName="fk_wash_machine_program_machine_id"
+            referencedTableName="wash_machine"
+            referencedColumnNames="id" />
+    </changeSet>
+
+    <changeSet id="migrate-wash_history" author="brunecker">
+        <dropForeignKeyConstraint baseTableName="wash_history" constraintName="fk_wash_history_program_id" />
+
+        <sql>
+            update wash_history wh
+            set wh.program_id = (select wmp.id from wash_machine_program wmp where wmp.lmp_id = wh.program_id);
+        </sql>
+
+        <dropColumn tableName="wash_machine_program" columnName="lmp_id" />
+        <dropTable tableName="laundry_machine_program" />
+
+        <addForeignKeyConstraint
+            baseTableName="wash_history"
+            baseColumnNames="program_id"
+            constraintName="fk_wash_history_program_id"
+            referencedTableName="wash_machine_program"
+            referencedColumnNames="id" />
+    </changeSet>
+
+</databaseChangeLog>

@@ -6,7 +6,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import de.farue.autocut.IntegrationTest;
+import de.farue.autocut.domain.LaundryMachine;
 import de.farue.autocut.domain.LaundryMachineProgram;
+import de.farue.autocut.domain.LaundryProgram;
 import de.farue.autocut.repository.LaundryMachineProgramRepository;
 import de.farue.autocut.security.AuthoritiesConstants;
 import java.util.List;
@@ -30,23 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 class LaundryMachineProgramResourceIT {
 
-    private static final String DEFAULT_NAME = "AAAAAAAAAA";
-    private static final String UPDATED_NAME = "BBBBBBBBBB";
-
-    private static final String DEFAULT_SUBPROGRAM = "AAAAAAAAAA";
-    private static final String UPDATED_SUBPROGRAM = "BBBBBBBBBB";
-
     private static final Integer DEFAULT_TIME = 1;
     private static final Integer UPDATED_TIME = 2;
-
-    private static final Integer DEFAULT_SPIN = 1;
-    private static final Integer UPDATED_SPIN = 2;
-
-    private static final Boolean DEFAULT_PRE_WASH = false;
-    private static final Boolean UPDATED_PRE_WASH = true;
-
-    private static final Boolean DEFAULT_PROTECT = false;
-    private static final Boolean UPDATED_PROTECT = true;
 
     private static final String ENTITY_API_URL = "/api/laundry-machine-programs";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -72,13 +59,27 @@ class LaundryMachineProgramResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static LaundryMachineProgram createEntity(EntityManager em) {
-        LaundryMachineProgram laundryMachineProgram = new LaundryMachineProgram()
-            .name(DEFAULT_NAME)
-            .subprogram(DEFAULT_SUBPROGRAM)
-            .time(DEFAULT_TIME)
-            .spin(DEFAULT_SPIN)
-            .preWash(DEFAULT_PRE_WASH)
-            .protect(DEFAULT_PROTECT);
+        LaundryMachineProgram laundryMachineProgram = new LaundryMachineProgram().time(DEFAULT_TIME);
+        // Add required entity
+        LaundryProgram laundryProgram;
+        if (TestUtil.findAll(em, LaundryProgram.class).isEmpty()) {
+            laundryProgram = LaundryProgramResourceIT.createEntity(em);
+            em.persist(laundryProgram);
+            em.flush();
+        } else {
+            laundryProgram = TestUtil.findAll(em, LaundryProgram.class).get(0);
+        }
+        laundryMachineProgram.setProgram(laundryProgram);
+        // Add required entity
+        LaundryMachine laundryMachine;
+        if (TestUtil.findAll(em, LaundryMachine.class).isEmpty()) {
+            laundryMachine = LaundryMachineResourceIT.createEntity(em);
+            em.persist(laundryMachine);
+            em.flush();
+        } else {
+            laundryMachine = TestUtil.findAll(em, LaundryMachine.class).get(0);
+        }
+        laundryMachineProgram.setMachine(laundryMachine);
         return laundryMachineProgram;
     }
 
@@ -89,13 +90,27 @@ class LaundryMachineProgramResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static LaundryMachineProgram createUpdatedEntity(EntityManager em) {
-        LaundryMachineProgram laundryMachineProgram = new LaundryMachineProgram()
-            .name(UPDATED_NAME)
-            .subprogram(UPDATED_SUBPROGRAM)
-            .time(UPDATED_TIME)
-            .spin(UPDATED_SPIN)
-            .preWash(UPDATED_PRE_WASH)
-            .protect(UPDATED_PROTECT);
+        LaundryMachineProgram laundryMachineProgram = new LaundryMachineProgram().time(UPDATED_TIME);
+        // Add required entity
+        LaundryProgram laundryProgram;
+        if (TestUtil.findAll(em, LaundryProgram.class).isEmpty()) {
+            laundryProgram = LaundryProgramResourceIT.createUpdatedEntity(em);
+            em.persist(laundryProgram);
+            em.flush();
+        } else {
+            laundryProgram = TestUtil.findAll(em, LaundryProgram.class).get(0);
+        }
+        laundryMachineProgram.setProgram(laundryProgram);
+        // Add required entity
+        LaundryMachine laundryMachine;
+        if (TestUtil.findAll(em, LaundryMachine.class).isEmpty()) {
+            laundryMachine = LaundryMachineResourceIT.createUpdatedEntity(em);
+            em.persist(laundryMachine);
+            em.flush();
+        } else {
+            laundryMachine = TestUtil.findAll(em, LaundryMachine.class).get(0);
+        }
+        laundryMachineProgram.setMachine(laundryMachine);
         return laundryMachineProgram;
     }
 
@@ -121,12 +136,7 @@ class LaundryMachineProgramResourceIT {
         List<LaundryMachineProgram> laundryMachineProgramList = laundryMachineProgramRepository.findAll();
         assertThat(laundryMachineProgramList).hasSize(databaseSizeBeforeCreate + 1);
         LaundryMachineProgram testLaundryMachineProgram = laundryMachineProgramList.get(laundryMachineProgramList.size() - 1);
-        assertThat(testLaundryMachineProgram.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testLaundryMachineProgram.getSubprogram()).isEqualTo(DEFAULT_SUBPROGRAM);
         assertThat(testLaundryMachineProgram.getTime()).isEqualTo(DEFAULT_TIME);
-        assertThat(testLaundryMachineProgram.getSpin()).isEqualTo(DEFAULT_SPIN);
-        assertThat(testLaundryMachineProgram.getPreWash()).isEqualTo(DEFAULT_PRE_WASH);
-        assertThat(testLaundryMachineProgram.getProtect()).isEqualTo(DEFAULT_PROTECT);
     }
 
     @Test
@@ -149,27 +159,6 @@ class LaundryMachineProgramResourceIT {
         // Validate the LaundryMachineProgram in the database
         List<LaundryMachineProgram> laundryMachineProgramList = laundryMachineProgramRepository.findAll();
         assertThat(laundryMachineProgramList).hasSize(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    @Transactional
-    void checkNameIsRequired() throws Exception {
-        int databaseSizeBeforeTest = laundryMachineProgramRepository.findAll().size();
-        // set the field null
-        laundryMachineProgram.setName(null);
-
-        // Create the LaundryMachineProgram, which fails.
-
-        restLaundryMachineProgramMockMvc
-            .perform(
-                post(ENTITY_API_URL)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(laundryMachineProgram))
-            )
-            .andExpect(status().isBadRequest());
-
-        List<LaundryMachineProgram> laundryMachineProgramList = laundryMachineProgramRepository.findAll();
-        assertThat(laundryMachineProgramList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -205,12 +194,7 @@ class LaundryMachineProgramResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(laundryMachineProgram.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].subprogram").value(hasItem(DEFAULT_SUBPROGRAM)))
-            .andExpect(jsonPath("$.[*].time").value(hasItem(DEFAULT_TIME)))
-            .andExpect(jsonPath("$.[*].spin").value(hasItem(DEFAULT_SPIN)))
-            .andExpect(jsonPath("$.[*].preWash").value(hasItem(DEFAULT_PRE_WASH.booleanValue())))
-            .andExpect(jsonPath("$.[*].protect").value(hasItem(DEFAULT_PROTECT.booleanValue())));
+            .andExpect(jsonPath("$.[*].time").value(hasItem(DEFAULT_TIME)));
     }
 
     @Test
@@ -225,12 +209,7 @@ class LaundryMachineProgramResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(laundryMachineProgram.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.subprogram").value(DEFAULT_SUBPROGRAM))
-            .andExpect(jsonPath("$.time").value(DEFAULT_TIME))
-            .andExpect(jsonPath("$.spin").value(DEFAULT_SPIN))
-            .andExpect(jsonPath("$.preWash").value(DEFAULT_PRE_WASH.booleanValue()))
-            .andExpect(jsonPath("$.protect").value(DEFAULT_PROTECT.booleanValue()));
+            .andExpect(jsonPath("$.time").value(DEFAULT_TIME));
     }
 
     @Test
@@ -252,13 +231,7 @@ class LaundryMachineProgramResourceIT {
         LaundryMachineProgram updatedLaundryMachineProgram = laundryMachineProgramRepository.findById(laundryMachineProgram.getId()).get();
         // Disconnect from session so that the updates on updatedLaundryMachineProgram are not directly saved in db
         em.detach(updatedLaundryMachineProgram);
-        updatedLaundryMachineProgram
-            .name(UPDATED_NAME)
-            .subprogram(UPDATED_SUBPROGRAM)
-            .time(UPDATED_TIME)
-            .spin(UPDATED_SPIN)
-            .preWash(UPDATED_PRE_WASH)
-            .protect(UPDATED_PROTECT);
+        updatedLaundryMachineProgram.time(UPDATED_TIME);
 
         restLaundryMachineProgramMockMvc
             .perform(
@@ -272,12 +245,7 @@ class LaundryMachineProgramResourceIT {
         List<LaundryMachineProgram> laundryMachineProgramList = laundryMachineProgramRepository.findAll();
         assertThat(laundryMachineProgramList).hasSize(databaseSizeBeforeUpdate);
         LaundryMachineProgram testLaundryMachineProgram = laundryMachineProgramList.get(laundryMachineProgramList.size() - 1);
-        assertThat(testLaundryMachineProgram.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testLaundryMachineProgram.getSubprogram()).isEqualTo(UPDATED_SUBPROGRAM);
         assertThat(testLaundryMachineProgram.getTime()).isEqualTo(UPDATED_TIME);
-        assertThat(testLaundryMachineProgram.getSpin()).isEqualTo(UPDATED_SPIN);
-        assertThat(testLaundryMachineProgram.getPreWash()).isEqualTo(UPDATED_PRE_WASH);
-        assertThat(testLaundryMachineProgram.getProtect()).isEqualTo(UPDATED_PROTECT);
     }
 
     @Test
@@ -352,8 +320,6 @@ class LaundryMachineProgramResourceIT {
         LaundryMachineProgram partialUpdatedLaundryMachineProgram = new LaundryMachineProgram();
         partialUpdatedLaundryMachineProgram.setId(laundryMachineProgram.getId());
 
-        partialUpdatedLaundryMachineProgram.spin(UPDATED_SPIN).protect(UPDATED_PROTECT);
-
         restLaundryMachineProgramMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedLaundryMachineProgram.getId())
@@ -366,12 +332,7 @@ class LaundryMachineProgramResourceIT {
         List<LaundryMachineProgram> laundryMachineProgramList = laundryMachineProgramRepository.findAll();
         assertThat(laundryMachineProgramList).hasSize(databaseSizeBeforeUpdate);
         LaundryMachineProgram testLaundryMachineProgram = laundryMachineProgramList.get(laundryMachineProgramList.size() - 1);
-        assertThat(testLaundryMachineProgram.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testLaundryMachineProgram.getSubprogram()).isEqualTo(DEFAULT_SUBPROGRAM);
         assertThat(testLaundryMachineProgram.getTime()).isEqualTo(DEFAULT_TIME);
-        assertThat(testLaundryMachineProgram.getSpin()).isEqualTo(UPDATED_SPIN);
-        assertThat(testLaundryMachineProgram.getPreWash()).isEqualTo(DEFAULT_PRE_WASH);
-        assertThat(testLaundryMachineProgram.getProtect()).isEqualTo(UPDATED_PROTECT);
     }
 
     @Test
@@ -386,13 +347,7 @@ class LaundryMachineProgramResourceIT {
         LaundryMachineProgram partialUpdatedLaundryMachineProgram = new LaundryMachineProgram();
         partialUpdatedLaundryMachineProgram.setId(laundryMachineProgram.getId());
 
-        partialUpdatedLaundryMachineProgram
-            .name(UPDATED_NAME)
-            .subprogram(UPDATED_SUBPROGRAM)
-            .time(UPDATED_TIME)
-            .spin(UPDATED_SPIN)
-            .preWash(UPDATED_PRE_WASH)
-            .protect(UPDATED_PROTECT);
+        partialUpdatedLaundryMachineProgram.time(UPDATED_TIME);
 
         restLaundryMachineProgramMockMvc
             .perform(
@@ -406,12 +361,7 @@ class LaundryMachineProgramResourceIT {
         List<LaundryMachineProgram> laundryMachineProgramList = laundryMachineProgramRepository.findAll();
         assertThat(laundryMachineProgramList).hasSize(databaseSizeBeforeUpdate);
         LaundryMachineProgram testLaundryMachineProgram = laundryMachineProgramList.get(laundryMachineProgramList.size() - 1);
-        assertThat(testLaundryMachineProgram.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testLaundryMachineProgram.getSubprogram()).isEqualTo(UPDATED_SUBPROGRAM);
         assertThat(testLaundryMachineProgram.getTime()).isEqualTo(UPDATED_TIME);
-        assertThat(testLaundryMachineProgram.getSpin()).isEqualTo(UPDATED_SPIN);
-        assertThat(testLaundryMachineProgram.getPreWash()).isEqualTo(UPDATED_PRE_WASH);
-        assertThat(testLaundryMachineProgram.getProtect()).isEqualTo(UPDATED_PROTECT);
     }
 
     @Test

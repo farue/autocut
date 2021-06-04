@@ -27,6 +27,8 @@ describe('Service Tests', () => {
         name: 'AAAAAAA',
         type: LaundryMachineType.WASHING_MACHINE,
         enabled: false,
+        positionX: 0,
+        positionY: 0,
       };
     });
 
@@ -66,6 +68,8 @@ describe('Service Tests', () => {
             name: 'BBBBBB',
             type: 'BBBBBB',
             enabled: true,
+            positionX: 1,
+            positionY: 1,
           },
           elemDefault
         );
@@ -107,6 +111,8 @@ describe('Service Tests', () => {
             name: 'BBBBBB',
             type: 'BBBBBB',
             enabled: true,
+            positionX: 1,
+            positionY: 1,
           },
           elemDefault
         );
@@ -158,7 +164,7 @@ describe('Service Tests', () => {
         });
 
         it('should add only unique LaundryMachine to an array', () => {
-          const laundryMachineArray: ILaundryMachine[] = [{ id: 123 }, { id: 456 }, { id: 29067 }];
+          const laundryMachineArray: ILaundryMachine[] = [{ id: 123 }, { id: 456 }, { id: 63288 }];
           const laundryMachineCollection: ILaundryMachine[] = [{ id: 123 }];
           expectedResult = service.addLaundryMachineToCollectionIfMissing(laundryMachineCollection, ...laundryMachineArray);
           expect(expectedResult).toHaveLength(3);

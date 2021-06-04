@@ -45,6 +45,10 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
         {
           path: 'services',
           loadChildren: () => import('./services/services-routing.module').then(m => m.ServicesRoutingModule),
+          data: {
+            authorities: [Authority.USER],
+          },
+          canActivate: [UserRouteAccessService],
         },
         ...LAYOUT_ROUTES,
       ],

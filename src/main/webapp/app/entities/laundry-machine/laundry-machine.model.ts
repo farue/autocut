@@ -7,6 +7,8 @@ export interface ILaundryMachine {
   name?: string;
   type?: LaundryMachineType;
   enabled?: boolean;
+  positionX?: number;
+  positionY?: number;
   programs?: ILaundryMachineProgram[] | null;
 }
 
@@ -17,6 +19,8 @@ export class LaundryMachine implements ILaundryMachine {
     public name?: string,
     public type?: LaundryMachineType,
     public enabled?: boolean,
+    public positionX?: number,
+    public positionY?: number,
     public programs?: ILaundryMachineProgram[] | null
   ) {
     this.enabled = this.enabled ?? false;
