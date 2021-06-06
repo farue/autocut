@@ -44,7 +44,9 @@
               >Check your internet status and find help with setup and troubleshooting.
             </mat-card-subtitle>
           </mat-card-header>
-          <img mat-card-image src="content/images/wifi.gif" alt="washing machine animation" />
+          <mat-card-content>
+            <jhi-internet-status *ngIf="networkStatus$ | async as networkStatus" [networkStatus]="networkStatus"></jhi-internet-status>
+          </mat-card-content>
         </mat-card>
       </a>
     </div>

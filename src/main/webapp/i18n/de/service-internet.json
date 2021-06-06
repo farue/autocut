@@ -1,7 +1,20 @@
 {
   "internet": {
+    "status": {
+      "title": "Status",
+      "portStatus": {
+        "connected": "Verbunden",
+        "notconnect": "Nicht verbunden",
+        "disabled": "Deaktiviert",
+        "err-disabled": "Fehler"
+      },
+      "withSpeed": "mit <b>{{ speed }} MBit/s</b>",
+      "maxSpeed": "max. mögliche Geschwindigkeit: {{ speed }} MBit/s",
+      "update": "Aktualisieren",
+      "lastUpdate": "zuletzt aktualisiert: {{ timestamp }}"
+    },
     "description": {
-      "title": "Wir verwenden statische IPs",
+      "title": "Einrichtung",
       "text": "Du bist vermutlich gewohnt, einfach den Router mit einem Ethernet Kabel mit dem Internetanschluss zu verbinden und ohne weiteres kannst du das Internet nutzen. Dies beruht auf einem Protokoll namens DHCP, das deinem Router automatisch eine IP Adresse und weitere Zugangsdaten liefert. Wir haben diesen Service (noch) nicht bei uns eingebaut, sodass du diese Daten manuell konfigurieren musst. Die meisten Router bieten diese Konfiguration unter einem Menüpunkt \"WAN\" oder \"Internet\" an. Schau bitte im Handbuch nach, falls das bei deinem Routermodell nicht der Fall sein sollte."
     },
     "ipData": {
@@ -26,6 +39,24 @@
     "messages": {
       "error": {
         "loadingIpFailed": "Beim Laden der IP Adresse ist ein Fehler aufgetreten."
+      }
+    },
+    "help": {
+      "status": {
+        "title": "Was bedeuten die Status?",
+        "connected": "Dein Internetanschluss ist <b>aktiviert</b> und der Switch hat erkannt, dass ein Gerät <b>verbunden</b> ist. Wenn du trotzdem das Internet noch nicht nutzen kannst, liegt es sehr wahrscheinlich an den IP Einstellungen deines Geräts (siehe unten: Einrichtung).",
+        "notconnect": "Dein Internetanschluss ist <b>aktiviert</b>, aber <b>kein Gerät ist verbunden</b>. Wenn du ein Gerät verbunden hast, kann der Switch es nicht erkennen. Bitte prüfe ob alle Kabel unbeschädigt und fest verbunden sind.",
+        "disabled": "<p>Dein Internetanschluss kann <b>deaktiviert</b> werden, wenn dein Kontostand negativ ist. Bitte überweise den fehlenden Betrag. Wir werden deinen Anschluss wieder freischalten sobald dein Konto ausgeglichen ist. Bitte sieh davon ab, uns zu kontaktieren, da dies kein Fehler ist und wir deinen Zugang erst freischalten werden, wenn dein Konto ausgeglichen ist.</p><p>Wenn du kürzlich eingezogen bist, versuche den Status zu aktualisieren, da der angezeigte Status möglicherweise etwas veraltet. Wenn es immer noch als Deaktiviert angezeigt wird, wende dich bitte an die Netzwerk AG.</p>",
+        "err-disabled": "Es ist ein <b>Fehler</b> am Switchport aufgetreten, der ihn in den Zustand err-disabled versetzt hat. Das Problem kannst du nicht selbst beheben. Bitte kontaktiere die Netzwerk AG."
+      },
+      "speedSlowerThanMax": {
+        "title": "Warum ist die angezeigte Geschwindigkeit langsamer als die maximal mögliche Geschwindigkeit?",
+        "description": "Die angezeigte Geschwindigkeit ist die Geschwindigkeit, die dein Gerät mit dem Switch ausgehandelt hat. Wie du sehen kannst, unterstützt der Switch eine höhere Geschwindigkeit. Daher ist der Flaschenhals sehr wahrscheinlich dein Gerät. Bitte überprüfe die Netzwerkgeschwindigkeit deines Geräts. Zum Beispiel könnte dort stehen \"10/100 Mbps Ethernet port\", was bedeuted, dass es nur bis zu 100 MBit/s unterstützt. Vorsicht: manche Geräte werben mit Gigabit (1000 MBit/s) <b>LAN</b> Ports, aber haben nur einen 10/100 MBit/s <b>WAN</b> Port."
+      },
+      "actualSpeedSlow": {
+        "title": "Meine tatsächliche Geschwindigkeit ist laut Speed Test viel langsamer als die angezeigte Geschwindigkeit. Warum?",
+        "description1": "Die angezeigte Geschwindigkeit ist die maximal mögliche Geschwindigkeit, die du über die aktive Verbindung erzielen kannst. Die tatsächliche Geschwindigkeit, die du über eine komplett kabelgebundene Verbindung (kein WLAN dazwischen) erzielst, sollte nah an dieses Maximum herankommen. Bitte teste dies zuerst und kontaktiere die Netzwerk AG, wenn die Verbindung immer noch zu langsam ist.",
+        "description2": "Wenn eine kabelgebundene Verbindung gut funktioniert, die drahtlosen Geräte jedoch nur eine langsame Verbindung haben, ist die häufigste Ursache ein alter Router. Es kann auch andere Gründe haben von Einstellungen, die die Bandbreite beschränken, bis zu Interferenzen mit anderen Geräten. Es gibt tausende Netzwerkgeräte, daher wissen wir sehr wahrscheinlich nicht was die Lösung für dein konkretes Problem ist. Bitte suche selbst nach der Ursache (lies die Bedienungsanleitung, google dein Problem, etc.)."
       }
     }
   }

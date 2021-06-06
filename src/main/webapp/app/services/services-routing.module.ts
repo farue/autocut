@@ -14,7 +14,7 @@ import { RouterModule } from '@angular/router';
       },
       {
         path: 'internet',
-        loadChildren: () => import('./internet/internet.module').then(m => m.InternetModule),
+        loadChildren: () => import('./internet/internet-routing.module').then(m => m.InternetRoutingModule),
       },
     ]),
   ],

@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from 'app/shared/shared.module';
-import { RouterModule } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { InternetComponent } from './internet.component';
-import { INTERNET_ROUTE } from './internet.route';
+import { InternetStatusComponent } from './internet-status/internet-status.component';
+import { UiModule } from 'app/ui/ui.module';
 
 @NgModule({
-  imports: [SharedModule, RouterModule.forChild([INTERNET_ROUTE]), NgSelectModule],
-  declarations: [InternetComponent],
+  imports: [SharedModule, NgSelectModule, UiModule],
+  declarations: [InternetComponent, InternetStatusComponent],
+  exports: [InternetStatusComponent],
 })
 export class InternetModule {}
