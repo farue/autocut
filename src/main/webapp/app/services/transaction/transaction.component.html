@@ -33,14 +33,7 @@
 
   <div fxLayout="row" fxLayoutAlign="end" class="data-container">
     <div fxLayout="column" fxFlexOffset="5%">
-      <div class="mat-h4 data-head" translate>transaction.balance</div>
-      <div
-        *ngIf="result && result.balanceNow != null"
-        class="mat-display-2 data-value"
-        [ngClass]="{ 'value-normal': result.balanceNow >= 0, 'value-negative': result.balanceNow < 0 }"
-      >
-        {{ result.balanceNow | i18nCurrency }}
-      </div>
+      <jhi-transaction-balance *ngIf="result" [balance]="result.balanceNow"></jhi-transaction-balance>
     </div>
   </div>
 

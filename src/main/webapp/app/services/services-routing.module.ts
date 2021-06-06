@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
       },
       {
         path: 'transactions',
-        loadChildren: () => import('./transaction/transaction.module').then(m => m.TransactionModule),
+        loadChildren: () => import('./transaction/transaction-routing.module').then(m => m.TransactionRoutingModule),
       },
       {
         path: 'internet',

@@ -5,6 +5,7 @@ import { Observable, of, timer } from 'rxjs';
 import { catchError, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Machine } from 'app/entities/washing/washing.model';
 import { LoggedInUserService } from 'app/shared/service/logged-in-user.service';
+import { MediaService } from 'app/shared/service/media.service';
 
 @Component({
   selector: 'jhi-services-overview',
@@ -29,5 +30,11 @@ export class ServicesOverviewComponent {
 
   networkStatus$ = this.loggedInUserService.networkStatus();
 
-  constructor(private washingService: WashingService, private loggedInUserService: LoggedInUserService) {}
+  transactionBooks$ = this.loggedInUserService.transactionBooks();
+
+  constructor(
+    private washingService: WashingService,
+    private loggedInUserService: LoggedInUserService,
+    public mediaService: MediaService
+  ) {}
 }
