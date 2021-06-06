@@ -4,6 +4,7 @@ import { isEqual } from 'lodash-es';
 import { Observable, of, timer } from 'rxjs';
 import { catchError, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Machine } from 'app/entities/washing/washing.model';
+import { LoggedInUserService } from 'app/shared/service/logged-in-user.service';
 
 @Component({
   selector: 'jhi-services-overview',
@@ -26,5 +27,7 @@ export class ServicesOverviewComponent {
     distinctUntilChanged(isEqual)
   );
 
-  constructor(private washingService: WashingService) {}
+  networkStatus$ = this.loggedInUserService.networkStatus();
+
+  constructor(private washingService: WashingService, private loggedInUserService: LoggedInUserService) {}
 }

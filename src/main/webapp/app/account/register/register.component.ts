@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { RegisterService } from './register.service';
@@ -6,15 +6,14 @@ import { IApartment } from 'app/entities/apartment/apartment.model';
 import { ApartmentValidator } from 'app/account/register/apartment-validator';
 import { ImmediateErrorStateMatcher } from 'app/shared/material/immediate-error-state-matcher';
 import * as dayjs from 'dayjs';
-import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { heartBeatAnimation } from 'angular-animations';
 import { MatStepper } from '@angular/material/stepper';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { UsernameValidator } from 'app/account/register/username-validator';
 import { EmailValidator } from 'app/account/register/email-validator';
+import { MediaService } from 'app/shared/service/media.service';
 
 export function dateNotAfter(maxDate: dayjs.Dayjs): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -50,15 +49,13 @@ export class PasswordMismatchErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./register.component.scss'],
   animations: [heartBeatAnimation({ anchor: 'heartBeat', direction: '=>' })],
 })
-export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
+export class RegisterComponent implements OnInit, AfterViewInit {
   @ViewChild('username', { static: false })
   firstName?: ElementRef;
   @ViewChild('stepper')
   stepper?: MatStepper;
 
-  onDestroy$ = new Subject<void>();
-
-  verticalStepper = false;
+  verticalStepper$ = this.mediaService.isLtMd$;
   selectedIndex = 0;
   animationEnd = false;
   loading = false;
@@ -114,26 +111,18 @@ export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
     public usernameValidator: UsernameValidator,
     public emailValidator: EmailValidator,
     public apartmentValidator: ApartmentValidator,
-    private bpObserver: BreakpointObserver
+    private bpObserver: BreakpointObserver,
+    private mediaService: MediaService
   ) {}
 
   ngOnInit(): void {
     this.maxStartDate = dayjs().add(1, 'month');
-    this.bpObserver
-      .observe(['(max-width: 959px)'])
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe((state: BreakpointState) => (this.verticalStepper = state.matches));
   }
 
   ngAfterViewInit(): void {
     if (this.firstName) {
       this.firstName.nativeElement.focus();
     }
-  }
-
-  ngOnDestroy(): void {
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
   }
 
   selectionChanged(event: StepperSelectionEvent): void {

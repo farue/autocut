@@ -11,7 +11,7 @@
       <!-- form inputs will not show up in the form fields after resize. -->
       <mat-horizontal-stepper
         #stepper
-        *ngIf="!verticalStepper"
+        *ngIf="!(verticalStepper$ | async)"
         (selectionChange)="selectionChanged($event)"
         (animationDone)="animationEnd = true"
         [selectedIndex]="selectedIndex"
@@ -45,7 +45,7 @@
 
       <mat-vertical-stepper
         #stepper
-        *ngIf="verticalStepper"
+        *ngIf="verticalStepper$ | async"
         (selectionChange)="selectionChanged($event)"
         (animationDone)="animationEnd = true"
         [selectedIndex]="selectedIndex"

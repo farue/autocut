@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class NetworkSwitchStatusService {
 
-    private static final TemporalAmount OUTDATED_DURATION = Duration.ofDays(1);
+    private static final TemporalAmount DEFAULT_MAX_AGE = Duration.ofDays(1);
 
     private final Logger log = LoggerFactory.getLogger(NetworkSwitchStatusService.class);
 
@@ -136,12 +136,24 @@ public class NetworkSwitchStatusService {
             .orElseThrow();
     }
 
+    public NetworkSwitchStatus getSwitchInterfaceStatus(InternetAccess internetAccess, TemporalAmount maxAge) {
+        return getSwitchStatus(internetAccess.getNetworkSwitch(), maxAge)
+            .stream()
+            .filter(status -> StringUtils.equals(status.getPort(), internetAccess.getSwitchPortName()))
+            .findFirst()
+            .orElseThrow();
+    }
+
     public List<NetworkSwitchStatus> getSwitchStatus(NetworkSwitch networkSwitch) {
+        return getSwitchStatus(networkSwitch, DEFAULT_MAX_AGE);
+    }
+
+    public List<NetworkSwitchStatus> getSwitchStatus(NetworkSwitch networkSwitch, TemporalAmount maxAge) {
         List<NetworkSwitchStatus> switchStatus = networkSwitchStatusRepository.findAllByNetworkSwitch(networkSwitch);
         Instant timestamp = Instant.now();
 
         if (!switchStatus.isEmpty()) {
-            boolean outdated = switchStatus.stream().anyMatch(status -> status.getTimestamp().plus(OUTDATED_DURATION).isBefore(timestamp));
+            boolean outdated = switchStatus.stream().anyMatch(status -> status.getTimestamp().plus(maxAge).isBefore(timestamp));
             if (!outdated) {
                 return switchStatus;
             }

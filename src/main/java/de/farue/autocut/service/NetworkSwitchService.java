@@ -5,9 +5,11 @@ import de.farue.autocut.domain.InternetAccess;
 import de.farue.autocut.domain.NetworkSwitch;
 import de.farue.autocut.repository.NetworkSwitchRepository;
 import de.farue.autocut.service.internetaccess.SwitchCommandExecutor;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import javax.annotation.PreDestroy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,21 @@ public class NetworkSwitchService {
     ) {
         this.networkSwitchRepository = networkSwitchRepository;
         this.switchExecutorsByHostName = switchExecutorsByHostName;
+    }
+
+    @PreDestroy
+    public void destroy() {
+        switchExecutorsByHostName
+            .values()
+            .forEach(
+                executor -> {
+                    try {
+                        executor.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            );
     }
 
     /**

@@ -1,23 +1,82 @@
 <div class="row justify-content-center">
   <div class="col-md-8">
-    <div>
-      <h2 jhiTranslate="internet.description.title">We use static IPs</h2>
-      <p jhiTranslate="internet.description.text">
-        You are probably used to simply plugging one end of an ethernet cable into your router and the other end into the ethernet jack and
-        just like that you can browse the internet. This relies on a protocol called DHCP that automatically provides an IP address and
-        other access data to your router. We have not (yet) implemented this service so you need to manually configure this data. Most
-        routers allow this configuration under a menu entry called "WAN" or "Internet". If this is not the case for your router model,
-        please consult the manual.
-      </p>
+    <div *ngIf="networkStatus">
+      <h2 translate>internet.status.title</h2>
+      <div fxLayout="column" fxLayoutAlign=" center">
+        <jhi-internet-status [networkStatus]="networkStatus"></jhi-internet-status>
+        <button mat-flat-button [loading]="updatingStatus" (click)="updateStatus()" color="primary" class="button-update mt-4 mb-2">
+          <span translate>internet.status.update</span>
+        </button>
+        <div class="last-updated">
+          {{ 'internet.status.lastUpdate' | translate: { timestamp: networkStatus.lastUpdate | i18nDate: undefined:'L LT' } }}
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header
+            [collapsedHeight]="(mediaService.isXs$ | async) ? '72px' : ''"
+            [expandedHeight]="(mediaService.isXs$ | async) ? '96px' : ''"
+          >
+            <span translate>internet.help.status.title</span>
+          </mat-expansion-panel-header>
+          <table mat-table [dataSource]="dataSourceStatusHelp" fxFill>
+            <ng-container matColumnDef="symbol">
+              <td mat-cell *matCellDef="let element" class="pr-2 py-1">
+                <div [ngClass]="['status', 'status-' + element.status]"></div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <td mat-cell *matCellDef="let element" class="pr-2">
+                <b>{{ 'internet.status.portStatus.' + element.status | translate }}</b>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="description">
+              <td mat-cell *matCellDef="let element">
+                <div [innerHTML]="'internet.help.status.' + element.status | translate"></div>
+              </td>
+            </ng-container>
+
+            <tr mat-row *matRowDef="let row; columns: ['symbol', 'status', 'description']"></tr>
+          </table>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header
+            [collapsedHeight]="(mediaService.isXs$ | async) ? '72px' : ''"
+            [expandedHeight]="(mediaService.isXs$ | async) ? '96px' : ''"
+          >
+            <span translate>internet.help.speedSlowerThanMax.title</span>
+          </mat-expansion-panel-header>
+          <p [innerHTML]="'internet.help.speedSlowerThanMax.description' | translate"></p>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header
+            [collapsedHeight]="(mediaService.isXs$ | async) ? '72px' : ''"
+            [expandedHeight]="(mediaService.isXs$ | async) ? '96px' : ''"
+          >
+            <span translate>internet.help.actualSpeedSlow.title</span>
+          </mat-expansion-panel-header>
+          <p [innerHTML]="'internet.help.actualSpeedSlow.description1' | translate"></p>
+          <p [innerHTML]="'internet.help.actualSpeedSlow.description2' | translate"></p>
+        </mat-expansion-panel>
+      </div>
     </div>
+
+    <div class="mt-4">
+      <h2 translate>internet.description.title</h2>
+      <p translate>internet.description.text</p>
+    </div>
+
     <div>
-      <h2 jhiTranslate="internet.ipData.title">Your IP</h2>
+      <h3 translate>internet.ipData.title</h3>
 
       <div *ngIf="error" class="alert alert-danger">
         <span translate>internet.messages.error.loadingIpFailed</span>
       </div>
 
-      <table mat-table [dataSource]="dataSource1" fxFill>
+      <table mat-table [dataSource]="dataSourceIpData" fxFill>
         <ng-container matColumnDef="key">
           <td mat-cell *matCellDef="let element">{{ element.key | translate }}</td>
         </ng-container>
@@ -25,9 +84,10 @@
           <td mat-cell *matCellDef="let element">{{ element.value }}</td>
         </ng-container>
 
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['key', 'value']"></tr>
       </table>
     </div>
+
     <div>
       <h2 jhiTranslate="internet.troubleshooting.title">Troubleshooting</h2>
       <p jhiTranslate="internet.troubleshooting.p1">

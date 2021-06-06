@@ -7,9 +7,10 @@ import { HomeComponent } from './home.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { ServicesOverviewComponent } from './services-overview/services-overview.component';
 import { WashingModule } from 'app/services/washing/washing.module';
+import { InternetModule } from 'app/services/internet/internet.module';
 
 @NgModule({
-  imports: [SharedModule, RouterModule.forChild([HOME_ROUTE]), WashingModule],
+  imports: [SharedModule, RouterModule.forChild([HOME_ROUTE]), WashingModule, InternetModule],
   declarations: [HomeComponent, WelcomeComponent, ServicesOverviewComponent],
 })
 export class HomeModule {}
