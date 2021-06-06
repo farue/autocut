@@ -5,7 +5,6 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { SERVER_API_URL } from 'app/app.constants';
 import { Tenant } from 'app/entities/tenant/tenant.model';
 import { Lease } from 'app/entities/lease/lease.model';
-import { TransactionBook } from 'app/entities/transaction-book/transaction-book.model';
 import { WashHistory } from 'app/entities/wash-history/wash-history.model';
 import { createRequestOption } from 'app/core/request/request-util';
 import { Pagination } from 'app/core/request/request.model';
@@ -13,6 +12,7 @@ import { Program } from 'app/entities/washing/washing.model';
 import { NetworkStatus } from 'app/entities/internet/network-status.model';
 import { tap } from 'rxjs/operators';
 import { toDate } from 'app/core/util/date-util';
+import { TransactionBook } from 'app/entities/transaction/transaction-book.model';
 
 @Injectable({ providedIn: 'root' })
 export class LoggedInUserService {

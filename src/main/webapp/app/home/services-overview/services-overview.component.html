@@ -30,7 +30,9 @@
               >View your account balance and transactions.
             </mat-card-subtitle>
           </mat-card-header>
-          <img mat-card-image src="content/images/money.gif" alt="washing machine animation" />
+          <div *ngIf="transactionBooks$ | async as transactionBooks" fxLayout="column" fxLayoutAlign=" center">
+            <jhi-transaction-balance *ngFor="let tb of transactionBooks" [balance]="tb.balance"></jhi-transaction-balance>
+          </div>
         </mat-card>
       </a>
     </div>

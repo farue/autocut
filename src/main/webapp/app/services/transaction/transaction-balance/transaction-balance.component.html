@@ -1,0 +1,4 @@
+<div class="mat-h4 data-head" translate>transaction.balance</div>
+<div *ngIf="balance != null" class="mat-display-2 data-value" [ngClass]="{ 'value-normal': balance >= 0, 'value-negative': balance < 0 }">
+  {{ balance | i18nCurrency }}
+</div>

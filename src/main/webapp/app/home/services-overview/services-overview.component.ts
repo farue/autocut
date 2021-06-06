@@ -29,5 +29,7 @@ export class ServicesOverviewComponent {
 
   networkStatus$ = this.loggedInUserService.networkStatus();
 
+  transactionBooks$ = this.loggedInUserService.transactionBooks();
+
   constructor(private washingService: WashingService, private loggedInUserService: LoggedInUserService) {}
 }
