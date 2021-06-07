@@ -2,21 +2,10 @@
   text-decoration: none;
 }
 
-.card-header {
-  padding-top: 10px;
+.card-wrapper {
+  max-width: 250px;
 }
 
-.card-img {
-  max-width: 200px;
-}
-
-// reduce font size on small screens
-@media screen and (max-width: 400px) {
-  .mat-card-title {
-    font-size: 14px;
-  }
-
-  .mat-card-subtitle {
-    font-size: 12px;
-  }
+.service-card {
+  height: 100%;
 }

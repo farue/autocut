@@ -1,29 +1,28 @@
-<div fxFlex fxLayoutAlign="center">
-  <div fxLayout="row wrap" fxLayoutGap="16px grid">
-    <div fxFlex.xs="50%" fxFlex.sm="33%" fxFlex.gt-sm="300px">
+<div>
+  <div gdAlignRows=" center" gdColumns="repeat(auto-fit, minmax(190px, 1fr))" gdGap="8px">
+    <div class="card-wrapper">
       <a href="/services/washing" class="service-item">
-        <mat-card fxFlexFill>
+        <mat-card class="service-card">
           <mat-card-header>
             <mat-card-title jhiTranslate="services-overview.washing-system.title">Washing System</mat-card-title>
             <mat-card-subtitle jhiTranslate="services-overview.washing-system.subtitle"
               >Easily unlock the washing machines and dryers.
             </mat-card-subtitle>
           </mat-card-header>
-          <mat-card-content>
+          <mat-card-content fxLayout="column" fxLayoutAlign=" center">
             <jhi-washing-laundry-machines
               *ngIf="machines$ | async as machines"
               [machines]="machines"
               [showLabels]="false"
             ></jhi-washing-laundry-machines>
           </mat-card-content>
-          <!--          <img mat-card-image src="content/images/washing_machine.gif" alt="washing machine animation" />-->
         </mat-card>
       </a>
     </div>
 
-    <div fxFlex.xs="50%" fxFlex.sm="33%" fxFlex.gt-sm="300px">
+    <div class="card-wrapper">
       <a href="/services/transactions" class="service-item">
-        <mat-card fxFlexFill>
+        <mat-card class="service-card">
           <mat-card-header>
             <mat-card-title jhiTranslate="services-overview.transactions.title">Transactions</mat-card-title>
             <mat-card-subtitle jhiTranslate="services-overview.transactions.subtitle"
@@ -41,9 +40,9 @@
       </a>
     </div>
 
-    <div fxFlex.xs="50%" fxFlex.sm="33%" fxFlex.gt-sm="300px">
+    <div class="card-wrapper">
       <a href="/services/internet" class="service-item">
-        <mat-card fxFlexFill>
+        <mat-card class="service-card">
           <mat-card-header>
             <mat-card-title jhiTranslate="services-overview.internet.title">Internet</mat-card-title>
             <mat-card-subtitle jhiTranslate="services-overview.internet.subtitle"
