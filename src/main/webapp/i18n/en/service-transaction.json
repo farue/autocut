@@ -10,6 +10,7 @@
       "purpose": "Purpose"
     },
     "balance": "Balance",
+    "onDate": "on {{ date }}",
     "deposit": "Deposit",
     "booked": "Booked:",
     "table": {

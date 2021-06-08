@@ -33,7 +33,11 @@
 
   <div fxLayout="row" fxLayoutAlign="end" class="data-container">
     <div fxLayout="column" fxFlexOffset="5%">
-      <jhi-transaction-balance *ngIf="result" [balance]="result.balanceNow"></jhi-transaction-balance>
+      <jhi-transaction-balance
+        *ngIf="result"
+        [balance]="result.balanceNow"
+        [label]="'transaction.balance' | translate"
+      ></jhi-transaction-balance>
     </div>
   </div>
 

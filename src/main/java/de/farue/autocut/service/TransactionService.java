@@ -6,6 +6,7 @@ import de.farue.autocut.domain.Transaction;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.domain.Transaction_;
 import de.farue.autocut.repository.TransactionRepository;
+import de.farue.autocut.utils.DateUtil;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
@@ -185,6 +186,13 @@ public abstract class TransactionService<T extends Transaction> {
     @Transactional(readOnly = true)
     public Page<T> findAllForTransactionBook(TransactionBook transactionBook, Pageable pageable) {
         return getRepository().findAllByTransactionBook(transactionBook, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<T> findAllForTransactionBook(TransactionBook transactionBook, Instant from, Instant until, Pageable pageable) {
+        from = from != null ? from : DateUtil.MIN_INSTANT;
+        until = until != null ? until : DateUtil.MAX_INSTANT;
+        return getRepository().findAllByTransactionBookBetween(transactionBook, from, until, pageable);
     }
 
     public List<T> findAllForTransactionBookWithLinks(TransactionBook transactionBook) {

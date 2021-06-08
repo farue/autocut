@@ -11,6 +11,7 @@ import de.farue.autocut.service.dto.UserDTO;
 import de.farue.autocut.service.mapper.NetworkStatusMapper;
 import de.farue.autocut.service.mapper.TransactionBookMapper;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -102,6 +103,16 @@ public class LoggedInUserResource {
                 )
                 .findFirst()
         );
+    }
+
+    @GetMapping("/transaction-books/{id}/transactions")
+    public List<InternalTransaction> getTransactions(
+        @PathVariable Long id,
+        @RequestParam(required = false) Instant from,
+        @RequestParam(required = false) Instant until,
+        Pageable pageable
+    ) {
+        return loggedInUserService.getTransactions(id, from, until, pageable).getContent();
     }
 
     @GetMapping("/laundry-machines/{id}/history")
