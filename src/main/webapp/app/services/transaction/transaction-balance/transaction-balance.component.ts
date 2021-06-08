@@ -9,5 +9,7 @@ export class TransactionBalanceComponent {
   @Input()
   balance?: number | null;
   @Input()
+  label?: string | null;
+  @Input()
   typography?: string | null;
 }

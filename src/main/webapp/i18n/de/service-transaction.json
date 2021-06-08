@@ -10,6 +10,7 @@
       "purpose": "Zweck"
     },
     "balance": "Kontostand",
+    "onDate": "am {{ date }}",
     "deposit": "Kaution",
     "booked": "Gebucht:",
     "table": {

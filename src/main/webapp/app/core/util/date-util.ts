@@ -14,3 +14,19 @@ export function toDate(value: string | Date | dayjs.Dayjs | null | undefined): d
   }
   return dayjs(value);
 }
+
+export function dateToString(value: null): null;
+export function dateToString(value: undefined): undefined;
+export function dateToString(value: string | Date | dayjs.Dayjs): string;
+export function dateToString(value: string | Date | dayjs.Dayjs | null | undefined): string | null | undefined {
+  if (value === null) {
+    return null;
+  }
+  if (value === undefined) {
+    return undefined;
+  }
+  if (typeof value === 'string') {
+    return value;
+  }
+  return dayjs(value).toISOString();
+}

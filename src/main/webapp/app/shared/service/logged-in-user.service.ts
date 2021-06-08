@@ -11,8 +11,10 @@ import { Pagination } from 'app/core/request/request.model';
 import { Program } from 'app/entities/washing/washing.model';
 import { NetworkStatus } from 'app/entities/internet/network-status.model';
 import { tap } from 'rxjs/operators';
-import { toDate } from 'app/core/util/date-util';
+import { dateToString, toDate } from 'app/core/util/date-util';
 import { TransactionBook } from 'app/entities/transaction/transaction-book.model';
+import * as dayjs from 'dayjs';
+import { InternalTransaction } from 'app/entities/internal-transaction/internal-transaction.model';
 
 @Injectable({ providedIn: 'root' })
 export class LoggedInUserService {
@@ -34,6 +36,20 @@ export class LoggedInUserService {
 
   transactionBooks(): Observable<TransactionBook[]> {
     return this.http.get<TransactionBook[]>(`${this.resourceUrl}/transaction-books`);
+  }
+
+  transactions(id: number, from?: dayjs.Dayjs, until?: dayjs.Dayjs, req?: Pagination): Observable<HttpResponse<InternalTransaction[]>> {
+    let options = createRequestOption(req);
+    if (from) {
+      options = options.set('from', dateToString(from));
+    }
+    if (until) {
+      options = options.set('until', dateToString(until));
+    }
+    return this.http.get<InternalTransaction[]>(`${this.resourceUrl}/transaction-books/${id}/transactions`, {
+      params: options,
+      observe: 'response',
+    });
   }
 
   washHistory(id?: number, req?: Pagination): Observable<HttpResponse<WashHistory[]>> {

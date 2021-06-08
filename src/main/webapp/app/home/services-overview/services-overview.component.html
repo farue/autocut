@@ -29,12 +29,20 @@
               >View your account balance and transactions.
             </mat-card-subtitle>
           </mat-card-header>
-          <div *ngIf="transactionBooks$ | async as transactionBooks" fxLayout="column" fxLayoutAlign=" center">
-            <jhi-transaction-balance
-              *ngFor="let tb of transactionBooks"
-              [balance]="tb.balance"
-              [typography]="(mediaService.isXs$ | async) ? 'mat-display-1' : undefined"
-            ></jhi-transaction-balance>
+          <div *ngIf="balances$ | async as balances" fxLayout="column" fxLayoutAlign=" center">
+            <div *ngFor="let b of balances" fxLayout="column" fxLayoutGap="16px">
+              <jhi-transaction-balance
+                [balance]="b.transactionBook.balance"
+                [label]="'transaction.balance' | translate"
+                [typography]="(mediaService.isXs$ | async) ? 'mat-display-1' : undefined"
+              ></jhi-transaction-balance>
+              <jhi-transaction-balance
+                *ngIf="b.transaction != null && b.transaction.balanceAfter != null && b.transaction.valueDate != null"
+                [balance]="b.transaction.balanceAfter"
+                [label]="'transaction.onDate' | translate: { date: b.transaction.valueDate | i18nDate }"
+                [typography]="'mat-h2'"
+              ></jhi-transaction-balance>
+            </div>
           </div>
         </mat-card>
       </a>

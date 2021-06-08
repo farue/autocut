@@ -37,6 +37,10 @@ public interface TransactionRepository<T extends Transaction> extends JpaReposit
     Page<T> findAllByTransactionBook(TransactionBook transactionBook, Pageable pageable);
 
     @Lock(LockModeType.PESSIMISTIC_READ)
+    @Query("select t from #{#entityName} t where t.transactionBook = :transactionBook and t.valueDate between :from and :until")
+    Page<T> findAllByTransactionBookBetween(TransactionBook transactionBook, Instant from, Instant until, Pageable pageable);
+
+    @Lock(LockModeType.PESSIMISTIC_READ)
     @Query(
         value = "select t from #{#entityName} t left join fetch t.lefts where t.transactionBook = :transactionBook",
         countQuery = "select count(distinct t) from #{#entityName} t where t.transactionBook = :transactionBook"
