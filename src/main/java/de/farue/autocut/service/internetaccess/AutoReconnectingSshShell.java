@@ -19,7 +19,6 @@ public class AutoReconnectingSshShell implements SshShell {
     private SimpleSshShell sshShell;
     private SSHClient sshClient;
     private Session session;
-    private String prompt;
 
     public AutoReconnectingSshShell(SshConnection connection) {
         this.connection = connection;
@@ -78,9 +77,8 @@ public class AutoReconnectingSshShell implements SshShell {
             .build();
 
         sshShell = new SimpleSshShell(expect);
-        if (connection.getPromptSymbol() != null && prompt == null) {
+        if (connection.getPromptSymbol() != null) {
             sshShell.autoDetectPrompt(connection.getPromptSymbol());
-            prompt = sshShell.getPrompt();
         }
     }
 }
