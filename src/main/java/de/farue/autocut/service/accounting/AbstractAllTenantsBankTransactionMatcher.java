@@ -2,18 +2,15 @@ package de.farue.autocut.service.accounting;
 
 import com.google.common.math.DoubleMath;
 import de.farue.autocut.domain.BankTransaction;
+import de.farue.autocut.domain.Lease;
 import de.farue.autocut.domain.Tenant;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.service.LeaseService;
 import de.farue.autocut.service.TenantService;
 import de.farue.autocut.utils.StringCandidateMatcher;
 import de.farue.autocut.utils.StringCandidateMatcher.MatchResult;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -43,14 +40,12 @@ public abstract class AbstractAllTenantsBankTransactionMatcher implements BankTr
 
     @Override
     public Optional<TransactionBook> findMatch(BankTransaction bankTransaction) {
-        return findMatchByDistance(bankTransaction, tenantService.findAll())
-            .map(Tenant::getLease)
-            .map(leaseService::getCashTransactionBook);
+        return findMatchByDistance(bankTransaction, tenantService.findAll()).map(leaseService::getCashTransactionBook);
     }
 
     protected abstract Optional<String> getMatchSentence(BankTransaction bankTransaction);
 
-    private Optional<Tenant> findMatchByDistance(BankTransaction bankTransaction, List<Tenant> tenants) {
+    private Optional<Lease> findMatchByDistance(BankTransaction bankTransaction, List<Tenant> tenants) {
         Optional<String> matchSentenceOptional = getMatchSentence(bankTransaction);
         if (matchSentenceOptional.isEmpty()) {
             return Optional.empty();
@@ -60,18 +55,18 @@ public abstract class AbstractAllTenantsBankTransactionMatcher implements BankTr
         String normalizedMatchSentence = normalize(matchSentence);
 
         double bestErrorRatio = Double.MAX_VALUE;
-        Map<Tenant, MatchResult> bestResultMap = new HashMap<>();
+        Map<Lease, MatchResult> bestResultMap = new HashMap<>();
         for (Tenant tenant : tenants) {
             Set<String> candidates = matchCandidateProvider.buildMatchCandidates(tenant);
             Set<String> normalizedCandidates = candidates.stream().map(this::normalize).collect(Collectors.toSet());
             MatchResult matchResult = StringCandidateMatcher.findBestMatch(normalizedCandidates, normalizedMatchSentence);
 
             if (DoubleMath.fuzzyEquals(matchResult.errorRatio, bestErrorRatio, EPS)) {
-                bestResultMap.put(tenant, matchResult);
+                bestResultMap.put(tenant.getLease(), matchResult);
             } else if (matchResult.errorRatio < bestErrorRatio) {
                 bestErrorRatio = matchResult.errorRatio;
                 bestResultMap.clear();
-                bestResultMap.put(tenant, matchResult);
+                bestResultMap.put(tenant.getLease(), matchResult);
             }
         }
 
@@ -82,9 +77,9 @@ public abstract class AbstractAllTenantsBankTransactionMatcher implements BankTr
             // with purpose "123 1 chen li". The candidate "123 1 li" will be generated for both
             // tenants and perfectly matches a subset of the words, so it has an error ratio of 0.
             // The longer candidate generated for Chen Li is to be preferred.
-            Map<Tenant, MatchResult> newBestResultMap = new HashMap<>();
+            Map<Lease, MatchResult> newBestResultMap = new HashMap<>();
             int maxLength = 0;
-            for (Entry<Tenant, MatchResult> entry : bestResultMap.entrySet()) {
+            for (Entry<Lease, MatchResult> entry : bestResultMap.entrySet()) {
                 int length = entry.getValue().candidate.length();
                 if (length > maxLength) {
                     maxLength = length;
@@ -97,19 +92,20 @@ public abstract class AbstractAllTenantsBankTransactionMatcher implements BankTr
             bestResultMap = newBestResultMap;
         }
 
-        if (bestResultMap.size() > 1) {
-            // At this point we give up trying to identify the tenant
-            log.info("Found multiple tenants matching \"{}\": {}", normalizedMatchSentence, bestResultMap);
+        Set<Lease> leases = bestResultMap.keySet();
+        if (leases.size() > 1) {
+            // At this point we give up trying to identify the lease
+            log.info("Found multiple leases with tenants matching \"{}\": {}", normalizedMatchSentence, bestResultMap);
             return Optional.empty();
         }
 
-        if (bestResultMap.size() == 1) {
-            Tenant matchingTenant = bestResultMap.keySet().iterator().next();
-            MatchResult matchResult = bestResultMap.get(matchingTenant);
+        if (leases.size() == 1) {
+            Lease lease = leases.iterator().next();
+            MatchResult matchResult = bestResultMap.get(lease);
 
             // Check if error ratio is acceptable
             if (matchResult.errorRatio * 100 < ERROR_RATIO_CUTOFF_PERCENT) {
-                return Optional.of(matchingTenant);
+                return Optional.of(lease);
             }
         }
 

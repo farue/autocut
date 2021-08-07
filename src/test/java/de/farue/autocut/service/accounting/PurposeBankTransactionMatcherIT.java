@@ -83,8 +83,10 @@ public class PurposeBankTransactionMatcherIT {
 
         Lease lease3 = new Lease().nr(ANY_NO).start(ANY_START).end(ANY_END);
         Tenant tenant3 = new Tenant().firstName("Chris").lastName("Black").lease(lease3);
+        Tenant otherTenant3 = new Tenant().firstName("Jack").lastName("Black").lease(lease3);
         this.lease3 = leaseService.save(lease3);
         this.tenant3 = tenantService.save(tenant3);
+        this.tenant3 = tenantService.save(otherTenant3);
 
         Lease lease4 = new Lease().nr(ANY_NO).start(ANY_START).end(ANY_END);
         Tenant tenant4 = new Tenant().firstName("Jet").lastName("Li").lease(lease4);
@@ -102,6 +104,7 @@ public class PurposeBankTransactionMatcherIT {
         when(matchCandidateProvider.buildMatchCandidates(tenant1)).thenReturn(Set.of("Bob Miller 123 45", "Miller 123 45"));
         when(matchCandidateProvider.buildMatchCandidates(tenant2)).thenReturn(Set.of("Alice Wonderland 123 33", "Wonderland 123 33"));
         when(matchCandidateProvider.buildMatchCandidates(tenant3)).thenReturn(Set.of("Chris Black 123 21", "Black 123 21"));
+        when(matchCandidateProvider.buildMatchCandidates(otherTenant3)).thenReturn(Set.of("Jack Black 123 21", "Black 123 21"));
         when(matchCandidateProvider.buildMatchCandidates(tenant4)).thenReturn(Set.of("Jet Li 123 11", "Li 123 11"));
         when(matchCandidateProvider.buildMatchCandidates(tenant5)).thenReturn(Set.of("Chen Li 123 11", "Li 123 11"));
     }
@@ -143,7 +146,7 @@ public class PurposeBankTransactionMatcherIT {
     }
 
     @Test
-    void testMultipleTenantNamesMatch() {
+    void testMultipleTenantNamesOfDifferentLeasesMatch() {
         BankTransaction bankTransaction = new BankTransaction()
             .type(ANY_TYPE)
             .bookingDate(ANY_BOOKING_DATE)
@@ -158,5 +161,23 @@ public class PurposeBankTransactionMatcherIT {
         Optional<TransactionBook> transactionBookOptional = matcher.findMatch(bankTransaction);
 
         assertThat(transactionBookOptional).isEmpty();
+    }
+
+    @Test
+    void testMultipleTenantNamesOfSameLeaseMatch() {
+        BankTransaction bankTransaction = new BankTransaction()
+            .type(ANY_TYPE)
+            .bookingDate(ANY_BOOKING_DATE)
+            .valueDate(ANY_VALUE_DATE)
+            .value(ANY_VALUE)
+            .balanceAfter(ANY_BALANCE_AFTER)
+            .description("Black 123 11")
+            .bankAccount(referenceBankAccount)
+            .contraBankAccount(contraBankAccount)
+            .transactionBook(referenceCashTransactionBook);
+
+        Optional<TransactionBook> transactionBookOptional = matcher.findMatch(bankTransaction);
+
+        assertThat(lease3.getTransactionBooks()).contains(transactionBookOptional.get());
     }
 }
