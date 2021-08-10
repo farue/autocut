@@ -1,0 +1,29 @@
+{
+  "autocutApp": {
+    "broadcastMessage": {
+      "home": {
+        "title": "Broadcast Messages",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Broadcast Message",
+        "createOrEditLabel": "Create or edit a Broadcast Message",
+        "notFound": "No Broadcast Messages found"
+      },
+      "created": "A new Broadcast Message is created with identifier {{ param }}",
+      "updated": "A Broadcast Message is updated with identifier {{ param }}",
+      "deleted": "A Broadcast Message is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Broadcast Message {{ id }}?"
+      },
+      "detail": {
+        "title": "Broadcast Message"
+      },
+      "id": "ID",
+      "type": "Type",
+      "start": "Start",
+      "end": "End",
+      "usersOnly": "Users Only",
+      "dismissible": "Dismissible",
+      "messageText": "Message Text"
+    }
+  }
+}

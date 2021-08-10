@@ -35,6 +35,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DateAdapter } from '@angular/material/core';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { PaginatorIntlService } from 'app/shared/pagination/paginator-intl.service';
+import { BroadcastMessagesComponent } from './layouts/broadcast-messages/broadcast-messages.component';
 
 // import { ApartmentInputComponent } from './ui/apartment-input/apartment-input.component';
 
@@ -86,6 +87,7 @@ import { PaginatorIntlService } from 'app/shared/pagination/paginator-intl.servi
     PageRibbonComponent,
     ActiveMenuDirective,
     FooterComponent,
+    BroadcastMessagesComponent,
     // ApartmentInputComponent,
   ],
   bootstrap: [MainComponent],

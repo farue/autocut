@@ -1,0 +1,45 @@
+{
+  "fields": [
+    {
+      "fieldName": "type",
+      "fieldType": "BroadcastMessageType",
+      "fieldValues": "PRIMARY,SECONDARY,SUCCESS,DANGER,WARNING,INFO,LIGHT,DARK",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "start",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "end",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "usersOnly",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "dismissible",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "broadcastMessageText",
+      "otherEntityRelationshipName": "message",
+      "relationshipName": "messageText"
+    }
+  ],
+  "service": "no",
+  "dto": "no",
+  "jpaMetamodelFiltering": false,
+  "readOnly": false,
+  "pagination": "no",
+  "name": "BroadcastMessage",
+  "changelogDate": "20210807170559",
+  "entityTableName": "broadcast_message",
+  "fluentMethods": true,
+  "embedded": false,
+  "applications": ["autocut"]
+}

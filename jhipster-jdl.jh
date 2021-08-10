@@ -376,3 +376,31 @@ entity GlobalSetting {
     value String,
     valueType String
 }
+
+entity BroadcastMessage {
+    type BroadcastMessageType required
+    start Instant
+    end Instant
+    usersOnly Boolean
+    dismissible Boolean
+}
+
+entity BroadcastMessageText {
+    langKey String required maxlength(2)
+    text String required maxlength(4000)
+}
+
+enum BroadcastMessageType {
+    PRIMARY
+    SECONDARY
+    SUCCESS
+    DANGER
+    WARNING
+    INFO
+    LIGHT
+    DARK
+}
+
+relationship OneToMany {
+    BroadcastMessage{messageText} to BroadcastMessageText{message required}
+}

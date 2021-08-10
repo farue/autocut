@@ -45,6 +45,10 @@ public class LoggedInUserService {
         this.transactionService = transactionService;
     }
 
+    public boolean isLoggedIn() {
+        return userService.getUserWithAuthorities().isPresent();
+    }
+
     public UserDTO getUser() {
         return userService.getUserWithAuthorities().map(UserDTO::new).orElseThrow();
     }

@@ -1,0 +1,36 @@
+{
+  "name": "BroadcastMessageText",
+  "fields": [
+    {
+      "fieldName": "langKey",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "2"
+    },
+    {
+      "fieldName": "text",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "4000"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "broadcastMessage",
+      "otherEntityRelationshipName": "messageText",
+      "relationshipValidateRules": "required",
+      "relationshipName": "message"
+    }
+  ],
+  "entityTableName": "broadcast_message_text",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": ["autocut"],
+  "changelogDate": "20210808220524"
+}

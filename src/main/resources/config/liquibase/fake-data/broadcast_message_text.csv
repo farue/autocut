@@ -1,0 +1,11 @@
+id;message_id;lang_key;text
+1;1;en;Active Message, No Start, Primary, Public
+2;1;de;Aktive Nachricht, Kein Start, Primär, Öffentlich
+3;2;en;Active Message, No End, Warning, Users Only
+4;2;de;Aktive Nachricht, Kein Ende, Warnung, Nur Nutzer
+5;3;en;Expired Message
+6;3;de;Abgelaufene Nachricht
+7;4;en;Scheduled Message
+8;4;de;Geplante Nachricht
+9;5;en;<p class="text-center">Hi! Follow this <a target="_blank" href="https://www.test.com">link</a>!</p>
+10;5;de;<p class="text-center">Hallo! Folge diesem <a target="_blank" href="https://www.test.com">Link</a>!</p>
