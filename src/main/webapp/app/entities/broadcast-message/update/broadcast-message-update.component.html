@@ -1,0 +1,107 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-broadcast-message-heading"
+        data-cy="BroadcastMessageCreateUpdateHeading"
+        jhiTranslate="autocutApp.broadcastMessage.home.createOrEditLabel"
+      >
+        Create or edit a Broadcast Message
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autocutApp.broadcastMessage.type" for="field_type">Type</label>
+          <select class="form-control" name="type" formControlName="type" id="field_type" data-cy="type">
+            <option [ngValue]="null">{{ 'autocutApp.BroadcastMessageType.null' | translate }}</option>
+            <option value="PRIMARY">{{ 'autocutApp.BroadcastMessageType.PRIMARY' | translate }}</option>
+            <option value="SECONDARY">{{ 'autocutApp.BroadcastMessageType.SECONDARY' | translate }}</option>
+            <option value="SUCCESS">{{ 'autocutApp.BroadcastMessageType.SUCCESS' | translate }}</option>
+            <option value="DANGER">{{ 'autocutApp.BroadcastMessageType.DANGER' | translate }}</option>
+            <option value="WARNING">{{ 'autocutApp.BroadcastMessageType.WARNING' | translate }}</option>
+            <option value="INFO">{{ 'autocutApp.BroadcastMessageType.INFO' | translate }}</option>
+            <option value="LIGHT">{{ 'autocutApp.BroadcastMessageType.LIGHT' | translate }}</option>
+            <option value="DARK">{{ 'autocutApp.BroadcastMessageType.DARK' | translate }}</option>
+          </select>
+          <div *ngIf="editForm.get('type')!.invalid && (editForm.get('type')!.dirty || editForm.get('type')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('type')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autocutApp.broadcastMessage.start" for="field_start">Start</label>
+          <div class="d-flex">
+            <input
+              id="field_start"
+              data-cy="start"
+              type="datetime-local"
+              class="form-control"
+              name="start"
+              formControlName="start"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autocutApp.broadcastMessage.end" for="field_end">End</label>
+          <div class="d-flex">
+            <input
+              id="field_end"
+              data-cy="end"
+              type="datetime-local"
+              class="form-control"
+              name="end"
+              formControlName="end"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autocutApp.broadcastMessage.usersOnly" for="field_usersOnly">Users Only</label>
+          <input type="checkbox" class="form-check" name="usersOnly" id="field_usersOnly" data-cy="usersOnly" formControlName="usersOnly" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autocutApp.broadcastMessage.dismissible" for="field_dismissible"
+            >Dismissible</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="dismissible"
+            id="field_dismissible"
+            data-cy="dismissible"
+            formControlName="dismissible"
+          />
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

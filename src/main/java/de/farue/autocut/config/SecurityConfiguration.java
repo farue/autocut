@@ -91,6 +91,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.GET, "/api/apartments/nr=*").permitAll()
             .antMatchers(HttpMethod.GET, "/api/transaction-books/overview").authenticated()
             .antMatchers(HttpMethod.GET, "/api/transaction-books/purpose").authenticated()
+            .antMatchers("/api/public/**").permitAll()
             .antMatchers("/api/me/**").authenticated()
             .antMatchers("/api/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/management/health").permitAll()

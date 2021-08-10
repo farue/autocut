@@ -1,0 +1,6 @@
+id;type;start;end;users_only;dismissible
+1;PRIMARY;;2099-12-31T23:59:59;false;false
+2;WARNING;2020-01-01T12:00:00;;true;false
+3;INFO;;2020-01-01T12:00:00;false;false
+4;INFO;2099-12-31T23:59:59;;false;false
+5;INFO;;;false;false

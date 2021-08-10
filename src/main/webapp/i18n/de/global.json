@@ -43,6 +43,8 @@
         "bankTransaction": "Bank Transaction",
         "networkSwitchStatus": "Network Switch Status",
         "laundryProgram": "Laundry Program",
+        "broadcastMessage": "Broadcast Message",
+        "broadcastMessageText": "Broadcast Message Text",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
