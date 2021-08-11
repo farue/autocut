@@ -3,11 +3,7 @@ package de.farue.autocut.batch.fee;
 import static de.farue.autocut.utils.BigDecimalUtil.compare;
 
 import com.google.common.base.Preconditions;
-import de.farue.autocut.domain.InternalTransaction;
-import de.farue.autocut.domain.Lease;
-import de.farue.autocut.domain.Transaction;
-import de.farue.autocut.domain.TransactionBook;
-import de.farue.autocut.domain.Transaction_;
+import de.farue.autocut.domain.*;
 import de.farue.autocut.domain.enumeration.TransactionType;
 import de.farue.autocut.repository.InternalTransactionRepository;
 import de.farue.autocut.service.ActivityService;
@@ -91,8 +87,8 @@ public class TenantFeeCorrectingBatchProcessor extends AbstractTenantFeeBatchPro
             boolean isEligibleForDiscount = activityService.isEligibleForDiscount(lease, chargeDate);
             BigDecimal chargedFee = sumValues(chargePeriodTransactions);
             BigDecimal expectedFee = activityService.getFeeValue(lease, chargeDate);
-            Preconditions.checkState(compare(chargedFee).isNegative(), "Charged fee has to be a negative value");
-            Preconditions.checkState(compare(expectedFee).isNegative(), "Expected fee has to be a negative value");
+            Preconditions.checkState(compare(chargedFee).isNotPositive(), "Charged fee has to be a negative value");
+            Preconditions.checkState(compare(expectedFee).isNotPositive(), "Expected fee has to be a negative value");
 
             BigDecimal value = expectedFee.subtract(chargedFee);
             if (!compare(value).isZero()) {
