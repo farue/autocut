@@ -27,7 +27,7 @@ describe('Service Tests', () => {
 
       elemDefault = {
         id: 0,
-        role: TeamRole.SPOKESPERSON,
+        role: TeamRole.LEAD,
         start: currentDate,
         end: currentDate,
       };

@@ -4,7 +4,7 @@
     {
       "fieldName": "role",
       "fieldType": "TeamRole",
-      "fieldValues": "SPOKESPERSON,DEPUTY,MEMBER"
+      "fieldValues": "LEAD,DEPUTY,MEMBER"
     },
     {
       "fieldName": "start",

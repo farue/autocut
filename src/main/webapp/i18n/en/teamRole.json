@@ -2,7 +2,7 @@
   "autocutApp": {
     "TeamRole": {
       "null": "",
-      "SPOKESPERSON": "SPOKESPERSON",
+      "LEAD": "LEAD",
       "DEPUTY": "DEPUTY",
       "MEMBER": "MEMBER"
     }

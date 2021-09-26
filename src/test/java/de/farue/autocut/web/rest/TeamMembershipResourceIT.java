@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 class TeamMembershipResourceIT {
 
-    private static final TeamRole DEFAULT_ROLE = TeamRole.SPOKESPERSON;
+    private static final TeamRole DEFAULT_ROLE = TeamRole.LEAD;
     private static final TeamRole UPDATED_ROLE = TeamRole.DEPUTY;
 
     private static final LocalDate DEFAULT_START = LocalDate.ofEpochDay(0L);

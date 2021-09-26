@@ -1,5 +1,5 @@
 export enum TeamRole {
-  SPOKESPERSON = 'SPOKESPERSON',
+  LEAD = 'LEAD',
 
   DEPUTY = 'DEPUTY',
 
