@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { RegisterService } from './register.service';
@@ -6,6 +6,7 @@ import { IApartment } from 'app/entities/apartment/apartment.model';
 import { ApartmentValidator } from 'app/account/register/apartment-validator';
 import { ImmediateErrorStateMatcher } from 'app/shared/material/immediate-error-state-matcher';
 import * as dayjs from 'dayjs';
+import { OpUnitType } from 'dayjs';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { heartBeatAnimation } from 'angular-animations';
@@ -15,14 +16,14 @@ import { UsernameValidator } from 'app/account/register/username-validator';
 import { EmailValidator } from 'app/account/register/email-validator';
 import { MediaService } from 'app/shared/service/media.service';
 
-export function dateNotAfter(maxDate: dayjs.Dayjs): ValidatorFn {
+export function dateNotAfter(value: number, unit: OpUnitType): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const date: dayjs.Dayjs | string | null = control.value;
     if (!date || typeof date === 'string') {
       // if date is of type string, it could not be parsed so other errors will be shown
       return null;
     }
-    if (date.isAfter(maxDate)) {
+    if (date.isAfter(dayjs().add(value, unit))) {
       return { invalidMaxDate: true };
     }
     return null;
@@ -49,7 +50,7 @@ export class PasswordMismatchErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./register.component.scss'],
   animations: [heartBeatAnimation({ anchor: 'heartBeat', direction: '=>' })],
 })
-export class RegisterComponent implements OnInit, AfterViewInit {
+export class RegisterComponent implements AfterViewInit {
   @ViewChild('username', { static: false })
   firstName?: ElementRef;
   @ViewChild('stepper')
@@ -62,9 +63,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
   immediateErrorStateMatcher = new ImmediateErrorStateMatcher();
   passwordMismatchErrorStateMatcher = new PasswordMismatchErrorStateMatcher();
-  maxStartDate!: dayjs.Dayjs;
-  // success = false;
-  success = this.selectedIndex === 3;
+  success = false;
   apartment: IApartment | null = null;
 
   userForm = this.fb.group(
@@ -100,7 +99,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       [Validators.required, Validators.pattern('\\d{2}-\\d{2}')],
       [this.apartmentValidator.validate.bind(this.apartmentValidator)],
     ],
-    start: ['', [Validators.required, dateNotAfter(this.maxStartDate)]],
+    start: ['', [Validators.required, dateNotAfter(1, 'month')]],
     end: ['', [Validators.required]],
   });
 
@@ -114,10 +113,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     private bpObserver: BreakpointObserver,
     private mediaService: MediaService
   ) {}
-
-  ngOnInit(): void {
-    this.maxStartDate = dayjs().add(1, 'month');
-  }
 
   ngAfterViewInit(): void {
     if (this.firstName) {
@@ -137,6 +132,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     this.registerService.save({ ...userData, ...personData, langKey: this.translateService.currentLang }).subscribe(
       () => {
         this.loading = false;
+        this.success = true;
         this.stepper?.next();
       },
       () => {

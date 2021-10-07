@@ -20,21 +20,21 @@
       >
         <mat-step [stepControl]="userForm" [editable]="!success" [label]="'register.form.steps.user' | translate">
           <ng-container [ngTemplateOutlet]="stepOne"></ng-container>
-          <button #nextButton mat-button matStepperNext [disabled]="userForm.invalid" type="button" [@heartBeat]="!nextButton.disabled">
+          <button #nextButton1 mat-button matStepperNext [disabled]="!userForm.valid" type="button" [@heartBeat]="!nextButton1.disabled">
             <span translate>register.form.buttons.next</span>
           </button>
         </mat-step>
         <mat-step [stepControl]="personForm" [editable]="!success" [label]="'register.form.steps.person' | translate">
           <ng-container [ngTemplateOutlet]="stepTwo"></ng-container>
           <button mat-button matStepperPrevious type="button"><span translate>register.form.buttons.back</span></button>
-          <button #nextButton mat-button matStepperNext [disabled]="personForm.invalid" type="button" [@heartBeat]="!nextButton.disabled">
+          <button #nextButton2 mat-button matStepperNext [disabled]="!personForm.valid" type="button" [@heartBeat]="!nextButton2.disabled">
             <span translate>register.form.buttons.next</span>
           </button>
         </mat-step>
         <mat-step [editable]="!success" [label]="'register.form.steps.documents.title' | translate">
           <ng-container [ngTemplateOutlet]="stepThree"></ng-container>
           <button mat-button matStepperPrevious type="button"><span translate>register.form.buttons.back</span></button>
-          <button #nextButton mat-button type="button" [loading]="loading" (click)="register()" [@heartBeat]="!nextButton.disabled">
+          <button #nextButton3 mat-button type="button" [loading]="loading" (click)="register()">
             <span translate>register.form.buttons.submit</span>
           </button>
         </mat-step>
@@ -53,21 +53,21 @@
       >
         <mat-step [stepControl]="userForm" [editable]="!success" [label]="'register.form.steps.user' | translate">
           <ng-container [ngTemplateOutlet]="stepOne"></ng-container>
-          <button #nextButton mat-button matStepperNext [disabled]="userForm.invalid" type="button" [@heartBeat]="!nextButton.disabled">
+          <button #nextButton1 mat-button matStepperNext [disabled]="!userForm.valid" type="button" [@heartBeat]="!nextButton1.disabled">
             <span translate>register.form.buttons.next</span>
           </button>
         </mat-step>
         <mat-step [stepControl]="personForm" [editable]="!success" [label]="'register.form.steps.person' | translate">
           <ng-container [ngTemplateOutlet]="stepTwo"></ng-container>
           <button mat-button matStepperPrevious type="button"><span translate>register.form.buttons.back</span></button>
-          <button #nextButton mat-button matStepperNext [disabled]="personForm.invalid" type="button" [@heartBeat]="!nextButton.disabled">
+          <button #nextButton2 mat-button matStepperNext [disabled]="!personForm.valid" type="button" [@heartBeat]="!nextButton2.disabled">
             <span translate>register.form.buttons.next</span>
           </button>
         </mat-step>
         <mat-step [editable]="!success" [label]="'register.form.steps.documents.title' | translate">
           <ng-container [ngTemplateOutlet]="stepThree"></ng-container>
           <button mat-button matStepperPrevious type="button"><span translate>register.form.buttons.back</span></button>
-          <button #nextButton mat-button type="button" [loading]="loading" (click)="register()" [@heartBeat]="!nextButton.disabled">
+          <button #nextButton3 mat-button type="button" [loading]="loading" (click)="register()">
             <span translate>register.form.buttons.submit</span>
           </button>
         </mat-step>
@@ -125,7 +125,7 @@
       </mat-form-field>
 
       <div fxLayout="column">
-        <mat-form-field appearance="outline" [color]="passwordStrength.color" fxFlex>
+        <mat-form-field appearance="outline" fxFlex>
           <mat-label>{{ 'global.form.newpassword.label' | translate }}</mat-label>
           <mat-pass-toggle-visibility #passwordVisiblity [tabindex]="'-1'" matSuffix></mat-pass-toggle-visibility>
           <input
@@ -148,7 +148,7 @@
           }}</mat-error>
         </mat-form-field>
 
-        <mat-password-strength #passwordStrength [password]="password.value" fxFlex></mat-password-strength>
+        <mat-password-strength [password]="password.value" class="green" fxFlex></mat-password-strength>
       </div>
 
       <mat-form-field appearance="outline" fxFlex>
