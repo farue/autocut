@@ -3,6 +3,10 @@ version: '3.8'
 networks:
   traefik:
     external: true
+  autocut:
+
+volumes:
+  autocut-db:
 
 services:
   autocut-app:
@@ -10,7 +14,8 @@ services:
     container_name: 'autocut-app'
     restart: always
     networks:
-      - 'traefik'
+      - traefik
+      - autocut
     environment:
       - TZ=Europe/Berlin
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
@@ -56,9 +61,9 @@ services:
     container_name: 'autocut-mysql'
     restart: always
     volumes:
-      - ~/volumes/autocut/mysql/:/var/lib/mysql/
+      - autocut-db:/var/lib/mysql/
     networks:
-      - 'traefik'
+      - autocut
     environment:
       - TZ=Europe/Berlin
       - MYSQL_USER=root
