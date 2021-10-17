@@ -76,3 +76,23 @@ services:
       test: mysqladmin ping -h localhost
       timeout: 20s
       retries: 10
+
+  autocut-backup:
+    image: tiredofit/db-backup
+    container_name: autocut-backup
+    restart: always
+    volumes:
+      - /var/lib/restic/backup/autocut/db:/backup
+    networks:
+      - autocut
+    environment:
+      TZ: Europe/Berlin
+      DB_TYPE: mysql
+      DB_HOST: autocut-mysql
+      DB_NAME: autocut
+      DB_USER: root
+      DB_DUMP_FREQ: 360 # in minutes, so every 6 hours
+      DB_DUMP_BEGIN: +5
+      DB_CLEANUP_TIME: 360
+      SPLIT_DB: 'TRUE'
+      MD5: 'FALSE'
