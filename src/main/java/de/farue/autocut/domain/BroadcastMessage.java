@@ -23,6 +23,7 @@ public class BroadcastMessage implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -48,17 +49,18 @@ public class BroadcastMessage implements Serializable {
     private Set<BroadcastMessageText> messageTexts = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public BroadcastMessage id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public BroadcastMessage id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public BroadcastMessageType getType() {
@@ -66,7 +68,7 @@ public class BroadcastMessage implements Serializable {
     }
 
     public BroadcastMessage type(BroadcastMessageType type) {
-        this.type = type;
+        this.setType(type);
         return this;
     }
 
@@ -79,7 +81,7 @@ public class BroadcastMessage implements Serializable {
     }
 
     public BroadcastMessage start(Instant start) {
-        this.start = start;
+        this.setStart(start);
         return this;
     }
 
@@ -92,7 +94,7 @@ public class BroadcastMessage implements Serializable {
     }
 
     public BroadcastMessage end(Instant end) {
-        this.end = end;
+        this.setEnd(end);
         return this;
     }
 
@@ -105,7 +107,7 @@ public class BroadcastMessage implements Serializable {
     }
 
     public BroadcastMessage usersOnly(Boolean usersOnly) {
-        this.usersOnly = usersOnly;
+        this.setUsersOnly(usersOnly);
         return this;
     }
 
@@ -118,7 +120,7 @@ public class BroadcastMessage implements Serializable {
     }
 
     public BroadcastMessage dismissible(Boolean dismissible) {
-        this.dismissible = dismissible;
+        this.setDismissible(dismissible);
         return this;
     }
 
@@ -128,6 +130,16 @@ public class BroadcastMessage implements Serializable {
 
     public Set<BroadcastMessageText> getMessageTexts() {
         return this.messageTexts;
+    }
+
+    public void setMessageTexts(Set<BroadcastMessageText> broadcastMessageTexts) {
+        if (this.messageTexts != null) {
+            this.messageTexts.forEach(i -> i.setMessage(null));
+        }
+        if (broadcastMessageTexts != null) {
+            broadcastMessageTexts.forEach(i -> i.setMessage(this));
+        }
+        this.messageTexts = broadcastMessageTexts;
     }
 
     public BroadcastMessage messageTexts(Set<BroadcastMessageText> broadcastMessageTexts) {
@@ -145,16 +157,6 @@ public class BroadcastMessage implements Serializable {
         this.messageTexts.remove(broadcastMessageText);
         broadcastMessageText.setMessage(null);
         return this;
-    }
-
-    public void setMessageTexts(Set<BroadcastMessageText> broadcastMessageTexts) {
-        if (this.messageTexts != null) {
-            this.messageTexts.forEach(i -> i.setMessage(null));
-        }
-        if (broadcastMessageTexts != null) {
-            broadcastMessageTexts.forEach(i -> i.setMessage(this));
-        }
-        this.messageTexts = broadcastMessageTexts;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

@@ -31,7 +31,7 @@
   <div class="table-responsive" id="entities" *ngIf="internalTransactions && internalTransactions.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
           <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="type">
             <span jhiTranslate="autocutApp.internalTransaction.type">Type</span> <fa-icon icon="sort"></fa-icon>

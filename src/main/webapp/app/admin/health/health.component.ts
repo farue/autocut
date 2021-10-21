@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component, OnInit} from '@angular/core';
+import {HttpErrorResponse} from '@angular/common/http';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { HealthService } from './health.service';
-import { Health, HealthDetails, HealthStatus } from './health.model';
-import { HealthModalComponent } from './modal/health-modal.component';
+import {HealthService} from './health.service';
+import {Health, HealthDetails, HealthStatus} from './health.model';
+import {HealthModalComponent} from './modal/health-modal.component';
 
 @Component({
   selector: 'jhi-health',
@@ -22,9 +22,8 @@ export class HealthComponent implements OnInit {
   getBadgeClass(statusState: HealthStatus): string {
     if (statusState === 'UP') {
       return 'badge-success';
-    } else {
-      return 'badge-danger';
     }
+    return 'badge-danger';
   }
 
   refresh(): void {

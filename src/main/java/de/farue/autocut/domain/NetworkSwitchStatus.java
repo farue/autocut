@@ -3,7 +3,7 @@ package de.farue.autocut.domain;
 import java.io.Serializable;
 import java.time.Instant;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -19,6 +19,7 @@ public class NetworkSwitchStatus implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -48,17 +49,18 @@ public class NetworkSwitchStatus implements Serializable {
     private NetworkSwitch networkSwitch;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public NetworkSwitchStatus id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public NetworkSwitchStatus id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public String getPort() {
@@ -66,7 +68,7 @@ public class NetworkSwitchStatus implements Serializable {
     }
 
     public NetworkSwitchStatus port(String port) {
-        this.port = port;
+        this.setPort(port);
         return this;
     }
 
@@ -79,7 +81,7 @@ public class NetworkSwitchStatus implements Serializable {
     }
 
     public NetworkSwitchStatus name(String name) {
-        this.name = name;
+        this.setName(name);
         return this;
     }
 
@@ -92,7 +94,7 @@ public class NetworkSwitchStatus implements Serializable {
     }
 
     public NetworkSwitchStatus status(String status) {
-        this.status = status;
+        this.setStatus(status);
         return this;
     }
 
@@ -105,7 +107,7 @@ public class NetworkSwitchStatus implements Serializable {
     }
 
     public NetworkSwitchStatus vlan(String vlan) {
-        this.vlan = vlan;
+        this.setVlan(vlan);
         return this;
     }
 
@@ -118,7 +120,7 @@ public class NetworkSwitchStatus implements Serializable {
     }
 
     public NetworkSwitchStatus speed(String speed) {
-        this.speed = speed;
+        this.setSpeed(speed);
         return this;
     }
 
@@ -131,7 +133,7 @@ public class NetworkSwitchStatus implements Serializable {
     }
 
     public NetworkSwitchStatus type(String type) {
-        this.type = type;
+        this.setType(type);
         return this;
     }
 
@@ -144,7 +146,7 @@ public class NetworkSwitchStatus implements Serializable {
     }
 
     public NetworkSwitchStatus timestamp(Instant timestamp) {
-        this.timestamp = timestamp;
+        this.setTimestamp(timestamp);
         return this;
     }
 
@@ -156,13 +158,13 @@ public class NetworkSwitchStatus implements Serializable {
         return this.networkSwitch;
     }
 
+    public void setNetworkSwitch(NetworkSwitch networkSwitch) {
+        this.networkSwitch = networkSwitch;
+    }
+
     public NetworkSwitchStatus networkSwitch(NetworkSwitch networkSwitch) {
         this.setNetworkSwitch(networkSwitch);
         return this;
-    }
-
-    public void setNetworkSwitch(NetworkSwitch networkSwitch) {
-        this.networkSwitch = networkSwitch;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

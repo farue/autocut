@@ -2,7 +2,7 @@ package de.farue.autocut.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -18,6 +18,7 @@ public class NetworkSwitch implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -29,17 +30,18 @@ public class NetworkSwitch implements Serializable {
     private String sshHost;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public NetworkSwitch id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public NetworkSwitch id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public String getInterfaceName() {
@@ -47,7 +49,7 @@ public class NetworkSwitch implements Serializable {
     }
 
     public NetworkSwitch interfaceName(String interfaceName) {
-        this.interfaceName = interfaceName;
+        this.setInterfaceName(interfaceName);
         return this;
     }
 
@@ -60,7 +62,7 @@ public class NetworkSwitch implements Serializable {
     }
 
     public NetworkSwitch sshHost(String sshHost) {
-        this.sshHost = sshHost;
+        this.setSshHost(sshHost);
         return this;
     }
 

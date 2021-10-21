@@ -1,20 +1,20 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
-import { isPresent } from 'app/core/util/operators';
-import { ApplicationConfigService } from 'app/core/config/application-config.service';
-import { createRequestOption } from 'app/core/request/request-util';
-import { INetworkSwitch, getNetworkSwitchIdentifier } from '../network-switch.model';
+import {isPresent} from 'app/core/util/operators';
+import {ApplicationConfigService} from 'app/core/config/application-config.service';
+import {createRequestOption} from 'app/core/request/request-util';
+import {getNetworkSwitchIdentifier, INetworkSwitch} from '../network-switch.model';
 
 export type EntityResponseType = HttpResponse<INetworkSwitch>;
 export type EntityArrayResponseType = HttpResponse<INetworkSwitch[]>;
 
 @Injectable({ providedIn: 'root' })
 export class NetworkSwitchService {
-  public resourceUrl = this.applicationConfigService.getEndpointFor('api/network-switches');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/network-switches');
 
-  constructor(protected http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(networkSwitch: INetworkSwitch): Observable<EntityResponseType> {
     return this.http.post<INetworkSwitch>(this.resourceUrl, networkSwitch, { observe: 'response' });

@@ -1,20 +1,20 @@
 jest.mock('@angular/router');
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { of, Subject } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {HttpResponse} from '@angular/common/http';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {FormBuilder} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {of, Subject} from 'rxjs';
 
-import { LaundryMachineProgramService } from '../service/laundry-machine-program.service';
-import { ILaundryMachineProgram, LaundryMachineProgram } from '../laundry-machine-program.model';
-import { ILaundryProgram } from 'app/entities/laundry-program/laundry-program.model';
-import { LaundryProgramService } from 'app/entities/laundry-program/service/laundry-program.service';
-import { ILaundryMachine } from 'app/entities/laundry-machine/laundry-machine.model';
-import { LaundryMachineService } from 'app/entities/laundry-machine/service/laundry-machine.service';
+import {LaundryMachineProgramService} from '../service/laundry-machine-program.service';
+import {ILaundryMachineProgram, LaundryMachineProgram} from '../laundry-machine-program.model';
+import {ILaundryProgram} from 'app/entities/laundry-program/laundry-program.model';
+import {LaundryProgramService} from 'app/entities/laundry-program/service/laundry-program.service';
+import {ILaundryMachine} from 'app/entities/laundry-machine/laundry-machine.model';
+import {LaundryMachineService} from 'app/entities/laundry-machine/service/laundry-machine.service';
 
-import { LaundryMachineProgramUpdateComponent } from './laundry-machine-program-update.component';
+import {LaundryMachineProgramUpdateComponent} from './laundry-machine-program-update.component';
 
 describe('Component Tests', () => {
   describe('LaundryMachineProgram Management Update Component', () => {
@@ -46,14 +46,14 @@ describe('Component Tests', () => {
     describe('ngOnInit', () => {
       it('Should call LaundryProgram query and add missing value', () => {
         const laundryMachineProgram: ILaundryMachineProgram = { id: 456 };
-        const program: ILaundryProgram = { id: 43548 };
+        const program: ILaundryProgram = { id: 3271 };
         laundryMachineProgram.program = program;
 
-        const laundryProgramCollection: ILaundryProgram[] = [{ id: 75902 }];
-        spyOn(laundryProgramService, 'query').and.returnValue(of(new HttpResponse({ body: laundryProgramCollection })));
+        const laundryProgramCollection: ILaundryProgram[] = [{ id: 92796 }];
+        jest.spyOn(laundryProgramService, 'query').mockReturnValue(of(new HttpResponse({ body: laundryProgramCollection })));
         const additionalLaundryPrograms = [program];
         const expectedCollection: ILaundryProgram[] = [...additionalLaundryPrograms, ...laundryProgramCollection];
-        spyOn(laundryProgramService, 'addLaundryProgramToCollectionIfMissing').and.returnValue(expectedCollection);
+        jest.spyOn(laundryProgramService, 'addLaundryProgramToCollectionIfMissing').mockReturnValue(expectedCollection);
 
         activatedRoute.data = of({ laundryMachineProgram });
         comp.ngOnInit();
@@ -68,14 +68,14 @@ describe('Component Tests', () => {
 
       it('Should call LaundryMachine query and add missing value', () => {
         const laundryMachineProgram: ILaundryMachineProgram = { id: 456 };
-        const machine: ILaundryMachine = { id: 49974 };
+        const machine: ILaundryMachine = { id: 50344 };
         laundryMachineProgram.machine = machine;
 
-        const laundryMachineCollection: ILaundryMachine[] = [{ id: 70602 }];
-        spyOn(laundryMachineService, 'query').and.returnValue(of(new HttpResponse({ body: laundryMachineCollection })));
+        const laundryMachineCollection: ILaundryMachine[] = [{ id: 78591 }];
+        jest.spyOn(laundryMachineService, 'query').mockReturnValue(of(new HttpResponse({ body: laundryMachineCollection })));
         const additionalLaundryMachines = [machine];
         const expectedCollection: ILaundryMachine[] = [...additionalLaundryMachines, ...laundryMachineCollection];
-        spyOn(laundryMachineService, 'addLaundryMachineToCollectionIfMissing').and.returnValue(expectedCollection);
+        jest.spyOn(laundryMachineService, 'addLaundryMachineToCollectionIfMissing').mockReturnValue(expectedCollection);
 
         activatedRoute.data = of({ laundryMachineProgram });
         comp.ngOnInit();
@@ -90,9 +90,9 @@ describe('Component Tests', () => {
 
       it('Should update editForm', () => {
         const laundryMachineProgram: ILaundryMachineProgram = { id: 456 };
-        const program: ILaundryProgram = { id: 43569 };
+        const program: ILaundryProgram = { id: 15890 };
         laundryMachineProgram.program = program;
-        const machine: ILaundryMachine = { id: 53251 };
+        const machine: ILaundryMachine = { id: 52770 };
         laundryMachineProgram.machine = machine;
 
         activatedRoute.data = of({ laundryMachineProgram });
@@ -107,10 +107,10 @@ describe('Component Tests', () => {
     describe('save', () => {
       it('Should call update service on save for existing entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<LaundryMachineProgram>>();
         const laundryMachineProgram = { id: 123 };
-        spyOn(laundryMachineProgramService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(laundryMachineProgramService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ laundryMachineProgram });
         comp.ngOnInit();
 
@@ -128,10 +128,10 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<LaundryMachineProgram>>();
         const laundryMachineProgram = new LaundryMachineProgram();
-        spyOn(laundryMachineProgramService, 'create').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(laundryMachineProgramService, 'create').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ laundryMachineProgram });
         comp.ngOnInit();
 
@@ -149,10 +149,10 @@ describe('Component Tests', () => {
 
       it('Should set isSaving to false on error', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<LaundryMachineProgram>>();
         const laundryMachineProgram = { id: 123 };
-        spyOn(laundryMachineProgramService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(laundryMachineProgramService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ laundryMachineProgram });
         comp.ngOnInit();
 

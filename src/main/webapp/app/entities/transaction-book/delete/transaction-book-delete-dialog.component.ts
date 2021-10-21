@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { ITransactionBook } from '../transaction-book.model';
-import { TransactionBookService } from '../service/transaction-book.service';
+import {ITransactionBook} from '../transaction-book.model';
+import {TransactionBookService} from '../service/transaction-book.service';
 
 @Component({
   templateUrl: './transaction-book-delete-dialog.component.html',
@@ -10,7 +10,7 @@ import { TransactionBookService } from '../service/transaction-book.service';
 export class TransactionBookDeleteDialogComponent {
   transactionBook?: ITransactionBook;
 
-  constructor(protected transactionBookService: TransactionBookService, public activeModal: NgbActiveModal) {}
+  constructor(protected transactionBookService: TransactionBookService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

@@ -1,33 +1,31 @@
-import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {TestBed} from '@angular/core/testing';
+import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 
-import { LogsService } from './logs.service';
+import {LogsService} from './logs.service';
 
-describe('Service Tests', () => {
-  describe('Logs Service', () => {
-    let service: LogsService;
-    let httpMock: HttpTestingController;
+describe('Logs Service', () => {
+  let service: LogsService;
+  let httpMock: HttpTestingController;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
-      });
-
-      service = TestBed.inject(LogsService);
-      httpMock = TestBed.inject(HttpTestingController);
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
     });
 
-    afterEach(() => {
-      httpMock.verify();
-    });
+    service = TestBed.inject(LogsService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
 
-    describe('Service methods', () => {
-      it('should change log level', () => {
-        service.changeLevel('main', 'ERROR').subscribe();
+  afterEach(() => {
+    httpMock.verify();
+  });
 
-        const req = httpMock.expectOne({ method: 'POST' });
-        expect(req.request.body).toEqual({ configuredLevel: 'ERROR' });
-      });
+  describe('Service methods', () => {
+    it('should change log level', () => {
+      service.changeLevel('main', 'ERROR').subscribe();
+
+      const req = httpMock.expectOne({ method: 'POST' });
+      expect(req.request.body).toEqual({ configuredLevel: 'ERROR' });
     });
   });
 });

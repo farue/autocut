@@ -323,10 +323,9 @@ class TenantResourceIT {
         partialUpdatedTenant.setId(tenant.getId());
 
         partialUpdatedTenant
-            .lastName(UPDATED_LAST_NAME)
+            .firstName(UPDATED_FIRST_NAME)
             .pictureId(UPDATED_PICTURE_ID)
-            .pictureIdContentType(UPDATED_PICTURE_ID_CONTENT_TYPE)
-            .verified(UPDATED_VERIFIED);
+            .pictureIdContentType(UPDATED_PICTURE_ID_CONTENT_TYPE);
 
         restTenantMockMvc
             .perform(
@@ -340,11 +339,11 @@ class TenantResourceIT {
         List<Tenant> tenantList = tenantRepository.findAll();
         assertThat(tenantList).hasSize(databaseSizeBeforeUpdate);
         Tenant testTenant = tenantList.get(tenantList.size() - 1);
-        assertThat(testTenant.getFirstName()).isEqualTo(DEFAULT_FIRST_NAME);
-        assertThat(testTenant.getLastName()).isEqualTo(UPDATED_LAST_NAME);
+        assertThat(testTenant.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
+        assertThat(testTenant.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
         assertThat(testTenant.getPictureId()).isEqualTo(UPDATED_PICTURE_ID);
         assertThat(testTenant.getPictureIdContentType()).isEqualTo(UPDATED_PICTURE_ID_CONTENT_TYPE);
-        assertThat(testTenant.getVerified()).isEqualTo(UPDATED_VERIFIED);
+        assertThat(testTenant.getVerified()).isEqualTo(DEFAULT_VERIFIED);
     }
 
     @Test

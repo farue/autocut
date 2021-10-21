@@ -1,10 +1,10 @@
-import { Component, OnInit, Renderer2, RendererFactory2 } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { ActivatedRouteSnapshot, NavigationEnd, NavigationError, Router } from '@angular/router';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import {Component, OnInit, Renderer2, RendererFactory2} from '@angular/core';
+import {Title} from '@angular/platform-browser';
+import {ActivatedRouteSnapshot, NavigationEnd, Router} from '@angular/router';
+import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
 import * as dayjs from 'dayjs';
 
-import { AccountService } from 'app/core/auth/account.service';
+import {AccountService} from 'app/core/auth/account.service';
 
 @Component({
   selector: 'jhi-main',
@@ -31,9 +31,6 @@ export class MainComponent implements OnInit {
       if (event instanceof NavigationEnd) {
         this.updateTitle();
       }
-      if (event instanceof NavigationError && event.error.status === 404) {
-        this.router.navigate(['/404']);
-      }
     });
 
     this.translateService.onLangChange.subscribe((langChangeEvent: LangChangeEvent) => {
@@ -44,9 +41,9 @@ export class MainComponent implements OnInit {
   }
 
   private getPageTitle(routeSnapshot: ActivatedRouteSnapshot): string {
-    let title: string = routeSnapshot.data['pageTitle'] ?? '';
+    const title: string = routeSnapshot.data['pageTitle'] ?? '';
     if (routeSnapshot.firstChild) {
-      title = this.getPageTitle(routeSnapshot.firstChild) || title;
+      return this.getPageTitle(routeSnapshot.firstChild) || title;
     }
     return title;
   }

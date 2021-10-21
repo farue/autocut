@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -21,6 +21,7 @@ public class Team implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -33,17 +34,18 @@ public class Team implements Serializable {
     private Set<TeamMembership> teamMemberships = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public Team id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Team id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public String getName() {
@@ -51,7 +53,7 @@ public class Team implements Serializable {
     }
 
     public Team name(String name) {
-        this.name = name;
+        this.setName(name);
         return this;
     }
 
@@ -61,6 +63,16 @@ public class Team implements Serializable {
 
     public Set<TeamMembership> getTeamMemberships() {
         return this.teamMemberships;
+    }
+
+    public void setTeamMemberships(Set<TeamMembership> teamMemberships) {
+        if (this.teamMemberships != null) {
+            this.teamMemberships.forEach(i -> i.setTeam(null));
+        }
+        if (teamMemberships != null) {
+            teamMemberships.forEach(i -> i.setTeam(this));
+        }
+        this.teamMemberships = teamMemberships;
     }
 
     public Team teamMemberships(Set<TeamMembership> teamMemberships) {
@@ -78,16 +90,6 @@ public class Team implements Serializable {
         this.teamMemberships.remove(teamMembership);
         teamMembership.setTeam(null);
         return this;
-    }
-
-    public void setTeamMemberships(Set<TeamMembership> teamMemberships) {
-        if (this.teamMemberships != null) {
-            this.teamMemberships.forEach(i -> i.setTeam(null));
-        }
-        if (teamMemberships != null) {
-            teamMemberships.forEach(i -> i.setTeam(this));
-        }
-        this.teamMemberships = teamMemberships;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

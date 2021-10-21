@@ -1,16 +1,16 @@
 jest.mock('@angular/router');
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { of, Subject } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {HttpResponse} from '@angular/common/http';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {FormBuilder} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {of, Subject} from 'rxjs';
 
-import { GlobalSettingService } from '../service/global-setting.service';
-import { IGlobalSetting, GlobalSetting } from '../global-setting.model';
+import {GlobalSettingService} from '../service/global-setting.service';
+import {GlobalSetting, IGlobalSetting} from '../global-setting.model';
 
-import { GlobalSettingUpdateComponent } from './global-setting-update.component';
+import {GlobalSettingUpdateComponent} from './global-setting-update.component';
 
 describe('Component Tests', () => {
   describe('GlobalSetting Management Update Component', () => {
@@ -49,10 +49,10 @@ describe('Component Tests', () => {
     describe('save', () => {
       it('Should call update service on save for existing entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<GlobalSetting>>();
         const globalSetting = { id: 123 };
-        spyOn(globalSettingService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(globalSettingService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ globalSetting });
         comp.ngOnInit();
 
@@ -70,10 +70,10 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<GlobalSetting>>();
         const globalSetting = new GlobalSetting();
-        spyOn(globalSettingService, 'create').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(globalSettingService, 'create').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ globalSetting });
         comp.ngOnInit();
 
@@ -91,10 +91,10 @@ describe('Component Tests', () => {
 
       it('Should set isSaving to false on error', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<GlobalSetting>>();
         const globalSetting = { id: 123 };
-        spyOn(globalSettingService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(globalSettingService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ globalSetting });
         comp.ngOnInit();
 

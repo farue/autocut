@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -23,6 +23,7 @@ public class TeamMembership implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Enumerated(EnumType.STRING)
@@ -50,17 +51,18 @@ public class TeamMembership implements Serializable {
     private Team team;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public TeamMembership id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public TeamMembership id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public TeamRole getRole() {
@@ -68,7 +70,7 @@ public class TeamMembership implements Serializable {
     }
 
     public TeamMembership role(TeamRole role) {
-        this.role = role;
+        this.setRole(role);
         return this;
     }
 
@@ -81,7 +83,7 @@ public class TeamMembership implements Serializable {
     }
 
     public TeamMembership start(LocalDate start) {
-        this.start = start;
+        this.setStart(start);
         return this;
     }
 
@@ -94,7 +96,7 @@ public class TeamMembership implements Serializable {
     }
 
     public TeamMembership end(LocalDate end) {
-        this.end = end;
+        this.setEnd(end);
         return this;
     }
 
@@ -104,6 +106,16 @@ public class TeamMembership implements Serializable {
 
     public Set<SecurityPolicy> getSecurityPolicies() {
         return this.securityPolicies;
+    }
+
+    public void setSecurityPolicies(Set<SecurityPolicy> securityPolicies) {
+        if (this.securityPolicies != null) {
+            this.securityPolicies.forEach(i -> i.setTeamMember(null));
+        }
+        if (securityPolicies != null) {
+            securityPolicies.forEach(i -> i.setTeamMember(this));
+        }
+        this.securityPolicies = securityPolicies;
     }
 
     public TeamMembership securityPolicies(Set<SecurityPolicy> securityPolicies) {
@@ -123,18 +135,12 @@ public class TeamMembership implements Serializable {
         return this;
     }
 
-    public void setSecurityPolicies(Set<SecurityPolicy> securityPolicies) {
-        if (this.securityPolicies != null) {
-            this.securityPolicies.forEach(i -> i.setTeamMember(null));
-        }
-        if (securityPolicies != null) {
-            securityPolicies.forEach(i -> i.setTeamMember(this));
-        }
-        this.securityPolicies = securityPolicies;
-    }
-
     public Tenant getTenant() {
         return this.tenant;
+    }
+
+    public void setTenant(Tenant tenant) {
+        this.tenant = tenant;
     }
 
     public TeamMembership tenant(Tenant tenant) {
@@ -142,21 +148,17 @@ public class TeamMembership implements Serializable {
         return this;
     }
 
-    public void setTenant(Tenant tenant) {
-        this.tenant = tenant;
-    }
-
     public Team getTeam() {
         return this.team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     public TeamMembership team(Team team) {
         this.setTeam(team);
         return this;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

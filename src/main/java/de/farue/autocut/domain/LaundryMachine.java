@@ -22,6 +22,7 @@ public class LaundryMachine implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -55,17 +56,18 @@ public class LaundryMachine implements Serializable {
     private Set<LaundryMachineProgram> programs = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public LaundryMachine id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public LaundryMachine id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public String getIdentifier() {
@@ -73,7 +75,7 @@ public class LaundryMachine implements Serializable {
     }
 
     public LaundryMachine identifier(String identifier) {
-        this.identifier = identifier;
+        this.setIdentifier(identifier);
         return this;
     }
 
@@ -86,7 +88,7 @@ public class LaundryMachine implements Serializable {
     }
 
     public LaundryMachine name(String name) {
-        this.name = name;
+        this.setName(name);
         return this;
     }
 
@@ -99,7 +101,7 @@ public class LaundryMachine implements Serializable {
     }
 
     public LaundryMachine type(LaundryMachineType type) {
-        this.type = type;
+        this.setType(type);
         return this;
     }
 
@@ -112,7 +114,7 @@ public class LaundryMachine implements Serializable {
     }
 
     public LaundryMachine enabled(Boolean enabled) {
-        this.enabled = enabled;
+        this.setEnabled(enabled);
         return this;
     }
 
@@ -125,7 +127,7 @@ public class LaundryMachine implements Serializable {
     }
 
     public LaundryMachine positionX(Integer positionX) {
-        this.positionX = positionX;
+        this.setPositionX(positionX);
         return this;
     }
 
@@ -138,7 +140,7 @@ public class LaundryMachine implements Serializable {
     }
 
     public LaundryMachine positionY(Integer positionY) {
-        this.positionY = positionY;
+        this.setPositionY(positionY);
         return this;
     }
 
@@ -148,6 +150,16 @@ public class LaundryMachine implements Serializable {
 
     public Set<LaundryMachineProgram> getPrograms() {
         return this.programs;
+    }
+
+    public void setPrograms(Set<LaundryMachineProgram> laundryMachinePrograms) {
+        if (this.programs != null) {
+            this.programs.forEach(i -> i.setMachine(null));
+        }
+        if (laundryMachinePrograms != null) {
+            laundryMachinePrograms.forEach(i -> i.setMachine(this));
+        }
+        this.programs = laundryMachinePrograms;
     }
 
     public LaundryMachine programs(Set<LaundryMachineProgram> laundryMachinePrograms) {
@@ -165,16 +177,6 @@ public class LaundryMachine implements Serializable {
         this.programs.remove(laundryMachineProgram);
         laundryMachineProgram.setMachine(null);
         return this;
-    }
-
-    public void setPrograms(Set<LaundryMachineProgram> laundryMachinePrograms) {
-        if (this.programs != null) {
-            this.programs.forEach(i -> i.setMachine(null));
-        }
-        if (laundryMachinePrograms != null) {
-            laundryMachinePrograms.forEach(i -> i.setMachine(this));
-        }
-        this.programs = laundryMachinePrograms;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

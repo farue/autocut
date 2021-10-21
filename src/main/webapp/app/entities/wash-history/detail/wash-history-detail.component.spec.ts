@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ActivatedRoute} from '@angular/router';
+import {of} from 'rxjs';
 
-import { WashHistoryDetailComponent } from './wash-history-detail.component';
+import {WashHistoryDetailComponent} from './wash-history-detail.component';
 
 describe('Component Tests', () => {
   describe('WashHistory Management Detail Component', () => {
@@ -31,7 +31,7 @@ describe('Component Tests', () => {
         comp.ngOnInit();
 
         // THEN
-        expect(comp.washHistory).toEqual(jasmine.objectContaining({ id: 123 }));
+        expect(comp.washHistory).toEqual(expect.objectContaining({ id: 123 }));
       });
     });
   });

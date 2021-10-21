@@ -1,20 +1,20 @@
 jest.mock('@angular/router');
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { of, Subject } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {HttpResponse} from '@angular/common/http';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {FormBuilder} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {of, Subject} from 'rxjs';
 
-import { LeaseService } from '../service/lease.service';
-import { ILease, Lease } from '../lease.model';
-import { ITransactionBook } from 'app/entities/transaction-book/transaction-book.model';
-import { TransactionBookService } from 'app/entities/transaction-book/service/transaction-book.service';
-import { IApartment } from 'app/entities/apartment/apartment.model';
-import { ApartmentService } from 'app/entities/apartment/service/apartment.service';
+import {LeaseService} from '../service/lease.service';
+import {ILease, Lease} from '../lease.model';
+import {ITransactionBook} from 'app/entities/transaction-book/transaction-book.model';
+import {TransactionBookService} from 'app/entities/transaction-book/service/transaction-book.service';
+import {IApartment} from 'app/entities/apartment/apartment.model';
+import {ApartmentService} from 'app/entities/apartment/service/apartment.service';
 
-import { LeaseUpdateComponent } from './lease-update.component';
+import {LeaseUpdateComponent} from './lease-update.component';
 
 describe('Component Tests', () => {
   describe('Lease Management Update Component', () => {
@@ -46,14 +46,14 @@ describe('Component Tests', () => {
     describe('ngOnInit', () => {
       it('Should call TransactionBook query and add missing value', () => {
         const lease: ILease = { id: 456 };
-        const transactionBooks: ITransactionBook[] = [{ id: 88022 }];
+        const transactionBooks: ITransactionBook[] = [{ id: 14392 }];
         lease.transactionBooks = transactionBooks;
 
-        const transactionBookCollection: ITransactionBook[] = [{ id: 33050 }];
-        spyOn(transactionBookService, 'query').and.returnValue(of(new HttpResponse({ body: transactionBookCollection })));
+        const transactionBookCollection: ITransactionBook[] = [{ id: 73850 }];
+        jest.spyOn(transactionBookService, 'query').mockReturnValue(of(new HttpResponse({ body: transactionBookCollection })));
         const additionalTransactionBooks = [...transactionBooks];
         const expectedCollection: ITransactionBook[] = [...additionalTransactionBooks, ...transactionBookCollection];
-        spyOn(transactionBookService, 'addTransactionBookToCollectionIfMissing').and.returnValue(expectedCollection);
+        jest.spyOn(transactionBookService, 'addTransactionBookToCollectionIfMissing').mockReturnValue(expectedCollection);
 
         activatedRoute.data = of({ lease });
         comp.ngOnInit();
@@ -68,14 +68,14 @@ describe('Component Tests', () => {
 
       it('Should call Apartment query and add missing value', () => {
         const lease: ILease = { id: 456 };
-        const apartment: IApartment = { id: 18906 };
+        const apartment: IApartment = { id: 21618 };
         lease.apartment = apartment;
 
-        const apartmentCollection: IApartment[] = [{ id: 4324 }];
-        spyOn(apartmentService, 'query').and.returnValue(of(new HttpResponse({ body: apartmentCollection })));
+        const apartmentCollection: IApartment[] = [{ id: 68920 }];
+        jest.spyOn(apartmentService, 'query').mockReturnValue(of(new HttpResponse({ body: apartmentCollection })));
         const additionalApartments = [apartment];
         const expectedCollection: IApartment[] = [...additionalApartments, ...apartmentCollection];
-        spyOn(apartmentService, 'addApartmentToCollectionIfMissing').and.returnValue(expectedCollection);
+        jest.spyOn(apartmentService, 'addApartmentToCollectionIfMissing').mockReturnValue(expectedCollection);
 
         activatedRoute.data = of({ lease });
         comp.ngOnInit();
@@ -87,9 +87,9 @@ describe('Component Tests', () => {
 
       it('Should update editForm', () => {
         const lease: ILease = { id: 456 };
-        const transactionBooks: ITransactionBook = { id: 99052 };
+        const transactionBooks: ITransactionBook = { id: 63945 };
         lease.transactionBooks = [transactionBooks];
-        const apartment: IApartment = { id: 73660 };
+        const apartment: IApartment = { id: 11654 };
         lease.apartment = apartment;
 
         activatedRoute.data = of({ lease });
@@ -104,10 +104,10 @@ describe('Component Tests', () => {
     describe('save', () => {
       it('Should call update service on save for existing entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<Lease>>();
         const lease = { id: 123 };
-        spyOn(leaseService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(leaseService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ lease });
         comp.ngOnInit();
 
@@ -125,10 +125,10 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<Lease>>();
         const lease = new Lease();
-        spyOn(leaseService, 'create').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(leaseService, 'create').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ lease });
         comp.ngOnInit();
 
@@ -146,10 +146,10 @@ describe('Component Tests', () => {
 
       it('Should set isSaving to false on error', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<Lease>>();
         const lease = { id: 123 };
-        spyOn(leaseService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(leaseService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ lease });
         comp.ngOnInit();
 

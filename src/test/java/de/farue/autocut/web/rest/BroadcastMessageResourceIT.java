@@ -316,7 +316,7 @@ class BroadcastMessageResourceIT {
         BroadcastMessage partialUpdatedBroadcastMessage = new BroadcastMessage();
         partialUpdatedBroadcastMessage.setId(broadcastMessage.getId());
 
-        partialUpdatedBroadcastMessage.dismissible(UPDATED_DISMISSIBLE);
+        partialUpdatedBroadcastMessage.type(UPDATED_TYPE).usersOnly(UPDATED_USERS_ONLY).dismissible(UPDATED_DISMISSIBLE);
 
         restBroadcastMessageMockMvc
             .perform(
@@ -330,10 +330,10 @@ class BroadcastMessageResourceIT {
         List<BroadcastMessage> broadcastMessageList = broadcastMessageRepository.findAll();
         assertThat(broadcastMessageList).hasSize(databaseSizeBeforeUpdate);
         BroadcastMessage testBroadcastMessage = broadcastMessageList.get(broadcastMessageList.size() - 1);
-        assertThat(testBroadcastMessage.getType()).isEqualTo(DEFAULT_TYPE);
+        assertThat(testBroadcastMessage.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testBroadcastMessage.getStart()).isEqualTo(DEFAULT_START);
         assertThat(testBroadcastMessage.getEnd()).isEqualTo(DEFAULT_END);
-        assertThat(testBroadcastMessage.getUsersOnly()).isEqualTo(DEFAULT_USERS_ONLY);
+        assertThat(testBroadcastMessage.getUsersOnly()).isEqualTo(UPDATED_USERS_ONLY);
         assertThat(testBroadcastMessage.getDismissible()).isEqualTo(UPDATED_DISMISSIBLE);
     }
 

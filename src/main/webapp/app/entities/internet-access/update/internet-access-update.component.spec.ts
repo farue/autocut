@@ -1,18 +1,18 @@
 jest.mock('@angular/router');
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { of, Subject } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {HttpResponse} from '@angular/common/http';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {FormBuilder} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {of, Subject} from 'rxjs';
 
-import { InternetAccessService } from '../service/internet-access.service';
-import { IInternetAccess, InternetAccess } from '../internet-access.model';
-import { INetworkSwitch } from 'app/entities/network-switch/network-switch.model';
-import { NetworkSwitchService } from 'app/entities/network-switch/service/network-switch.service';
+import {InternetAccessService} from '../service/internet-access.service';
+import {IInternetAccess, InternetAccess} from '../internet-access.model';
+import {INetworkSwitch} from 'app/entities/network-switch/network-switch.model';
+import {NetworkSwitchService} from 'app/entities/network-switch/service/network-switch.service';
 
-import { InternetAccessUpdateComponent } from './internet-access-update.component';
+import {InternetAccessUpdateComponent} from './internet-access-update.component';
 
 describe('Component Tests', () => {
   describe('InternetAccess Management Update Component', () => {
@@ -42,14 +42,14 @@ describe('Component Tests', () => {
     describe('ngOnInit', () => {
       it('Should call NetworkSwitch query and add missing value', () => {
         const internetAccess: IInternetAccess = { id: 456 };
-        const networkSwitch: INetworkSwitch = { id: 62951 };
+        const networkSwitch: INetworkSwitch = { id: 22765 };
         internetAccess.networkSwitch = networkSwitch;
 
-        const networkSwitchCollection: INetworkSwitch[] = [{ id: 62261 }];
-        spyOn(networkSwitchService, 'query').and.returnValue(of(new HttpResponse({ body: networkSwitchCollection })));
+        const networkSwitchCollection: INetworkSwitch[] = [{ id: 74200 }];
+        jest.spyOn(networkSwitchService, 'query').mockReturnValue(of(new HttpResponse({ body: networkSwitchCollection })));
         const additionalNetworkSwitches = [networkSwitch];
         const expectedCollection: INetworkSwitch[] = [...additionalNetworkSwitches, ...networkSwitchCollection];
-        spyOn(networkSwitchService, 'addNetworkSwitchToCollectionIfMissing').and.returnValue(expectedCollection);
+        jest.spyOn(networkSwitchService, 'addNetworkSwitchToCollectionIfMissing').mockReturnValue(expectedCollection);
 
         activatedRoute.data = of({ internetAccess });
         comp.ngOnInit();
@@ -64,7 +64,7 @@ describe('Component Tests', () => {
 
       it('Should update editForm', () => {
         const internetAccess: IInternetAccess = { id: 456 };
-        const networkSwitch: INetworkSwitch = { id: 4040 };
+        const networkSwitch: INetworkSwitch = { id: 69453 };
         internetAccess.networkSwitch = networkSwitch;
 
         activatedRoute.data = of({ internetAccess });
@@ -78,10 +78,10 @@ describe('Component Tests', () => {
     describe('save', () => {
       it('Should call update service on save for existing entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<InternetAccess>>();
         const internetAccess = { id: 123 };
-        spyOn(internetAccessService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(internetAccessService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ internetAccess });
         comp.ngOnInit();
 
@@ -99,10 +99,10 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<InternetAccess>>();
         const internetAccess = new InternetAccess();
-        spyOn(internetAccessService, 'create').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(internetAccessService, 'create').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ internetAccess });
         comp.ngOnInit();
 
@@ -120,10 +120,10 @@ describe('Component Tests', () => {
 
       it('Should set isSaving to false on error', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<InternetAccess>>();
         const internetAccess = { id: 123 };
-        spyOn(internetAccessService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(internetAccessService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ internetAccess });
         comp.ngOnInit();
 

@@ -1,22 +1,22 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 import * as dayjs from 'dayjs';
 
-import { isPresent } from 'app/core/util/operators';
-import { ApplicationConfigService } from 'app/core/config/application-config.service';
-import { createRequestOption } from 'app/core/request/request-util';
-import { INetworkSwitchStatus, getNetworkSwitchStatusIdentifier } from '../network-switch-status.model';
+import {isPresent} from 'app/core/util/operators';
+import {ApplicationConfigService} from 'app/core/config/application-config.service';
+import {createRequestOption} from 'app/core/request/request-util';
+import {getNetworkSwitchStatusIdentifier, INetworkSwitchStatus} from '../network-switch-status.model';
 
 export type EntityResponseType = HttpResponse<INetworkSwitchStatus>;
 export type EntityArrayResponseType = HttpResponse<INetworkSwitchStatus[]>;
 
 @Injectable({ providedIn: 'root' })
 export class NetworkSwitchStatusService {
-  public resourceUrl = this.applicationConfigService.getEndpointFor('api/network-switch-statuses');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/network-switch-statuses');
 
-  constructor(protected http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(networkSwitchStatus: INetworkSwitchStatus): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(networkSwitchStatus);

@@ -2,7 +2,8 @@ package de.farue.autocut.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -18,6 +19,7 @@ public class Address implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -42,17 +44,18 @@ public class Address implements Serializable {
     private String country;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public Address id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Address id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public String getStreet() {
@@ -60,7 +63,7 @@ public class Address implements Serializable {
     }
 
     public Address street(String street) {
-        this.street = street;
+        this.setStreet(street);
         return this;
     }
 
@@ -73,7 +76,7 @@ public class Address implements Serializable {
     }
 
     public Address streetNumber(String streetNumber) {
-        this.streetNumber = streetNumber;
+        this.setStreetNumber(streetNumber);
         return this;
     }
 
@@ -86,7 +89,7 @@ public class Address implements Serializable {
     }
 
     public Address zip(String zip) {
-        this.zip = zip;
+        this.setZip(zip);
         return this;
     }
 
@@ -99,7 +102,7 @@ public class Address implements Serializable {
     }
 
     public Address city(String city) {
-        this.city = city;
+        this.setCity(city);
         return this;
     }
 
@@ -112,7 +115,7 @@ public class Address implements Serializable {
     }
 
     public Address country(String country) {
-        this.country = country;
+        this.setCountry(country);
         return this;
     }
 

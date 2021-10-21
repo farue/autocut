@@ -279,7 +279,7 @@ class WashHistoryResourceIT {
         WashHistory partialUpdatedWashHistory = new WashHistory();
         partialUpdatedWashHistory.setId(washHistory.getId());
 
-        partialUpdatedWashHistory.reservationDate(UPDATED_RESERVATION_DATE);
+        partialUpdatedWashHistory.usingDate(UPDATED_USING_DATE).reservationDate(UPDATED_RESERVATION_DATE);
 
         restWashHistoryMockMvc
             .perform(
@@ -293,7 +293,7 @@ class WashHistoryResourceIT {
         List<WashHistory> washHistoryList = washHistoryRepository.findAll();
         assertThat(washHistoryList).hasSize(databaseSizeBeforeUpdate);
         WashHistory testWashHistory = washHistoryList.get(washHistoryList.size() - 1);
-        assertThat(testWashHistory.getUsingDate()).isEqualTo(DEFAULT_USING_DATE);
+        assertThat(testWashHistory.getUsingDate()).isEqualTo(UPDATED_USING_DATE);
         assertThat(testWashHistory.getReservationDate()).isEqualTo(UPDATED_RESERVATION_DATE);
         // ignore lastModifiedDate
         // assertThat(testWashHistory.getLastModifiedDate()).isEqualTo(DEFAULT_LAST_MODIFIED_DATE);

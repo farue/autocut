@@ -1,16 +1,16 @@
 jest.mock('@ngx-translate/core');
 jest.mock('app/core/auth/account.service');
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormBuilder } from '@angular/forms';
-import { throwError, of } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {FormBuilder} from '@angular/forms';
+import {of, throwError} from 'rxjs';
+import {TranslateService} from '@ngx-translate/core';
 
-import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/auth/account.model';
+import {AccountService} from 'app/core/auth/account.service';
+import {Account} from 'app/core/auth/account.model';
 
-import { SettingsComponent } from './settings.component';
+import {SettingsComponent} from './settings.component';
 
 describe('Component Tests', () => {
   describe('SettingsComponent', () => {
@@ -22,7 +22,7 @@ describe('Component Tests', () => {
       lastName: 'Doe',
       activated: true,
       email: 'john.doe@mail.com',
-      langKey: 'en',
+      langKey: 'de',
       login: 'john',
       authorities: [],
       imageUrl: '',
@@ -55,7 +55,7 @@ describe('Component Tests', () => {
         firstName: 'John',
         lastName: 'Doe',
         email: 'john.doe@mail.com',
-        langKey: 'en',
+        langKey: 'de',
       };
 
       // WHEN

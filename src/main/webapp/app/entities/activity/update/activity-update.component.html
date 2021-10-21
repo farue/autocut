@@ -30,8 +30,9 @@
           <label class="form-control-label" jhiTranslate="autocutApp.activity.term" for="field_term">Term</label>
           <select class="form-control" name="term" formControlName="term" id="field_term" data-cy="term">
             <option [ngValue]="null">{{ 'autocutApp.SemesterTerms.null' | translate }}</option>
-            <option value="SUMMER_TERM">{{ 'autocutApp.SemesterTerms.SUMMER_TERM' | translate }}</option>
-            <option value="WINTER_TERM">{{ 'autocutApp.SemesterTerms.WINTER_TERM' | translate }}</option>
+            <option *ngFor="let semesterTerms of semesterTermsValues" [value]="semesterTerms">
+              {{ 'autocutApp.SemesterTerms.' + semesterTerms | translate }}
+            </option>
           </select>
           <div *ngIf="editForm.get('term')!.invalid && (editForm.get('term')!.dirty || editForm.get('term')!.touched)">
             <small class="form-text text-danger" *ngIf="editForm.get('term')?.errors?.required" jhiTranslate="entity.validation.required">
@@ -147,7 +148,7 @@
       </div>
 
       <div>
-        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
           <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
 

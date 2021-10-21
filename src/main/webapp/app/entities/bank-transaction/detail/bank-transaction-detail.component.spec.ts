@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ActivatedRoute} from '@angular/router';
+import {of} from 'rxjs';
 
-import { BankTransactionDetailComponent } from './bank-transaction-detail.component';
+import {BankTransactionDetailComponent} from './bank-transaction-detail.component';
 
 describe('Component Tests', () => {
   describe('BankTransaction Management Detail Component', () => {
@@ -31,7 +31,7 @@ describe('Component Tests', () => {
         comp.ngOnInit();
 
         // THEN
-        expect(comp.bankTransaction).toEqual(jasmine.objectContaining({ id: 123 }));
+        expect(comp.bankTransaction).toEqual(expect.objectContaining({ id: 123 }));
       });
     });
   });

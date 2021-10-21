@@ -1,20 +1,20 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
-import { isPresent } from 'app/core/util/operators';
-import { ApplicationConfigService } from 'app/core/config/application-config.service';
-import { createRequestOption } from 'app/core/request/request-util';
-import { IAddress, getAddressIdentifier } from '../address.model';
+import {isPresent} from 'app/core/util/operators';
+import {ApplicationConfigService} from 'app/core/config/application-config.service';
+import {createRequestOption} from 'app/core/request/request-util';
+import {getAddressIdentifier, IAddress} from '../address.model';
 
 export type EntityResponseType = HttpResponse<IAddress>;
 export type EntityArrayResponseType = HttpResponse<IAddress[]>;
 
 @Injectable({ providedIn: 'root' })
 export class AddressService {
-  public resourceUrl = this.applicationConfigService.getEndpointFor('api/addresses');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/addresses');
 
-  constructor(protected http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(address: IAddress): Observable<EntityResponseType> {
     return this.http.post<IAddress>(this.resourceUrl, address, { observe: 'response' });

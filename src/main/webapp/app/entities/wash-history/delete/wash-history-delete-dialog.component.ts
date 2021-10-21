@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { IWashHistory } from '../wash-history.model';
-import { WashHistoryService } from '../service/wash-history.service';
+import {IWashHistory} from '../wash-history.model';
+import {WashHistoryService} from '../service/wash-history.service';
 
 @Component({
   templateUrl: './wash-history-delete-dialog.component.html',
@@ -10,7 +10,7 @@ import { WashHistoryService } from '../service/wash-history.service';
 export class WashHistoryDeleteDialogComponent {
   washHistory?: IWashHistory;
 
-  constructor(protected washHistoryService: WashHistoryService, public activeModal: NgbActiveModal) {}
+  constructor(protected washHistoryService: WashHistoryService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

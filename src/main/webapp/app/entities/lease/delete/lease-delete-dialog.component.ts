@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { ILease } from '../lease.model';
-import { LeaseService } from '../service/lease.service';
+import {ILease} from '../lease.model';
+import {LeaseService} from '../service/lease.service';
 
 @Component({
   templateUrl: './lease-delete-dialog.component.html',
@@ -10,7 +10,7 @@ import { LeaseService } from '../service/lease.service';
 export class LeaseDeleteDialogComponent {
   lease?: ILease;
 
-  constructor(protected leaseService: LeaseService, public activeModal: NgbActiveModal) {}
+  constructor(protected leaseService: LeaseService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

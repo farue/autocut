@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ActivatedRoute} from '@angular/router';
+import {of} from 'rxjs';
 
-import { ApartmentDetailComponent } from './apartment-detail.component';
+import {ApartmentDetailComponent} from './apartment-detail.component';
 
 describe('Component Tests', () => {
   describe('Apartment Management Detail Component', () => {
@@ -31,7 +31,7 @@ describe('Component Tests', () => {
         comp.ngOnInit();
 
         // THEN
-        expect(comp.apartment).toEqual(jasmine.objectContaining({ id: 123 }));
+        expect(comp.apartment).toEqual(expect.objectContaining({ id: 123 }));
       });
     });
   });

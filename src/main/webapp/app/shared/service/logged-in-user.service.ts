@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from 'app/admin/user-management/user-management.model';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { SERVER_API_URL } from 'app/app.constants';
 import { Tenant } from 'app/entities/tenant/tenant.model';
 import { Lease } from 'app/entities/lease/lease.model';
 import { WashHistory } from 'app/entities/wash-history/wash-history.model';
@@ -15,12 +14,13 @@ import { dateToString, toDate } from 'app/core/util/date-util';
 import { TransactionBook } from 'app/entities/transaction/transaction-book.model';
 import * as dayjs from 'dayjs';
 import { InternalTransaction } from 'app/entities/internal-transaction/internal-transaction.model';
+import { ApplicationConfigService } from '../../core/config/application-config.service';
 
 @Injectable({ providedIn: 'root' })
 export class LoggedInUserService {
-  public resourceUrl = SERVER_API_URL + 'api/me';
+  public resourceUrl = this.applicationConfigService.getEndpointFor('api/me');
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
 
   user(): Observable<User> {
     return this.http.get<User>(this.resourceUrl);

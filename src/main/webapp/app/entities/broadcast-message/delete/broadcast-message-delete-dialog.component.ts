@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { IBroadcastMessage } from '../broadcast-message.model';
-import { BroadcastMessageService } from '../service/broadcast-message.service';
+import {IBroadcastMessage} from '../broadcast-message.model';
+import {BroadcastMessageService} from '../service/broadcast-message.service';
 
 @Component({
   templateUrl: './broadcast-message-delete-dialog.component.html',
@@ -10,7 +10,7 @@ import { BroadcastMessageService } from '../service/broadcast-message.service';
 export class BroadcastMessageDeleteDialogComponent {
   broadcastMessage?: IBroadcastMessage;
 
-  constructor(protected broadcastMessageService: BroadcastMessageService, public activeModal: NgbActiveModal) {}
+  constructor(protected broadcastMessageService: BroadcastMessageService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

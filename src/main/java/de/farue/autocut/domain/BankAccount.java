@@ -2,7 +2,8 @@ package de.farue.autocut.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -18,6 +19,7 @@ public class BankAccount implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -35,17 +37,18 @@ public class BankAccount implements Serializable {
     private String iban;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public BankAccount id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public BankAccount id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public String getName() {
@@ -53,7 +56,7 @@ public class BankAccount implements Serializable {
     }
 
     public BankAccount name(String name) {
-        this.name = name;
+        this.setName(name);
         return this;
     }
 
@@ -66,7 +69,7 @@ public class BankAccount implements Serializable {
     }
 
     public BankAccount bic(String bic) {
-        this.bic = bic;
+        this.setBic(bic);
         return this;
     }
 
@@ -79,7 +82,7 @@ public class BankAccount implements Serializable {
     }
 
     public BankAccount iban(String iban) {
-        this.iban = iban;
+        this.setIban(iban);
         return this;
     }
 

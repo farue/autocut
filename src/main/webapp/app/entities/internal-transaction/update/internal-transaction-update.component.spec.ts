@@ -1,18 +1,18 @@
 jest.mock('@angular/router');
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { of, Subject } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {HttpResponse} from '@angular/common/http';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {FormBuilder} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {of, Subject} from 'rxjs';
 
-import { InternalTransactionService } from '../service/internal-transaction.service';
-import { IInternalTransaction, InternalTransaction } from '../internal-transaction.model';
-import { ITransactionBook } from 'app/entities/transaction-book/transaction-book.model';
-import { TransactionBookService } from 'app/entities/transaction-book/service/transaction-book.service';
+import {InternalTransactionService} from '../service/internal-transaction.service';
+import {IInternalTransaction, InternalTransaction} from '../internal-transaction.model';
+import {ITransactionBook} from 'app/entities/transaction-book/transaction-book.model';
+import {TransactionBookService} from 'app/entities/transaction-book/service/transaction-book.service';
 
-import { InternalTransactionUpdateComponent } from './internal-transaction-update.component';
+import {InternalTransactionUpdateComponent} from './internal-transaction-update.component';
 
 describe('Component Tests', () => {
   describe('InternalTransaction Management Update Component', () => {
@@ -42,14 +42,14 @@ describe('Component Tests', () => {
     describe('ngOnInit', () => {
       it('Should call InternalTransaction query and add missing value', () => {
         const internalTransaction: IInternalTransaction = { id: 456 };
-        const lefts: IInternalTransaction[] = [{ id: 75979 }];
+        const lefts: IInternalTransaction[] = [{ id: 38547 }];
         internalTransaction.lefts = lefts;
 
-        const internalTransactionCollection: IInternalTransaction[] = [{ id: 24572 }];
-        spyOn(internalTransactionService, 'query').and.returnValue(of(new HttpResponse({ body: internalTransactionCollection })));
+        const internalTransactionCollection: IInternalTransaction[] = [{ id: 11183 }];
+        jest.spyOn(internalTransactionService, 'query').mockReturnValue(of(new HttpResponse({ body: internalTransactionCollection })));
         const additionalInternalTransactions = [...lefts];
         const expectedCollection: IInternalTransaction[] = [...additionalInternalTransactions, ...internalTransactionCollection];
-        spyOn(internalTransactionService, 'addInternalTransactionToCollectionIfMissing').and.returnValue(expectedCollection);
+        jest.spyOn(internalTransactionService, 'addInternalTransactionToCollectionIfMissing').mockReturnValue(expectedCollection);
 
         activatedRoute.data = of({ internalTransaction });
         comp.ngOnInit();
@@ -64,14 +64,14 @@ describe('Component Tests', () => {
 
       it('Should call TransactionBook query and add missing value', () => {
         const internalTransaction: IInternalTransaction = { id: 456 };
-        const transactionBook: ITransactionBook = { id: 32942 };
+        const transactionBook: ITransactionBook = { id: 24194 };
         internalTransaction.transactionBook = transactionBook;
 
-        const transactionBookCollection: ITransactionBook[] = [{ id: 94846 }];
-        spyOn(transactionBookService, 'query').and.returnValue(of(new HttpResponse({ body: transactionBookCollection })));
+        const transactionBookCollection: ITransactionBook[] = [{ id: 25757 }];
+        jest.spyOn(transactionBookService, 'query').mockReturnValue(of(new HttpResponse({ body: transactionBookCollection })));
         const additionalTransactionBooks = [transactionBook];
         const expectedCollection: ITransactionBook[] = [...additionalTransactionBooks, ...transactionBookCollection];
-        spyOn(transactionBookService, 'addTransactionBookToCollectionIfMissing').and.returnValue(expectedCollection);
+        jest.spyOn(transactionBookService, 'addTransactionBookToCollectionIfMissing').mockReturnValue(expectedCollection);
 
         activatedRoute.data = of({ internalTransaction });
         comp.ngOnInit();
@@ -86,9 +86,9 @@ describe('Component Tests', () => {
 
       it('Should update editForm', () => {
         const internalTransaction: IInternalTransaction = { id: 456 };
-        const lefts: IInternalTransaction = { id: 39807 };
+        const lefts: IInternalTransaction = { id: 26807 };
         internalTransaction.lefts = [lefts];
-        const transactionBook: ITransactionBook = { id: 15285 };
+        const transactionBook: ITransactionBook = { id: 94360 };
         internalTransaction.transactionBook = transactionBook;
 
         activatedRoute.data = of({ internalTransaction });
@@ -103,10 +103,10 @@ describe('Component Tests', () => {
     describe('save', () => {
       it('Should call update service on save for existing entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<InternalTransaction>>();
         const internalTransaction = { id: 123 };
-        spyOn(internalTransactionService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(internalTransactionService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ internalTransaction });
         comp.ngOnInit();
 
@@ -124,10 +124,10 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<InternalTransaction>>();
         const internalTransaction = new InternalTransaction();
-        spyOn(internalTransactionService, 'create').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(internalTransactionService, 'create').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ internalTransaction });
         comp.ngOnInit();
 
@@ -145,10 +145,10 @@ describe('Component Tests', () => {
 
       it('Should set isSaving to false on error', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<InternalTransaction>>();
         const internalTransaction = { id: 123 };
-        spyOn(internalTransactionService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(internalTransactionService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ internalTransaction });
         comp.ngOnInit();
 

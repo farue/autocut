@@ -69,27 +69,25 @@ public class TenantService {
 
         return tenantRepository
             .findById(tenant.getId())
-            .map(
-                existingTenant -> {
-                    if (tenant.getFirstName() != null) {
-                        existingTenant.setFirstName(tenant.getFirstName());
-                    }
-                    if (tenant.getLastName() != null) {
-                        existingTenant.setLastName(tenant.getLastName());
-                    }
-                    if (tenant.getPictureId() != null) {
-                        existingTenant.setPictureId(tenant.getPictureId());
-                    }
-                    if (tenant.getPictureIdContentType() != null) {
-                        existingTenant.setPictureIdContentType(tenant.getPictureIdContentType());
-                    }
-                    if (tenant.getVerified() != null) {
-                        existingTenant.setVerified(tenant.getVerified());
-                    }
-
-                    return existingTenant;
+            .map(existingTenant -> {
+                if (tenant.getFirstName() != null) {
+                    existingTenant.setFirstName(tenant.getFirstName());
                 }
-            )
+                if (tenant.getLastName() != null) {
+                    existingTenant.setLastName(tenant.getLastName());
+                }
+                if (tenant.getPictureId() != null) {
+                    existingTenant.setPictureId(tenant.getPictureId());
+                }
+                if (tenant.getPictureIdContentType() != null) {
+                    existingTenant.setPictureIdContentType(tenant.getPictureIdContentType());
+                }
+                if (tenant.getVerified() != null) {
+                    existingTenant.setVerified(tenant.getVerified());
+                }
+
+                return existingTenant;
+            })
             .map(tenantRepository::save);
     }
 

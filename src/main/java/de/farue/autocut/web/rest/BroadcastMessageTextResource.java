@@ -106,7 +106,7 @@ public class BroadcastMessageTextResource {
      * or with status {@code 500 (Internal Server Error)} if the broadcastMessageText couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/broadcast-message-texts/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/broadcast-message-texts/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<BroadcastMessageText> partialUpdateBroadcastMessageText(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody BroadcastMessageText broadcastMessageText
@@ -125,18 +125,16 @@ public class BroadcastMessageTextResource {
 
         Optional<BroadcastMessageText> result = broadcastMessageTextRepository
             .findById(broadcastMessageText.getId())
-            .map(
-                existingBroadcastMessageText -> {
-                    if (broadcastMessageText.getLangKey() != null) {
-                        existingBroadcastMessageText.setLangKey(broadcastMessageText.getLangKey());
-                    }
-                    if (broadcastMessageText.getText() != null) {
-                        existingBroadcastMessageText.setText(broadcastMessageText.getText());
-                    }
-
-                    return existingBroadcastMessageText;
+            .map(existingBroadcastMessageText -> {
+                if (broadcastMessageText.getLangKey() != null) {
+                    existingBroadcastMessageText.setLangKey(broadcastMessageText.getLangKey());
                 }
-            )
+                if (broadcastMessageText.getText() != null) {
+                    existingBroadcastMessageText.setText(broadcastMessageText.getText());
+                }
+
+                return existingBroadcastMessageText;
+            })
             .map(broadcastMessageTextRepository::save);
 
         return ResponseUtil.wrapOrNotFound(

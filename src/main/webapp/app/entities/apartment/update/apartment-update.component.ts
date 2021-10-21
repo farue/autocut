@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
+import {FormBuilder, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
+import {finalize, map} from 'rxjs/operators';
 
-import { IApartment, Apartment } from '../apartment.model';
-import { ApartmentService } from '../service/apartment.service';
-import { IInternetAccess } from 'app/entities/internet-access/internet-access.model';
-import { InternetAccessService } from 'app/entities/internet-access/service/internet-access.service';
-import { IAddress } from 'app/entities/address/address.model';
-import { AddressService } from 'app/entities/address/service/address.service';
+import {Apartment, IApartment} from '../apartment.model';
+import {ApartmentService} from '../service/apartment.service';
+import {IInternetAccess} from 'app/entities/internet-access/internet-access.model';
+import {InternetAccessService} from 'app/entities/internet-access/service/internet-access.service';
+import {IAddress} from 'app/entities/address/address.model';
+import {AddressService} from 'app/entities/address/service/address.service';
+import {ApartmentTypes} from 'app/entities/enumerations/apartment-types.model';
 
 @Component({
   selector: 'jhi-apartment-update',
@@ -18,6 +19,7 @@ import { AddressService } from 'app/entities/address/service/address.service';
 })
 export class ApartmentUpdateComponent implements OnInit {
   isSaving = false;
+  apartmentTypesValues = Object.keys(ApartmentTypes);
 
   internetAccessesCollection: IInternetAccess[] = [];
   addressesSharedCollection: IAddress[] = [];

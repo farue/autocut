@@ -1,6 +1,7 @@
-import { Component, ViewChild, OnInit, AfterViewInit, ElementRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+
 import { LoginService } from 'app/login/login.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -12,7 +13,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class LoginComponent implements OnInit, AfterViewInit {
   @ViewChild('username', { static: false })
-  username?: ElementRef;
+  username!: ElementRef;
 
   authenticationError = false;
   accountNotVerified = false;
@@ -40,9 +41,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (this.username) {
-      this.username.nativeElement.focus();
-    }
+    this.username.nativeElement.focus();
   }
 
   login(): void {
@@ -63,7 +62,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
           }
         },
         (err: HttpErrorResponse) => {
-          if (err.error.status === 401 && err.error.type === 'https://www.jhipster.tech/problem/user-not-verified') {
+          if (err.error?.status === 401 && err.error?.type === 'https://www.jhipster.tech/problem/user-not-verified') {
             this.accountNotVerified = true;
           } else {
             this.authenticationError = true;

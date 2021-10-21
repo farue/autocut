@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { IAddress } from '../address.model';
-import { AddressService } from '../service/address.service';
+import {IAddress} from '../address.model';
+import {AddressService} from '../service/address.service';
 
 @Component({
   templateUrl: './address-delete-dialog.component.html',
@@ -10,7 +10,7 @@ import { AddressService } from '../service/address.service';
 export class AddressDeleteDialogComponent {
   address?: IAddress;
 
-  constructor(protected addressService: AddressService, public activeModal: NgbActiveModal) {}
+  constructor(protected addressService: AddressService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

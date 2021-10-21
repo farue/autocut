@@ -1,12 +1,12 @@
-import { ElementRef } from '@angular/core';
-import { ComponentFixture, TestBed, inject, tick, fakeAsync } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { of, throwError } from 'rxjs';
+import {ElementRef} from '@angular/core';
+import {ComponentFixture, fakeAsync, inject, TestBed, tick} from '@angular/core/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {FormBuilder} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {of, throwError} from 'rxjs';
 
-import { PasswordResetFinishComponent } from './password-reset-finish.component';
-import { PasswordResetFinishService } from './password-reset-finish.service';
+import {PasswordResetFinishComponent} from './password-reset-finish.component';
+import {PasswordResetFinishService} from './password-reset-finish.service';
 
 describe('Component Tests', () => {
   describe('PasswordResetFinishComponent', () => {
@@ -65,7 +65,7 @@ describe('Component Tests', () => {
     it('should update success to true after resetting password', inject(
       [PasswordResetFinishService],
       fakeAsync((service: PasswordResetFinishService) => {
-        spyOn(service, 'save').and.returnValue(of({}));
+        jest.spyOn(service, 'save').mockReturnValue(of({}));
         comp.passwordForm.patchValue({
           newPassword: 'password',
           confirmPassword: 'password',
@@ -82,7 +82,7 @@ describe('Component Tests', () => {
     it('should notify of generic error', inject(
       [PasswordResetFinishService],
       fakeAsync((service: PasswordResetFinishService) => {
-        spyOn(service, 'save').and.returnValue(throwError('ERROR'));
+        jest.spyOn(service, 'save').mockReturnValue(throwError('ERROR'));
         comp.passwordForm.patchValue({
           newPassword: 'password',
           confirmPassword: 'password',

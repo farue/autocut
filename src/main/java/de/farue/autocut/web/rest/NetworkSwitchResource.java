@@ -107,7 +107,7 @@ public class NetworkSwitchResource {
      * or with status {@code 500 (Internal Server Error)} if the networkSwitch couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/network-switches/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/network-switches/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<NetworkSwitch> partialUpdateNetworkSwitch(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody NetworkSwitch networkSwitch

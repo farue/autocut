@@ -1,13 +1,13 @@
 jest.mock('@ng-bootstrap/ng-bootstrap');
 
-import { ComponentFixture, TestBed, waitForAsync, inject, fakeAsync, tick } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { of } from 'rxjs';
+import {ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync} from '@angular/core/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {of} from 'rxjs';
 
-import { UserManagementService } from '../service/user-management.service';
+import {UserManagementService} from '../service/user-management.service';
 
-import { UserManagementDeleteDialogComponent } from './user-management-delete-dialog.component';
+import {UserManagementDeleteDialogComponent} from './user-management-delete-dialog.component';
 
 describe('Component Tests', () => {
   describe('User Management Delete Component', () => {
@@ -40,7 +40,7 @@ describe('Component Tests', () => {
         [],
         fakeAsync(() => {
           // GIVEN
-          spyOn(service, 'delete').and.returnValue(of({}));
+          jest.spyOn(service, 'delete').mockReturnValue(of({}));
 
           // WHEN
           comp.confirmDelete('user');

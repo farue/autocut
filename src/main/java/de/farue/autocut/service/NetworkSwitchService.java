@@ -73,18 +73,16 @@ public class NetworkSwitchService {
 
         return networkSwitchRepository
             .findById(networkSwitch.getId())
-            .map(
-                existingNetworkSwitch -> {
-                    if (networkSwitch.getInterfaceName() != null) {
-                        existingNetworkSwitch.setInterfaceName(networkSwitch.getInterfaceName());
-                    }
-                    if (networkSwitch.getSshHost() != null) {
-                        existingNetworkSwitch.setSshHost(networkSwitch.getSshHost());
-                    }
-
-                    return existingNetworkSwitch;
+            .map(existingNetworkSwitch -> {
+                if (networkSwitch.getInterfaceName() != null) {
+                    existingNetworkSwitch.setInterfaceName(networkSwitch.getInterfaceName());
                 }
-            )
+                if (networkSwitch.getSshHost() != null) {
+                    existingNetworkSwitch.setSshHost(networkSwitch.getSshHost());
+                }
+
+                return existingNetworkSwitch;
+            })
             .map(networkSwitchRepository::save);
     }
 

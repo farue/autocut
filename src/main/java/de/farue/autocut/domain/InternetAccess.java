@@ -3,7 +3,8 @@ package de.farue.autocut.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -19,6 +20,7 @@ public class InternetAccess implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -46,17 +48,18 @@ public class InternetAccess implements Serializable {
     private Apartment apartment;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public InternetAccess id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public InternetAccess id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public String getIp1() {
@@ -64,7 +67,7 @@ public class InternetAccess implements Serializable {
     }
 
     public InternetAccess ip1(String ip1) {
-        this.ip1 = ip1;
+        this.setIp1(ip1);
         return this;
     }
 
@@ -77,7 +80,7 @@ public class InternetAccess implements Serializable {
     }
 
     public InternetAccess ip2(String ip2) {
-        this.ip2 = ip2;
+        this.setIp2(ip2);
         return this;
     }
 
@@ -90,7 +93,7 @@ public class InternetAccess implements Serializable {
     }
 
     public InternetAccess switchInterface(String switchInterface) {
-        this.switchInterface = switchInterface;
+        this.setSwitchInterface(switchInterface);
         return this;
     }
 
@@ -103,7 +106,7 @@ public class InternetAccess implements Serializable {
     }
 
     public InternetAccess port(Integer port) {
-        this.port = port;
+        this.setPort(port);
         return this;
     }
 
@@ -115,22 +118,17 @@ public class InternetAccess implements Serializable {
         return this.networkSwitch;
     }
 
+    public void setNetworkSwitch(NetworkSwitch networkSwitch) {
+        this.networkSwitch = networkSwitch;
+    }
+
     public InternetAccess networkSwitch(NetworkSwitch networkSwitch) {
         this.setNetworkSwitch(networkSwitch);
         return this;
     }
 
-    public void setNetworkSwitch(NetworkSwitch networkSwitch) {
-        this.networkSwitch = networkSwitch;
-    }
-
     public Apartment getApartment() {
         return this.apartment;
-    }
-
-    public InternetAccess apartment(Apartment apartment) {
-        this.setApartment(apartment);
-        return this;
     }
 
     public void setApartment(Apartment apartment) {
@@ -141,6 +139,11 @@ public class InternetAccess implements Serializable {
             apartment.setInternetAccess(this);
         }
         this.apartment = apartment;
+    }
+
+    public InternetAccess apartment(Apartment apartment) {
+        this.setApartment(apartment);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

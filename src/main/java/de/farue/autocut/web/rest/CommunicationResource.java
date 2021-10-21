@@ -105,7 +105,7 @@ public class CommunicationResource {
      * or with status {@code 500 (Internal Server Error)} if the communication couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/communications/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/communications/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Communication> partialUpdateCommunication(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody Communication communication
@@ -124,24 +124,22 @@ public class CommunicationResource {
 
         Optional<Communication> result = communicationRepository
             .findById(communication.getId())
-            .map(
-                existingCommunication -> {
-                    if (communication.getSubject() != null) {
-                        existingCommunication.setSubject(communication.getSubject());
-                    }
-                    if (communication.getText() != null) {
-                        existingCommunication.setText(communication.getText());
-                    }
-                    if (communication.getNote() != null) {
-                        existingCommunication.setNote(communication.getNote());
-                    }
-                    if (communication.getDate() != null) {
-                        existingCommunication.setDate(communication.getDate());
-                    }
-
-                    return existingCommunication;
+            .map(existingCommunication -> {
+                if (communication.getSubject() != null) {
+                    existingCommunication.setSubject(communication.getSubject());
                 }
-            )
+                if (communication.getText() != null) {
+                    existingCommunication.setText(communication.getText());
+                }
+                if (communication.getNote() != null) {
+                    existingCommunication.setNote(communication.getNote());
+                }
+                if (communication.getDate() != null) {
+                    existingCommunication.setDate(communication.getDate());
+                }
+
+                return existingCommunication;
+            })
             .map(communicationRepository::save);
 
         return ResponseUtil.wrapOrNotFound(

@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
+import {FormBuilder, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
+import {finalize} from 'rxjs/operators';
 
-import { ILaundryMachine, LaundryMachine } from '../laundry-machine.model';
-import { LaundryMachineService } from '../service/laundry-machine.service';
+import {ILaundryMachine, LaundryMachine} from '../laundry-machine.model';
+import {LaundryMachineService} from '../service/laundry-machine.service';
+import {LaundryMachineType} from 'app/entities/enumerations/laundry-machine-type.model';
 
 @Component({
   selector: 'jhi-laundry-machine-update',
@@ -14,6 +15,7 @@ import { LaundryMachineService } from '../service/laundry-machine.service';
 })
 export class LaundryMachineUpdateComponent implements OnInit {
   isSaving = false;
+  laundryMachineTypeValues = Object.keys(LaundryMachineType);
 
   editForm = this.fb.group({
     id: [],

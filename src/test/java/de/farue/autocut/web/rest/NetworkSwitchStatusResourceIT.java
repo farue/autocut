@@ -354,7 +354,7 @@ class NetworkSwitchStatusResourceIT {
         NetworkSwitchStatus partialUpdatedNetworkSwitchStatus = new NetworkSwitchStatus();
         partialUpdatedNetworkSwitchStatus.setId(networkSwitchStatus.getId());
 
-        partialUpdatedNetworkSwitchStatus.port(UPDATED_PORT).name(UPDATED_NAME).speed(UPDATED_SPEED).type(UPDATED_TYPE);
+        partialUpdatedNetworkSwitchStatus.name(UPDATED_NAME).status(UPDATED_STATUS).vlan(UPDATED_VLAN).timestamp(UPDATED_TIMESTAMP);
 
         restNetworkSwitchStatusMockMvc
             .perform(
@@ -368,13 +368,13 @@ class NetworkSwitchStatusResourceIT {
         List<NetworkSwitchStatus> networkSwitchStatusList = networkSwitchStatusRepository.findAll();
         assertThat(networkSwitchStatusList).hasSize(databaseSizeBeforeUpdate);
         NetworkSwitchStatus testNetworkSwitchStatus = networkSwitchStatusList.get(networkSwitchStatusList.size() - 1);
-        assertThat(testNetworkSwitchStatus.getPort()).isEqualTo(UPDATED_PORT);
+        assertThat(testNetworkSwitchStatus.getPort()).isEqualTo(DEFAULT_PORT);
         assertThat(testNetworkSwitchStatus.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testNetworkSwitchStatus.getStatus()).isEqualTo(DEFAULT_STATUS);
-        assertThat(testNetworkSwitchStatus.getVlan()).isEqualTo(DEFAULT_VLAN);
-        assertThat(testNetworkSwitchStatus.getSpeed()).isEqualTo(UPDATED_SPEED);
-        assertThat(testNetworkSwitchStatus.getType()).isEqualTo(UPDATED_TYPE);
-        assertThat(testNetworkSwitchStatus.getTimestamp()).isEqualTo(DEFAULT_TIMESTAMP);
+        assertThat(testNetworkSwitchStatus.getStatus()).isEqualTo(UPDATED_STATUS);
+        assertThat(testNetworkSwitchStatus.getVlan()).isEqualTo(UPDATED_VLAN);
+        assertThat(testNetworkSwitchStatus.getSpeed()).isEqualTo(DEFAULT_SPEED);
+        assertThat(testNetworkSwitchStatus.getType()).isEqualTo(DEFAULT_TYPE);
+        assertThat(testNetworkSwitchStatus.getTimestamp()).isEqualTo(UPDATED_TIMESTAMP);
     }
 
     @Test

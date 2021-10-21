@@ -1,22 +1,22 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 import * as dayjs from 'dayjs';
 
-import { isPresent } from 'app/core/util/operators';
-import { ApplicationConfigService } from 'app/core/config/application-config.service';
-import { createRequestOption } from 'app/core/request/request-util';
-import { IInternalTransaction, getInternalTransactionIdentifier } from '../internal-transaction.model';
+import {isPresent} from 'app/core/util/operators';
+import {ApplicationConfigService} from 'app/core/config/application-config.service';
+import {createRequestOption} from 'app/core/request/request-util';
+import {getInternalTransactionIdentifier, IInternalTransaction} from '../internal-transaction.model';
 
 export type EntityResponseType = HttpResponse<IInternalTransaction>;
 export type EntityArrayResponseType = HttpResponse<IInternalTransaction[]>;
 
 @Injectable({ providedIn: 'root' })
 export class InternalTransactionService {
-  public resourceUrl = this.applicationConfigService.getEndpointFor('api/internal-transactions');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/internal-transactions');
 
-  constructor(protected http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(internalTransaction: IInternalTransaction): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(internalTransaction);

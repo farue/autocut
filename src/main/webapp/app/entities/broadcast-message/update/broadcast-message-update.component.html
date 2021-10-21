@@ -21,14 +21,9 @@
           <label class="form-control-label" jhiTranslate="autocutApp.broadcastMessage.type" for="field_type">Type</label>
           <select class="form-control" name="type" formControlName="type" id="field_type" data-cy="type">
             <option [ngValue]="null">{{ 'autocutApp.BroadcastMessageType.null' | translate }}</option>
-            <option value="PRIMARY">{{ 'autocutApp.BroadcastMessageType.PRIMARY' | translate }}</option>
-            <option value="SECONDARY">{{ 'autocutApp.BroadcastMessageType.SECONDARY' | translate }}</option>
-            <option value="SUCCESS">{{ 'autocutApp.BroadcastMessageType.SUCCESS' | translate }}</option>
-            <option value="DANGER">{{ 'autocutApp.BroadcastMessageType.DANGER' | translate }}</option>
-            <option value="WARNING">{{ 'autocutApp.BroadcastMessageType.WARNING' | translate }}</option>
-            <option value="INFO">{{ 'autocutApp.BroadcastMessageType.INFO' | translate }}</option>
-            <option value="LIGHT">{{ 'autocutApp.BroadcastMessageType.LIGHT' | translate }}</option>
-            <option value="DARK">{{ 'autocutApp.BroadcastMessageType.DARK' | translate }}</option>
+            <option *ngFor="let broadcastMessageType of broadcastMessageTypeValues" [value]="broadcastMessageType">
+              {{ 'autocutApp.BroadcastMessageType.' + broadcastMessageType | translate }}
+            </option>
           </select>
           <div *ngIf="editForm.get('type')!.invalid && (editForm.get('type')!.dirty || editForm.get('type')!.touched)">
             <small class="form-text text-danger" *ngIf="editForm.get('type')?.errors?.required" jhiTranslate="entity.validation.required">
@@ -88,7 +83,7 @@
       </div>
 
       <div>
-        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
           <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
 

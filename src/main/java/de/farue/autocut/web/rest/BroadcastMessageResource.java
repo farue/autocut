@@ -106,7 +106,7 @@ public class BroadcastMessageResource {
      * or with status {@code 500 (Internal Server Error)} if the broadcastMessage couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/broadcast-messages/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/broadcast-messages/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<BroadcastMessage> partialUpdateBroadcastMessage(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody BroadcastMessage broadcastMessage
@@ -125,27 +125,25 @@ public class BroadcastMessageResource {
 
         Optional<BroadcastMessage> result = broadcastMessageRepository
             .findById(broadcastMessage.getId())
-            .map(
-                existingBroadcastMessage -> {
-                    if (broadcastMessage.getType() != null) {
-                        existingBroadcastMessage.setType(broadcastMessage.getType());
-                    }
-                    if (broadcastMessage.getStart() != null) {
-                        existingBroadcastMessage.setStart(broadcastMessage.getStart());
-                    }
-                    if (broadcastMessage.getEnd() != null) {
-                        existingBroadcastMessage.setEnd(broadcastMessage.getEnd());
-                    }
-                    if (broadcastMessage.getUsersOnly() != null) {
-                        existingBroadcastMessage.setUsersOnly(broadcastMessage.getUsersOnly());
-                    }
-                    if (broadcastMessage.getDismissible() != null) {
-                        existingBroadcastMessage.setDismissible(broadcastMessage.getDismissible());
-                    }
-
-                    return existingBroadcastMessage;
+            .map(existingBroadcastMessage -> {
+                if (broadcastMessage.getType() != null) {
+                    existingBroadcastMessage.setType(broadcastMessage.getType());
                 }
-            )
+                if (broadcastMessage.getStart() != null) {
+                    existingBroadcastMessage.setStart(broadcastMessage.getStart());
+                }
+                if (broadcastMessage.getEnd() != null) {
+                    existingBroadcastMessage.setEnd(broadcastMessage.getEnd());
+                }
+                if (broadcastMessage.getUsersOnly() != null) {
+                    existingBroadcastMessage.setUsersOnly(broadcastMessage.getUsersOnly());
+                }
+                if (broadcastMessage.getDismissible() != null) {
+                    existingBroadcastMessage.setDismissible(broadcastMessage.getDismissible());
+                }
+
+                return existingBroadcastMessage;
+            })
             .map(broadcastMessageRepository::save);
 
         return ResponseUtil.wrapOrNotFound(

@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { INetworkSwitch } from '../network-switch.model';
-import { NetworkSwitchService } from '../service/network-switch.service';
+import {INetworkSwitch} from '../network-switch.model';
+import {NetworkSwitchService} from '../service/network-switch.service';
 
 @Component({
   templateUrl: './network-switch-delete-dialog.component.html',
@@ -10,7 +10,7 @@ import { NetworkSwitchService } from '../service/network-switch.service';
 export class NetworkSwitchDeleteDialogComponent {
   networkSwitch?: INetworkSwitch;
 
-  constructor(protected networkSwitchService: NetworkSwitchService, public activeModal: NgbActiveModal) {}
+  constructor(protected networkSwitchService: NetworkSwitchService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

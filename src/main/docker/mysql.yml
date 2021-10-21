@@ -2,11 +2,10 @@
 version: '3.8'
 services:
   autocut-mysql:
-    image: mysql:8.0.23
+    image: mysql:8.0.26
     # volumes:
     #   - ~/volumes/jhipster/autocut/mysql/:/var/lib/mysql/
     environment:
-      - TZ=Europe/Berlin
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
       - MYSQL_DATABASE=autocut
     # If you want to expose these ports outside your dev PC,

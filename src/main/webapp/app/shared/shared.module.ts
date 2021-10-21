@@ -1,20 +1,21 @@
-import { NgModule } from '@angular/core';
-import { SharedLibsModule } from './shared-libs.module';
-import { FindLanguageFromKeyPipe } from './language/find-language-from-key.pipe';
-import { TranslateDirective } from './language/translate.directive';
-import { AlertComponent } from './alert/alert.component';
-import { AlertErrorComponent } from './alert/alert-error.component';
-import { HasAnyAuthorityDirective } from './auth/has-any-authority.directive';
-import { DurationPipe } from './date/duration.pipe';
-import { FormatMediumDatetimePipe } from './date/format-medium-datetime.pipe';
-import { FormatMediumDatePipe } from './date/format-medium-date.pipe';
-import { SortByDirective } from './sort/sort-by.directive';
-import { SortDirective } from './sort/sort.directive';
-import { ItemCountComponent } from './pagination/item-count.component';
-import { I18nDatePipe } from 'app/shared/pipes/i18n-date.pipe';
-import { I18nCurrencyPipe } from 'app/shared/pipes/i18n-currency.pipe';
-import { MaterialModule } from 'app/shared/material.module';
-import { I18nPipe } from 'app/shared/pipes/i18n.pipe';
+import {NgModule} from '@angular/core';
+
+import {SharedLibsModule} from './shared-libs.module';
+import {FindLanguageFromKeyPipe} from './language/find-language-from-key.pipe';
+import {TranslateDirective} from './language/translate.directive';
+import {AlertComponent} from './alert/alert.component';
+import {AlertErrorComponent} from './alert/alert-error.component';
+import {HasAnyAuthorityDirective} from './auth/has-any-authority.directive';
+import {DurationPipe} from './date/duration.pipe';
+import {FormatMediumDatetimePipe} from './date/format-medium-datetime.pipe';
+import {FormatMediumDatePipe} from './date/format-medium-date.pipe';
+import {SortByDirective} from './sort/sort-by.directive';
+import {SortDirective} from './sort/sort.directive';
+import {ItemCountComponent} from './pagination/item-count.component';
+import {I18nDatePipe} from 'app/shared/pipes/i18n-date.pipe';
+import {I18nCurrencyPipe} from 'app/shared/pipes/i18n-currency.pipe';
+import {MaterialModule} from 'app/shared/material.module';
+import {I18nPipe} from 'app/shared/pipes/i18n.pipe';
 
 @NgModule({
   imports: [SharedLibsModule, MaterialModule],

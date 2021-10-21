@@ -259,7 +259,7 @@ class GlobalSettingResourceIT {
         GlobalSetting partialUpdatedGlobalSetting = new GlobalSetting();
         partialUpdatedGlobalSetting.setId(globalSetting.getId());
 
-        partialUpdatedGlobalSetting.value(UPDATED_VALUE);
+        partialUpdatedGlobalSetting.valueType(UPDATED_VALUE_TYPE);
 
         restGlobalSettingMockMvc
             .perform(
@@ -274,8 +274,8 @@ class GlobalSettingResourceIT {
         assertThat(globalSettingList).hasSize(databaseSizeBeforeUpdate);
         GlobalSetting testGlobalSetting = globalSettingList.get(globalSettingList.size() - 1);
         assertThat(testGlobalSetting.getKey()).isEqualTo(DEFAULT_KEY);
-        assertThat(testGlobalSetting.getValue()).isEqualTo(UPDATED_VALUE);
-        assertThat(testGlobalSetting.getValueType()).isEqualTo(DEFAULT_VALUE_TYPE);
+        assertThat(testGlobalSetting.getValue()).isEqualTo(DEFAULT_VALUE);
+        assertThat(testGlobalSetting.getValueType()).isEqualTo(UPDATED_VALUE_TYPE);
     }
 
     @Test

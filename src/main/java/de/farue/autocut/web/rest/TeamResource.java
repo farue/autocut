@@ -103,7 +103,7 @@ public class TeamResource {
      * or with status {@code 500 (Internal Server Error)} if the team couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/teams/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/teams/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Team> partialUpdateTeam(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody Team team
@@ -122,15 +122,13 @@ public class TeamResource {
 
         Optional<Team> result = teamRepository
             .findById(team.getId())
-            .map(
-                existingTeam -> {
-                    if (team.getName() != null) {
-                        existingTeam.setName(team.getName());
-                    }
-
-                    return existingTeam;
+            .map(existingTeam -> {
+                if (team.getName() != null) {
+                    existingTeam.setName(team.getName());
                 }
-            )
+
+                return existingTeam;
+            })
             .map(teamRepository::save);
 
         return ResponseUtil.wrapOrNotFound(

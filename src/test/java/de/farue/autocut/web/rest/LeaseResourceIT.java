@@ -230,16 +230,18 @@ class LeaseResourceIT {
             .andExpect(jsonPath("$.[*].pictureContract").value(hasItem(Base64Utils.encodeToString(DEFAULT_PICTURE_CONTRACT))));
     }
 
+    @SuppressWarnings({ "unchecked" })
     void getAllLeasesWithEagerRelationshipsIsEnabled() throws Exception {
-        when(leaseServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl<>(new ArrayList<>()));
+        when(leaseServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restLeaseMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
 
         verify(leaseServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
+    @SuppressWarnings({ "unchecked" })
     void getAllLeasesWithEagerRelationshipsIsNotEnabled() throws Exception {
-        when(leaseServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl<>(new ArrayList<>()));
+        when(leaseServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restLeaseMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
 
@@ -381,11 +383,7 @@ class LeaseResourceIT {
         Lease partialUpdatedLease = new Lease();
         partialUpdatedLease.setId(lease.getId());
 
-        partialUpdatedLease
-            .nr(UPDATED_NR)
-            .start(UPDATED_START)
-            .pictureContract(UPDATED_PICTURE_CONTRACT)
-            .pictureContractContentType(UPDATED_PICTURE_CONTRACT_CONTENT_TYPE);
+        partialUpdatedLease.start(UPDATED_START).end(UPDATED_END);
 
         restLeaseMockMvc
             .perform(
@@ -399,12 +397,12 @@ class LeaseResourceIT {
         List<Lease> leaseList = leaseRepository.findAll();
         assertThat(leaseList).hasSize(databaseSizeBeforeUpdate);
         Lease testLease = leaseList.get(leaseList.size() - 1);
-        assertThat(testLease.getNr()).isEqualTo(UPDATED_NR);
+        assertThat(testLease.getNr()).isEqualTo(DEFAULT_NR);
         assertThat(testLease.getStart()).isEqualTo(UPDATED_START);
-        assertThat(testLease.getEnd()).isEqualTo(DEFAULT_END);
+        assertThat(testLease.getEnd()).isEqualTo(UPDATED_END);
         assertThat(testLease.getBlocked()).isEqualTo(DEFAULT_BLOCKED);
-        assertThat(testLease.getPictureContract()).isEqualTo(UPDATED_PICTURE_CONTRACT);
-        assertThat(testLease.getPictureContractContentType()).isEqualTo(UPDATED_PICTURE_CONTRACT_CONTENT_TYPE);
+        assertThat(testLease.getPictureContract()).isEqualTo(DEFAULT_PICTURE_CONTRACT);
+        assertThat(testLease.getPictureContractContentType()).isEqualTo(DEFAULT_PICTURE_CONTRACT_CONTENT_TYPE);
     }
 
     @Test

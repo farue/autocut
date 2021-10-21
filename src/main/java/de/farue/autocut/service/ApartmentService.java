@@ -53,21 +53,19 @@ public class ApartmentService {
 
         return apartmentRepository
             .findById(apartment.getId())
-            .map(
-                existingApartment -> {
-                    if (apartment.getNr() != null) {
-                        existingApartment.setNr(apartment.getNr());
-                    }
-                    if (apartment.getType() != null) {
-                        existingApartment.setType(apartment.getType());
-                    }
-                    if (apartment.getMaxNumberOfLeases() != null) {
-                        existingApartment.setMaxNumberOfLeases(apartment.getMaxNumberOfLeases());
-                    }
-
-                    return existingApartment;
+            .map(existingApartment -> {
+                if (apartment.getNr() != null) {
+                    existingApartment.setNr(apartment.getNr());
                 }
-            )
+                if (apartment.getType() != null) {
+                    existingApartment.setType(apartment.getType());
+                }
+                if (apartment.getMaxNumberOfLeases() != null) {
+                    existingApartment.setMaxNumberOfLeases(apartment.getMaxNumberOfLeases());
+                }
+
+                return existingApartment;
+            })
             .map(apartmentRepository::save);
     }
 
@@ -111,12 +109,10 @@ public class ApartmentService {
         Address address = addressService.findByStudierendenwerkStreetNrIdentifier(stwApartment.getStreetNoIdentifier());
         return apartmentRepository
             .findOneByNrAndAddress(String.valueOf(stwApartment.getApartmentNr()), address)
-            .map(
-                apartment -> {
-                    verifyApartmentType(apartment, stwApartment);
-                    return apartment;
-                }
-            );
+            .map(apartment -> {
+                verifyApartmentType(apartment, stwApartment);
+                return apartment;
+            });
     }
 
     private void verifyApartmentType(Apartment apartment, StwApartment stwApartment) {

@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
-import { EMPTY, Observable, of } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
+import {ActivatedRouteSnapshot, Resolve, Router} from '@angular/router';
+import {EMPTY, Observable, of} from 'rxjs';
+import {mergeMap} from 'rxjs/operators';
 
-import { BroadcastMessageText, IBroadcastMessageText } from '../broadcast-message-text.model';
-import { BroadcastMessageTextService } from '../service/broadcast-message-text.service';
+import {BroadcastMessageText, IBroadcastMessageText} from '../broadcast-message-text.model';
+import {BroadcastMessageTextService} from '../service/broadcast-message-text.service';
 
 @Injectable({ providedIn: 'root' })
 export class BroadcastMessageTextRoutingResolveService implements Resolve<IBroadcastMessageText> {

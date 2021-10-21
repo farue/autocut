@@ -1,21 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
+import {FormBuilder} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
+import {finalize, map} from 'rxjs/operators';
 
 import * as dayjs from 'dayjs';
-import { DATE_TIME_FORMAT } from 'app/config/input.constants';
+import {DATE_TIME_FORMAT} from 'app/config/input.constants';
 
-import { IWashHistory, WashHistory } from '../wash-history.model';
-import { WashHistoryService } from '../service/wash-history.service';
-import { ITenant } from 'app/entities/tenant/tenant.model';
-import { TenantService } from 'app/entities/tenant/service/tenant.service';
-import { ILaundryMachine } from 'app/entities/laundry-machine/laundry-machine.model';
-import { LaundryMachineService } from 'app/entities/laundry-machine/service/laundry-machine.service';
-import { ILaundryMachineProgram } from 'app/entities/laundry-machine-program/laundry-machine-program.model';
-import { LaundryMachineProgramService } from 'app/entities/laundry-machine-program/service/laundry-machine-program.service';
+import {IWashHistory, WashHistory} from '../wash-history.model';
+import {WashHistoryService} from '../service/wash-history.service';
+import {ITenant} from 'app/entities/tenant/tenant.model';
+import {TenantService} from 'app/entities/tenant/service/tenant.service';
+import {ILaundryMachine} from 'app/entities/laundry-machine/laundry-machine.model';
+import {LaundryMachineService} from 'app/entities/laundry-machine/service/laundry-machine.service';
+import {ILaundryMachineProgram} from 'app/entities/laundry-machine-program/laundry-machine-program.model';
+import {LaundryMachineProgramService} from 'app/entities/laundry-machine-program/service/laundry-machine-program.service';
+import {WashHistoryStatus} from 'app/entities/enumerations/wash-history-status.model';
 
 @Component({
   selector: 'jhi-wash-history-update',
@@ -23,6 +24,7 @@ import { LaundryMachineProgramService } from 'app/entities/laundry-machine-progr
 })
 export class WashHistoryUpdateComponent implements OnInit {
   isSaving = false;
+  washHistoryStatusValues = Object.keys(WashHistoryStatus);
 
   tenantsSharedCollection: ITenant[] = [];
   laundryMachinesSharedCollection: ILaundryMachine[] = [];

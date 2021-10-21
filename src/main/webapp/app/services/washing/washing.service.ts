@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SERVER_API_URL } from 'app/app.constants';
 import { Injectable } from '@angular/core';
 import * as dayjs from 'dayjs';
 import { tap } from 'rxjs/operators';
 import { toDate } from 'app/core/util/date-util';
 import { Machine, Program } from 'app/entities/washing/washing.model';
+import { ApplicationConfigService } from '../../core/config/application-config.service';
 
 export interface ActivateResponse {
   machineId: number;
@@ -16,9 +16,9 @@ export interface ActivateResponse {
 
 @Injectable({ providedIn: 'root' })
 export class WashingService {
-  public resourceUrl = SERVER_API_URL + 'api/washing/laundry-machines';
+  public resourceUrl = this.applicationConfigService.getEndpointFor('api/washing/laundry-machines');
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
 
   getAllMachines(): Observable<Machine[]> {
     return this.http

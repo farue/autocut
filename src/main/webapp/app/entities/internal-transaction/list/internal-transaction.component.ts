@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest } from 'rxjs';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component, OnInit} from '@angular/core';
+import {HttpHeaders, HttpResponse} from '@angular/common/http';
+import {ActivatedRoute, Router} from '@angular/router';
+import {combineLatest} from 'rxjs';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { IInternalTransaction } from '../internal-transaction.model';
+import {IInternalTransaction} from '../internal-transaction.model';
 
-import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
-import { InternalTransactionService } from '../service/internal-transaction.service';
-import { InternalTransactionDeleteDialogComponent } from '../delete/internal-transaction-delete-dialog.component';
+import {ASC, DESC, ITEMS_PER_PAGE, SORT} from 'app/config/pagination.constants';
+import {InternalTransactionService} from '../service/internal-transaction.service';
+import {InternalTransactionDeleteDialogComponent} from '../delete/internal-transaction-delete-dialog.component';
 
 @Component({
   selector: 'jhi-internal-transaction',
@@ -73,7 +73,7 @@ export class InternalTransactionComponent implements OnInit {
   }
 
   protected sort(): string[] {
-    const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
+    const result = [this.predicate + ',' + (this.ascending ? ASC : DESC)];
     if (this.predicate !== 'id') {
       result.push('id');
     }
@@ -83,10 +83,10 @@ export class InternalTransactionComponent implements OnInit {
   protected handleNavigation(): void {
     combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
       const page = params.get('page');
-      const pageNumber = page !== null ? +page : 1;
-      const sort = (params.get('sort') ?? data['defaultSort']).split(',');
+      const pageNumber = +(page ?? 1);
+      const sort = (params.get(SORT) ?? data['defaultSort']).split(',');
       const predicate = sort[0];
-      const ascending = sort[1] === 'asc';
+      const ascending = sort[1] === ASC;
       if (pageNumber !== this.page || predicate !== this.predicate || ascending !== this.ascending) {
         this.predicate = predicate;
         this.ascending = ascending;
@@ -103,7 +103,7 @@ export class InternalTransactionComponent implements OnInit {
         queryParams: {
           page: this.page,
           size: this.itemsPerPage,
-          sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc'),
+          sort: this.predicate + ',' + (this.ascending ? ASC : DESC),
         },
       });
     }

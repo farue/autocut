@@ -354,7 +354,7 @@ class InternetAccessResourceIT {
         InternetAccess partialUpdatedInternetAccess = new InternetAccess();
         partialUpdatedInternetAccess.setId(internetAccess.getId());
 
-        partialUpdatedInternetAccess.ip1(UPDATED_IP_1).switchInterface(UPDATED_SWITCH_INTERFACE);
+        partialUpdatedInternetAccess.ip1(UPDATED_IP_1).ip2(UPDATED_IP_2).switchInterface(UPDATED_SWITCH_INTERFACE);
 
         restInternetAccessMockMvc
             .perform(
@@ -369,7 +369,7 @@ class InternetAccessResourceIT {
         assertThat(internetAccessList).hasSize(databaseSizeBeforeUpdate);
         InternetAccess testInternetAccess = internetAccessList.get(internetAccessList.size() - 1);
         assertThat(testInternetAccess.getIp1()).isEqualTo(UPDATED_IP_1);
-        assertThat(testInternetAccess.getIp2()).isEqualTo(DEFAULT_IP_2);
+        assertThat(testInternetAccess.getIp2()).isEqualTo(UPDATED_IP_2);
         assertThat(testInternetAccess.getSwitchInterface()).isEqualTo(UPDATED_SWITCH_INTERFACE);
         assertThat(testInternetAccess.getPort()).isEqualTo(DEFAULT_PORT);
     }

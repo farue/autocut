@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { User } from '../user-management.model';
-import { UserManagementService } from '../service/user-management.service';
+import {User} from '../user-management.model';
+import {UserManagementService} from '../service/user-management.service';
 
 @Component({
   selector: 'jhi-user-mgmt-delete-dialog',
@@ -11,7 +11,7 @@ import { UserManagementService } from '../service/user-management.service';
 export class UserManagementDeleteDialogComponent {
   user?: User;
 
-  constructor(private userService: UserManagementService, public activeModal: NgbActiveModal) {}
+  constructor(private userService: UserManagementService, private activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

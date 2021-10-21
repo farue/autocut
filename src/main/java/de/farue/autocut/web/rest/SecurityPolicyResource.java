@@ -106,7 +106,7 @@ public class SecurityPolicyResource {
      * or with status {@code 500 (Internal Server Error)} if the securityPolicy couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/security-policies/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/security-policies/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<SecurityPolicy> partialUpdateSecurityPolicy(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody SecurityPolicy securityPolicy
@@ -125,18 +125,16 @@ public class SecurityPolicyResource {
 
         Optional<SecurityPolicy> result = securityPolicyRepository
             .findById(securityPolicy.getId())
-            .map(
-                existingSecurityPolicy -> {
-                    if (securityPolicy.getProtectionUnit() != null) {
-                        existingSecurityPolicy.setProtectionUnit(securityPolicy.getProtectionUnit());
-                    }
-                    if (securityPolicy.getAccess() != null) {
-                        existingSecurityPolicy.setAccess(securityPolicy.getAccess());
-                    }
-
-                    return existingSecurityPolicy;
+            .map(existingSecurityPolicy -> {
+                if (securityPolicy.getProtectionUnit() != null) {
+                    existingSecurityPolicy.setProtectionUnit(securityPolicy.getProtectionUnit());
                 }
-            )
+                if (securityPolicy.getAccess() != null) {
+                    existingSecurityPolicy.setAccess(securityPolicy.getAccess());
+                }
+
+                return existingSecurityPolicy;
+            })
             .map(securityPolicyRepository::save);
 
         return ResponseUtil.wrapOrNotFound(

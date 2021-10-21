@@ -1,6 +1,6 @@
 jib {
     from {
-        image = "adoptopenjdk:14-jre-hotspot"
+        image = "eclipse-temurin:17-focal"
     }
     to {
         image = "autocut:latest"

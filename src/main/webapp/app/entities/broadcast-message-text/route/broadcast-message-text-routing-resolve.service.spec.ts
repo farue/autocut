@@ -1,82 +1,80 @@
 jest.mock('@angular/router');
 
-import { TestBed } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { of } from 'rxjs';
+import {TestBed} from '@angular/core/testing';
+import {HttpResponse} from '@angular/common/http';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {ActivatedRouteSnapshot, Router} from '@angular/router';
+import {of} from 'rxjs';
 
-import { BroadcastMessageText, IBroadcastMessageText } from '../broadcast-message-text.model';
-import { BroadcastMessageTextService } from '../service/broadcast-message-text.service';
+import {BroadcastMessageText, IBroadcastMessageText} from '../broadcast-message-text.model';
+import {BroadcastMessageTextService} from '../service/broadcast-message-text.service';
 
-import { BroadcastMessageTextRoutingResolveService } from './broadcast-message-text-routing-resolve.service';
+import {BroadcastMessageTextRoutingResolveService} from './broadcast-message-text-routing-resolve.service';
 
-describe('Service Tests', () => {
-  describe('BroadcastMessageText routing resolve service', () => {
-    let mockRouter: Router;
-    let mockActivatedRouteSnapshot: ActivatedRouteSnapshot;
-    let routingResolveService: BroadcastMessageTextRoutingResolveService;
-    let service: BroadcastMessageTextService;
-    let resultBroadcastMessageText: IBroadcastMessageText | undefined;
+describe('BroadcastMessageText routing resolve service', () => {
+  let mockRouter: Router;
+  let mockActivatedRouteSnapshot: ActivatedRouteSnapshot;
+  let routingResolveService: BroadcastMessageTextRoutingResolveService;
+  let service: BroadcastMessageTextService;
+  let resultBroadcastMessageText: IBroadcastMessageText | undefined;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
-        providers: [Router, ActivatedRouteSnapshot],
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [Router, ActivatedRouteSnapshot],
+    });
+    mockRouter = TestBed.inject(Router);
+    mockActivatedRouteSnapshot = TestBed.inject(ActivatedRouteSnapshot);
+    routingResolveService = TestBed.inject(BroadcastMessageTextRoutingResolveService);
+    service = TestBed.inject(BroadcastMessageTextService);
+    resultBroadcastMessageText = undefined;
+  });
+
+  describe('resolve', () => {
+    it('should return IBroadcastMessageText returned by find', () => {
+      // GIVEN
+      service.find = jest.fn(id => of(new HttpResponse({ body: { id } })));
+      mockActivatedRouteSnapshot.params = { id: 123 };
+
+      // WHEN
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultBroadcastMessageText = result;
       });
-      mockRouter = TestBed.inject(Router);
-      mockActivatedRouteSnapshot = TestBed.inject(ActivatedRouteSnapshot);
-      routingResolveService = TestBed.inject(BroadcastMessageTextRoutingResolveService);
-      service = TestBed.inject(BroadcastMessageTextService);
-      resultBroadcastMessageText = undefined;
+
+      // THEN
+      expect(service.find).toBeCalledWith(123);
+      expect(resultBroadcastMessageText).toEqual({ id: 123 });
     });
 
-    describe('resolve', () => {
-      it('should return IBroadcastMessageText returned by find', () => {
-        // GIVEN
-        service.find = jest.fn(id => of(new HttpResponse({ body: { id } })));
-        mockActivatedRouteSnapshot.params = { id: 123 };
+    it('should return new IBroadcastMessageText if id is not provided', () => {
+      // GIVEN
+      service.find = jest.fn();
+      mockActivatedRouteSnapshot.params = {};
 
-        // WHEN
-        routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
-          resultBroadcastMessageText = result;
-        });
-
-        // THEN
-        expect(service.find).toBeCalledWith(123);
-        expect(resultBroadcastMessageText).toEqual({ id: 123 });
+      // WHEN
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultBroadcastMessageText = result;
       });
 
-      it('should return new IBroadcastMessageText if id is not provided', () => {
-        // GIVEN
-        service.find = jest.fn();
-        mockActivatedRouteSnapshot.params = {};
+      // THEN
+      expect(service.find).not.toBeCalled();
+      expect(resultBroadcastMessageText).toEqual(new BroadcastMessageText());
+    });
 
-        // WHEN
-        routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
-          resultBroadcastMessageText = result;
-        });
+    it('should route to 404 page if data not found in server', () => {
+      // GIVEN
+      jest.spyOn(service, 'find').mockReturnValue(of(new HttpResponse({ body: null as unknown as BroadcastMessageText })));
+      mockActivatedRouteSnapshot.params = { id: 123 };
 
-        // THEN
-        expect(service.find).not.toBeCalled();
-        expect(resultBroadcastMessageText).toEqual(new BroadcastMessageText());
+      // WHEN
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultBroadcastMessageText = result;
       });
 
-      it('should route to 404 page if data not found in server', () => {
-        // GIVEN
-        spyOn(service, 'find').and.returnValue(of(new HttpResponse({ body: null })));
-        mockActivatedRouteSnapshot.params = { id: 123 };
-
-        // WHEN
-        routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
-          resultBroadcastMessageText = result;
-        });
-
-        // THEN
-        expect(service.find).toBeCalledWith(123);
-        expect(resultBroadcastMessageText).toEqual(undefined);
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['404']);
-      });
+      // THEN
+      expect(service.find).toBeCalledWith(123);
+      expect(resultBroadcastMessageText).toEqual(undefined);
+      expect(mockRouter.navigate).toHaveBeenCalledWith(['404']);
     });
   });
 });

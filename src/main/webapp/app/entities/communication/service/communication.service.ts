@@ -1,22 +1,22 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 import * as dayjs from 'dayjs';
 
-import { isPresent } from 'app/core/util/operators';
-import { ApplicationConfigService } from 'app/core/config/application-config.service';
-import { createRequestOption } from 'app/core/request/request-util';
-import { ICommunication, getCommunicationIdentifier } from '../communication.model';
+import {isPresent} from 'app/core/util/operators';
+import {ApplicationConfigService} from 'app/core/config/application-config.service';
+import {createRequestOption} from 'app/core/request/request-util';
+import {getCommunicationIdentifier, ICommunication} from '../communication.model';
 
 export type EntityResponseType = HttpResponse<ICommunication>;
 export type EntityArrayResponseType = HttpResponse<ICommunication[]>;
 
 @Injectable({ providedIn: 'root' })
 export class CommunicationService {
-  public resourceUrl = this.applicationConfigService.getEndpointFor('api/communications');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/communications');
 
-  constructor(protected http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(communication: ICommunication): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(communication);

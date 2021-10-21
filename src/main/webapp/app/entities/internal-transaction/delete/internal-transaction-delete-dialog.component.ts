@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { IInternalTransaction } from '../internal-transaction.model';
-import { InternalTransactionService } from '../service/internal-transaction.service';
+import {IInternalTransaction} from '../internal-transaction.model';
+import {InternalTransactionService} from '../service/internal-transaction.service';
 
 @Component({
   templateUrl: './internal-transaction-delete-dialog.component.html',
@@ -10,7 +10,7 @@ import { InternalTransactionService } from '../service/internal-transaction.serv
 export class InternalTransactionDeleteDialogComponent {
   internalTransaction?: IInternalTransaction;
 
-  constructor(protected internalTransactionService: InternalTransactionService, public activeModal: NgbActiveModal) {}
+  constructor(protected internalTransactionService: InternalTransactionService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

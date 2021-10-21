@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.farue.autocut.domain.enumeration.TransactionType;
 import java.math.BigDecimal;
 import java.time.Instant;
-import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * A InternalTransaction.
@@ -76,7 +78,7 @@ public class InternalTransaction extends Transaction {
     }
 
     public InternalTransaction issuer(String issuer) {
-        this.issuer = issuer;
+        this.setIssuer(issuer);
         return this;
     }
 
@@ -89,7 +91,7 @@ public class InternalTransaction extends Transaction {
     }
 
     public InternalTransaction recipient(String recipient) {
-        this.recipient = recipient;
+        this.setRecipient(recipient);
         return this;
     }
 

@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ActivatedRoute} from '@angular/router';
+import {of} from 'rxjs';
 
-import { ActivityDetailComponent } from './activity-detail.component';
+import {ActivityDetailComponent} from './activity-detail.component';
 
 describe('Component Tests', () => {
   describe('Activity Management Detail Component', () => {
@@ -31,7 +31,7 @@ describe('Component Tests', () => {
         comp.ngOnInit();
 
         // THEN
-        expect(comp.activity).toEqual(jasmine.objectContaining({ id: 123 }));
+        expect(comp.activity).toEqual(expect.objectContaining({ id: 123 }));
       });
     });
   });

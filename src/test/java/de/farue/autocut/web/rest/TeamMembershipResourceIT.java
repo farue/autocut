@@ -287,7 +287,7 @@ class TeamMembershipResourceIT {
         TeamMembership partialUpdatedTeamMembership = new TeamMembership();
         partialUpdatedTeamMembership.setId(teamMembership.getId());
 
-        partialUpdatedTeamMembership.start(UPDATED_START).end(UPDATED_END);
+        partialUpdatedTeamMembership.role(UPDATED_ROLE).end(UPDATED_END);
 
         restTeamMembershipMockMvc
             .perform(
@@ -301,8 +301,8 @@ class TeamMembershipResourceIT {
         List<TeamMembership> teamMembershipList = teamMembershipRepository.findAll();
         assertThat(teamMembershipList).hasSize(databaseSizeBeforeUpdate);
         TeamMembership testTeamMembership = teamMembershipList.get(teamMembershipList.size() - 1);
-        assertThat(testTeamMembership.getRole()).isEqualTo(DEFAULT_ROLE);
-        assertThat(testTeamMembership.getStart()).isEqualTo(UPDATED_START);
+        assertThat(testTeamMembership.getRole()).isEqualTo(UPDATED_ROLE);
+        assertThat(testTeamMembership.getStart()).isEqualTo(DEFAULT_START);
         assertThat(testTeamMembership.getEnd()).isEqualTo(UPDATED_END);
     }
 

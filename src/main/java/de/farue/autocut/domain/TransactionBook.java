@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -22,6 +22,7 @@ public class TransactionBook implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "name")
@@ -38,17 +39,18 @@ public class TransactionBook implements Serializable {
     private Set<Transaction> transactions = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public TransactionBook id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public TransactionBook id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public String getName() {
@@ -56,7 +58,7 @@ public class TransactionBook implements Serializable {
     }
 
     public TransactionBook name(String name) {
-        this.name = name;
+        this.setName(name);
         return this;
     }
 
@@ -69,7 +71,7 @@ public class TransactionBook implements Serializable {
     }
 
     public TransactionBook type(TransactionBookType type) {
-        this.type = type;
+        this.setType(type);
         return this;
     }
 

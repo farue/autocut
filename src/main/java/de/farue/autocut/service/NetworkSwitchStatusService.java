@@ -65,33 +65,31 @@ public class NetworkSwitchStatusService {
 
         return networkSwitchStatusRepository
             .findById(networkSwitchStatus.getId())
-            .map(
-                existingNetworkSwitchStatus -> {
-                    if (networkSwitchStatus.getPort() != null) {
-                        existingNetworkSwitchStatus.setPort(networkSwitchStatus.getPort());
-                    }
-                    if (networkSwitchStatus.getName() != null) {
-                        existingNetworkSwitchStatus.setName(networkSwitchStatus.getName());
-                    }
-                    if (networkSwitchStatus.getStatus() != null) {
-                        existingNetworkSwitchStatus.setStatus(networkSwitchStatus.getStatus());
-                    }
-                    if (networkSwitchStatus.getVlan() != null) {
-                        existingNetworkSwitchStatus.setVlan(networkSwitchStatus.getVlan());
-                    }
-                    if (networkSwitchStatus.getSpeed() != null) {
-                        existingNetworkSwitchStatus.setSpeed(networkSwitchStatus.getSpeed());
-                    }
-                    if (networkSwitchStatus.getType() != null) {
-                        existingNetworkSwitchStatus.setType(networkSwitchStatus.getType());
-                    }
-                    if (networkSwitchStatus.getTimestamp() != null) {
-                        existingNetworkSwitchStatus.setTimestamp(networkSwitchStatus.getTimestamp());
-                    }
-
-                    return existingNetworkSwitchStatus;
+            .map(existingNetworkSwitchStatus -> {
+                if (networkSwitchStatus.getPort() != null) {
+                    existingNetworkSwitchStatus.setPort(networkSwitchStatus.getPort());
                 }
-            )
+                if (networkSwitchStatus.getName() != null) {
+                    existingNetworkSwitchStatus.setName(networkSwitchStatus.getName());
+                }
+                if (networkSwitchStatus.getStatus() != null) {
+                    existingNetworkSwitchStatus.setStatus(networkSwitchStatus.getStatus());
+                }
+                if (networkSwitchStatus.getVlan() != null) {
+                    existingNetworkSwitchStatus.setVlan(networkSwitchStatus.getVlan());
+                }
+                if (networkSwitchStatus.getSpeed() != null) {
+                    existingNetworkSwitchStatus.setSpeed(networkSwitchStatus.getSpeed());
+                }
+                if (networkSwitchStatus.getType() != null) {
+                    existingNetworkSwitchStatus.setType(networkSwitchStatus.getType());
+                }
+                if (networkSwitchStatus.getTimestamp() != null) {
+                    existingNetworkSwitchStatus.setTimestamp(networkSwitchStatus.getTimestamp());
+                }
+
+                return existingNetworkSwitchStatus;
+            })
             .map(networkSwitchStatusRepository::save);
     }
 

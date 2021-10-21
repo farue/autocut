@@ -57,7 +57,7 @@ services:
       start_period: 40s
 
   autocut-mysql:
-    image: mysql:8.0.23
+    image: mysql:8.0.26
     container_name: 'autocut-mysql'
     restart: always
     volumes:
@@ -66,7 +66,6 @@ services:
       - autocut
     environment:
       - TZ=Europe/Berlin
-      - MYSQL_USER=root
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
       - MYSQL_DATABASE=autocut
     ports:

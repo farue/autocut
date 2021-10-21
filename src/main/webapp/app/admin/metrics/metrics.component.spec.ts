@@ -1,9 +1,10 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { of } from 'rxjs';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {of} from 'rxjs';
 
-import { MetricsComponent } from './metrics.component';
-import { MetricsService } from './metrics.service';
+import {MetricsComponent} from './metrics.component';
+import {MetricsService} from './metrics.service';
+import {Metrics} from './metrics.model';
 
 describe('Component Tests', () => {
   describe('MetricsComponent', () => {
@@ -31,19 +32,7 @@ describe('Component Tests', () => {
     describe('refresh', () => {
       it('should call refresh on init', () => {
         // GIVEN
-        const response = {
-          timers: {
-            service: 'test',
-            unrelatedKey: 'test',
-          },
-          gauges: {
-            'jcache.statistics': {
-              value: 2,
-            },
-            unrelatedKey: 'test',
-          },
-        };
-        spyOn(service, 'getMetrics').and.returnValue(of(response));
+        jest.spyOn(service, 'getMetrics').mockReturnValue(of({} as Metrics));
 
         // WHEN
         comp.ngOnInit();

@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
-import { EMPTY, Observable, of } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
+import {ActivatedRouteSnapshot, Resolve, Router} from '@angular/router';
+import {EMPTY, Observable, of} from 'rxjs';
+import {mergeMap} from 'rxjs/operators';
 
-import { ILaundryProgram, LaundryProgram } from '../laundry-program.model';
-import { LaundryProgramService } from '../service/laundry-program.service';
+import {ILaundryProgram, LaundryProgram} from '../laundry-program.model';
+import {LaundryProgramService} from '../service/laundry-program.service';
 
 @Injectable({ providedIn: 'root' })
 export class LaundryProgramRoutingResolveService implements Resolve<ILaundryProgram> {

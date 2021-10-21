@@ -18,6 +18,7 @@ public class LaundryProgram implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -37,17 +38,18 @@ public class LaundryProgram implements Serializable {
     private Boolean protect;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public LaundryProgram id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public LaundryProgram id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public String getName() {
@@ -55,7 +57,7 @@ public class LaundryProgram implements Serializable {
     }
 
     public LaundryProgram name(String name) {
-        this.name = name;
+        this.setName(name);
         return this;
     }
 
@@ -68,7 +70,7 @@ public class LaundryProgram implements Serializable {
     }
 
     public LaundryProgram subprogram(String subprogram) {
-        this.subprogram = subprogram;
+        this.setSubprogram(subprogram);
         return this;
     }
 
@@ -81,7 +83,7 @@ public class LaundryProgram implements Serializable {
     }
 
     public LaundryProgram spin(Integer spin) {
-        this.spin = spin;
+        this.setSpin(spin);
         return this;
     }
 
@@ -94,7 +96,7 @@ public class LaundryProgram implements Serializable {
     }
 
     public LaundryProgram preWash(Boolean preWash) {
-        this.preWash = preWash;
+        this.setPreWash(preWash);
         return this;
     }
 
@@ -107,7 +109,7 @@ public class LaundryProgram implements Serializable {
     }
 
     public LaundryProgram protect(Boolean protect) {
-        this.protect = protect;
+        this.setProtect(protect);
         return this;
     }
 

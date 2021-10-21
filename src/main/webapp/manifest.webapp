@@ -3,13 +3,13 @@
   "short_name": "FaRü",
   "icons": [
     {
-        "src": "content/images/logo_x192.png",
+        "src": "./content/images/logo_x192.png",
         "sizes": "192x192",
         "type": "image/png",
         "purpose": "any maskable"
     },
     {
-        "src": "content/images/logo_x512.png",
+        "src": "./content/images/logo_x512.png",
         "sizes": "512x512",
         "type": "image/png"
     }

@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ActivatedRoute} from '@angular/router';
+import {of} from 'rxjs';
 
-import { InternetAccessDetailComponent } from './internet-access-detail.component';
+import {InternetAccessDetailComponent} from './internet-access-detail.component';
 
 describe('Component Tests', () => {
   describe('InternetAccess Management Detail Component', () => {
@@ -31,7 +31,7 @@ describe('Component Tests', () => {
         comp.ngOnInit();
 
         // THEN
-        expect(comp.internetAccess).toEqual(jasmine.objectContaining({ id: 123 }));
+        expect(comp.internetAccess).toEqual(expect.objectContaining({ id: 123 }));
       });
     });
   });

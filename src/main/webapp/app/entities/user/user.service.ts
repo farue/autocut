@@ -6,12 +6,12 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 import { createRequestOption } from 'app/core/request/request-util';
 import { isPresent } from 'app/core/util/operators';
 import { Pagination } from 'app/core/request/request.model';
-import { IUser, getUserIdentifier } from './user.model';
+import { getUserIdentifier, IUser } from './user.model';
 import { catchError, map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  public resourceUrl = this.applicationConfigService.getEndpointFor('api/users');
+  private resourceUrl = this.applicationConfigService.getEndpointFor('api/users');
 
   constructor(private http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
 

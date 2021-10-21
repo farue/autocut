@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ActivatedRoute} from '@angular/router';
+import {of} from 'rxjs';
 
-import { TeamDetailComponent } from './team-detail.component';
+import {TeamDetailComponent} from './team-detail.component';
 
 describe('Component Tests', () => {
   describe('Team Management Detail Component', () => {
@@ -31,7 +31,7 @@ describe('Component Tests', () => {
         comp.ngOnInit();
 
         // THEN
-        expect(comp.team).toEqual(jasmine.objectContaining({ id: 123 }));
+        expect(comp.team).toEqual(expect.objectContaining({ id: 123 }));
       });
     });
   });

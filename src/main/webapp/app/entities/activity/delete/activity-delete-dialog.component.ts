@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { IActivity } from '../activity.model';
-import { ActivityService } from '../service/activity.service';
+import {IActivity} from '../activity.model';
+import {ActivityService} from '../service/activity.service';
 
 @Component({
   templateUrl: './activity-delete-dialog.component.html',
@@ -10,7 +10,7 @@ import { ActivityService } from '../service/activity.service';
 export class ActivityDeleteDialogComponent {
   activity?: IActivity;
 
-  constructor(protected activityService: ActivityService, public activeModal: NgbActiveModal) {}
+  constructor(protected activityService: ActivityService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

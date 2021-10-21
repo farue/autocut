@@ -19,6 +19,7 @@ public class LaundryMachineProgram implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -35,17 +36,18 @@ public class LaundryMachineProgram implements Serializable {
     private LaundryMachine machine;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public LaundryMachineProgram id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public LaundryMachineProgram id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public Integer getTime() {
@@ -53,7 +55,7 @@ public class LaundryMachineProgram implements Serializable {
     }
 
     public LaundryMachineProgram time(Integer time) {
-        this.time = time;
+        this.setTime(time);
         return this;
     }
 
@@ -65,26 +67,26 @@ public class LaundryMachineProgram implements Serializable {
         return this.program;
     }
 
+    public void setProgram(LaundryProgram laundryProgram) {
+        this.program = laundryProgram;
+    }
+
     public LaundryMachineProgram program(LaundryProgram laundryProgram) {
         this.setProgram(laundryProgram);
         return this;
-    }
-
-    public void setProgram(LaundryProgram laundryProgram) {
-        this.program = laundryProgram;
     }
 
     public LaundryMachine getMachine() {
         return this.machine;
     }
 
+    public void setMachine(LaundryMachine laundryMachine) {
+        this.machine = laundryMachine;
+    }
+
     public LaundryMachineProgram machine(LaundryMachine laundryMachine) {
         this.setMachine(laundryMachine);
         return this;
-    }
-
-    public void setMachine(LaundryMachine laundryMachine) {
-        this.machine = laundryMachine;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

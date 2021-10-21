@@ -1,11 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { of } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {HttpHeaders, HttpResponse} from '@angular/common/http';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {of} from 'rxjs';
 
-import { NetworkSwitchService } from '../service/network-switch.service';
+import {NetworkSwitchService} from '../service/network-switch.service';
 
-import { NetworkSwitchComponent } from './network-switch.component';
+import {NetworkSwitchComponent} from './network-switch.component';
 
 describe('Component Tests', () => {
   describe('NetworkSwitch Management Component', () => {
@@ -26,7 +26,7 @@ describe('Component Tests', () => {
       service = TestBed.inject(NetworkSwitchService);
 
       const headers = new HttpHeaders().append('link', 'link;link');
-      spyOn(service, 'query').and.returnValue(
+      jest.spyOn(service, 'query').mockReturnValue(
         of(
           new HttpResponse({
             body: [{ id: 123 }],
@@ -42,7 +42,7 @@ describe('Component Tests', () => {
 
       // THEN
       expect(service.query).toHaveBeenCalled();
-      expect(comp.networkSwitches?.[0]).toEqual(jasmine.objectContaining({ id: 123 }));
+      expect(comp.networkSwitches?.[0]).toEqual(expect.objectContaining({ id: 123 }));
     });
   });
 });

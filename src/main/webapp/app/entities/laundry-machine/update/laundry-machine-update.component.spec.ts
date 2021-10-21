@@ -1,16 +1,16 @@
 jest.mock('@angular/router');
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { of, Subject } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {HttpResponse} from '@angular/common/http';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {FormBuilder} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {of, Subject} from 'rxjs';
 
-import { LaundryMachineService } from '../service/laundry-machine.service';
-import { ILaundryMachine, LaundryMachine } from '../laundry-machine.model';
+import {LaundryMachineService} from '../service/laundry-machine.service';
+import {ILaundryMachine, LaundryMachine} from '../laundry-machine.model';
 
-import { LaundryMachineUpdateComponent } from './laundry-machine-update.component';
+import {LaundryMachineUpdateComponent} from './laundry-machine-update.component';
 
 describe('Component Tests', () => {
   describe('LaundryMachine Management Update Component', () => {
@@ -49,10 +49,10 @@ describe('Component Tests', () => {
     describe('save', () => {
       it('Should call update service on save for existing entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<LaundryMachine>>();
         const laundryMachine = { id: 123 };
-        spyOn(laundryMachineService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(laundryMachineService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ laundryMachine });
         comp.ngOnInit();
 
@@ -70,10 +70,10 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<LaundryMachine>>();
         const laundryMachine = new LaundryMachine();
-        spyOn(laundryMachineService, 'create').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(laundryMachineService, 'create').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ laundryMachine });
         comp.ngOnInit();
 
@@ -91,10 +91,10 @@ describe('Component Tests', () => {
 
       it('Should set isSaving to false on error', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<LaundryMachine>>();
         const laundryMachine = { id: 123 };
-        spyOn(laundryMachineService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(laundryMachineService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ laundryMachine });
         comp.ngOnInit();
 

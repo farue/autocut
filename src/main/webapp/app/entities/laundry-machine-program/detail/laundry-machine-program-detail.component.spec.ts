@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ActivatedRoute} from '@angular/router';
+import {of} from 'rxjs';
 
-import { LaundryMachineProgramDetailComponent } from './laundry-machine-program-detail.component';
+import {LaundryMachineProgramDetailComponent} from './laundry-machine-program-detail.component';
 
 describe('Component Tests', () => {
   describe('LaundryMachineProgram Management Detail Component', () => {
@@ -31,7 +31,7 @@ describe('Component Tests', () => {
         comp.ngOnInit();
 
         // THEN
-        expect(comp.laundryMachineProgram).toEqual(jasmine.objectContaining({ id: 123 }));
+        expect(comp.laundryMachineProgram).toEqual(expect.objectContaining({ id: 123 }));
       });
     });
   });

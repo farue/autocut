@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -21,6 +21,7 @@ public class Tenant implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -55,17 +56,18 @@ public class Tenant implements Serializable {
     private Lease lease;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public Tenant id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Tenant id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public String getFirstName() {
@@ -73,7 +75,7 @@ public class Tenant implements Serializable {
     }
 
     public Tenant firstName(String firstName) {
-        this.firstName = firstName;
+        this.setFirstName(firstName);
         return this;
     }
 
@@ -86,7 +88,7 @@ public class Tenant implements Serializable {
     }
 
     public Tenant lastName(String lastName) {
-        this.lastName = lastName;
+        this.setLastName(lastName);
         return this;
     }
 
@@ -99,7 +101,7 @@ public class Tenant implements Serializable {
     }
 
     public Tenant pictureId(byte[] pictureId) {
-        this.pictureId = pictureId;
+        this.setPictureId(pictureId);
         return this;
     }
 
@@ -125,7 +127,7 @@ public class Tenant implements Serializable {
     }
 
     public Tenant verified(Boolean verified) {
-        this.verified = verified;
+        this.setVerified(verified);
         return this;
     }
 
@@ -137,17 +139,27 @@ public class Tenant implements Serializable {
         return this.user;
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Tenant user(User user) {
         this.setUser(user);
         return this;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Set<SecurityPolicy> getSecurityPolicies() {
         return this.securityPolicies;
+    }
+
+    public void setSecurityPolicies(Set<SecurityPolicy> securityPolicies) {
+        if (this.securityPolicies != null) {
+            this.securityPolicies.forEach(i -> i.setTenant(null));
+        }
+        if (securityPolicies != null) {
+            securityPolicies.forEach(i -> i.setTenant(this));
+        }
+        this.securityPolicies = securityPolicies;
     }
 
     public Tenant securityPolicies(Set<SecurityPolicy> securityPolicies) {
@@ -167,27 +179,17 @@ public class Tenant implements Serializable {
         return this;
     }
 
-    public void setSecurityPolicies(Set<SecurityPolicy> securityPolicies) {
-        if (this.securityPolicies != null) {
-            this.securityPolicies.forEach(i -> i.setTenant(null));
-        }
-        if (securityPolicies != null) {
-            securityPolicies.forEach(i -> i.setTenant(this));
-        }
-        this.securityPolicies = securityPolicies;
-    }
-
     public Lease getLease() {
         return this.lease;
+    }
+
+    public void setLease(Lease lease) {
+        this.lease = lease;
     }
 
     public Tenant lease(Lease lease) {
         this.setLease(lease);
         return this;
-    }
-
-    public void setLease(Lease lease) {
-        this.lease = lease;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

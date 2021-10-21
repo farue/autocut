@@ -46,30 +46,28 @@ public class LaundryMachineService {
 
         return laundryMachineRepository
             .findById(laundryMachine.getId())
-            .map(
-                existingLaundryMachine -> {
-                    if (laundryMachine.getIdentifier() != null) {
-                        existingLaundryMachine.setIdentifier(laundryMachine.getIdentifier());
-                    }
-                    if (laundryMachine.getName() != null) {
-                        existingLaundryMachine.setName(laundryMachine.getName());
-                    }
-                    if (laundryMachine.getType() != null) {
-                        existingLaundryMachine.setType(laundryMachine.getType());
-                    }
-                    if (laundryMachine.getEnabled() != null) {
-                        existingLaundryMachine.setEnabled(laundryMachine.getEnabled());
-                    }
-                    if (laundryMachine.getPositionX() != null) {
-                        existingLaundryMachine.setPositionX(laundryMachine.getPositionX());
-                    }
-                    if (laundryMachine.getPositionY() != null) {
-                        existingLaundryMachine.setPositionY(laundryMachine.getPositionY());
-                    }
-
-                    return existingLaundryMachine;
+            .map(existingLaundryMachine -> {
+                if (laundryMachine.getIdentifier() != null) {
+                    existingLaundryMachine.setIdentifier(laundryMachine.getIdentifier());
                 }
-            )
+                if (laundryMachine.getName() != null) {
+                    existingLaundryMachine.setName(laundryMachine.getName());
+                }
+                if (laundryMachine.getType() != null) {
+                    existingLaundryMachine.setType(laundryMachine.getType());
+                }
+                if (laundryMachine.getEnabled() != null) {
+                    existingLaundryMachine.setEnabled(laundryMachine.getEnabled());
+                }
+                if (laundryMachine.getPositionX() != null) {
+                    existingLaundryMachine.setPositionX(laundryMachine.getPositionX());
+                }
+                if (laundryMachine.getPositionY() != null) {
+                    existingLaundryMachine.setPositionY(laundryMachine.getPositionY());
+                }
+
+                return existingLaundryMachine;
+            })
             .map(laundryMachineRepository::save);
     }
 

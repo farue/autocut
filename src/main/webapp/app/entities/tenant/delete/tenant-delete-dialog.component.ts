@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { ITenant } from '../tenant.model';
-import { TenantService } from '../service/tenant.service';
+import {ITenant} from '../tenant.model';
+import {TenantService} from '../service/tenant.service';
 
 @Component({
   templateUrl: './tenant-delete-dialog.component.html',
@@ -10,7 +10,7 @@ import { TenantService } from '../service/tenant.service';
 export class TenantDeleteDialogComponent {
   tenant?: ITenant;
 
-  constructor(protected tenantService: TenantService, public activeModal: NgbActiveModal) {}
+  constructor(protected tenantService: TenantService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

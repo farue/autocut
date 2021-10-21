@@ -1,20 +1,20 @@
 jest.mock('@angular/router');
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { of, Subject } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {HttpResponse} from '@angular/common/http';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {FormBuilder} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {of, Subject} from 'rxjs';
 
-import { ActivityService } from '../service/activity.service';
-import { IActivity, Activity } from '../activity.model';
-import { ITenant } from 'app/entities/tenant/tenant.model';
-import { TenantService } from 'app/entities/tenant/service/tenant.service';
-import { ITeamMembership } from 'app/entities/team-membership/team-membership.model';
-import { TeamMembershipService } from 'app/entities/team-membership/service/team-membership.service';
+import {ActivityService} from '../service/activity.service';
+import {Activity, IActivity} from '../activity.model';
+import {ITenant} from 'app/entities/tenant/tenant.model';
+import {TenantService} from 'app/entities/tenant/service/tenant.service';
+import {ITeamMembership} from 'app/entities/team-membership/team-membership.model';
+import {TeamMembershipService} from 'app/entities/team-membership/service/team-membership.service';
 
-import { ActivityUpdateComponent } from './activity-update.component';
+import {ActivityUpdateComponent} from './activity-update.component';
 
 describe('Component Tests', () => {
   describe('Activity Management Update Component', () => {
@@ -46,14 +46,14 @@ describe('Component Tests', () => {
     describe('ngOnInit', () => {
       it('Should call Tenant query and add missing value', () => {
         const activity: IActivity = { id: 456 };
-        const tenant: ITenant = { id: 20688 };
+        const tenant: ITenant = { id: 92752 };
         activity.tenant = tenant;
 
-        const tenantCollection: ITenant[] = [{ id: 96173 }];
-        spyOn(tenantService, 'query').and.returnValue(of(new HttpResponse({ body: tenantCollection })));
+        const tenantCollection: ITenant[] = [{ id: 64521 }];
+        jest.spyOn(tenantService, 'query').mockReturnValue(of(new HttpResponse({ body: tenantCollection })));
         const additionalTenants = [tenant];
         const expectedCollection: ITenant[] = [...additionalTenants, ...tenantCollection];
-        spyOn(tenantService, 'addTenantToCollectionIfMissing').and.returnValue(expectedCollection);
+        jest.spyOn(tenantService, 'addTenantToCollectionIfMissing').mockReturnValue(expectedCollection);
 
         activatedRoute.data = of({ activity });
         comp.ngOnInit();
@@ -65,14 +65,14 @@ describe('Component Tests', () => {
 
       it('Should call TeamMembership query and add missing value', () => {
         const activity: IActivity = { id: 456 };
-        const teamMembership: ITeamMembership = { id: 37978 };
+        const teamMembership: ITeamMembership = { id: 81646 };
         activity.teamMembership = teamMembership;
 
-        const teamMembershipCollection: ITeamMembership[] = [{ id: 74783 }];
-        spyOn(teamMembershipService, 'query').and.returnValue(of(new HttpResponse({ body: teamMembershipCollection })));
+        const teamMembershipCollection: ITeamMembership[] = [{ id: 23072 }];
+        jest.spyOn(teamMembershipService, 'query').mockReturnValue(of(new HttpResponse({ body: teamMembershipCollection })));
         const additionalTeamMemberships = [teamMembership];
         const expectedCollection: ITeamMembership[] = [...additionalTeamMemberships, ...teamMembershipCollection];
-        spyOn(teamMembershipService, 'addTeamMembershipToCollectionIfMissing').and.returnValue(expectedCollection);
+        jest.spyOn(teamMembershipService, 'addTeamMembershipToCollectionIfMissing').mockReturnValue(expectedCollection);
 
         activatedRoute.data = of({ activity });
         comp.ngOnInit();
@@ -87,9 +87,9 @@ describe('Component Tests', () => {
 
       it('Should update editForm', () => {
         const activity: IActivity = { id: 456 };
-        const tenant: ITenant = { id: 36126 };
+        const tenant: ITenant = { id: 54459 };
         activity.tenant = tenant;
-        const teamMembership: ITeamMembership = { id: 76400 };
+        const teamMembership: ITeamMembership = { id: 4415 };
         activity.teamMembership = teamMembership;
 
         activatedRoute.data = of({ activity });
@@ -104,10 +104,10 @@ describe('Component Tests', () => {
     describe('save', () => {
       it('Should call update service on save for existing entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<Activity>>();
         const activity = { id: 123 };
-        spyOn(activityService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(activityService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ activity });
         comp.ngOnInit();
 
@@ -125,10 +125,10 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<Activity>>();
         const activity = new Activity();
-        spyOn(activityService, 'create').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(activityService, 'create').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ activity });
         comp.ngOnInit();
 
@@ -146,10 +146,10 @@ describe('Component Tests', () => {
 
       it('Should set isSaving to false on error', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<Activity>>();
         const activity = { id: 123 };
-        spyOn(activityService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(activityService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ activity });
         comp.ngOnInit();
 

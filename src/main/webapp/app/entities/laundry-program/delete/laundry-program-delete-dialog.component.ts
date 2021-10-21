@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { ILaundryProgram } from '../laundry-program.model';
-import { LaundryProgramService } from '../service/laundry-program.service';
+import {ILaundryProgram} from '../laundry-program.model';
+import {LaundryProgramService} from '../service/laundry-program.service';
 
 @Component({
   templateUrl: './laundry-program-delete-dialog.component.html',
@@ -10,7 +10,7 @@ import { LaundryProgramService } from '../service/laundry-program.service';
 export class LaundryProgramDeleteDialogComponent {
   laundryProgram?: ILaundryProgram;
 
-  constructor(protected laundryProgramService: LaundryProgramService, public activeModal: NgbActiveModal) {}
+  constructor(protected laundryProgramService: LaundryProgramService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

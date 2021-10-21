@@ -27,10 +27,9 @@
           <label class="form-control-label" jhiTranslate="autocutApp.apartment.type" for="field_type">Type</label>
           <select class="form-control" name="type" formControlName="type" id="field_type" data-cy="type">
             <option [ngValue]="null">{{ 'autocutApp.ApartmentTypes.null' | translate }}</option>
-            <option value="SHARED">{{ 'autocutApp.ApartmentTypes.SHARED' | translate }}</option>
-            <option value="SINGLE">{{ 'autocutApp.ApartmentTypes.SINGLE' | translate }}</option>
-            <option value="SHORT_TERM">{{ 'autocutApp.ApartmentTypes.SHORT_TERM' | translate }}</option>
-            <option value="BACKUP">{{ 'autocutApp.ApartmentTypes.BACKUP' | translate }}</option>
+            <option *ngFor="let apartmentTypes of apartmentTypesValues" [value]="apartmentTypes">
+              {{ 'autocutApp.ApartmentTypes.' + apartmentTypes | translate }}
+            </option>
           </select>
           <div *ngIf="editForm.get('type')!.invalid && (editForm.get('type')!.dirty || editForm.get('type')!.touched)">
             <small class="form-text text-danger" *ngIf="editForm.get('type')?.errors?.required" jhiTranslate="entity.validation.required">
@@ -122,7 +121,7 @@
       </div>
 
       <div>
-        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
           <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
 

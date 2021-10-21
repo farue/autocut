@@ -1,19 +1,19 @@
 jest.mock('@angular/router');
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { of, Subject } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {HttpResponse} from '@angular/common/http';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {FormBuilder} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {of, Subject} from 'rxjs';
 
-import { CommunicationService } from '../service/communication.service';
-import { ICommunication, Communication } from '../communication.model';
+import {CommunicationService} from '../service/communication.service';
+import {Communication, ICommunication} from '../communication.model';
 
-import { IUser } from 'app/entities/user/user.model';
-import { UserService } from 'app/entities/user/user.service';
+import {IUser} from 'app/entities/user/user.model';
+import {UserService} from 'app/entities/user/user.service';
 
-import { CommunicationUpdateComponent } from './communication-update.component';
+import {CommunicationUpdateComponent} from './communication-update.component';
 
 describe('Component Tests', () => {
   describe('Communication Management Update Component', () => {
@@ -43,14 +43,14 @@ describe('Component Tests', () => {
     describe('ngOnInit', () => {
       it('Should call User query and add missing value', () => {
         const communication: ICommunication = { id: 456 };
-        const tenant: IUser = { id: 25434 };
+        const tenant: IUser = { id: 57737 };
         communication.tenant = tenant;
 
-        const userCollection: IUser[] = [{ id: 70226 }];
-        spyOn(userService, 'query').and.returnValue(of(new HttpResponse({ body: userCollection })));
+        const userCollection: IUser[] = [{ id: 57251 }];
+        jest.spyOn(userService, 'query').mockReturnValue(of(new HttpResponse({ body: userCollection })));
         const additionalUsers = [tenant];
         const expectedCollection: IUser[] = [...additionalUsers, ...userCollection];
-        spyOn(userService, 'addUserToCollectionIfMissing').and.returnValue(expectedCollection);
+        jest.spyOn(userService, 'addUserToCollectionIfMissing').mockReturnValue(expectedCollection);
 
         activatedRoute.data = of({ communication });
         comp.ngOnInit();
@@ -62,7 +62,7 @@ describe('Component Tests', () => {
 
       it('Should update editForm', () => {
         const communication: ICommunication = { id: 456 };
-        const tenant: IUser = { id: 56158 };
+        const tenant: IUser = { id: 70848 };
         communication.tenant = tenant;
 
         activatedRoute.data = of({ communication });
@@ -76,10 +76,10 @@ describe('Component Tests', () => {
     describe('save', () => {
       it('Should call update service on save for existing entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<Communication>>();
         const communication = { id: 123 };
-        spyOn(communicationService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(communicationService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ communication });
         comp.ngOnInit();
 
@@ -97,10 +97,10 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<Communication>>();
         const communication = new Communication();
-        spyOn(communicationService, 'create').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(communicationService, 'create').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ communication });
         comp.ngOnInit();
 
@@ -118,10 +118,10 @@ describe('Component Tests', () => {
 
       it('Should set isSaving to false on error', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<Communication>>();
         const communication = { id: 123 };
-        spyOn(communicationService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(communicationService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ communication });
         comp.ngOnInit();
 

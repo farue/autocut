@@ -310,7 +310,7 @@ class BankAccountResourceIT {
         BankAccount partialUpdatedBankAccount = new BankAccount();
         partialUpdatedBankAccount.setId(bankAccount.getId());
 
-        partialUpdatedBankAccount.bic(UPDATED_BIC).iban(UPDATED_IBAN);
+        partialUpdatedBankAccount.name(UPDATED_NAME).bic(UPDATED_BIC);
 
         restBankAccountMockMvc
             .perform(
@@ -324,9 +324,9 @@ class BankAccountResourceIT {
         List<BankAccount> bankAccountList = bankAccountRepository.findAll();
         assertThat(bankAccountList).hasSize(databaseSizeBeforeUpdate);
         BankAccount testBankAccount = bankAccountList.get(bankAccountList.size() - 1);
-        assertThat(testBankAccount.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testBankAccount.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testBankAccount.getBic()).isEqualTo(UPDATED_BIC);
-        assertThat(testBankAccount.getIban()).isEqualTo(UPDATED_IBAN);
+        assertThat(testBankAccount.getIban()).isEqualTo(DEFAULT_IBAN);
     }
 
     @Test

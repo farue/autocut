@@ -1,11 +1,11 @@
-import { ElementRef } from '@angular/core';
-import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormBuilder } from '@angular/forms';
-import { of, throwError } from 'rxjs';
+import {ElementRef} from '@angular/core';
+import {ComponentFixture, inject, TestBed} from '@angular/core/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {FormBuilder} from '@angular/forms';
+import {of, throwError} from 'rxjs';
 
-import { PasswordResetInitComponent } from './password-reset-init.component';
-import { PasswordResetInitService } from './password-reset-init.service';
+import {PasswordResetInitComponent} from './password-reset-init.component';
+import {PasswordResetInitService} from './password-reset-init.service';
 
 describe('Component Tests', () => {
   describe('PasswordResetInitComponent', () => {
@@ -35,7 +35,7 @@ describe('Component Tests', () => {
     });
 
     it('notifies of success upon successful requestReset', inject([PasswordResetInitService], (service: PasswordResetInitService) => {
-      spyOn(service, 'save').and.returnValue(of({}));
+      jest.spyOn(service, 'save').mockReturnValue(of({}));
       comp.resetRequestForm.patchValue({
         email: 'user@domain.com',
       });
@@ -47,7 +47,7 @@ describe('Component Tests', () => {
     }));
 
     it('no notification of success upon error response', inject([PasswordResetInitService], (service: PasswordResetInitService) => {
-      spyOn(service, 'save').and.returnValue(
+      jest.spyOn(service, 'save').mockReturnValue(
         throwError({
           status: 503,
           data: 'something else',

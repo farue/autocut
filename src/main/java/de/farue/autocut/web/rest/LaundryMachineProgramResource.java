@@ -107,7 +107,7 @@ public class LaundryMachineProgramResource {
      * or with status {@code 500 (Internal Server Error)} if the laundryMachineProgram couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/laundry-machine-programs/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/laundry-machine-programs/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<LaundryMachineProgram> partialUpdateLaundryMachineProgram(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody LaundryMachineProgram laundryMachineProgram
@@ -126,15 +126,13 @@ public class LaundryMachineProgramResource {
 
         Optional<LaundryMachineProgram> result = laundryMachineProgramRepository
             .findById(laundryMachineProgram.getId())
-            .map(
-                existingLaundryMachineProgram -> {
-                    if (laundryMachineProgram.getTime() != null) {
-                        existingLaundryMachineProgram.setTime(laundryMachineProgram.getTime());
-                    }
-
-                    return existingLaundryMachineProgram;
+            .map(existingLaundryMachineProgram -> {
+                if (laundryMachineProgram.getTime() != null) {
+                    existingLaundryMachineProgram.setTime(laundryMachineProgram.getTime());
                 }
-            )
+
+                return existingLaundryMachineProgram;
+            })
             .map(laundryMachineProgramRepository::save);
 
         return ResponseUtil.wrapOrNotFound(

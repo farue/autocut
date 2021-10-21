@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ActivatedRoute} from '@angular/router';
+import {of} from 'rxjs';
 
-import { AddressDetailComponent } from './address-detail.component';
+import {AddressDetailComponent} from './address-detail.component';
 
 describe('Component Tests', () => {
   describe('Address Management Detail Component', () => {
@@ -31,7 +31,7 @@ describe('Component Tests', () => {
         comp.ngOnInit();
 
         // THEN
-        expect(comp.address).toEqual(jasmine.objectContaining({ id: 123 }));
+        expect(comp.address).toEqual(expect.objectContaining({ id: 123 }));
       });
     });
   });

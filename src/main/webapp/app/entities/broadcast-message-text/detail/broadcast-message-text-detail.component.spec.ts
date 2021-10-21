@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ActivatedRoute} from '@angular/router';
+import {of} from 'rxjs';
 
-import { BroadcastMessageTextDetailComponent } from './broadcast-message-text-detail.component';
+import {BroadcastMessageTextDetailComponent} from './broadcast-message-text-detail.component';
 
 describe('Component Tests', () => {
   describe('BroadcastMessageText Management Detail Component', () => {
@@ -31,7 +31,7 @@ describe('Component Tests', () => {
         comp.ngOnInit();
 
         // THEN
-        expect(comp.broadcastMessageText).toEqual(jasmine.objectContaining({ id: 123 }));
+        expect(comp.broadcastMessageText).toEqual(expect.objectContaining({ id: 123 }));
       });
     });
   });

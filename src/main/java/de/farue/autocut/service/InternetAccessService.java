@@ -48,24 +48,22 @@ public class InternetAccessService {
 
         return internetAccessRepository
             .findById(internetAccess.getId())
-            .map(
-                existingInternetAccess -> {
-                    if (internetAccess.getIp1() != null) {
-                        existingInternetAccess.setIp1(internetAccess.getIp1());
-                    }
-                    if (internetAccess.getIp2() != null) {
-                        existingInternetAccess.setIp2(internetAccess.getIp2());
-                    }
-                    if (internetAccess.getSwitchInterface() != null) {
-                        existingInternetAccess.setSwitchInterface(internetAccess.getSwitchInterface());
-                    }
-                    if (internetAccess.getPort() != null) {
-                        existingInternetAccess.setPort(internetAccess.getPort());
-                    }
-
-                    return existingInternetAccess;
+            .map(existingInternetAccess -> {
+                if (internetAccess.getIp1() != null) {
+                    existingInternetAccess.setIp1(internetAccess.getIp1());
                 }
-            )
+                if (internetAccess.getIp2() != null) {
+                    existingInternetAccess.setIp2(internetAccess.getIp2());
+                }
+                if (internetAccess.getSwitchInterface() != null) {
+                    existingInternetAccess.setSwitchInterface(internetAccess.getSwitchInterface());
+                }
+                if (internetAccess.getPort() != null) {
+                    existingInternetAccess.setPort(internetAccess.getPort());
+                }
+
+                return existingInternetAccess;
+            })
             .map(internetAccessRepository::save);
     }
 

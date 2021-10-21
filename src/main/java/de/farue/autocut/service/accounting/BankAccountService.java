@@ -46,21 +46,19 @@ public class BankAccountService {
 
         return bankAccountRepository
             .findById(bankAccount.getId())
-            .map(
-                existingBankAccount -> {
-                    if (bankAccount.getName() != null) {
-                        existingBankAccount.setName(bankAccount.getName());
-                    }
-                    if (bankAccount.getBic() != null) {
-                        existingBankAccount.setBic(bankAccount.getBic());
-                    }
-                    if (bankAccount.getIban() != null) {
-                        existingBankAccount.setIban(bankAccount.getIban());
-                    }
-
-                    return existingBankAccount;
+            .map(existingBankAccount -> {
+                if (bankAccount.getName() != null) {
+                    existingBankAccount.setName(bankAccount.getName());
                 }
-            )
+                if (bankAccount.getBic() != null) {
+                    existingBankAccount.setBic(bankAccount.getBic());
+                }
+                if (bankAccount.getIban() != null) {
+                    existingBankAccount.setIban(bankAccount.getIban());
+                }
+
+                return existingBankAccount;
+            })
             .map(bankAccountRepository::save);
     }
 

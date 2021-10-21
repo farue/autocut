@@ -1,22 +1,22 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 import * as dayjs from 'dayjs';
 
-import { isPresent } from 'app/core/util/operators';
-import { ApplicationConfigService } from 'app/core/config/application-config.service';
-import { createRequestOption } from 'app/core/request/request-util';
-import { IBankTransaction, getBankTransactionIdentifier } from '../bank-transaction.model';
+import {isPresent} from 'app/core/util/operators';
+import {ApplicationConfigService} from 'app/core/config/application-config.service';
+import {createRequestOption} from 'app/core/request/request-util';
+import {getBankTransactionIdentifier, IBankTransaction} from '../bank-transaction.model';
 
 export type EntityResponseType = HttpResponse<IBankTransaction>;
 export type EntityArrayResponseType = HttpResponse<IBankTransaction[]>;
 
 @Injectable({ providedIn: 'root' })
 export class BankTransactionService {
-  public resourceUrl = this.applicationConfigService.getEndpointFor('api/bank-transactions');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/bank-transactions');
 
-  constructor(protected http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(bankTransaction: IBankTransaction): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(bankTransaction);

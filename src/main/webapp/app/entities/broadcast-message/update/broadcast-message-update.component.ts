@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
+import {FormBuilder, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
+import {finalize} from 'rxjs/operators';
 
 import * as dayjs from 'dayjs';
-import { DATE_TIME_FORMAT } from 'app/config/input.constants';
+import {DATE_TIME_FORMAT} from 'app/config/input.constants';
 
-import { BroadcastMessage, IBroadcastMessage } from '../broadcast-message.model';
-import { BroadcastMessageService } from '../service/broadcast-message.service';
+import {BroadcastMessage, IBroadcastMessage} from '../broadcast-message.model';
+import {BroadcastMessageService} from '../service/broadcast-message.service';
+import {BroadcastMessageType} from 'app/entities/enumerations/broadcast-message-type.model';
 
 @Component({
   selector: 'jhi-broadcast-message-update',
@@ -17,6 +18,7 @@ import { BroadcastMessageService } from '../service/broadcast-message.service';
 })
 export class BroadcastMessageUpdateComponent implements OnInit {
   isSaving = false;
+  broadcastMessageTypeValues = Object.keys(BroadcastMessageType);
 
   editForm = this.fb.group({
     id: [],

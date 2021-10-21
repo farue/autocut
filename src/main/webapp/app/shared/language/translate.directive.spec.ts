@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import {Component} from '@angular/core';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
 
-import { TranslateDirective } from './translate.directive';
+import {TranslateDirective} from './translate.directive';
 
 @Component({
   template: ` <div jhiTranslate="test"></div> `,
@@ -28,7 +28,7 @@ describe('TranslateDirective Tests', () => {
   });
 
   it('should change HTML', () => {
-    const spy = spyOn(translateService, 'get').and.callThrough();
+    const spy = jest.spyOn(translateService, 'get');
 
     fixture.detectChanges();
 

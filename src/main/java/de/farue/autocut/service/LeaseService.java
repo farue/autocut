@@ -91,30 +91,28 @@ public class LeaseService {
 
         return leaseRepository
             .findById(lease.getId())
-            .map(
-                existingLease -> {
-                    if (lease.getNr() != null) {
-                        existingLease.setNr(lease.getNr());
-                    }
-                    if (lease.getStart() != null) {
-                        existingLease.setStart(lease.getStart());
-                    }
-                    if (lease.getEnd() != null) {
-                        existingLease.setEnd(lease.getEnd());
-                    }
-                    if (lease.getBlocked() != null) {
-                        existingLease.setBlocked(lease.getBlocked());
-                    }
-                    if (lease.getPictureContract() != null) {
-                        existingLease.setPictureContract(lease.getPictureContract());
-                    }
-                    if (lease.getPictureContractContentType() != null) {
-                        existingLease.setPictureContractContentType(lease.getPictureContractContentType());
-                    }
-
-                    return existingLease;
+            .map(existingLease -> {
+                if (lease.getNr() != null) {
+                    existingLease.setNr(lease.getNr());
                 }
-            )
+                if (lease.getStart() != null) {
+                    existingLease.setStart(lease.getStart());
+                }
+                if (lease.getEnd() != null) {
+                    existingLease.setEnd(lease.getEnd());
+                }
+                if (lease.getBlocked() != null) {
+                    existingLease.setBlocked(lease.getBlocked());
+                }
+                if (lease.getPictureContract() != null) {
+                    existingLease.setPictureContract(lease.getPictureContract());
+                }
+                if (lease.getPictureContractContentType() != null) {
+                    existingLease.setPictureContractContentType(lease.getPictureContractContentType());
+                }
+
+                return existingLease;
+            })
             .map(leaseRepository::save);
     }
 

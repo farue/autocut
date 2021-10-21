@@ -5,7 +5,7 @@ import de.farue.autocut.domain.enumeration.Access;
 import de.farue.autocut.domain.enumeration.ProtectionUnits;
 import java.io.Serializable;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -21,6 +21,7 @@ public class SecurityPolicy implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -42,17 +43,18 @@ public class SecurityPolicy implements Serializable {
     private Tenant tenant;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public SecurityPolicy id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public SecurityPolicy id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public ProtectionUnits getProtectionUnit() {
@@ -60,7 +62,7 @@ public class SecurityPolicy implements Serializable {
     }
 
     public SecurityPolicy protectionUnit(ProtectionUnits protectionUnit) {
-        this.protectionUnit = protectionUnit;
+        this.setProtectionUnit(protectionUnit);
         return this;
     }
 
@@ -73,7 +75,7 @@ public class SecurityPolicy implements Serializable {
     }
 
     public SecurityPolicy access(Access access) {
-        this.access = access;
+        this.setAccess(access);
         return this;
     }
 
@@ -85,26 +87,26 @@ public class SecurityPolicy implements Serializable {
         return this.teamMember;
     }
 
+    public void setTeamMember(TeamMembership teamMembership) {
+        this.teamMember = teamMembership;
+    }
+
     public SecurityPolicy teamMember(TeamMembership teamMembership) {
         this.setTeamMember(teamMembership);
         return this;
-    }
-
-    public void setTeamMember(TeamMembership teamMembership) {
-        this.teamMember = teamMembership;
     }
 
     public Tenant getTenant() {
         return this.tenant;
     }
 
+    public void setTenant(Tenant tenant) {
+        this.tenant = tenant;
+    }
+
     public SecurityPolicy tenant(Tenant tenant) {
         this.setTenant(tenant);
         return this;
-    }
-
-    public void setTenant(Tenant tenant) {
-        this.tenant = tenant;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

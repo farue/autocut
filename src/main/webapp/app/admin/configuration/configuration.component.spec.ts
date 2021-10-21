@@ -1,10 +1,10 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { of } from 'rxjs';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {of} from 'rxjs';
 
-import { ConfigurationComponent } from './configuration.component';
-import { ConfigurationService } from './configuration.service';
-import { Bean, PropertySource } from './configuration.model';
+import {ConfigurationComponent} from './configuration.component';
+import {ConfigurationService} from './configuration.service';
+import {Bean, PropertySource} from './configuration.model';
 
 describe('Component Tests', () => {
   describe('ConfigurationComponent', () => {
@@ -53,8 +53,8 @@ describe('Component Tests', () => {
             },
           },
         ];
-        spyOn(service, 'getBeans').and.returnValue(of(beans));
-        spyOn(service, 'getPropertySources').and.returnValue(of(propertySources));
+        jest.spyOn(service, 'getBeans').mockReturnValue(of(beans));
+        jest.spyOn(service, 'getPropertySources').mockReturnValue(of(propertySources));
 
         // WHEN
         comp.ngOnInit();

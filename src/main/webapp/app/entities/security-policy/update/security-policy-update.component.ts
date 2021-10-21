@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
+import {FormBuilder, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
+import {finalize, map} from 'rxjs/operators';
 
-import { ISecurityPolicy, SecurityPolicy } from '../security-policy.model';
-import { SecurityPolicyService } from '../service/security-policy.service';
-import { ITeamMembership } from 'app/entities/team-membership/team-membership.model';
-import { TeamMembershipService } from 'app/entities/team-membership/service/team-membership.service';
-import { ITenant } from 'app/entities/tenant/tenant.model';
-import { TenantService } from 'app/entities/tenant/service/tenant.service';
+import {ISecurityPolicy, SecurityPolicy} from '../security-policy.model';
+import {SecurityPolicyService} from '../service/security-policy.service';
+import {ITeamMembership} from 'app/entities/team-membership/team-membership.model';
+import {TeamMembershipService} from 'app/entities/team-membership/service/team-membership.service';
+import {ITenant} from 'app/entities/tenant/tenant.model';
+import {TenantService} from 'app/entities/tenant/service/tenant.service';
+import {ProtectionUnits} from 'app/entities/enumerations/protection-units.model';
+import {Access} from 'app/entities/enumerations/access.model';
 
 @Component({
   selector: 'jhi-security-policy-update',
@@ -18,6 +20,8 @@ import { TenantService } from 'app/entities/tenant/service/tenant.service';
 })
 export class SecurityPolicyUpdateComponent implements OnInit {
   isSaving = false;
+  protectionUnitsValues = Object.keys(ProtectionUnits);
+  accessValues = Object.keys(Access);
 
   teamMembershipsSharedCollection: ITeamMembership[] = [];
   tenantsSharedCollection: ITenant[] = [];

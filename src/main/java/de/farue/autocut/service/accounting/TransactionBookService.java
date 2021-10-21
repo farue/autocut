@@ -59,18 +59,16 @@ public class TransactionBookService {
 
         return transactionBookRepository
             .findById(transactionBook.getId())
-            .map(
-                existingTransactionBook -> {
-                    if (transactionBook.getName() != null) {
-                        existingTransactionBook.setName(transactionBook.getName());
-                    }
-                    if (transactionBook.getType() != null) {
-                        existingTransactionBook.setType(transactionBook.getType());
-                    }
-
-                    return existingTransactionBook;
+            .map(existingTransactionBook -> {
+                if (transactionBook.getName() != null) {
+                    existingTransactionBook.setName(transactionBook.getName());
                 }
-            )
+                if (transactionBook.getType() != null) {
+                    existingTransactionBook.setType(transactionBook.getType());
+                }
+
+                return existingTransactionBook;
+            })
             .map(transactionBookRepository::save);
     }
 

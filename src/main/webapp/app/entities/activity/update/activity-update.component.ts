@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
+import {FormBuilder, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
+import {finalize, map} from 'rxjs/operators';
 
-import { IActivity, Activity } from '../activity.model';
-import { ActivityService } from '../service/activity.service';
-import { ITenant } from 'app/entities/tenant/tenant.model';
-import { TenantService } from 'app/entities/tenant/service/tenant.service';
-import { ITeamMembership } from 'app/entities/team-membership/team-membership.model';
-import { TeamMembershipService } from 'app/entities/team-membership/service/team-membership.service';
+import {Activity, IActivity} from '../activity.model';
+import {ActivityService} from '../service/activity.service';
+import {ITenant} from 'app/entities/tenant/tenant.model';
+import {TenantService} from 'app/entities/tenant/service/tenant.service';
+import {ITeamMembership} from 'app/entities/team-membership/team-membership.model';
+import {TeamMembershipService} from 'app/entities/team-membership/service/team-membership.service';
+import {SemesterTerms} from 'app/entities/enumerations/semester-terms.model';
 
 @Component({
   selector: 'jhi-activity-update',
@@ -18,6 +19,7 @@ import { TeamMembershipService } from 'app/entities/team-membership/service/team
 })
 export class ActivityUpdateComponent implements OnInit {
   isSaving = false;
+  semesterTermsValues = Object.keys(SemesterTerms);
 
   tenantsSharedCollection: ITenant[] = [];
   teamMembershipsSharedCollection: ITeamMembership[] = [];

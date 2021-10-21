@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { IBankAccount } from '../bank-account.model';
-import { BankAccountService } from '../service/bank-account.service';
+import {IBankAccount} from '../bank-account.model';
+import {BankAccountService} from '../service/bank-account.service';
 
 @Component({
   templateUrl: './bank-account-delete-dialog.component.html',
@@ -10,7 +10,7 @@ import { BankAccountService } from '../service/bank-account.service';
 export class BankAccountDeleteDialogComponent {
   bankAccount?: IBankAccount;
 
-  constructor(protected bankAccountService: BankAccountService, public activeModal: NgbActiveModal) {}
+  constructor(protected bankAccountService: BankAccountService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

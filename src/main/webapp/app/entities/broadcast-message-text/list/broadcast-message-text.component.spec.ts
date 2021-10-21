@@ -1,11 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { of } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {HttpHeaders, HttpResponse} from '@angular/common/http';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {of} from 'rxjs';
 
-import { BroadcastMessageTextService } from '../service/broadcast-message-text.service';
+import {BroadcastMessageTextService} from '../service/broadcast-message-text.service';
 
-import { BroadcastMessageTextComponent } from './broadcast-message-text.component';
+import {BroadcastMessageTextComponent} from './broadcast-message-text.component';
 
 describe('Component Tests', () => {
   describe('BroadcastMessageText Management Component', () => {
@@ -26,7 +26,7 @@ describe('Component Tests', () => {
       service = TestBed.inject(BroadcastMessageTextService);
 
       const headers = new HttpHeaders().append('link', 'link;link');
-      spyOn(service, 'query').and.returnValue(
+      jest.spyOn(service, 'query').mockReturnValue(
         of(
           new HttpResponse({
             body: [{ id: 123 }],
@@ -42,7 +42,7 @@ describe('Component Tests', () => {
 
       // THEN
       expect(service.query).toHaveBeenCalled();
-      expect(comp.broadcastMessageTexts?.[0]).toEqual(jasmine.objectContaining({ id: 123 }));
+      expect(comp.broadcastMessageTexts?.[0]).toEqual(expect.objectContaining({ id: 123 }));
     });
   });
 });

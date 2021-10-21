@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { SERVER_API_URL } from 'app/app.constants';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { createRequestOption } from 'app/core/request/request-util';
@@ -8,14 +7,15 @@ import { ITransactionOverview } from './transaction-overview.model';
 import { map } from 'rxjs/operators';
 import * as dayjs from 'dayjs';
 import { ITransaction } from 'app/entities/transaction/transaction.model';
+import { ApplicationConfigService } from '../../core/config/application-config.service';
 
 export type EntityResponseType = HttpResponse<ITransactionOverview>;
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
-  public resourceUrl = SERVER_API_URL + 'api/transaction-books';
+  public resourceUrl = this.applicationConfigService.getEndpointFor('api/transaction-books');
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
 
   query(req?: Pagination): Observable<HttpResponse<ITransactionOverview>> {
     const options = createRequestOption(req);

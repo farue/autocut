@@ -286,8 +286,6 @@ class NetworkSwitchResourceIT {
         NetworkSwitch partialUpdatedNetworkSwitch = new NetworkSwitch();
         partialUpdatedNetworkSwitch.setId(networkSwitch.getId());
 
-        partialUpdatedNetworkSwitch.sshHost(UPDATED_SSH_HOST);
-
         restNetworkSwitchMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedNetworkSwitch.getId())
@@ -301,7 +299,7 @@ class NetworkSwitchResourceIT {
         assertThat(networkSwitchList).hasSize(databaseSizeBeforeUpdate);
         NetworkSwitch testNetworkSwitch = networkSwitchList.get(networkSwitchList.size() - 1);
         assertThat(testNetworkSwitch.getInterfaceName()).isEqualTo(DEFAULT_INTERFACE_NAME);
-        assertThat(testNetworkSwitch.getSshHost()).isEqualTo(UPDATED_SSH_HOST);
+        assertThat(testNetworkSwitch.getSshHost()).isEqualTo(DEFAULT_SSH_HOST);
     }
 
     @Test

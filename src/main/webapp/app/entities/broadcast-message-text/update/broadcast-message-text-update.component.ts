@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
+import {FormBuilder, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
+import {finalize, map} from 'rxjs/operators';
 
-import { BroadcastMessageText, IBroadcastMessageText } from '../broadcast-message-text.model';
-import { BroadcastMessageTextService } from '../service/broadcast-message-text.service';
-import { IBroadcastMessage } from 'app/entities/broadcast-message/broadcast-message.model';
-import { BroadcastMessageService } from 'app/entities/broadcast-message/service/broadcast-message.service';
+import {BroadcastMessageText, IBroadcastMessageText} from '../broadcast-message-text.model';
+import {BroadcastMessageTextService} from '../service/broadcast-message-text.service';
+import {IBroadcastMessage} from 'app/entities/broadcast-message/broadcast-message.model';
+import {BroadcastMessageService} from 'app/entities/broadcast-message/service/broadcast-message.service';
 
 @Component({
   selector: 'jhi-broadcast-message-text-update',

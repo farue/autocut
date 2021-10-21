@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse, HttpHeaders } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest } from 'rxjs';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component, OnInit} from '@angular/core';
+import {HttpHeaders, HttpResponse} from '@angular/common/http';
+import {ActivatedRoute, Router} from '@angular/router';
+import {combineLatest} from 'rxjs';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
-import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/auth/account.model';
-import { UserManagementService } from '../service/user-management.service';
-import { User } from '../user-management.model';
-import { UserManagementDeleteDialogComponent } from '../delete/user-management-delete-dialog.component';
+import {ASC, DESC, ITEMS_PER_PAGE, SORT} from 'app/config/pagination.constants';
+import {AccountService} from 'app/core/auth/account.service';
+import {Account} from 'app/core/auth/account.model';
+import {UserManagementService} from '../service/user-management.service';
+import {User} from '../user-management.model';
+import {UserManagementDeleteDialogComponent} from '../delete/user-management-delete-dialog.component';
 
 @Component({
   selector: 'jhi-user-mgmt',
@@ -79,7 +79,7 @@ export class UserManagementComponent implements OnInit {
       relativeTo: this.activatedRoute.parent,
       queryParams: {
         page: this.page,
-        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc'),
+        sort: `${this.predicate},${this.ascending ? ASC : DESC}`,
       },
     });
   }
@@ -87,16 +87,16 @@ export class UserManagementComponent implements OnInit {
   private handleNavigation(): void {
     combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
       const page = params.get('page');
-      this.page = page !== null ? +page : 1;
-      const sort = (params.get('sort') ?? data['defaultSort']).split(',');
+      this.page = +(page ?? 1);
+      const sort = (params.get(SORT) ?? data['defaultSort']).split(',');
       this.predicate = sort[0];
-      this.ascending = sort[1] === 'asc';
+      this.ascending = sort[1] === ASC;
       this.loadAll();
     });
   }
 
   private sort(): string[] {
-    const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
+    const result = [`${this.predicate},${this.ascending ? ASC : DESC}`];
     if (this.predicate !== 'id') {
       result.push('id');
     }

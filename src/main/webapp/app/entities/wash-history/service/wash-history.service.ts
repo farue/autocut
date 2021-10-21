@@ -1,22 +1,22 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 import * as dayjs from 'dayjs';
 
-import { isPresent } from 'app/core/util/operators';
-import { ApplicationConfigService } from 'app/core/config/application-config.service';
-import { createRequestOption } from 'app/core/request/request-util';
-import { IWashHistory, getWashHistoryIdentifier } from '../wash-history.model';
+import {isPresent} from 'app/core/util/operators';
+import {ApplicationConfigService} from 'app/core/config/application-config.service';
+import {createRequestOption} from 'app/core/request/request-util';
+import {getWashHistoryIdentifier, IWashHistory} from '../wash-history.model';
 
 export type EntityResponseType = HttpResponse<IWashHistory>;
 export type EntityArrayResponseType = HttpResponse<IWashHistory[]>;
 
 @Injectable({ providedIn: 'root' })
 export class WashHistoryService {
-  public resourceUrl = this.applicationConfigService.getEndpointFor('api/wash-histories');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/wash-histories');
 
-  constructor(protected http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(washHistory: IWashHistory): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(washHistory);

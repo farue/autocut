@@ -1,18 +1,18 @@
 jest.mock('@angular/router');
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { of, Subject } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {HttpResponse} from '@angular/common/http';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {FormBuilder} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {of, Subject} from 'rxjs';
 
-import { BroadcastMessageTextService } from '../service/broadcast-message-text.service';
-import { BroadcastMessageText, IBroadcastMessageText } from '../broadcast-message-text.model';
-import { IBroadcastMessage } from 'app/entities/broadcast-message/broadcast-message.model';
-import { BroadcastMessageService } from 'app/entities/broadcast-message/service/broadcast-message.service';
+import {BroadcastMessageTextService} from '../service/broadcast-message-text.service';
+import {BroadcastMessageText, IBroadcastMessageText} from '../broadcast-message-text.model';
+import {IBroadcastMessage} from 'app/entities/broadcast-message/broadcast-message.model';
+import {BroadcastMessageService} from 'app/entities/broadcast-message/service/broadcast-message.service';
 
-import { BroadcastMessageTextUpdateComponent } from './broadcast-message-text-update.component';
+import {BroadcastMessageTextUpdateComponent} from './broadcast-message-text-update.component';
 
 describe('Component Tests', () => {
   describe('BroadcastMessageText Management Update Component', () => {
@@ -42,14 +42,14 @@ describe('Component Tests', () => {
     describe('ngOnInit', () => {
       it('Should call BroadcastMessage query and add missing value', () => {
         const broadcastMessageText: IBroadcastMessageText = { id: 456 };
-        const message: IBroadcastMessage = { id: 31246 };
+        const message: IBroadcastMessage = { id: 57895 };
         broadcastMessageText.message = message;
 
-        const broadcastMessageCollection: IBroadcastMessage[] = [{ id: 24629 }];
-        spyOn(broadcastMessageService, 'query').and.returnValue(of(new HttpResponse({ body: broadcastMessageCollection })));
+        const broadcastMessageCollection: IBroadcastMessage[] = [{ id: 78089 }];
+        jest.spyOn(broadcastMessageService, 'query').mockReturnValue(of(new HttpResponse({ body: broadcastMessageCollection })));
         const additionalBroadcastMessages = [message];
         const expectedCollection: IBroadcastMessage[] = [...additionalBroadcastMessages, ...broadcastMessageCollection];
-        spyOn(broadcastMessageService, 'addBroadcastMessageToCollectionIfMissing').and.returnValue(expectedCollection);
+        jest.spyOn(broadcastMessageService, 'addBroadcastMessageToCollectionIfMissing').mockReturnValue(expectedCollection);
 
         activatedRoute.data = of({ broadcastMessageText });
         comp.ngOnInit();
@@ -64,7 +64,7 @@ describe('Component Tests', () => {
 
       it('Should update editForm', () => {
         const broadcastMessageText: IBroadcastMessageText = { id: 456 };
-        const message: IBroadcastMessage = { id: 79224 };
+        const message: IBroadcastMessage = { id: 68575 };
         broadcastMessageText.message = message;
 
         activatedRoute.data = of({ broadcastMessageText });
@@ -78,10 +78,10 @@ describe('Component Tests', () => {
     describe('save', () => {
       it('Should call update service on save for existing entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<BroadcastMessageText>>();
         const broadcastMessageText = { id: 123 };
-        spyOn(broadcastMessageTextService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(broadcastMessageTextService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ broadcastMessageText });
         comp.ngOnInit();
 
@@ -99,10 +99,10 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<BroadcastMessageText>>();
         const broadcastMessageText = new BroadcastMessageText();
-        spyOn(broadcastMessageTextService, 'create').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(broadcastMessageTextService, 'create').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ broadcastMessageText });
         comp.ngOnInit();
 
@@ -120,10 +120,10 @@ describe('Component Tests', () => {
 
       it('Should set isSaving to false on error', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<BroadcastMessageText>>();
         const broadcastMessageText = { id: 123 };
-        spyOn(broadcastMessageTextService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(broadcastMessageTextService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ broadcastMessageText });
         comp.ngOnInit();
 

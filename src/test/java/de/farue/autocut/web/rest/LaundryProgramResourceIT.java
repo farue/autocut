@@ -311,7 +311,7 @@ class LaundryProgramResourceIT {
         LaundryProgram partialUpdatedLaundryProgram = new LaundryProgram();
         partialUpdatedLaundryProgram.setId(laundryProgram.getId());
 
-        partialUpdatedLaundryProgram.name(UPDATED_NAME).preWash(UPDATED_PRE_WASH).protect(UPDATED_PROTECT);
+        partialUpdatedLaundryProgram.preWash(UPDATED_PRE_WASH);
 
         restLaundryProgramMockMvc
             .perform(
@@ -325,11 +325,11 @@ class LaundryProgramResourceIT {
         List<LaundryProgram> laundryProgramList = laundryProgramRepository.findAll();
         assertThat(laundryProgramList).hasSize(databaseSizeBeforeUpdate);
         LaundryProgram testLaundryProgram = laundryProgramList.get(laundryProgramList.size() - 1);
-        assertThat(testLaundryProgram.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testLaundryProgram.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testLaundryProgram.getSubprogram()).isEqualTo(DEFAULT_SUBPROGRAM);
         assertThat(testLaundryProgram.getSpin()).isEqualTo(DEFAULT_SPIN);
         assertThat(testLaundryProgram.getPreWash()).isEqualTo(UPDATED_PRE_WASH);
-        assertThat(testLaundryProgram.getProtect()).isEqualTo(UPDATED_PROTECT);
+        assertThat(testLaundryProgram.getProtect()).isEqualTo(DEFAULT_PROTECT);
     }
 
     @Test

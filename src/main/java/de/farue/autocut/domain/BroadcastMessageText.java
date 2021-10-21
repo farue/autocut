@@ -20,6 +20,7 @@ public class BroadcastMessageText implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -38,17 +39,18 @@ public class BroadcastMessageText implements Serializable {
     private BroadcastMessage message;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public BroadcastMessageText id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public BroadcastMessageText id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public String getLangKey() {
@@ -56,7 +58,7 @@ public class BroadcastMessageText implements Serializable {
     }
 
     public BroadcastMessageText langKey(String langKey) {
-        this.langKey = langKey;
+        this.setLangKey(langKey);
         return this;
     }
 
@@ -69,7 +71,7 @@ public class BroadcastMessageText implements Serializable {
     }
 
     public BroadcastMessageText text(String text) {
-        this.text = text;
+        this.setText(text);
         return this;
     }
 
@@ -81,13 +83,13 @@ public class BroadcastMessageText implements Serializable {
         return this.message;
     }
 
+    public void setMessage(BroadcastMessage broadcastMessage) {
+        this.message = broadcastMessage;
+    }
+
     public BroadcastMessageText message(BroadcastMessage broadcastMessage) {
         this.setMessage(broadcastMessage);
         return this;
-    }
-
-    public void setMessage(BroadcastMessage broadcastMessage) {
-        this.message = broadcastMessage;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

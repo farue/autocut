@@ -107,7 +107,7 @@ public class ActivityResource {
      * or with status {@code 500 (Internal Server Error)} if the activity couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/activities/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/activities/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Activity> partialUpdateActivity(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody Activity activity

@@ -13,6 +13,7 @@ import de.farue.autocut.domain.BankTransaction;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.repository.BankTransactionRepository;
 import de.farue.autocut.security.AuthoritiesConstants;
+import de.farue.autocut.service.accounting.BankTransactionService;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -90,6 +91,9 @@ class BankTransactionResourceIT {
 
     @Mock
     private BankTransactionRepository bankTransactionRepositoryMock;
+
+    @Mock
+    private BankTransactionService bankTransactionServiceMock;
 
     @Autowired
     private EntityManager em;
@@ -341,20 +345,22 @@ class BankTransactionResourceIT {
             .andExpect(jsonPath("$.[*].mandate").value(hasItem(DEFAULT_MANDATE)));
     }
 
+    @SuppressWarnings({ "unchecked" })
     void getAllBankTransactionsWithEagerRelationshipsIsEnabled() throws Exception {
-        when(bankTransactionRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl<>(new ArrayList<>()));
+        when(bankTransactionServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restBankTransactionMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
 
-        verify(bankTransactionRepositoryMock, times(1)).findAllWithEagerRelationships(any());
+        verify(bankTransactionServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
+    @SuppressWarnings({ "unchecked" })
     void getAllBankTransactionsWithEagerRelationshipsIsNotEnabled() throws Exception {
-        when(bankTransactionRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl<>(new ArrayList<>()));
+        when(bankTransactionServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restBankTransactionMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
 
-        verify(bankTransactionRepositoryMock, times(1)).findAllWithEagerRelationships(any());
+        verify(bankTransactionServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @Test
@@ -513,12 +519,14 @@ class BankTransactionResourceIT {
         partialUpdatedBankTransaction.setId(bankTransaction.getId());
 
         partialUpdatedBankTransaction
+            .bookingDate(UPDATED_BOOKING_DATE)
             .valueDate(UPDATED_VALUE_DATE)
+            .value(UPDATED_VALUE)
             .balanceAfter(UPDATED_BALANCE_AFTER)
             .type(UPDATED_TYPE)
-            .customerRef(UPDATED_CUSTOMER_REF)
-            .creditor(UPDATED_CREDITOR)
-            .mandate(UPDATED_MANDATE);
+            .description(UPDATED_DESCRIPTION)
+            .gvCode(UPDATED_GV_CODE)
+            .primanota(UPDATED_PRIMANOTA);
 
         restBankTransactionMockMvc
             .perform(
@@ -532,18 +540,18 @@ class BankTransactionResourceIT {
         List<BankTransaction> bankTransactionList = bankTransactionRepository.findAll();
         assertThat(bankTransactionList).hasSize(databaseSizeBeforeUpdate);
         BankTransaction testBankTransaction = bankTransactionList.get(bankTransactionList.size() - 1);
-        assertThat(testBankTransaction.getBookingDate()).isEqualTo(DEFAULT_BOOKING_DATE);
+        assertThat(testBankTransaction.getBookingDate()).isEqualTo(UPDATED_BOOKING_DATE);
         assertThat(testBankTransaction.getValueDate()).isEqualTo(UPDATED_VALUE_DATE);
-        assertThat(testBankTransaction.getValue()).isEqualByComparingTo(DEFAULT_VALUE);
+        assertThat(testBankTransaction.getValue()).isEqualByComparingTo(UPDATED_VALUE);
         assertThat(testBankTransaction.getBalanceAfter()).isEqualByComparingTo(UPDATED_BALANCE_AFTER);
         assertThat(testBankTransaction.getType()).isEqualTo(UPDATED_TYPE);
-        assertThat(testBankTransaction.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
-        assertThat(testBankTransaction.getCustomerRef()).isEqualTo(UPDATED_CUSTOMER_REF);
-        assertThat(testBankTransaction.getGvCode()).isEqualTo(DEFAULT_GV_CODE);
+        assertThat(testBankTransaction.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testBankTransaction.getCustomerRef()).isEqualTo(DEFAULT_CUSTOMER_REF);
+        assertThat(testBankTransaction.getGvCode()).isEqualTo(UPDATED_GV_CODE);
         assertThat(testBankTransaction.getEndToEnd()).isEqualTo(DEFAULT_END_TO_END);
-        assertThat(testBankTransaction.getPrimanota()).isEqualTo(DEFAULT_PRIMANOTA);
-        assertThat(testBankTransaction.getCreditor()).isEqualTo(UPDATED_CREDITOR);
-        assertThat(testBankTransaction.getMandate()).isEqualTo(UPDATED_MANDATE);
+        assertThat(testBankTransaction.getPrimanota()).isEqualTo(UPDATED_PRIMANOTA);
+        assertThat(testBankTransaction.getCreditor()).isEqualTo(DEFAULT_CREDITOR);
+        assertThat(testBankTransaction.getMandate()).isEqualTo(DEFAULT_MANDATE);
     }
 
     @Test

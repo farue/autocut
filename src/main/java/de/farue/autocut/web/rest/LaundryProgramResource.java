@@ -106,7 +106,7 @@ public class LaundryProgramResource {
      * or with status {@code 500 (Internal Server Error)} if the laundryProgram couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/laundry-programs/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/laundry-programs/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<LaundryProgram> partialUpdateLaundryProgram(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody LaundryProgram laundryProgram
@@ -125,27 +125,25 @@ public class LaundryProgramResource {
 
         Optional<LaundryProgram> result = laundryProgramRepository
             .findById(laundryProgram.getId())
-            .map(
-                existingLaundryProgram -> {
-                    if (laundryProgram.getName() != null) {
-                        existingLaundryProgram.setName(laundryProgram.getName());
-                    }
-                    if (laundryProgram.getSubprogram() != null) {
-                        existingLaundryProgram.setSubprogram(laundryProgram.getSubprogram());
-                    }
-                    if (laundryProgram.getSpin() != null) {
-                        existingLaundryProgram.setSpin(laundryProgram.getSpin());
-                    }
-                    if (laundryProgram.getPreWash() != null) {
-                        existingLaundryProgram.setPreWash(laundryProgram.getPreWash());
-                    }
-                    if (laundryProgram.getProtect() != null) {
-                        existingLaundryProgram.setProtect(laundryProgram.getProtect());
-                    }
-
-                    return existingLaundryProgram;
+            .map(existingLaundryProgram -> {
+                if (laundryProgram.getName() != null) {
+                    existingLaundryProgram.setName(laundryProgram.getName());
                 }
-            )
+                if (laundryProgram.getSubprogram() != null) {
+                    existingLaundryProgram.setSubprogram(laundryProgram.getSubprogram());
+                }
+                if (laundryProgram.getSpin() != null) {
+                    existingLaundryProgram.setSpin(laundryProgram.getSpin());
+                }
+                if (laundryProgram.getPreWash() != null) {
+                    existingLaundryProgram.setPreWash(laundryProgram.getPreWash());
+                }
+                if (laundryProgram.getProtect() != null) {
+                    existingLaundryProgram.setProtect(laundryProgram.getProtect());
+                }
+
+                return existingLaundryProgram;
+            })
             .map(laundryProgramRepository::save);
 
         return ResponseUtil.wrapOrNotFound(

@@ -1,19 +1,19 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import {Component, ElementRef, OnInit} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
+import {FormBuilder, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
+import {finalize, map} from 'rxjs/operators';
 
-import { ILease, Lease } from '../lease.model';
-import { LeaseService } from '../service/lease.service';
-import { AlertError } from 'app/shared/alert/alert-error.model';
-import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
-import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
-import { ITransactionBook } from 'app/entities/transaction-book/transaction-book.model';
-import { TransactionBookService } from 'app/entities/transaction-book/service/transaction-book.service';
-import { IApartment } from 'app/entities/apartment/apartment.model';
-import { ApartmentService } from 'app/entities/apartment/service/apartment.service';
+import {ILease, Lease} from '../lease.model';
+import {LeaseService} from '../service/lease.service';
+import {AlertError} from 'app/shared/alert/alert-error.model';
+import {EventManager, EventWithContent} from 'app/core/util/event-manager.service';
+import {DataUtils, FileLoadError} from 'app/core/util/data-util.service';
+import {ITransactionBook} from 'app/entities/transaction-book/transaction-book.model';
+import {TransactionBookService} from 'app/entities/transaction-book/service/transaction-book.service';
+import {IApartment} from 'app/entities/apartment/apartment.model';
+import {ApartmentService} from 'app/entities/apartment/service/apartment.service';
 
 @Component({
   selector: 'jhi-lease-update',
@@ -67,9 +67,7 @@ export class LeaseUpdateComponent implements OnInit {
   setFileData(event: Event, field: string, isImage: boolean): void {
     this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
       error: (err: FileLoadError) =>
-        this.eventManager.broadcast(
-          new EventWithContent<AlertError>('autocutApp.error', { ...err, key: 'error.file.' + err.key })
-        ),
+        this.eventManager.broadcast(new EventWithContent<AlertError>('autocutApp.error', { ...err, key: 'error.file.' + err.key })),
     });
   }
 

@@ -1,6 +1,7 @@
 package de.farue.autocut.config;
 
-import static de.farue.autocut.config.StaticResourcesWebConfiguration.*;
+import static de.farue.autocut.config.StaticResourcesWebConfiguration.RESOURCE_LOCATIONS;
+import static de.farue.autocut.config.StaticResourcesWebConfiguration.RESOURCE_PATHS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -34,7 +35,7 @@ class StaticResourcesWebConfigurerTest {
     }
 
     @Test
-    void shouldAppendResourceHandlerAndInitiliazeIt() {
+    void shouldAppendResourceHandlerAndInitializeIt() {
         staticResourcesWebConfiguration.addResourceHandlers(resourceHandlerRegistry);
 
         verify(resourceHandlerRegistry, times(1)).addResourceHandler(RESOURCE_PATHS);
@@ -58,7 +59,7 @@ class StaticResourcesWebConfigurerTest {
     }
 
     @Test
-    void shoudCreateCacheControlBasedOnJhipsterDefaultProperties() {
+    void shouldCreateCacheControlBasedOnJhipsterDefaultProperties() {
         CacheControl cacheExpected = CacheControl.maxAge(JHipsterDefaults.Http.Cache.timeToLiveInDays, TimeUnit.DAYS).cachePublic();
         assertThat(staticResourcesWebConfiguration.getCacheControl())
             .extracting(CacheControl::getHeaderValue)
@@ -66,7 +67,7 @@ class StaticResourcesWebConfigurerTest {
     }
 
     @Test
-    void shoudCreateCacheControlWithSpecificConfigurationInProperties() {
+    void shouldCreateCacheControlWithSpecificConfigurationInProperties() {
         props.getHttp().getCache().setTimeToLiveInDays(MAX_AGE_TEST);
         CacheControl cacheExpected = CacheControl.maxAge(MAX_AGE_TEST, TimeUnit.DAYS).cachePublic();
         assertThat(staticResourcesWebConfiguration.getCacheControl())

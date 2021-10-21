@@ -83,34 +83,32 @@ public abstract class TransactionService<T extends Transaction> {
 
         return getRepository()
             .findById(transaction.getId())
-            .map(
-                existingTransaction -> {
-                    if (transaction.getType() != null) {
-                        existingTransaction.setType(transaction.getType());
-                    }
-                    if (transaction.getBookingDate() != null) {
-                        existingTransaction.setBookingDate(transaction.getBookingDate());
-                    }
-                    if (transaction.getValueDate() != null) {
-                        existingTransaction.setValueDate(transaction.getValueDate());
-                    }
-                    if (transaction.getValue() != null) {
-                        existingTransaction.setValue(transaction.getValue());
-                    }
-                    if (transaction.getBalanceAfter() != null) {
-                        existingTransaction.setBalanceAfter(transaction.getBalanceAfter());
-                    }
-                    if (transaction.getDescription() != null) {
-                        existingTransaction.setDescription(transaction.getDescription());
-                    }
-                    if (transaction.getServiceQulifier() != null) {
-                        existingTransaction.setServiceQulifier(transaction.getServiceQulifier());
-                    }
-                    partialUpdate(existingTransaction, transaction);
-
-                    return existingTransaction;
+            .map(existingTransaction -> {
+                if (transaction.getType() != null) {
+                    existingTransaction.setType(transaction.getType());
                 }
-            )
+                if (transaction.getBookingDate() != null) {
+                    existingTransaction.setBookingDate(transaction.getBookingDate());
+                }
+                if (transaction.getValueDate() != null) {
+                    existingTransaction.setValueDate(transaction.getValueDate());
+                }
+                if (transaction.getValue() != null) {
+                    existingTransaction.setValue(transaction.getValue());
+                }
+                if (transaction.getBalanceAfter() != null) {
+                    existingTransaction.setBalanceAfter(transaction.getBalanceAfter());
+                }
+                if (transaction.getDescription() != null) {
+                    existingTransaction.setDescription(transaction.getDescription());
+                }
+                if (transaction.getServiceQulifier() != null) {
+                    existingTransaction.setServiceQulifier(transaction.getServiceQulifier());
+                }
+                partialUpdate(existingTransaction, transaction);
+
+                return existingTransaction;
+            })
             .map(getRepository()::save);
     }
 

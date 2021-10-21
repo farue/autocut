@@ -5,8 +5,8 @@ import * as relativeTime from 'dayjs/plugin/relativeTime';
 import * as localizedFormat from 'dayjs/plugin/localizedFormat';
 
 // jhipster-needle-i18n-language-dayjs-imports - JHipster will import languages from dayjs here
-import 'dayjs/locale/en';
 import 'dayjs/locale/de';
+import 'dayjs/locale/en';
 
 // DAYJS CONFIGURATION
 dayjs.extend(customParseFormat);

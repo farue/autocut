@@ -46,27 +46,25 @@ public class AddressService {
 
         return addressRepository
             .findById(address.getId())
-            .map(
-                existingAddress -> {
-                    if (address.getStreet() != null) {
-                        existingAddress.setStreet(address.getStreet());
-                    }
-                    if (address.getStreetNumber() != null) {
-                        existingAddress.setStreetNumber(address.getStreetNumber());
-                    }
-                    if (address.getZip() != null) {
-                        existingAddress.setZip(address.getZip());
-                    }
-                    if (address.getCity() != null) {
-                        existingAddress.setCity(address.getCity());
-                    }
-                    if (address.getCountry() != null) {
-                        existingAddress.setCountry(address.getCountry());
-                    }
-
-                    return existingAddress;
+            .map(existingAddress -> {
+                if (address.getStreet() != null) {
+                    existingAddress.setStreet(address.getStreet());
                 }
-            )
+                if (address.getStreetNumber() != null) {
+                    existingAddress.setStreetNumber(address.getStreetNumber());
+                }
+                if (address.getZip() != null) {
+                    existingAddress.setZip(address.getZip());
+                }
+                if (address.getCity() != null) {
+                    existingAddress.setCity(address.getCity());
+                }
+                if (address.getCountry() != null) {
+                    existingAddress.setCountry(address.getCountry());
+                }
+
+                return existingAddress;
+            })
             .map(addressRepository::save);
     }
 

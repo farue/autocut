@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
   imports: [
@@ -108,6 +108,21 @@ import { RouterModule } from '@angular/router';
         path: 'network-switch-status',
         data: { pageTitle: 'autocutApp.networkSwitchStatus.home.title' },
         loadChildren: () => import('./network-switch-status/network-switch-status.module').then(m => m.NetworkSwitchStatusModule),
+      },
+      {
+        path: 'laundry-program',
+        data: { pageTitle: 'autocutApp.laundryProgram.home.title' },
+        loadChildren: () => import('./laundry-program/laundry-program.module').then(m => m.LaundryProgramModule),
+      },
+      {
+        path: 'broadcast-message',
+        data: { pageTitle: 'autocutApp.broadcastMessage.home.title' },
+        loadChildren: () => import('./broadcast-message/broadcast-message.module').then(m => m.BroadcastMessageModule),
+      },
+      {
+        path: 'broadcast-message-text',
+        data: { pageTitle: 'autocutApp.broadcastMessageText.home.title' },
+        loadChildren: () => import('./broadcast-message-text/broadcast-message-text.module').then(m => m.BroadcastMessageTextModule),
       },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),

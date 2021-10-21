@@ -8,7 +8,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -25,6 +25,7 @@ public abstract class Transaction implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -86,17 +87,18 @@ public abstract class Transaction implements Serializable {
     }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public Transaction id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Transaction id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public String getType() {
@@ -104,7 +106,7 @@ public abstract class Transaction implements Serializable {
     }
 
     public Transaction type(String type) {
-        this.type = type;
+        this.setType(type);
         return this;
     }
 
@@ -117,7 +119,7 @@ public abstract class Transaction implements Serializable {
     }
 
     public Transaction bookingDate(Instant bookingDate) {
-        this.bookingDate = bookingDate.truncatedTo(ChronoUnit.MILLIS);
+        this.setBookingDate(bookingDate.truncatedTo(ChronoUnit.MILLIS));
         return this;
     }
 
@@ -130,7 +132,7 @@ public abstract class Transaction implements Serializable {
     }
 
     public Transaction valueDate(Instant valueDate) {
-        this.valueDate = valueDate.truncatedTo(ChronoUnit.MILLIS);
+        this.setValueDate(valueDate.truncatedTo(ChronoUnit.MILLIS));
         return this;
     }
 
@@ -143,7 +145,7 @@ public abstract class Transaction implements Serializable {
     }
 
     public Transaction value(BigDecimal value) {
-        this.value = value;
+        this.setValue(value);
         return this;
     }
 
@@ -156,7 +158,7 @@ public abstract class Transaction implements Serializable {
     }
 
     public Transaction balanceAfter(BigDecimal balanceAfter) {
-        this.balanceAfter = balanceAfter;
+        this.setBalanceAfter(balanceAfter);
         return this;
     }
 
@@ -169,7 +171,7 @@ public abstract class Transaction implements Serializable {
     }
 
     public Transaction description(String description) {
-        this.description = description;
+        this.setDescription(description);
         return this;
     }
 
@@ -182,7 +184,7 @@ public abstract class Transaction implements Serializable {
     }
 
     public Transaction serviceQulifier(String serviceQulifier) {
-        this.serviceQulifier = serviceQulifier;
+        this.setServiceQulifier(serviceQulifier);
         return this;
     }
 

@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ActivatedRoute} from '@angular/router';
+import {of} from 'rxjs';
 
-import { GlobalSettingDetailComponent } from './global-setting-detail.component';
+import {GlobalSettingDetailComponent} from './global-setting-detail.component';
 
 describe('Component Tests', () => {
   describe('GlobalSetting Management Detail Component', () => {
@@ -31,7 +31,7 @@ describe('Component Tests', () => {
         comp.ngOnInit();
 
         // THEN
-        expect(comp.globalSetting).toEqual(jasmine.objectContaining({ id: 123 }));
+        expect(comp.globalSetting).toEqual(expect.objectContaining({ id: 123 }));
       });
     });
   });

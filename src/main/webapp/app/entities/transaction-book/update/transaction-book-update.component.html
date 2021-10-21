@@ -26,9 +26,9 @@
           <label class="form-control-label" jhiTranslate="autocutApp.transactionBook.type" for="field_type">Type</label>
           <select class="form-control" name="type" formControlName="type" id="field_type" data-cy="type">
             <option [ngValue]="null">{{ 'autocutApp.TransactionBookType.null' | translate }}</option>
-            <option value="CASH">{{ 'autocutApp.TransactionBookType.CASH' | translate }}</option>
-            <option value="REVENUE">{{ 'autocutApp.TransactionBookType.REVENUE' | translate }}</option>
-            <option value="DEPOSIT">{{ 'autocutApp.TransactionBookType.DEPOSIT' | translate }}</option>
+            <option *ngFor="let transactionBookType of transactionBookTypeValues" [value]="transactionBookType">
+              {{ 'autocutApp.TransactionBookType.' + transactionBookType | translate }}
+            </option>
           </select>
           <div *ngIf="editForm.get('type')!.invalid && (editForm.get('type')!.dirty || editForm.get('type')!.touched)">
             <small class="form-text text-danger" *ngIf="editForm.get('type')?.errors?.required" jhiTranslate="entity.validation.required">
@@ -39,7 +39,7 @@
       </div>
 
       <div>
-        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
           <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
 

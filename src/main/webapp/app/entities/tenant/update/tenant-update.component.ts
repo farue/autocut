@@ -1,19 +1,19 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import {Component, ElementRef, OnInit} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
+import {FormBuilder, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
+import {finalize, map} from 'rxjs/operators';
 
-import { ITenant, Tenant } from '../tenant.model';
-import { TenantService } from '../service/tenant.service';
-import { AlertError } from 'app/shared/alert/alert-error.model';
-import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
-import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
-import { IUser } from 'app/entities/user/user.model';
-import { UserService } from 'app/entities/user/user.service';
-import { ILease } from 'app/entities/lease/lease.model';
-import { LeaseService } from 'app/entities/lease/service/lease.service';
+import {ITenant, Tenant} from '../tenant.model';
+import {TenantService} from '../service/tenant.service';
+import {AlertError} from 'app/shared/alert/alert-error.model';
+import {EventManager, EventWithContent} from 'app/core/util/event-manager.service';
+import {DataUtils, FileLoadError} from 'app/core/util/data-util.service';
+import {IUser} from 'app/entities/user/user.model';
+import {UserService} from 'app/entities/user/user.service';
+import {ILease} from 'app/entities/lease/lease.model';
+import {LeaseService} from 'app/entities/lease/service/lease.service';
 
 @Component({
   selector: 'jhi-tenant-update',
@@ -66,9 +66,7 @@ export class TenantUpdateComponent implements OnInit {
   setFileData(event: Event, field: string, isImage: boolean): void {
     this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
       error: (err: FileLoadError) =>
-        this.eventManager.broadcast(
-          new EventWithContent<AlertError>('autocutApp.error', { ...err, key: 'error.file.' + err.key })
-        ),
+        this.eventManager.broadcast(new EventWithContent<AlertError>('autocutApp.error', { ...err, key: 'error.file.' + err.key })),
     });
   }
 

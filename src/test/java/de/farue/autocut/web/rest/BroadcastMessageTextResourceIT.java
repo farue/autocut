@@ -325,7 +325,7 @@ class BroadcastMessageTextResourceIT {
         BroadcastMessageText partialUpdatedBroadcastMessageText = new BroadcastMessageText();
         partialUpdatedBroadcastMessageText.setId(broadcastMessageText.getId());
 
-        partialUpdatedBroadcastMessageText.text(UPDATED_TEXT);
+        partialUpdatedBroadcastMessageText.langKey(UPDATED_LANG_KEY).text(UPDATED_TEXT);
 
         restBroadcastMessageTextMockMvc
             .perform(
@@ -339,7 +339,7 @@ class BroadcastMessageTextResourceIT {
         List<BroadcastMessageText> broadcastMessageTextList = broadcastMessageTextRepository.findAll();
         assertThat(broadcastMessageTextList).hasSize(databaseSizeBeforeUpdate);
         BroadcastMessageText testBroadcastMessageText = broadcastMessageTextList.get(broadcastMessageTextList.size() - 1);
-        assertThat(testBroadcastMessageText.getLangKey()).isEqualTo(DEFAULT_LANG_KEY);
+        assertThat(testBroadcastMessageText.getLangKey()).isEqualTo(UPDATED_LANG_KEY);
         assertThat(testBroadcastMessageText.getText()).isEqualTo(UPDATED_TEXT);
     }
 

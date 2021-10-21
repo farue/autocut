@@ -1,20 +1,20 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
-import { isPresent } from 'app/core/util/operators';
-import { ApplicationConfigService } from 'app/core/config/application-config.service';
-import { createRequestOption } from 'app/core/request/request-util';
-import { IInternetAccess, getInternetAccessIdentifier } from '../internet-access.model';
+import {isPresent} from 'app/core/util/operators';
+import {ApplicationConfigService} from 'app/core/config/application-config.service';
+import {createRequestOption} from 'app/core/request/request-util';
+import {getInternetAccessIdentifier, IInternetAccess} from '../internet-access.model';
 
 export type EntityResponseType = HttpResponse<IInternetAccess>;
 export type EntityArrayResponseType = HttpResponse<IInternetAccess[]>;
 
 @Injectable({ providedIn: 'root' })
 export class InternetAccessService {
-  public resourceUrl = this.applicationConfigService.getEndpointFor('api/internet-accesses');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/internet-accesses');
 
-  constructor(protected http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(internetAccess: IInternetAccess): Observable<EntityResponseType> {
     return this.http.post<IInternetAccess>(this.resourceUrl, internetAccess, { observe: 'response' });

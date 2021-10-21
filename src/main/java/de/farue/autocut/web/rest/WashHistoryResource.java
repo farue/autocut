@@ -103,7 +103,7 @@ public class WashHistoryResource {
      * or with status {@code 500 (Internal Server Error)} if the washHistory couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/wash-histories/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/wash-histories/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<WashHistory> partialUpdateWashHistory(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody WashHistory washHistory
@@ -122,24 +122,22 @@ public class WashHistoryResource {
 
         Optional<WashHistory> result = washHistoryRepository
             .findById(washHistory.getId())
-            .map(
-                existingWashHistory -> {
-                    if (washHistory.getUsingDate() != null) {
-                        existingWashHistory.setUsingDate(washHistory.getUsingDate());
-                    }
-                    if (washHistory.getReservationDate() != null) {
-                        existingWashHistory.setReservationDate(washHistory.getReservationDate());
-                    }
-                    if (washHistory.getLastModifiedDate() != null) {
-                        existingWashHistory.setLastModifiedDate(washHistory.getLastModifiedDate());
-                    }
-                    if (washHistory.getStatus() != null) {
-                        existingWashHistory.setStatus(washHistory.getStatus());
-                    }
-
-                    return existingWashHistory;
+            .map(existingWashHistory -> {
+                if (washHistory.getUsingDate() != null) {
+                    existingWashHistory.setUsingDate(washHistory.getUsingDate());
                 }
-            )
+                if (washHistory.getReservationDate() != null) {
+                    existingWashHistory.setReservationDate(washHistory.getReservationDate());
+                }
+                if (washHistory.getLastModifiedDate() != null) {
+                    existingWashHistory.setLastModifiedDate(washHistory.getLastModifiedDate());
+                }
+                if (washHistory.getStatus() != null) {
+                    existingWashHistory.setStatus(washHistory.getStatus());
+                }
+
+                return existingWashHistory;
+            })
             .map(washHistoryRepository::save);
 
         return ResponseUtil.wrapOrNotFound(

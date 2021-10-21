@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ActivatedRoute} from '@angular/router';
+import {of} from 'rxjs';
 
-import { NetworkSwitchDetailComponent } from './network-switch-detail.component';
+import {NetworkSwitchDetailComponent} from './network-switch-detail.component';
 
 describe('Component Tests', () => {
   describe('NetworkSwitch Management Detail Component', () => {
@@ -31,7 +31,7 @@ describe('Component Tests', () => {
         comp.ngOnInit();
 
         // THEN
-        expect(comp.networkSwitch).toEqual(jasmine.objectContaining({ id: 123 }));
+        expect(comp.networkSwitch).toEqual(expect.objectContaining({ id: 123 }));
       });
     });
   });

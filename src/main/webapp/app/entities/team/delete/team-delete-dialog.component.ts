@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { ITeam } from '../team.model';
-import { TeamService } from '../service/team.service';
+import {ITeam} from '../team.model';
+import {TeamService} from '../service/team.service';
 
 @Component({
   templateUrl: './team-delete-dialog.component.html',
@@ -10,7 +10,7 @@ import { TeamService } from '../service/team.service';
 export class TeamDeleteDialogComponent {
   team?: ITeam;
 
-  constructor(protected teamService: TeamService, public activeModal: NgbActiveModal) {}
+  constructor(protected teamService: TeamService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { ProfileService } from './profile.service';
+import {Component, OnInit} from '@angular/core';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+
+import {ProfileService} from './profile.service';
 
 @Component({
   selector: 'jhi-page-ribbon',

@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { IApartment } from '../apartment.model';
-import { ApartmentService } from '../service/apartment.service';
+import {IApartment} from '../apartment.model';
+import {ApartmentService} from '../service/apartment.service';
 
 @Component({
   templateUrl: './apartment-delete-dialog.component.html',
@@ -10,7 +10,7 @@ import { ApartmentService } from '../service/apartment.service';
 export class ApartmentDeleteDialogComponent {
   apartment?: IApartment;
 
-  constructor(protected apartmentService: ApartmentService, public activeModal: NgbActiveModal) {}
+  constructor(protected apartmentService: ApartmentService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

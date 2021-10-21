@@ -11,12 +11,15 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A BankTransaction.
  */
 @Entity
 @Table(name = "bank_transaction")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class BankTransaction extends Transaction {
 
     private static final long serialVersionUID = 1L;
@@ -102,7 +105,7 @@ public class BankTransaction extends Transaction {
     }
 
     public BankTransaction customerRef(String customerRef) {
-        this.customerRef = customerRef;
+        this.setCustomerRef(customerRef);
         return this;
     }
 
@@ -115,7 +118,7 @@ public class BankTransaction extends Transaction {
     }
 
     public BankTransaction gvCode(String gvCode) {
-        this.gvCode = gvCode;
+        this.setGvCode(gvCode);
         return this;
     }
 
@@ -128,7 +131,7 @@ public class BankTransaction extends Transaction {
     }
 
     public BankTransaction endToEnd(String endToEnd) {
-        this.endToEnd = endToEnd;
+        this.setEndToEnd(endToEnd);
         return this;
     }
 
@@ -141,7 +144,7 @@ public class BankTransaction extends Transaction {
     }
 
     public BankTransaction primanota(String primanota) {
-        this.primanota = primanota;
+        this.setPrimanota(primanota);
         return this;
     }
 
@@ -154,7 +157,7 @@ public class BankTransaction extends Transaction {
     }
 
     public BankTransaction creditor(String creditor) {
-        this.creditor = creditor;
+        this.setCreditor(creditor);
         return this;
     }
 
@@ -167,7 +170,7 @@ public class BankTransaction extends Transaction {
     }
 
     public BankTransaction mandate(String mandate) {
-        this.mandate = mandate;
+        this.setMandate(mandate);
         return this;
     }
 
@@ -179,26 +182,26 @@ public class BankTransaction extends Transaction {
         return this.bankAccount;
     }
 
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+
     public BankTransaction bankAccount(BankAccount bankAccount) {
         this.setBankAccount(bankAccount);
         return this;
-    }
-
-    public void setBankAccount(BankAccount bankAccount) {
-        this.bankAccount = bankAccount;
     }
 
     public BankAccount getContraBankAccount() {
         return this.contraBankAccount;
     }
 
+    public void setContraBankAccount(BankAccount bankAccount) {
+        this.contraBankAccount = bankAccount;
+    }
+
     public BankTransaction contraBankAccount(BankAccount bankAccount) {
         this.setContraBankAccount(bankAccount);
         return this;
-    }
-
-    public void setContraBankAccount(BankAccount bankAccount) {
-        this.contraBankAccount = bankAccount;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

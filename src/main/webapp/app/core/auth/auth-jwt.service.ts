@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 
-import { ApplicationConfigService } from '../config/application-config.service';
-import { Login } from 'app/login/login.model';
+import {ApplicationConfigService} from '../config/application-config.service';
+import {Login} from 'app/login/login.model';
 
 type JwtToken = {
   id_token: string;
@@ -15,14 +15,14 @@ type JwtToken = {
 export class AuthServerProvider {
   constructor(
     private http: HttpClient,
-    private $localStorage: LocalStorageService,
-    private $sessionStorage: SessionStorageService,
+    private localStorageService: LocalStorageService,
+    private sessionStorageService: SessionStorageService,
     private applicationConfigService: ApplicationConfigService
   ) {}
 
   getToken(): string {
-    const tokenInLocalStorage: string | null = this.$localStorage.retrieve('authenticationToken');
-    const tokenInSessionStorage: string | null = this.$sessionStorage.retrieve('authenticationToken');
+    const tokenInLocalStorage: string | null = this.localStorageService.retrieve('authenticationToken');
+    const tokenInSessionStorage: string | null = this.sessionStorageService.retrieve('authenticationToken');
     return tokenInLocalStorage ?? tokenInSessionStorage ?? '';
   }
 
@@ -34,8 +34,8 @@ export class AuthServerProvider {
 
   logout(): Observable<void> {
     return new Observable(observer => {
-      this.$localStorage.clear('authenticationToken');
-      this.$sessionStorage.clear('authenticationToken');
+      this.localStorageService.clear('authenticationToken');
+      this.sessionStorageService.clear('authenticationToken');
       observer.complete();
     });
   }
@@ -43,11 +43,11 @@ export class AuthServerProvider {
   private authenticateSuccess(response: JwtToken, rememberMe: boolean): void {
     const jwt = response.id_token;
     if (rememberMe) {
-      this.$localStorage.store('authenticationToken', jwt);
-      this.$sessionStorage.clear('authenticationToken');
+      this.localStorageService.store('authenticationToken', jwt);
+      this.sessionStorageService.clear('authenticationToken');
     } else {
-      this.$sessionStorage.store('authenticationToken', jwt);
-      this.$localStorage.clear('authenticationToken');
+      this.sessionStorageService.store('authenticationToken', jwt);
+      this.localStorageService.clear('authenticationToken');
     }
   }
 }

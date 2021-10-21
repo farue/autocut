@@ -18,7 +18,7 @@
     <span class="icon-bar middle-bar"></span>
     <span class="icon-bar bottom-bar"></span>
   </a>
-  <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="isAuthenticated()">
+  <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="account !== null">
     <ul class="navbar-nav ml-auto">
       <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
         <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
@@ -478,7 +478,7 @@
           </li>
           <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
           <li *ngIf="!inProduction">
-            <a class="dropdown-item" href="./h2-console" target="_tab" (click)="collapseNavbar()">
+            <a class="dropdown-item" href="./h2-console/" target="_tab" (click)="collapseNavbar()">
               <fa-icon icon="database" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="global.menu.admin.database">Database</span>
             </a>
@@ -543,7 +543,7 @@
         [routerLinkActiveOptions]="{ exact: true }"
       >
         <a
-          *ngIf="!isAuthenticated()"
+          *ngIf="account === null"
           routerLink="/login"
           class="nav-link"
           href="javascript:void(0);"
@@ -554,18 +554,18 @@
           <fa-icon icon="user" [fixedWidth]="true"></fa-icon>
         </a>
         <a
-          *ngIf="isAuthenticated()"
+          *ngIf="account !== null"
           class="nav-link dropdown-toggle"
           ngbDropdownToggle
           href="javascript:void(0);"
           id="account-menu"
           data-cy="accountMenu"
         >
-          <span *ngIf="!getImageUrl()">
+          <span *ngIf="!account?.imageUrl">
             <fa-icon icon="user" [fixedWidth]="true"></fa-icon>
           </span>
-          <span *ngIf="getImageUrl()">
-            <img [src]="getImageUrl()" class="profile-image rounded-circle" alt="Avatar" />
+          <span *ngIf="account?.imageUrl">
+            <img [src]="account!.imageUrl" class="profile-image rounded-circle" alt="Avatar" />
           </span>
         </a>
         <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="account-menu">
