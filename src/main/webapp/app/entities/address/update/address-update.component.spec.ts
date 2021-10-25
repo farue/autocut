@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { of, Subject } from 'rxjs';
 
 import { AddressService } from '../service/address.service';
-import { IAddress, Address } from '../address.model';
+import { Address, IAddress } from '../address.model';
 
 import { AddressUpdateComponent } from './address-update.component';
 
@@ -49,10 +49,10 @@ describe('Component Tests', () => {
     describe('save', () => {
       it('Should call update service on save for existing entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<Address>>();
         const address = { id: 123 };
-        spyOn(addressService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(addressService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ address });
         comp.ngOnInit();
 
@@ -70,10 +70,10 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<Address>>();
         const address = new Address();
-        spyOn(addressService, 'create').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(addressService, 'create').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ address });
         comp.ngOnInit();
 
@@ -91,10 +91,10 @@ describe('Component Tests', () => {
 
       it('Should set isSaving to false on error', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<Address>>();
         const address = { id: 123 };
-        spyOn(addressService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(addressService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ address });
         comp.ngOnInit();
 

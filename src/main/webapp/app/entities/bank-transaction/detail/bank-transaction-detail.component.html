@@ -1,0 +1,105 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="bankTransaction">
+      <h2 data-cy="bankTransactionDetailsHeading"><span jhiTranslate="autocutApp.bankTransaction.detail.title">Bank Transaction</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ bankTransaction.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.bankTransaction.bookingDate">Booking Date</span></dt>
+        <dd>
+          <span>{{ bankTransaction.bookingDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.bankTransaction.valueDate">Value Date</span></dt>
+        <dd>
+          <span>{{ bankTransaction.valueDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.bankTransaction.value">Value</span></dt>
+        <dd>
+          <span>{{ bankTransaction.value }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.bankTransaction.balanceAfter">Balance After</span></dt>
+        <dd>
+          <span>{{ bankTransaction.balanceAfter }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.bankTransaction.type">Type</span></dt>
+        <dd>
+          <span>{{ bankTransaction.type }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.bankTransaction.description">Description</span></dt>
+        <dd>
+          <span>{{ bankTransaction.description }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.bankTransaction.customerRef">Customer Ref</span></dt>
+        <dd>
+          <span>{{ bankTransaction.customerRef }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.bankTransaction.gvCode">Gv Code</span></dt>
+        <dd>
+          <span>{{ bankTransaction.gvCode }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.bankTransaction.endToEnd">End To End</span></dt>
+        <dd>
+          <span>{{ bankTransaction.endToEnd }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.bankTransaction.primanota">Primanota</span></dt>
+        <dd>
+          <span>{{ bankTransaction.primanota }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.bankTransaction.creditor">Creditor</span></dt>
+        <dd>
+          <span>{{ bankTransaction.creditor }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.bankTransaction.mandate">Mandate</span></dt>
+        <dd>
+          <span>{{ bankTransaction.mandate }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.bankTransaction.bankAccount">Bank Account</span></dt>
+        <dd>
+          <div *ngIf="bankTransaction.bankAccount">
+            <a [routerLink]="['/bank-account', bankTransaction.bankAccount?.id, 'view']">{{ bankTransaction.bankAccount?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.bankTransaction.contraBankAccount">Contra Bank Account</span></dt>
+        <dd>
+          <div *ngIf="bankTransaction.contraBankAccount">
+            <a [routerLink]="['/bank-account', bankTransaction.contraBankAccount?.id, 'view']">{{
+              bankTransaction.contraBankAccount?.id
+            }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.bankTransaction.left">Left</span></dt>
+        <dd>
+          <span *ngFor="let left of bankTransaction.lefts; let last = last">
+            <a [routerLink]="['/bank-transaction', left?.id, 'view']">{{ left.id }}</a
+            >{{ last ? '' : ', ' }}
+          </span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.bankTransaction.transactionBook">Transaction Book</span></dt>
+        <dd>
+          <div *ngIf="bankTransaction.transactionBook">
+            <a [routerLink]="['/transaction-book', bankTransaction.transactionBook?.id, 'view']">{{
+              bankTransaction.transactionBook?.id
+            }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/bank-transaction', bankTransaction.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

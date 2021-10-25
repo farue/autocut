@@ -8,16 +8,16 @@ import { isPresent } from 'app/core/util/operators';
 import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { ILease, getLeaseIdentifier } from '../lease.model';
+import { getLeaseIdentifier, ILease } from '../lease.model';
 
 export type EntityResponseType = HttpResponse<ILease>;
 export type EntityArrayResponseType = HttpResponse<ILease[]>;
 
 @Injectable({ providedIn: 'root' })
 export class LeaseService {
-  public resourceUrl = this.applicationConfigService.getEndpointFor('api/leases');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/leases');
 
-  constructor(protected http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(lease: ILease): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(lease);

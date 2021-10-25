@@ -10,7 +10,7 @@ import { ApartmentService } from '../service/apartment.service';
 export class ApartmentDeleteDialogComponent {
   apartment?: IApartment;
 
-  constructor(protected apartmentService: ApartmentService, public activeModal: NgbActiveModal) {}
+  constructor(protected apartmentService: ApartmentService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

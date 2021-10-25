@@ -1,0 +1,80 @@
+{
+  "name": "InternalTransaction",
+  "fields": [
+    {
+      "fieldName": "type",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "bookingDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "valueDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "value",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "balanceAfter",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "serviceQulifier",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "issuer",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "recipient",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "internalTransaction",
+      "otherEntityRelationshipName": "right",
+      "relationshipName": "left",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "transactionBook",
+      "otherEntityRelationshipName": "iTransaction",
+      "relationshipValidateRules": "required",
+      "relationshipName": "transactionBook"
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "internalTransaction",
+      "otherEntityRelationshipName": "left",
+      "relationshipName": "right",
+      "ownerSide": false
+    }
+  ],
+  "entityTableName": "internal_transaction",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": ["autocut"],
+  "changelogDate": "20211025002640"
+}

@@ -31,7 +31,7 @@ describe('Component Tests', () => {
         comp.ngOnInit();
 
         // THEN
-        expect(comp.laundryMachineProgram).toEqual(jasmine.objectContaining({ id: 123 }));
+        expect(comp.laundryMachineProgram).toEqual(expect.objectContaining({ id: 123 }));
       });
     });
   });

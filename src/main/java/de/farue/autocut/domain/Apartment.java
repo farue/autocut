@@ -6,7 +6,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -22,6 +23,7 @@ public class Apartment implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -52,17 +54,18 @@ public class Apartment implements Serializable {
     private Address address;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public Apartment id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Apartment id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public String getNr() {
@@ -70,7 +73,7 @@ public class Apartment implements Serializable {
     }
 
     public Apartment nr(String nr) {
-        this.nr = nr;
+        this.setNr(nr);
         return this;
     }
 
@@ -83,7 +86,7 @@ public class Apartment implements Serializable {
     }
 
     public Apartment type(ApartmentTypes type) {
-        this.type = type;
+        this.setType(type);
         return this;
     }
 
@@ -96,7 +99,7 @@ public class Apartment implements Serializable {
     }
 
     public Apartment maxNumberOfLeases(Integer maxNumberOfLeases) {
-        this.maxNumberOfLeases = maxNumberOfLeases;
+        this.setMaxNumberOfLeases(maxNumberOfLeases);
         return this;
     }
 
@@ -108,17 +111,27 @@ public class Apartment implements Serializable {
         return this.internetAccess;
     }
 
+    public void setInternetAccess(InternetAccess internetAccess) {
+        this.internetAccess = internetAccess;
+    }
+
     public Apartment internetAccess(InternetAccess internetAccess) {
         this.setInternetAccess(internetAccess);
         return this;
     }
 
-    public void setInternetAccess(InternetAccess internetAccess) {
-        this.internetAccess = internetAccess;
-    }
-
     public Set<Lease> getLeases() {
         return this.leases;
+    }
+
+    public void setLeases(Set<Lease> leases) {
+        if (this.leases != null) {
+            this.leases.forEach(i -> i.setApartment(null));
+        }
+        if (leases != null) {
+            leases.forEach(i -> i.setApartment(this));
+        }
+        this.leases = leases;
     }
 
     public Apartment leases(Set<Lease> leases) {
@@ -138,27 +151,17 @@ public class Apartment implements Serializable {
         return this;
     }
 
-    public void setLeases(Set<Lease> leases) {
-        if (this.leases != null) {
-            this.leases.forEach(i -> i.setApartment(null));
-        }
-        if (leases != null) {
-            leases.forEach(i -> i.setApartment(this));
-        }
-        this.leases = leases;
-    }
-
     public Address getAddress() {
         return this.address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public Apartment address(Address address) {
         this.setAddress(address);
         return this;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

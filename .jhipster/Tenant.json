@@ -27,7 +27,6 @@
       "otherEntityName": "user",
       "otherEntityRelationshipName": "tenant",
       "relationshipName": "user",
-      "otherEntityField": "id",
       "ownerSide": true
     },
     {
@@ -40,8 +39,7 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "lease",
       "otherEntityRelationshipName": "tenants",
-      "relationshipName": "lease",
-      "otherEntityField": "id"
+      "relationshipName": "lease"
     }
   ],
   "changelogDate": "20191117011741",
@@ -53,6 +51,6 @@
   "fluentMethods": true,
   "readOnly": false,
   "clientRootFolder": "",
-  "applications": "*",
+  "applications": ["autocut"],
   "embedded": false
 }

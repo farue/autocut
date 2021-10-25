@@ -14,7 +14,7 @@ import tech.jhipster.config.JHipsterConstants;
 import tech.jhipster.config.h2.H2ConfigurationHelper;
 
 @Configuration
-@EnableJpaRepositories("de.farue.autocut.repository")
+@EnableJpaRepositories({ "de.farue.autocut.repository" })
 @EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")
 @EnableTransactionManagement
 public class DatabaseConfiguration {

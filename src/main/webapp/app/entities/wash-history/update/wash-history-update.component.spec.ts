@@ -50,16 +50,16 @@ describe('Component Tests', () => {
     describe('ngOnInit', () => {
       it('Should call Tenant query and add missing value', () => {
         const washHistory: IWashHistory = { id: 456 };
-        const reservationTenant: ITenant = { id: 74014 };
+        const reservationTenant: ITenant = { id: 94577 };
         washHistory.reservationTenant = reservationTenant;
-        const usingTenant: ITenant = { id: 7186 };
+        const usingTenant: ITenant = { id: 23614 };
         washHistory.usingTenant = usingTenant;
 
-        const tenantCollection: ITenant[] = [{ id: 79188 }];
-        spyOn(tenantService, 'query').and.returnValue(of(new HttpResponse({ body: tenantCollection })));
+        const tenantCollection: ITenant[] = [{ id: 50091 }];
+        jest.spyOn(tenantService, 'query').mockReturnValue(of(new HttpResponse({ body: tenantCollection })));
         const additionalTenants = [reservationTenant, usingTenant];
         const expectedCollection: ITenant[] = [...additionalTenants, ...tenantCollection];
-        spyOn(tenantService, 'addTenantToCollectionIfMissing').and.returnValue(expectedCollection);
+        jest.spyOn(tenantService, 'addTenantToCollectionIfMissing').mockReturnValue(expectedCollection);
 
         activatedRoute.data = of({ washHistory });
         comp.ngOnInit();
@@ -71,14 +71,14 @@ describe('Component Tests', () => {
 
       it('Should call LaundryMachine query and add missing value', () => {
         const washHistory: IWashHistory = { id: 456 };
-        const machine: ILaundryMachine = { id: 63407 };
+        const machine: ILaundryMachine = { id: 84899 };
         washHistory.machine = machine;
 
-        const laundryMachineCollection: ILaundryMachine[] = [{ id: 46452 }];
-        spyOn(laundryMachineService, 'query').and.returnValue(of(new HttpResponse({ body: laundryMachineCollection })));
+        const laundryMachineCollection: ILaundryMachine[] = [{ id: 86726 }];
+        jest.spyOn(laundryMachineService, 'query').mockReturnValue(of(new HttpResponse({ body: laundryMachineCollection })));
         const additionalLaundryMachines = [machine];
         const expectedCollection: ILaundryMachine[] = [...additionalLaundryMachines, ...laundryMachineCollection];
-        spyOn(laundryMachineService, 'addLaundryMachineToCollectionIfMissing').and.returnValue(expectedCollection);
+        jest.spyOn(laundryMachineService, 'addLaundryMachineToCollectionIfMissing').mockReturnValue(expectedCollection);
 
         activatedRoute.data = of({ washHistory });
         comp.ngOnInit();
@@ -93,14 +93,14 @@ describe('Component Tests', () => {
 
       it('Should call LaundryMachineProgram query and add missing value', () => {
         const washHistory: IWashHistory = { id: 456 };
-        const program: ILaundryMachineProgram = { id: 30898 };
+        const program: ILaundryMachineProgram = { id: 82030 };
         washHistory.program = program;
 
-        const laundryMachineProgramCollection: ILaundryMachineProgram[] = [{ id: 67708 }];
-        spyOn(laundryMachineProgramService, 'query').and.returnValue(of(new HttpResponse({ body: laundryMachineProgramCollection })));
+        const laundryMachineProgramCollection: ILaundryMachineProgram[] = [{ id: 34346 }];
+        jest.spyOn(laundryMachineProgramService, 'query').mockReturnValue(of(new HttpResponse({ body: laundryMachineProgramCollection })));
         const additionalLaundryMachinePrograms = [program];
         const expectedCollection: ILaundryMachineProgram[] = [...additionalLaundryMachinePrograms, ...laundryMachineProgramCollection];
-        spyOn(laundryMachineProgramService, 'addLaundryMachineProgramToCollectionIfMissing').and.returnValue(expectedCollection);
+        jest.spyOn(laundryMachineProgramService, 'addLaundryMachineProgramToCollectionIfMissing').mockReturnValue(expectedCollection);
 
         activatedRoute.data = of({ washHistory });
         comp.ngOnInit();
@@ -115,13 +115,13 @@ describe('Component Tests', () => {
 
       it('Should update editForm', () => {
         const washHistory: IWashHistory = { id: 456 };
-        const reservationTenant: ITenant = { id: 84187 };
+        const reservationTenant: ITenant = { id: 19910 };
         washHistory.reservationTenant = reservationTenant;
-        const usingTenant: ITenant = { id: 99216 };
+        const usingTenant: ITenant = { id: 65986 };
         washHistory.usingTenant = usingTenant;
-        const machine: ILaundryMachine = { id: 3230 };
+        const machine: ILaundryMachine = { id: 29871 };
         washHistory.machine = machine;
-        const program: ILaundryMachineProgram = { id: 31644 };
+        const program: ILaundryMachineProgram = { id: 88993 };
         washHistory.program = program;
 
         activatedRoute.data = of({ washHistory });
@@ -138,10 +138,10 @@ describe('Component Tests', () => {
     describe('save', () => {
       it('Should call update service on save for existing entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<WashHistory>>();
         const washHistory = { id: 123 };
-        spyOn(washHistoryService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(washHistoryService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ washHistory });
         comp.ngOnInit();
 
@@ -159,10 +159,10 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<WashHistory>>();
         const washHistory = new WashHistory();
-        spyOn(washHistoryService, 'create').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(washHistoryService, 'create').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ washHistory });
         comp.ngOnInit();
 
@@ -180,10 +180,10 @@ describe('Component Tests', () => {
 
       it('Should set isSaving to false on error', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<WashHistory>>();
         const washHistory = { id: 123 };
-        spyOn(washHistoryService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(washHistoryService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ washHistory });
         comp.ngOnInit();
 

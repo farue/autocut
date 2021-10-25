@@ -94,6 +94,41 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'autocutApp.teamMembership.home.title' },
         loadChildren: () => import('./team-membership/team-membership.module').then(m => m.TeamMembershipModule),
       },
+      {
+        path: 'bank-account',
+        data: { pageTitle: 'autocutApp.bankAccount.home.title' },
+        loadChildren: () => import('./bank-account/bank-account.module').then(m => m.BankAccountModule),
+      },
+      {
+        path: 'bank-transaction',
+        data: { pageTitle: 'autocutApp.bankTransaction.home.title' },
+        loadChildren: () => import('./bank-transaction/bank-transaction.module').then(m => m.BankTransactionModule),
+      },
+      {
+        path: 'internal-transaction',
+        data: { pageTitle: 'autocutApp.internalTransaction.home.title' },
+        loadChildren: () => import('./internal-transaction/internal-transaction.module').then(m => m.InternalTransactionModule),
+      },
+      {
+        path: 'network-switch-status',
+        data: { pageTitle: 'autocutApp.networkSwitchStatus.home.title' },
+        loadChildren: () => import('./network-switch-status/network-switch-status.module').then(m => m.NetworkSwitchStatusModule),
+      },
+      {
+        path: 'laundry-program',
+        data: { pageTitle: 'autocutApp.laundryProgram.home.title' },
+        loadChildren: () => import('./laundry-program/laundry-program.module').then(m => m.LaundryProgramModule),
+      },
+      {
+        path: 'broadcast-message',
+        data: { pageTitle: 'autocutApp.broadcastMessage.home.title' },
+        loadChildren: () => import('./broadcast-message/broadcast-message.module').then(m => m.BroadcastMessageModule),
+      },
+      {
+        path: 'broadcast-message-text',
+        data: { pageTitle: 'autocutApp.broadcastMessageText.home.title' },
+        loadChildren: () => import('./broadcast-message-text/broadcast-message-text.module').then(m => m.BroadcastMessageTextModule),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

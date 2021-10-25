@@ -9,7 +9,7 @@
     {
       "fieldName": "type",
       "fieldType": "ApartmentTypes",
-      "fieldValues": "SHARED,SINGLE,SHORT_TERM",
+      "fieldValues": "SHARED,SINGLE,SHORT_TERM,BACKUP",
       "fieldValidateRules": ["required"]
     },
     {
@@ -25,7 +25,6 @@
       "otherEntityName": "internetAccess",
       "otherEntityRelationshipName": "apartment",
       "relationshipName": "internetAccess",
-      "otherEntityField": "id",
       "ownerSide": true
     },
     {
@@ -38,8 +37,7 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "address",
       "otherEntityRelationshipName": "apartment",
-      "relationshipName": "address",
-      "otherEntityField": "id"
+      "relationshipName": "address"
     }
   ],
   "changelogDate": "20191117011745",
@@ -51,6 +49,6 @@
   "fluentMethods": true,
   "readOnly": false,
   "clientRootFolder": "",
-  "applications": "*",
+  "applications": ["autocut"],
   "embedded": false
 }

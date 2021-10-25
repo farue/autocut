@@ -106,7 +106,7 @@ public class TeamMembershipResource {
      * or with status {@code 500 (Internal Server Error)} if the teamMembership couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/team-memberships/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/team-memberships/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<TeamMembership> partialUpdateTeamMembership(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody TeamMembership teamMembership
@@ -125,21 +125,19 @@ public class TeamMembershipResource {
 
         Optional<TeamMembership> result = teamMembershipRepository
             .findById(teamMembership.getId())
-            .map(
-                existingTeamMembership -> {
-                    if (teamMembership.getRole() != null) {
-                        existingTeamMembership.setRole(teamMembership.getRole());
-                    }
-                    if (teamMembership.getStart() != null) {
-                        existingTeamMembership.setStart(teamMembership.getStart());
-                    }
-                    if (teamMembership.getEnd() != null) {
-                        existingTeamMembership.setEnd(teamMembership.getEnd());
-                    }
-
-                    return existingTeamMembership;
+            .map(existingTeamMembership -> {
+                if (teamMembership.getRole() != null) {
+                    existingTeamMembership.setRole(teamMembership.getRole());
                 }
-            )
+                if (teamMembership.getStart() != null) {
+                    existingTeamMembership.setStart(teamMembership.getStart());
+                }
+                if (teamMembership.getEnd() != null) {
+                    existingTeamMembership.setEnd(teamMembership.getEnd());
+                }
+
+                return existingTeamMembership;
+            })
             .map(teamMembershipRepository::save);
 
         return ResponseUtil.wrapOrNotFound(

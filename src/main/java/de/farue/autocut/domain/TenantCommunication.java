@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.Instant;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -20,6 +21,7 @@ public class TenantCommunication implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -44,17 +46,18 @@ public class TenantCommunication implements Serializable {
     private Tenant tenant;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public TenantCommunication id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public TenantCommunication id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public String getSubject() {
@@ -62,7 +65,7 @@ public class TenantCommunication implements Serializable {
     }
 
     public TenantCommunication subject(String subject) {
-        this.subject = subject;
+        this.setSubject(subject);
         return this;
     }
 
@@ -75,7 +78,7 @@ public class TenantCommunication implements Serializable {
     }
 
     public TenantCommunication text(String text) {
-        this.text = text;
+        this.setText(text);
         return this;
     }
 
@@ -88,7 +91,7 @@ public class TenantCommunication implements Serializable {
     }
 
     public TenantCommunication note(String note) {
-        this.note = note;
+        this.setNote(note);
         return this;
     }
 
@@ -101,7 +104,7 @@ public class TenantCommunication implements Serializable {
     }
 
     public TenantCommunication date(Instant date) {
-        this.date = date;
+        this.setDate(date);
         return this;
     }
 
@@ -113,13 +116,13 @@ public class TenantCommunication implements Serializable {
         return this.tenant;
     }
 
+    public void setTenant(Tenant tenant) {
+        this.tenant = tenant;
+    }
+
     public TenantCommunication tenant(Tenant tenant) {
         this.setTenant(tenant);
         return this;
-    }
-
-    public void setTenant(Tenant tenant) {
-        this.tenant = tenant;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

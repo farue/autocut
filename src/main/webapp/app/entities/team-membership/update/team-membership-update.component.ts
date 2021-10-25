@@ -11,6 +11,7 @@ import { ITenant } from 'app/entities/tenant/tenant.model';
 import { TenantService } from 'app/entities/tenant/service/tenant.service';
 import { ITeam } from 'app/entities/team/team.model';
 import { TeamService } from 'app/entities/team/service/team.service';
+import { TeamRole } from 'app/entities/enumerations/team-role.model';
 
 @Component({
   selector: 'jhi-team-membership-update',
@@ -18,6 +19,7 @@ import { TeamService } from 'app/entities/team/service/team.service';
 })
 export class TeamMembershipUpdateComponent implements OnInit {
   isSaving = false;
+  teamRoleValues = Object.keys(TeamRole);
 
   tenantsSharedCollection: ITenant[] = [];
   teamsSharedCollection: ITeam[] = [];

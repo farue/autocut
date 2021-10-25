@@ -2,12 +2,12 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
     <!--
         Added the constraints for entity TeamMembership.
     -->
     <changeSet id="20201023093232-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="tenant_id"
                                  baseTableName="team_membership"
                                  constraintName="fk_team_membership__tenant_id"
@@ -19,6 +19,5 @@
                                  constraintName="fk_team_membership__team_id"
                                  referencedColumnNames="id"
                                  referencedTableName="team"/>
-
     </changeSet>
 </databaseChangeLog>

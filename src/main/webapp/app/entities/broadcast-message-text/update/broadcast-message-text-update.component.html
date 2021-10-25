@@ -1,0 +1,102 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-broadcast-message-text-heading"
+        data-cy="BroadcastMessageTextCreateUpdateHeading"
+        jhiTranslate="autocutApp.broadcastMessageText.home.createOrEditLabel"
+      >
+        Create or edit a Broadcast Message Text
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autocutApp.broadcastMessageText.langKey" for="field_langKey">Lang Key</label>
+          <input type="text" class="form-control" name="langKey" id="field_langKey" data-cy="langKey" formControlName="langKey" />
+          <div *ngIf="editForm.get('langKey')!.invalid && (editForm.get('langKey')!.dirty || editForm.get('langKey')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('langKey')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('langKey')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 2 }"
+            >
+              This field cannot be longer than 2 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autocutApp.broadcastMessageText.text" for="field_text">Text</label>
+          <input type="text" class="form-control" name="text" id="field_text" data-cy="text" formControlName="text" />
+          <div *ngIf="editForm.get('text')!.invalid && (editForm.get('text')!.dirty || editForm.get('text')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('text')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('text')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 4000 }"
+            >
+              This field cannot be longer than 4000 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autocutApp.broadcastMessageText.message" for="field_message">Message</label>
+          <select class="form-control" id="field_message" data-cy="message" name="message" formControlName="message">
+            <option *ngIf="!editForm.get('message')!.value" [ngValue]="null" selected></option>
+            <option
+              [ngValue]="
+                broadcastMessageOption.id === editForm.get('message')!.value?.id ? editForm.get('message')!.value : broadcastMessageOption
+              "
+              *ngFor="let broadcastMessageOption of broadcastMessagesSharedCollection; trackBy: trackBroadcastMessageById"
+            >
+              {{ broadcastMessageOption.id }}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="editForm.get(['message'])!.invalid && (editForm.get(['message'])!.dirty || editForm.get(['message'])!.touched)">
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['message'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            This field is required.
+          </small>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

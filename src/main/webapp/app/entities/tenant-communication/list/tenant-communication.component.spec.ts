@@ -26,7 +26,7 @@ describe('Component Tests', () => {
       service = TestBed.inject(TenantCommunicationService);
 
       const headers = new HttpHeaders().append('link', 'link;link');
-      spyOn(service, 'query').and.returnValue(
+      jest.spyOn(service, 'query').mockReturnValue(
         of(
           new HttpResponse({
             body: [{ id: 123 }],
@@ -42,7 +42,7 @@ describe('Component Tests', () => {
 
       // THEN
       expect(service.query).toHaveBeenCalled();
-      expect(comp.tenantCommunications?.[0]).toEqual(jasmine.objectContaining({ id: 123 }));
+      expect(comp.tenantCommunications?.[0]).toEqual(expect.objectContaining({ id: 123 }));
     });
   });
 });

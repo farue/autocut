@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { of, Subject } from 'rxjs';
 
 import { ApartmentService } from '../service/apartment.service';
-import { IApartment, Apartment } from '../apartment.model';
+import { Apartment, IApartment } from '../apartment.model';
 import { IInternetAccess } from 'app/entities/internet-access/internet-access.model';
 import { InternetAccessService } from 'app/entities/internet-access/service/internet-access.service';
 import { IAddress } from 'app/entities/address/address.model';
@@ -46,13 +46,13 @@ describe('Component Tests', () => {
     describe('ngOnInit', () => {
       it('Should call internetAccess query and add missing value', () => {
         const apartment: IApartment = { id: 456 };
-        const internetAccess: IInternetAccess = { id: 17905 };
+        const internetAccess: IInternetAccess = { id: 25909 };
         apartment.internetAccess = internetAccess;
 
-        const internetAccessCollection: IInternetAccess[] = [{ id: 16955 }];
-        spyOn(internetAccessService, 'query').and.returnValue(of(new HttpResponse({ body: internetAccessCollection })));
+        const internetAccessCollection: IInternetAccess[] = [{ id: 51624 }];
+        jest.spyOn(internetAccessService, 'query').mockReturnValue(of(new HttpResponse({ body: internetAccessCollection })));
         const expectedCollection: IInternetAccess[] = [internetAccess, ...internetAccessCollection];
-        spyOn(internetAccessService, 'addInternetAccessToCollectionIfMissing').and.returnValue(expectedCollection);
+        jest.spyOn(internetAccessService, 'addInternetAccessToCollectionIfMissing').mockReturnValue(expectedCollection);
 
         activatedRoute.data = of({ apartment });
         comp.ngOnInit();
@@ -64,14 +64,14 @@ describe('Component Tests', () => {
 
       it('Should call Address query and add missing value', () => {
         const apartment: IApartment = { id: 456 };
-        const address: IAddress = { id: 38579 };
+        const address: IAddress = { id: 53880 };
         apartment.address = address;
 
-        const addressCollection: IAddress[] = [{ id: 86833 }];
-        spyOn(addressService, 'query').and.returnValue(of(new HttpResponse({ body: addressCollection })));
+        const addressCollection: IAddress[] = [{ id: 84572 }];
+        jest.spyOn(addressService, 'query').mockReturnValue(of(new HttpResponse({ body: addressCollection })));
         const additionalAddresses = [address];
         const expectedCollection: IAddress[] = [...additionalAddresses, ...addressCollection];
-        spyOn(addressService, 'addAddressToCollectionIfMissing').and.returnValue(expectedCollection);
+        jest.spyOn(addressService, 'addAddressToCollectionIfMissing').mockReturnValue(expectedCollection);
 
         activatedRoute.data = of({ apartment });
         comp.ngOnInit();
@@ -83,9 +83,9 @@ describe('Component Tests', () => {
 
       it('Should update editForm', () => {
         const apartment: IApartment = { id: 456 };
-        const internetAccess: IInternetAccess = { id: 81211 };
+        const internetAccess: IInternetAccess = { id: 48042 };
         apartment.internetAccess = internetAccess;
-        const address: IAddress = { id: 17221 };
+        const address: IAddress = { id: 64773 };
         apartment.address = address;
 
         activatedRoute.data = of({ apartment });
@@ -100,10 +100,10 @@ describe('Component Tests', () => {
     describe('save', () => {
       it('Should call update service on save for existing entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<Apartment>>();
         const apartment = { id: 123 };
-        spyOn(apartmentService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(apartmentService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ apartment });
         comp.ngOnInit();
 
@@ -121,10 +121,10 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<Apartment>>();
         const apartment = new Apartment();
-        spyOn(apartmentService, 'create').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(apartmentService, 'create').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ apartment });
         comp.ngOnInit();
 
@@ -142,10 +142,10 @@ describe('Component Tests', () => {
 
       it('Should set isSaving to false on error', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<Apartment>>();
         const apartment = { id: 123 };
-        spyOn(apartmentService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(apartmentService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ apartment });
         comp.ngOnInit();
 

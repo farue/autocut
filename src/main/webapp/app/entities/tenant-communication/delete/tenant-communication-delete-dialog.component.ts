@@ -10,7 +10,7 @@ import { TenantCommunicationService } from '../service/tenant-communication.serv
 export class TenantCommunicationDeleteDialogComponent {
   tenantCommunication?: ITenantCommunication;
 
-  constructor(protected tenantCommunicationService: TenantCommunicationService, public activeModal: NgbActiveModal) {}
+  constructor(protected tenantCommunicationService: TenantCommunicationService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

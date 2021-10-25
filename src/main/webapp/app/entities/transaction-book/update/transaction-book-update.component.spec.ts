@@ -49,10 +49,10 @@ describe('Component Tests', () => {
     describe('save', () => {
       it('Should call update service on save for existing entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<TransactionBook>>();
         const transactionBook = { id: 123 };
-        spyOn(transactionBookService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(transactionBookService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ transactionBook });
         comp.ngOnInit();
 
@@ -70,10 +70,10 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<TransactionBook>>();
         const transactionBook = new TransactionBook();
-        spyOn(transactionBookService, 'create').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(transactionBookService, 'create').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ transactionBook });
         comp.ngOnInit();
 
@@ -91,10 +91,10 @@ describe('Component Tests', () => {
 
       it('Should set isSaving to false on error', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<TransactionBook>>();
         const transactionBook = { id: 123 };
-        spyOn(transactionBookService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(transactionBookService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ transactionBook });
         comp.ngOnInit();
 

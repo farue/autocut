@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-
 import { SharedModule } from 'app/shared/shared.module';
 import { InternetAccessComponent } from './list/internet-access.component';
 import { InternetAccessDetailComponent } from './detail/internet-access-detail.component';

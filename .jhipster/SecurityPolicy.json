@@ -19,15 +19,13 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "teamMembership",
       "otherEntityRelationshipName": "securityPolicies",
-      "relationshipName": "teamMember",
-      "otherEntityField": "id"
+      "relationshipName": "teamMember"
     },
     {
       "relationshipType": "many-to-one",
       "otherEntityName": "tenant",
       "otherEntityRelationshipName": "securityPolicies",
-      "relationshipName": "tenant",
-      "otherEntityField": "id"
+      "relationshipName": "tenant"
     }
   ],
   "changelogDate": "20191117011747",
@@ -39,6 +37,6 @@
   "fluentMethods": true,
   "readOnly": false,
   "clientRootFolder": "",
-  "applications": "*",
+  "applications": ["autocut"],
   "embedded": false
 }

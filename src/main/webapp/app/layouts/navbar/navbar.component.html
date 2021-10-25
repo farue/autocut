@@ -1,4 +1,4 @@
-<nav data-cy="navbar" class="navbar navbar-dark navbar-expand-md bg-dark">
+<nav data-cy="navbar" class="navbar navbar-light navbar-expand-md bg-light">
   <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
     <span class="logo-img"></span>
     <span jhiTranslate="global.title" class="navbar-title">Autocut</span>
@@ -16,7 +16,7 @@
   >
     <fa-icon icon="bars"></fa-icon>
   </a>
-  <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="isAuthenticated()">
+  <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="account !== null">
     <ul class="navbar-nav ml-auto">
       <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
         <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
@@ -258,6 +258,90 @@
               <span jhiTranslate="global.menu.entities.teamMembership">Team Membership</span>
             </a>
           </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="bank-account"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="collapseNavbar()"
+            >
+              <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.entities.bankAccount">Bank Account</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="bank-transaction"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="collapseNavbar()"
+            >
+              <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.entities.bankTransaction">Bank Transaction</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="internal-transaction"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="collapseNavbar()"
+            >
+              <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.entities.internalTransaction">Internal Transaction</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="network-switch-status"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="collapseNavbar()"
+            >
+              <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.entities.networkSwitchStatus">Network Switch Status</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="laundry-program"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="collapseNavbar()"
+            >
+              <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.entities.laundryProgram">Laundry Program</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="broadcast-message"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="collapseNavbar()"
+            >
+              <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.entities.broadcastMessage">Broadcast Message</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="broadcast-message-text"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="collapseNavbar()"
+            >
+              <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.entities.broadcastMessageText">Broadcast Message Text</span>
+            </a>
+          </li>
           <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
         </ul>
       </li>
@@ -314,7 +398,7 @@
           </li>
           <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
           <li *ngIf="!inProduction">
-            <a class="dropdown-item" href="./h2-console" target="_tab" (click)="collapseNavbar()">
+            <a class="dropdown-item" href="./h2-console/" target="_tab" (click)="collapseNavbar()">
               <fa-icon icon="database" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="global.menu.admin.database">Database</span>
             </a>
@@ -348,12 +432,12 @@
         [routerLinkActiveOptions]="{ exact: true }"
       >
         <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu" data-cy="accountMenu">
-          <span *ngIf="!getImageUrl()">
+          <span *ngIf="!account?.imageUrl">
             <fa-icon icon="user"></fa-icon>
             <span jhiTranslate="global.menu.account.main">Account</span>
           </span>
-          <span *ngIf="getImageUrl()">
-            <img [src]="getImageUrl()" class="profile-image rounded-circle" alt="Avatar" />
+          <span *ngIf="account?.imageUrl">
+            <img [src]="account!.imageUrl" class="profile-image rounded-circle" alt="Avatar" />
           </span>
         </a>
         <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="account-menu">

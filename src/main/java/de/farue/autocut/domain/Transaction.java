@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -24,6 +24,7 @@ public class Transaction implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -61,18 +62,18 @@ public class Transaction implements Serializable {
     private String recipient;
 
     @ManyToMany
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JoinTable(
         name = "rel_transaction__left",
         joinColumns = @JoinColumn(name = "transaction_id"),
         inverseJoinColumns = @JoinColumn(name = "left_id")
     )
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "lefts", "transactionBook", "rights" }, allowSetters = true)
     private Set<Transaction> lefts = new HashSet<>();
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "transactions", "leases" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "iTransactions", "bTransactions", "leases" }, allowSetters = true)
     private TransactionBook transactionBook;
 
     @ManyToMany(mappedBy = "lefts")
@@ -81,17 +82,18 @@ public class Transaction implements Serializable {
     private Set<Transaction> rights = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public Transaction id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Transaction id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public TransactionKind getKind() {
@@ -99,7 +101,7 @@ public class Transaction implements Serializable {
     }
 
     public Transaction kind(TransactionKind kind) {
-        this.kind = kind;
+        this.setKind(kind);
         return this;
     }
 
@@ -112,7 +114,7 @@ public class Transaction implements Serializable {
     }
 
     public Transaction bookingDate(Instant bookingDate) {
-        this.bookingDate = bookingDate;
+        this.setBookingDate(bookingDate);
         return this;
     }
 
@@ -125,7 +127,7 @@ public class Transaction implements Serializable {
     }
 
     public Transaction valueDate(Instant valueDate) {
-        this.valueDate = valueDate;
+        this.setValueDate(valueDate);
         return this;
     }
 
@@ -138,7 +140,7 @@ public class Transaction implements Serializable {
     }
 
     public Transaction value(BigDecimal value) {
-        this.value = value;
+        this.setValue(value);
         return this;
     }
 
@@ -151,7 +153,7 @@ public class Transaction implements Serializable {
     }
 
     public Transaction balanceAfter(BigDecimal balanceAfter) {
-        this.balanceAfter = balanceAfter;
+        this.setBalanceAfter(balanceAfter);
         return this;
     }
 
@@ -164,7 +166,7 @@ public class Transaction implements Serializable {
     }
 
     public Transaction description(String description) {
-        this.description = description;
+        this.setDescription(description);
         return this;
     }
 
@@ -177,7 +179,7 @@ public class Transaction implements Serializable {
     }
 
     public Transaction serviceQulifier(String serviceQulifier) {
-        this.serviceQulifier = serviceQulifier;
+        this.setServiceQulifier(serviceQulifier);
         return this;
     }
 
@@ -190,7 +192,7 @@ public class Transaction implements Serializable {
     }
 
     public Transaction issuer(String issuer) {
-        this.issuer = issuer;
+        this.setIssuer(issuer);
         return this;
     }
 
@@ -203,7 +205,7 @@ public class Transaction implements Serializable {
     }
 
     public Transaction recipient(String recipient) {
-        this.recipient = recipient;
+        this.setRecipient(recipient);
         return this;
     }
 
@@ -213,6 +215,10 @@ public class Transaction implements Serializable {
 
     public Set<Transaction> getLefts() {
         return this.lefts;
+    }
+
+    public void setLefts(Set<Transaction> transactions) {
+        this.lefts = transactions;
     }
 
     public Transaction lefts(Set<Transaction> transactions) {
@@ -232,12 +238,12 @@ public class Transaction implements Serializable {
         return this;
     }
 
-    public void setLefts(Set<Transaction> transactions) {
-        this.lefts = transactions;
-    }
-
     public TransactionBook getTransactionBook() {
         return this.transactionBook;
+    }
+
+    public void setTransactionBook(TransactionBook transactionBook) {
+        this.transactionBook = transactionBook;
     }
 
     public Transaction transactionBook(TransactionBook transactionBook) {
@@ -245,12 +251,18 @@ public class Transaction implements Serializable {
         return this;
     }
 
-    public void setTransactionBook(TransactionBook transactionBook) {
-        this.transactionBook = transactionBook;
-    }
-
     public Set<Transaction> getRights() {
         return this.rights;
+    }
+
+    public void setRights(Set<Transaction> transactions) {
+        if (this.rights != null) {
+            this.rights.forEach(i -> i.removeLeft(this));
+        }
+        if (transactions != null) {
+            transactions.forEach(i -> i.addLeft(this));
+        }
+        this.rights = transactions;
     }
 
     public Transaction rights(Set<Transaction> transactions) {
@@ -268,16 +280,6 @@ public class Transaction implements Serializable {
         this.rights.remove(transaction);
         transaction.getLefts().remove(this);
         return this;
-    }
-
-    public void setRights(Set<Transaction> transactions) {
-        if (this.rights != null) {
-            this.rights.forEach(i -> i.removeLeft(this));
-        }
-        if (transactions != null) {
-            transactions.forEach(i -> i.addLeft(this));
-        }
-        this.rights = transactions;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

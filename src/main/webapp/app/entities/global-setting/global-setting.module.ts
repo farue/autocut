@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-
 import { SharedModule } from 'app/shared/shared.module';
 import { GlobalSettingComponent } from './list/global-setting.component';
 import { GlobalSettingDetailComponent } from './detail/global-setting-detail.component';

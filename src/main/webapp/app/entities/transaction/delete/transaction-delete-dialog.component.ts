@@ -10,7 +10,7 @@ import { TransactionService } from '../service/transaction.service';
 export class TransactionDeleteDialogComponent {
   transaction?: ITransaction;
 
-  constructor(protected transactionService: TransactionService, public activeModal: NgbActiveModal) {}
+  constructor(protected transactionService: TransactionService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

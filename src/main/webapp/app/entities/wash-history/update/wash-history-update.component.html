@@ -70,11 +70,9 @@
           <label class="form-control-label" jhiTranslate="autocutApp.washHistory.status" for="field_status">Status</label>
           <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
             <option [ngValue]="null">{{ 'autocutApp.WashHistoryStatus.null' | translate }}</option>
-            <option value="OPEN">{{ 'autocutApp.WashHistoryStatus.OPEN' | translate }}</option>
-            <option value="EXPIRED">{{ 'autocutApp.WashHistoryStatus.EXPIRED' | translate }}</option>
-            <option value="COMPLETED">{{ 'autocutApp.WashHistoryStatus.COMPLETED' | translate }}</option>
-            <option value="CANCELLED_BY_USER">{{ 'autocutApp.WashHistoryStatus.CANCELLED_BY_USER' | translate }}</option>
-            <option value="CANCELLED_BY_SYSTEM">{{ 'autocutApp.WashHistoryStatus.CANCELLED_BY_SYSTEM' | translate }}</option>
+            <option *ngFor="let washHistoryStatus of washHistoryStatusValues" [value]="washHistoryStatus">
+              {{ 'autocutApp.WashHistoryStatus.' + washHistoryStatus | translate }}
+            </option>
           </select>
         </div>
 
@@ -148,7 +146,7 @@
       </div>
 
       <div>
-        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
           <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
 

@@ -1,0 +1,31 @@
+{
+  "autocutApp": {
+    "networkSwitchStatus": {
+      "home": {
+        "title": "Network Switch Statuses",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Network Switch Status",
+        "createOrEditLabel": "Create or edit a Network Switch Status",
+        "notFound": "No Network Switch Statuses found"
+      },
+      "created": "A new Network Switch Status is created with identifier {{ param }}",
+      "updated": "A Network Switch Status is updated with identifier {{ param }}",
+      "deleted": "A Network Switch Status is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Network Switch Status {{ id }}?"
+      },
+      "detail": {
+        "title": "Network Switch Status"
+      },
+      "id": "ID",
+      "port": "Port",
+      "name": "Name",
+      "status": "Status",
+      "vlan": "Vlan",
+      "speed": "Speed",
+      "type": "Type",
+      "timestamp": "Timestamp",
+      "networkSwitch": "Network Switch"
+    }
+  }
+}

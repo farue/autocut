@@ -33,13 +33,9 @@
       <thead>
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="autocutApp.laundryMachineProgram.name">Name</span></th>
-          <th scope="col"><span jhiTranslate="autocutApp.laundryMachineProgram.subprogram">Subprogram</span></th>
           <th scope="col"><span jhiTranslate="autocutApp.laundryMachineProgram.time">Time</span></th>
-          <th scope="col"><span jhiTranslate="autocutApp.laundryMachineProgram.spin">Spin</span></th>
-          <th scope="col"><span jhiTranslate="autocutApp.laundryMachineProgram.preWash">Pre Wash</span></th>
-          <th scope="col"><span jhiTranslate="autocutApp.laundryMachineProgram.protect">Protect</span></th>
-          <th scope="col"><span jhiTranslate="autocutApp.laundryMachineProgram.laundryMachine">Laundry Machine</span></th>
+          <th scope="col"><span jhiTranslate="autocutApp.laundryMachineProgram.program">Program</span></th>
+          <th scope="col"><span jhiTranslate="autocutApp.laundryMachineProgram.machine">Machine</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -48,17 +44,15 @@
           <td>
             <a [routerLink]="['/laundry-machine-program', laundryMachineProgram.id, 'view']">{{ laundryMachineProgram.id }}</a>
           </td>
-          <td>{{ laundryMachineProgram.name }}</td>
-          <td>{{ laundryMachineProgram.subprogram }}</td>
           <td>{{ laundryMachineProgram.time }}</td>
-          <td>{{ laundryMachineProgram.spin }}</td>
-          <td>{{ laundryMachineProgram.preWash }}</td>
-          <td>{{ laundryMachineProgram.protect }}</td>
           <td>
-            <div *ngIf="laundryMachineProgram.laundryMachine">
-              <a [routerLink]="['/laundry-machine', laundryMachineProgram.laundryMachine?.id, 'view']">{{
-                laundryMachineProgram.laundryMachine?.id
-              }}</a>
+            <div *ngIf="laundryMachineProgram.program">
+              <a [routerLink]="['/laundry-program', laundryMachineProgram.program?.id, 'view']">{{ laundryMachineProgram.program?.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="laundryMachineProgram.machine">
+              <a [routerLink]="['/laundry-machine', laundryMachineProgram.machine?.id, 'view']">{{ laundryMachineProgram.machine?.id }}</a>
             </div>
           </td>
           <td class="text-right">

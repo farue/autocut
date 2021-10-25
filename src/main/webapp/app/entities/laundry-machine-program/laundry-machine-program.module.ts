@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-
 import { SharedModule } from 'app/shared/shared.module';
 import { LaundryMachineProgramComponent } from './list/laundry-machine-program.component';
 import { LaundryMachineProgramDetailComponent } from './detail/laundry-machine-program-detail.component';

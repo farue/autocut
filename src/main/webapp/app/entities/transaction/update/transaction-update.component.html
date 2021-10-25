@@ -21,12 +21,9 @@
           <label class="form-control-label" jhiTranslate="autocutApp.transaction.kind" for="field_kind">Kind</label>
           <select class="form-control" name="kind" formControlName="kind" id="field_kind" data-cy="kind">
             <option [ngValue]="null">{{ 'autocutApp.TransactionKind.null' | translate }}</option>
-            <option value="FEE">{{ 'autocutApp.TransactionKind.FEE' | translate }}</option>
-            <option value="CREDIT">{{ 'autocutApp.TransactionKind.CREDIT' | translate }}</option>
-            <option value="DEBIT">{{ 'autocutApp.TransactionKind.DEBIT' | translate }}</option>
-            <option value="TRANSFER">{{ 'autocutApp.TransactionKind.TRANSFER' | translate }}</option>
-            <option value="CORRECTION">{{ 'autocutApp.TransactionKind.CORRECTION' | translate }}</option>
-            <option value="PURCHASE">{{ 'autocutApp.TransactionKind.PURCHASE' | translate }}</option>
+            <option *ngFor="let transactionKind of transactionKindValues" [value]="transactionKind">
+              {{ 'autocutApp.TransactionKind.' + transactionKind | translate }}
+            </option>
           </select>
           <div *ngIf="editForm.get('kind')!.invalid && (editForm.get('kind')!.dirty || editForm.get('kind')!.touched)">
             <small class="form-text text-danger" *ngIf="editForm.get('kind')?.errors?.required" jhiTranslate="entity.validation.required">
@@ -236,7 +233,7 @@
       </div>
 
       <div>
-        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
           <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
 

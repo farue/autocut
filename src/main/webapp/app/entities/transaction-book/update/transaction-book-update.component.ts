@@ -7,6 +7,7 @@ import { finalize } from 'rxjs/operators';
 
 import { ITransactionBook, TransactionBook } from '../transaction-book.model';
 import { TransactionBookService } from '../service/transaction-book.service';
+import { TransactionBookType } from 'app/entities/enumerations/transaction-book-type.model';
 
 @Component({
   selector: 'jhi-transaction-book-update',
@@ -14,6 +15,7 @@ import { TransactionBookService } from '../service/transaction-book.service';
 })
 export class TransactionBookUpdateComponent implements OnInit {
   isSaving = false;
+  transactionBookTypeValues = Object.keys(TransactionBookType);
 
   editForm = this.fb.group({
     id: [],

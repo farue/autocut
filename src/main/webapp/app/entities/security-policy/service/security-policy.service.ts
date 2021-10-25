@@ -5,16 +5,16 @@ import { Observable } from 'rxjs';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { ISecurityPolicy, getSecurityPolicyIdentifier } from '../security-policy.model';
+import { getSecurityPolicyIdentifier, ISecurityPolicy } from '../security-policy.model';
 
 export type EntityResponseType = HttpResponse<ISecurityPolicy>;
 export type EntityArrayResponseType = HttpResponse<ISecurityPolicy[]>;
 
 @Injectable({ providedIn: 'root' })
 export class SecurityPolicyService {
-  public resourceUrl = this.applicationConfigService.getEndpointFor('api/security-policies');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/security-policies');
 
-  constructor(protected http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(securityPolicy: ISecurityPolicy): Observable<EntityResponseType> {
     return this.http.post<ISecurityPolicy>(this.resourceUrl, securityPolicy, { observe: 'response' });

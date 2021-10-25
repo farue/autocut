@@ -7,4 +7,5 @@ public enum ApartmentTypes {
     SHARED,
     SINGLE,
     SHORT_TERM,
+    BACKUP,
 }

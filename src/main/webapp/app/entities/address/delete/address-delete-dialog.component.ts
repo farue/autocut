@@ -10,7 +10,7 @@ import { AddressService } from '../service/address.service';
 export class AddressDeleteDialogComponent {
   address?: IAddress;
 
-  constructor(protected addressService: AddressService, public activeModal: NgbActiveModal) {}
+  constructor(protected addressService: AddressService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

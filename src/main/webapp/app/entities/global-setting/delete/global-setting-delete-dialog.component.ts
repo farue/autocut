@@ -10,7 +10,7 @@ import { GlobalSettingService } from '../service/global-setting.service';
 export class GlobalSettingDeleteDialogComponent {
   globalSetting?: IGlobalSetting;
 
-  constructor(protected globalSettingService: GlobalSettingService, public activeModal: NgbActiveModal) {}
+  constructor(protected globalSettingService: GlobalSettingService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

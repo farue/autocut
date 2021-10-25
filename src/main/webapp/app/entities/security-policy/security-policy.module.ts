@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-
 import { SharedModule } from 'app/shared/shared.module';
 import { SecurityPolicyComponent } from './list/security-policy.component';
 import { SecurityPolicyDetailComponent } from './detail/security-policy-detail.component';

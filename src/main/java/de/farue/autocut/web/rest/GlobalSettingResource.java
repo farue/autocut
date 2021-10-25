@@ -103,7 +103,7 @@ public class GlobalSettingResource {
      * or with status {@code 500 (Internal Server Error)} if the globalSetting couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/global-settings/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/global-settings/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<GlobalSetting> partialUpdateGlobalSetting(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody GlobalSetting globalSetting
@@ -122,21 +122,19 @@ public class GlobalSettingResource {
 
         Optional<GlobalSetting> result = globalSettingRepository
             .findById(globalSetting.getId())
-            .map(
-                existingGlobalSetting -> {
-                    if (globalSetting.getKey() != null) {
-                        existingGlobalSetting.setKey(globalSetting.getKey());
-                    }
-                    if (globalSetting.getValue() != null) {
-                        existingGlobalSetting.setValue(globalSetting.getValue());
-                    }
-                    if (globalSetting.getValueType() != null) {
-                        existingGlobalSetting.setValueType(globalSetting.getValueType());
-                    }
-
-                    return existingGlobalSetting;
+            .map(existingGlobalSetting -> {
+                if (globalSetting.getKey() != null) {
+                    existingGlobalSetting.setKey(globalSetting.getKey());
                 }
-            )
+                if (globalSetting.getValue() != null) {
+                    existingGlobalSetting.setValue(globalSetting.getValue());
+                }
+                if (globalSetting.getValueType() != null) {
+                    existingGlobalSetting.setValueType(globalSetting.getValueType());
+                }
+
+                return existingGlobalSetting;
+            })
             .map(globalSettingRepository::save);
 
         return ResponseUtil.wrapOrNotFound(

@@ -2,7 +2,7 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
 
     <property name="now" value="now()" dbms="h2"/>
     <property name="now" value="now()" dbms="mysql, mariadb"/>
@@ -33,6 +33,13 @@
     <include file="config/liquibase/changelog/20200429190800_added_entity_NetworkSwitch.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200920172639_added_entity_TransactionBook.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201023093232_added_entity_TeamMembership.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211025002638_added_entity_BankAccount.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211025002639_added_entity_BankTransaction.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211025002640_added_entity_InternalTransaction.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211025002641_added_entity_NetworkSwitchStatus.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211025002642_added_entity_LaundryProgram.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211025002643_added_entity_BroadcastMessage.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211025002644_added_entity_BroadcastMessageText.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20191117011741_added_entity_constraints_Tenant.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191117011744_added_entity_constraints_Lease.xml" relativeToChangelogFile="false"/>
@@ -46,6 +53,10 @@
     <include file="config/liquibase/changelog/20200326184246_added_entity_constraints_LaundryMachineProgram.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200326184247_added_entity_constraints_WashHistory.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201023093232_added_entity_constraints_TeamMembership.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211025002639_added_entity_constraints_BankTransaction.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211025002640_added_entity_constraints_InternalTransaction.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211025002641_added_entity_constraints_NetworkSwitchStatus.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211025002644_added_entity_constraints_BroadcastMessageText.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

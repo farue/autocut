@@ -22,7 +22,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
 
 /**
  * Integration tests for the {@link TenantCommunicationResource} REST controller.
@@ -320,7 +319,7 @@ class TenantCommunicationResourceIT {
         TenantCommunication partialUpdatedTenantCommunication = new TenantCommunication();
         partialUpdatedTenantCommunication.setId(tenantCommunication.getId());
 
-        partialUpdatedTenantCommunication.subject(UPDATED_SUBJECT);
+        partialUpdatedTenantCommunication.text(UPDATED_TEXT).date(UPDATED_DATE);
 
         restTenantCommunicationMockMvc
             .perform(
@@ -334,10 +333,10 @@ class TenantCommunicationResourceIT {
         List<TenantCommunication> tenantCommunicationList = tenantCommunicationRepository.findAll();
         assertThat(tenantCommunicationList).hasSize(databaseSizeBeforeUpdate);
         TenantCommunication testTenantCommunication = tenantCommunicationList.get(tenantCommunicationList.size() - 1);
-        assertThat(testTenantCommunication.getSubject()).isEqualTo(UPDATED_SUBJECT);
-        assertThat(testTenantCommunication.getText()).isEqualTo(DEFAULT_TEXT);
+        assertThat(testTenantCommunication.getSubject()).isEqualTo(DEFAULT_SUBJECT);
+        assertThat(testTenantCommunication.getText()).isEqualTo(UPDATED_TEXT);
         assertThat(testTenantCommunication.getNote()).isEqualTo(DEFAULT_NOTE);
-        assertThat(testTenantCommunication.getDate()).isEqualTo(DEFAULT_DATE);
+        assertThat(testTenantCommunication.getDate()).isEqualTo(UPDATED_DATE);
     }
 
     @Test

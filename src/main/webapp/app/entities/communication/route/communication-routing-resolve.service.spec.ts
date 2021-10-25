@@ -6,77 +6,75 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { of } from 'rxjs';
 
-import { ICommunication, Communication } from '../communication.model';
+import { Communication, ICommunication } from '../communication.model';
 import { CommunicationService } from '../service/communication.service';
 
 import { CommunicationRoutingResolveService } from './communication-routing-resolve.service';
 
-describe('Service Tests', () => {
-  describe('Communication routing resolve service', () => {
-    let mockRouter: Router;
-    let mockActivatedRouteSnapshot: ActivatedRouteSnapshot;
-    let routingResolveService: CommunicationRoutingResolveService;
-    let service: CommunicationService;
-    let resultCommunication: ICommunication | undefined;
+describe('Communication routing resolve service', () => {
+  let mockRouter: Router;
+  let mockActivatedRouteSnapshot: ActivatedRouteSnapshot;
+  let routingResolveService: CommunicationRoutingResolveService;
+  let service: CommunicationService;
+  let resultCommunication: ICommunication | undefined;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
-        providers: [Router, ActivatedRouteSnapshot],
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [Router, ActivatedRouteSnapshot],
+    });
+    mockRouter = TestBed.inject(Router);
+    mockActivatedRouteSnapshot = TestBed.inject(ActivatedRouteSnapshot);
+    routingResolveService = TestBed.inject(CommunicationRoutingResolveService);
+    service = TestBed.inject(CommunicationService);
+    resultCommunication = undefined;
+  });
+
+  describe('resolve', () => {
+    it('should return ICommunication returned by find', () => {
+      // GIVEN
+      service.find = jest.fn(id => of(new HttpResponse({ body: { id } })));
+      mockActivatedRouteSnapshot.params = { id: 123 };
+
+      // WHEN
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultCommunication = result;
       });
-      mockRouter = TestBed.inject(Router);
-      mockActivatedRouteSnapshot = TestBed.inject(ActivatedRouteSnapshot);
-      routingResolveService = TestBed.inject(CommunicationRoutingResolveService);
-      service = TestBed.inject(CommunicationService);
-      resultCommunication = undefined;
+
+      // THEN
+      expect(service.find).toBeCalledWith(123);
+      expect(resultCommunication).toEqual({ id: 123 });
     });
 
-    describe('resolve', () => {
-      it('should return ICommunication returned by find', () => {
-        // GIVEN
-        service.find = jest.fn(id => of(new HttpResponse({ body: { id } })));
-        mockActivatedRouteSnapshot.params = { id: 123 };
+    it('should return new ICommunication if id is not provided', () => {
+      // GIVEN
+      service.find = jest.fn();
+      mockActivatedRouteSnapshot.params = {};
 
-        // WHEN
-        routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
-          resultCommunication = result;
-        });
-
-        // THEN
-        expect(service.find).toBeCalledWith(123);
-        expect(resultCommunication).toEqual({ id: 123 });
+      // WHEN
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultCommunication = result;
       });
 
-      it('should return new ICommunication if id is not provided', () => {
-        // GIVEN
-        service.find = jest.fn();
-        mockActivatedRouteSnapshot.params = {};
+      // THEN
+      expect(service.find).not.toBeCalled();
+      expect(resultCommunication).toEqual(new Communication());
+    });
 
-        // WHEN
-        routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
-          resultCommunication = result;
-        });
+    it('should route to 404 page if data not found in server', () => {
+      // GIVEN
+      jest.spyOn(service, 'find').mockReturnValue(of(new HttpResponse({ body: null as unknown as Communication })));
+      mockActivatedRouteSnapshot.params = { id: 123 };
 
-        // THEN
-        expect(service.find).not.toBeCalled();
-        expect(resultCommunication).toEqual(new Communication());
+      // WHEN
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultCommunication = result;
       });
 
-      it('should route to 404 page if data not found in server', () => {
-        // GIVEN
-        spyOn(service, 'find').and.returnValue(of(new HttpResponse({ body: null })));
-        mockActivatedRouteSnapshot.params = { id: 123 };
-
-        // WHEN
-        routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
-          resultCommunication = result;
-        });
-
-        // THEN
-        expect(service.find).toBeCalledWith(123);
-        expect(resultCommunication).toEqual(undefined);
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['404']);
-      });
+      // THEN
+      expect(service.find).toBeCalledWith(123);
+      expect(resultCommunication).toEqual(undefined);
+      expect(mockRouter.navigate).toHaveBeenCalledWith(['404']);
     });
   });
 });

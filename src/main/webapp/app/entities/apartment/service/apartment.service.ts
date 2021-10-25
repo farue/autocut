@@ -5,16 +5,16 @@ import { Observable } from 'rxjs';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IApartment, getApartmentIdentifier } from '../apartment.model';
+import { getApartmentIdentifier, IApartment } from '../apartment.model';
 
 export type EntityResponseType = HttpResponse<IApartment>;
 export type EntityArrayResponseType = HttpResponse<IApartment[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ApartmentService {
-  public resourceUrl = this.applicationConfigService.getEndpointFor('api/apartments');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/apartments');
 
-  constructor(protected http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(apartment: IApartment): Observable<EntityResponseType> {
     return this.http.post<IApartment>(this.resourceUrl, apartment, { observe: 'response' });

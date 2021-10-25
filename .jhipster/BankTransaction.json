@@ -1,0 +1,103 @@
+{
+  "name": "BankTransaction",
+  "fields": [
+    {
+      "fieldName": "bookingDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "valueDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "value",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "balanceAfter",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "customerRef",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "gvCode",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "endToEnd",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "primanota",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "creditor",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "mandate",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "bankAccount",
+      "otherEntityRelationshipName": "bankTransaction",
+      "relationshipValidateRules": "required",
+      "relationshipName": "bankAccount"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "bankAccount",
+      "otherEntityRelationshipName": "bankTransaction",
+      "relationshipName": "contraBankAccount"
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "bankTransaction",
+      "otherEntityRelationshipName": "right",
+      "relationshipName": "left",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "transactionBook",
+      "otherEntityRelationshipName": "bTransaction",
+      "relationshipValidateRules": "required",
+      "relationshipName": "transactionBook"
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "bankTransaction",
+      "otherEntityRelationshipName": "left",
+      "relationshipName": "right",
+      "ownerSide": false
+    }
+  ],
+  "entityTableName": "bank_transaction",
+  "dto": "no",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": ["autocut"],
+  "changelogDate": "20211025002639"
+}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+    <!--
+        Added the constraints for entity InternalTransaction.
+    -->
+    <changeSet id="20211025002640-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="internal_transaction_id"
+                                 baseTableName="rel_internal_transaction__left"
+                                 constraintName="fk_rel_internal_transaction__left__internal_transaction_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="internal_transaction"/>
+
+        <addForeignKeyConstraint baseColumnNames="left_id"
+                                 baseTableName="rel_internal_transaction__left"
+                                 constraintName="fk_rel_internal_transaction__left__left_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="internal_transaction"/>
+
+        <addForeignKeyConstraint baseColumnNames="transaction_book_id"
+                                 baseTableName="internal_transaction"
+                                 constraintName="fk_internal_transaction__transaction_book_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transaction_book"/>
+    </changeSet>
+</databaseChangeLog>

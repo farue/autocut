@@ -20,7 +20,8 @@
       "id": "ID",
       "name": "Name",
       "type": "Type",
-      "transaction": "Transaction",
+      "iTransaction": "I Transaction",
+      "bTransaction": "B Transaction",
       "lease": "Lease"
     }
   }

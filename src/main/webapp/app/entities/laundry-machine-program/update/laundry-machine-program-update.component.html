@@ -18,30 +18,6 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="autocutApp.laundryMachineProgram.name" for="field_name">Name</label>
-          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
-          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
-            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
-              This field is required.
-            </small>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="autocutApp.laundryMachineProgram.subprogram" for="field_subprogram"
-            >Subprogram</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="subprogram"
-            id="field_subprogram"
-            data-cy="subprogram"
-            formControlName="subprogram"
-          />
-        </div>
-
-        <div class="form-group">
           <label class="form-control-label" jhiTranslate="autocutApp.laundryMachineProgram.time" for="field_time">Time</label>
           <input type="number" class="form-control" name="time" id="field_time" data-cy="time" formControlName="time" />
           <div *ngIf="editForm.get('time')!.invalid && (editForm.get('time')!.dirty || editForm.get('time')!.touched)">
@@ -55,37 +31,36 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="autocutApp.laundryMachineProgram.spin" for="field_spin">Spin</label>
-          <input type="number" class="form-control" name="spin" id="field_spin" data-cy="spin" formControlName="spin" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="autocutApp.laundryMachineProgram.preWash" for="field_preWash">Pre Wash</label>
-          <input type="checkbox" class="form-check" name="preWash" id="field_preWash" data-cy="preWash" formControlName="preWash" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="autocutApp.laundryMachineProgram.protect" for="field_protect">Protect</label>
-          <input type="checkbox" class="form-check" name="protect" id="field_protect" data-cy="protect" formControlName="protect" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="autocutApp.laundryMachineProgram.laundryMachine" for="field_laundryMachine"
-            >Laundry Machine</label
-          >
-          <select
-            class="form-control"
-            id="field_laundryMachine"
-            data-cy="laundryMachine"
-            name="laundryMachine"
-            formControlName="laundryMachine"
-          >
-            <option [ngValue]="null"></option>
+          <label class="form-control-label" jhiTranslate="autocutApp.laundryMachineProgram.program" for="field_program">Program</label>
+          <select class="form-control" id="field_program" data-cy="program" name="program" formControlName="program">
+            <option *ngIf="!editForm.get('program')!.value" [ngValue]="null" selected></option>
             <option
               [ngValue]="
-                laundryMachineOption.id === editForm.get('laundryMachine')!.value?.id
-                  ? editForm.get('laundryMachine')!.value
-                  : laundryMachineOption
+                laundryProgramOption.id === editForm.get('program')!.value?.id ? editForm.get('program')!.value : laundryProgramOption
+              "
+              *ngFor="let laundryProgramOption of laundryProgramsSharedCollection; trackBy: trackLaundryProgramById"
+            >
+              {{ laundryProgramOption.id }}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="editForm.get(['program'])!.invalid && (editForm.get(['program'])!.dirty || editForm.get(['program'])!.touched)">
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['program'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            This field is required.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autocutApp.laundryMachineProgram.machine" for="field_machine">Machine</label>
+          <select class="form-control" id="field_machine" data-cy="machine" name="machine" formControlName="machine">
+            <option *ngIf="!editForm.get('machine')!.value" [ngValue]="null" selected></option>
+            <option
+              [ngValue]="
+                laundryMachineOption.id === editForm.get('machine')!.value?.id ? editForm.get('machine')!.value : laundryMachineOption
               "
               *ngFor="let laundryMachineOption of laundryMachinesSharedCollection; trackBy: trackLaundryMachineById"
             >
@@ -93,10 +68,19 @@
             </option>
           </select>
         </div>
+        <div *ngIf="editForm.get(['machine'])!.invalid && (editForm.get(['machine'])!.dirty || editForm.get(['machine'])!.touched)">
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['machine'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            This field is required.
+          </small>
+        </div>
       </div>
 
       <div>
-        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
           <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
 

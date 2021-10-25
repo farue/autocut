@@ -17,6 +17,7 @@ public class GlobalSetting implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "jhi_key")
@@ -29,17 +30,18 @@ public class GlobalSetting implements Serializable {
     private String valueType;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public GlobalSetting id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public GlobalSetting id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public String getKey() {
@@ -47,7 +49,7 @@ public class GlobalSetting implements Serializable {
     }
 
     public GlobalSetting key(String key) {
-        this.key = key;
+        this.setKey(key);
         return this;
     }
 
@@ -60,7 +62,7 @@ public class GlobalSetting implements Serializable {
     }
 
     public GlobalSetting value(String value) {
-        this.value = value;
+        this.setValue(value);
         return this;
     }
 
@@ -73,7 +75,7 @@ public class GlobalSetting implements Serializable {
     }
 
     public GlobalSetting valueType(String valueType) {
-        this.valueType = valueType;
+        this.setValueType(valueType);
         return this;
     }
 

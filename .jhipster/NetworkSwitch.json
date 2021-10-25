@@ -10,19 +10,6 @@
       "fieldName": "sshHost",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "sshPort",
-      "fieldType": "Integer",
-      "fieldValidateRules": ["required", "min", "max"],
-      "fieldValidateRulesMin": "0",
-      "fieldValidateRulesMax": "65535"
-    },
-    {
-      "fieldName": "sshKey",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "text",
-      "fieldValidateRules": ["required"]
     }
   ],
   "relationships": [],
@@ -30,11 +17,11 @@
   "entityTableName": "network_switch",
   "dto": "no",
   "pagination": "no",
-  "service": "no",
+  "service": "serviceClass",
   "jpaMetamodelFiltering": false,
   "fluentMethods": true,
   "readOnly": false,
   "embedded": false,
   "clientRootFolder": "",
-  "applications": "*"
+  "applications": ["autocut"]
 }

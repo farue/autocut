@@ -19,9 +19,7 @@
       },
       "id": "ID",
       "interfaceName": "Interface Name",
-      "sshHost": "Ssh Host",
-      "sshPort": "Ssh Port",
-      "sshKey": "Ssh Key"
+      "sshHost": "Ssh Host"
     }
   }
 }

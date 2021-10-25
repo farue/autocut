@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
-                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
 
     <!--
         Added the entity InternetAccess.
@@ -13,9 +11,6 @@
         <createTable tableName="internet_access">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="blocked" type="boolean">
-                <constraints nullable="false" />
             </column>
             <column name="ip_1" type="varchar(255)">
                 <constraints nullable="false" />
@@ -50,9 +45,9 @@
         <loadData
                   file="config/liquibase/fake-data/internet_access.csv"
                   separator=";"
-                  tableName="internet_access">
+                  tableName="internet_access"
+                  usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="blocked" type="boolean"/>
             <column name="ip_1" type="string"/>
             <column name="ip_2" type="string"/>
             <column name="switch_interface" type="string"/>

@@ -12,8 +12,10 @@ import de.farue.autocut.web.rest.errors.EmailAlreadyUsedException;
 import de.farue.autocut.web.rest.errors.LoginAlreadyUsedException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import org.slf4j.Logger;
@@ -61,7 +63,19 @@ import tech.jhipster.web.util.ResponseUtil;
 public class UserResource {
 
     private static final List<String> ALLOWED_ORDERED_PROPERTIES = Collections.unmodifiableList(
-        Arrays.asList("id", "login", "firstName", "lastName", "email", "activated", "langKey")
+        Arrays.asList(
+            "id",
+            "login",
+            "firstName",
+            "lastName",
+            "email",
+            "activated",
+            "langKey",
+            "createdBy",
+            "createdDate",
+            "lastModifiedBy",
+            "lastModifiedDate"
+        )
     );
 
     private final Logger log = LoggerFactory.getLogger(UserResource.class);

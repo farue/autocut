@@ -46,14 +46,14 @@ describe('Component Tests', () => {
     describe('ngOnInit', () => {
       it('Should call TeamMembership query and add missing value', () => {
         const securityPolicy: ISecurityPolicy = { id: 456 };
-        const teamMember: ITeamMembership = { id: 76455 };
+        const teamMember: ITeamMembership = { id: 57573 };
         securityPolicy.teamMember = teamMember;
 
-        const teamMembershipCollection: ITeamMembership[] = [{ id: 66936 }];
-        spyOn(teamMembershipService, 'query').and.returnValue(of(new HttpResponse({ body: teamMembershipCollection })));
+        const teamMembershipCollection: ITeamMembership[] = [{ id: 29501 }];
+        jest.spyOn(teamMembershipService, 'query').mockReturnValue(of(new HttpResponse({ body: teamMembershipCollection })));
         const additionalTeamMemberships = [teamMember];
         const expectedCollection: ITeamMembership[] = [...additionalTeamMemberships, ...teamMembershipCollection];
-        spyOn(teamMembershipService, 'addTeamMembershipToCollectionIfMissing').and.returnValue(expectedCollection);
+        jest.spyOn(teamMembershipService, 'addTeamMembershipToCollectionIfMissing').mockReturnValue(expectedCollection);
 
         activatedRoute.data = of({ securityPolicy });
         comp.ngOnInit();
@@ -68,14 +68,14 @@ describe('Component Tests', () => {
 
       it('Should call Tenant query and add missing value', () => {
         const securityPolicy: ISecurityPolicy = { id: 456 };
-        const tenant: ITenant = { id: 91592 };
+        const tenant: ITenant = { id: 77471 };
         securityPolicy.tenant = tenant;
 
-        const tenantCollection: ITenant[] = [{ id: 4105 }];
-        spyOn(tenantService, 'query').and.returnValue(of(new HttpResponse({ body: tenantCollection })));
+        const tenantCollection: ITenant[] = [{ id: 71420 }];
+        jest.spyOn(tenantService, 'query').mockReturnValue(of(new HttpResponse({ body: tenantCollection })));
         const additionalTenants = [tenant];
         const expectedCollection: ITenant[] = [...additionalTenants, ...tenantCollection];
-        spyOn(tenantService, 'addTenantToCollectionIfMissing').and.returnValue(expectedCollection);
+        jest.spyOn(tenantService, 'addTenantToCollectionIfMissing').mockReturnValue(expectedCollection);
 
         activatedRoute.data = of({ securityPolicy });
         comp.ngOnInit();
@@ -87,9 +87,9 @@ describe('Component Tests', () => {
 
       it('Should update editForm', () => {
         const securityPolicy: ISecurityPolicy = { id: 456 };
-        const teamMember: ITeamMembership = { id: 90870 };
+        const teamMember: ITeamMembership = { id: 77502 };
         securityPolicy.teamMember = teamMember;
-        const tenant: ITenant = { id: 15631 };
+        const tenant: ITenant = { id: 76965 };
         securityPolicy.tenant = tenant;
 
         activatedRoute.data = of({ securityPolicy });
@@ -104,10 +104,10 @@ describe('Component Tests', () => {
     describe('save', () => {
       it('Should call update service on save for existing entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<SecurityPolicy>>();
         const securityPolicy = { id: 123 };
-        spyOn(securityPolicyService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(securityPolicyService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ securityPolicy });
         comp.ngOnInit();
 
@@ -125,10 +125,10 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<SecurityPolicy>>();
         const securityPolicy = new SecurityPolicy();
-        spyOn(securityPolicyService, 'create').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(securityPolicyService, 'create').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ securityPolicy });
         comp.ngOnInit();
 
@@ -146,10 +146,10 @@ describe('Component Tests', () => {
 
       it('Should set isSaving to false on error', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<SecurityPolicy>>();
         const securityPolicy = { id: 123 };
-        spyOn(securityPolicyService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(securityPolicyService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ securityPolicy });
         comp.ngOnInit();
 

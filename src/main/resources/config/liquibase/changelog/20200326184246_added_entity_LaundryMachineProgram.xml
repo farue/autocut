@@ -1,39 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
-                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
 
     <!--
         Added the entity LaundryMachineProgram.
     -->
     <changeSet id="20200326184246-1" author="jhipster">
-        <createTable tableName="laundry_machine_program">
+        <createTable tableName="wash_machine_program">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="name" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            <column name="subprogram" type="varchar(255)">
-                <constraints nullable="true" />
             </column>
             <column name="time" type="integer">
                 <constraints nullable="false" />
             </column>
-            <column name="spin" type="integer">
-                <constraints nullable="true" />
+            <column name="program_id" type="bigint">
+                <constraints nullable="false" />
             </column>
-            <column name="pre_wash" type="boolean">
-                <constraints nullable="true" />
-            </column>
-            <column name="protect" type="boolean">
-                <constraints nullable="true" />
-            </column>
-            <column name="laundry_machine_id" type="bigint">
-                <constraints nullable="true" />
+            <column name="machine_id" type="bigint">
+                <constraints nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
@@ -51,16 +37,14 @@
     -->
     <changeSet id="20200326184246-1-data" author="jhipster" context="faker">
         <loadData
-                  file="config/liquibase/fake-data/laundry_machine_program.csv"
+                  file="config/liquibase/fake-data/wash_machine_program.csv"
                   separator=";"
-                  tableName="laundry_machine_program">
+                  tableName="wash_machine_program"
+                  usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="name" type="string"/>
-            <column name="subprogram" type="string"/>
             <column name="time" type="numeric"/>
-            <column name="spin" type="numeric"/>
-            <column name="pre_wash" type="boolean"/>
-            <column name="protect" type="boolean"/>
+            <column name="program_id" type="numeric"/>
+            <column name="machine_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

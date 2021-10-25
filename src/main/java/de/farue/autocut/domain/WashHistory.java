@@ -20,6 +20,7 @@ public class WashHistory implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "using_date")
@@ -48,21 +49,22 @@ public class WashHistory implements Serializable {
     private LaundryMachine machine;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "laundryMachine" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "program", "machine" }, allowSetters = true)
     private LaundryMachineProgram program;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public WashHistory id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public WashHistory id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public Instant getUsingDate() {
@@ -70,7 +72,7 @@ public class WashHistory implements Serializable {
     }
 
     public WashHistory usingDate(Instant usingDate) {
-        this.usingDate = usingDate;
+        this.setUsingDate(usingDate);
         return this;
     }
 
@@ -83,7 +85,7 @@ public class WashHistory implements Serializable {
     }
 
     public WashHistory reservationDate(Instant reservationDate) {
-        this.reservationDate = reservationDate;
+        this.setReservationDate(reservationDate);
         return this;
     }
 
@@ -96,7 +98,7 @@ public class WashHistory implements Serializable {
     }
 
     public WashHistory lastModifiedDate(Instant lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
+        this.setLastModifiedDate(lastModifiedDate);
         return this;
     }
 
@@ -109,7 +111,7 @@ public class WashHistory implements Serializable {
     }
 
     public WashHistory status(WashHistoryStatus status) {
-        this.status = status;
+        this.setStatus(status);
         return this;
     }
 
@@ -121,17 +123,21 @@ public class WashHistory implements Serializable {
         return this.reservationTenant;
     }
 
+    public void setReservationTenant(Tenant tenant) {
+        this.reservationTenant = tenant;
+    }
+
     public WashHistory reservationTenant(Tenant tenant) {
         this.setReservationTenant(tenant);
         return this;
     }
 
-    public void setReservationTenant(Tenant tenant) {
-        this.reservationTenant = tenant;
-    }
-
     public Tenant getUsingTenant() {
         return this.usingTenant;
+    }
+
+    public void setUsingTenant(Tenant tenant) {
+        this.usingTenant = tenant;
     }
 
     public WashHistory usingTenant(Tenant tenant) {
@@ -139,12 +145,12 @@ public class WashHistory implements Serializable {
         return this;
     }
 
-    public void setUsingTenant(Tenant tenant) {
-        this.usingTenant = tenant;
-    }
-
     public LaundryMachine getMachine() {
         return this.machine;
+    }
+
+    public void setMachine(LaundryMachine laundryMachine) {
+        this.machine = laundryMachine;
     }
 
     public WashHistory machine(LaundryMachine laundryMachine) {
@@ -152,21 +158,17 @@ public class WashHistory implements Serializable {
         return this;
     }
 
-    public void setMachine(LaundryMachine laundryMachine) {
-        this.machine = laundryMachine;
-    }
-
     public LaundryMachineProgram getProgram() {
         return this.program;
+    }
+
+    public void setProgram(LaundryMachineProgram laundryMachineProgram) {
+        this.program = laundryMachineProgram;
     }
 
     public WashHistory program(LaundryMachineProgram laundryMachineProgram) {
         this.setProgram(laundryMachineProgram);
         return this;
-    }
-
-    public void setProgram(LaundryMachineProgram laundryMachineProgram) {
-        this.program = laundryMachineProgram;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

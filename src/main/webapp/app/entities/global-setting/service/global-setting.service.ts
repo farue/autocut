@@ -5,16 +5,16 @@ import { Observable } from 'rxjs';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IGlobalSetting, getGlobalSettingIdentifier } from '../global-setting.model';
+import { getGlobalSettingIdentifier, IGlobalSetting } from '../global-setting.model';
 
 export type EntityResponseType = HttpResponse<IGlobalSetting>;
 export type EntityArrayResponseType = HttpResponse<IGlobalSetting[]>;
 
 @Injectable({ providedIn: 'root' })
 export class GlobalSettingService {
-  public resourceUrl = this.applicationConfigService.getEndpointFor('api/global-settings');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/global-settings');
 
-  constructor(protected http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(globalSetting: IGlobalSetting): Observable<EntityResponseType> {
     return this.http.post<IGlobalSetting>(this.resourceUrl, globalSetting, { observe: 'response' });

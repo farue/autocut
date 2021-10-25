@@ -16,36 +16,20 @@
         <dd>
           <span>{{ laundryMachineProgram.id }}</span>
         </dd>
-        <dt><span jhiTranslate="autocutApp.laundryMachineProgram.name">Name</span></dt>
-        <dd>
-          <span>{{ laundryMachineProgram.name }}</span>
-        </dd>
-        <dt><span jhiTranslate="autocutApp.laundryMachineProgram.subprogram">Subprogram</span></dt>
-        <dd>
-          <span>{{ laundryMachineProgram.subprogram }}</span>
-        </dd>
         <dt><span jhiTranslate="autocutApp.laundryMachineProgram.time">Time</span></dt>
         <dd>
           <span>{{ laundryMachineProgram.time }}</span>
         </dd>
-        <dt><span jhiTranslate="autocutApp.laundryMachineProgram.spin">Spin</span></dt>
+        <dt><span jhiTranslate="autocutApp.laundryMachineProgram.program">Program</span></dt>
         <dd>
-          <span>{{ laundryMachineProgram.spin }}</span>
+          <div *ngIf="laundryMachineProgram.program">
+            <a [routerLink]="['/laundry-program', laundryMachineProgram.program?.id, 'view']">{{ laundryMachineProgram.program?.id }}</a>
+          </div>
         </dd>
-        <dt><span jhiTranslate="autocutApp.laundryMachineProgram.preWash">Pre Wash</span></dt>
+        <dt><span jhiTranslate="autocutApp.laundryMachineProgram.machine">Machine</span></dt>
         <dd>
-          <span>{{ laundryMachineProgram.preWash }}</span>
-        </dd>
-        <dt><span jhiTranslate="autocutApp.laundryMachineProgram.protect">Protect</span></dt>
-        <dd>
-          <span>{{ laundryMachineProgram.protect }}</span>
-        </dd>
-        <dt><span jhiTranslate="autocutApp.laundryMachineProgram.laundryMachine">Laundry Machine</span></dt>
-        <dd>
-          <div *ngIf="laundryMachineProgram.laundryMachine">
-            <a [routerLink]="['/laundry-machine', laundryMachineProgram.laundryMachine?.id, 'view']">{{
-              laundryMachineProgram.laundryMachine?.id
-            }}</a>
+          <div *ngIf="laundryMachineProgram.machine">
+            <a [routerLink]="['/laundry-machine', laundryMachineProgram.machine?.id, 'view']">{{ laundryMachineProgram.machine?.id }}</a>
           </div>
         </dd>
       </dl>

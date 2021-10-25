@@ -7,16 +7,16 @@ import * as dayjs from 'dayjs';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { ITransaction, getTransactionIdentifier } from '../transaction.model';
+import { getTransactionIdentifier, ITransaction } from '../transaction.model';
 
 export type EntityResponseType = HttpResponse<ITransaction>;
 export type EntityArrayResponseType = HttpResponse<ITransaction[]>;
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
-  public resourceUrl = this.applicationConfigService.getEndpointFor('api/transactions');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/transactions');
 
-  constructor(protected http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(transaction: ITransaction): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(transaction);

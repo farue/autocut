@@ -2,12 +2,12 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
     <!--
         Added the constraints for entity SecurityPolicy.
     -->
     <changeSet id="20191117011747-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="team_member_id"
                                  baseTableName="security_policy"
                                  constraintName="fk_security_policy__team_member_id"
@@ -19,6 +19,5 @@
                                  constraintName="fk_security_policy__tenant_id"
                                  referencedColumnNames="id"
                                  referencedTableName="tenant"/>
-
     </changeSet>
 </databaseChangeLog>

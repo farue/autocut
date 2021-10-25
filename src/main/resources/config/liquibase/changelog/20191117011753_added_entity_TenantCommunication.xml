@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
-                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
 
     <!--
         Added the entity TenantCommunication.
@@ -48,12 +46,13 @@
         <loadData
                   file="config/liquibase/fake-data/tenant_communication.csv"
                   separator=";"
-                  tableName="tenant_communication">
+                  tableName="tenant_communication"
+                  usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="subject" type="string"/>
             <column name="text" type="clob"/>
             <column name="note" type="clob"/>
-            <column name="date" type="${datetimeType}"/>
+            <column name="date" type="date"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

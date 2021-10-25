@@ -49,10 +49,10 @@ describe('Component Tests', () => {
     describe('save', () => {
       it('Should call update service on save for existing entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<NetworkSwitch>>();
         const networkSwitch = { id: 123 };
-        spyOn(networkSwitchService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(networkSwitchService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ networkSwitch });
         comp.ngOnInit();
 
@@ -70,10 +70,10 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<NetworkSwitch>>();
         const networkSwitch = new NetworkSwitch();
-        spyOn(networkSwitchService, 'create').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(networkSwitchService, 'create').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ networkSwitch });
         comp.ngOnInit();
 
@@ -91,10 +91,10 @@ describe('Component Tests', () => {
 
       it('Should set isSaving to false on error', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<NetworkSwitch>>();
         const networkSwitch = { id: 123 };
-        spyOn(networkSwitchService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(networkSwitchService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ networkSwitch });
         comp.ngOnInit();
 

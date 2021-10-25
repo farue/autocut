@@ -2,12 +2,12 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
     <!--
         Added the constraints for entity WashHistory.
     -->
     <changeSet id="20200326184247-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="reservation_tenant_id"
                                  baseTableName="wash_history"
                                  constraintName="fk_wash_history__reservation_tenant_id"
@@ -24,13 +24,12 @@
                                  baseTableName="wash_history"
                                  constraintName="fk_wash_history__machine_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="laundry_machine"/>
+                                 referencedTableName="wash_machine"/>
 
         <addForeignKeyConstraint baseColumnNames="program_id"
                                  baseTableName="wash_history"
                                  constraintName="fk_wash_history__program_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="laundry_machine_program"/>
-
+                                 referencedTableName="wash_machine_program"/>
     </changeSet>
 </databaseChangeLog>

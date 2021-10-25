@@ -1,7 +1,9 @@
 package de.farue.autocut.config;
 
 import java.time.Duration;
-import org.ehcache.config.builders.*;
+import org.ehcache.config.builders.CacheConfigurationBuilder;
+import org.ehcache.config.builders.ExpiryPolicyBuilder;
+import org.ehcache.config.builders.ResourcePoolsBuilder;
 import org.ehcache.jsr107.Eh107Configuration;
 import org.hibernate.cache.jcache.ConfigSettings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,8 @@ import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.info.GitProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import tech.jhipster.config.JHipsterProperties;
 import tech.jhipster.config.cache.PrefixedKeyGenerator;
 
@@ -73,10 +76,23 @@ public class CacheConfiguration {
             createCache(cm, de.farue.autocut.domain.GlobalSetting.class.getName());
             createCache(cm, de.farue.autocut.domain.NetworkSwitch.class.getName());
             createCache(cm, de.farue.autocut.domain.TransactionBook.class.getName());
-            createCache(cm, de.farue.autocut.domain.TransactionBook.class.getName() + ".transactions");
+            createCache(cm, de.farue.autocut.domain.TransactionBook.class.getName() + ".iTransactions");
+            createCache(cm, de.farue.autocut.domain.TransactionBook.class.getName() + ".bTransactions");
             createCache(cm, de.farue.autocut.domain.TransactionBook.class.getName() + ".leases");
             createCache(cm, de.farue.autocut.domain.TeamMembership.class.getName());
             createCache(cm, de.farue.autocut.domain.TeamMembership.class.getName() + ".securityPolicies");
+            createCache(cm, de.farue.autocut.domain.BankAccount.class.getName());
+            createCache(cm, de.farue.autocut.domain.BankTransaction.class.getName());
+            createCache(cm, de.farue.autocut.domain.BankTransaction.class.getName() + ".lefts");
+            createCache(cm, de.farue.autocut.domain.BankTransaction.class.getName() + ".rights");
+            createCache(cm, de.farue.autocut.domain.InternalTransaction.class.getName());
+            createCache(cm, de.farue.autocut.domain.InternalTransaction.class.getName() + ".lefts");
+            createCache(cm, de.farue.autocut.domain.InternalTransaction.class.getName() + ".rights");
+            createCache(cm, de.farue.autocut.domain.NetworkSwitchStatus.class.getName());
+            createCache(cm, de.farue.autocut.domain.LaundryProgram.class.getName());
+            createCache(cm, de.farue.autocut.domain.BroadcastMessage.class.getName());
+            createCache(cm, de.farue.autocut.domain.BroadcastMessage.class.getName() + ".messageTexts");
+            createCache(cm, de.farue.autocut.domain.BroadcastMessageText.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

@@ -11,6 +11,8 @@ import { ITeamMembership } from 'app/entities/team-membership/team-membership.mo
 import { TeamMembershipService } from 'app/entities/team-membership/service/team-membership.service';
 import { ITenant } from 'app/entities/tenant/tenant.model';
 import { TenantService } from 'app/entities/tenant/service/tenant.service';
+import { ProtectionUnits } from 'app/entities/enumerations/protection-units.model';
+import { Access } from 'app/entities/enumerations/access.model';
 
 @Component({
   selector: 'jhi-security-policy-update',
@@ -18,6 +20,8 @@ import { TenantService } from 'app/entities/tenant/service/tenant.service';
 })
 export class SecurityPolicyUpdateComponent implements OnInit {
   isSaving = false;
+  protectionUnitsValues = Object.keys(ProtectionUnits);
+  accessValues = Object.keys(Access);
 
   teamMembershipsSharedCollection: ITeamMembership[] = [];
   tenantsSharedCollection: ITenant[] = [];

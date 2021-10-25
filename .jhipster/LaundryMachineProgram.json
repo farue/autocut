@@ -2,43 +2,29 @@
   "name": "LaundryMachineProgram",
   "fields": [
     {
-      "fieldName": "name",
-      "fieldType": "String",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "subprogram",
-      "fieldType": "String"
-    },
-    {
       "fieldName": "time",
       "fieldType": "Integer",
       "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "spin",
-      "fieldType": "Integer"
-    },
-    {
-      "fieldName": "preWash",
-      "fieldType": "Boolean"
-    },
-    {
-      "fieldName": "protect",
-      "fieldType": "Boolean"
     }
   ],
   "relationships": [
     {
       "relationshipType": "many-to-one",
+      "otherEntityName": "laundryProgram",
+      "otherEntityRelationshipName": "laundryMachineProgram",
+      "relationshipValidateRules": "required",
+      "relationshipName": "program"
+    },
+    {
+      "relationshipType": "many-to-one",
       "otherEntityName": "laundryMachine",
       "otherEntityRelationshipName": "programs",
-      "relationshipName": "laundryMachine",
-      "otherEntityField": "id"
+      "relationshipValidateRules": "required",
+      "relationshipName": "machine"
     }
   ],
   "changelogDate": "20200326184246",
-  "entityTableName": "laundry_machine_program",
+  "entityTableName": "wash_machine_program",
   "dto": "no",
   "pagination": "no",
   "service": "no",
@@ -46,6 +32,6 @@
   "fluentMethods": true,
   "readOnly": false,
   "clientRootFolder": "",
-  "applications": "*",
+  "applications": ["autocut"],
   "embedded": false
 }

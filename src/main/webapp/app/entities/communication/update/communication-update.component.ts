@@ -8,7 +8,7 @@ import { finalize, map } from 'rxjs/operators';
 import * as dayjs from 'dayjs';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 
-import { ICommunication, Communication } from '../communication.model';
+import { Communication, ICommunication } from '../communication.model';
 import { CommunicationService } from '../service/communication.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
@@ -67,9 +67,7 @@ export class CommunicationUpdateComponent implements OnInit {
   setFileData(event: Event, field: string, isImage: boolean): void {
     this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
       error: (err: FileLoadError) =>
-        this.eventManager.broadcast(
-          new EventWithContent<AlertError>('autocutApp.error', { ...err, key: 'error.file.' + err.key })
-        ),
+        this.eventManager.broadcast(new EventWithContent<AlertError>('autocutApp.error', { ...err, key: 'error.file.' + err.key })),
     });
   }
 

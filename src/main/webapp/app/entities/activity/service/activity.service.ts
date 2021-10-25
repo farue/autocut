@@ -8,16 +8,16 @@ import { isPresent } from 'app/core/util/operators';
 import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IActivity, getActivityIdentifier } from '../activity.model';
+import { getActivityIdentifier, IActivity } from '../activity.model';
 
 export type EntityResponseType = HttpResponse<IActivity>;
 export type EntityArrayResponseType = HttpResponse<IActivity[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ActivityService {
-  public resourceUrl = this.applicationConfigService.getEndpointFor('api/activities');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/activities');
 
-  constructor(protected http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(activity: IActivity): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(activity);

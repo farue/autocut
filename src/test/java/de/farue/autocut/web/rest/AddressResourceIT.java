@@ -35,8 +35,8 @@ class AddressResourceIT {
     private static final String DEFAULT_STREET_NUMBER = "AAAAAAAAAA";
     private static final String UPDATED_STREET_NUMBER = "BBBBBBBBBB";
 
-    private static final String DEFAULT_ZIP = "47699";
-    private static final String UPDATED_ZIP = "29671";
+    private static final String DEFAULT_ZIP = "89591";
+    private static final String UPDATED_ZIP = "50280";
 
     private static final String DEFAULT_CITY = "AAAAAAAAAA";
     private static final String UPDATED_CITY = "BBBBBBBBBB";
@@ -372,8 +372,6 @@ class AddressResourceIT {
         Address partialUpdatedAddress = new Address();
         partialUpdatedAddress.setId(address.getId());
 
-        partialUpdatedAddress.street(UPDATED_STREET).streetNumber(UPDATED_STREET_NUMBER).city(UPDATED_CITY).country(UPDATED_COUNTRY);
-
         restAddressMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedAddress.getId())
@@ -386,11 +384,11 @@ class AddressResourceIT {
         List<Address> addressList = addressRepository.findAll();
         assertThat(addressList).hasSize(databaseSizeBeforeUpdate);
         Address testAddress = addressList.get(addressList.size() - 1);
-        assertThat(testAddress.getStreet()).isEqualTo(UPDATED_STREET);
-        assertThat(testAddress.getStreetNumber()).isEqualTo(UPDATED_STREET_NUMBER);
+        assertThat(testAddress.getStreet()).isEqualTo(DEFAULT_STREET);
+        assertThat(testAddress.getStreetNumber()).isEqualTo(DEFAULT_STREET_NUMBER);
         assertThat(testAddress.getZip()).isEqualTo(DEFAULT_ZIP);
-        assertThat(testAddress.getCity()).isEqualTo(UPDATED_CITY);
-        assertThat(testAddress.getCountry()).isEqualTo(UPDATED_COUNTRY);
+        assertThat(testAddress.getCity()).isEqualTo(DEFAULT_CITY);
+        assertThat(testAddress.getCountry()).isEqualTo(DEFAULT_COUNTRY);
     }
 
     @Test

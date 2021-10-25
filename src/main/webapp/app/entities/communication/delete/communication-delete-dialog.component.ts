@@ -10,7 +10,7 @@ import { CommunicationService } from '../service/communication.service';
 export class CommunicationDeleteDialogComponent {
   communication?: ICommunication;
 
-  constructor(protected communicationService: CommunicationService, public activeModal: NgbActiveModal) {}
+  constructor(protected communicationService: CommunicationService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

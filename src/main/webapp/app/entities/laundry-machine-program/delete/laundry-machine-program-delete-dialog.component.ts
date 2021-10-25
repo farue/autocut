@@ -10,7 +10,7 @@ import { LaundryMachineProgramService } from '../service/laundry-machine-program
 export class LaundryMachineProgramDeleteDialogComponent {
   laundryMachineProgram?: ILaundryMachineProgram;
 
-  constructor(protected laundryMachineProgramService: LaundryMachineProgramService, public activeModal: NgbActiveModal) {}
+  constructor(protected laundryMachineProgramService: LaundryMachineProgramService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

@@ -37,6 +37,8 @@
           <th scope="col"><span jhiTranslate="autocutApp.laundryMachine.name">Name</span></th>
           <th scope="col"><span jhiTranslate="autocutApp.laundryMachine.type">Type</span></th>
           <th scope="col"><span jhiTranslate="autocutApp.laundryMachine.enabled">Enabled</span></th>
+          <th scope="col"><span jhiTranslate="autocutApp.laundryMachine.positionX">Position X</span></th>
+          <th scope="col"><span jhiTranslate="autocutApp.laundryMachine.positionY">Position Y</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -49,6 +51,8 @@
           <td>{{ laundryMachine.name }}</td>
           <td jhiTranslate="{{ 'autocutApp.LaundryMachineType.' + laundryMachine.type }}">{{ laundryMachine.type }}</td>
           <td>{{ laundryMachine.enabled }}</td>
+          <td>{{ laundryMachine.positionX }}</td>
+          <td>{{ laundryMachine.positionY }}</td>
           <td class="text-right">
             <div class="btn-group">
               <button

@@ -1,4 +1,4 @@
-import { Input, Directive, ElementRef, OnChanges, OnInit, OnDestroy } from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -21,6 +21,9 @@ export class TranslateDirective implements OnChanges, OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.translateService.onLangChange.pipe(takeUntil(this.directiveDestroyed)).subscribe(() => {
+      this.getTranslation();
+    });
+    this.translateService.onTranslationChange.pipe(takeUntil(this.directiveDestroyed)).subscribe(() => {
       this.getTranslation();
     });
   }

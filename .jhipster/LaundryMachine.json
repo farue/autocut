@@ -21,25 +21,35 @@
       "fieldName": "enabled",
       "fieldType": "Boolean",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "positionX",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "positionY",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
     }
   ],
   "relationships": [
     {
       "relationshipType": "one-to-many",
       "otherEntityName": "laundryMachineProgram",
-      "otherEntityRelationshipName": "laundryMachine",
+      "otherEntityRelationshipName": "machine",
       "relationshipName": "programs"
     }
   ],
   "changelogDate": "20200326184245",
-  "entityTableName": "laundry_machine",
+  "entityTableName": "wash_machine",
   "dto": "no",
   "pagination": "no",
-  "service": "no",
+  "service": "serviceClass",
   "jpaMetamodelFiltering": false,
   "fluentMethods": true,
   "readOnly": false,
   "clientRootFolder": "",
-  "applications": "*",
+  "applications": ["autocut"],
   "embedded": false
 }

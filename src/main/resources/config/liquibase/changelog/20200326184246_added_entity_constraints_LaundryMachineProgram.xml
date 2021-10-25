@@ -2,17 +2,22 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
     <!--
         Added the constraints for entity LaundryMachineProgram.
     -->
     <changeSet id="20200326184246-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="laundry_machine_id"
-                                 baseTableName="laundry_machine_program"
-                                 constraintName="fk_laundry_machine_program__laundry_machine_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="laundry_machine"/>
 
+        <addForeignKeyConstraint baseColumnNames="program_id"
+                                 baseTableName="wash_machine_program"
+                                 constraintName="fk_wash_machine_program__program_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="wash_program"/>
+
+        <addForeignKeyConstraint baseColumnNames="machine_id"
+                                 baseTableName="wash_machine_program"
+                                 constraintName="fk_wash_machine_program__machine_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="wash_machine"/>
     </changeSet>
 </databaseChangeLog>

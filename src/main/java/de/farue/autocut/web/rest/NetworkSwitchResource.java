@@ -2,6 +2,7 @@ package de.farue.autocut.web.rest;
 
 import de.farue.autocut.domain.NetworkSwitch;
 import de.farue.autocut.repository.NetworkSwitchRepository;
+import de.farue.autocut.service.NetworkSwitchService;
 import de.farue.autocut.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -14,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -24,7 +24,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class NetworkSwitchResource {
 
     private final Logger log = LoggerFactory.getLogger(NetworkSwitchResource.class);
@@ -34,9 +33,12 @@ public class NetworkSwitchResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final NetworkSwitchService networkSwitchService;
+
     private final NetworkSwitchRepository networkSwitchRepository;
 
-    public NetworkSwitchResource(NetworkSwitchRepository networkSwitchRepository) {
+    public NetworkSwitchResource(NetworkSwitchService networkSwitchService, NetworkSwitchRepository networkSwitchRepository) {
+        this.networkSwitchService = networkSwitchService;
         this.networkSwitchRepository = networkSwitchRepository;
     }
 
@@ -53,7 +55,7 @@ public class NetworkSwitchResource {
         if (networkSwitch.getId() != null) {
             throw new BadRequestAlertException("A new networkSwitch cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        NetworkSwitch result = networkSwitchRepository.save(networkSwitch);
+        NetworkSwitch result = networkSwitchService.save(networkSwitch);
         return ResponseEntity
             .created(new URI("/api/network-switches/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -87,7 +89,7 @@ public class NetworkSwitchResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        NetworkSwitch result = networkSwitchRepository.save(networkSwitch);
+        NetworkSwitch result = networkSwitchService.save(networkSwitch);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, networkSwitch.getId().toString()))
@@ -105,7 +107,7 @@ public class NetworkSwitchResource {
      * or with status {@code 500 (Internal Server Error)} if the networkSwitch couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/network-switches/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/network-switches/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<NetworkSwitch> partialUpdateNetworkSwitch(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody NetworkSwitch networkSwitch
@@ -122,27 +124,7 @@ public class NetworkSwitchResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<NetworkSwitch> result = networkSwitchRepository
-            .findById(networkSwitch.getId())
-            .map(
-                existingNetworkSwitch -> {
-                    if (networkSwitch.getInterfaceName() != null) {
-                        existingNetworkSwitch.setInterfaceName(networkSwitch.getInterfaceName());
-                    }
-                    if (networkSwitch.getSshHost() != null) {
-                        existingNetworkSwitch.setSshHost(networkSwitch.getSshHost());
-                    }
-                    if (networkSwitch.getSshPort() != null) {
-                        existingNetworkSwitch.setSshPort(networkSwitch.getSshPort());
-                    }
-                    if (networkSwitch.getSshKey() != null) {
-                        existingNetworkSwitch.setSshKey(networkSwitch.getSshKey());
-                    }
-
-                    return existingNetworkSwitch;
-                }
-            )
-            .map(networkSwitchRepository::save);
+        Optional<NetworkSwitch> result = networkSwitchService.partialUpdate(networkSwitch);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -158,7 +140,7 @@ public class NetworkSwitchResource {
     @GetMapping("/network-switches")
     public List<NetworkSwitch> getAllNetworkSwitches() {
         log.debug("REST request to get all NetworkSwitches");
-        return networkSwitchRepository.findAll();
+        return networkSwitchService.findAll();
     }
 
     /**
@@ -170,7 +152,7 @@ public class NetworkSwitchResource {
     @GetMapping("/network-switches/{id}")
     public ResponseEntity<NetworkSwitch> getNetworkSwitch(@PathVariable Long id) {
         log.debug("REST request to get NetworkSwitch : {}", id);
-        Optional<NetworkSwitch> networkSwitch = networkSwitchRepository.findById(id);
+        Optional<NetworkSwitch> networkSwitch = networkSwitchService.findOne(id);
         return ResponseUtil.wrapOrNotFound(networkSwitch);
     }
 
@@ -183,7 +165,7 @@ public class NetworkSwitchResource {
     @DeleteMapping("/network-switches/{id}")
     public ResponseEntity<Void> deleteNetworkSwitch(@PathVariable Long id) {
         log.debug("REST request to delete NetworkSwitch : {}", id);
-        networkSwitchRepository.deleteById(id);
+        networkSwitchService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

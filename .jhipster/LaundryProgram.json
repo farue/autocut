@@ -1,0 +1,37 @@
+{
+  "name": "LaundryProgram",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "subprogram",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "spin",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "preWash",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "protect",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [],
+  "entityTableName": "wash_program",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": ["autocut"],
+  "changelogDate": "20211025002642"
+}

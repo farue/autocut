@@ -67,9 +67,7 @@ export class TenantCommunicationUpdateComponent implements OnInit {
   setFileData(event: Event, field: string, isImage: boolean): void {
     this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
       error: (err: FileLoadError) =>
-        this.eventManager.broadcast(
-          new EventWithContent<AlertError>('autocutApp.error', { ...err, key: 'error.file.' + err.key })
-        ),
+        this.eventManager.broadcast(new EventWithContent<AlertError>('autocutApp.error', { ...err, key: 'error.file.' + err.key })),
     });
   }
 

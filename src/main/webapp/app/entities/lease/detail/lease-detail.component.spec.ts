@@ -27,6 +27,7 @@ describe('Component Tests', () => {
       fixture = TestBed.createComponent(LeaseDetailComponent);
       comp = fixture.componentInstance;
       dataUtils = TestBed.inject(DataUtils);
+      jest.spyOn(window, 'open').mockImplementation(() => null);
     });
 
     describe('OnInit', () => {
@@ -35,14 +36,14 @@ describe('Component Tests', () => {
         comp.ngOnInit();
 
         // THEN
-        expect(comp.lease).toEqual(jasmine.objectContaining({ id: 123 }));
+        expect(comp.lease).toEqual(expect.objectContaining({ id: 123 }));
       });
     });
 
     describe('byteSize', () => {
       it('Should call byteSize from DataUtils', () => {
         // GIVEN
-        spyOn(dataUtils, 'byteSize');
+        jest.spyOn(dataUtils, 'byteSize');
         const fakeBase64 = 'fake base64';
 
         // WHEN
@@ -55,8 +56,13 @@ describe('Component Tests', () => {
 
     describe('openFile', () => {
       it('Should call openFile from DataUtils', () => {
+        const newWindow = { ...window };
+        newWindow.document.write = jest.fn();
+        window.open = jest.fn(() => newWindow);
+        window.onload = jest.fn(() => newWindow);
+        window.URL.createObjectURL = jest.fn();
         // GIVEN
-        spyOn(dataUtils, 'openFile');
+        jest.spyOn(dataUtils, 'openFile');
         const fakeContentType = 'fake content type';
         const fakeBase64 = 'fake base64';
 

@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModel;
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -25,6 +25,7 @@ public class Activity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -60,17 +61,18 @@ public class Activity implements Serializable {
     private TeamMembership teamMembership;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public Activity id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Activity id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public Integer getYear() {
@@ -78,7 +80,7 @@ public class Activity implements Serializable {
     }
 
     public Activity year(Integer year) {
-        this.year = year;
+        this.setYear(year);
         return this;
     }
 
@@ -91,7 +93,7 @@ public class Activity implements Serializable {
     }
 
     public Activity term(SemesterTerms term) {
-        this.term = term;
+        this.setTerm(term);
         return this;
     }
 
@@ -104,7 +106,7 @@ public class Activity implements Serializable {
     }
 
     public Activity start(LocalDate start) {
-        this.start = start;
+        this.setStart(start);
         return this;
     }
 
@@ -117,7 +119,7 @@ public class Activity implements Serializable {
     }
 
     public Activity end(LocalDate end) {
-        this.end = end;
+        this.setEnd(end);
         return this;
     }
 
@@ -130,7 +132,7 @@ public class Activity implements Serializable {
     }
 
     public Activity description(String description) {
-        this.description = description;
+        this.setDescription(description);
         return this;
     }
 
@@ -143,7 +145,7 @@ public class Activity implements Serializable {
     }
 
     public Activity discount(Boolean discount) {
-        this.discount = discount;
+        this.setDiscount(discount);
         return this;
     }
 
@@ -156,7 +158,7 @@ public class Activity implements Serializable {
     }
 
     public Activity stwActivity(Boolean stwActivity) {
-        this.stwActivity = stwActivity;
+        this.setStwActivity(stwActivity);
         return this;
     }
 
@@ -168,26 +170,26 @@ public class Activity implements Serializable {
         return this.tenant;
     }
 
+    public void setTenant(Tenant tenant) {
+        this.tenant = tenant;
+    }
+
     public Activity tenant(Tenant tenant) {
         this.setTenant(tenant);
         return this;
-    }
-
-    public void setTenant(Tenant tenant) {
-        this.tenant = tenant;
     }
 
     public TeamMembership getTeamMembership() {
         return this.teamMembership;
     }
 
+    public void setTeamMembership(TeamMembership teamMembership) {
+        this.teamMembership = teamMembership;
+    }
+
     public Activity teamMembership(TeamMembership teamMembership) {
         this.setTeamMembership(teamMembership);
         return this;
-    }
-
-    public void setTeamMembership(TeamMembership teamMembership) {
-        this.teamMembership = teamMembership;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

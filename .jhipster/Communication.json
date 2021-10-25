@@ -29,8 +29,7 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "user",
       "otherEntityRelationshipName": "communication",
-      "relationshipName": "tenant",
-      "otherEntityField": "id"
+      "relationshipName": "tenant"
     }
   ],
   "changelogDate": "20200326184242",
@@ -42,6 +41,6 @@
   "fluentMethods": true,
   "readOnly": false,
   "clientRootFolder": "",
-  "applications": "*",
+  "applications": ["autocut"],
   "embedded": false
 }

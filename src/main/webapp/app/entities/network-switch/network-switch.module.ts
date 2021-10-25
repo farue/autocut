@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-
 import { SharedModule } from 'app/shared/shared.module';
 import { NetworkSwitchComponent } from './list/network-switch.component';
 import { NetworkSwitchDetailComponent } from './detail/network-switch-detail.component';

@@ -42,14 +42,14 @@ describe('Component Tests', () => {
     describe('ngOnInit', () => {
       it('Should call Transaction query and add missing value', () => {
         const transaction: ITransaction = { id: 456 };
-        const lefts: ITransaction[] = [{ id: 99701 }];
+        const lefts: ITransaction[] = [{ id: 51290 }];
         transaction.lefts = lefts;
 
-        const transactionCollection: ITransaction[] = [{ id: 87407 }];
-        spyOn(transactionService, 'query').and.returnValue(of(new HttpResponse({ body: transactionCollection })));
+        const transactionCollection: ITransaction[] = [{ id: 34604 }];
+        jest.spyOn(transactionService, 'query').mockReturnValue(of(new HttpResponse({ body: transactionCollection })));
         const additionalTransactions = [...lefts];
         const expectedCollection: ITransaction[] = [...additionalTransactions, ...transactionCollection];
-        spyOn(transactionService, 'addTransactionToCollectionIfMissing').and.returnValue(expectedCollection);
+        jest.spyOn(transactionService, 'addTransactionToCollectionIfMissing').mockReturnValue(expectedCollection);
 
         activatedRoute.data = of({ transaction });
         comp.ngOnInit();
@@ -64,14 +64,14 @@ describe('Component Tests', () => {
 
       it('Should call TransactionBook query and add missing value', () => {
         const transaction: ITransaction = { id: 456 };
-        const transactionBook: ITransactionBook = { id: 56354 };
+        const transactionBook: ITransactionBook = { id: 76059 };
         transaction.transactionBook = transactionBook;
 
-        const transactionBookCollection: ITransactionBook[] = [{ id: 99553 }];
-        spyOn(transactionBookService, 'query').and.returnValue(of(new HttpResponse({ body: transactionBookCollection })));
+        const transactionBookCollection: ITransactionBook[] = [{ id: 62086 }];
+        jest.spyOn(transactionBookService, 'query').mockReturnValue(of(new HttpResponse({ body: transactionBookCollection })));
         const additionalTransactionBooks = [transactionBook];
         const expectedCollection: ITransactionBook[] = [...additionalTransactionBooks, ...transactionBookCollection];
-        spyOn(transactionBookService, 'addTransactionBookToCollectionIfMissing').and.returnValue(expectedCollection);
+        jest.spyOn(transactionBookService, 'addTransactionBookToCollectionIfMissing').mockReturnValue(expectedCollection);
 
         activatedRoute.data = of({ transaction });
         comp.ngOnInit();
@@ -86,9 +86,9 @@ describe('Component Tests', () => {
 
       it('Should update editForm', () => {
         const transaction: ITransaction = { id: 456 };
-        const lefts: ITransaction = { id: 95136 };
+        const lefts: ITransaction = { id: 17191 };
         transaction.lefts = [lefts];
-        const transactionBook: ITransactionBook = { id: 29433 };
+        const transactionBook: ITransactionBook = { id: 3398 };
         transaction.transactionBook = transactionBook;
 
         activatedRoute.data = of({ transaction });
@@ -103,10 +103,10 @@ describe('Component Tests', () => {
     describe('save', () => {
       it('Should call update service on save for existing entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<Transaction>>();
         const transaction = { id: 123 };
-        spyOn(transactionService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(transactionService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ transaction });
         comp.ngOnInit();
 
@@ -124,10 +124,10 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<Transaction>>();
         const transaction = new Transaction();
-        spyOn(transactionService, 'create').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(transactionService, 'create').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ transaction });
         comp.ngOnInit();
 
@@ -145,10 +145,10 @@ describe('Component Tests', () => {
 
       it('Should set isSaving to false on error', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<Transaction>>();
         const transaction = { id: 123 };
-        spyOn(transactionService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(transactionService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ transaction });
         comp.ngOnInit();
 

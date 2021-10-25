@@ -1,0 +1,35 @@
+{
+  "autocutApp": {
+    "internalTransaction": {
+      "home": {
+        "title": "Internal Transactions",
+        "refreshListLabel": "Liste aktualisieren",
+        "createLabel": "Internal Transaction erstellen",
+        "createOrEditLabel": "Internal Transaction erstellen oder bearbeiten",
+        "notFound": "Keine Internal Transactions gefunden"
+      },
+      "created": "Internal Transaction erstellt mit ID {{ param }}",
+      "updated": "Internal Transaction aktualisiert mit ID {{ param }}",
+      "deleted": "Internal Transaction gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Internal Transaction {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Internal Transaction"
+      },
+      "id": "ID",
+      "type": "Type",
+      "bookingDate": "Booking Date",
+      "valueDate": "Value Date",
+      "value": "Value",
+      "balanceAfter": "Balance After",
+      "description": "Description",
+      "serviceQulifier": "Service Qulifier",
+      "issuer": "Issuer",
+      "recipient": "Recipient",
+      "left": "Left",
+      "transactionBook": "Transaction Book",
+      "right": "Right"
+    }
+  }
+}

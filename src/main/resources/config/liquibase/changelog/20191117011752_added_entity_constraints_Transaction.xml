@@ -2,12 +2,12 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
     <!--
         Added the constraints for entity Transaction.
     -->
     <changeSet id="20191117011752-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="transaction_id"
                                  baseTableName="rel_transaction__left"
                                  constraintName="fk_rel_transaction__left__transaction_id"
@@ -19,12 +19,11 @@
                                  constraintName="fk_rel_transaction__left__left_id"
                                  referencedColumnNames="id"
                                  referencedTableName="transaction"/>
-        
+
         <addForeignKeyConstraint baseColumnNames="transaction_book_id"
                                  baseTableName="transaction"
                                  constraintName="fk_transaction__transaction_book_id"
                                  referencedColumnNames="id"
                                  referencedTableName="transaction_book"/>
-
     </changeSet>
 </databaseChangeLog>

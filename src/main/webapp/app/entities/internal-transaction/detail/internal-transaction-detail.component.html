@@ -1,0 +1,81 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="internalTransaction">
+      <h2 data-cy="internalTransactionDetailsHeading">
+        <span jhiTranslate="autocutApp.internalTransaction.detail.title">Internal Transaction</span>
+      </h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ internalTransaction.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.internalTransaction.type">Type</span></dt>
+        <dd>
+          <span>{{ internalTransaction.type }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.internalTransaction.bookingDate">Booking Date</span></dt>
+        <dd>
+          <span>{{ internalTransaction.bookingDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.internalTransaction.valueDate">Value Date</span></dt>
+        <dd>
+          <span>{{ internalTransaction.valueDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.internalTransaction.value">Value</span></dt>
+        <dd>
+          <span>{{ internalTransaction.value }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.internalTransaction.balanceAfter">Balance After</span></dt>
+        <dd>
+          <span>{{ internalTransaction.balanceAfter }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.internalTransaction.description">Description</span></dt>
+        <dd>
+          <span>{{ internalTransaction.description }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.internalTransaction.serviceQulifier">Service Qulifier</span></dt>
+        <dd>
+          <span>{{ internalTransaction.serviceQulifier }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.internalTransaction.issuer">Issuer</span></dt>
+        <dd>
+          <span>{{ internalTransaction.issuer }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.internalTransaction.recipient">Recipient</span></dt>
+        <dd>
+          <span>{{ internalTransaction.recipient }}</span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.internalTransaction.left">Left</span></dt>
+        <dd>
+          <span *ngFor="let left of internalTransaction.lefts; let last = last">
+            <a [routerLink]="['/internal-transaction', left?.id, 'view']">{{ left.id }}</a
+            >{{ last ? '' : ', ' }}
+          </span>
+        </dd>
+        <dt><span jhiTranslate="autocutApp.internalTransaction.transactionBook">Transaction Book</span></dt>
+        <dd>
+          <div *ngIf="internalTransaction.transactionBook">
+            <a [routerLink]="['/transaction-book', internalTransaction.transactionBook?.id, 'view']">{{
+              internalTransaction.transactionBook?.id
+            }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/internal-transaction', internalTransaction.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -107,7 +107,7 @@ public class TenantResource {
      * or with status {@code 500 (Internal Server Error)} if the tenant couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/tenants/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/tenants/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Tenant> partialUpdateTenant(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody Tenant tenant

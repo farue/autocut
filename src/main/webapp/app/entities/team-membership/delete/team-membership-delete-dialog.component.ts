@@ -10,7 +10,7 @@ import { TeamMembershipService } from '../service/team-membership.service';
 export class TeamMembershipDeleteDialogComponent {
   teamMembership?: ITeamMembership;
 
-  constructor(protected teamMembershipService: TeamMembershipService, public activeModal: NgbActiveModal) {}
+  constructor(protected teamMembershipService: TeamMembershipService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

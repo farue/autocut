@@ -46,33 +46,31 @@ public class ActivityService {
 
         return activityRepository
             .findById(activity.getId())
-            .map(
-                existingActivity -> {
-                    if (activity.getYear() != null) {
-                        existingActivity.setYear(activity.getYear());
-                    }
-                    if (activity.getTerm() != null) {
-                        existingActivity.setTerm(activity.getTerm());
-                    }
-                    if (activity.getStart() != null) {
-                        existingActivity.setStart(activity.getStart());
-                    }
-                    if (activity.getEnd() != null) {
-                        existingActivity.setEnd(activity.getEnd());
-                    }
-                    if (activity.getDescription() != null) {
-                        existingActivity.setDescription(activity.getDescription());
-                    }
-                    if (activity.getDiscount() != null) {
-                        existingActivity.setDiscount(activity.getDiscount());
-                    }
-                    if (activity.getStwActivity() != null) {
-                        existingActivity.setStwActivity(activity.getStwActivity());
-                    }
-
-                    return existingActivity;
+            .map(existingActivity -> {
+                if (activity.getYear() != null) {
+                    existingActivity.setYear(activity.getYear());
                 }
-            )
+                if (activity.getTerm() != null) {
+                    existingActivity.setTerm(activity.getTerm());
+                }
+                if (activity.getStart() != null) {
+                    existingActivity.setStart(activity.getStart());
+                }
+                if (activity.getEnd() != null) {
+                    existingActivity.setEnd(activity.getEnd());
+                }
+                if (activity.getDescription() != null) {
+                    existingActivity.setDescription(activity.getDescription());
+                }
+                if (activity.getDiscount() != null) {
+                    existingActivity.setDiscount(activity.getDiscount());
+                }
+                if (activity.getStwActivity() != null) {
+                    existingActivity.setStwActivity(activity.getStwActivity());
+                }
+
+                return existingActivity;
+            })
             .map(activityRepository::save);
     }
 

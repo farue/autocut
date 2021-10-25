@@ -29,7 +29,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -488,7 +487,7 @@ class TransactionResourceIT {
         Transaction partialUpdatedTransaction = new Transaction();
         partialUpdatedTransaction.setId(transaction.getId());
 
-        partialUpdatedTransaction.bookingDate(UPDATED_BOOKING_DATE).issuer(UPDATED_ISSUER);
+        partialUpdatedTransaction.bookingDate(UPDATED_BOOKING_DATE).recipient(UPDATED_RECIPIENT);
 
         restTransactionMockMvc
             .perform(
@@ -509,8 +508,8 @@ class TransactionResourceIT {
         assertThat(testTransaction.getBalanceAfter()).isEqualByComparingTo(DEFAULT_BALANCE_AFTER);
         assertThat(testTransaction.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testTransaction.getServiceQulifier()).isEqualTo(DEFAULT_SERVICE_QULIFIER);
-        assertThat(testTransaction.getIssuer()).isEqualTo(UPDATED_ISSUER);
-        assertThat(testTransaction.getRecipient()).isEqualTo(DEFAULT_RECIPIENT);
+        assertThat(testTransaction.getIssuer()).isEqualTo(DEFAULT_ISSUER);
+        assertThat(testTransaction.getRecipient()).isEqualTo(UPDATED_RECIPIENT);
     }
 
     @Test

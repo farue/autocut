@@ -42,6 +42,12 @@ class LaundryMachineResourceIT {
     private static final Boolean DEFAULT_ENABLED = false;
     private static final Boolean UPDATED_ENABLED = true;
 
+    private static final Integer DEFAULT_POSITION_X = 1;
+    private static final Integer UPDATED_POSITION_X = 2;
+
+    private static final Integer DEFAULT_POSITION_Y = 1;
+    private static final Integer UPDATED_POSITION_Y = 2;
+
     private static final String ENTITY_API_URL = "/api/laundry-machines";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -70,7 +76,9 @@ class LaundryMachineResourceIT {
             .identifier(DEFAULT_IDENTIFIER)
             .name(DEFAULT_NAME)
             .type(DEFAULT_TYPE)
-            .enabled(DEFAULT_ENABLED);
+            .enabled(DEFAULT_ENABLED)
+            .positionX(DEFAULT_POSITION_X)
+            .positionY(DEFAULT_POSITION_Y);
         return laundryMachine;
     }
 
@@ -85,7 +93,9 @@ class LaundryMachineResourceIT {
             .identifier(UPDATED_IDENTIFIER)
             .name(UPDATED_NAME)
             .type(UPDATED_TYPE)
-            .enabled(UPDATED_ENABLED);
+            .enabled(UPDATED_ENABLED)
+            .positionX(UPDATED_POSITION_X)
+            .positionY(UPDATED_POSITION_Y);
         return laundryMachine;
     }
 
@@ -113,6 +123,8 @@ class LaundryMachineResourceIT {
         assertThat(testLaundryMachine.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testLaundryMachine.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testLaundryMachine.getEnabled()).isEqualTo(DEFAULT_ENABLED);
+        assertThat(testLaundryMachine.getPositionX()).isEqualTo(DEFAULT_POSITION_X);
+        assertThat(testLaundryMachine.getPositionY()).isEqualTo(DEFAULT_POSITION_Y);
     }
 
     @Test
@@ -213,6 +225,44 @@ class LaundryMachineResourceIT {
 
     @Test
     @Transactional
+    void checkPositionXIsRequired() throws Exception {
+        int databaseSizeBeforeTest = laundryMachineRepository.findAll().size();
+        // set the field null
+        laundryMachine.setPositionX(null);
+
+        // Create the LaundryMachine, which fails.
+
+        restLaundryMachineMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(laundryMachine))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<LaundryMachine> laundryMachineList = laundryMachineRepository.findAll();
+        assertThat(laundryMachineList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkPositionYIsRequired() throws Exception {
+        int databaseSizeBeforeTest = laundryMachineRepository.findAll().size();
+        // set the field null
+        laundryMachine.setPositionY(null);
+
+        // Create the LaundryMachine, which fails.
+
+        restLaundryMachineMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(laundryMachine))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<LaundryMachine> laundryMachineList = laundryMachineRepository.findAll();
+        assertThat(laundryMachineList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllLaundryMachines() throws Exception {
         // Initialize the database
         laundryMachineRepository.saveAndFlush(laundryMachine);
@@ -226,7 +276,9 @@ class LaundryMachineResourceIT {
             .andExpect(jsonPath("$.[*].identifier").value(hasItem(DEFAULT_IDENTIFIER)))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].enabled").value(hasItem(DEFAULT_ENABLED.booleanValue())));
+            .andExpect(jsonPath("$.[*].enabled").value(hasItem(DEFAULT_ENABLED.booleanValue())))
+            .andExpect(jsonPath("$.[*].positionX").value(hasItem(DEFAULT_POSITION_X)))
+            .andExpect(jsonPath("$.[*].positionY").value(hasItem(DEFAULT_POSITION_Y)));
     }
 
     @Test
@@ -244,7 +296,9 @@ class LaundryMachineResourceIT {
             .andExpect(jsonPath("$.identifier").value(DEFAULT_IDENTIFIER))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
-            .andExpect(jsonPath("$.enabled").value(DEFAULT_ENABLED.booleanValue()));
+            .andExpect(jsonPath("$.enabled").value(DEFAULT_ENABLED.booleanValue()))
+            .andExpect(jsonPath("$.positionX").value(DEFAULT_POSITION_X))
+            .andExpect(jsonPath("$.positionY").value(DEFAULT_POSITION_Y));
     }
 
     @Test
@@ -266,7 +320,13 @@ class LaundryMachineResourceIT {
         LaundryMachine updatedLaundryMachine = laundryMachineRepository.findById(laundryMachine.getId()).get();
         // Disconnect from session so that the updates on updatedLaundryMachine are not directly saved in db
         em.detach(updatedLaundryMachine);
-        updatedLaundryMachine.identifier(UPDATED_IDENTIFIER).name(UPDATED_NAME).type(UPDATED_TYPE).enabled(UPDATED_ENABLED);
+        updatedLaundryMachine
+            .identifier(UPDATED_IDENTIFIER)
+            .name(UPDATED_NAME)
+            .type(UPDATED_TYPE)
+            .enabled(UPDATED_ENABLED)
+            .positionX(UPDATED_POSITION_X)
+            .positionY(UPDATED_POSITION_Y);
 
         restLaundryMachineMockMvc
             .perform(
@@ -284,6 +344,8 @@ class LaundryMachineResourceIT {
         assertThat(testLaundryMachine.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testLaundryMachine.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testLaundryMachine.getEnabled()).isEqualTo(UPDATED_ENABLED);
+        assertThat(testLaundryMachine.getPositionX()).isEqualTo(UPDATED_POSITION_X);
+        assertThat(testLaundryMachine.getPositionY()).isEqualTo(UPDATED_POSITION_Y);
     }
 
     @Test
@@ -372,6 +434,8 @@ class LaundryMachineResourceIT {
         assertThat(testLaundryMachine.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testLaundryMachine.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testLaundryMachine.getEnabled()).isEqualTo(UPDATED_ENABLED);
+        assertThat(testLaundryMachine.getPositionX()).isEqualTo(DEFAULT_POSITION_X);
+        assertThat(testLaundryMachine.getPositionY()).isEqualTo(DEFAULT_POSITION_Y);
     }
 
     @Test
@@ -386,7 +450,13 @@ class LaundryMachineResourceIT {
         LaundryMachine partialUpdatedLaundryMachine = new LaundryMachine();
         partialUpdatedLaundryMachine.setId(laundryMachine.getId());
 
-        partialUpdatedLaundryMachine.identifier(UPDATED_IDENTIFIER).name(UPDATED_NAME).type(UPDATED_TYPE).enabled(UPDATED_ENABLED);
+        partialUpdatedLaundryMachine
+            .identifier(UPDATED_IDENTIFIER)
+            .name(UPDATED_NAME)
+            .type(UPDATED_TYPE)
+            .enabled(UPDATED_ENABLED)
+            .positionX(UPDATED_POSITION_X)
+            .positionY(UPDATED_POSITION_Y);
 
         restLaundryMachineMockMvc
             .perform(
@@ -404,6 +474,8 @@ class LaundryMachineResourceIT {
         assertThat(testLaundryMachine.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testLaundryMachine.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testLaundryMachine.getEnabled()).isEqualTo(UPDATED_ENABLED);
+        assertThat(testLaundryMachine.getPositionX()).isEqualTo(UPDATED_POSITION_X);
+        assertThat(testLaundryMachine.getPositionY()).isEqualTo(UPDATED_POSITION_Y);
     }
 
     @Test

@@ -48,39 +48,37 @@ public class TransactionService {
 
         return transactionRepository
             .findById(transaction.getId())
-            .map(
-                existingTransaction -> {
-                    if (transaction.getKind() != null) {
-                        existingTransaction.setKind(transaction.getKind());
-                    }
-                    if (transaction.getBookingDate() != null) {
-                        existingTransaction.setBookingDate(transaction.getBookingDate());
-                    }
-                    if (transaction.getValueDate() != null) {
-                        existingTransaction.setValueDate(transaction.getValueDate());
-                    }
-                    if (transaction.getValue() != null) {
-                        existingTransaction.setValue(transaction.getValue());
-                    }
-                    if (transaction.getBalanceAfter() != null) {
-                        existingTransaction.setBalanceAfter(transaction.getBalanceAfter());
-                    }
-                    if (transaction.getDescription() != null) {
-                        existingTransaction.setDescription(transaction.getDescription());
-                    }
-                    if (transaction.getServiceQulifier() != null) {
-                        existingTransaction.setServiceQulifier(transaction.getServiceQulifier());
-                    }
-                    if (transaction.getIssuer() != null) {
-                        existingTransaction.setIssuer(transaction.getIssuer());
-                    }
-                    if (transaction.getRecipient() != null) {
-                        existingTransaction.setRecipient(transaction.getRecipient());
-                    }
-
-                    return existingTransaction;
+            .map(existingTransaction -> {
+                if (transaction.getKind() != null) {
+                    existingTransaction.setKind(transaction.getKind());
                 }
-            )
+                if (transaction.getBookingDate() != null) {
+                    existingTransaction.setBookingDate(transaction.getBookingDate());
+                }
+                if (transaction.getValueDate() != null) {
+                    existingTransaction.setValueDate(transaction.getValueDate());
+                }
+                if (transaction.getValue() != null) {
+                    existingTransaction.setValue(transaction.getValue());
+                }
+                if (transaction.getBalanceAfter() != null) {
+                    existingTransaction.setBalanceAfter(transaction.getBalanceAfter());
+                }
+                if (transaction.getDescription() != null) {
+                    existingTransaction.setDescription(transaction.getDescription());
+                }
+                if (transaction.getServiceQulifier() != null) {
+                    existingTransaction.setServiceQulifier(transaction.getServiceQulifier());
+                }
+                if (transaction.getIssuer() != null) {
+                    existingTransaction.setIssuer(transaction.getIssuer());
+                }
+                if (transaction.getRecipient() != null) {
+                    existingTransaction.setRecipient(transaction.getRecipient());
+                }
+
+                return existingTransaction;
+            })
             .map(transactionRepository::save);
     }
 

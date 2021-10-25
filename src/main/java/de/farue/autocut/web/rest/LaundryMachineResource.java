@@ -2,6 +2,7 @@ package de.farue.autocut.web.rest;
 
 import de.farue.autocut.domain.LaundryMachine;
 import de.farue.autocut.repository.LaundryMachineRepository;
+import de.farue.autocut.service.LaundryMachineService;
 import de.farue.autocut.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -14,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -24,7 +24,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class LaundryMachineResource {
 
     private final Logger log = LoggerFactory.getLogger(LaundryMachineResource.class);
@@ -34,9 +33,12 @@ public class LaundryMachineResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final LaundryMachineService laundryMachineService;
+
     private final LaundryMachineRepository laundryMachineRepository;
 
-    public LaundryMachineResource(LaundryMachineRepository laundryMachineRepository) {
+    public LaundryMachineResource(LaundryMachineService laundryMachineService, LaundryMachineRepository laundryMachineRepository) {
+        this.laundryMachineService = laundryMachineService;
         this.laundryMachineRepository = laundryMachineRepository;
     }
 
@@ -54,7 +56,7 @@ public class LaundryMachineResource {
         if (laundryMachine.getId() != null) {
             throw new BadRequestAlertException("A new laundryMachine cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        LaundryMachine result = laundryMachineRepository.save(laundryMachine);
+        LaundryMachine result = laundryMachineService.save(laundryMachine);
         return ResponseEntity
             .created(new URI("/api/laundry-machines/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -88,7 +90,7 @@ public class LaundryMachineResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        LaundryMachine result = laundryMachineRepository.save(laundryMachine);
+        LaundryMachine result = laundryMachineService.save(laundryMachine);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, laundryMachine.getId().toString()))
@@ -106,7 +108,7 @@ public class LaundryMachineResource {
      * or with status {@code 500 (Internal Server Error)} if the laundryMachine couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/laundry-machines/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/laundry-machines/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<LaundryMachine> partialUpdateLaundryMachine(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody LaundryMachine laundryMachine
@@ -123,27 +125,7 @@ public class LaundryMachineResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<LaundryMachine> result = laundryMachineRepository
-            .findById(laundryMachine.getId())
-            .map(
-                existingLaundryMachine -> {
-                    if (laundryMachine.getIdentifier() != null) {
-                        existingLaundryMachine.setIdentifier(laundryMachine.getIdentifier());
-                    }
-                    if (laundryMachine.getName() != null) {
-                        existingLaundryMachine.setName(laundryMachine.getName());
-                    }
-                    if (laundryMachine.getType() != null) {
-                        existingLaundryMachine.setType(laundryMachine.getType());
-                    }
-                    if (laundryMachine.getEnabled() != null) {
-                        existingLaundryMachine.setEnabled(laundryMachine.getEnabled());
-                    }
-
-                    return existingLaundryMachine;
-                }
-            )
-            .map(laundryMachineRepository::save);
+        Optional<LaundryMachine> result = laundryMachineService.partialUpdate(laundryMachine);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -159,7 +141,7 @@ public class LaundryMachineResource {
     @GetMapping("/laundry-machines")
     public List<LaundryMachine> getAllLaundryMachines() {
         log.debug("REST request to get all LaundryMachines");
-        return laundryMachineRepository.findAll();
+        return laundryMachineService.findAll();
     }
 
     /**
@@ -171,7 +153,7 @@ public class LaundryMachineResource {
     @GetMapping("/laundry-machines/{id}")
     public ResponseEntity<LaundryMachine> getLaundryMachine(@PathVariable Long id) {
         log.debug("REST request to get LaundryMachine : {}", id);
-        Optional<LaundryMachine> laundryMachine = laundryMachineRepository.findById(id);
+        Optional<LaundryMachine> laundryMachine = laundryMachineService.findOne(id);
         return ResponseUtil.wrapOrNotFound(laundryMachine);
     }
 
@@ -184,7 +166,7 @@ public class LaundryMachineResource {
     @DeleteMapping("/laundry-machines/{id}")
     public ResponseEntity<Void> deleteLaundryMachine(@PathVariable Long id) {
         log.debug("REST request to delete LaundryMachine : {}", id);
-        laundryMachineRepository.deleteById(id);
+        laundryMachineService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

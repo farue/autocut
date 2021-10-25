@@ -2,11 +2,6 @@
   "name": "InternetAccess",
   "fields": [
     {
-      "fieldName": "blocked",
-      "fieldType": "Boolean",
-      "fieldValidateRules": ["required"]
-    },
-    {
       "fieldName": "ip1",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
@@ -33,8 +28,7 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "networkSwitch",
       "otherEntityRelationshipName": "internetAccess",
-      "relationshipName": "networkSwitch",
-      "otherEntityField": "id"
+      "relationshipName": "networkSwitch"
     },
     {
       "relationshipType": "one-to-one",
@@ -53,6 +47,6 @@
   "fluentMethods": true,
   "readOnly": false,
   "clientRootFolder": "",
-  "applications": "*",
+  "applications": ["autocut"],
   "embedded": false
 }

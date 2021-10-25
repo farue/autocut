@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -22,6 +22,7 @@ public class Lease implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -52,13 +53,13 @@ public class Lease implements Serializable {
     private Set<Tenant> tenants = new HashSet<>();
 
     @ManyToMany
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JoinTable(
         name = "rel_lease__transaction_book",
         joinColumns = @JoinColumn(name = "lease_id"),
         inverseJoinColumns = @JoinColumn(name = "transaction_book_id")
     )
-    @JsonIgnoreProperties(value = { "transactions", "leases" }, allowSetters = true)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "iTransactions", "bTransactions", "leases" }, allowSetters = true)
     private Set<TransactionBook> transactionBooks = new HashSet<>();
 
     @ManyToOne
@@ -66,17 +67,18 @@ public class Lease implements Serializable {
     private Apartment apartment;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public Lease id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Lease id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public String getNr() {
@@ -84,7 +86,7 @@ public class Lease implements Serializable {
     }
 
     public Lease nr(String nr) {
-        this.nr = nr;
+        this.setNr(nr);
         return this;
     }
 
@@ -97,7 +99,7 @@ public class Lease implements Serializable {
     }
 
     public Lease start(LocalDate start) {
-        this.start = start;
+        this.setStart(start);
         return this;
     }
 
@@ -110,7 +112,7 @@ public class Lease implements Serializable {
     }
 
     public Lease end(LocalDate end) {
-        this.end = end;
+        this.setEnd(end);
         return this;
     }
 
@@ -123,7 +125,7 @@ public class Lease implements Serializable {
     }
 
     public Lease blocked(Boolean blocked) {
-        this.blocked = blocked;
+        this.setBlocked(blocked);
         return this;
     }
 
@@ -136,7 +138,7 @@ public class Lease implements Serializable {
     }
 
     public Lease pictureContract(byte[] pictureContract) {
-        this.pictureContract = pictureContract;
+        this.setPictureContract(pictureContract);
         return this;
     }
 
@@ -161,6 +163,16 @@ public class Lease implements Serializable {
         return this.tenants;
     }
 
+    public void setTenants(Set<Tenant> tenants) {
+        if (this.tenants != null) {
+            this.tenants.forEach(i -> i.setLease(null));
+        }
+        if (tenants != null) {
+            tenants.forEach(i -> i.setLease(this));
+        }
+        this.tenants = tenants;
+    }
+
     public Lease tenants(Set<Tenant> tenants) {
         this.setTenants(tenants);
         return this;
@@ -178,18 +190,12 @@ public class Lease implements Serializable {
         return this;
     }
 
-    public void setTenants(Set<Tenant> tenants) {
-        if (this.tenants != null) {
-            this.tenants.forEach(i -> i.setLease(null));
-        }
-        if (tenants != null) {
-            tenants.forEach(i -> i.setLease(this));
-        }
-        this.tenants = tenants;
-    }
-
     public Set<TransactionBook> getTransactionBooks() {
         return this.transactionBooks;
+    }
+
+    public void setTransactionBooks(Set<TransactionBook> transactionBooks) {
+        this.transactionBooks = transactionBooks;
     }
 
     public Lease transactionBooks(Set<TransactionBook> transactionBooks) {
@@ -209,21 +215,17 @@ public class Lease implements Serializable {
         return this;
     }
 
-    public void setTransactionBooks(Set<TransactionBook> transactionBooks) {
-        this.transactionBooks = transactionBooks;
-    }
-
     public Apartment getApartment() {
         return this.apartment;
+    }
+
+    public void setApartment(Apartment apartment) {
+        this.apartment = apartment;
     }
 
     public Lease apartment(Apartment apartment) {
         this.setApartment(apartment);
         return this;
-    }
-
-    public void setApartment(Apartment apartment) {
-        this.apartment = apartment;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

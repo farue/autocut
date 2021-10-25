@@ -18,20 +18,6 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="autocutApp.internetAccess.blocked" for="field_blocked">Blocked</label>
-          <input type="checkbox" class="form-check" name="blocked" id="field_blocked" data-cy="blocked" formControlName="blocked" />
-          <div *ngIf="editForm.get('blocked')!.invalid && (editForm.get('blocked')!.dirty || editForm.get('blocked')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('blocked')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-          </div>
-        </div>
-
-        <div class="form-group">
           <label class="form-control-label" jhiTranslate="autocutApp.internetAccess.ip1" for="field_ip1">Ip 1</label>
           <input type="text" class="form-control" name="ip1" id="field_ip1" data-cy="ip1" formControlName="ip1" />
           <div *ngIf="editForm.get('ip1')!.invalid && (editForm.get('ip1')!.dirty || editForm.get('ip1')!.touched)">
@@ -127,7 +113,7 @@
       </div>
 
       <div>
-        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
           <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
 

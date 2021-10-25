@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-
 import { SharedModule } from 'app/shared/shared.module';
 import { ApartmentComponent } from './list/apartment.component';
 import { ApartmentDetailComponent } from './detail/apartment-detail.component';

@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-
 import { SharedModule } from 'app/shared/shared.module';
 import { WashHistoryComponent } from './list/wash-history.component';
 import { WashHistoryDetailComponent } from './detail/wash-history-detail.component';

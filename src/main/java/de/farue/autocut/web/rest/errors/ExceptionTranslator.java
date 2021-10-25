@@ -21,11 +21,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.zalando.problem.DefaultProblem;
-import org.zalando.problem.Problem;
-import org.zalando.problem.ProblemBuilder;
-import org.zalando.problem.Status;
-import org.zalando.problem.StatusType;
+import org.zalando.problem.*;
 import org.zalando.problem.spring.web.advice.ProblemHandling;
 import org.zalando.problem.spring.web.advice.security.SecurityAdviceTrait;
 import org.zalando.problem.violations.ConstraintViolationProblem;
@@ -95,13 +91,12 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         List<FieldErrorVM> fieldErrors = result
             .getFieldErrors()
             .stream()
-            .map(
-                f ->
-                    new FieldErrorVM(
-                        f.getObjectName().replaceFirst("DTO$", ""),
-                        f.getField(),
-                        StringUtils.isNotBlank(f.getDefaultMessage()) ? f.getDefaultMessage() : f.getCode()
-                    )
+            .map(f ->
+                new FieldErrorVM(
+                    f.getObjectName().replaceFirst("DTO$", ""),
+                    f.getField(),
+                    StringUtils.isNotBlank(f.getDefaultMessage()) ? f.getDefaultMessage() : f.getCode()
+                )
             )
             .collect(Collectors.toList());
 

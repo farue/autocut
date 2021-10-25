@@ -5,16 +5,16 @@ import { Observable } from 'rxjs';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { ILaundryMachineProgram, getLaundryMachineProgramIdentifier } from '../laundry-machine-program.model';
+import { getLaundryMachineProgramIdentifier, ILaundryMachineProgram } from '../laundry-machine-program.model';
 
 export type EntityResponseType = HttpResponse<ILaundryMachineProgram>;
 export type EntityArrayResponseType = HttpResponse<ILaundryMachineProgram[]>;
 
 @Injectable({ providedIn: 'root' })
 export class LaundryMachineProgramService {
-  public resourceUrl = this.applicationConfigService.getEndpointFor('api/laundry-machine-programs');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/laundry-machine-programs');
 
-  constructor(protected http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(laundryMachineProgram: ILaundryMachineProgram): Observable<EntityResponseType> {
     return this.http.post<ILaundryMachineProgram>(this.resourceUrl, laundryMachineProgram, { observe: 'response' });

@@ -16,6 +16,7 @@ import { ILaundryMachine } from 'app/entities/laundry-machine/laundry-machine.mo
 import { LaundryMachineService } from 'app/entities/laundry-machine/service/laundry-machine.service';
 import { ILaundryMachineProgram } from 'app/entities/laundry-machine-program/laundry-machine-program.model';
 import { LaundryMachineProgramService } from 'app/entities/laundry-machine-program/service/laundry-machine-program.service';
+import { WashHistoryStatus } from 'app/entities/enumerations/wash-history-status.model';
 
 @Component({
   selector: 'jhi-wash-history-update',
@@ -23,6 +24,7 @@ import { LaundryMachineProgramService } from 'app/entities/laundry-machine-progr
 })
 export class WashHistoryUpdateComponent implements OnInit {
   isSaving = false;
+  washHistoryStatusValues = Object.keys(WashHistoryStatus);
 
   tenantsSharedCollection: ITenant[] = [];
   laundryMachinesSharedCollection: ILaundryMachine[] = [];

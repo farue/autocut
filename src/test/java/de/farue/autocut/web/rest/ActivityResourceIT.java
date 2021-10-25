@@ -344,13 +344,7 @@ class ActivityResourceIT {
         Activity partialUpdatedActivity = new Activity();
         partialUpdatedActivity.setId(activity.getId());
 
-        partialUpdatedActivity
-            .year(UPDATED_YEAR)
-            .start(UPDATED_START)
-            .end(UPDATED_END)
-            .description(UPDATED_DESCRIPTION)
-            .discount(UPDATED_DISCOUNT)
-            .stwActivity(UPDATED_STW_ACTIVITY);
+        partialUpdatedActivity.year(UPDATED_YEAR).end(UPDATED_END).description(UPDATED_DESCRIPTION).stwActivity(UPDATED_STW_ACTIVITY);
 
         restActivityMockMvc
             .perform(
@@ -366,10 +360,10 @@ class ActivityResourceIT {
         Activity testActivity = activityList.get(activityList.size() - 1);
         assertThat(testActivity.getYear()).isEqualTo(UPDATED_YEAR);
         assertThat(testActivity.getTerm()).isEqualTo(DEFAULT_TERM);
-        assertThat(testActivity.getStart()).isEqualTo(UPDATED_START);
+        assertThat(testActivity.getStart()).isEqualTo(DEFAULT_START);
         assertThat(testActivity.getEnd()).isEqualTo(UPDATED_END);
         assertThat(testActivity.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testActivity.getDiscount()).isEqualTo(UPDATED_DISCOUNT);
+        assertThat(testActivity.getDiscount()).isEqualTo(DEFAULT_DISCOUNT);
         assertThat(testActivity.getStwActivity()).isEqualTo(UPDATED_STW_ACTIVITY);
     }
 

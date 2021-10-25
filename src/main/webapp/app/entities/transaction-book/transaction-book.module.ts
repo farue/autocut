@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-
 import { SharedModule } from 'app/shared/shared.module';
 import { TransactionBookComponent } from './list/transaction-book.component';
 import { TransactionBookDetailComponent } from './detail/transaction-book-detail.component';

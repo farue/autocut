@@ -106,7 +106,7 @@ public class TenantCommunicationResource {
      * or with status {@code 500 (Internal Server Error)} if the tenantCommunication couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/tenant-communications/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/tenant-communications/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<TenantCommunication> partialUpdateTenantCommunication(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody TenantCommunication tenantCommunication
@@ -125,24 +125,22 @@ public class TenantCommunicationResource {
 
         Optional<TenantCommunication> result = tenantCommunicationRepository
             .findById(tenantCommunication.getId())
-            .map(
-                existingTenantCommunication -> {
-                    if (tenantCommunication.getSubject() != null) {
-                        existingTenantCommunication.setSubject(tenantCommunication.getSubject());
-                    }
-                    if (tenantCommunication.getText() != null) {
-                        existingTenantCommunication.setText(tenantCommunication.getText());
-                    }
-                    if (tenantCommunication.getNote() != null) {
-                        existingTenantCommunication.setNote(tenantCommunication.getNote());
-                    }
-                    if (tenantCommunication.getDate() != null) {
-                        existingTenantCommunication.setDate(tenantCommunication.getDate());
-                    }
-
-                    return existingTenantCommunication;
+            .map(existingTenantCommunication -> {
+                if (tenantCommunication.getSubject() != null) {
+                    existingTenantCommunication.setSubject(tenantCommunication.getSubject());
                 }
-            )
+                if (tenantCommunication.getText() != null) {
+                    existingTenantCommunication.setText(tenantCommunication.getText());
+                }
+                if (tenantCommunication.getNote() != null) {
+                    existingTenantCommunication.setNote(tenantCommunication.getNote());
+                }
+                if (tenantCommunication.getDate() != null) {
+                    existingTenantCommunication.setDate(tenantCommunication.getDate());
+                }
+
+                return existingTenantCommunication;
+            })
             .map(tenantCommunicationRepository::save);
 
         return ResponseUtil.wrapOrNotFound(

@@ -1,0 +1,33 @@
+{
+  "name": "BankAccount",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "bic",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "required"],
+      "fieldValidateRulesMaxlength": "11"
+    },
+    {
+      "fieldName": "iban",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "required", "unique"],
+      "fieldValidateRulesMaxlength": "34"
+    }
+  ],
+  "relationships": [],
+  "entityTableName": "bank_account",
+  "dto": "no",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": ["autocut"],
+  "changelogDate": "20211025002638"
+}

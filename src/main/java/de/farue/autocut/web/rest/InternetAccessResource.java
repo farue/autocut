@@ -9,7 +9,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -109,7 +108,7 @@ public class InternetAccessResource {
      * or with status {@code 500 (Internal Server Error)} if the internetAccess couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/internet-accesses/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/internet-accesses/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<InternetAccess> partialUpdateInternetAccess(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody InternetAccess internetAccess

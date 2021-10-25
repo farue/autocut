@@ -5,16 +5,16 @@ import { Observable } from 'rxjs';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { ITeam, getTeamIdentifier } from '../team.model';
+import { getTeamIdentifier, ITeam } from '../team.model';
 
 export type EntityResponseType = HttpResponse<ITeam>;
 export type EntityArrayResponseType = HttpResponse<ITeam[]>;
 
 @Injectable({ providedIn: 'root' })
 export class TeamService {
-  public resourceUrl = this.applicationConfigService.getEndpointFor('api/teams');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/teams');
 
-  constructor(protected http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(team: ITeam): Observable<EntityResponseType> {
     return this.http.post<ITeam>(this.resourceUrl, team, { observe: 'response' });

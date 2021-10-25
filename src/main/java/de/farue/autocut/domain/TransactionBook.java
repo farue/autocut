@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -22,6 +22,7 @@ public class TransactionBook implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "name")
@@ -35,7 +36,12 @@ public class TransactionBook implements Serializable {
     @OneToMany(mappedBy = "transactionBook")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "lefts", "transactionBook", "rights" }, allowSetters = true)
-    private Set<Transaction> transactions = new HashSet<>();
+    private Set<InternalTransaction> iTransactions = new HashSet<>();
+
+    @OneToMany(mappedBy = "transactionBook")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "bankAccount", "contraBankAccount", "lefts", "transactionBook", "rights" }, allowSetters = true)
+    private Set<BankTransaction> bTransactions = new HashSet<>();
 
     @ManyToMany(mappedBy = "transactionBooks")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -43,17 +49,18 @@ public class TransactionBook implements Serializable {
     private Set<Lease> leases = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public TransactionBook id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public TransactionBook id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public String getName() {
@@ -61,7 +68,7 @@ public class TransactionBook implements Serializable {
     }
 
     public TransactionBook name(String name) {
-        this.name = name;
+        this.setName(name);
         return this;
     }
 
@@ -74,7 +81,7 @@ public class TransactionBook implements Serializable {
     }
 
     public TransactionBook type(TransactionBookType type) {
-        this.type = type;
+        this.setType(type);
         return this;
     }
 
@@ -82,39 +89,80 @@ public class TransactionBook implements Serializable {
         this.type = type;
     }
 
-    public Set<Transaction> getTransactions() {
-        return this.transactions;
+    public Set<InternalTransaction> getITransactions() {
+        return this.iTransactions;
     }
 
-    public TransactionBook transactions(Set<Transaction> transactions) {
-        this.setTransactions(transactions);
-        return this;
-    }
-
-    public TransactionBook addTransaction(Transaction transaction) {
-        this.transactions.add(transaction);
-        transaction.setTransactionBook(this);
-        return this;
-    }
-
-    public TransactionBook removeTransaction(Transaction transaction) {
-        this.transactions.remove(transaction);
-        transaction.setTransactionBook(null);
-        return this;
-    }
-
-    public void setTransactions(Set<Transaction> transactions) {
-        if (this.transactions != null) {
-            this.transactions.forEach(i -> i.setTransactionBook(null));
+    public void setITransactions(Set<InternalTransaction> internalTransactions) {
+        if (this.iTransactions != null) {
+            this.iTransactions.forEach(i -> i.setTransactionBook(null));
         }
-        if (transactions != null) {
-            transactions.forEach(i -> i.setTransactionBook(this));
+        if (internalTransactions != null) {
+            internalTransactions.forEach(i -> i.setTransactionBook(this));
         }
-        this.transactions = transactions;
+        this.iTransactions = internalTransactions;
+    }
+
+    public TransactionBook iTransactions(Set<InternalTransaction> internalTransactions) {
+        this.setITransactions(internalTransactions);
+        return this;
+    }
+
+    public TransactionBook addITransaction(InternalTransaction internalTransaction) {
+        this.iTransactions.add(internalTransaction);
+        internalTransaction.setTransactionBook(this);
+        return this;
+    }
+
+    public TransactionBook removeITransaction(InternalTransaction internalTransaction) {
+        this.iTransactions.remove(internalTransaction);
+        internalTransaction.setTransactionBook(null);
+        return this;
+    }
+
+    public Set<BankTransaction> getBTransactions() {
+        return this.bTransactions;
+    }
+
+    public void setBTransactions(Set<BankTransaction> bankTransactions) {
+        if (this.bTransactions != null) {
+            this.bTransactions.forEach(i -> i.setTransactionBook(null));
+        }
+        if (bankTransactions != null) {
+            bankTransactions.forEach(i -> i.setTransactionBook(this));
+        }
+        this.bTransactions = bankTransactions;
+    }
+
+    public TransactionBook bTransactions(Set<BankTransaction> bankTransactions) {
+        this.setBTransactions(bankTransactions);
+        return this;
+    }
+
+    public TransactionBook addBTransaction(BankTransaction bankTransaction) {
+        this.bTransactions.add(bankTransaction);
+        bankTransaction.setTransactionBook(this);
+        return this;
+    }
+
+    public TransactionBook removeBTransaction(BankTransaction bankTransaction) {
+        this.bTransactions.remove(bankTransaction);
+        bankTransaction.setTransactionBook(null);
+        return this;
     }
 
     public Set<Lease> getLeases() {
         return this.leases;
+    }
+
+    public void setLeases(Set<Lease> leases) {
+        if (this.leases != null) {
+            this.leases.forEach(i -> i.removeTransactionBook(this));
+        }
+        if (leases != null) {
+            leases.forEach(i -> i.addTransactionBook(this));
+        }
+        this.leases = leases;
     }
 
     public TransactionBook leases(Set<Lease> leases) {
@@ -132,16 +180,6 @@ public class TransactionBook implements Serializable {
         this.leases.remove(lease);
         lease.getTransactionBooks().remove(this);
         return this;
-    }
-
-    public void setLeases(Set<Lease> leases) {
-        if (this.leases != null) {
-            this.leases.forEach(i -> i.removeTransactionBook(this));
-        }
-        if (leases != null) {
-            leases.forEach(i -> i.addTransactionBook(this));
-        }
-        this.leases = leases;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

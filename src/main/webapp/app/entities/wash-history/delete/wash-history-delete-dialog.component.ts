@@ -10,7 +10,7 @@ import { WashHistoryService } from '../service/wash-history.service';
 export class WashHistoryDeleteDialogComponent {
   washHistory?: IWashHistory;
 
-  constructor(protected washHistoryService: WashHistoryService, public activeModal: NgbActiveModal) {}
+  constructor(protected washHistoryService: WashHistoryService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

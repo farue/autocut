@@ -12,6 +12,7 @@ import { ITransaction, Transaction } from '../transaction.model';
 import { TransactionService } from '../service/transaction.service';
 import { ITransactionBook } from 'app/entities/transaction-book/transaction-book.model';
 import { TransactionBookService } from 'app/entities/transaction-book/service/transaction-book.service';
+import { TransactionKind } from 'app/entities/enumerations/transaction-kind.model';
 
 @Component({
   selector: 'jhi-transaction-update',
@@ -19,6 +20,7 @@ import { TransactionBookService } from 'app/entities/transaction-book/service/tr
 })
 export class TransactionUpdateComponent implements OnInit {
   isSaving = false;
+  transactionKindValues = Object.keys(TransactionKind);
 
   transactionsSharedCollection: ITransaction[] = [];
   transactionBooksSharedCollection: ITransactionBook[] = [];

@@ -1,6 +1,6 @@
 jest.mock('@ngx-translate/core');
 
-import { ComponentFixture, TestBed, waitForAsync, inject, tick, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormBuilder } from '@angular/forms';
 import { of, throwError } from 'rxjs';
@@ -47,8 +47,8 @@ describe('Component Tests', () => {
     it('should update success to true after creating an account', inject(
       [RegisterService, TranslateService],
       fakeAsync((service: RegisterService, mockLanguageService: TranslateService) => {
-        spyOn(service, 'save').and.returnValue(of({}));
-        mockLanguageService.currentLang = 'en';
+        jest.spyOn(service, 'save').mockReturnValue(of({}));
+        mockLanguageService.currentLang = 'de';
         comp.registerForm.patchValue({
           password: 'password',
           confirmPassword: 'password',
@@ -61,7 +61,7 @@ describe('Component Tests', () => {
           email: '',
           password: 'password',
           login: '',
-          langKey: 'en',
+          langKey: 'de',
         });
         expect(comp.success).toBe(true);
         expect(comp.errorUserExists).toBe(false);
@@ -73,7 +73,7 @@ describe('Component Tests', () => {
     it('should notify of user existence upon 400/login already in use', inject(
       [RegisterService],
       fakeAsync((service: RegisterService) => {
-        spyOn(service, 'save').and.returnValue(
+        jest.spyOn(service, 'save').mockReturnValue(
           throwError({
             status: 400,
             error: { type: LOGIN_ALREADY_USED_TYPE },
@@ -96,7 +96,7 @@ describe('Component Tests', () => {
     it('should notify of email existence upon 400/email address already in use', inject(
       [RegisterService],
       fakeAsync((service: RegisterService) => {
-        spyOn(service, 'save').and.returnValue(
+        jest.spyOn(service, 'save').mockReturnValue(
           throwError({
             status: 400,
             error: { type: EMAIL_ALREADY_USED_TYPE },
@@ -119,7 +119,7 @@ describe('Component Tests', () => {
     it('should notify of generic error', inject(
       [RegisterService],
       fakeAsync((service: RegisterService) => {
-        spyOn(service, 'save').and.returnValue(
+        jest.spyOn(service, 'save').mockReturnValue(
           throwError({
             status: 503,
           })

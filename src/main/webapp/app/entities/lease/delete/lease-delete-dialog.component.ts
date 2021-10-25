@@ -10,7 +10,7 @@ import { LeaseService } from '../service/lease.service';
 export class LeaseDeleteDialogComponent {
   lease?: ILease;
 
-  constructor(protected leaseService: LeaseService, public activeModal: NgbActiveModal) {}
+  constructor(protected leaseService: LeaseService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

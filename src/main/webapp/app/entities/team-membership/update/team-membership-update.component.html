@@ -21,9 +21,7 @@
           <label class="form-control-label" jhiTranslate="autocutApp.teamMembership.role" for="field_role">Role</label>
           <select class="form-control" name="role" formControlName="role" id="field_role" data-cy="role">
             <option [ngValue]="null">{{ 'autocutApp.TeamRole.null' | translate }}</option>
-            <option value="SPOKESPERSON">{{ 'autocutApp.TeamRole.SPOKESPERSON' | translate }}</option>
-            <option value="DEPUTY">{{ 'autocutApp.TeamRole.DEPUTY' | translate }}</option>
-            <option value="MEMBER">{{ 'autocutApp.TeamRole.MEMBER' | translate }}</option>
+            <option *ngFor="let teamRole of teamRoleValues" [value]="teamRole">{{ 'autocutApp.TeamRole.' + teamRole | translate }}</option>
           </select>
         </div>
 
@@ -98,7 +96,7 @@
       </div>
 
       <div>
-        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
           <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
 

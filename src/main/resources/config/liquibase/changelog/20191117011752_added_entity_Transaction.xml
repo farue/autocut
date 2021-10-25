@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
-                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
 
     <!--
         Added the entity Transaction.
@@ -78,11 +76,12 @@
         <loadData
                   file="config/liquibase/fake-data/transaction.csv"
                   separator=";"
-                  tableName="transaction">
+                  tableName="transaction"
+                  usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="kind" type="string"/>
-            <column name="booking_date" type="${datetimeType}"/>
-            <column name="value_date" type="${datetimeType}"/>
+            <column name="booking_date" type="date"/>
+            <column name="value_date" type="date"/>
             <column name="value" type="numeric"/>
             <column name="balance_after" type="numeric"/>
             <column name="description" type="string"/>

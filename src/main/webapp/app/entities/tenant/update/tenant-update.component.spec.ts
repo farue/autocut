@@ -47,14 +47,14 @@ describe('Component Tests', () => {
     describe('ngOnInit', () => {
       it('Should call User query and add missing value', () => {
         const tenant: ITenant = { id: 456 };
-        const user: IUser = { id: 50311 };
+        const user: IUser = { id: 29209 };
         tenant.user = user;
 
-        const userCollection: IUser[] = [{ id: 49568 }];
-        spyOn(userService, 'query').and.returnValue(of(new HttpResponse({ body: userCollection })));
+        const userCollection: IUser[] = [{ id: 78936 }];
+        jest.spyOn(userService, 'query').mockReturnValue(of(new HttpResponse({ body: userCollection })));
         const additionalUsers = [user];
         const expectedCollection: IUser[] = [...additionalUsers, ...userCollection];
-        spyOn(userService, 'addUserToCollectionIfMissing').and.returnValue(expectedCollection);
+        jest.spyOn(userService, 'addUserToCollectionIfMissing').mockReturnValue(expectedCollection);
 
         activatedRoute.data = of({ tenant });
         comp.ngOnInit();
@@ -66,14 +66,14 @@ describe('Component Tests', () => {
 
       it('Should call Lease query and add missing value', () => {
         const tenant: ITenant = { id: 456 };
-        const lease: ILease = { id: 11732 };
+        const lease: ILease = { id: 59606 };
         tenant.lease = lease;
 
-        const leaseCollection: ILease[] = [{ id: 64729 }];
-        spyOn(leaseService, 'query').and.returnValue(of(new HttpResponse({ body: leaseCollection })));
+        const leaseCollection: ILease[] = [{ id: 85987 }];
+        jest.spyOn(leaseService, 'query').mockReturnValue(of(new HttpResponse({ body: leaseCollection })));
         const additionalLeases = [lease];
         const expectedCollection: ILease[] = [...additionalLeases, ...leaseCollection];
-        spyOn(leaseService, 'addLeaseToCollectionIfMissing').and.returnValue(expectedCollection);
+        jest.spyOn(leaseService, 'addLeaseToCollectionIfMissing').mockReturnValue(expectedCollection);
 
         activatedRoute.data = of({ tenant });
         comp.ngOnInit();
@@ -85,9 +85,9 @@ describe('Component Tests', () => {
 
       it('Should update editForm', () => {
         const tenant: ITenant = { id: 456 };
-        const user: IUser = { id: 40502 };
+        const user: IUser = { id: 52572 };
         tenant.user = user;
-        const lease: ILease = { id: 33505 };
+        const lease: ILease = { id: 46107 };
         tenant.lease = lease;
 
         activatedRoute.data = of({ tenant });
@@ -102,10 +102,10 @@ describe('Component Tests', () => {
     describe('save', () => {
       it('Should call update service on save for existing entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<Tenant>>();
         const tenant = { id: 123 };
-        spyOn(tenantService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(tenantService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ tenant });
         comp.ngOnInit();
 
@@ -123,10 +123,10 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<Tenant>>();
         const tenant = new Tenant();
-        spyOn(tenantService, 'create').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(tenantService, 'create').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ tenant });
         comp.ngOnInit();
 
@@ -144,10 +144,10 @@ describe('Component Tests', () => {
 
       it('Should set isSaving to false on error', () => {
         // GIVEN
-        const saveSubject = new Subject();
+        const saveSubject = new Subject<HttpResponse<Tenant>>();
         const tenant = { id: 123 };
-        spyOn(tenantService, 'update').and.returnValue(saveSubject);
-        spyOn(comp, 'previousState');
+        jest.spyOn(tenantService, 'update').mockReturnValue(saveSubject);
+        jest.spyOn(comp, 'previousState');
         activatedRoute.data = of({ tenant });
         comp.ngOnInit();
 

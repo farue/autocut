@@ -1,11 +1,11 @@
 id;nr;type;max_number_of_leases
-1;Ohio Mouse;SHORT_TERM;81211
-2;Common;SHARED;19186
-3;program dot-com;SHORT_TERM;43847
-4;Qatar;SINGLE;5206
-5;synthesizing;SHORT_TERM;24499
+1;Saarland Mouse;BACKUP;81211
+2;Common;SINGLE;19186
+3;program dot-com;BACKUP;43847
+4;Moldau;SINGLE;5206
+5;synthesizing;BACKUP;24499
 6;solid Refined Table;SHARED;3509
 7;quantify seize;SINGLE;33923
-8;Legacy cross-platform Dinar;SINGLE;7982
-9;hack application Steel;SHORT_TERM;85182
-10;enhance Operations;SHARED;37523
+8;Legacy cross-platform Dinar;SHORT_TERM;7982
+9;hack application Steel;BACKUP;85182
+10;enhance Operations;SINGLE;37523

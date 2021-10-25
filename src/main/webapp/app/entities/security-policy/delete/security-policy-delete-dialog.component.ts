@@ -10,7 +10,7 @@ import { SecurityPolicyService } from '../service/security-policy.service';
 export class SecurityPolicyDeleteDialogComponent {
   securityPolicy?: ISecurityPolicy;
 
-  constructor(protected securityPolicyService: SecurityPolicyService, public activeModal: NgbActiveModal) {}
+  constructor(protected securityPolicyService: SecurityPolicyService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

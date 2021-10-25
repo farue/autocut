@@ -25,6 +25,13 @@
         "networkSwitch": "Network Switch",
         "transactionBook": "Transaction Book",
         "teamMembership": "Team Membership",
+        "bankAccount": "Bank Account",
+        "bankTransaction": "Bank Transaction",
+        "internalTransaction": "Internal Transaction",
+        "networkSwitchStatus": "Network Switch Status",
+        "laundryProgram": "Laundry Program",
+        "broadcastMessage": "Broadcast Message",
+        "broadcastMessageText": "Broadcast Message Text",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

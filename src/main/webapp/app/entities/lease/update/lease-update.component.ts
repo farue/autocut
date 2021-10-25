@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -67,9 +67,7 @@ export class LeaseUpdateComponent implements OnInit {
   setFileData(event: Event, field: string, isImage: boolean): void {
     this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
       error: (err: FileLoadError) =>
-        this.eventManager.broadcast(
-          new EventWithContent<AlertError>('autocutApp.error', { ...err, key: 'error.file.' + err.key })
-        ),
+        this.eventManager.broadcast(new EventWithContent<AlertError>('autocutApp.error', { ...err, key: 'error.file.' + err.key })),
     });
   }
 

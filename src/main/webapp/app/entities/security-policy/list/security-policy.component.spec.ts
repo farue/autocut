@@ -26,7 +26,7 @@ describe('Component Tests', () => {
       service = TestBed.inject(SecurityPolicyService);
 
       const headers = new HttpHeaders().append('link', 'link;link');
-      spyOn(service, 'query').and.returnValue(
+      jest.spyOn(service, 'query').mockReturnValue(
         of(
           new HttpResponse({
             body: [{ id: 123 }],
@@ -42,7 +42,7 @@ describe('Component Tests', () => {
 
       // THEN
       expect(service.query).toHaveBeenCalled();
-      expect(comp.securityPolicies?.[0]).toEqual(jasmine.objectContaining({ id: 123 }));
+      expect(comp.securityPolicies?.[0]).toEqual(expect.objectContaining({ id: 123 }));
     });
   });
 });

@@ -10,7 +10,7 @@ import { InternetAccessService } from '../service/internet-access.service';
 export class InternetAccessDeleteDialogComponent {
   internetAccess?: IInternetAccess;
 
-  constructor(protected internetAccessService: InternetAccessService, public activeModal: NgbActiveModal) {}
+  constructor(protected internetAccessService: InternetAccessService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

@@ -15,16 +15,21 @@
   "relationships": [
     {
       "relationshipType": "one-to-many",
-      "otherEntityName": "transaction",
+      "otherEntityName": "internalTransaction",
       "otherEntityRelationshipName": "transactionBook",
-      "relationshipName": "transaction"
+      "relationshipName": "iTransaction"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "bankTransaction",
+      "otherEntityRelationshipName": "transactionBook",
+      "relationshipName": "bTransaction"
     },
     {
       "relationshipType": "many-to-many",
       "otherEntityName": "lease",
       "otherEntityRelationshipName": "transactionBook",
       "relationshipName": "lease",
-      "otherEntityField": "id",
       "ownerSide": false
     }
   ],
@@ -38,5 +43,5 @@
   "readOnly": false,
   "embedded": false,
   "clientRootFolder": "",
-  "applications": "*"
+  "applications": ["autocut"]
 }

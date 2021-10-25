@@ -1,0 +1,51 @@
+{
+  "name": "NetworkSwitchStatus",
+  "fields": [
+    {
+      "fieldName": "port",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "vlan",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "speed",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "timestamp",
+      "fieldType": "Instant"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "networkSwitch",
+      "otherEntityRelationshipName": "networkSwitchStatus",
+      "relationshipName": "networkSwitch"
+    }
+  ],
+  "entityTableName": "network_switch_status",
+  "dto": "no",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": ["autocut"],
+  "changelogDate": "20211025002641"
+}

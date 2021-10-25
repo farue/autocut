@@ -18,13 +18,9 @@
         "title": "Laundry Machine Program"
       },
       "id": "ID",
-      "name": "Name",
-      "subprogram": "Subprogram",
       "time": "Time",
-      "spin": "Spin",
-      "preWash": "Pre Wash",
-      "protect": "Protect",
-      "laundryMachine": "Laundry Machine"
+      "program": "Program",
+      "machine": "Machine"
     }
   }
 }

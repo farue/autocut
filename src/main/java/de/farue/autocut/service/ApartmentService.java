@@ -46,21 +46,19 @@ public class ApartmentService {
 
         return apartmentRepository
             .findById(apartment.getId())
-            .map(
-                existingApartment -> {
-                    if (apartment.getNr() != null) {
-                        existingApartment.setNr(apartment.getNr());
-                    }
-                    if (apartment.getType() != null) {
-                        existingApartment.setType(apartment.getType());
-                    }
-                    if (apartment.getMaxNumberOfLeases() != null) {
-                        existingApartment.setMaxNumberOfLeases(apartment.getMaxNumberOfLeases());
-                    }
-
-                    return existingApartment;
+            .map(existingApartment -> {
+                if (apartment.getNr() != null) {
+                    existingApartment.setNr(apartment.getNr());
                 }
-            )
+                if (apartment.getType() != null) {
+                    existingApartment.setType(apartment.getType());
+                }
+                if (apartment.getMaxNumberOfLeases() != null) {
+                    existingApartment.setMaxNumberOfLeases(apartment.getMaxNumberOfLeases());
+                }
+
+                return existingApartment;
+            })
             .map(apartmentRepository::save);
     }
 

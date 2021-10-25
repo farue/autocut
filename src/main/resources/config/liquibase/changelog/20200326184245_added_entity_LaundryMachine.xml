@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
-                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
 
     <!--
         Added the entity LaundryMachine.
     -->
     <changeSet id="20200326184245-1" author="jhipster">
-        <createTable tableName="laundry_machine">
+        <createTable tableName="wash_machine">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -24,6 +22,12 @@
                 <constraints nullable="false" />
             </column>
             <column name="enabled" type="boolean">
+                <constraints nullable="false" />
+            </column>
+            <column name="position_x" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="position_y" type="integer">
                 <constraints nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
@@ -42,14 +46,17 @@
     -->
     <changeSet id="20200326184245-1-data" author="jhipster" context="faker">
         <loadData
-                  file="config/liquibase/fake-data/laundry_machine.csv"
+                  file="config/liquibase/fake-data/wash_machine.csv"
                   separator=";"
-                  tableName="laundry_machine">
+                  tableName="wash_machine"
+                  usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="identifier" type="string"/>
             <column name="name" type="string"/>
             <column name="type" type="string"/>
             <column name="enabled" type="boolean"/>
+            <column name="position_x" type="numeric"/>
+            <column name="position_y" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
