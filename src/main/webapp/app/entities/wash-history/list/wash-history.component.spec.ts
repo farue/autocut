@@ -1,48 +1,46 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {HttpHeaders, HttpResponse} from '@angular/common/http';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {of} from 'rxjs';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { of } from 'rxjs';
 
-import {WashHistoryService} from '../service/wash-history.service';
+import { WashHistoryService } from '../service/wash-history.service';
 
-import {WashHistoryComponent} from './wash-history.component';
+import { WashHistoryComponent } from './wash-history.component';
 
-describe('Component Tests', () => {
-  describe('WashHistory Management Component', () => {
-    let comp: WashHistoryComponent;
-    let fixture: ComponentFixture<WashHistoryComponent>;
-    let service: WashHistoryService;
+describe('WashHistory Management Component', () => {
+  let comp: WashHistoryComponent;
+  let fixture: ComponentFixture<WashHistoryComponent>;
+  let service: WashHistoryService;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
-        declarations: [WashHistoryComponent],
-      })
-        .overrideTemplate(WashHistoryComponent, '')
-        .compileComponents();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      declarations: [WashHistoryComponent],
+    })
+      .overrideTemplate(WashHistoryComponent, '')
+      .compileComponents();
 
-      fixture = TestBed.createComponent(WashHistoryComponent);
-      comp = fixture.componentInstance;
-      service = TestBed.inject(WashHistoryService);
+    fixture = TestBed.createComponent(WashHistoryComponent);
+    comp = fixture.componentInstance;
+    service = TestBed.inject(WashHistoryService);
 
-      const headers = new HttpHeaders().append('link', 'link;link');
-      jest.spyOn(service, 'query').mockReturnValue(
-        of(
-          new HttpResponse({
-            body: [{ id: 123 }],
-            headers,
-          })
-        )
-      );
-    });
+    const headers = new HttpHeaders();
+    jest.spyOn(service, 'query').mockReturnValue(
+      of(
+        new HttpResponse({
+          body: [{ id: 123 }],
+          headers,
+        })
+      )
+    );
+  });
 
-    it('Should call load all on init', () => {
-      // WHEN
-      comp.ngOnInit();
+  it('Should call load all on init', () => {
+    // WHEN
+    comp.ngOnInit();
 
-      // THEN
-      expect(service.query).toHaveBeenCalled();
-      expect(comp.washHistories?.[0]).toEqual(expect.objectContaining({ id: 123 }));
-    });
+    // THEN
+    expect(service.query).toHaveBeenCalled();
+    expect(comp.washHistories?.[0]).toEqual(expect.objectContaining({ id: 123 }));
   });
 });
