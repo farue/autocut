@@ -7,42 +7,40 @@ import { GlobalSettingService } from '../service/global-setting.service';
 
 import { GlobalSettingComponent } from './global-setting.component';
 
-describe('Component Tests', () => {
-  describe('GlobalSetting Management Component', () => {
-    let comp: GlobalSettingComponent;
-    let fixture: ComponentFixture<GlobalSettingComponent>;
-    let service: GlobalSettingService;
+describe('GlobalSetting Management Component', () => {
+  let comp: GlobalSettingComponent;
+  let fixture: ComponentFixture<GlobalSettingComponent>;
+  let service: GlobalSettingService;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
-        declarations: [GlobalSettingComponent],
-      })
-        .overrideTemplate(GlobalSettingComponent, '')
-        .compileComponents();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      declarations: [GlobalSettingComponent],
+    })
+      .overrideTemplate(GlobalSettingComponent, '')
+      .compileComponents();
 
-      fixture = TestBed.createComponent(GlobalSettingComponent);
-      comp = fixture.componentInstance;
-      service = TestBed.inject(GlobalSettingService);
+    fixture = TestBed.createComponent(GlobalSettingComponent);
+    comp = fixture.componentInstance;
+    service = TestBed.inject(GlobalSettingService);
 
-      const headers = new HttpHeaders().append('link', 'link;link');
-      jest.spyOn(service, 'query').mockReturnValue(
-        of(
-          new HttpResponse({
-            body: [{ id: 123 }],
-            headers,
-          })
-        )
-      );
-    });
+    const headers = new HttpHeaders();
+    jest.spyOn(service, 'query').mockReturnValue(
+      of(
+        new HttpResponse({
+          body: [{ id: 123 }],
+          headers,
+        })
+      )
+    );
+  });
 
-    it('Should call load all on init', () => {
-      // WHEN
-      comp.ngOnInit();
+  it('Should call load all on init', () => {
+    // WHEN
+    comp.ngOnInit();
 
-      // THEN
-      expect(service.query).toHaveBeenCalled();
-      expect(comp.globalSettings?.[0]).toEqual(expect.objectContaining({ id: 123 }));
-    });
+    // THEN
+    expect(service.query).toHaveBeenCalled();
+    expect(comp.globalSettings?.[0]).toEqual(expect.objectContaining({ id: 123 }));
   });
 });

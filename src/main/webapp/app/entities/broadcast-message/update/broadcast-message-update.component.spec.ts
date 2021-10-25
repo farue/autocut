@@ -12,102 +12,100 @@ import { BroadcastMessage, IBroadcastMessage } from '../broadcast-message.model'
 
 import { BroadcastMessageUpdateComponent } from './broadcast-message-update.component';
 
-describe('Component Tests', () => {
-  describe('BroadcastMessage Management Update Component', () => {
-    let comp: BroadcastMessageUpdateComponent;
-    let fixture: ComponentFixture<BroadcastMessageUpdateComponent>;
-    let activatedRoute: ActivatedRoute;
-    let broadcastMessageService: BroadcastMessageService;
+describe('BroadcastMessage Management Update Component', () => {
+  let comp: BroadcastMessageUpdateComponent;
+  let fixture: ComponentFixture<BroadcastMessageUpdateComponent>;
+  let activatedRoute: ActivatedRoute;
+  let broadcastMessageService: BroadcastMessageService;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
-        declarations: [BroadcastMessageUpdateComponent],
-        providers: [FormBuilder, ActivatedRoute],
-      })
-        .overrideTemplate(BroadcastMessageUpdateComponent, '')
-        .compileComponents();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      declarations: [BroadcastMessageUpdateComponent],
+      providers: [FormBuilder, ActivatedRoute],
+    })
+      .overrideTemplate(BroadcastMessageUpdateComponent, '')
+      .compileComponents();
 
-      fixture = TestBed.createComponent(BroadcastMessageUpdateComponent);
-      activatedRoute = TestBed.inject(ActivatedRoute);
-      broadcastMessageService = TestBed.inject(BroadcastMessageService);
+    fixture = TestBed.createComponent(BroadcastMessageUpdateComponent);
+    activatedRoute = TestBed.inject(ActivatedRoute);
+    broadcastMessageService = TestBed.inject(BroadcastMessageService);
 
-      comp = fixture.componentInstance;
+    comp = fixture.componentInstance;
+  });
+
+  describe('ngOnInit', () => {
+    it('Should update editForm', () => {
+      const broadcastMessage: IBroadcastMessage = { id: 456 };
+
+      activatedRoute.data = of({ broadcastMessage });
+      comp.ngOnInit();
+
+      expect(comp.editForm.value).toEqual(expect.objectContaining(broadcastMessage));
+    });
+  });
+
+  describe('save', () => {
+    it('Should call update service on save for existing entity', () => {
+      // GIVEN
+      const saveSubject = new Subject<HttpResponse<BroadcastMessage>>();
+      const broadcastMessage = { id: 123 };
+      jest.spyOn(broadcastMessageService, 'update').mockReturnValue(saveSubject);
+      jest.spyOn(comp, 'previousState');
+      activatedRoute.data = of({ broadcastMessage });
+      comp.ngOnInit();
+
+      // WHEN
+      comp.save();
+      expect(comp.isSaving).toEqual(true);
+      saveSubject.next(new HttpResponse({ body: broadcastMessage }));
+      saveSubject.complete();
+
+      // THEN
+      expect(comp.previousState).toHaveBeenCalled();
+      expect(broadcastMessageService.update).toHaveBeenCalledWith(broadcastMessage);
+      expect(comp.isSaving).toEqual(false);
     });
 
-    describe('ngOnInit', () => {
-      it('Should update editForm', () => {
-        const broadcastMessage: IBroadcastMessage = { id: 456 };
+    it('Should call create service on save for new entity', () => {
+      // GIVEN
+      const saveSubject = new Subject<HttpResponse<BroadcastMessage>>();
+      const broadcastMessage = new BroadcastMessage();
+      jest.spyOn(broadcastMessageService, 'create').mockReturnValue(saveSubject);
+      jest.spyOn(comp, 'previousState');
+      activatedRoute.data = of({ broadcastMessage });
+      comp.ngOnInit();
 
-        activatedRoute.data = of({ broadcastMessage });
-        comp.ngOnInit();
+      // WHEN
+      comp.save();
+      expect(comp.isSaving).toEqual(true);
+      saveSubject.next(new HttpResponse({ body: broadcastMessage }));
+      saveSubject.complete();
 
-        expect(comp.editForm.value).toEqual(expect.objectContaining(broadcastMessage));
-      });
+      // THEN
+      expect(broadcastMessageService.create).toHaveBeenCalledWith(broadcastMessage);
+      expect(comp.isSaving).toEqual(false);
+      expect(comp.previousState).toHaveBeenCalled();
     });
 
-    describe('save', () => {
-      it('Should call update service on save for existing entity', () => {
-        // GIVEN
-        const saveSubject = new Subject<HttpResponse<BroadcastMessage>>();
-        const broadcastMessage = { id: 123 };
-        jest.spyOn(broadcastMessageService, 'update').mockReturnValue(saveSubject);
-        jest.spyOn(comp, 'previousState');
-        activatedRoute.data = of({ broadcastMessage });
-        comp.ngOnInit();
+    it('Should set isSaving to false on error', () => {
+      // GIVEN
+      const saveSubject = new Subject<HttpResponse<BroadcastMessage>>();
+      const broadcastMessage = { id: 123 };
+      jest.spyOn(broadcastMessageService, 'update').mockReturnValue(saveSubject);
+      jest.spyOn(comp, 'previousState');
+      activatedRoute.data = of({ broadcastMessage });
+      comp.ngOnInit();
 
-        // WHEN
-        comp.save();
-        expect(comp.isSaving).toEqual(true);
-        saveSubject.next(new HttpResponse({ body: broadcastMessage }));
-        saveSubject.complete();
+      // WHEN
+      comp.save();
+      expect(comp.isSaving).toEqual(true);
+      saveSubject.error('This is an error!');
 
-        // THEN
-        expect(comp.previousState).toHaveBeenCalled();
-        expect(broadcastMessageService.update).toHaveBeenCalledWith(broadcastMessage);
-        expect(comp.isSaving).toEqual(false);
-      });
-
-      it('Should call create service on save for new entity', () => {
-        // GIVEN
-        const saveSubject = new Subject<HttpResponse<BroadcastMessage>>();
-        const broadcastMessage = new BroadcastMessage();
-        jest.spyOn(broadcastMessageService, 'create').mockReturnValue(saveSubject);
-        jest.spyOn(comp, 'previousState');
-        activatedRoute.data = of({ broadcastMessage });
-        comp.ngOnInit();
-
-        // WHEN
-        comp.save();
-        expect(comp.isSaving).toEqual(true);
-        saveSubject.next(new HttpResponse({ body: broadcastMessage }));
-        saveSubject.complete();
-
-        // THEN
-        expect(broadcastMessageService.create).toHaveBeenCalledWith(broadcastMessage);
-        expect(comp.isSaving).toEqual(false);
-        expect(comp.previousState).toHaveBeenCalled();
-      });
-
-      it('Should set isSaving to false on error', () => {
-        // GIVEN
-        const saveSubject = new Subject<HttpResponse<BroadcastMessage>>();
-        const broadcastMessage = { id: 123 };
-        jest.spyOn(broadcastMessageService, 'update').mockReturnValue(saveSubject);
-        jest.spyOn(comp, 'previousState');
-        activatedRoute.data = of({ broadcastMessage });
-        comp.ngOnInit();
-
-        // WHEN
-        comp.save();
-        expect(comp.isSaving).toEqual(true);
-        saveSubject.error('This is an error!');
-
-        // THEN
-        expect(broadcastMessageService.update).toHaveBeenCalledWith(broadcastMessage);
-        expect(comp.isSaving).toEqual(false);
-        expect(comp.previousState).not.toHaveBeenCalled();
-      });
+      // THEN
+      expect(broadcastMessageService.update).toHaveBeenCalledWith(broadcastMessage);
+      expect(comp.isSaving).toEqual(false);
+      expect(comp.previousState).not.toHaveBeenCalled();
     });
   });
 });

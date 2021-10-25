@@ -12,102 +12,100 @@ import { ILaundryProgram, LaundryProgram } from '../laundry-program.model';
 
 import { LaundryProgramUpdateComponent } from './laundry-program-update.component';
 
-describe('Component Tests', () => {
-  describe('LaundryProgram Management Update Component', () => {
-    let comp: LaundryProgramUpdateComponent;
-    let fixture: ComponentFixture<LaundryProgramUpdateComponent>;
-    let activatedRoute: ActivatedRoute;
-    let laundryProgramService: LaundryProgramService;
+describe('LaundryProgram Management Update Component', () => {
+  let comp: LaundryProgramUpdateComponent;
+  let fixture: ComponentFixture<LaundryProgramUpdateComponent>;
+  let activatedRoute: ActivatedRoute;
+  let laundryProgramService: LaundryProgramService;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
-        declarations: [LaundryProgramUpdateComponent],
-        providers: [FormBuilder, ActivatedRoute],
-      })
-        .overrideTemplate(LaundryProgramUpdateComponent, '')
-        .compileComponents();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      declarations: [LaundryProgramUpdateComponent],
+      providers: [FormBuilder, ActivatedRoute],
+    })
+      .overrideTemplate(LaundryProgramUpdateComponent, '')
+      .compileComponents();
 
-      fixture = TestBed.createComponent(LaundryProgramUpdateComponent);
-      activatedRoute = TestBed.inject(ActivatedRoute);
-      laundryProgramService = TestBed.inject(LaundryProgramService);
+    fixture = TestBed.createComponent(LaundryProgramUpdateComponent);
+    activatedRoute = TestBed.inject(ActivatedRoute);
+    laundryProgramService = TestBed.inject(LaundryProgramService);
 
-      comp = fixture.componentInstance;
+    comp = fixture.componentInstance;
+  });
+
+  describe('ngOnInit', () => {
+    it('Should update editForm', () => {
+      const laundryProgram: ILaundryProgram = { id: 456 };
+
+      activatedRoute.data = of({ laundryProgram });
+      comp.ngOnInit();
+
+      expect(comp.editForm.value).toEqual(expect.objectContaining(laundryProgram));
+    });
+  });
+
+  describe('save', () => {
+    it('Should call update service on save for existing entity', () => {
+      // GIVEN
+      const saveSubject = new Subject<HttpResponse<LaundryProgram>>();
+      const laundryProgram = { id: 123 };
+      jest.spyOn(laundryProgramService, 'update').mockReturnValue(saveSubject);
+      jest.spyOn(comp, 'previousState');
+      activatedRoute.data = of({ laundryProgram });
+      comp.ngOnInit();
+
+      // WHEN
+      comp.save();
+      expect(comp.isSaving).toEqual(true);
+      saveSubject.next(new HttpResponse({ body: laundryProgram }));
+      saveSubject.complete();
+
+      // THEN
+      expect(comp.previousState).toHaveBeenCalled();
+      expect(laundryProgramService.update).toHaveBeenCalledWith(laundryProgram);
+      expect(comp.isSaving).toEqual(false);
     });
 
-    describe('ngOnInit', () => {
-      it('Should update editForm', () => {
-        const laundryProgram: ILaundryProgram = { id: 456 };
+    it('Should call create service on save for new entity', () => {
+      // GIVEN
+      const saveSubject = new Subject<HttpResponse<LaundryProgram>>();
+      const laundryProgram = new LaundryProgram();
+      jest.spyOn(laundryProgramService, 'create').mockReturnValue(saveSubject);
+      jest.spyOn(comp, 'previousState');
+      activatedRoute.data = of({ laundryProgram });
+      comp.ngOnInit();
 
-        activatedRoute.data = of({ laundryProgram });
-        comp.ngOnInit();
+      // WHEN
+      comp.save();
+      expect(comp.isSaving).toEqual(true);
+      saveSubject.next(new HttpResponse({ body: laundryProgram }));
+      saveSubject.complete();
 
-        expect(comp.editForm.value).toEqual(expect.objectContaining(laundryProgram));
-      });
+      // THEN
+      expect(laundryProgramService.create).toHaveBeenCalledWith(laundryProgram);
+      expect(comp.isSaving).toEqual(false);
+      expect(comp.previousState).toHaveBeenCalled();
     });
 
-    describe('save', () => {
-      it('Should call update service on save for existing entity', () => {
-        // GIVEN
-        const saveSubject = new Subject<HttpResponse<LaundryProgram>>();
-        const laundryProgram = { id: 123 };
-        jest.spyOn(laundryProgramService, 'update').mockReturnValue(saveSubject);
-        jest.spyOn(comp, 'previousState');
-        activatedRoute.data = of({ laundryProgram });
-        comp.ngOnInit();
+    it('Should set isSaving to false on error', () => {
+      // GIVEN
+      const saveSubject = new Subject<HttpResponse<LaundryProgram>>();
+      const laundryProgram = { id: 123 };
+      jest.spyOn(laundryProgramService, 'update').mockReturnValue(saveSubject);
+      jest.spyOn(comp, 'previousState');
+      activatedRoute.data = of({ laundryProgram });
+      comp.ngOnInit();
 
-        // WHEN
-        comp.save();
-        expect(comp.isSaving).toEqual(true);
-        saveSubject.next(new HttpResponse({ body: laundryProgram }));
-        saveSubject.complete();
+      // WHEN
+      comp.save();
+      expect(comp.isSaving).toEqual(true);
+      saveSubject.error('This is an error!');
 
-        // THEN
-        expect(comp.previousState).toHaveBeenCalled();
-        expect(laundryProgramService.update).toHaveBeenCalledWith(laundryProgram);
-        expect(comp.isSaving).toEqual(false);
-      });
-
-      it('Should call create service on save for new entity', () => {
-        // GIVEN
-        const saveSubject = new Subject<HttpResponse<LaundryProgram>>();
-        const laundryProgram = new LaundryProgram();
-        jest.spyOn(laundryProgramService, 'create').mockReturnValue(saveSubject);
-        jest.spyOn(comp, 'previousState');
-        activatedRoute.data = of({ laundryProgram });
-        comp.ngOnInit();
-
-        // WHEN
-        comp.save();
-        expect(comp.isSaving).toEqual(true);
-        saveSubject.next(new HttpResponse({ body: laundryProgram }));
-        saveSubject.complete();
-
-        // THEN
-        expect(laundryProgramService.create).toHaveBeenCalledWith(laundryProgram);
-        expect(comp.isSaving).toEqual(false);
-        expect(comp.previousState).toHaveBeenCalled();
-      });
-
-      it('Should set isSaving to false on error', () => {
-        // GIVEN
-        const saveSubject = new Subject<HttpResponse<LaundryProgram>>();
-        const laundryProgram = { id: 123 };
-        jest.spyOn(laundryProgramService, 'update').mockReturnValue(saveSubject);
-        jest.spyOn(comp, 'previousState');
-        activatedRoute.data = of({ laundryProgram });
-        comp.ngOnInit();
-
-        // WHEN
-        comp.save();
-        expect(comp.isSaving).toEqual(true);
-        saveSubject.error('This is an error!');
-
-        // THEN
-        expect(laundryProgramService.update).toHaveBeenCalledWith(laundryProgram);
-        expect(comp.isSaving).toEqual(false);
-        expect(comp.previousState).not.toHaveBeenCalled();
-      });
+      // THEN
+      expect(laundryProgramService.update).toHaveBeenCalledWith(laundryProgram);
+      expect(comp.isSaving).toEqual(false);
+      expect(comp.previousState).not.toHaveBeenCalled();
     });
   });
 });

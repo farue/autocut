@@ -10,56 +10,54 @@ import { BroadcastMessageTextService } from '../service/broadcast-message-text.s
 
 import { BroadcastMessageTextDeleteDialogComponent } from './broadcast-message-text-delete-dialog.component';
 
-describe('Component Tests', () => {
-  describe('BroadcastMessageText Management Delete Component', () => {
-    let comp: BroadcastMessageTextDeleteDialogComponent;
-    let fixture: ComponentFixture<BroadcastMessageTextDeleteDialogComponent>;
-    let service: BroadcastMessageTextService;
-    let mockActiveModal: NgbActiveModal;
+describe('BroadcastMessageText Management Delete Component', () => {
+  let comp: BroadcastMessageTextDeleteDialogComponent;
+  let fixture: ComponentFixture<BroadcastMessageTextDeleteDialogComponent>;
+  let service: BroadcastMessageTextService;
+  let mockActiveModal: NgbActiveModal;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
-        declarations: [BroadcastMessageTextDeleteDialogComponent],
-        providers: [NgbActiveModal],
-      })
-        .overrideTemplate(BroadcastMessageTextDeleteDialogComponent, '')
-        .compileComponents();
-      fixture = TestBed.createComponent(BroadcastMessageTextDeleteDialogComponent);
-      comp = fixture.componentInstance;
-      service = TestBed.inject(BroadcastMessageTextService);
-      mockActiveModal = TestBed.inject(NgbActiveModal);
-    });
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      declarations: [BroadcastMessageTextDeleteDialogComponent],
+      providers: [NgbActiveModal],
+    })
+      .overrideTemplate(BroadcastMessageTextDeleteDialogComponent, '')
+      .compileComponents();
+    fixture = TestBed.createComponent(BroadcastMessageTextDeleteDialogComponent);
+    comp = fixture.componentInstance;
+    service = TestBed.inject(BroadcastMessageTextService);
+    mockActiveModal = TestBed.inject(NgbActiveModal);
+  });
 
-    describe('confirmDelete', () => {
-      it('Should call delete service on confirmDelete', inject(
-        [],
-        fakeAsync(() => {
-          // GIVEN
-          jest.spyOn(service, 'delete').mockReturnValue(of(new HttpResponse({})));
-
-          // WHEN
-          comp.confirmDelete(123);
-          tick();
-
-          // THEN
-          expect(service.delete).toHaveBeenCalledWith(123);
-          expect(mockActiveModal.close).toHaveBeenCalledWith('deleted');
-        })
-      ));
-
-      it('Should not call delete service on clear', () => {
+  describe('confirmDelete', () => {
+    it('Should call delete service on confirmDelete', inject(
+      [],
+      fakeAsync(() => {
         // GIVEN
-        jest.spyOn(service, 'delete');
+        jest.spyOn(service, 'delete').mockReturnValue(of(new HttpResponse({})));
 
         // WHEN
-        comp.cancel();
+        comp.confirmDelete(123);
+        tick();
 
         // THEN
-        expect(service.delete).not.toHaveBeenCalled();
-        expect(mockActiveModal.close).not.toHaveBeenCalled();
-        expect(mockActiveModal.dismiss).toHaveBeenCalled();
-      });
+        expect(service.delete).toHaveBeenCalledWith(123);
+        expect(mockActiveModal.close).toHaveBeenCalledWith('deleted');
+      })
+    ));
+
+    it('Should not call delete service on clear', () => {
+      // GIVEN
+      jest.spyOn(service, 'delete');
+
+      // WHEN
+      comp.cancel();
+
+      // THEN
+      expect(service.delete).not.toHaveBeenCalled();
+      expect(mockActiveModal.close).not.toHaveBeenCalled();
+      expect(mockActiveModal.dismiss).toHaveBeenCalled();
     });
   });
 });

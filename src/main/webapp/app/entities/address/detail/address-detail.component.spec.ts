@@ -4,35 +4,33 @@ import { of } from 'rxjs';
 
 import { AddressDetailComponent } from './address-detail.component';
 
-describe('Component Tests', () => {
-  describe('Address Management Detail Component', () => {
-    let comp: AddressDetailComponent;
-    let fixture: ComponentFixture<AddressDetailComponent>;
+describe('Address Management Detail Component', () => {
+  let comp: AddressDetailComponent;
+  let fixture: ComponentFixture<AddressDetailComponent>;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        declarations: [AddressDetailComponent],
-        providers: [
-          {
-            provide: ActivatedRoute,
-            useValue: { data: of({ address: { id: 123 } }) },
-          },
-        ],
-      })
-        .overrideTemplate(AddressDetailComponent, '')
-        .compileComponents();
-      fixture = TestBed.createComponent(AddressDetailComponent);
-      comp = fixture.componentInstance;
-    });
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [AddressDetailComponent],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: { data: of({ address: { id: 123 } }) },
+        },
+      ],
+    })
+      .overrideTemplate(AddressDetailComponent, '')
+      .compileComponents();
+    fixture = TestBed.createComponent(AddressDetailComponent);
+    comp = fixture.componentInstance;
+  });
 
-    describe('OnInit', () => {
-      it('Should load address on init', () => {
-        // WHEN
-        comp.ngOnInit();
+  describe('OnInit', () => {
+    it('Should load address on init', () => {
+      // WHEN
+      comp.ngOnInit();
 
-        // THEN
-        expect(comp.address).toEqual(expect.objectContaining({ id: 123 }));
-      });
+      // THEN
+      expect(comp.address).toEqual(expect.objectContaining({ id: 123 }));
     });
   });
 });

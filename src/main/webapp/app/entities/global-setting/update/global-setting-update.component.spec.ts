@@ -12,102 +12,100 @@ import { GlobalSetting, IGlobalSetting } from '../global-setting.model';
 
 import { GlobalSettingUpdateComponent } from './global-setting-update.component';
 
-describe('Component Tests', () => {
-  describe('GlobalSetting Management Update Component', () => {
-    let comp: GlobalSettingUpdateComponent;
-    let fixture: ComponentFixture<GlobalSettingUpdateComponent>;
-    let activatedRoute: ActivatedRoute;
-    let globalSettingService: GlobalSettingService;
+describe('GlobalSetting Management Update Component', () => {
+  let comp: GlobalSettingUpdateComponent;
+  let fixture: ComponentFixture<GlobalSettingUpdateComponent>;
+  let activatedRoute: ActivatedRoute;
+  let globalSettingService: GlobalSettingService;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
-        declarations: [GlobalSettingUpdateComponent],
-        providers: [FormBuilder, ActivatedRoute],
-      })
-        .overrideTemplate(GlobalSettingUpdateComponent, '')
-        .compileComponents();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      declarations: [GlobalSettingUpdateComponent],
+      providers: [FormBuilder, ActivatedRoute],
+    })
+      .overrideTemplate(GlobalSettingUpdateComponent, '')
+      .compileComponents();
 
-      fixture = TestBed.createComponent(GlobalSettingUpdateComponent);
-      activatedRoute = TestBed.inject(ActivatedRoute);
-      globalSettingService = TestBed.inject(GlobalSettingService);
+    fixture = TestBed.createComponent(GlobalSettingUpdateComponent);
+    activatedRoute = TestBed.inject(ActivatedRoute);
+    globalSettingService = TestBed.inject(GlobalSettingService);
 
-      comp = fixture.componentInstance;
+    comp = fixture.componentInstance;
+  });
+
+  describe('ngOnInit', () => {
+    it('Should update editForm', () => {
+      const globalSetting: IGlobalSetting = { id: 456 };
+
+      activatedRoute.data = of({ globalSetting });
+      comp.ngOnInit();
+
+      expect(comp.editForm.value).toEqual(expect.objectContaining(globalSetting));
+    });
+  });
+
+  describe('save', () => {
+    it('Should call update service on save for existing entity', () => {
+      // GIVEN
+      const saveSubject = new Subject<HttpResponse<GlobalSetting>>();
+      const globalSetting = { id: 123 };
+      jest.spyOn(globalSettingService, 'update').mockReturnValue(saveSubject);
+      jest.spyOn(comp, 'previousState');
+      activatedRoute.data = of({ globalSetting });
+      comp.ngOnInit();
+
+      // WHEN
+      comp.save();
+      expect(comp.isSaving).toEqual(true);
+      saveSubject.next(new HttpResponse({ body: globalSetting }));
+      saveSubject.complete();
+
+      // THEN
+      expect(comp.previousState).toHaveBeenCalled();
+      expect(globalSettingService.update).toHaveBeenCalledWith(globalSetting);
+      expect(comp.isSaving).toEqual(false);
     });
 
-    describe('ngOnInit', () => {
-      it('Should update editForm', () => {
-        const globalSetting: IGlobalSetting = { id: 456 };
+    it('Should call create service on save for new entity', () => {
+      // GIVEN
+      const saveSubject = new Subject<HttpResponse<GlobalSetting>>();
+      const globalSetting = new GlobalSetting();
+      jest.spyOn(globalSettingService, 'create').mockReturnValue(saveSubject);
+      jest.spyOn(comp, 'previousState');
+      activatedRoute.data = of({ globalSetting });
+      comp.ngOnInit();
 
-        activatedRoute.data = of({ globalSetting });
-        comp.ngOnInit();
+      // WHEN
+      comp.save();
+      expect(comp.isSaving).toEqual(true);
+      saveSubject.next(new HttpResponse({ body: globalSetting }));
+      saveSubject.complete();
 
-        expect(comp.editForm.value).toEqual(expect.objectContaining(globalSetting));
-      });
+      // THEN
+      expect(globalSettingService.create).toHaveBeenCalledWith(globalSetting);
+      expect(comp.isSaving).toEqual(false);
+      expect(comp.previousState).toHaveBeenCalled();
     });
 
-    describe('save', () => {
-      it('Should call update service on save for existing entity', () => {
-        // GIVEN
-        const saveSubject = new Subject<HttpResponse<GlobalSetting>>();
-        const globalSetting = { id: 123 };
-        jest.spyOn(globalSettingService, 'update').mockReturnValue(saveSubject);
-        jest.spyOn(comp, 'previousState');
-        activatedRoute.data = of({ globalSetting });
-        comp.ngOnInit();
+    it('Should set isSaving to false on error', () => {
+      // GIVEN
+      const saveSubject = new Subject<HttpResponse<GlobalSetting>>();
+      const globalSetting = { id: 123 };
+      jest.spyOn(globalSettingService, 'update').mockReturnValue(saveSubject);
+      jest.spyOn(comp, 'previousState');
+      activatedRoute.data = of({ globalSetting });
+      comp.ngOnInit();
 
-        // WHEN
-        comp.save();
-        expect(comp.isSaving).toEqual(true);
-        saveSubject.next(new HttpResponse({ body: globalSetting }));
-        saveSubject.complete();
+      // WHEN
+      comp.save();
+      expect(comp.isSaving).toEqual(true);
+      saveSubject.error('This is an error!');
 
-        // THEN
-        expect(comp.previousState).toHaveBeenCalled();
-        expect(globalSettingService.update).toHaveBeenCalledWith(globalSetting);
-        expect(comp.isSaving).toEqual(false);
-      });
-
-      it('Should call create service on save for new entity', () => {
-        // GIVEN
-        const saveSubject = new Subject<HttpResponse<GlobalSetting>>();
-        const globalSetting = new GlobalSetting();
-        jest.spyOn(globalSettingService, 'create').mockReturnValue(saveSubject);
-        jest.spyOn(comp, 'previousState');
-        activatedRoute.data = of({ globalSetting });
-        comp.ngOnInit();
-
-        // WHEN
-        comp.save();
-        expect(comp.isSaving).toEqual(true);
-        saveSubject.next(new HttpResponse({ body: globalSetting }));
-        saveSubject.complete();
-
-        // THEN
-        expect(globalSettingService.create).toHaveBeenCalledWith(globalSetting);
-        expect(comp.isSaving).toEqual(false);
-        expect(comp.previousState).toHaveBeenCalled();
-      });
-
-      it('Should set isSaving to false on error', () => {
-        // GIVEN
-        const saveSubject = new Subject<HttpResponse<GlobalSetting>>();
-        const globalSetting = { id: 123 };
-        jest.spyOn(globalSettingService, 'update').mockReturnValue(saveSubject);
-        jest.spyOn(comp, 'previousState');
-        activatedRoute.data = of({ globalSetting });
-        comp.ngOnInit();
-
-        // WHEN
-        comp.save();
-        expect(comp.isSaving).toEqual(true);
-        saveSubject.error('This is an error!');
-
-        // THEN
-        expect(globalSettingService.update).toHaveBeenCalledWith(globalSetting);
-        expect(comp.isSaving).toEqual(false);
-        expect(comp.previousState).not.toHaveBeenCalled();
-      });
+      // THEN
+      expect(globalSettingService.update).toHaveBeenCalledWith(globalSetting);
+      expect(comp.isSaving).toEqual(false);
+      expect(comp.previousState).not.toHaveBeenCalled();
     });
   });
 });

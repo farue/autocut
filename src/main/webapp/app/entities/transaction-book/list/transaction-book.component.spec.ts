@@ -7,42 +7,40 @@ import { TransactionBookService } from '../service/transaction-book.service';
 
 import { TransactionBookComponent } from './transaction-book.component';
 
-describe('Component Tests', () => {
-  describe('TransactionBook Management Component', () => {
-    let comp: TransactionBookComponent;
-    let fixture: ComponentFixture<TransactionBookComponent>;
-    let service: TransactionBookService;
+describe('TransactionBook Management Component', () => {
+  let comp: TransactionBookComponent;
+  let fixture: ComponentFixture<TransactionBookComponent>;
+  let service: TransactionBookService;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
-        declarations: [TransactionBookComponent],
-      })
-        .overrideTemplate(TransactionBookComponent, '')
-        .compileComponents();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      declarations: [TransactionBookComponent],
+    })
+      .overrideTemplate(TransactionBookComponent, '')
+      .compileComponents();
 
-      fixture = TestBed.createComponent(TransactionBookComponent);
-      comp = fixture.componentInstance;
-      service = TestBed.inject(TransactionBookService);
+    fixture = TestBed.createComponent(TransactionBookComponent);
+    comp = fixture.componentInstance;
+    service = TestBed.inject(TransactionBookService);
 
-      const headers = new HttpHeaders().append('link', 'link;link');
-      jest.spyOn(service, 'query').mockReturnValue(
-        of(
-          new HttpResponse({
-            body: [{ id: 123 }],
-            headers,
-          })
-        )
-      );
-    });
+    const headers = new HttpHeaders();
+    jest.spyOn(service, 'query').mockReturnValue(
+      of(
+        new HttpResponse({
+          body: [{ id: 123 }],
+          headers,
+        })
+      )
+    );
+  });
 
-    it('Should call load all on init', () => {
-      // WHEN
-      comp.ngOnInit();
+  it('Should call load all on init', () => {
+    // WHEN
+    comp.ngOnInit();
 
-      // THEN
-      expect(service.query).toHaveBeenCalled();
-      expect(comp.transactionBooks?.[0]).toEqual(expect.objectContaining({ id: 123 }));
-    });
+    // THEN
+    expect(service.query).toHaveBeenCalled();
+    expect(comp.transactionBooks?.[0]).toEqual(expect.objectContaining({ id: 123 }));
   });
 });

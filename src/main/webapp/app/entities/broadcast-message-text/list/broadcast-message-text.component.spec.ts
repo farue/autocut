@@ -7,42 +7,40 @@ import { BroadcastMessageTextService } from '../service/broadcast-message-text.s
 
 import { BroadcastMessageTextComponent } from './broadcast-message-text.component';
 
-describe('Component Tests', () => {
-  describe('BroadcastMessageText Management Component', () => {
-    let comp: BroadcastMessageTextComponent;
-    let fixture: ComponentFixture<BroadcastMessageTextComponent>;
-    let service: BroadcastMessageTextService;
+describe('BroadcastMessageText Management Component', () => {
+  let comp: BroadcastMessageTextComponent;
+  let fixture: ComponentFixture<BroadcastMessageTextComponent>;
+  let service: BroadcastMessageTextService;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
-        declarations: [BroadcastMessageTextComponent],
-      })
-        .overrideTemplate(BroadcastMessageTextComponent, '')
-        .compileComponents();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      declarations: [BroadcastMessageTextComponent],
+    })
+      .overrideTemplate(BroadcastMessageTextComponent, '')
+      .compileComponents();
 
-      fixture = TestBed.createComponent(BroadcastMessageTextComponent);
-      comp = fixture.componentInstance;
-      service = TestBed.inject(BroadcastMessageTextService);
+    fixture = TestBed.createComponent(BroadcastMessageTextComponent);
+    comp = fixture.componentInstance;
+    service = TestBed.inject(BroadcastMessageTextService);
 
-      const headers = new HttpHeaders().append('link', 'link;link');
-      jest.spyOn(service, 'query').mockReturnValue(
-        of(
-          new HttpResponse({
-            body: [{ id: 123 }],
-            headers,
-          })
-        )
-      );
-    });
+    const headers = new HttpHeaders();
+    jest.spyOn(service, 'query').mockReturnValue(
+      of(
+        new HttpResponse({
+          body: [{ id: 123 }],
+          headers,
+        })
+      )
+    );
+  });
 
-    it('Should call load all on init', () => {
-      // WHEN
-      comp.ngOnInit();
+  it('Should call load all on init', () => {
+    // WHEN
+    comp.ngOnInit();
 
-      // THEN
-      expect(service.query).toHaveBeenCalled();
-      expect(comp.broadcastMessageTexts?.[0]).toEqual(expect.objectContaining({ id: 123 }));
-    });
+    // THEN
+    expect(service.query).toHaveBeenCalled();
+    expect(comp.broadcastMessageTexts?.[0]).toEqual(expect.objectContaining({ id: 123 }));
   });
 });
