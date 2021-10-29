@@ -52,7 +52,7 @@ spring:
     host: mail.rwth-aachen.de
     port: 587
     username: fkt_noreply@farue.rwth-aachen.de
-    password: sTjYzVHWBeLgQZzI2TOU
+    password: ENC(4hih/lusdPPkQsP6iI31fCZ8pfiHb29a4EprHK1ugw/nHAzP/u0wByAvjw3wMvo4gs9Ar8F2DwlSPCD1aRPsDA==)
     protocol: smtp
     tls: true
     properties.mail:
@@ -115,7 +115,7 @@ jhipster:
         # - In the JHipster Registry (which includes a Spring Cloud Config server)
         # - In a separate `application-prod.yml` file, in the same folder as your executable JAR file
         # - In the `JHIPSTER_SECURITY_AUTHENTICATION_JWT_BASE64_SECRET` environment variable
-        base64-secret: 1yO0SmNUhN6rCEPNl5avNJrdEbAFLwVsRpme0BbmPZ/0tH0zUva1LBNchg7hwPimLkFr8Xcz7suB0A1/g56g+g==
+        base64-secret: ENC(0RZQwfXqzb4TYuSawUJ18xAakLFNgfDPLPuGbyYVf+1seslmDg8FFzvGPlbU2T74iGGPJml9GuktcRvhl3I2q6ye/JTPS3Z7Tm4J+gIuoLiszMS54cjohhUzVp599u9xSBIyj4yJKaIrGySnkwY/GxurSqmMeHR3sAEcsrI6OlA=)
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000
