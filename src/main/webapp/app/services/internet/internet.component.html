@@ -13,54 +13,56 @@
       </div>
 
       <div class="mt-4">
-        <mat-expansion-panel>
-          <mat-expansion-panel-header
-            [collapsedHeight]="(mediaService.isXs$ | async) ? '72px' : ''"
-            [expandedHeight]="(mediaService.isXs$ | async) ? '96px' : ''"
-          >
-            <span translate>internet.help.status.title</span>
-          </mat-expansion-panel-header>
-          <table mat-table [dataSource]="dataSourceStatusHelp" fxFill>
-            <ng-container matColumnDef="symbol">
-              <td mat-cell *matCellDef="let element" class="pr-2 py-1">
-                <div [ngClass]="['status', 'status-' + element.status]"></div>
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="status">
-              <td mat-cell *matCellDef="let element" class="pr-2">
-                <b>{{ 'internet.status.portStatus.' + element.status | translate }}</b>
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="description">
-              <td mat-cell *matCellDef="let element">
-                <div [innerHTML]="'internet.help.status.' + element.status | translate"></div>
-              </td>
-            </ng-container>
+        <mat-accordion multi>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header
+              [collapsedHeight]="(mediaService.isXs$ | async) ? '72px' : ''"
+              [expandedHeight]="(mediaService.isXs$ | async) ? '96px' : ''"
+            >
+              <span translate>internet.help.status.title</span>
+            </mat-expansion-panel-header>
+            <table mat-table [dataSource]="dataSourceStatusHelp" fxFill>
+              <ng-container matColumnDef="symbol">
+                <td mat-cell *matCellDef="let element" class="pr-2 py-1">
+                  <div [ngClass]="['status', 'status-' + element.status]"></div>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="status">
+                <td mat-cell *matCellDef="let element" class="pr-2">
+                  <b>{{ 'internet.status.portStatus.' + element.status | translate }}</b>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="description">
+                <td mat-cell *matCellDef="let element">
+                  <div [innerHTML]="'internet.help.status.' + element.status | translate"></div>
+                </td>
+              </ng-container>
 
-            <tr mat-row *matRowDef="let row; columns: ['symbol', 'status', 'description']"></tr>
-          </table>
-        </mat-expansion-panel>
+              <tr mat-row *matRowDef="let row; columns: ['symbol', 'status', 'description']"></tr>
+            </table>
+          </mat-expansion-panel>
 
-        <mat-expansion-panel>
-          <mat-expansion-panel-header
-            [collapsedHeight]="(mediaService.isXs$ | async) ? '72px' : ''"
-            [expandedHeight]="(mediaService.isXs$ | async) ? '96px' : ''"
-          >
-            <span translate>internet.help.speedSlowerThanMax.title</span>
-          </mat-expansion-panel-header>
-          <p [innerHTML]="'internet.help.speedSlowerThanMax.description' | translate"></p>
-        </mat-expansion-panel>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header
+              [collapsedHeight]="(mediaService.isXs$ | async) ? '72px' : ''"
+              [expandedHeight]="(mediaService.isXs$ | async) ? '96px' : ''"
+            >
+              <span translate>internet.help.speedSlowerThanMax.title</span>
+            </mat-expansion-panel-header>
+            <p [innerHTML]="'internet.help.speedSlowerThanMax.description' | translate"></p>
+          </mat-expansion-panel>
 
-        <mat-expansion-panel>
-          <mat-expansion-panel-header
-            [collapsedHeight]="(mediaService.isXs$ | async) ? '72px' : ''"
-            [expandedHeight]="(mediaService.isXs$ | async) ? '96px' : ''"
-          >
-            <span translate>internet.help.actualSpeedSlow.title</span>
-          </mat-expansion-panel-header>
-          <p [innerHTML]="'internet.help.actualSpeedSlow.description1' | translate"></p>
-          <p [innerHTML]="'internet.help.actualSpeedSlow.description2' | translate"></p>
-        </mat-expansion-panel>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header
+              [collapsedHeight]="(mediaService.isXs$ | async) ? '72px' : ''"
+              [expandedHeight]="(mediaService.isXs$ | async) ? '96px' : ''"
+            >
+              <span translate>internet.help.actualSpeedSlow.title</span>
+            </mat-expansion-panel-header>
+            <p [innerHTML]="'internet.help.actualSpeedSlow.description1' | translate"></p>
+            <p [innerHTML]="'internet.help.actualSpeedSlow.description2' | translate"></p>
+          </mat-expansion-panel>
+        </mat-accordion>
       </div>
     </div>
 
