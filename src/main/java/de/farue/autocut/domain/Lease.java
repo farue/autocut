@@ -63,7 +63,7 @@ public class Lease implements Serializable {
     private Set<TransactionBook> transactionBooks = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "leases", "address" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "leases" }, allowSetters = true)
     private Apartment apartment;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

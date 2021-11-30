@@ -28,6 +28,9 @@ public class Team implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "email")
+    private String email;
+
     @OneToMany(mappedBy = "team")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "securityPolicies", "tenant", "team" }, allowSetters = true)
@@ -59,6 +62,19 @@ public class Team implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public Team email(String email) {
+        this.setEmail(email);
+        return this;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Set<TeamMembership> getTeamMemberships() {
@@ -117,6 +133,7 @@ public class Team implements Serializable {
         return "Team{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", email='" + getEmail() + "'" +
             "}";
     }
 }

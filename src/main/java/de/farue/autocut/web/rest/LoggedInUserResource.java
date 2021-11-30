@@ -5,9 +5,9 @@ import de.farue.autocut.domain.enumeration.TransactionBookType;
 import de.farue.autocut.service.LaundryMachineService;
 import de.farue.autocut.service.LoggedInUserService;
 import de.farue.autocut.service.accounting.TransactionBookService;
+import de.farue.autocut.service.dto.AdminUserDTO;
 import de.farue.autocut.service.dto.NetworkStatusDTO;
 import de.farue.autocut.service.dto.TransactionBookDTO;
-import de.farue.autocut.service.dto.UserDTO;
 import de.farue.autocut.service.mapper.NetworkStatusMapper;
 import de.farue.autocut.service.mapper.TransactionBookMapper;
 import java.math.BigDecimal;
@@ -48,7 +48,7 @@ public class LoggedInUserResource {
     }
 
     @GetMapping
-    public UserDTO getUser() {
+    public AdminUserDTO getUser() {
         return loggedInUserService.getUser();
     }
 
@@ -79,12 +79,10 @@ public class LoggedInUserResource {
             .stream()
             // TODO: Deposit transaction books should be removed, then we won't need this filter anymore
             .filter(transactionBook -> transactionBook.getType() == TransactionBookType.CASH)
-            .map(
-                transactionBook -> {
-                    BigDecimal balance = transactionBookService.getCurrentBalance(transactionBook);
-                    return transactionBookMapper.fromTransactionBook(transactionBook, balance);
-                }
-            )
+            .map(transactionBook -> {
+                BigDecimal balance = transactionBookService.getCurrentBalance(transactionBook);
+                return transactionBookMapper.fromTransactionBook(transactionBook, balance);
+            })
             .collect(Collectors.toList());
     }
 
@@ -95,12 +93,10 @@ public class LoggedInUserResource {
                 .getTransactionBooks()
                 .stream()
                 .filter(transactionBook -> Objects.equals(transactionBook.getId(), id))
-                .map(
-                    transactionBook -> {
-                        BigDecimal balance = transactionBookService.getCurrentBalance(transactionBook);
-                        return transactionBookMapper.fromTransactionBook(transactionBook, balance);
-                    }
-                )
+                .map(transactionBook -> {
+                    BigDecimal balance = transactionBookService.getCurrentBalance(transactionBook);
+                    return transactionBookMapper.fromTransactionBook(transactionBook, balance);
+                })
                 .findFirst()
         );
     }

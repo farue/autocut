@@ -22,6 +22,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatListModule } from '@angular/material/list';
+import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
   exports: [
@@ -48,6 +49,7 @@ import { MatListModule } from '@angular/material/list';
     MatSortModule,
     MatStepperModule,
     MatTableModule,
+    NgxMaskModule,
   ],
 })
 export class MaterialModule {}

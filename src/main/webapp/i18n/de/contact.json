@@ -1,0 +1,83 @@
+{
+  "contact": {
+    "title": "Kontakt",
+    "cards": {
+      "spokesperson": {
+        "title": "Wohnheimssprecher",
+        "subtitle": "Kontaktiere uns bei Fragen zur Verwaltung, allgemeinen Problemen oder wenn du einfach nicht weißt wer der richtige Ansprechpartner ist."
+      },
+      "assignment-team": {
+        "title": "Belegungsausschuss",
+        "subtitle": "Du möchtest dich für eine Wohnung bewerben und hast noch Fragen? Dann bist du bei uns richtig."
+      },
+      "networking-team": {
+        "title": "Netzwerk AG",
+        "subtitle": "Wir helfen dir bei Fragen und Problemen rund um Internet und Website."
+      },
+      "washing-team": {
+        "title": "Wasch AG",
+        "subtitle": "Gibt es Probleme mit den Waschmaschinen oder Trocknern? Dann melde dich gerne bei uns."
+      },
+      "tools-team": {
+        "title": "Werkzeug AG",
+        "subtitle": "Du möchtest ein Werkzeug ausleihen oder zurückgeben? Schreib uns."
+      },
+      "janitor": {
+        "title": "Hausmeister",
+        "subtitle": "Kontaktiere die Hausmeister bei Fragen und Problemen rund um die Wohnung, z.B. wenn dein Wasserhahn tropft, dein Abfluss verstopft ist oder du Ausziehen möchtest."
+      }
+    },
+    "form": {
+      "label": {
+        "name": "Name",
+        "apartment": "Wohnung",
+        "apartmentPlaceholder": "z.B. 123/5",
+        "email": "E-Mail",
+        "subject": "Betreff",
+        "message": "Nachricht",
+        "copyToOwnEmail": "Schicke eine Kopie an meine E-Mail Adresse",
+        "send": "Abschicken"
+      },
+      "spokesperson": {
+        "title": "Kontaktiere die Wohnheimssprecher",
+        "subjectPlaceholder": "Frage zum Sommerfest"
+      },
+      "assignment-team": {
+        "title": "Kontaktiere den Belegungsausschuss",
+        "subjectPlaceholder": "Ist Strom in der Miete enthalten?"
+      },
+      "networking-team": {
+        "title": "Kontaktiere die Netzwerk AG",
+        "subjectPlaceholder": "Mein Internet funktioniert nicht"
+      },
+      "washing-team": {
+        "title": "Kontaktiere die Wasch AG",
+        "subjectPlaceholder": "Die Waschmaschine zeigt einen Fehler an"
+      },
+      "tools-team": {
+        "title": "Kontaktiere die Werkzeug AG",
+        "subjectPlaceholder": "Kann ich den Akkuschrauber ausleihen?"
+      },
+      "janitor": {
+        "title": "Kontaktiere den Hausmeister",
+        "subjectPlaceholder": "Mein Wasserhahn im Bad tropft"
+      }
+    },
+    "janitor": {
+      "useForm": "Bitte kontaktiere die Hausmeister über das Formular unten. So enthält deine Nachricht alle relevanten Informationen, die die Hausmeister benötigen, um deine Anfrage zu bearbeiten. Wenn du lieber eine E-Mail schreiben möchtest, halte dich bitte an die Formalen Richtlinien unten. In Notfällen kannst du sie auch anrufen.",
+      "formalGuideline": {
+        "title": "Formale Richtlinien für E-Mails",
+        "subj": "Wenn ihr mir eine E-Mail schreibt, bitte oben in der Betreffzeile immer folgende Angaben machen: Wohnheim, Zimmer/Apartmentnummer, Kurzbeschreibung des Anliegens.",
+        "examples": "Beispiele:",
+        "ex1": "OIH, 03-06, Einzug Juni 2018",
+        "ex2": "OPH, 04-17, Waschbecken verstopft",
+        "ex3": "Hilton, 08-15, Spülarmatur defekt<br /> oder<br /> Turmstraße 1, 08-15, UM, Spülarmatur defekt<br /> oder<br /> T1, 08-15, UM, Spülarmatur defekt",
+        "ex4": "EPW, 123/25, Spiegellampe im Bad defekt",
+        "ex5": "OIH, 10-11, Auszug November 2018",
+        "sublease": "Ein großes „UM“ hinter der Zimmer-/Apartmentnummer heißt Untermieter (UM).",
+        "missingAddress": "Wenn das Wohnheim und die Zimmer/Apartmentnummer fehlen, lösche ich die Mail. Ich habe keine Zeit oder Möglichkeit, mir 500 Namen zu merken oder die Wohnheime heraus zu finden.",
+        "subjectGerman": "Achtung! Die Angaben oben in der Betreffzeile bitte immer in Deutsch schreiben."
+      }
+    }
+  }
+}

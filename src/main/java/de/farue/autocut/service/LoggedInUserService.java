@@ -4,7 +4,7 @@ import de.farue.autocut.domain.*;
 import de.farue.autocut.repository.UserRepository;
 import de.farue.autocut.security.SecurityUtils;
 import de.farue.autocut.service.accounting.InternalTransactionService;
-import de.farue.autocut.service.dto.UserDTO;
+import de.farue.autocut.service.dto.AdminUserDTO;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -45,8 +45,8 @@ public class LoggedInUserService {
         this.transactionService = transactionService;
     }
 
-    public UserDTO getUser() {
-        return userService.getUserWithAuthorities().map(UserDTO::new).orElseThrow();
+    public AdminUserDTO getUser() {
+        return userService.getUserWithAuthorities().map(AdminUserDTO::new).orElseThrow();
     }
 
     public Tenant getTenant() {

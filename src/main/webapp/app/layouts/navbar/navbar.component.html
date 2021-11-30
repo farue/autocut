@@ -99,12 +99,6 @@
             </a>
           </li>
           <li>
-            <a class="dropdown-item" routerLink="info/contacts" routerLinkActive="active" (click)="collapseNavbar()">
-              <fa-icon icon="address-book" [fixedWidth]="true"></fa-icon>
-              <span jhiTranslate="contacts.title">Contacts</span>
-            </a>
-          </li>
-          <li>
             <a class="dropdown-item" routerLink="info/statutes" routerLinkActive="active" (click)="collapseNavbar()">
               <fa-icon icon="balance-scale-left" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="statutes.title">Statutes</span>
@@ -535,6 +529,13 @@
           </li>
         </ul>
       </li>
+      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" routerLink="/contact" (click)="collapseNavbar()">
+          <span>
+            <fa-icon icon="envelope" [fixedWidth]="true" size="lg"></fa-icon>
+          </span>
+        </a>
+      </li>
       <li
         ngbDropdown
         class="nav-item dropdown pointer"
@@ -551,7 +552,7 @@
           (click)="collapseNavbar()"
           data-cy="loginMenu"
         >
-          <fa-icon icon="user" [fixedWidth]="true"></fa-icon>
+          <fa-icon icon="user" [fixedWidth]="true" size="lg"></fa-icon>
         </a>
         <a
           *ngIf="account !== null"

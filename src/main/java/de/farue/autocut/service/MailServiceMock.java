@@ -1,6 +1,7 @@
 package de.farue.autocut.service;
 
 import de.farue.autocut.email.ImapFolderFactory;
+import javax.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -28,14 +29,7 @@ public class MailServiceMock extends MailService {
     }
 
     @Override
-    public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
-        log.debug(
-            "Mocking send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
-            isMultipart,
-            isHtml,
-            to,
-            subject,
-            content
-        );
+    public void sendEmail(MimeMessage mimeMessage) {
+        log.debug("Mocking send email: {}", mimeMessageToString(mimeMessage));
     }
 }

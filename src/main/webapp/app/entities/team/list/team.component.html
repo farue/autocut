@@ -34,6 +34,7 @@
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
           <th scope="col"><span jhiTranslate="autocutApp.team.name">Name</span></th>
+          <th scope="col"><span jhiTranslate="autocutApp.team.email">Email</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -43,6 +44,7 @@
             <a [routerLink]="['/team', team.id, 'view']">{{ team.id }}</a>
           </td>
           <td>{{ team.name }}</td>
+          <td>{{ team.email }}</td>
           <td class="text-right">
             <div class="btn-group">
               <button type="submit" [routerLink]="['/team', team.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

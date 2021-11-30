@@ -3,8 +3,11 @@ package de.farue.autocut.service;
 import de.farue.autocut.domain.User;
 import de.farue.autocut.email.ImapFolder;
 import de.farue.autocut.email.ImapFolderFactory;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Locale;
+import javax.mail.Address;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import org.slf4j.Logger;
@@ -60,6 +63,10 @@ public class MailService {
         this.imapFolderFactory = imapFolderFactory;
     }
 
+    public MimeMessageHelper createMimeMessageHelper() {
+        return new MimeMessageHelper(javaMailSender.createMimeMessage());
+    }
+
     @Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
         log.debug(
@@ -79,10 +86,29 @@ public class MailService {
             message.setFrom(jHipsterProperties.getMail().getFrom());
             message.setSubject(subject);
             message.setText(content, isHtml);
-            javaMailSender.send(mimeMessage);
-            log.debug("Sent email to User '{}'", to);
         } catch (MailException | MessagingException e) {
             log.warn("Email could not be sent to user '{}'", to, e);
+            return;
+        }
+        sendEmail(mimeMessage);
+    }
+
+    public void sendEmail(MimeMessage mimeMessage) {
+        try {
+            if (mimeMessage.getFrom() == null || mimeMessage.getFrom().length == 0) {
+                mimeMessage.setFrom(jHipsterProperties.getMail().getFrom());
+            }
+        } catch (MessagingException e) {
+            log.warn("Sender could not be determined / set, thus email was not sent.");
+            return;
+        }
+
+        try {
+            javaMailSender.send(mimeMessage);
+            log.debug("Sent email to User: {}", mimeMessageToString(mimeMessage));
+        } catch (MailException e) {
+            log.warn("Email could not be sent: {}", mimeMessageToString(mimeMessage), e);
+            return;
         }
 
         try {
@@ -130,5 +156,32 @@ public class MailService {
     public void sendPasswordResetMail(User user) {
         log.debug("Sending password reset email to '{}'", user.getEmail());
         sendEmailFromTemplate(user, "mail/passwordResetEmail", "email.reset.title");
+    }
+
+    protected String mimeMessageToString(MimeMessage message) {
+        try {
+            Address[] from = message.getFrom();
+            Address[] recipients = message.getAllRecipients();
+            String subject = message.getSubject();
+            Object content = message.getContent();
+            return (
+                "MimeMessage{" +
+                "from='" +
+                Arrays.toString(from) +
+                "'" +
+                ", to='" +
+                Arrays.toString(recipients) +
+                "'" +
+                ", subject='" +
+                subject +
+                "'" +
+                ", content='" +
+                content +
+                "'" +
+                "}"
+            );
+        } catch (MessagingException | IOException e) {
+            return "MimeMessage{}: " + e.toString();
+        }
     }
 }

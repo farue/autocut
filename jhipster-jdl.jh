@@ -154,6 +154,7 @@ relationship ManyToOne {
 
 entity Team {
 	name String required
+	email String
 }
 
 entity TeamMembership {

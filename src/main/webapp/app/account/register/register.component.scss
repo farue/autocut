@@ -27,6 +27,7 @@ input[type='number'],
 [type='tel'].form-control,
 [contenteditable].form-control {
   box-shadow: none;
+  border: none;
 }
 
 .warn-icon {

@@ -1,9 +1,9 @@
-import {TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import {ITeam, Team} from '../team.model';
+import { ITeam, Team } from '../team.model';
 
-import {TeamService} from './team.service';
+import { TeamService } from './team.service';
 
 describe('Team Service', () => {
   let service: TeamService;
@@ -22,6 +22,7 @@ describe('Team Service', () => {
     elemDefault = {
       id: 0,
       name: 'AAAAAAA',
+      email: 'AAAAAAA',
     };
   });
 
@@ -58,6 +59,7 @@ describe('Team Service', () => {
         {
           id: 1,
           name: 'BBBBBB',
+          email: 'BBBBBB',
         },
         elemDefault
       );
@@ -90,6 +92,7 @@ describe('Team Service', () => {
         {
           id: 1,
           name: 'BBBBBB',
+          email: 'BBBBBB',
         },
         elemDefault
       );
@@ -141,7 +144,7 @@ describe('Team Service', () => {
       });
 
       it('should add only unique Team to an array', () => {
-        const teamArray: ITeam[] = [{ id: 123 }, { id: 456 }, { id: 47168 }];
+        const teamArray: ITeam[] = [{ id: 123 }, { id: 456 }, { id: 43062 }];
         const teamCollection: ITeam[] = [{ id: 123 }];
         expectedResult = service.addTeamToCollectionIfMissing(teamCollection, ...teamArray);
         expect(expectedResult).toHaveLength(3);

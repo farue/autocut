@@ -52,7 +52,7 @@ public class Tenant implements Serializable {
     private Set<SecurityPolicy> securityPolicies = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "tenants", "transactionBooks", "apartment" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "tenants", "transactionBooks" }, allowSetters = true)
     private Lease lease;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

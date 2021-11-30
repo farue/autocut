@@ -1,39 +1,40 @@
-import {LOCALE_ID, NgModule} from '@angular/core';
-import {registerLocaleData} from '@angular/common';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import { LOCALE_ID, NgModule } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
 import localeEn from '@angular/common/locales/en';
-import {BrowserModule, Title} from '@angular/platform-browser';
-import {ServiceWorkerModule} from '@angular/service-worker';
-import {FaIconLibrary} from '@fortawesome/angular-fontawesome';
-import {MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate/core';
-import {NgxWebstorageModule, SessionStorageService} from 'ngx-webstorage';
+import { BrowserModule, Title } from '@angular/platform-browser';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { NgxWebstorageModule, SessionStorageService } from 'ngx-webstorage';
 import * as dayjs from 'dayjs';
-import {NgbDateAdapter, NgbDatepickerConfig} from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 
-import {ApplicationConfigService} from 'app/core/config/application-config.service';
+import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import './config/dayjs';
-import {SharedModule} from 'app/shared/shared.module';
-import {AppRoutingModule} from './app-routing.module';
-import {HomeModule} from './home/home.module';
-import {EntityRoutingModule} from './entities/entity-routing.module';
+import { SharedModule } from 'app/shared/shared.module';
+import { AppRoutingModule } from './app-routing.module';
+import { HomeModule } from './home/home.module';
+import { EntityRoutingModule } from './entities/entity-routing.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
-import {NgbDateDayjsAdapter} from './config/datepicker-adapter';
-import {fontAwesomeIcons} from './config/font-awesome-icons';
-import {httpInterceptorProviders} from 'app/core/interceptor/index';
-import {missingTranslationHandler, translatePartialLoader} from './config/translation.config';
-import {MainComponent} from './layouts/main/main.component';
-import {NavbarComponent} from './layouts/navbar/navbar.component';
-import {FooterComponent} from './layouts/footer/footer.component';
-import {PageRibbonComponent} from './layouts/profiles/page-ribbon.component';
-import {ActiveMenuDirective} from './layouts/navbar/active-menu.directive';
-import {ErrorComponent} from './layouts/error/error.component';
-import {SelfAdministrationModule} from 'app/self-administration/self-administration.module';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {DateAdapter} from '@angular/material/core';
-import {MatPaginatorIntl} from '@angular/material/paginator';
-import {PaginatorIntlService} from 'app/shared/pagination/paginator-intl.service';
-import {BroadcastMessagesComponent} from './layouts/broadcast-messages/broadcast-messages.component';
+import { NgbDateDayjsAdapter } from './config/datepicker-adapter';
+import { fontAwesomeIcons } from './config/font-awesome-icons';
+import { httpInterceptorProviders } from 'app/core/interceptor/index';
+import { missingTranslationHandler, translatePartialLoader } from './config/translation.config';
+import { MainComponent } from './layouts/main/main.component';
+import { NavbarComponent } from './layouts/navbar/navbar.component';
+import { FooterComponent } from './layouts/footer/footer.component';
+import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
+import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
+import { ErrorComponent } from './layouts/error/error.component';
+import { SelfAdministrationModule } from 'app/self-administration/self-administration.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DateAdapter } from '@angular/material/core';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { PaginatorIntlService } from 'app/shared/pagination/paginator-intl.service';
+import { BroadcastMessagesComponent } from './layouts/broadcast-messages/broadcast-messages.component';
+import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
   imports: [
@@ -62,6 +63,7 @@ import {BroadcastMessagesComponent} from './layouts/broadcast-messages/broadcast
     // Autocut
     BrowserAnimationsModule,
     SelfAdministrationModule,
+    NgxMaskModule.forRoot(),
   ],
   providers: [
     Title,
@@ -76,7 +78,15 @@ import {BroadcastMessagesComponent} from './layouts/broadcast-messages/broadcast
       deps: [TranslateService],
     },
   ],
-  declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent, BroadcastMessagesComponent],
+  declarations: [
+    MainComponent,
+    NavbarComponent,
+    ErrorComponent,
+    PageRibbonComponent,
+    ActiveMenuDirective,
+    FooterComponent,
+    BroadcastMessagesComponent,
+  ],
   bootstrap: [MainComponent],
 })
 export class AppModule {
@@ -97,6 +107,6 @@ export class AppModule {
     // if user have changed language and navigates away from the application and back to the application then use previously choosed language
     const langKey = sessionStorageService.retrieve('locale') ?? 'de';
     translateService.use(langKey);
-    dateAdapter.setLocale(langKey)
+    dateAdapter.setLocale(langKey);
   }
 }
