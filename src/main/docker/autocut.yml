@@ -93,5 +93,5 @@ services:
       DB_DUMP_FREQ: 360 # in minutes, so every 6 hours
       DB_DUMP_BEGIN: +5
       DB_CLEANUP_TIME: 360
-      SPLIT_DB: 'TRUE'
       MD5: 'FALSE'
+      EXTRA_OPTS: --databases autocut
