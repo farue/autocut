@@ -27,7 +27,7 @@ public class SimpleSshShell implements SshShell {
     public void autoDetectPrompt(String promptSymbol) throws IOException {
         synchronized (expect) {
             Result result = expect.expect(Matchers.contains(promptSymbol));
-            prompt = result.getBefore() + promptSymbol;
+            prompt = (result.getBefore() + promptSymbol).strip();
         }
     }
 
