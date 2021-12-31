@@ -203,7 +203,7 @@ application:
       hostname: switch-2.farue.rwth-aachen.de
       username: gitlab
       promptSymbol: '#'
-    - hostFingerprint: 77:2d:6c:3d:94:a3:5d:2c:c9:9e:61:30:5b:c0:14:d6
+    - hostFingerprint: 9f:06:66:ea:37:d6:58:0c:58:ee:79:ec:89:88:e8:cd
       hostname: switch-3.farue.rwth-aachen.de
       username: gitlab
       promptSymbol: '#'
