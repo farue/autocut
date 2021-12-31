@@ -196,14 +196,14 @@ application:
     tanMedium: SO:Galaxy S10
   switchConnections:
     - hostFingerprint: 94:52:76:3a:53:6a:ec:3b:09:1f:18:5b:df:f7:5f:69
-      hostname: c3560-farue-1.farue.rwth-aachen.de
+      hostname: switch-1.farue.rwth-aachen.de
       username: gitlab
       promptSymbol: '#'
     - hostFingerprint: c6:28:35:f6:06:3d:82:97:60:c7:72:37:eb:2d:3c:be
-      hostname: c3560-farue-2.farue.rwth-aachen.de
+      hostname: switch-2.farue.rwth-aachen.de
       username: gitlab
       promptSymbol: '#'
     - hostFingerprint: 77:2d:6c:3d:94:a3:5d:2c:c9:9e:61:30:5b:c0:14:d6
-      hostname: c3560-farue-3.farue.rwth-aachen.de
+      hostname: switch-3.farue.rwth-aachen.de
       username: gitlab
       promptSymbol: '#'
