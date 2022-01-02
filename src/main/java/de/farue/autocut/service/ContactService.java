@@ -32,7 +32,7 @@ public class ContactService {
         boolean isLoggedIn = SecurityUtils.isAuthenticated();
         if (isLoggedIn) {
             log.debug("User is logged in. Overwriting email and apartment with stored user data.");
-            customerEmail = loggedInUserService.getUser().getLogin();
+            customerEmail = loggedInUserService.getUser().getEmail();
             apartmentString = buildApartmentString(loggedInUserService.getLease().getApartment());
         }
 
