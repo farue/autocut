@@ -155,26 +155,13 @@ docker-push:
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
 
-docker-deploy:
-  image: alpine
+trigger-deploy:
   stage: deploy
+  trigger: farue/autosetup
   resource_group: deploy
-  dependencies: []
-  environment:
-    name: production
-    url: https://www.farue.rwth-aachen.de
-  script:
-    - apk add openssh
-    - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - scp ${SSH_OPTS} ${DOCKER_COMPOSE_APP} gitlab@${SERVER_URL}:${REMOTE_DOCKER_COMPOSE_APP}
-    - ssh ${SSH_OPTS} gitlab@${SERVER_URL} "
-      export JASYPT_ENCRYPTOR_PASSWORD=${JASYPT_ENCRYPTOR_PASSWORD}
-      && docker login -u ${CI_DEPLOY_USER} -p ${CI_DEPLOY_PASSWORD} ${CI_REGISTRY}
-      && cd ~/autocut
-      && docker-compose -f autocut.yml pull
-      && docker-compose -f autocut.yml up -d"
+  variables:
+    PLAYBOOK: server.yml
+    TAGS: autocut
+    SKIP_TAGS: backup,restore
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
