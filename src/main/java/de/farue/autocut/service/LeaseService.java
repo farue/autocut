@@ -189,6 +189,10 @@ public class LeaseService {
         return leaseRepository.findAllByApartmentAndDate(apartment, date);
     }
 
+    public Optional<Lease> findByTransactionBook(TransactionBook transactionBook) {
+        return leaseRepository.findOneByTransactionBook(transactionBook);
+    }
+
     public TransactionBook getCashTransactionBook(Lease lease) {
         if (lease.getId() == null) {
             throw new IllegalStateException("Lease must be persisted first");
@@ -203,14 +207,12 @@ public class LeaseService {
             .stream()
             .filter(book -> book.getType() == TransactionBookType.CASH)
             .findFirst()
-            .orElseGet(
-                () -> {
-                    TransactionBook newTransactionBook = transactionBookService.save(new TransactionBook().type(TransactionBookType.CASH));
-                    loadedLease.addTransactionBook(newTransactionBook);
-                    save(loadedLease);
-                    return newTransactionBook;
-                }
-            );
+            .orElseGet(() -> {
+                TransactionBook newTransactionBook = transactionBookService.save(new TransactionBook().type(TransactionBookType.CASH));
+                loadedLease.addTransactionBook(newTransactionBook);
+                save(loadedLease);
+                return newTransactionBook;
+            });
     }
 
     public TransactionBook getDepositTransactionBook(Lease lease) {
@@ -227,16 +229,12 @@ public class LeaseService {
             .stream()
             .filter(book -> book.getType() == TransactionBookType.DEPOSIT)
             .findFirst()
-            .orElseGet(
-                () -> {
-                    TransactionBook newTransactionBook = transactionBookService.save(
-                        new TransactionBook().type(TransactionBookType.DEPOSIT)
-                    );
-                    loadedLease.addTransactionBook(newTransactionBook);
-                    save(loadedLease);
-                    return newTransactionBook;
-                }
-            );
+            .orElseGet(() -> {
+                TransactionBook newTransactionBook = transactionBookService.save(new TransactionBook().type(TransactionBookType.DEPOSIT));
+                loadedLease.addTransactionBook(newTransactionBook);
+                save(loadedLease);
+                return newTransactionBook;
+            });
     }
 
     // NB: Not read-only as a new transaction book is created if none exists

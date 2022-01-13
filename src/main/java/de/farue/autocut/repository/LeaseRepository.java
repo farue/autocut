@@ -3,6 +3,7 @@ package de.farue.autocut.repository;
 import de.farue.autocut.domain.Apartment;
 import de.farue.autocut.domain.Lease;
 import de.farue.autocut.domain.Tenant;
+import de.farue.autocut.domain.TransactionBook;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
@@ -38,4 +39,7 @@ public interface LeaseRepository extends JpaRepository<Lease, Long> {
     List<Lease> findAllByApartmentAndDate(Apartment apartment, Instant date);
 
     List<Lease> findAllByEndGreaterThanAndEndLessThanEqual(LocalDate fromExclusive, LocalDate untilInclusive);
+
+    @Query("select l from Lease l where :transactionBook in l.transactionBooks")
+    Optional<Lease> findOneByTransactionBook(TransactionBook transactionBook);
 }

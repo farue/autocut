@@ -40,15 +40,13 @@ public class NetworkSwitchService {
     public void destroy() {
         switchExecutorsByHostName
             .values()
-            .forEach(
-                executor -> {
-                    try {
-                        executor.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+            .forEach(executor -> {
+                try {
+                    executor.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            );
+            });
     }
 
     /**
@@ -120,6 +118,7 @@ public class NetworkSwitchService {
     }
 
     public void enable(InternetAccess internetAccess) {
+        log.debug("Enabling internet access on switch {} with port {}", internetAccess.getNetworkSwitch(), internetAccess.getPort());
         findSwitchCommandExecutor(internetAccess).enable(internetAccess);
     }
 

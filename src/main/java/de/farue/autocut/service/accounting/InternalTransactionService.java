@@ -101,30 +101,31 @@ public class InternalTransactionService extends TransactionService<InternalTrans
     }
 
     @EventListener
-    public void fireBalanceChangeSignEvent(InternalTransactionEffectiveEvent event) {
-        InternalTransaction transaction = event.getTransaction();
+    public void fireBalanceChangeSignEvent(InternalTransactionEffectiveEvent e) {
+        InternalTransaction transaction = e.getTransaction();
         BigDecimal balance = transaction.getBalanceAfter();
         this.findTransactionImmediatelyBefore(transaction)
-            .ifPresent(
-                previousTransaction -> {
-                    BigDecimal previousBalance = previousTransaction.getBalanceAfter();
-                    if (compare(previousBalance).isNegative() && compare(balance).isPositive()) {
-                        log.debug(
-                            "Balance changed to positive. Firing BalanceChangeToPositiveEvent. Previous: {}, Current: {}",
-                            previousTransaction,
-                            transaction
-                        );
-                        this.publisher.publishEvent(new BalanceChangeToPositiveEvent(previousTransaction, transaction));
-                    } else if (compare(previousBalance).isPositive() && compare(balance).isNegative()) {
-                        log.debug(
-                            "Balance changed to negative. Firing BalanceChangeToNegativeEvent. Previous: {}, Current: {}",
-                            previousTransaction,
-                            transaction
-                        );
-                        this.publisher.publishEvent(new BalanceChangeToNegativeEvent(previousTransaction, transaction));
-                    }
+            .ifPresent(previousTransaction -> {
+                BigDecimal previousBalance = previousTransaction.getBalanceAfter();
+                BigDecimal currentBalance = transactionBookService.getCurrentBalance(transaction.getTransactionBook());
+                if (compare(previousBalance).isNegative() && compare(balance).isPositive()) {
+                    BalanceChangeToPositiveEvent event = new BalanceChangeToPositiveEvent(
+                        previousTransaction,
+                        transaction,
+                        compare(currentBalance).isNegative()
+                    );
+                    log.debug("Balance changed to positive. Firing {}", event);
+                    this.publisher.publishEvent(event);
+                } else if (compare(previousBalance).isPositive() && compare(balance).isNegative()) {
+                    BalanceChangeToNegativeEvent event = new BalanceChangeToNegativeEvent(
+                        previousTransaction,
+                        transaction,
+                        compare(currentBalance).isNegative()
+                    );
+                    log.debug("Balance changed to negative. Firing {}", event);
+                    this.publisher.publishEvent(event);
                 }
-            );
+            });
     }
 
     @Override
@@ -186,18 +187,17 @@ public class InternalTransactionService extends TransactionService<InternalTrans
         return bookingTemplate
             .getTransactionTemplates()
             .stream()
-            .map(
-                transactionTemplate ->
-                    new InternalTransaction()
-                        .transactionType(transactionTemplate.getType())
-                        .bookingDate(bookingTemplate.getBookingDate())
-                        .valueDate(bookingTemplate.getValueDate())
-                        .value(transactionTemplate.getValue())
-                        .transactionBook(transactionTemplate.getTransactionBook())
-                        .description(transactionTemplate.getDescription())
-                        .issuer(transactionTemplate.getIssuer())
-                        .serviceQulifier(transactionTemplate.getServiceQualifier())
-                        .recipient(transactionTemplate.getRecipient())
+            .map(transactionTemplate ->
+                new InternalTransaction()
+                    .transactionType(transactionTemplate.getType())
+                    .bookingDate(bookingTemplate.getBookingDate())
+                    .valueDate(bookingTemplate.getValueDate())
+                    .value(transactionTemplate.getValue())
+                    .transactionBook(transactionTemplate.getTransactionBook())
+                    .description(transactionTemplate.getDescription())
+                    .issuer(transactionTemplate.getIssuer())
+                    .serviceQulifier(transactionTemplate.getServiceQualifier())
+                    .recipient(transactionTemplate.getRecipient())
             )
             .collect(Collectors.toList());
     }
