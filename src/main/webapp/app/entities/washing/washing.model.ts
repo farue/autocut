@@ -1,5 +1,5 @@
 import { LaundryMachineType } from 'app/entities/enumerations/laundry-machine-type.model';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 
 export interface Machine {
   id: number;

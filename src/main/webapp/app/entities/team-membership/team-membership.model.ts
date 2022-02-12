@@ -1,4 +1,4 @@
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 import { ISecurityPolicy } from 'app/entities/security-policy/security-policy.model';
 import { ITenant } from 'app/entities/tenant/tenant.model';
 import { ITeam } from 'app/entities/team/team.model';

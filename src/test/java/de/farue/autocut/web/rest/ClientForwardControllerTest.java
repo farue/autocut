@@ -1,9 +1,7 @@
 package de.farue.autocut.web.rest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,6 +43,16 @@ class ClientForwardControllerTest {
     @Test
     void getNestedClientEndpoint() throws Exception {
         restMockMvc.perform(get("/admin/user-management")).andExpect(status().isOk()).andExpect(forwardedUrl("/"));
+    }
+
+    @Test
+    void getUnmappedDottedEndpoint() throws Exception {
+        restMockMvc.perform(get("/foo.js")).andExpect(status().isNotFound());
+    }
+
+    @Test
+    void getUnmappedNestedDottedEndpoint() throws Exception {
+        restMockMvc.perform(get("/foo/bar.js")).andExpect(status().isNotFound());
     }
 
     @RestController

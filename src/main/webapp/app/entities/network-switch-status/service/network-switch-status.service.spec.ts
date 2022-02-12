@@ -1,11 +1,11 @@
-import {TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import * as dayjs from 'dayjs';
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import dayjs from 'dayjs/esm';
 
-import {DATE_TIME_FORMAT} from 'app/config/input.constants';
-import {INetworkSwitchStatus, NetworkSwitchStatus} from '../network-switch-status.model';
+import { DATE_TIME_FORMAT } from 'app/config/input.constants';
+import { INetworkSwitchStatus, NetworkSwitchStatus } from '../network-switch-status.model';
 
-import {NetworkSwitchStatusService} from './network-switch-status.service';
+import { NetworkSwitchStatusService } from './network-switch-status.service';
 
 describe('NetworkSwitchStatus Service', () => {
   let service: NetworkSwitchStatusService;

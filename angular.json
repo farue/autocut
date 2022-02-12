@@ -108,6 +108,11 @@
   },
   "defaultProject": "autocut",
   "cli": {
+    "cache": {
+      "enabled": true,
+      "path": "./build/",
+      "environment": "all"
+    },
     "packageManager": "npm"
   }
 }

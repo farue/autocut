@@ -1,9 +1,9 @@
-import {Directive, ElementRef, Input, OnChanges, OnDestroy, OnInit} from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { Directive, ElementRef, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import {translationNotFoundMessage} from 'app/config/translation.config';
+import { translationNotFoundMessage } from 'app/config/translation.config';
 
 /**
  * A wrapper directive on top of the translate pipe as the inbuilt translate directive from ngx-translate is too verbose and buggy
@@ -15,7 +15,7 @@ export class TranslateDirective implements OnChanges, OnInit, OnDestroy {
   @Input() jhiTranslate!: string;
   @Input() translateValues?: { [key: string]: unknown };
 
-  private readonly directiveDestroyed = new Subject<never>();
+  private readonly directiveDestroyed = new Subject();
 
   constructor(private el: ElementRef, private translateService: TranslateService) {}
 
@@ -33,7 +33,7 @@ export class TranslateDirective implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.directiveDestroyed.next();
+    this.directiveDestroyed.next(null);
     this.directiveDestroyed.complete();
   }
 
@@ -41,11 +41,11 @@ export class TranslateDirective implements OnChanges, OnInit, OnDestroy {
     this.translateService
       .get(this.jhiTranslate, this.translateValues)
       .pipe(takeUntil(this.directiveDestroyed))
-      .subscribe(
-        value => {
+      .subscribe({
+        next: value => {
           this.el.nativeElement.innerHTML = value;
         },
-        () => `${translationNotFoundMessage}[${this.jhiTranslate}]`
-      );
+        error: () => `${translationNotFoundMessage}[${this.jhiTranslate}]`,
+      });
   }
 }

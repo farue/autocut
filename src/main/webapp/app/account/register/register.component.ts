@@ -5,7 +5,7 @@ import { RegisterService } from './register.service';
 import { IApartment } from 'app/entities/apartment/apartment.model';
 import { ApartmentValidator } from 'app/account/register/apartment-validator';
 import { ImmediateErrorStateMatcher } from 'app/shared/material/immediate-error-state-matcher';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 import { OpUnitType } from 'dayjs';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';

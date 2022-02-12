@@ -1,4 +1,4 @@
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 import { IBroadcastMessageText } from 'app/entities/broadcast-message-text/broadcast-message-text.model';
 import { BroadcastMessageType } from 'app/entities/enumerations/broadcast-message-type.model';
 

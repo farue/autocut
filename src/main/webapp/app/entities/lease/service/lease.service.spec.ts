@@ -1,11 +1,11 @@
-import {TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import * as dayjs from 'dayjs';
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import dayjs from 'dayjs/esm';
 
-import {DATE_FORMAT} from 'app/config/input.constants';
-import {ILease, Lease} from '../lease.model';
+import { DATE_FORMAT } from 'app/config/input.constants';
+import { ILease, Lease } from '../lease.model';
 
-import {LeaseService} from './lease.service';
+import { LeaseService } from './lease.service';
 
 describe('Lease Service', () => {
   let service: LeaseService;

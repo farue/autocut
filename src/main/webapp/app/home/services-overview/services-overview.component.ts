@@ -6,7 +6,7 @@ import { catchError, distinctUntilChanged, filter, map, switchMap } from 'rxjs/o
 import { Machine } from 'app/entities/washing/washing.model';
 import { LoggedInUserService } from 'app/shared/service/logged-in-user.service';
 import { MediaService } from 'app/shared/service/media.service';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 import { InternalTransaction } from 'app/entities/internal-transaction/internal-transaction.model';
 import { HttpResponse } from '@angular/common/http';
 import { isPresent } from 'app/core/util/operators';

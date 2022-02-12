@@ -1,11 +1,11 @@
-import {TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import * as dayjs from 'dayjs';
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import dayjs from 'dayjs/esm';
 
-import {DATE_TIME_FORMAT} from 'app/config/input.constants';
-import {IInternalTransaction, InternalTransaction} from '../internal-transaction.model';
+import { DATE_TIME_FORMAT } from 'app/config/input.constants';
+import { IInternalTransaction, InternalTransaction } from '../internal-transaction.model';
 
-import {InternalTransactionService} from './internal-transaction.service';
+import { InternalTransactionService } from './internal-transaction.service';
 
 describe('InternalTransaction Service', () => {
   let service: InternalTransactionService;

@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 
 @Pipe({
   name: 'i18nDate',

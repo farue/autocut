@@ -2,7 +2,7 @@ package de.farue.autocut.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import de.farue.autocut.domain.enumeration.SemesterTerms;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.*;
@@ -15,7 +15,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * eligible for a discount, and its secondary purpose is to store activity counted at StW.
  * Both these things are in terms of full semesters.
  */
-@ApiModel(
+@Schema(
     description = "Activity always describes an entire semester since its main purpose is to capture who is\neligible for a discount, and its secondary purpose is to store activity counted at StW.\nBoth these things are in terms of full semesters."
 )
 @Entity

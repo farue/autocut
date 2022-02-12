@@ -4,7 +4,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { RegisterService } from './register.service';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { Registration } from './register.model';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 
 describe('RegisterService Service', () => {
   let service: RegisterService;

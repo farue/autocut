@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 import { tap } from 'rxjs/operators';
 import { toDate } from 'app/core/util/date-util';
 import { Machine, Program } from 'app/entities/washing/washing.model';

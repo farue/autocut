@@ -1,11 +1,11 @@
-import {TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import * as dayjs from 'dayjs';
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import dayjs from 'dayjs/esm';
 
-import {DATE_TIME_FORMAT} from 'app/config/input.constants';
-import {BankTransaction, IBankTransaction} from '../bank-transaction.model';
+import { DATE_TIME_FORMAT } from 'app/config/input.constants';
+import { BankTransaction, IBankTransaction } from '../bank-transaction.model';
 
-import {BankTransactionService} from './bank-transaction.service';
+import { BankTransactionService } from './bank-transaction.service';
 
 describe('BankTransaction Service', () => {
   let service: BankTransactionService;

@@ -1,12 +1,12 @@
-import {TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import * as dayjs from 'dayjs';
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import dayjs from 'dayjs/esm';
 
-import {DATE_FORMAT} from 'app/config/input.constants';
-import {SemesterTerms} from 'app/entities/enumerations/semester-terms.model';
-import {Activity, IActivity} from '../activity.model';
+import { DATE_FORMAT } from 'app/config/input.constants';
+import { SemesterTerms } from 'app/entities/enumerations/semester-terms.model';
+import { Activity, IActivity } from '../activity.model';
 
-import {ActivityService} from './activity.service';
+import { ActivityService } from './activity.service';
 
 describe('Activity Service', () => {
   let service: ActivityService;

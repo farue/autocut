@@ -1,4 +1,4 @@
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 import { ITransactionBook } from 'app/entities/transaction-book/transaction-book.model';
 
 export interface ITransaction {

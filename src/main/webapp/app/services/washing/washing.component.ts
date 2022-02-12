@@ -6,7 +6,7 @@ import { INSUFFICIENT_FUNDS_TYPE, LAUNDRY_MACHINE_UNAVAILABLE_TYPE } from 'app/c
 import { LaundryMachineType } from 'app/entities/enumerations/laundry-machine-type.model';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { catchError, distinctUntilChanged, finalize, switchMap, takeUntil, tap } from 'rxjs/operators';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 import { TranslateService } from '@ngx-translate/core';
 import { bounceOnEnterAnimation, rotateAnimation } from 'angular-animations';
 import { isEqual, isNil, uniq } from 'lodash-es';

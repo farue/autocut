@@ -1,4 +1,4 @@
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 import { ITenant } from 'app/entities/tenant/tenant.model';
 import { ILaundryMachine } from 'app/entities/laundry-machine/laundry-machine.model';
 import { ILaundryMachineProgram } from 'app/entities/laundry-machine-program/laundry-machine-program.model';

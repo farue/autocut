@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { IInternalTransaction } from 'app/entities/internal-transaction/internal-transaction.model';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 
 @Component({
   selector: 'jhi-transaction-cell',

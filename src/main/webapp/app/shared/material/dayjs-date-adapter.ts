@@ -1,10 +1,10 @@
-import { Optional, Inject, InjectionToken } from '@angular/core';
+import { Inject, InjectionToken, Optional } from '@angular/core';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
-import * as dayjs from 'dayjs';
-import * as utc from 'dayjs/plugin/utc';
-import * as localeData from 'dayjs/plugin/localeData';
-import * as localizedFormat from 'dayjs/plugin/localizedFormat';
-import * as customParseFormat from 'dayjs/plugin/customParseFormat';
+import dayjs from 'dayjs/esm';
+import utc from 'dayjs/esm/plugin/utc';
+import localeData from 'dayjs/esm/plugin/localeData';
+import localizedFormat from 'dayjs/esm/plugin/localizedFormat';
+import customParseFormat from 'dayjs/esm/plugin/customParseFormat';
 
 export interface DayJsDateAdapterOptions {
   /**

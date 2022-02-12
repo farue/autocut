@@ -1,4 +1,4 @@
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 import { ITenant } from 'app/entities/tenant/tenant.model';
 
 export interface ITenantCommunication {

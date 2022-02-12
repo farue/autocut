@@ -1,12 +1,12 @@
-import {TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import * as dayjs from 'dayjs';
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import dayjs from 'dayjs/esm';
 
-import {DATE_FORMAT} from 'app/config/input.constants';
-import {TeamRole} from 'app/entities/enumerations/team-role.model';
-import {ITeamMembership, TeamMembership} from '../team-membership.model';
+import { DATE_FORMAT } from 'app/config/input.constants';
+import { TeamRole } from 'app/entities/enumerations/team-role.model';
+import { ITeamMembership, TeamMembership } from '../team-membership.model';
 
-import {TeamMembershipService} from './team-membership.service';
+import { TeamMembershipService } from './team-membership.service';
 
 describe('TeamMembership Service', () => {
   let service: TeamMembershipService;

@@ -1,11 +1,11 @@
-import {TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import * as dayjs from 'dayjs';
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import dayjs from 'dayjs/esm';
 
-import {DATE_TIME_FORMAT} from 'app/config/input.constants';
-import {Communication, ICommunication} from '../communication.model';
+import { DATE_TIME_FORMAT } from 'app/config/input.constants';
+import { Communication, ICommunication } from '../communication.model';
 
-import {CommunicationService} from './communication.service';
+import { CommunicationService } from './communication.service';
 
 describe('Communication Service', () => {
   let service: CommunicationService;

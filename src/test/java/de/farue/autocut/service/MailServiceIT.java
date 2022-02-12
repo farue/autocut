@@ -70,7 +70,7 @@ class MailServiceIT {
 
     @BeforeEach
     public void setup() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         ImapFolderFactory imapFolderFactory = mock(ImapFolderFactory.class);
         ImapFolder imapFolder = mock(ImapFolder.class);
         when(imapFolderFactory.getFolder(any())).thenReturn(imapFolder);

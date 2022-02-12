@@ -19,22 +19,6 @@ module.exports = async (config, options, targetOptions) => {
     files: { include: ['*.json'] },
   });
 
-  config.cache = {
-    // 1. Set cache type to filesystem
-    type: 'filesystem',
-    cacheDirectory: path.resolve(__dirname, '../build/webpack'),
-    buildDependencies: {
-      // 2. Add your config as buildDependency to get cache invalidation on config change
-      config: [
-        __filename,
-        path.resolve(__dirname, 'webpack.custom.js'),
-        path.resolve(__dirname, '../angular.json'),
-        path.resolve(__dirname, '../tsconfig.app.json'),
-        path.resolve(__dirname, '../tsconfig.json'),
-      ],
-    },
-  };
-
   // PLUGINS
   if (config.mode === 'development') {
     config.plugins.push(
@@ -63,6 +47,7 @@ module.exports = async (config, options, targetOptions) => {
           https: tls,
           proxy: {
             target: `http${tls ? 's' : ''}://localhost:${targetOptions.target === 'serve' ? '4200' : '8080'}`,
+            ws: true,
             proxyOptions: {
               changeOrigin: false, //pass the Host header to the backend unchanged  https://github.com/Browsersync/browser-sync/issues/430
             },

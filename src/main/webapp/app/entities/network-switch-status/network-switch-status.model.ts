@@ -1,4 +1,4 @@
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 import { INetworkSwitch } from 'app/entities/network-switch/network-switch.model';
 
 export interface INetworkSwitchStatus {

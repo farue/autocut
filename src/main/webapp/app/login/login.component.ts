@@ -54,20 +54,20 @@ export class LoginComponent implements OnInit, AfterViewInit {
         password: this.loginForm.get('password')!.value,
         rememberMe: this.loginForm.get('rememberMe')!.value,
       })
-      .subscribe(
-        () => {
+      .subscribe({
+        next: () => {
           if (!this.router.getCurrentNavigation()) {
             // There were no routing during login (eg from navigationToStoredUrl)
             this.router.navigate(['']);
           }
         },
-        (err: HttpErrorResponse) => {
+        error: (err: HttpErrorResponse) => {
           if (err.error?.status === 401 && err.error?.type === 'https://www.jhipster.tech/problem/user-not-verified') {
             this.accountNotVerified = true;
           } else {
             this.authenticationError = true;
           }
-        }
-      );
+        },
+      });
   }
 }

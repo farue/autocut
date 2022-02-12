@@ -5,7 +5,7 @@ import { createRequestOption } from 'app/core/request/request-util';
 import { Pagination } from 'app/core/request/request.model';
 import { ITransactionOverview } from './transaction-overview.model';
 import { map } from 'rxjs/operators';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 import { ITransaction } from 'app/entities/transaction/transaction.model';
 import { ApplicationConfigService } from '../../core/config/application-config.service';
 

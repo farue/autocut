@@ -1,4 +1,4 @@
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 import { ITenant } from 'app/entities/tenant/tenant.model';
 import { ITeamMembership } from 'app/entities/team-membership/team-membership.model';
 import { SemesterTerms } from 'app/entities/enumerations/semester-terms.model';

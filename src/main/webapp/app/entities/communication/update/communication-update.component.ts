@@ -1,20 +1,20 @@
-import {Component, OnInit} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
-import {FormBuilder, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-import {finalize, map} from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { finalize, map } from 'rxjs/operators';
 
-import * as dayjs from 'dayjs';
-import {DATE_TIME_FORMAT} from 'app/config/input.constants';
+import dayjs from 'dayjs/esm';
+import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 
-import {Communication, ICommunication} from '../communication.model';
-import {CommunicationService} from '../service/communication.service';
-import {AlertError} from 'app/shared/alert/alert-error.model';
-import {EventManager, EventWithContent} from 'app/core/util/event-manager.service';
-import {DataUtils, FileLoadError} from 'app/core/util/data-util.service';
-import {IUser} from 'app/entities/user/user.model';
-import {UserService} from 'app/entities/user/user.service';
+import { Communication, ICommunication } from '../communication.model';
+import { CommunicationService } from '../service/communication.service';
+import { AlertError } from 'app/shared/alert/alert-error.model';
+import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
+import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
+import { IUser } from 'app/entities/user/user.model';
+import { UserService } from 'app/entities/user/user.service';
 
 @Component({
   selector: 'jhi-communication-update',

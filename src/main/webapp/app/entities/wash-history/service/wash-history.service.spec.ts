@@ -1,12 +1,12 @@
-import {TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import * as dayjs from 'dayjs';
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import dayjs from 'dayjs/esm';
 
-import {DATE_TIME_FORMAT} from 'app/config/input.constants';
-import {WashHistoryStatus} from 'app/entities/enumerations/wash-history-status.model';
-import {IWashHistory, WashHistory} from '../wash-history.model';
+import { DATE_TIME_FORMAT } from 'app/config/input.constants';
+import { WashHistoryStatus } from 'app/entities/enumerations/wash-history-status.model';
+import { IWashHistory, WashHistory } from '../wash-history.model';
 
-import {WashHistoryService} from './wash-history.service';
+import { WashHistoryService } from './wash-history.service';
 
 describe('WashHistory Service', () => {
   let service: WashHistoryService;

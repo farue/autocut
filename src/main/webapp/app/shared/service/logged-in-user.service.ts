@@ -12,7 +12,7 @@ import { NetworkStatus } from 'app/entities/internet/network-status.model';
 import { tap } from 'rxjs/operators';
 import { dateToString, toDate } from 'app/core/util/date-util';
 import { TransactionBook } from 'app/entities/transaction/transaction-book.model';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 import { InternalTransaction } from 'app/entities/internal-transaction/internal-transaction.model';
 import { ApplicationConfigService } from '../../core/config/application-config.service';
 

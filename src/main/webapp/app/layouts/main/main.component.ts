@@ -1,10 +1,10 @@
-import {Component, OnInit, Renderer2, RendererFactory2} from '@angular/core';
-import {Title} from '@angular/platform-browser';
-import {ActivatedRouteSnapshot, NavigationEnd, Router} from '@angular/router';
-import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
-import * as dayjs from 'dayjs';
+import { Component, OnInit, Renderer2, RendererFactory2 } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import dayjs from 'dayjs/esm';
 
-import {AccountService} from 'app/core/auth/account.service';
+import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
   selector: 'jhi-main',

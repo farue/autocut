@@ -1,15 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {HttpHeaders, HttpResponse} from '@angular/common/http';
-import {ActivatedRoute, Router} from '@angular/router';
-import {combineLatest} from 'rxjs';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit } from '@angular/core';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { combineLatest } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {ASC, DESC, ITEMS_PER_PAGE, SORT} from 'app/config/pagination.constants';
-import {AccountService} from 'app/core/auth/account.service';
-import {Account} from 'app/core/auth/account.model';
-import {UserManagementService} from '../service/user-management.service';
-import {User} from '../user-management.model';
-import {UserManagementDeleteDialogComponent} from '../delete/user-management-delete-dialog.component';
+import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/auth/account.model';
+import { UserManagementService } from '../service/user-management.service';
+import { User } from '../user-management.model';
+import { UserManagementDeleteDialogComponent } from '../delete/user-management-delete-dialog.component';
 
 @Component({
   selector: 'jhi-user-mgmt',
@@ -65,13 +65,13 @@ export class UserManagementComponent implements OnInit {
         size: this.itemsPerPage,
         sort: this.sort(),
       })
-      .subscribe(
-        (res: HttpResponse<User[]>) => {
+      .subscribe({
+        next: (res: HttpResponse<User[]>) => {
           this.isLoading = false;
           this.onSuccess(res.body, res.headers);
         },
-        () => (this.isLoading = false)
-      );
+        error: () => (this.isLoading = false),
+      });
   }
 
   transition(): void {

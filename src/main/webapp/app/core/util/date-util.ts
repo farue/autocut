@@ -1,4 +1,4 @@
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 
 export function toDate(value: null): null;
 export function toDate(value: undefined): undefined;
