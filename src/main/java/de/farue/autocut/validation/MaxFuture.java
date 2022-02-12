@@ -21,7 +21,7 @@ public @interface MaxFuture {
 
     ChronoUnit unit() default ChronoUnit.DAYS;
 
-    String message() default "Cannot be more than {amount} [unit} in the future.";
+    String message() default "Cannot be more than {amount} {unit} in the future.";
 
     Class<?>[] groups() default {};
 
