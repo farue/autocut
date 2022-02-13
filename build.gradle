@@ -348,6 +348,9 @@ if (project.hasProperty("nodeInstall")) {
     tasks.named("npmSetup").configure { finalizedBy fixedNpm }
 }
 
-test.dependsOn webapp_test
-compileJava.dependsOn processResources
-processResources.dependsOn bootBuildInfo
+// Autocut: speed up build
+if (project.hasProperty("includeWebapp")) {
+    test.dependsOn webapp_test
+}
+//compileJava.dependsOn processResources
+//processResources.dependsOn bootBuildInfo

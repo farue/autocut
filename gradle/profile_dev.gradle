@@ -20,7 +20,20 @@ springBoot {
 }
 
 bootRun {
+    doFirst {
+        if (!project.hasProperty("includeWebapp")) {
+            throw new GradleException("Required profile 'includeWebapp' missing. Set it with '-PincludeWebapp'.")
+        }
+    }
     args = []
+}
+
+bootJar {
+    doFirst {
+        if (!project.hasProperty("includeWebapp")) {
+            throw new GradleException("Required profile 'includeWebapp' missing. Set it with '-PincludeWebapp'.")
+        }
+    }
 }
 
 task webapp(type: NpmTask) {
@@ -65,5 +78,8 @@ processResources {
     }
 }
 
-processResources.dependsOn webapp
-bootJar.dependsOn processResources
+// Autocut: speed up build. Task bootRun and bootJar require property includeWebapp
+if (project.hasProperty("includeWebapp")) {
+    processResources.dependsOn webapp
+    bootJar.dependsOn processResources
+}
