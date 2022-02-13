@@ -19,15 +19,15 @@ export class BroadcastMessageTextComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.broadcastMessageTextService.query().subscribe(
-      (res: HttpResponse<IBroadcastMessageText[]>) => {
+    this.broadcastMessageTextService.query().subscribe({
+      next: (res: HttpResponse<IBroadcastMessageText[]>) => {
         this.isLoading = false;
         this.broadcastMessageTexts = res.body ?? [];
       },
-      () => {
+      error: () => {
         this.isLoading = false;
-      }
-    );
+      },
+    });
   }
 
   ngOnInit(): void {

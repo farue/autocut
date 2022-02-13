@@ -19,15 +19,15 @@ export class NetworkSwitchStatusComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.networkSwitchStatusService.query().subscribe(
-      (res: HttpResponse<INetworkSwitchStatus[]>) => {
+    this.networkSwitchStatusService.query().subscribe({
+      next: (res: HttpResponse<INetworkSwitchStatus[]>) => {
         this.isLoading = false;
         this.networkSwitchStatuses = res.body ?? [];
       },
-      () => {
+      error: () => {
         this.isLoading = false;
-      }
-    );
+      },
+    });
   }
 
   ngOnInit(): void {

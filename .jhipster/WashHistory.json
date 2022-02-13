@@ -1,5 +1,10 @@
 {
-  "name": "WashHistory",
+  "applications": ["autocut"],
+  "changelogDate": "20200326184247",
+  "clientRootFolder": "",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "wash_history",
   "fields": [
     {
       "fieldName": "usingDate",
@@ -19,41 +24,36 @@
       "fieldValues": "OPEN,EXPIRED,COMPLETED,CANCELLED_BY_USER,CANCELLED_BY_SYSTEM"
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "WashHistory",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "tenant",
       "otherEntityRelationshipName": "washHistory",
-      "relationshipName": "reservationTenant"
+      "relationshipName": "reservationTenant",
+      "relationshipType": "many-to-one"
     },
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "tenant",
       "otherEntityRelationshipName": "washHistory",
-      "relationshipName": "usingTenant"
+      "relationshipName": "usingTenant",
+      "relationshipType": "many-to-one"
     },
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "laundryMachine",
       "otherEntityRelationshipName": "washHistory",
-      "relationshipName": "machine"
+      "relationshipName": "machine",
+      "relationshipType": "many-to-one"
     },
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "laundryMachineProgram",
       "otherEntityRelationshipName": "washHistory",
-      "relationshipName": "program"
+      "relationshipName": "program",
+      "relationshipType": "many-to-one"
     }
   ],
-  "changelogDate": "20200326184247",
-  "entityTableName": "wash_history",
-  "dto": "no",
-  "pagination": "no",
-  "service": "no",
-  "jpaMetamodelFiltering": false,
-  "fluentMethods": true,
-  "readOnly": false,
-  "clientRootFolder": "",
-  "applications": ["autocut"],
-  "embedded": false
+  "service": "no"
 }

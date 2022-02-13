@@ -19,15 +19,15 @@ export class GlobalSettingComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.globalSettingService.query().subscribe(
-      (res: HttpResponse<IGlobalSetting[]>) => {
+    this.globalSettingService.query().subscribe({
+      next: (res: HttpResponse<IGlobalSetting[]>) => {
         this.isLoading = false;
         this.globalSettings = res.body ?? [];
       },
-      () => {
+      error: () => {
         this.isLoading = false;
-      }
-    );
+      },
+    });
   }
 
   ngOnInit(): void {

@@ -1,5 +1,10 @@
 {
-  "name": "LaundryMachine",
+  "applications": ["autocut"],
+  "changelogDate": "20200326184245",
+  "clientRootFolder": "",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "wash_machine",
   "fields": [
     {
       "fieldName": "identifier",
@@ -14,8 +19,8 @@
     {
       "fieldName": "type",
       "fieldType": "LaundryMachineType",
-      "fieldValues": "WASHING_MACHINE,DRYER",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": ["required"],
+      "fieldValues": "WASHING_MACHINE,DRYER"
     },
     {
       "fieldName": "enabled",
@@ -33,23 +38,18 @@
       "fieldValidateRules": ["required"]
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "LaundryMachine",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
-      "relationshipType": "one-to-many",
       "otherEntityName": "laundryMachineProgram",
       "otherEntityRelationshipName": "machine",
-      "relationshipName": "programs"
+      "relationshipName": "programs",
+      "relationshipType": "one-to-many"
     }
   ],
-  "changelogDate": "20200326184245",
-  "entityTableName": "wash_machine",
-  "dto": "no",
-  "pagination": "no",
-  "service": "serviceClass",
-  "jpaMetamodelFiltering": false,
-  "fluentMethods": true,
-  "readOnly": false,
-  "clientRootFolder": "",
-  "applications": ["autocut"],
-  "embedded": false
+  "service": "serviceClass"
 }

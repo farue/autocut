@@ -20,15 +20,15 @@ export class TenantComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.tenantService.query().subscribe(
-      (res: HttpResponse<ITenant[]>) => {
+    this.tenantService.query().subscribe({
+      next: (res: HttpResponse<ITenant[]>) => {
         this.isLoading = false;
         this.tenants = res.body ?? [];
       },
-      () => {
+      error: () => {
         this.isLoading = false;
-      }
-    );
+      },
+    });
   }
 
   ngOnInit(): void {

@@ -19,15 +19,15 @@ export class BankTransactionComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.bankTransactionService.query().subscribe(
-      (res: HttpResponse<IBankTransaction[]>) => {
+    this.bankTransactionService.query().subscribe({
+      next: (res: HttpResponse<IBankTransaction[]>) => {
         this.isLoading = false;
         this.bankTransactions = res.body ?? [];
       },
-      () => {
+      error: () => {
         this.isLoading = false;
-      }
-    );
+      },
+    });
   }
 
   ngOnInit(): void {

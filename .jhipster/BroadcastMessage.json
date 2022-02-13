@@ -1,10 +1,15 @@
 {
+  "applications": ["autocut"],
+  "changelogDate": "20210807170559",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "broadcast_message",
   "fields": [
     {
       "fieldName": "type",
       "fieldType": "BroadcastMessageType",
-      "fieldValues": "PRIMARY,SECONDARY,SUCCESS,DANGER,WARNING,INFO,LIGHT,DARK",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": ["required"],
+      "fieldValues": "PRIMARY,SECONDARY,SUCCESS,DANGER,WARNING,INFO,LIGHT,DARK"
     },
     {
       "fieldName": "start",
@@ -23,23 +28,18 @@
       "fieldType": "Boolean"
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "BroadcastMessage",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
-      "relationshipType": "one-to-many",
       "otherEntityName": "broadcastMessageText",
       "otherEntityRelationshipName": "message",
-      "relationshipName": "messageText"
+      "relationshipName": "messageText",
+      "relationshipType": "one-to-many"
     }
   ],
-  "service": "no",
-  "dto": "no",
-  "jpaMetamodelFiltering": false,
-  "readOnly": false,
-  "pagination": "no",
-  "name": "BroadcastMessage",
-  "changelogDate": "20210807170559",
-  "entityTableName": "broadcast_message",
-  "fluentMethods": true,
-  "embedded": false,
-  "applications": ["autocut"]
+  "service": "no"
 }

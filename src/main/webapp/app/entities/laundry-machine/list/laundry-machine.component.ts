@@ -19,15 +19,15 @@ export class LaundryMachineComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.laundryMachineService.query().subscribe(
-      (res: HttpResponse<ILaundryMachine[]>) => {
+    this.laundryMachineService.query().subscribe({
+      next: (res: HttpResponse<ILaundryMachine[]>) => {
         this.isLoading = false;
         this.laundryMachines = res.body ?? [];
       },
-      () => {
+      error: () => {
         this.isLoading = false;
-      }
-    );
+      },
+    });
   }
 
   ngOnInit(): void {

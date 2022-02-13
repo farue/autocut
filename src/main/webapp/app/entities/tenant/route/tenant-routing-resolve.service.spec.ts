@@ -1,15 +1,14 @@
-jest.mock('@angular/router');
+import { TestBed } from '@angular/core/testing';
+import { HttpResponse } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ActivatedRoute, ActivatedRouteSnapshot, convertToParamMap, Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { of } from 'rxjs';
 
-import {TestBed} from '@angular/core/testing';
-import {HttpResponse} from '@angular/common/http';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {ActivatedRouteSnapshot, Router} from '@angular/router';
-import {of} from 'rxjs';
+import { ITenant, Tenant } from '../tenant.model';
+import { TenantService } from '../service/tenant.service';
 
-import {ITenant, Tenant} from '../tenant.model';
-import {TenantService} from '../service/tenant.service';
-
-import {TenantRoutingResolveService} from './tenant-routing-resolve.service';
+import { TenantRoutingResolveService } from './tenant-routing-resolve.service';
 
 describe('Tenant routing resolve service', () => {
   let mockRouter: Router;
@@ -20,11 +19,21 @@ describe('Tenant routing resolve service', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [Router, ActivatedRouteSnapshot],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              paramMap: convertToParamMap({}),
+            },
+          },
+        },
+      ],
     });
     mockRouter = TestBed.inject(Router);
-    mockActivatedRouteSnapshot = TestBed.inject(ActivatedRouteSnapshot);
+    jest.spyOn(mockRouter, 'navigate').mockImplementation(() => Promise.resolve(true));
+    mockActivatedRouteSnapshot = TestBed.inject(ActivatedRoute).snapshot;
     routingResolveService = TestBed.inject(TenantRoutingResolveService);
     service = TestBed.inject(TenantService);
     resultTenant = undefined;

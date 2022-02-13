@@ -19,15 +19,15 @@ export class LaundryProgramComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.laundryProgramService.query().subscribe(
-      (res: HttpResponse<ILaundryProgram[]>) => {
+    this.laundryProgramService.query().subscribe({
+      next: (res: HttpResponse<ILaundryProgram[]>) => {
         this.isLoading = false;
         this.laundryPrograms = res.body ?? [];
       },
-      () => {
+      error: () => {
         this.isLoading = false;
-      }
-    );
+      },
+    });
   }
 
   ngOnInit(): void {

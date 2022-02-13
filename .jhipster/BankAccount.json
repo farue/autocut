@@ -1,5 +1,10 @@
 {
-  "name": "BankAccount",
+  "applications": ["autocut"],
+  "changelogDate": "20201025153348",
+  "clientRootFolder": "",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "bank_account",
   "fields": [
     {
       "fieldName": "name",
@@ -19,16 +24,11 @@
       "fieldValidateRulesMaxlength": "34"
     }
   ],
-  "relationships": [],
-  "changelogDate": "20201025153348",
-  "entityTableName": "bank_account",
-  "dto": "no",
-  "pagination": "no",
-  "service": "serviceClass",
-  "jpaMetamodelFiltering": false,
   "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "BankAccount",
+  "pagination": "no",
   "readOnly": false,
-  "embedded": false,
-  "clientRootFolder": "",
-  "applications": ["autocut"]
+  "relationships": [],
+  "service": "serviceClass"
 }

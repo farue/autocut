@@ -20,15 +20,15 @@ export class LeaseComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.leaseService.query().subscribe(
-      (res: HttpResponse<ILease[]>) => {
+    this.leaseService.query().subscribe({
+      next: (res: HttpResponse<ILease[]>) => {
         this.isLoading = false;
         this.leases = res.body ?? [];
       },
-      () => {
+      error: () => {
         this.isLoading = false;
-      }
-    );
+      },
+    });
   }
 
   ngOnInit(): void {

@@ -1,11 +1,10 @@
-jest.mock('@angular/router');
-
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { of, Subject } from 'rxjs';
+import { RouterTestingModule } from '@angular/router/testing';
+import { from, of, Subject } from 'rxjs';
 
 import { BroadcastMessageTextService } from '../service/broadcast-message-text.service';
 import { BroadcastMessageText, IBroadcastMessageText } from '../broadcast-message-text.model';
@@ -23,9 +22,17 @@ describe('BroadcastMessageText Management Update Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
       declarations: [BroadcastMessageTextUpdateComponent],
-      providers: [FormBuilder, ActivatedRoute],
+      providers: [
+        FormBuilder,
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: from([{}]),
+          },
+        },
+      ],
     })
       .overrideTemplate(BroadcastMessageTextUpdateComponent, '')
       .compileComponents();

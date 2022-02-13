@@ -1,5 +1,10 @@
 {
-  "name": "LaundryMachineProgram",
+  "applications": ["autocut"],
+  "changelogDate": "20200326184246",
+  "clientRootFolder": "",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "wash_machine_program",
   "fields": [
     {
       "fieldName": "time",
@@ -7,31 +12,26 @@
       "fieldValidateRules": ["required"]
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "LaundryMachineProgram",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "laundryProgram",
       "otherEntityRelationshipName": "laundryMachineProgram",
-      "relationshipValidateRules": "required",
-      "relationshipName": "program"
+      "relationshipName": "program",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
     },
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "laundryMachine",
       "otherEntityRelationshipName": "programs",
-      "relationshipValidateRules": "required",
-      "relationshipName": "machine"
+      "relationshipName": "machine",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
     }
   ],
-  "changelogDate": "20200326184246",
-  "entityTableName": "wash_machine_program",
-  "dto": "no",
-  "pagination": "no",
-  "service": "no",
-  "jpaMetamodelFiltering": false,
-  "fluentMethods": true,
-  "readOnly": false,
-  "clientRootFolder": "",
-  "applications": ["autocut"],
-  "embedded": false
+  "service": "no"
 }

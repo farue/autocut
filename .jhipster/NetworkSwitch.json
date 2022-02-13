@@ -1,5 +1,11 @@
 {
-  "name": "NetworkSwitch",
+  "applications": ["autocut"],
+  "changelogDate": "20200429190800",
+  "clientRootFolder": "",
+  "databaseType": "sql",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "network_switch",
   "fields": [
     {
       "fieldName": "interfaceName",
@@ -12,18 +18,12 @@
       "fieldValidateRules": ["required"]
     }
   ],
-  "relationships": [],
-  "changelogDate": "20200429190800",
-  "entityTableName": "network_switch",
-  "dto": "no",
-  "pagination": "no",
-  "service": "serviceClass",
-  "jpaMetamodelFiltering": false,
   "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "NetworkSwitch",
+  "pagination": "no",
   "readOnly": false,
-  "embedded": false,
-  "clientRootFolder": "",
-  "applications": ["autocut"],
+  "relationships": [],
   "searchEngine": false,
-  "databaseType": "sql"
+  "service": "serviceClass"
 }

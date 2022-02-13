@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
-import {FormBuilder, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-import {finalize} from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
-import {ILaundryMachine, LaundryMachine} from '../laundry-machine.model';
-import {LaundryMachineService} from '../service/laundry-machine.service';
-import {LaundryMachineType} from 'app/entities/enumerations/laundry-machine-type.model';
+import { ILaundryMachine, LaundryMachine } from '../laundry-machine.model';
+import { LaundryMachineService } from '../service/laundry-machine.service';
+import { LaundryMachineType } from 'app/entities/enumerations/laundry-machine-type.model';
 
 @Component({
   selector: 'jhi-laundry-machine-update',
@@ -54,10 +54,10 @@ export class LaundryMachineUpdateComponent implements OnInit {
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ILaundryMachine>>): void {
-    result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
-    );
+    result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
+      next: () => this.onSaveSuccess(),
+      error: () => this.onSaveError(),
+    });
   }
 
   protected onSaveSuccess(): void {

@@ -19,15 +19,15 @@ export class TeamComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.teamService.query().subscribe(
-      (res: HttpResponse<ITeam[]>) => {
+    this.teamService.query().subscribe({
+      next: (res: HttpResponse<ITeam[]>) => {
         this.isLoading = false;
         this.teams = res.body ?? [];
       },
-      () => {
+      error: () => {
         this.isLoading = false;
-      }
-    );
+      },
+    });
   }
 
   ngOnInit(): void {

@@ -1,5 +1,10 @@
 {
-  "name": "Lease",
+  "applications": ["autocut"],
+  "changelogDate": "20191117011744",
+  "clientRootFolder": "",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "lease",
   "fields": [
     {
       "fieldName": "nr",
@@ -26,36 +31,31 @@
       "fieldTypeBlobContent": "image"
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Lease",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
-      "relationshipType": "one-to-many",
       "otherEntityName": "tenant",
       "otherEntityRelationshipName": "lease",
-      "relationshipName": "tenants"
+      "relationshipName": "tenants",
+      "relationshipType": "one-to-many"
     },
     {
-      "relationshipType": "many-to-many",
       "otherEntityName": "transactionBook",
       "otherEntityRelationshipName": "lease",
+      "ownerSide": true,
       "relationshipName": "transactionBook",
-      "ownerSide": true
+      "relationshipType": "many-to-many"
     },
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "apartment",
       "otherEntityRelationshipName": "leases",
-      "relationshipName": "apartment"
+      "relationshipName": "apartment",
+      "relationshipType": "many-to-one"
     }
   ],
-  "changelogDate": "20191117011744",
-  "entityTableName": "lease",
-  "dto": "no",
-  "pagination": "no",
-  "service": "serviceClass",
-  "jpaMetamodelFiltering": false,
-  "fluentMethods": true,
-  "readOnly": false,
-  "clientRootFolder": "",
-  "applications": ["autocut"],
-  "embedded": false
+  "service": "serviceClass"
 }

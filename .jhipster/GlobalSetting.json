@@ -1,5 +1,10 @@
 {
-  "name": "GlobalSetting",
+  "applications": "*",
+  "changelogDate": "20200410002948",
+  "clientRootFolder": "",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "global_setting",
   "fields": [
     {
       "fieldName": "key",
@@ -14,16 +19,11 @@
       "fieldType": "String"
     }
   ],
-  "relationships": [],
-  "changelogDate": "20200410002948",
-  "entityTableName": "global_setting",
-  "dto": "no",
-  "pagination": "no",
-  "service": "no",
-  "jpaMetamodelFiltering": false,
   "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "GlobalSetting",
+  "pagination": "no",
   "readOnly": false,
-  "clientRootFolder": "",
-  "applications": "*",
-  "embedded": false
+  "relationships": [],
+  "service": "no"
 }

@@ -1,5 +1,10 @@
 {
-  "name": "Address",
+  "applications": "*",
+  "changelogDate": "20191117011746",
+  "clientRootFolder": "",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "address",
   "fields": [
     {
       "fieldName": "street",
@@ -28,16 +33,11 @@
       "fieldValidateRules": ["required"]
     }
   ],
-  "relationships": [],
-  "changelogDate": "20191117011746",
-  "entityTableName": "address",
-  "dto": "no",
-  "pagination": "no",
-  "service": "serviceClass",
-  "jpaMetamodelFiltering": false,
   "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Address",
+  "pagination": "no",
   "readOnly": false,
-  "clientRootFolder": "",
-  "applications": "*",
-  "embedded": false
+  "relationships": [],
+  "service": "serviceClass"
 }

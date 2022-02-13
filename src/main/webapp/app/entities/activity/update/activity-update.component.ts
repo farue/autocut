@@ -1,17 +1,17 @@
-import {Component, OnInit} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
-import {FormBuilder, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-import {finalize, map} from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { finalize, map } from 'rxjs/operators';
 
-import {Activity, IActivity} from '../activity.model';
-import {ActivityService} from '../service/activity.service';
-import {ITenant} from 'app/entities/tenant/tenant.model';
-import {TenantService} from 'app/entities/tenant/service/tenant.service';
-import {ITeamMembership} from 'app/entities/team-membership/team-membership.model';
-import {TeamMembershipService} from 'app/entities/team-membership/service/team-membership.service';
-import {SemesterTerms} from 'app/entities/enumerations/semester-terms.model';
+import { Activity, IActivity } from '../activity.model';
+import { ActivityService } from '../service/activity.service';
+import { ITenant } from 'app/entities/tenant/tenant.model';
+import { TenantService } from 'app/entities/tenant/service/tenant.service';
+import { ITeamMembership } from 'app/entities/team-membership/team-membership.model';
+import { TeamMembershipService } from 'app/entities/team-membership/service/team-membership.service';
+import { SemesterTerms } from 'app/entities/enumerations/semester-terms.model';
 
 @Component({
   selector: 'jhi-activity-update',
@@ -76,10 +76,10 @@ export class ActivityUpdateComponent implements OnInit {
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IActivity>>): void {
-    result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
-    );
+    result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
+      next: () => this.onSaveSuccess(),
+      error: () => this.onSaveError(),
+    });
   }
 
   protected onSaveSuccess(): void {

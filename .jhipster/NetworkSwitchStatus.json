@@ -1,14 +1,11 @@
 {
-  "fluentMethods": true,
+  "applications": ["autocut"],
+  "changelogDate": "20210117123309",
   "clientRootFolder": "",
-  "relationships": [
-    {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "networkSwitch",
-      "otherEntityRelationshipName": "networkSwitchStatus",
-      "relationshipName": "networkSwitch"
-    }
-  ],
+  "databaseType": "sql",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "network_switch_status",
   "fields": [
     {
       "fieldName": "port",
@@ -41,16 +38,19 @@
       "fieldValidateRules": ["required"]
     }
   ],
-  "changelogDate": "20210117123309",
-  "dto": "no",
-  "searchEngine": false,
-  "service": "serviceClass",
-  "entityTableName": "network_switch_status",
-  "databaseType": "sql",
-  "readOnly": false,
+  "fluentMethods": true,
   "jpaMetamodelFiltering": false,
-  "pagination": "no",
   "name": "NetworkSwitchStatus",
-  "embedded": false,
-  "applications": ["autocut"]
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "networkSwitch",
+      "otherEntityRelationshipName": "networkSwitchStatus",
+      "relationshipName": "networkSwitch",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": false,
+  "service": "serviceClass"
 }

@@ -1,42 +1,42 @@
 {
-  "name": "SecurityPolicy",
+  "applications": ["autocut"],
+  "changelogDate": "20191117011747",
+  "clientRootFolder": "",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "security_policy",
   "fields": [
     {
       "fieldName": "protectionUnit",
       "fieldType": "ProtectionUnits",
-      "fieldValues": "BANK_TRANSACTIONS,TENANT_MANAGEMENT,INTERNET_ACCESS_MANAGEMENT,TOOLS_MANAGEMENT,WASHING_SYSTEM_MANAGEMENT",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": ["required"],
+      "fieldValues": "BANK_TRANSACTIONS,TENANT_MANAGEMENT,INTERNET_ACCESS_MANAGEMENT,TOOLS_MANAGEMENT,WASHING_SYSTEM_MANAGEMENT"
     },
     {
       "fieldName": "access",
       "fieldType": "Access",
-      "fieldValues": "READ_ALLOW,READ_WRITE_ALLOW,WRITE_DENY,READ_WRITE_DENY",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": ["required"],
+      "fieldValues": "READ_ALLOW,READ_WRITE_ALLOW,WRITE_DENY,READ_WRITE_DENY"
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "SecurityPolicy",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "teamMembership",
       "otherEntityRelationshipName": "securityPolicies",
-      "relationshipName": "teamMember"
+      "relationshipName": "teamMember",
+      "relationshipType": "many-to-one"
     },
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "tenant",
       "otherEntityRelationshipName": "securityPolicies",
-      "relationshipName": "tenant"
+      "relationshipName": "tenant",
+      "relationshipType": "many-to-one"
     }
   ],
-  "changelogDate": "20191117011747",
-  "entityTableName": "security_policy",
-  "dto": "no",
-  "pagination": "no",
-  "service": "no",
-  "jpaMetamodelFiltering": false,
-  "fluentMethods": true,
-  "readOnly": false,
-  "clientRootFolder": "",
-  "applications": ["autocut"],
-  "embedded": false
+  "service": "no"
 }

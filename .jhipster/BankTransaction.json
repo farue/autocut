@@ -1,5 +1,10 @@
 {
-  "name": "BankTransaction",
+  "applications": ["autocut"],
+  "changelogDate": "20201025153448",
+  "clientRootFolder": "",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "bank_transaction",
   "fields": [
     {
       "fieldName": "bookingDate",
@@ -54,51 +59,46 @@
       "fieldType": "String"
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "BankTransaction",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "bankAccount",
       "otherEntityRelationshipName": "bankTransaction",
-      "relationshipValidateRules": "required",
-      "relationshipName": "bankAccount"
+      "relationshipName": "bankAccount",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
     },
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "bankAccount",
       "otherEntityRelationshipName": "bankTransaction",
-      "relationshipName": "contraBankAccount"
+      "relationshipName": "contraBankAccount",
+      "relationshipType": "many-to-one"
     },
     {
-      "relationshipType": "many-to-many",
       "otherEntityName": "bankTransaction",
       "otherEntityRelationshipName": "right",
+      "ownerSide": true,
       "relationshipName": "left",
-      "ownerSide": true
+      "relationshipType": "many-to-many"
     },
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "transactionBook",
       "otherEntityRelationshipName": "bTransaction",
-      "relationshipValidateRules": "required",
-      "relationshipName": "transactionBook"
+      "relationshipName": "transactionBook",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
     },
     {
-      "relationshipType": "many-to-many",
       "otherEntityName": "bankTransaction",
       "otherEntityRelationshipName": "left",
+      "ownerSide": false,
       "relationshipName": "right",
-      "ownerSide": false
+      "relationshipType": "many-to-many"
     }
   ],
-  "changelogDate": "20201025153448",
-  "entityTableName": "bank_transaction",
-  "dto": "no",
-  "pagination": "no",
-  "service": "serviceClass",
-  "jpaMetamodelFiltering": false,
-  "fluentMethods": true,
-  "readOnly": false,
-  "embedded": false,
-  "clientRootFolder": "",
-  "applications": ["autocut"]
+  "service": "serviceClass"
 }

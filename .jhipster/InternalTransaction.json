@@ -1,5 +1,10 @@
 {
-  "name": "InternalTransaction",
+  "applications": ["autocut"],
+  "changelogDate": "20191117011752",
+  "clientRootFolder": "",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "internal_transaction",
   "fields": [
     {
       "fieldName": "type",
@@ -44,38 +49,33 @@
       "fieldType": "String"
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "InternalTransaction",
+  "pagination": "pagination",
+  "readOnly": false,
   "relationships": [
     {
-      "relationshipType": "many-to-many",
       "otherEntityName": "internalTransaction",
       "otherEntityRelationshipName": "right",
+      "ownerSide": true,
       "relationshipName": "left",
-      "ownerSide": true
+      "relationshipType": "many-to-many"
     },
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "transactionBook",
       "otherEntityRelationshipName": "iTransaction",
-      "relationshipValidateRules": "required",
-      "relationshipName": "transactionBook"
+      "relationshipName": "transactionBook",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
     },
     {
-      "relationshipType": "many-to-many",
       "otherEntityName": "internalTransaction",
       "otherEntityRelationshipName": "left",
+      "ownerSide": false,
       "relationshipName": "right",
-      "ownerSide": false
+      "relationshipType": "many-to-many"
     }
   ],
-  "changelogDate": "20191117011752",
-  "entityTableName": "internal_transaction",
-  "dto": "no",
-  "pagination": "pagination",
-  "service": "serviceClass",
-  "jpaMetamodelFiltering": false,
-  "fluentMethods": true,
-  "readOnly": false,
-  "clientRootFolder": "",
-  "applications": ["autocut"],
-  "embedded": false
+  "service": "serviceClass"
 }

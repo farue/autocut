@@ -20,15 +20,15 @@ export class CommunicationComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.communicationService.query().subscribe(
-      (res: HttpResponse<ICommunication[]>) => {
+    this.communicationService.query().subscribe({
+      next: (res: HttpResponse<ICommunication[]>) => {
         this.isLoading = false;
         this.communications = res.body ?? [];
       },
-      () => {
+      error: () => {
         this.isLoading = false;
-      }
-    );
+      },
+    });
   }
 
   ngOnInit(): void {

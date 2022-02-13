@@ -1,5 +1,10 @@
 {
-  "name": "InternetAccess",
+  "applications": ["autocut"],
+  "changelogDate": "20191117011748",
+  "clientRootFolder": "",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "internet_access",
   "fields": [
     {
       "fieldName": "ip1",
@@ -23,30 +28,25 @@
       "fieldValidateRulesMin": "1"
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "InternetAccess",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "networkSwitch",
       "otherEntityRelationshipName": "internetAccess",
-      "relationshipName": "networkSwitch"
+      "relationshipName": "networkSwitch",
+      "relationshipType": "many-to-one"
     },
     {
-      "relationshipType": "one-to-one",
       "otherEntityName": "apartment",
       "otherEntityRelationshipName": "internetAccess",
+      "ownerSide": false,
       "relationshipName": "apartment",
-      "ownerSide": false
+      "relationshipType": "one-to-one"
     }
   ],
-  "changelogDate": "20191117011748",
-  "entityTableName": "internet_access",
-  "dto": "no",
-  "pagination": "no",
-  "service": "serviceClass",
-  "jpaMetamodelFiltering": false,
-  "fluentMethods": true,
-  "readOnly": false,
-  "clientRootFolder": "",
-  "applications": ["autocut"],
-  "embedded": false
+  "service": "serviceClass"
 }

@@ -1,5 +1,10 @@
 {
-  "name": "Activity",
+  "applications": ["autocut"],
+  "changelogDate": "20200112182900",
+  "clientRootFolder": "",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "activity",
   "fields": [
     {
       "fieldName": "year",
@@ -9,8 +14,8 @@
     {
       "fieldName": "term",
       "fieldType": "SemesterTerms",
-      "fieldValues": "SUMMER_TERM,WINTER_TERM",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": ["required"],
+      "fieldValues": "SUMMER_TERM,WINTER_TERM"
     },
     {
       "fieldName": "start",
@@ -33,30 +38,25 @@
       "fieldType": "Boolean"
     }
   ],
+  "fluentMethods": true,
+  "javadoc": "Activity always describes an entire semester since its main purpose is to capture who is\\neligible for a discount, and its secondary purpose is to store activity counted at StW.\\nBoth these things are in terms of full semesters.",
+  "jpaMetamodelFiltering": false,
+  "name": "Activity",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "tenant",
       "otherEntityRelationshipName": "activity",
-      "relationshipName": "tenant"
+      "relationshipName": "tenant",
+      "relationshipType": "many-to-one"
     },
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "teamMembership",
       "otherEntityRelationshipName": "activity",
-      "relationshipName": "teamMembership"
+      "relationshipName": "teamMembership",
+      "relationshipType": "many-to-one"
     }
   ],
-  "changelogDate": "20200112182900",
-  "entityTableName": "activity",
-  "dto": "no",
-  "pagination": "no",
-  "service": "serviceClass",
-  "jpaMetamodelFiltering": false,
-  "fluentMethods": true,
-  "readOnly": false,
-  "clientRootFolder": "",
-  "applications": ["autocut"],
-  "embedded": false,
-  "javadoc": "Activity always describes an entire semester since its main purpose is to capture who is\\neligible for a discount, and its secondary purpose is to store activity counted at StW.\\nBoth these things are in terms of full semesters."
+  "service": "serviceClass"
 }

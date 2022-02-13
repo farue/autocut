@@ -1,5 +1,9 @@
 {
-  "name": "BroadcastMessageText",
+  "applications": ["autocut"],
+  "changelogDate": "20210808220524",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "broadcast_message_text",
   "fields": [
     {
       "fieldName": "langKey",
@@ -14,23 +18,19 @@
       "fieldValidateRulesMaxlength": "4000"
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "BroadcastMessageText",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "broadcastMessage",
       "otherEntityRelationshipName": "messageText",
-      "relationshipValidateRules": "required",
-      "relationshipName": "message"
+      "relationshipName": "message",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
     }
   ],
-  "entityTableName": "broadcast_message_text",
-  "dto": "no",
-  "pagination": "no",
-  "service": "no",
-  "jpaMetamodelFiltering": false,
-  "fluentMethods": true,
-  "readOnly": false,
-  "embedded": false,
-  "applications": ["autocut"],
-  "changelogDate": "20210808220524"
+  "service": "no"
 }

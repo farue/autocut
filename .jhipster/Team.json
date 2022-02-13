@@ -1,35 +1,33 @@
 {
-  "name": "Team",
+  "applications": "*",
+  "changelogDate": "20191117011742",
+  "clientRootFolder": "",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "team",
   "fields": [
     {
       "fieldName": "name",
       "fieldType": "String",
-      "fieldValidateRules": [
-        "required"
-      ]
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "email",
       "fieldType": "String"
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Team",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
-      "relationshipType": "one-to-many",
       "otherEntityName": "teamMembership",
       "otherEntityRelationshipName": "team",
-      "relationshipName": "teamMembership"
+      "relationshipName": "teamMembership",
+      "relationshipType": "one-to-many"
     }
   ],
-  "changelogDate": "20191117011742",
-  "entityTableName": "team",
-  "dto": "no",
-  "pagination": "no",
-  "service": "no",
-  "jpaMetamodelFiltering": false,
-  "fluentMethods": true,
-  "readOnly": false,
-  "clientRootFolder": "",
-  "applications": "*",
-  "embedded": false
+  "service": "no"
 }

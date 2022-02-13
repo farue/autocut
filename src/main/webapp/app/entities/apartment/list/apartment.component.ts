@@ -19,15 +19,15 @@ export class ApartmentComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.apartmentService.query().subscribe(
-      (res: HttpResponse<IApartment[]>) => {
+    this.apartmentService.query().subscribe({
+      next: (res: HttpResponse<IApartment[]>) => {
         this.isLoading = false;
         this.apartments = res.body ?? [];
       },
-      () => {
+      error: () => {
         this.isLoading = false;
-      }
-    );
+      },
+    });
   }
 
   ngOnInit(): void {

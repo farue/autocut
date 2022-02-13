@@ -1,14 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {HttpHeaders, HttpResponse} from '@angular/common/http';
-import {ActivatedRoute, Router} from '@angular/router';
-import {combineLatest} from 'rxjs';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit } from '@angular/core';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { combineLatest } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {IInternalTransaction} from '../internal-transaction.model';
+import { IInternalTransaction } from '../internal-transaction.model';
 
-import {ASC, DESC, ITEMS_PER_PAGE, SORT} from 'app/config/pagination.constants';
-import {InternalTransactionService} from '../service/internal-transaction.service';
-import {InternalTransactionDeleteDialogComponent} from '../delete/internal-transaction-delete-dialog.component';
+import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
+import { InternalTransactionService } from '../service/internal-transaction.service';
+import { InternalTransactionDeleteDialogComponent } from '../delete/internal-transaction-delete-dialog.component';
 
 @Component({
   selector: 'jhi-internal-transaction',
@@ -41,16 +41,16 @@ export class InternalTransactionComponent implements OnInit {
         size: this.itemsPerPage,
         sort: this.sort(),
       })
-      .subscribe(
-        (res: HttpResponse<IInternalTransaction[]>) => {
+      .subscribe({
+        next: (res: HttpResponse<IInternalTransaction[]>) => {
           this.isLoading = false;
           this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
         },
-        () => {
+        error: () => {
           this.isLoading = false;
           this.onError();
-        }
-      );
+        },
+      });
   }
 
   ngOnInit(): void {

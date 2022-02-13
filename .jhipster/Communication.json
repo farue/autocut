@@ -1,5 +1,10 @@
 {
-  "name": "Communication",
+  "applications": ["autocut"],
+  "changelogDate": "20200326184242",
+  "clientRootFolder": "",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "communication",
   "fields": [
     {
       "fieldName": "subject",
@@ -24,23 +29,18 @@
       "fieldValidateRules": ["required"]
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Communication",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "user",
       "otherEntityRelationshipName": "communication",
-      "relationshipName": "tenant"
+      "relationshipName": "tenant",
+      "relationshipType": "many-to-one"
     }
   ],
-  "changelogDate": "20200326184242",
-  "entityTableName": "communication",
-  "dto": "no",
-  "pagination": "no",
-  "service": "no",
-  "jpaMetamodelFiltering": false,
-  "fluentMethods": true,
-  "readOnly": false,
-  "clientRootFolder": "",
-  "applications": ["autocut"],
-  "embedded": false
+  "service": "no"
 }

@@ -19,15 +19,15 @@ export class SecurityPolicyComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.securityPolicyService.query().subscribe(
-      (res: HttpResponse<ISecurityPolicy[]>) => {
+    this.securityPolicyService.query().subscribe({
+      next: (res: HttpResponse<ISecurityPolicy[]>) => {
         this.isLoading = false;
         this.securityPolicies = res.body ?? [];
       },
-      () => {
+      error: () => {
         this.isLoading = false;
-      }
-    );
+      },
+    });
   }
 
   ngOnInit(): void {

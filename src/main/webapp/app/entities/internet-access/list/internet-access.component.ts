@@ -19,15 +19,15 @@ export class InternetAccessComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.internetAccessService.query().subscribe(
-      (res: HttpResponse<IInternetAccess[]>) => {
+    this.internetAccessService.query().subscribe({
+      next: (res: HttpResponse<IInternetAccess[]>) => {
         this.isLoading = false;
         this.internetAccesses = res.body ?? [];
       },
-      () => {
+      error: () => {
         this.isLoading = false;
-      }
-    );
+      },
+    });
   }
 
   ngOnInit(): void {

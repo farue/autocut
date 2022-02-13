@@ -19,15 +19,15 @@ export class WashHistoryComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.washHistoryService.query().subscribe(
-      (res: HttpResponse<IWashHistory[]>) => {
+    this.washHistoryService.query().subscribe({
+      next: (res: HttpResponse<IWashHistory[]>) => {
         this.isLoading = false;
         this.washHistories = res.body ?? [];
       },
-      () => {
+      error: () => {
         this.isLoading = false;
-      }
-    );
+      },
+    });
   }
 
   ngOnInit(): void {

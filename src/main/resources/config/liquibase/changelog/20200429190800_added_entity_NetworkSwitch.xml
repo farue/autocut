@@ -52,7 +52,7 @@
             <column name="interface_name" type="string"/>
             <column name="ssh_host" type="string"/>
             <column name="ssh_port" type="numeric"/>
-            <column name="ssh_key" type="clob"/>
+            <column name="ssh_key" type="clob" defaultValue=""/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

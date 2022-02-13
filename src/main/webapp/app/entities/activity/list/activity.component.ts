@@ -19,15 +19,15 @@ export class ActivityComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.activityService.query().subscribe(
-      (res: HttpResponse<IActivity[]>) => {
+    this.activityService.query().subscribe({
+      next: (res: HttpResponse<IActivity[]>) => {
         this.isLoading = false;
         this.activities = res.body ?? [];
       },
-      () => {
+      error: () => {
         this.isLoading = false;
-      }
-    );
+      },
+    });
   }
 
   ngOnInit(): void {

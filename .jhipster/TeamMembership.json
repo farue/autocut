@@ -1,5 +1,10 @@
 {
-  "name": "TeamMembership",
+  "applications": ["autocut"],
+  "changelogDate": "20201022221139",
+  "clientRootFolder": "",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "team_membership",
   "fields": [
     {
       "fieldName": "role",
@@ -15,36 +20,31 @@
       "fieldType": "LocalDate"
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "TeamMembership",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
-      "relationshipType": "one-to-many",
       "otherEntityName": "securityPolicy",
       "otherEntityRelationshipName": "teamMember",
-      "relationshipName": "securityPolicies"
+      "relationshipName": "securityPolicies",
+      "relationshipType": "one-to-many"
     },
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "tenant",
       "otherEntityRelationshipName": "teamMembership",
-      "relationshipName": "tenant"
+      "relationshipName": "tenant",
+      "relationshipType": "many-to-one"
     },
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "team",
       "otherEntityRelationshipName": "teamMembership",
-      "relationshipValidateRules": "required",
-      "relationshipName": "team"
+      "relationshipName": "team",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
     }
   ],
-  "changelogDate": "20201022221139",
-  "entityTableName": "team_membership",
-  "dto": "no",
-  "pagination": "no",
-  "service": "no",
-  "jpaMetamodelFiltering": false,
-  "fluentMethods": true,
-  "readOnly": false,
-  "embedded": false,
-  "clientRootFolder": "",
-  "applications": ["autocut"]
+  "service": "no"
 }

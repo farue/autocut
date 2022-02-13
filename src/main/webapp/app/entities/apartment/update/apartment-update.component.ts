@@ -1,17 +1,17 @@
-import {Component, OnInit} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
-import {FormBuilder, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-import {finalize, map} from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { finalize, map } from 'rxjs/operators';
 
-import {Apartment, IApartment} from '../apartment.model';
-import {ApartmentService} from '../service/apartment.service';
-import {IInternetAccess} from 'app/entities/internet-access/internet-access.model';
-import {InternetAccessService} from 'app/entities/internet-access/service/internet-access.service';
-import {IAddress} from 'app/entities/address/address.model';
-import {AddressService} from 'app/entities/address/service/address.service';
-import {ApartmentTypes} from 'app/entities/enumerations/apartment-types.model';
+import { Apartment, IApartment } from '../apartment.model';
+import { ApartmentService } from '../service/apartment.service';
+import { IInternetAccess } from 'app/entities/internet-access/internet-access.model';
+import { InternetAccessService } from 'app/entities/internet-access/service/internet-access.service';
+import { IAddress } from 'app/entities/address/address.model';
+import { AddressService } from 'app/entities/address/service/address.service';
+import { ApartmentTypes } from 'app/entities/enumerations/apartment-types.model';
 
 @Component({
   selector: 'jhi-apartment-update',
@@ -72,10 +72,10 @@ export class ApartmentUpdateComponent implements OnInit {
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IApartment>>): void {
-    result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
-    );
+    result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
+      next: () => this.onSaveSuccess(),
+      error: () => this.onSaveError(),
+    });
   }
 
   protected onSaveSuccess(): void {

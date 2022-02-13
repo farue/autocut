@@ -24,15 +24,15 @@ export class TenantCommunicationComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.tenantCommunicationService.query().subscribe(
-      (res: HttpResponse<ITenantCommunication[]>) => {
+    this.tenantCommunicationService.query().subscribe({
+      next: (res: HttpResponse<ITenantCommunication[]>) => {
         this.isLoading = false;
         this.tenantCommunications = res.body ?? [];
       },
-      () => {
+      error: () => {
         this.isLoading = false;
-      }
-    );
+      },
+    });
   }
 
   ngOnInit(): void {

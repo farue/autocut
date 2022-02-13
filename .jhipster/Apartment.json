@@ -1,5 +1,10 @@
 {
-  "name": "Apartment",
+  "applications": ["autocut"],
+  "changelogDate": "20191117011745",
+  "clientRootFolder": "",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "apartment",
   "fields": [
     {
       "fieldName": "nr",
@@ -9,8 +14,8 @@
     {
       "fieldName": "type",
       "fieldType": "ApartmentTypes",
-      "fieldValues": "SHARED,SINGLE,SHORT_TERM,BACKUP",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": ["required"],
+      "fieldValues": "SHARED,SINGLE,SHORT_TERM,BACKUP"
     },
     {
       "fieldName": "maxNumberOfLeases",
@@ -19,36 +24,31 @@
       "fieldValidateRulesMin": "0"
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Apartment",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
-      "relationshipType": "one-to-one",
       "otherEntityName": "internetAccess",
       "otherEntityRelationshipName": "apartment",
+      "ownerSide": true,
       "relationshipName": "internetAccess",
-      "ownerSide": true
+      "relationshipType": "one-to-one"
     },
     {
-      "relationshipType": "one-to-many",
       "otherEntityName": "lease",
       "otherEntityRelationshipName": "apartment",
-      "relationshipName": "leases"
+      "relationshipName": "leases",
+      "relationshipType": "one-to-many"
     },
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "address",
       "otherEntityRelationshipName": "apartment",
-      "relationshipName": "address"
+      "relationshipName": "address",
+      "relationshipType": "many-to-one"
     }
   ],
-  "changelogDate": "20191117011745",
-  "entityTableName": "apartment",
-  "dto": "no",
-  "pagination": "no",
-  "service": "serviceClass",
-  "jpaMetamodelFiltering": false,
-  "fluentMethods": true,
-  "readOnly": false,
-  "clientRootFolder": "",
-  "applications": ["autocut"],
-  "embedded": false
+  "service": "serviceClass"
 }

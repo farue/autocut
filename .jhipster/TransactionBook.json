@@ -1,5 +1,10 @@
 {
-  "name": "TransactionBook",
+  "applications": ["autocut"],
+  "changelogDate": "20200920172639",
+  "clientRootFolder": "",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "transaction_book",
   "fields": [
     {
       "fieldName": "name",
@@ -8,40 +13,35 @@
     {
       "fieldName": "type",
       "fieldType": "TransactionBookType",
-      "fieldValues": "CASH,REVENUE,DEPOSIT",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": ["required"],
+      "fieldValues": "CASH,REVENUE,DEPOSIT"
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "TransactionBook",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
-      "relationshipType": "one-to-many",
       "otherEntityName": "internalTransaction",
       "otherEntityRelationshipName": "transactionBook",
-      "relationshipName": "iTransaction"
+      "relationshipName": "iTransaction",
+      "relationshipType": "one-to-many"
     },
     {
-      "relationshipType": "one-to-many",
       "otherEntityName": "bankTransaction",
       "otherEntityRelationshipName": "transactionBook",
-      "relationshipName": "bTransaction"
+      "relationshipName": "bTransaction",
+      "relationshipType": "one-to-many"
     },
     {
-      "relationshipType": "many-to-many",
       "otherEntityName": "lease",
       "otherEntityRelationshipName": "transactionBook",
+      "ownerSide": false,
       "relationshipName": "lease",
-      "ownerSide": false
+      "relationshipType": "many-to-many"
     }
   ],
-  "changelogDate": "20200920172639",
-  "entityTableName": "transaction_book",
-  "dto": "no",
-  "pagination": "no",
-  "service": "serviceClass",
-  "jpaMetamodelFiltering": false,
-  "fluentMethods": true,
-  "readOnly": false,
-  "embedded": false,
-  "clientRootFolder": "",
-  "applications": ["autocut"]
+  "service": "serviceClass"
 }

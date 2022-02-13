@@ -1,5 +1,9 @@
 {
-  "name": "TenantCommunication",
+  "applications": "*",
+  "changelogDate": "20191117011753",
+  "clientRootFolder": "",
+  "dto": "no",
+  "entityTableName": "tenant_communication",
   "fields": [
     {
       "fieldName": "subject",
@@ -24,23 +28,19 @@
       "fieldValidateRules": ["required"]
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "TenantCommunication",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
-      "relationshipType": "many-to-one",
+      "otherEntityField": "id",
       "otherEntityName": "tenant",
       "otherEntityRelationshipName": "messages",
       "relationshipName": "tenant",
-      "otherEntityField": "id"
+      "relationshipType": "many-to-one"
     }
   ],
-  "changelogDate": "20191117011753",
-  "entityTableName": "tenant_communication",
-  "dto": "no",
-  "pagination": "no",
-  "service": "no",
-  "jpaMetamodelFiltering": false,
-  "fluentMethods": true,
-  "readOnly": false,
-  "clientRootFolder": "",
-  "applications": "*"
+  "service": "no"
 }

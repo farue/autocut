@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
-import {FormBuilder, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-import {finalize} from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
-import {ITransactionBook, TransactionBook} from '../transaction-book.model';
-import {TransactionBookService} from '../service/transaction-book.service';
-import {TransactionBookType} from 'app/entities/enumerations/transaction-book-type.model';
+import { ITransactionBook, TransactionBook } from '../transaction-book.model';
+import { TransactionBookService } from '../service/transaction-book.service';
+import { TransactionBookType } from 'app/entities/enumerations/transaction-book-type.model';
 
 @Component({
   selector: 'jhi-transaction-book-update',
@@ -50,10 +50,10 @@ export class TransactionBookUpdateComponent implements OnInit {
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ITransactionBook>>): void {
-    result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
-    );
+    result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
+      next: () => this.onSaveSuccess(),
+      error: () => this.onSaveError(),
+    });
   }
 
   protected onSaveSuccess(): void {

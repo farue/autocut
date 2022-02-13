@@ -1,19 +1,19 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
-import {FormBuilder, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-import {finalize, map} from 'rxjs/operators';
+import { Component, ElementRef, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { finalize, map } from 'rxjs/operators';
 
-import {ITenant, Tenant} from '../tenant.model';
-import {TenantService} from '../service/tenant.service';
-import {AlertError} from 'app/shared/alert/alert-error.model';
-import {EventManager, EventWithContent} from 'app/core/util/event-manager.service';
-import {DataUtils, FileLoadError} from 'app/core/util/data-util.service';
-import {IUser} from 'app/entities/user/user.model';
-import {UserService} from 'app/entities/user/user.service';
-import {ILease} from 'app/entities/lease/lease.model';
-import {LeaseService} from 'app/entities/lease/service/lease.service';
+import { ITenant, Tenant } from '../tenant.model';
+import { TenantService } from '../service/tenant.service';
+import { AlertError } from 'app/shared/alert/alert-error.model';
+import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
+import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
+import { IUser } from 'app/entities/user/user.model';
+import { UserService } from 'app/entities/user/user.service';
+import { ILease } from 'app/entities/lease/lease.model';
+import { LeaseService } from 'app/entities/lease/service/lease.service';
 
 @Component({
   selector: 'jhi-tenant-update',
@@ -103,10 +103,10 @@ export class TenantUpdateComponent implements OnInit {
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ITenant>>): void {
-    result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
-    );
+    result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
+      next: () => this.onSaveSuccess(),
+      error: () => this.onSaveError(),
+    });
   }
 
   protected onSaveSuccess(): void {

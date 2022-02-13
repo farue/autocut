@@ -1,5 +1,9 @@
 {
-  "name": "LaundryProgram",
+  "applications": ["autocut"],
+  "changelogDate": "20210603143221",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "wash_program",
   "fields": [
     {
       "fieldName": "name",
@@ -23,15 +27,11 @@
       "fieldType": "Boolean"
     }
   ],
-  "relationships": [],
-  "entityTableName": "wash_program",
-  "dto": "no",
-  "pagination": "no",
-  "service": "no",
-  "jpaMetamodelFiltering": false,
   "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "LaundryProgram",
+  "pagination": "no",
   "readOnly": false,
-  "embedded": false,
-  "applications": ["autocut"],
-  "changelogDate": "20210603143221"
+  "relationships": [],
+  "service": "no"
 }

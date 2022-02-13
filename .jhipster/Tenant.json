@@ -1,5 +1,10 @@
 {
-  "name": "Tenant",
+  "applications": ["autocut"],
+  "changelogDate": "20191117011741",
+  "clientRootFolder": "",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "tenant",
   "fields": [
     {
       "fieldName": "firstName",
@@ -21,36 +26,31 @@
       "fieldType": "Boolean"
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Tenant",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
-      "relationshipType": "one-to-one",
       "otherEntityName": "user",
       "otherEntityRelationshipName": "tenant",
+      "ownerSide": true,
       "relationshipName": "user",
-      "ownerSide": true
+      "relationshipType": "one-to-one"
     },
     {
-      "relationshipType": "one-to-many",
       "otherEntityName": "securityPolicy",
       "otherEntityRelationshipName": "tenant",
-      "relationshipName": "securityPolicies"
+      "relationshipName": "securityPolicies",
+      "relationshipType": "one-to-many"
     },
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "lease",
       "otherEntityRelationshipName": "tenants",
-      "relationshipName": "lease"
+      "relationshipName": "lease",
+      "relationshipType": "many-to-one"
     }
   ],
-  "changelogDate": "20191117011741",
-  "entityTableName": "tenant",
-  "dto": "no",
-  "pagination": "no",
-  "service": "serviceClass",
-  "jpaMetamodelFiltering": false,
-  "fluentMethods": true,
-  "readOnly": false,
-  "clientRootFolder": "",
-  "applications": ["autocut"],
-  "embedded": false
+  "service": "serviceClass"
 }

@@ -19,15 +19,15 @@ export class AddressComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.addressService.query().subscribe(
-      (res: HttpResponse<IAddress[]>) => {
+    this.addressService.query().subscribe({
+      next: (res: HttpResponse<IAddress[]>) => {
         this.isLoading = false;
         this.addresses = res.body ?? [];
       },
-      () => {
+      error: () => {
         this.isLoading = false;
-      }
-    );
+      },
+    });
   }
 
   ngOnInit(): void {

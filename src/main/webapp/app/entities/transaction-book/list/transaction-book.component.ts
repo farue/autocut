@@ -19,15 +19,15 @@ export class TransactionBookComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.transactionBookService.query().subscribe(
-      (res: HttpResponse<ITransactionBook[]>) => {
+    this.transactionBookService.query().subscribe({
+      next: (res: HttpResponse<ITransactionBook[]>) => {
         this.isLoading = false;
         this.transactionBooks = res.body ?? [];
       },
-      () => {
+      error: () => {
         this.isLoading = false;
-      }
-    );
+      },
+    });
   }
 
   ngOnInit(): void {
