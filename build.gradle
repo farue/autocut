@@ -93,6 +93,8 @@ test {
     exclude "**/*IT*", "**/*IntTest*"
     testLogging {
         events 'FAILED', 'SKIPPED'
+        // Autocut: show application output during test
+        // showStandardStreams = true
     }
     jvmArgs += '-Djava.security.egd=file:/dev/./urandom -Xmx256m'
     // uncomment if the tests reports are not generated
@@ -113,6 +115,8 @@ task integrationTest(type: Test) {
     include "**/*IT*", "**/*IntTest*"
     testLogging {
         events 'FAILED', 'SKIPPED'
+        // Autocut: show application output during test
+        // showStandardStreams = true
     }
     jvmArgs += '-Djava.security.egd=file:/dev/./urandom -Xmx256m'
     if (project.hasProperty('testcontainers')) {
