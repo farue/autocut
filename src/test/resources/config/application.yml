@@ -131,3 +131,8 @@ application:
     passportPassword: testpassportpassword
     tanCode: 920
     tanMedium: testmedium
+
+decorator:
+  datasource:
+    p6spy:
+      log-format: '%(currentTime)|%(executionTime)|%(category)|connection%(connectionId)|%(sqlSingleLine)'
