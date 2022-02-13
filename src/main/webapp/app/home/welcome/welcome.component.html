@@ -11,7 +11,8 @@
       </div>
     </div>
 
-    <div>
+    <!-- Disable carousel until Angular 13 support arrives: https://github.com/gabrielbusarello/material2-carousel/issues/33 -->
+    <!--<div>
       <mat-carousel
         [slides]="images.length"
         [interval]="2000"
@@ -25,6 +26,6 @@
       >
         <mat-carousel-slide *ngFor="let item of images" [image]="item.previewImageSrc"> </mat-carousel-slide>
       </mat-carousel>
-    </div>
+    </div>-->
   </div>
 </div>
