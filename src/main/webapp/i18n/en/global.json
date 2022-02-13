@@ -196,5 +196,5 @@
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
     }
   },
-  "footer": "© 2021 FaRü Familienwohnheim Rütscher Straße. All rights reserved."
+  "footer": "© {{year}} FaRü Familienwohnheim Rütscher Straße. All rights reserved."
 }
