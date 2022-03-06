@@ -25,7 +25,8 @@ stages:
   - analyze
   - package
   - release
-  - deploy
+  - deploy-preview
+  - deploy-prod
 
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
@@ -141,7 +142,7 @@ gradle-package:
   script:
     - gradle bootJar -PincludeWebapp -Pprod
   rules:
-    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 docker-push:
   stage: release
@@ -149,17 +150,52 @@ docker-push:
   dependencies:
     - gradle-package
   script:
-    - gradle jib -Pprod -Djib.to.image=$CI_REGISTRY_IMAGE -Djib.to.tags=$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA -Djib.to.auth.username=gitlab-ci-token -Djib.to.auth.password=$CI_BUILD_TOKEN -Djib.httpTimeout=120000
+    - gradle jib -Pprod -Djib.to.image=$CI_REGISTRY_IMAGE -Djib.to.tags=$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA,$CI_COMMIT_REF_SLUG-latest -Djib.to.auth.username=gitlab-ci-token -Djib.to.auth.password=$CI_BUILD_TOKEN -Djib.httpTimeout=120000
   rules:
-    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
-trigger-deploy:
-  stage: deploy
+trigger-deploy-review:
+  stage: deploy-preview
   trigger: farue/autosetup
   resource_group: deploy
   variables:
     PLAYBOOK: server.yml
+    INVENTORY: dev
+    TAGS: autocut, dns-dev-create, dns-dev-deploy
+    SKIP_TAGS: backup,restore
+    VARS: 'autocut_tag=$CI_COMMIT_REF_SLUG-latest autocut_host=$CI_ENVIRONMENT_SLUG.dev.farue.rwth-aachen.de autocut_environment=staging autocut_db_volume=false autocut_db_expose_port=false dns_dev_subdomain=$CI_ENVIRONMENT_SLUG'
+    ENVIRONMENT_NAME: review/$CI_COMMIT_REF_SLUG
+    ENVIRONMENT_URL: https://www.$CI_ENVIRONMENT_SLUG.dev.farue.rwth-aachen.de
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+
+trigger-deploy-staging:
+  stage: deploy-preview
+  trigger: farue/autosetup
+  resource_group: deploy
+  variables:
+    PLAYBOOK: server.yml
+    INVENTORY: staging
     TAGS: autocut
     SKIP_TAGS: backup,restore
+    VARS: 'autocut_tag=$CI_COMMIT_REF_SLUG-latest autocut_host=staging.farue.rwth-aachen.de autocut_environment=staging'
+    ENVIRONMENT_NAME: staging
+    ENVIRONMENT_URL: https://www.staging.farue.rwth-aachen.de
   rules:
-    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+trigger-deploy-prod:
+  stage: deploy-prod
+  trigger: farue/autosetup
+  resource_group: deploy
+  variables:
+    PLAYBOOK: server.yml
+    INVENTORY: production
+    TAGS: autocut
+    SKIP_TAGS: backup,restore
+    VARS: 'autocut_tag=$CI_COMMIT_REF_SLUG-latest autocut_host=farue.rwth-aachen.de'
+    ENVIRONMENT_NAME: production
+    ENVIRONMENT_URL: https://www.farue.rwth-aachen.de
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
