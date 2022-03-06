@@ -2,10 +2,11 @@ jib {
     from {
         image = "eclipse-temurin:17-focal"
     }
-    to {
-        image = "autocut:latest"
-        tags = ["registry.git.rwth-aachen.de/farue/autocut:latest"]
-    }
+    // AC: is set in CI
+    // to {
+    //     image = "autocut:latest"
+    //     tags = ["registry.git.rwth-aachen.de/farue/autocut:latest"]
+    // }
     container {
         entrypoint = ["bash", "-c", "/entrypoint.sh"]
         ports = ["8080"]
