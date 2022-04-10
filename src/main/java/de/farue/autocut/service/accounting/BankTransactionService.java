@@ -62,13 +62,16 @@ public class BankTransactionService extends TransactionService<BankTransaction> 
     public void saveWithContraTransaction(BankTransaction transaction) {
         bankTransactionContraTransactionProvider
             .calculateContraTransaction(transaction)
-            .ifPresent(
-                contraTransaction -> {
-                    contraTransaction.link(transaction);
-                    internalTransactionService.save(contraTransaction);
-                    publisher.publishEvent(new InternalTransactionCreatedEvent(contraTransaction));
-                }
-            );
+            .ifPresent(contraTransaction -> {
+                contraTransaction.link(transaction);
+                internalTransactionService.save(contraTransaction);
+                publisher.publishEvent(new InternalTransactionCreatedEvent(contraTransaction));
+            });
+        transactionRepository.save(transaction);
+        publisher.publishEvent(new BankTransactionCreatedEvent(transaction));
+    }
+
+    public void saveWithoutContraTransaction(BankTransaction transaction) {
         transactionRepository.save(transaction);
         publisher.publishEvent(new BankTransactionCreatedEvent(transaction));
     }
