@@ -1,9 +1,0 @@
-{
-  "autocutApp": {
-    "LaundryMachineType": {
-      "null": "",
-      "WASHING_MACHINE": "Waschmaschine",
-      "DRYER": "Trockner"
-    }
-  }
-}

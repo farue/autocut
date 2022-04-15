@@ -16,42 +16,5 @@ springBoot {
 }
 
 bootRun {
-    doFirst {
-        if (!project.hasProperty("includeWebapp")) {
-            throw new GradleException("Required profile 'includeWebapp' missing. Set it with '-PincludeWebapp'.")
-        }
-    }
     args = []
-}
-
-bootJar {
-    doFirst {
-        if (!project.hasProperty("includeWebapp")) {
-            throw new GradleException("Required profile 'includeWebapp' missing. Set it with '-PincludeWebapp'.")
-        }
-    }
-}
-
-task webapp(type: NpmTask, dependsOn: "npm_install") {
-    args = ["run", "webapp:prod"]
-    environment = [APP_VERSION: project.version]
-}
-
-processResources {
-    inputs.property('version', version)
-    inputs.property('springProfiles', profiles)
-    filesMatching("**/application.yml") {
-        filter {
-            it.replace("#project.version#", version)
-        }
-        filter {
-            it.replace("#spring.profiles.active#", profiles)
-        }
-    }
-}
-
-// Autocut: speed up build
-if (project.hasProperty("includeWebapp")) {
-    processResources.dependsOn webapp
-    bootJar.dependsOn processResources
 }

@@ -1,7 +1,0 @@
-<div *ngIf="broadcastMessages.length > 0">
-  <div
-    *ngFor="let m of broadcastMessages"
-    [class]="['message', 'alert', 'alert-' + (m.type | lowercase)]"
-    [innerHTML]="getBroadcastMessageText(m)"
-  ></div>
-</div>

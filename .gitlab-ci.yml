@@ -42,19 +42,6 @@ gradle-compile:
     - gradle compileJava
   needs: []
 
-frontend-compile:
-  stage: build
-  before_script:
-    - export NG_CLI_ANALYTICS="false"
-    - gradle npmSetup -PnodeInstall
-  script:
-    - gradle webapp
-  cache:
-    key: 'frontend-cache'
-    paths:
-      - .gradle/
-      - node_modules/
-
 gradle-test:
   stage: test
   script:
@@ -66,10 +53,6 @@ gradle-test:
       - build/test-results/
       - build/jacoco/
     expire_in: 1 day
-  needs:
-    - gradle-compile
-  dependencies:
-    - gradle-compile
 
 gradle-integration-test:
   # DinD service is required for Testcontainers
@@ -88,34 +71,6 @@ gradle-integration-test:
       - build/test-results/
       - build/jacoco/
     expire_in: 1 day
-  needs:
-    - gradle-compile
-  dependencies:
-    - gradle-compile
-
-frontend-test:
-  stage: test
-  before_script:
-    - export NG_CLI_ANALYTICS="false"
-    - gradle npmSetup -PnodeInstall
-  script:
-    - gradle webapp_test
-  cache:
-    key: 'frontend-cache'
-    paths:
-      - .gradle/
-      - node_modules/
-  artifacts:
-    reports:
-      junit: build/test-results/TESTS-results-jest.xml
-    paths:
-      - build/test-results/
-      - build/jacoco/
-    expire_in: 1 day
-  needs:
-    - frontend-compile
-  dependencies:
-    - frontend-compile
 
 .sonar-analyze:
   stage: analyze
@@ -123,10 +78,8 @@ frontend-test:
     - merge_requests
   dependencies:
     - gradle-compile
-    - frontend-compile
     - gradle-test
     - gradle-integration-test
-    - frontend-test
   before_script:
     - export NG_CLI_ANALYTICS="false"
     - gradle npm_install -PnodeInstall
