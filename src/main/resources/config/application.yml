@@ -242,3 +242,40 @@ decorator:
   datasource:
     p6spy:
       log-format: '%(currentTime)|%(executionTime)|%(category)|connection%(connectionId)|%(sqlSingleLine)'
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+    import:
+      - prod.yml
+      - prod-app-properties.yml
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+    import:
+      - dev.yml
+      - dev-app-properties.yml
+      # Uncomment to activate TLS for the dev profile
+      #- tls.yml
+---
+spring:
+  config:
+    activate:
+      on-profile: staging
+    import:
+      - prod.yml
+      - dev-app-properties.yml
+      - staging.yml
+---
+spring:
+  config:
+    activate:
+      on-profile: review
+    import:
+      - prod.yml
+      - dev-app-properties.yml
+      - review.yml

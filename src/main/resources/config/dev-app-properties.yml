@@ -1,0 +1,26 @@
+application:
+  washit:
+    url: localhost:8090
+  banking:
+    user: user
+    pin: pin
+    passportPassword: passportPassword
+  switchConnections:
+    - hostFingerprint: 94:52:76:3a:53:6a:ec:3b:09:1f:18:5b:df:f7:5f:69
+      hostname: switch-1.farue.rwth-aachen.de
+      username: gitlab
+      promptSymbol: '#'
+      privateKey: privateKey
+      publicKey: publicKey
+    - hostFingerprint: c6:28:35:f6:06:3d:82:97:60:c7:72:37:eb:2d:3c:be
+      hostname: switch-2.farue.rwth-aachen.de
+      username: gitlab
+      promptSymbol: '#'
+      privateKey: privateKey
+      publicKey: publicKey
+    - hostFingerprint: 9f:06:66:ea:37:d6:58:0c:58:ee:79:ec:89:88:e8:cd
+      hostname: switch-3.farue.rwth-aachen.de
+      username: gitlab
+      promptSymbol: '#'
+      privateKey: privateKey
+      publicKey: publicKey

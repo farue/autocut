@@ -107,8 +107,9 @@ trigger-deploy-review:
     VARS: 'autocut_service_dir=/srv/autocut/$CI_COMMIT_REF_NAME
       autocut_tag=$CI_COMMIT_REF_SLUG-latest
       autocut_host=api.$CI_ENVIRONMENT_SLUG.dev.farue.rwth-aachen.de
-      autocut_environment=staging
-      autocut_db_volume=false autocut_db_expose_port=false
+      autocut_profiles=review,api-docs
+      autocut_db_volume=false
+      autocut_db_expose_port=false
       dns_dev_subdomain=api.$CI_ENVIRONMENT_SLUG'
     ENVIRONMENT_NAME: autocut/review/$CI_COMMIT_REF_SLUG
     ENVIRONMENT_URL: https://www.$CI_ENVIRONMENT_SLUG.dev.farue.rwth-aachen.de
@@ -126,7 +127,7 @@ trigger-deploy-staging:
     SKIP_TAGS: backup,restore
     VARS: 'autocut_tag=$CI_COMMIT_REF_SLUG-latest
       autocut_host=api.staging.farue.rwth-aachen.de
-      autocut_environment=staging'
+      autocut_profiles=staging,api-docs'
     ENVIRONMENT_NAME: autocut/staging
     ENVIRONMENT_URL: https://www.staging.farue.rwth-aachen.de
   rules:
@@ -141,7 +142,9 @@ trigger-deploy-prod:
     INVENTORY: production
     TAGS: docker,autocut
     SKIP_TAGS: backup,restore
-    VARS: 'autocut_tag=$CI_COMMIT_REF_SLUG-latest autocut_host=api.farue.rwth-aachen.de'
+    VARS: 'autocut_tag=$CI_COMMIT_REF_SLUG-latest
+      autocut_host=api.farue.rwth-aachen.de
+      autocut_profiles=prod'
     ENVIRONMENT_NAME: autocut/production
     ENVIRONMENT_URL: https://www.farue.rwth-aachen.de
   rules:
