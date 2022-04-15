@@ -1,22 +1,15 @@
 image: gradle:7.3-jdk17
 
 cache:
-  key: 'main-cache'
   paths:
     - .gradle/
     - build/
 
 variables:
-  # Docker
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: '/certs'
   DOCKER_TLS_VERIFY: '1'
   DOCKER_CERT_PATH: '/certs/client'
-  # Deployment
-  SERVER_URL: '137.226.153.2'
-  SSH_OPTS: '-o StrictHostKeyChecking=no'
-  DOCKER_COMPOSE_APP: 'src/main/docker/autocut.yml'
-  REMOTE_DOCKER_COMPOSE_APP: '~/autocut/autocut.yml'
 
 stages:
   - check
@@ -80,20 +73,14 @@ gradle-integration-test:
     - gradle-compile
     - gradle-test
     - gradle-integration-test
-  before_script:
-    - export NG_CLI_ANALYTICS="false"
-    - gradle npm_install -PnodeInstall
   script:
     - gradle sonarqube -x test -Dsonar.projectKey=autocut -Dsonar.host.url=https://www.farue.rwth-aachen.de/sonar -Dsonar.login=$SONAR_TOKEN
   allow_failure: true
 
 gradle-package:
   stage: package
-  before_script:
-    - export NG_CLI_ANALYTICS="false"
-    - gradle npm_install -PnodeInstall
   script:
-    - gradle bootJar -PincludeWebapp -Pprod
+    - gradle bootJar -Pprod
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
@@ -119,11 +106,11 @@ trigger-deploy-review:
     SKIP_TAGS: backup,restore
     VARS: 'autocut_service_dir=/srv/autocut/$CI_COMMIT_REF_NAME
       autocut_tag=$CI_COMMIT_REF_SLUG-latest
-      autocut_host=$CI_ENVIRONMENT_SLUG.dev.farue.rwth-aachen.de
+      autocut_host=api.$CI_ENVIRONMENT_SLUG.dev.farue.rwth-aachen.de
       autocut_environment=staging
       autocut_db_volume=false autocut_db_expose_port=false
-      dns_dev_subdomain=$CI_ENVIRONMENT_SLUG'
-    ENVIRONMENT_NAME: review/$CI_COMMIT_REF_SLUG
+      dns_dev_subdomain=api.$CI_ENVIRONMENT_SLUG'
+    ENVIRONMENT_NAME: autocut/review/$CI_COMMIT_REF_SLUG
     ENVIRONMENT_URL: https://www.$CI_ENVIRONMENT_SLUG.dev.farue.rwth-aachen.de
   rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
@@ -138,9 +125,9 @@ trigger-deploy-staging:
     TAGS: docker,autocut
     SKIP_TAGS: backup,restore
     VARS: 'autocut_tag=$CI_COMMIT_REF_SLUG-latest
-      autocut_host=staging.farue.rwth-aachen.de
+      autocut_host=api.staging.farue.rwth-aachen.de
       autocut_environment=staging'
-    ENVIRONMENT_NAME: staging
+    ENVIRONMENT_NAME: autocut/staging
     ENVIRONMENT_URL: https://www.staging.farue.rwth-aachen.de
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
@@ -154,8 +141,8 @@ trigger-deploy-prod:
     INVENTORY: production
     TAGS: docker,autocut
     SKIP_TAGS: backup,restore
-    VARS: 'autocut_tag=$CI_COMMIT_REF_SLUG-latest autocut_host=farue.rwth-aachen.de'
-    ENVIRONMENT_NAME: production
+    VARS: 'autocut_tag=$CI_COMMIT_REF_SLUG-latest autocut_host=api.farue.rwth-aachen.de'
+    ENVIRONMENT_NAME: autocut/production
     ENVIRONMENT_URL: https://www.farue.rwth-aachen.de
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
