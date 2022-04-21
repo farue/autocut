@@ -9,3 +9,5 @@ jhipster:
     exposed-headers: 'Authorization,Link,X-Total-Count,X-${jhipster.clientApp.name}-alert,X-${jhipster.clientApp.name}-error,X-${jhipster.clientApp.name}-params'
     allow-credentials: true
     max-age: 1800
+  mail:
+    base-url: https://www.my.staging.farue.rwth-aachen.de
