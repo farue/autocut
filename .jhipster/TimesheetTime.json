@@ -1,0 +1,70 @@
+{
+  "applications": ["autocut"],
+  "changelogDate": "20220219184759",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "timesheet_time",
+  "fields": [
+    {
+      "fieldName": "start",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "end",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "effectiveTime",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "pause",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "1000"
+    },
+    {
+      "fieldName": "editedFactor",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "editedConstant",
+      "fieldType": "Integer"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "TimesheetTime",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "timesheet",
+      "otherEntityRelationshipName": "timesheetTime",
+      "relationshipName": "timesheet",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "timesheetProject",
+      "otherEntityRelationshipName": "timesheetTime",
+      "relationshipName": "project",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "timesheetTask",
+      "otherEntityRelationshipName": "timesheetTime",
+      "relationshipName": "task",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "service": "serviceClass"
+}

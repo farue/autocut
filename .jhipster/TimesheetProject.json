@@ -1,0 +1,44 @@
+{
+  "applications": ["autocut"],
+  "changelogDate": "20220219184802",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "timesheet_project",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "start",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "end",
+      "fieldType": "Instant"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "TimesheetProject",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "tenant",
+      "otherEntityRelationshipName": "timesheetProject",
+      "relationshipName": "owner",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "timesheetTask",
+      "otherEntityRelationshipName": "projects",
+      "ownerSide": true,
+      "relationshipName": "tasks",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "service": "serviceClass"
+}

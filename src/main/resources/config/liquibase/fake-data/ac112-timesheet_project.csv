@@ -1,0 +1,10 @@
+id;name;start;end;owner_id
+1;Networking Team;;;1
+2;Washing Team;;;2
+3;Spokesperson;;;2
+4;Tools Team;;;2
+5;Assignment Team;;;4
+6;Accounting;;;5
+7;Cleaning Basements;2020-02-01T10:00:00;2020-02-28T20:00:00;1
+8;Cleaning Basements;2022-02-01T10:00:00;;1
+9;Summer Party;2021-08-10T00:00:00;;3

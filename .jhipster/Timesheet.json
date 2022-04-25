@@ -1,0 +1,30 @@
+{
+  "applications": ["autocut"],
+  "changelogDate": "20220219184758",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "timesheet",
+  "fields": [
+    {
+      "fieldName": "enabled",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Timesheet",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "tenant",
+      "otherEntityRelationshipName": "timesheet",
+      "ownerSide": true,
+      "relationshipName": "member",
+      "relationshipType": "one-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "service": "serviceClass"
+}

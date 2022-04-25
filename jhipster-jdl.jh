@@ -367,6 +367,74 @@ relationship ManyToOne {
 	WashHistory{program} to LaundryMachineProgram
 }
 
+// ****************************************************
+// * Timesheet
+// ****************************************************
+
+@service(serviceClass)
+entity Timesheet {
+    enabled Boolean required
+}
+
+@service(serviceClass)
+entity TimesheetTime {
+    start Instant
+    end Instant
+    effectiveTime Integer required
+    pause Integer required
+    description String required maxlength(1000)
+    editedFactor BigDecimal
+    editedConstant Integer
+}
+
+@service(serviceClass)
+entity TimesheetTimer {
+    start Instant required
+    pauseStart Instant
+    pause Integer
+}
+
+@service(serviceClass)
+entity TimesheetTask {
+    name String required
+    enabled Boolean required
+    constant Integer required
+    constantEditable Boolean required
+    factor BigDecimal required
+    factorEditable Boolean required
+    defaultTimespan Integer
+}
+
+@service(serviceClass)
+entity TimesheetProject {
+    name String required
+    start Instant
+    end Instant
+}
+
+@service(serviceClass)
+entity TimesheetProjectMember {
+    start Instant
+    end Instant
+}
+
+relationship OneToOne {
+    Timesheet{member required} to Tenant
+    TimesheetTimer{timesheet required} to Timesheet
+}
+
+relationship ManyToOne {
+    TimesheetTime{timesheet required} to Timesheet
+    TimesheetTime{project required} to TimesheetProject
+    TimesheetTime{task required} to TimesheetTask
+    TimesheetProject{owner required} to Tenant
+    TimesheetProjectMember{project required} to TimesheetProject
+    TimesheetProjectMember{timesheet required} to Timesheet
+}
+
+relationship ManyToMany {
+    TimesheetProject{tasks} to TimesheetTask{projects}
+}
 
 // ****************************************************
 // * Global

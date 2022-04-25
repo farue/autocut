@@ -1,0 +1,6 @@
+id;name;enabled;constant;constant_editable;factor;factor_editable;default_timespan
+1;Default;true;0;false;1;false;
+2;Communication;false;600;true;0;false;
+3;Communication;true;900;true;0;false;
+4;Tool Rental;true;600;true;1.2;false;1200
+5;Apartment visit;true;600;true;1.1;false;1800

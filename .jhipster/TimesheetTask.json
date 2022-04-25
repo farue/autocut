@@ -1,0 +1,58 @@
+{
+  "applications": ["autocut"],
+  "changelogDate": "20220219184801",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "timesheet_task",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "enabled",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "constant",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "constantEditable",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "factor",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "factorEditable",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "defaultTimespan",
+      "fieldType": "Integer"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "TimesheetTask",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "timesheetProject",
+      "otherEntityRelationshipName": "tasks",
+      "ownerSide": false,
+      "relationshipName": "projects",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "service": "serviceClass"
+}

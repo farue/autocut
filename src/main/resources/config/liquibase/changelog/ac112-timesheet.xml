@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <!--
+        Create tables
+    -->
+
+    <changeSet id="table-timesheet" author="jhipster">
+        <createTable tableName="timesheet">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="enabled" type="boolean">
+                <constraints nullable="false" />
+            </column>
+            <column name="member_id" type="bigint">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_timesheet__member_id" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="table-timesheet_time" author="jhipster">
+        <createTable tableName="timesheet_time">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="start" type="datetime(6)">
+                <constraints nullable="true" />
+            </column>
+            <column name="end" type="datetime(6)">
+                <constraints nullable="true" />
+            </column>
+            <column name="effective_time" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="pause" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="description" type="varchar(1000)">
+                <constraints nullable="false" />
+            </column>
+            <column name="edited_factor" type="decimal(21,2)">
+                <constraints nullable="true" />
+            </column>
+            <column name="edited_constant" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="timesheet_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="project_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="task_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <dropDefaultValue tableName="timesheet_time" columnName="start" columnDataType="datetime(6)"/>
+        <dropDefaultValue tableName="timesheet_time" columnName="end" columnDataType="datetime(6)"/>
+    </changeSet>
+
+    <changeSet id="table-timesheet_timer" author="jhipster">
+        <createTable tableName="timesheet_timer">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="start" type="datetime(6)">
+                <constraints nullable="false" />
+            </column>
+            <column name="pause_start" type="datetime(6)">
+                <constraints nullable="true" />
+            </column>
+            <column name="pause" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="timesheet_id" type="bigint">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_timesheet_timer__timesheet_id" />
+            </column>
+        </createTable>
+        <dropDefaultValue tableName="timesheet_timer" columnName="start" columnDataType="datetime(6)"/>
+    </changeSet>
+
+    <changeSet id="20220219184801-1" author="jhipster">
+        <createTable tableName="timesheet_task">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="enabled" type="boolean">
+                <constraints nullable="false" />
+            </column>
+            <column name="constant" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="constant_editable" type="boolean">
+                <constraints nullable="false" />
+            </column>
+            <column name="factor" type="decimal(21,2)">
+                <constraints nullable="false" />
+            </column>
+            <column name="factor_editable" type="boolean">
+                <constraints nullable="false" />
+            </column>
+            <column name="default_timespan" type="integer">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20220219184802-1" author="jhipster">
+        <createTable tableName="timesheet_project">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="start" type="datetime(6)">
+                <constraints nullable="true" />
+            </column>
+            <column name="end" type="datetime(6)">
+                <constraints nullable="true" />
+            </column>
+            <column name="owner_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <dropDefaultValue tableName="timesheet_project" columnName="start" columnDataType="datetime(6)"/>
+        <dropDefaultValue tableName="timesheet_project" columnName="end" columnDataType="datetime(6)"/>
+    </changeSet>
+
+    <changeSet id="20220219184802-1-relations" author="jhipster">
+        <createTable tableName="rel_timesheet_project__tasks">
+            <column name="tasks_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="timesheet_project_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="timesheet_project_id, tasks_id" tableName="rel_timesheet_project__tasks"/>
+    </changeSet>
+
+    <changeSet id="20220219184803-1" author="jhipster">
+        <createTable tableName="timesheet_project_member">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="start" type="datetime(6)">
+                <constraints nullable="true" />
+            </column>
+            <column name="end" type="datetime(6)">
+                <constraints nullable="true" />
+            </column>
+            <column name="project_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="timesheet_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <dropDefaultValue tableName="timesheet_project_member" columnName="start" columnDataType="datetime(6)"/>
+        <dropDefaultValue tableName="timesheet_project_member" columnName="end" columnDataType="datetime(6)"/>
+    </changeSet>
+
+
+    <!--
+        Load fake data
+    -->
+
+    <changeSet id="fake-data-timesheet" author="jhipster" context="faker">
+        <loadData
+            file="config/liquibase/fake-data/ac112-timesheet.csv"
+            separator=";"
+            tableName="timesheet"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="enabled" type="boolean"/>
+            <column name="member_id" type="numeric"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="fake-data-timesheet_time" author="jhipster" context="faker">
+        <loadData
+            file="config/liquibase/fake-data/ac112-timesheet_time.csv"
+            separator=";"
+            tableName="timesheet_time"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="start" type="date"/>
+            <column name="end" type="date"/>
+            <column name="effective_time" type="numeric"/>
+            <column name="description" type="string"/>
+            <column name="timesheet_id" type="numeric"/>
+            <column name="project_id" type="numeric"/>
+            <column name="task_id" type="numeric"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="fake-data-timesheet_task" author="jhipster" context="faker">
+        <loadData
+            file="config/liquibase/fake-data/ac112-timesheet_task.csv"
+            separator=";"
+            tableName="timesheet_task"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="name" type="string"/>
+            <column name="enabled" type="boolean"/>
+            <column name="constant" type="numeric"/>
+            <column name="constant_editable" type="boolean"/>
+            <column name="factor" type="numeric"/>
+            <column name="factor_editable" type="boolean"/>
+            <column name="default_timespan" type="numeric"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="fake-data-timesheet_project" author="jhipster" context="faker">
+        <loadData
+            file="config/liquibase/fake-data/ac112-timesheet_project.csv"
+            separator=";"
+            tableName="timesheet_project"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="name" type="string"/>
+            <column name="start" type="date"/>
+            <column name="end" type="date"/>
+            <column name="owner_id" type="numeric"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="fake-data-timesheet_project_tasks" author="jhipster" context="faker">
+        <loadData
+            file="config/liquibase/fake-data/ac112-timesheet_project_tasks.csv"
+            separator=";"
+            tableName="rel_timesheet_project__tasks"
+            usePreparedStatements="true">
+            <column name="tasks_id" type="numeric"/>
+            <column name="timesheet_project_id" type="numeric"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="fake-data-timesheet_project_member" author="jhipster" context="faker">
+        <loadData
+            file="config/liquibase/fake-data/ac112-timesheet_project_member.csv"
+            separator=";"
+            tableName="timesheet_project_member"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="start" type="date"/>
+            <column name="end" type="date"/>
+            <column name="project_id" type="numeric"/>
+            <column name="timesheet_id" type="numeric"/>
+        </loadData>
+    </changeSet>
+
+    <!--
+        Add constraints
+    -->
+
+    <changeSet id="constarints-timesheet" author="jhipster">
+        <addForeignKeyConstraint baseColumnNames="member_id"
+                                 baseTableName="timesheet"
+                                 constraintName="fk_timesheet__member_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tenant"/>
+    </changeSet>
+
+    <changeSet id="constraints-timesheet_time" author="jhipster">
+        <addForeignKeyConstraint baseColumnNames="timesheet_id"
+                                 baseTableName="timesheet_time"
+                                 constraintName="fk_timesheet_time__timesheet_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="timesheet"/>
+
+        <addForeignKeyConstraint baseColumnNames="project_id"
+                                 baseTableName="timesheet_time"
+                                 constraintName="fk_timesheet_time__project_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="timesheet_project"/>
+
+        <addForeignKeyConstraint baseColumnNames="task_id"
+                                 baseTableName="timesheet_time"
+                                 constraintName="fk_timesheet_time__task_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="timesheet_task"/>
+    </changeSet>
+
+    <changeSet id="constraints-timesheet_timer" author="jhipster">
+        <addForeignKeyConstraint baseColumnNames="timesheet_id"
+                                 baseTableName="timesheet_timer"
+                                 constraintName="fk_timesheet_timer__timesheet_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="timesheet"/>
+    </changeSet>
+
+    <changeSet id="constraints-timesheet_project" author="jhipster">
+        <addForeignKeyConstraint baseColumnNames="owner_id"
+                                 baseTableName="timesheet_project"
+                                 constraintName="fk_timesheet_project__owner_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tenant"/>
+
+        <addForeignKeyConstraint baseColumnNames="timesheet_project_id"
+                                 baseTableName="rel_timesheet_project__tasks"
+                                 constraintName="fk_rel_timesheet_project__tasks__timesheet_project_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="timesheet_project"/>
+
+        <addForeignKeyConstraint baseColumnNames="tasks_id"
+                                 baseTableName="rel_timesheet_project__tasks"
+                                 constraintName="fk_rel_timesheet_project__tasks__tasks_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="timesheet_task"/>
+    </changeSet>
+
+    <changeSet id="constraints-timesheet_project_member" author="jhipster">
+        <addForeignKeyConstraint baseColumnNames="project_id"
+                                 baseTableName="timesheet_project_member"
+                                 constraintName="fk_timesheet_project_member__project_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="timesheet_project"/>
+
+        <addForeignKeyConstraint baseColumnNames="timesheet_id"
+                                 baseTableName="timesheet_project_member"
+                                 constraintName="fk_timesheet_project_member__timesheet_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="timesheet"/>
+    </changeSet>
+</databaseChangeLog>

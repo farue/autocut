@@ -1,0 +1,39 @@
+{
+  "applications": ["autocut"],
+  "changelogDate": "20220219184803",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "timesheet_project_member",
+  "fields": [
+    {
+      "fieldName": "start",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "end",
+      "fieldType": "Instant"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "TimesheetProjectMember",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "timesheetProject",
+      "otherEntityRelationshipName": "timesheetProjectMember",
+      "relationshipName": "project",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "timesheet",
+      "otherEntityRelationshipName": "timesheetProjectMember",
+      "relationshipName": "timesheet",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "service": "serviceClass"
+}

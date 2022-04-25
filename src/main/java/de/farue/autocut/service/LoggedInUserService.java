@@ -7,10 +7,7 @@ import de.farue.autocut.service.accounting.InternalTransactionService;
 import de.farue.autocut.service.dto.AdminUserDTO;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -50,11 +47,11 @@ public class LoggedInUserService {
     }
 
     public Tenant getTenant() {
-        return SecurityUtils
-            .getCurrentUserLogin()
-            .flatMap(userRepository::findOneByLogin)
-            .flatMap(tenantService::findOneByUser)
-            .orElseThrow();
+        return getTenantOptional().orElseThrow();
+    }
+
+    public Optional<Tenant> getTenantOptional() {
+        return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneByLogin).flatMap(tenantService::findOneByUser);
     }
 
     public Lease getLease() {

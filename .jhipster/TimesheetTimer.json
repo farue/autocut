@@ -1,0 +1,38 @@
+{
+  "applications": ["autocut"],
+  "changelogDate": "20220219184800",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "timesheet_timer",
+  "fields": [
+    {
+      "fieldName": "start",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "pauseStart",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "pause",
+      "fieldType": "Integer"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "TimesheetTimer",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "timesheet",
+      "otherEntityRelationshipName": "timesheetTimer",
+      "ownerSide": true,
+      "relationshipName": "timesheet",
+      "relationshipType": "one-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "service": "serviceClass"
+}

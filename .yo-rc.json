@@ -1,5 +1,6 @@
 {
   "generator-jhipster": {
+    "applicationIndex": 0,
     "applicationType": "monolith",
     "authenticationType": "jwt",
     "baseName": "autocut",
@@ -42,14 +43,21 @@
       "WashHistory",
       "LaundryProgram",
       "BroadcastMessage",
-      "BroadcastMessageText"
+      "BroadcastMessageText",
+      "Timesheet",
+      "TimesheetTime",
+      "TimesheetTimer",
+      "TimesheetTask",
+      "TimesheetProject",
+      "TimesheetProjectMember"
     ],
     "entitySuffix": "",
+    "gradleEnterpriseHost": "",
     "jhiPrefix": "jhi",
     "jhipsterVersion": "7.6.0",
     "jwtSecretKey": "MzNkNDYyZDgyZWI0MTJiMGNlNmI1MzIxNThiMzkyNTQ3OTY4ZTA4ZDM3OThlNDE2ZGQzYzc4N2UwZmRhMDA3NGJjZmJlZjZjYjExYWQxZmU1M2NjN2QwZTM3MTYyOWRjYmM2MGM4NmFlYWZkODI3ODNhNjlhNGMyMDljZWJiMWU=",
     "languages": ["de", "en"],
-    "lastLiquibaseTimestamp": 1628460324000,
+    "lastLiquibaseTimestamp": 1645296483000,
     "messageBroker": false,
     "nativeLanguage": "de",
     "otherModules": [],
