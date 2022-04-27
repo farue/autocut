@@ -1,7 +1,9 @@
 package de.farue.autocut.repository;
 
 import de.farue.autocut.domain.InternetAccess;
-import org.springframework.data.jpa.repository.*;
+import de.farue.autocut.domain.NetworkSwitch;
+import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -9,4 +11,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface InternetAccessRepository extends JpaRepository<InternetAccess, Long> {}
+public interface InternetAccessRepository extends JpaRepository<InternetAccess, Long> {
+    List<InternetAccess> findAllByNetworkSwitch(NetworkSwitch networkSwitch);
+}

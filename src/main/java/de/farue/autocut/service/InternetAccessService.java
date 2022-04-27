@@ -1,6 +1,7 @@
 package de.farue.autocut.service;
 
 import de.farue.autocut.domain.InternetAccess;
+import de.farue.autocut.domain.NetworkSwitch;
 import de.farue.autocut.repository.InternetAccessRepository;
 import java.util.List;
 import java.util.Optional;
@@ -111,5 +112,10 @@ public class InternetAccessService {
     public void delete(Long id) {
         log.debug("Request to delete InternetAccess : {}", id);
         internetAccessRepository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<InternetAccess> findAllByNetworkSwitch(NetworkSwitch networkSwitch) {
+        return internetAccessRepository.findAllByNetworkSwitch(networkSwitch);
     }
 }
