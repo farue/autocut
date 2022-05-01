@@ -6,6 +6,7 @@ import de.farue.autocut.security.SecurityUtils;
 import de.farue.autocut.service.dto.ContactFormDTO;
 import javax.mail.MessagingException;
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -63,7 +64,7 @@ public class ContactService {
     }
 
     public String buildSubject(String apartment, String subject) {
-        return "EPW " + apartment + ": " + subject;
+        return StringUtils.isNotBlank(apartment) ? ("EPW " + apartment + ": " + subject) : subject;
     }
 
     private String buildApartmentString(Apartment apartment) {
