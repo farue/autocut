@@ -9,6 +9,7 @@ import de.farue.autocut.service.internetaccess.SwitchStatusColumns;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.TemporalAmount;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -149,7 +150,11 @@ public class NetworkSwitchStatusService {
         Instant timestamp = Instant.now();
 
         if (!switchStatus.isEmpty()) {
-            boolean outdated = switchStatus.stream().anyMatch(status -> status.getTimestamp().plus(maxAge).isBefore(timestamp));
+            boolean outdated = switchStatus
+                .stream()
+                .max(Comparator.comparing(NetworkSwitchStatus::getTimestamp))
+                .map(status -> status.getTimestamp().plus(maxAge).isBefore(timestamp))
+                .orElse(true);
             if (!outdated) {
                 return switchStatus;
             }
