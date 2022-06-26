@@ -40,6 +40,11 @@ public interface LeaseRepository extends JpaRepository<Lease, Long> {
 
     List<Lease> findAllByEndGreaterThanAndEndLessThanEqual(LocalDate fromExclusive, LocalDate untilInclusive);
 
+    @Query(
+        "select distinct lease from Lease lease left join fetch lease.transactionBooks left join fetch lease.tenants where lease.end > :date"
+    )
+    List<Lease> findAllByEndGreaterThanWithEagerRelationships(LocalDate date);
+
     @Query("select l from Lease l where :transactionBook in l.transactionBooks")
     Optional<Lease> findOneByTransactionBook(TransactionBook transactionBook);
 }

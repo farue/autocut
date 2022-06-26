@@ -253,6 +253,10 @@ public class LeaseService {
         return this.leaseRepository.findAllByEndGreaterThanAndEndLessThanEqual(sinceDate, nowDate);
     }
 
+    public List<Lease> getAllUnexpiredLeasesAt(LocalDate date) {
+        return leaseRepository.findAllByEndGreaterThanWithEagerRelationships(date);
+    }
+
     // Fired every day at 00:00
     @Scheduled(cron = "0 0 0 * * ?")
     public void leaseExpiredSchedule() {

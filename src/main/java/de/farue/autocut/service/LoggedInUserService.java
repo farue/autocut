@@ -1,13 +1,25 @@
 package de.farue.autocut.service;
 
-import de.farue.autocut.domain.*;
+import de.farue.autocut.domain.InternalTransaction;
+import de.farue.autocut.domain.InternetAccess;
+import de.farue.autocut.domain.LaundryMachine;
+import de.farue.autocut.domain.LaundryProgram;
+import de.farue.autocut.domain.Lease;
+import de.farue.autocut.domain.NetworkSwitchStatus;
+import de.farue.autocut.domain.Tenant;
+import de.farue.autocut.domain.TransactionBook;
+import de.farue.autocut.domain.WashHistory;
 import de.farue.autocut.repository.UserRepository;
 import de.farue.autocut.security.SecurityUtils;
 import de.farue.autocut.service.accounting.InternalTransactionService;
 import de.farue.autocut.service.dto.AdminUserDTO;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -98,11 +110,11 @@ public class LoggedInUserService {
         return washHistoryService.findSuggestions(tenants, machine);
     }
 
-    public NetworkSwitchStatus getInternetStatus() {
+    public Optional<NetworkSwitchStatus> getInternetStatus() {
         return networkSwitchStatusService.getSwitchInterfaceStatus(getInternetAccess());
     }
 
-    public NetworkSwitchStatus updatedAndGetInternetStatus() {
+    public Optional<NetworkSwitchStatus> updatedAndGetInternetStatus() {
         return networkSwitchStatusService.getSwitchInterfaceStatus(getInternetAccess(), Duration.ofSeconds(90));
     }
 }

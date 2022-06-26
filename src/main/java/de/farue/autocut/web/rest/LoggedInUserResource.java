@@ -1,8 +1,25 @@
 package de.farue.autocut.web.rest;
 
-import de.farue.autocut.domain.*;
+import de.farue.autocut.domain.InternalTransaction;
+import de.farue.autocut.domain.InternetAccess;
+import de.farue.autocut.domain.LaundryMachine;
+import de.farue.autocut.domain.LaundryProgram;
+import de.farue.autocut.domain.Lease;
+import de.farue.autocut.domain.Tenant;
+import de.farue.autocut.domain.Timesheet;
+import de.farue.autocut.domain.TimesheetProject;
+import de.farue.autocut.domain.TimesheetProjectMember;
+import de.farue.autocut.domain.TimesheetTask;
+import de.farue.autocut.domain.TimesheetTime;
+import de.farue.autocut.domain.WashHistory;
 import de.farue.autocut.domain.enumeration.TransactionBookType;
-import de.farue.autocut.service.*;
+import de.farue.autocut.service.LaundryMachineService;
+import de.farue.autocut.service.LoggedInUserService;
+import de.farue.autocut.service.TimesheetProjectMemberService;
+import de.farue.autocut.service.TimesheetProjectService;
+import de.farue.autocut.service.TimesheetService;
+import de.farue.autocut.service.TimesheetTaskService;
+import de.farue.autocut.service.TimesheetTimeService;
 import de.farue.autocut.service.accounting.TransactionBookService;
 import de.farue.autocut.service.dto.AdminUserDTO;
 import de.farue.autocut.service.dto.NetworkStatusDTO;
@@ -24,7 +41,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.PaginationUtil;
@@ -157,12 +181,12 @@ public class LoggedInUserResource {
 
     @GetMapping("/network/status")
     public NetworkStatusDTO getInternetStatus() {
-        return networkStatusMapper.fromNetworkSwitchStatus(loggedInUserService.getInternetStatus());
+        return networkStatusMapper.fromNetworkSwitchStatus(loggedInUserService.getInternetStatus().orElse(null));
     }
 
     @PostMapping("/network/update")
     public NetworkStatusDTO updatedAndGetInternetStatus() {
-        return networkStatusMapper.fromNetworkSwitchStatus(loggedInUserService.updatedAndGetInternetStatus());
+        return networkStatusMapper.fromNetworkSwitchStatus(loggedInUserService.updatedAndGetInternetStatus().orElse(null));
     }
 
     @GetMapping("/timesheets")

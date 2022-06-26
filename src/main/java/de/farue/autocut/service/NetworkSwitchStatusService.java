@@ -126,20 +126,18 @@ public class NetworkSwitchStatusService {
         networkSwitchStatusRepository.deleteById(id);
     }
 
-    public NetworkSwitchStatus getSwitchInterfaceStatus(InternetAccess internetAccess) {
+    public Optional<NetworkSwitchStatus> getSwitchInterfaceStatus(InternetAccess internetAccess) {
         return getSwitchStatus(internetAccess.getNetworkSwitch())
             .stream()
             .filter(status -> StringUtils.equals(status.getPort(), internetAccess.getSwitchPortName()))
-            .findFirst()
-            .orElseThrow();
+            .findFirst();
     }
 
-    public NetworkSwitchStatus getSwitchInterfaceStatus(InternetAccess internetAccess, TemporalAmount maxAge) {
+    public Optional<NetworkSwitchStatus> getSwitchInterfaceStatus(InternetAccess internetAccess, TemporalAmount maxAge) {
         return getSwitchStatus(internetAccess.getNetworkSwitch(), maxAge)
             .stream()
             .filter(status -> StringUtils.equals(status.getPort(), internetAccess.getSwitchPortName()))
-            .findFirst()
-            .orElseThrow();
+            .findFirst();
     }
 
     public List<NetworkSwitchStatus> getSwitchStatus(NetworkSwitch networkSwitch) {

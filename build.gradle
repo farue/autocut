@@ -294,7 +294,7 @@ dependencies {
     implementation "org.springframework.cloud:spring-cloud-starter-feign:${spring_cloud_starter_feign_version}"
     implementation "com.github.ulisesbocchio:jasypt-spring-boot-starter:${jasypt_spring_boot_starter_version}"
     implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:${p6spy_spring_boot_starter_version}")
-    implementation("com.github.hbci4j:hbci4j-core:+")
+    implementation("com.github.hbci4j:hbci4j-core:${hbci4j_version}")
     implementation "com.hierynomus:sshj:${sshj_version}"
     implementation "net.sf.expectit:expectit-core:${expectit_core_version}"
     implementation "org.springframework.data:spring-data-envers"
