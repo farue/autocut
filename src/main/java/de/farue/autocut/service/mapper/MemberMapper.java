@@ -14,5 +14,5 @@ public interface MemberMapper {
     @Mapping(target = "email", source = "tenant.user.email")
     @Mapping(target = "emailConfirmed", source = "tenant.user.activated")
     @Mapping(target = "memberVerified", source = "tenant.verified")
-    MemberDTO fromLaundryMachine(Tenant tenant);
+    MemberDTO fromTenant(Tenant tenant);
 }

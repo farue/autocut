@@ -1,14 +1,12 @@
 package de.farue.autocut.service;
 
 import de.farue.autocut.domain.*;
+import de.farue.autocut.repository.TeamMembershipRepository;
 import de.farue.autocut.repository.TeamRepository;
 import de.farue.autocut.security.AuthoritiesConstants;
 import de.farue.autocut.security.SecurityUtils;
 import de.farue.autocut.service.accounting.TransactionBookService;
-import de.farue.autocut.service.dto.MemberDTO;
-import de.farue.autocut.service.dto.MembershipDTO;
-import de.farue.autocut.service.dto.TeamDTO;
-import de.farue.autocut.service.dto.TransactionBookDTO;
+import de.farue.autocut.service.dto.*;
 import de.farue.autocut.service.mapper.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -33,6 +31,8 @@ public class AdminService {
     private final InternetMapper internetMapper;
     private final TeamRepository teamRepository;
     private final TeamMapper teamMapper;
+    private final TeamMembershipRepository teamMembershipRepository;
+    private final TeamMembershipMapper teamMembershipMapper;
 
     public AdminService(
         NetworkSwitchStatusService networkSwitchStatusService,
@@ -43,7 +43,9 @@ public class AdminService {
         TransactionBookMapper transactionBookMapper,
         InternetMapper internetMapper,
         TeamRepository teamRepository,
-        TeamMapper teamMapper
+        TeamMapper teamMapper,
+        TeamMembershipRepository teamMembershipRepository,
+        TeamMembershipMapper teamMembershipMapper
     ) {
         this.networkSwitchStatusService = networkSwitchStatusService;
         this.transactionBookService = transactionBookService;
@@ -54,6 +56,8 @@ public class AdminService {
         this.internetMapper = internetMapper;
         this.teamRepository = teamRepository;
         this.teamMapper = teamMapper;
+        this.teamMembershipRepository = teamMembershipRepository;
+        this.teamMembershipMapper = teamMembershipMapper;
     }
 
     public TransactionBookDTO getCashTransactionBook(Lease lease) {
@@ -77,7 +81,7 @@ public class AdminService {
 
             MembershipDTO memberListDTO = new MembershipDTO();
             memberListDTO.setLease(leaseMapper.fromLease(lease));
-            List<MemberDTO> memberDTOs = tenants.stream().map(memberMapper::fromLaundryMachine).toList();
+            List<MemberDTO> memberDTOs = tenants.stream().map(memberMapper::fromTenant).toList();
             memberListDTO.setMembers(memberDTOs);
             memberListDTO.setTransactionBook(getCashTransactionBook(lease));
             memberListDTO.setApartment(apartment);
@@ -93,5 +97,23 @@ public class AdminService {
         }
 
         return teamRepository.findAll().stream().map(teamMapper::fromTeam).toList();
+    }
+
+    public TeamDTO getTeam(Long teamId) {
+        if (!SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        Team team = teamRepository.findById(teamId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return teamMapper.fromTeam(team);
+    }
+
+    public List<TeamMembershipDTO> getTeamMembers(Long teamId) {
+        if (!SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        Team team = teamRepository.findById(teamId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return teamMembershipRepository.findAllByTeam(team).stream().map(teamMembershipMapper::fromTeamMembership).toList();
     }
 }

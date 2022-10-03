@@ -1,7 +1,9 @@
 package de.farue.autocut.repository;
 
+import de.farue.autocut.domain.Team;
 import de.farue.autocut.domain.TeamMembership;
-import org.springframework.data.jpa.repository.*;
+import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -9,4 +11,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface TeamMembershipRepository extends JpaRepository<TeamMembership, Long> {}
+public interface TeamMembershipRepository extends JpaRepository<TeamMembership, Long> {
+    List<TeamMembership> findAllByTeam(Team team);
+}
