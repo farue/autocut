@@ -8,5 +8,5 @@ public class TeamDTO {
     private long id;
     private String name;
     private String email;
-    private int teamMembersCount;
+    private int activeTeamMembersCount;
 }
