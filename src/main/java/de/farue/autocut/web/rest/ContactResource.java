@@ -20,20 +20,7 @@ public class ContactResource {
 
     @PostMapping("/{team}/email")
     public void sendEmail(@PathVariable(value = "team") final String team, @RequestBody ContactFormDTO contact) {
-        String teamName = mapTeam(team);
-        final Team t = teamRepository.findByName(teamName).orElseThrow();
+        final Team t = teamRepository.findByName(team).orElseThrow();
         contactService.contact(t, contact);
-    }
-
-    private String mapTeam(String teamUrlPath) {
-        return switch (teamUrlPath) {
-            case "spokesperson" -> "SPOKESPERSON";
-            case "assignment-team" -> "ASSIGNMENT";
-            case "networking-team" -> "NETWORKING";
-            case "washing-team" -> "WASHING";
-            case "tools-team" -> "TOOLS";
-            case "janitor" -> "JANITOR";
-            default -> throw new IllegalArgumentException("Unknown team: " + teamUrlPath);
-        };
     }
 }

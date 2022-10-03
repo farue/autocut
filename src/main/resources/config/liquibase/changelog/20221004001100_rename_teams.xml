@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="rename-teams" author="brunecker">
+        <update tableName="team">
+            <column name="name" valueComputed="CONCAT(UCASE(LEFT(name, 1)), SUBSTRING(LCASE(name), 2))"/>
+        </update>
+        <update tableName="team">
+            <column name="name" value="Representatives"/>
+            <where>name = 'Spokesperson'</where>
+        </update>
+    </changeSet>
+</databaseChangeLog>
