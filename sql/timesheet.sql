@@ -1,3 +1,13 @@
+# Times since last assembly
+select t2.first_name, t2.last_name, sec_to_time(times.time), t.id as timesheet_id
+from timesheet t
+         left join (select timesheet_id, sum(effective_time) as time
+                    from timesheet_time
+                    where start > '2022-03-19'
+                    group by timesheet_id) times
+                   on t.id = times.timesheet_id
+         inner join tenant t2 on t.member_id = t2.id;
+
 select tp.id   as 'Project ID',
        tp.name as 'Project',
        tt.id   as 'Task ID',
