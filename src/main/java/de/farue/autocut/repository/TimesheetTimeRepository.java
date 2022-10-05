@@ -3,6 +3,7 @@ package de.farue.autocut.repository;
 import de.farue.autocut.domain.Timesheet;
 import de.farue.autocut.domain.TimesheetProject;
 import de.farue.autocut.domain.TimesheetTime;
+import java.time.Instant;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,4 +28,7 @@ public interface TimesheetTimeRepository extends JpaRepository<TimesheetTime, Lo
         "order by t.id desc"
     )
     List<TimesheetTime> findByTimesheetOrderByLastUsed(Timesheet timesheet, TimesheetProject project, Pageable pageable);
+
+    @Query("select t from TimesheetTime t left join fetch t.timesheet where t.start >= :earliest and t.end < :latest")
+    List<TimesheetTime> findAllByEndAfterAndEndBefore(Instant earliest, Instant latest);
 }
