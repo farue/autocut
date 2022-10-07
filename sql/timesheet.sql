@@ -8,13 +8,9 @@ from timesheet t
                    on t.id = times.timesheet_id
          inner join tenant t2 on t.member_id = t2.id;
 
-# Re-calculate effective time
-update timesheet_time time
-set time.effective_time =
-        (select time_to_sec(timediff(time.end, time.start)) * task.factor + task.constant
-         from timesheet_task task
-         where time.task_id = task.id)
-where time.id between 103 and 117;
+# Pretty print times in timesheet
+select sec_to_time(effective_time) from timesheet_time
+where timesheet_id = 15;
 
 # Projects and tasks
 select tp.id   as 'Project ID',
@@ -31,7 +27,25 @@ from timesheet_task tt
          inner join rel_timesheet_project__tasks rtt on tt.id = rtt.tasks_id
          inner join timesheet_project tp on rtt.timesheet_project_id = tp.id;
 
--- INITIALIZATION
+### CORRECTIONS
+
+# Re-calculate effective time
+update timesheet_time time
+set time.effective_time =
+        (select time_to_sec(timediff(time.end, time.start)) * task.factor + task.constant
+         from timesheet_task task
+         where time.task_id = task.id)
+where time.id between 103 and 117;
+
+# Change from Communication to Default task
+update timesheet_time time
+set time.task_id         = 1,
+    time.edited_constant = null,
+    time.end             = date_add(time.start, interval time.effective_time second)
+where time.timesheet_id = 16
+  and task_id = 16;
+
+### INITIALIZATION
 
 insert into timesheet_project(name, owner_id, start, end)
 select res.name, res.id, null, null
