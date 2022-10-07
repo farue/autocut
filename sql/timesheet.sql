@@ -1,3 +1,19 @@
+# Times overview
+select concat(t2.first_name, ' ', t2.last_name) as name,
+       tp.name                                  as project,
+       task.name                                as task,
+       time.start                               as start,
+       time.end                                 as end,
+       sec_to_time(time.effective_time)         as duration,
+       time.description                         as description
+from timesheet_time time
+         inner join timesheet t on time.timesheet_id = t.id
+         inner join tenant t2 on t.member_id = t2.id
+         inner join timesheet_project tp on time.project_id = tp.id
+         inner join timesheet_task task on time.task_id = task.id
+where time.end >= '2022-03-19'
+order by t.id, time.start;
+
 # Times since last assembly
 select t2.first_name, t2.last_name, sec_to_time(times.time), t.id as timesheet_id
 from timesheet t
