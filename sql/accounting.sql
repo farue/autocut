@@ -1,8 +1,8 @@
 # Bank transactions for accounting
-select date_format(t.value_date, '%d.%m.%Y'), t.description, t.value, t.balance_after
+select date_format(convert_tz(t.value_date, 'UTC', 'Europe/Berlin'), '%d.%m.%Y'), t.description, t.value, t.balance_after
 from bank_transaction bt
          inner join transaction t on bt.id = t.id
-where t.value_date > '2021-03-28'
+where t.value_date > '2022-03-14'
 order by t.value_date;
 
 # account balances for accounting
