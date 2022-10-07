@@ -9,7 +9,7 @@ import org.springframework.batch.item.ItemWriter;
 
 public class BankingBatchWriter implements ItemWriter<BankTransaction> {
 
-    private static final Pattern INVOICE_PATTERN = Pattern.compile(".*ER20\\d{2}-\\d{3}.*");
+    private static final Pattern INVOICE_PATTERN = Pattern.compile(".*(ER|EB|Eig|EZ)20\\d{2}-\\d{3}.*");
 
     private final BankTransactionService transactionService;
 
