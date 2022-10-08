@@ -9,7 +9,10 @@ import de.farue.autocut.domain.TimesheetTime;
 import de.farue.autocut.repository.TimesheetTimeRepository;
 import de.farue.autocut.security.AuthoritiesConstants;
 import de.farue.autocut.security.SecurityUtils;
+import de.farue.autocut.service.dto.CreateTimesheetTimeDTO;
 import de.farue.autocut.service.timesheet.TimesheetTimeCalculator;
+import de.farue.autocut.utils.DateUtil;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -20,9 +23,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  * Service Implementation for managing {@link TimesheetTime}.
@@ -37,15 +42,18 @@ public class TimesheetTimeService {
 
     private final TimesheetProjectService timesheetProjectService;
     private final TimesheetService timesheetService;
+    private final TimesheetTaskService timesheetTaskService;
 
     public TimesheetTimeService(
         TimesheetTimeRepository timesheetTimeRepository,
         TimesheetProjectService timesheetProjectService,
-        TimesheetService timesheetService
+        TimesheetService timesheetService,
+        TimesheetTaskService timesheetTaskService
     ) {
         this.timesheetTimeRepository = timesheetTimeRepository;
         this.timesheetProjectService = timesheetProjectService;
         this.timesheetService = timesheetService;
+        this.timesheetTaskService = timesheetTaskService;
     }
 
     /**
@@ -161,9 +169,39 @@ public class TimesheetTimeService {
         return timesheetTimeRepository.findAllByTimesheet(timesheet, pageable);
     }
 
-    public TimesheetTime saveWithValidation(TimesheetTime time) {
-        validate(time);
-        time.setEffectiveTime(new TimesheetTimeCalculator(time).getEffectiveTime());
+    public TimesheetTime save(Long timesheetId, CreateTimesheetTimeDTO timeDTO) {
+        Timesheet timesheet = timesheetService
+            .findOneForCurrentUser()
+            .stream()
+            .filter(t -> t.getId().equals(timesheetId))
+            .findFirst()
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        TimesheetProject project = timesheetProjectService
+            .findAllByTimesheet(timesheet)
+            .stream()
+            .filter(p -> p.getId().equals(timeDTO.getProjectId()))
+            .findFirst()
+            .orElseThrow(() -> new RuntimeException("Project " + timeDTO.getProjectId() + " does not exist."));
+        TimesheetTask task = timesheetTaskService
+            .findAllByTimesheetProject(project)
+            .stream()
+            .filter(t -> t.getId().equals(timeDTO.getTaskId()))
+            .findFirst()
+            .orElseThrow(() -> new RuntimeException("Task " + timeDTO.getTaskId() + " does not exist or has been disabled."));
+        TimesheetTime time = new TimesheetTime()
+            .start(DateUtil.roundDown(timeDTO.getStart(), ChronoUnit.SECONDS))
+            .end(DateUtil.roundUp(timeDTO.getEnd(), ChronoUnit.SECONDS))
+            .pause(timeDTO.getPause())
+            .timesheet(timesheet)
+            .project(project)
+            .task(task)
+            .editedConstant(timeDTO.getEditedConstant())
+            .editedFactor(timeDTO.getEditedFactor())
+            .description(timeDTO.getDescription());
+
+        TimesheetTimeCalculator calculator = new TimesheetTimeCalculator(time);
+        time.setEffectiveTime(calculator.getEffectiveTime());
+        validate(time, calculator);
         return save(time);
     }
 
@@ -176,29 +214,7 @@ public class TimesheetTimeService {
             .toList();
     }
 
-    private void validate(TimesheetTime time) {
-        // TODO: Create DTO with correct validation annotations and create custom validators
-        Timesheet timesheet = time.getTimesheet();
-        if (timesheet == null) {
-            throw new ValidationException("timesheet must not be null");
-        }
-        TimesheetProject project = time.getProject();
-        if (project == null) {
-            throw new ValidationException("project must not be null");
-        }
-        TimesheetTask task = time.getTask();
-        if (task == null) {
-            throw new ValidationException("task must not be null");
-        }
-        if (time.getStart() == null) {
-            throw new ValidationException("start must not be null");
-        }
-        if (time.getPause() == null) {
-            throw new ValidationException("pause must not be null");
-        }
-
-        TimesheetTimeCalculator calculator = new TimesheetTimeCalculator(time);
-
+    private void validate(TimesheetTime time, TimesheetTimeCalculator calculator) {
         if (!compare(calculator.getFactor()).isZero() && time.getEnd() == null) {
             throw new ValidationException("end must not be null");
         }
@@ -209,19 +225,12 @@ public class TimesheetTimeService {
             throw new ValidationException("worked time must be positive integer");
         }
 
-        if (!timesheetProjectService.findAllByTimesheet(timesheet).contains(project)) {
-            throw new ValidationException("project does not exist");
-        }
-        if (!project.getTasks().contains(task)) {
-            throw new ValidationException("task does not exist");
-        }
-
-        if (BooleanUtils.isNotTrue(task.getConstantEditable())) {
+        if (BooleanUtils.isNotTrue(time.getTask().getConstantEditable())) {
             if (time.getEditedConstant() != null) {
                 throw new ValidationException("not allowed to edit constant");
             }
         }
-        if (BooleanUtils.isNotTrue(task.getFactorEditable())) {
+        if (BooleanUtils.isNotTrue(time.getTask().getFactorEditable())) {
             if (time.getEditedFactor() != null) {
                 throw new ValidationException("not allowed to edit constant");
             }

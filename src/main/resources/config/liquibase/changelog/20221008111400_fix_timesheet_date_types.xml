@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="fix timesheet date types" author="brunecker">
+        <modifyDataType tableName="timesheet_time" columnName="start" newDataType="datetime"/>
+        <modifyDataType tableName="timesheet_time" columnName="end" newDataType="datetime"/>
+        <modifyDataType tableName="timesheet_timer" columnName="start" newDataType="datetime"/>
+        <modifyDataType tableName="timesheet_timer" columnName="pause_start" newDataType="datetime"/>
+        <modifyDataType tableName="timesheet_project" columnName="start" newDataType="date"/>
+        <modifyDataType tableName="timesheet_project" columnName="end" newDataType="date"/>
+        <modifyDataType tableName="timesheet_project_member" columnName="start" newDataType="date"/>
+        <modifyDataType tableName="timesheet_project_member" columnName="end" newDataType="date"/>
+    </changeSet>
+</databaseChangeLog>

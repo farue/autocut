@@ -68,4 +68,5 @@
     <include file="config/liquibase/changelog/ac113-fix_team.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/ac112-timesheet.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20221004001100_rename_teams.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221008111400_fix_timesheet_date_types.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

@@ -2,6 +2,8 @@ package de.farue.autocut.service;
 
 import de.farue.autocut.domain.TimesheetTimer;
 import de.farue.autocut.repository.TimesheetTimerRepository;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -19,9 +21,17 @@ public class TimesheetTimerService {
     private final Logger log = LoggerFactory.getLogger(TimesheetTimerService.class);
 
     private final TimesheetTimerRepository timesheetTimerRepository;
+    private final LoggedInUserService loggedInUserService;
+    private final TimesheetService timesheetService;
 
-    public TimesheetTimerService(TimesheetTimerRepository timesheetTimerRepository) {
+    public TimesheetTimerService(
+        TimesheetTimerRepository timesheetTimerRepository,
+        LoggedInUserService loggedInUserService,
+        TimesheetService timesheetService
+    ) {
         this.timesheetTimerRepository = timesheetTimerRepository;
+        this.loggedInUserService = loggedInUserService;
+        this.timesheetService = timesheetService;
     }
 
     /**
@@ -93,5 +103,66 @@ public class TimesheetTimerService {
     public void delete(Long id) {
         log.debug("Request to delete TimesheetTimer : {}", id);
         timesheetTimerRepository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public TimesheetTimer getTimer() {
+        return timesheetService.findOneForCurrentUser().flatMap(timesheetTimerRepository::findOneByTimesheet).orElse(null);
+    }
+
+    public TimesheetTimer startTimer() {
+        Instant start = Instant.now();
+        return timesheetService
+            .findOneForCurrentUser()
+            .map(timesheet -> {
+                timesheetTimerRepository
+                    .findOneByTimesheet(timesheet)
+                    .ifPresent(timer -> {
+                        throw new IllegalStateException(
+                            "Timer is already running for timesheet " + timesheet.getId() + " with start " + timer.getStart()
+                        );
+                    });
+
+                TimesheetTimer timer = new TimesheetTimer().start(start).timesheet(timesheet);
+                return this.timesheetTimerRepository.save(timer);
+            })
+            .orElse(null);
+    }
+
+    public void deleteTimer() {
+        System.out.println(timesheetTimerRepository.findAll());
+
+        timesheetService
+            .findOneForCurrentUser()
+            .flatMap(timesheetTimerRepository::findOneByTimesheet)
+            .ifPresent(timesheetTimerRepository::delete);
+
+        System.out.println(timesheetTimerRepository.findAll());
+    }
+
+    public TimesheetTimer pauseTimer() {
+        return timesheetService
+            .findOneForCurrentUser()
+            .flatMap(timesheetTimerRepository::findOneByTimesheet)
+            .map(timer -> {
+                timer.setPauseStart(Instant.now());
+                return timesheetTimerRepository.save(timer);
+            })
+            .orElse(null);
+    }
+
+    public TimesheetTimer unpauseTimer() {
+        return timesheetService
+            .findOneForCurrentUser()
+            .flatMap(timesheetTimerRepository::findOneByTimesheet)
+            .map(timer -> {
+                Instant pauseStart = timer.getPauseStart();
+                Instant pauseEnd = Instant.now();
+                int pause = (int) pauseStart.until(pauseEnd, ChronoUnit.SECONDS);
+                timer.setPauseStart(null);
+                timer.setPause(timer.getPause() != null ? timer.getPause() + pause : pause);
+                return timesheetTimerRepository.save(timer);
+            })
+            .orElse(null);
     }
 }

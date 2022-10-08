@@ -1,32 +1,15 @@
 package de.farue.autocut.web.rest;
 
-import de.farue.autocut.domain.InternalTransaction;
-import de.farue.autocut.domain.InternetAccess;
-import de.farue.autocut.domain.LaundryMachine;
-import de.farue.autocut.domain.LaundryProgram;
-import de.farue.autocut.domain.Lease;
-import de.farue.autocut.domain.Tenant;
-import de.farue.autocut.domain.Timesheet;
-import de.farue.autocut.domain.TimesheetProject;
-import de.farue.autocut.domain.TimesheetProjectMember;
-import de.farue.autocut.domain.TimesheetTask;
-import de.farue.autocut.domain.TimesheetTime;
-import de.farue.autocut.domain.WashHistory;
+import de.farue.autocut.domain.*;
 import de.farue.autocut.domain.enumeration.TransactionBookType;
-import de.farue.autocut.service.LaundryMachineService;
-import de.farue.autocut.service.LoggedInUserService;
-import de.farue.autocut.service.TimesheetProjectMemberService;
-import de.farue.autocut.service.TimesheetProjectService;
-import de.farue.autocut.service.TimesheetService;
-import de.farue.autocut.service.TimesheetTaskService;
-import de.farue.autocut.service.TimesheetTimeService;
+import de.farue.autocut.service.*;
 import de.farue.autocut.service.accounting.TransactionBookService;
 import de.farue.autocut.service.dto.AdminUserDTO;
+import de.farue.autocut.service.dto.CreateTimesheetTimeDTO;
 import de.farue.autocut.service.dto.NetworkStatusDTO;
 import de.farue.autocut.service.dto.TransactionBookDTO;
 import de.farue.autocut.service.mapper.NetworkStatusMapper;
 import de.farue.autocut.service.mapper.TransactionBookMapper;
-import de.farue.autocut.web.rest.errors.BadRequestAlertException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -35,20 +18,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.PaginationUtil;
@@ -70,6 +47,7 @@ public class LoggedInUserResource {
     private final TimesheetProjectService timesheetProjectService;
     private final TimesheetProjectMemberService timesheetProjectMemberService;
     private final TimesheetTaskService timesheetTaskService;
+    private final TimesheetTimerService timesheetTimerService;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -84,7 +62,8 @@ public class LoggedInUserResource {
         TimesheetTimeService timesheetTimeService,
         TimesheetProjectService timesheetProjectService,
         TimesheetProjectMemberService timesheetProjectMemberService,
-        TimesheetTaskService timesheetTaskService
+        TimesheetTaskService timesheetTaskService,
+        TimesheetTimerService timesheetTimerService
     ) {
         this.laundryMachineService = laundryMachineService;
         this.loggedInUserService = loggedInUserService;
@@ -96,6 +75,7 @@ public class LoggedInUserResource {
         this.timesheetProjectService = timesheetProjectService;
         this.timesheetProjectMemberService = timesheetProjectMemberService;
         this.timesheetTaskService = timesheetTaskService;
+        this.timesheetTimerService = timesheetTimerService;
     }
 
     @GetMapping
@@ -220,19 +200,12 @@ public class LoggedInUserResource {
     }
 
     @PostMapping("/timesheets/{id}/times")
-    public ResponseEntity<TimesheetTime> createTimesheetTime(@PathVariable Long id, @RequestBody TimesheetTime time)
+    public ResponseEntity<TimesheetTime> createTimesheetTime(@PathVariable Long id, @RequestBody @Valid CreateTimesheetTimeDTO timeDTO)
         throws URISyntaxException {
-        if (time.getId() != null) {
-            throw new BadRequestAlertException("A new timesheetTime cannot already have an ID", TIMESHEET_TIME_ENTITY_NAME, "idexists");
+        TimesheetTime result = timesheetTimeService.save(id, timeDTO);
+        if (timeDTO.isStopTimer()) {
+            timesheetTimerService.deleteTimer();
         }
-        Timesheet timesheet = getTimesheets()
-            .stream()
-            .filter(t -> t.getId().equals(id))
-            .findFirst()
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        time.setTimesheet(timesheet);
-
-        TimesheetTime result = timesheetTimeService.saveWithValidation(time);
         return ResponseEntity.created(new URI("/api/timesheet-times/" + result.getId())).body(result);
     }
 
@@ -290,5 +263,30 @@ public class LoggedInUserResource {
             .findFirst()
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return timesheetTimeService.getDescriptions(timesheet, project);
+    }
+
+    @GetMapping("/timesheets/timer")
+    public TimesheetTimer getTimer() {
+        return timesheetTimerService.getTimer();
+    }
+
+    @PostMapping("/timesheets/timer/start")
+    public TimesheetTimer startTimer() {
+        return timesheetTimerService.startTimer();
+    }
+
+    @PostMapping("/timesheets/timer/pause")
+    public TimesheetTimer pauseTimer() {
+        return timesheetTimerService.pauseTimer();
+    }
+
+    @PostMapping("/timesheets/timer/unpause")
+    public TimesheetTimer unpauseTimer() {
+        return timesheetTimerService.unpauseTimer();
+    }
+
+    @DeleteMapping("/timesheets/timer")
+    public void deleteTimer() {
+        timesheetTimerService.deleteTimer();
     }
 }

@@ -4,6 +4,7 @@ import de.farue.autocut.domain.enumeration.SemesterTerms;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.temporal.TemporalUnit;
 import java.util.Arrays;
 
 public class DateUtil {
@@ -19,6 +20,18 @@ public class DateUtil {
 
     public static LocalDate max(LocalDate... dates) {
         return Arrays.stream(dates).max(LocalDate::compareTo).orElseThrow();
+    }
+
+    public static Instant roundDown(Instant instant, TemporalUnit unit) {
+        return instant.truncatedTo(unit);
+    }
+
+    public static Instant roundUp(Instant instant, TemporalUnit unit) {
+        Instant roundedDown = roundDown(instant, unit);
+        if (!roundedDown.equals(instant)) {
+            return roundedDown.plus(1, unit);
+        }
+        return roundedDown;
     }
 
     public static SemesterTerms semesterTermAt(int month) {

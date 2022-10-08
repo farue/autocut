@@ -23,4 +23,11 @@ public interface TimesheetTaskRepository extends JpaRepository<TimesheetTask, Lo
         "order by time.id desc"
     )
     List<TimesheetTask> findAllByTimesheetProjectOrderByLastUsed(TimesheetProject project);
+
+    @Query(
+        "select distinct task from TimesheetTask task " +
+        "left join fetch task.projects project " +
+        "where project = :project and task.enabled = true"
+    )
+    List<TimesheetTask> findAllByTimesheetProject(TimesheetProject project);
 }

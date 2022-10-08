@@ -109,6 +109,11 @@ public class TimesheetTaskService {
     }
 
     @Transactional(readOnly = true)
+    public List<TimesheetTask> findAllByTimesheetProject(TimesheetProject project) {
+        return timesheetTaskRepository.findAllByTimesheetProject(project);
+    }
+
+    @Transactional(readOnly = true)
     public List<TimesheetTask> findAllByTimesheetProjectOrderByLastUsed(TimesheetProject project) {
         return timesheetTaskRepository.findAllByTimesheetProjectOrderByLastUsed(project).stream().distinct().toList();
     }
