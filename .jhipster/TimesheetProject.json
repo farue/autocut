@@ -12,11 +12,11 @@
     },
     {
       "fieldName": "start",
-      "fieldType": "Instant"
+      "fieldType": "LocalDate"
     },
     {
       "fieldName": "end",
-      "fieldType": "Instant"
+      "fieldType": "LocalDate"
     }
   ],
   "fluentMethods": true,

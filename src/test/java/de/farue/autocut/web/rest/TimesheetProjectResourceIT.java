@@ -12,8 +12,8 @@ import de.farue.autocut.domain.TimesheetProject;
 import de.farue.autocut.repository.TimesheetProjectRepository;
 import de.farue.autocut.security.AuthoritiesConstants;
 import de.farue.autocut.service.TimesheetProjectService;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -44,11 +44,11 @@ class TimesheetProjectResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final Instant DEFAULT_START = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_START = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final LocalDate DEFAULT_START = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_START = LocalDate.now(ZoneId.systemDefault());
 
-    private static final Instant DEFAULT_END = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_END = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final LocalDate DEFAULT_END = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_END = LocalDate.now(ZoneId.systemDefault());
 
     private static final String ENTITY_API_URL = "/api/timesheet-projects";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";

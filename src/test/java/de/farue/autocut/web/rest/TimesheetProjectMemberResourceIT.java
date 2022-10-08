@@ -11,8 +11,8 @@ import de.farue.autocut.domain.TimesheetProject;
 import de.farue.autocut.domain.TimesheetProjectMember;
 import de.farue.autocut.repository.TimesheetProjectMemberRepository;
 import de.farue.autocut.security.AuthoritiesConstants;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -34,11 +34,11 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 class TimesheetProjectMemberResourceIT {
 
-    private static final Instant DEFAULT_START = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_START = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final LocalDate DEFAULT_START = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_START = LocalDate.now(ZoneId.systemDefault());
 
-    private static final Instant DEFAULT_END = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_END = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final LocalDate DEFAULT_END = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_END = LocalDate.now(ZoneId.systemDefault());
 
     private static final String ENTITY_API_URL = "/api/timesheet-project-members";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";

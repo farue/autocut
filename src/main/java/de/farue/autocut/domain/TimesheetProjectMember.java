@@ -2,7 +2,7 @@ package de.farue.autocut.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDate;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
@@ -24,10 +24,10 @@ public class TimesheetProjectMember implements Serializable {
     private Long id;
 
     @Column(name = "start")
-    private Instant start;
+    private LocalDate start;
 
     @Column(name = "end")
-    private Instant end;
+    private LocalDate end;
 
     @ManyToOne(optional = false)
     @NotNull
@@ -54,29 +54,29 @@ public class TimesheetProjectMember implements Serializable {
         this.id = id;
     }
 
-    public Instant getStart() {
+    public LocalDate getStart() {
         return this.start;
     }
 
-    public TimesheetProjectMember start(Instant start) {
+    public TimesheetProjectMember start(LocalDate start) {
         this.setStart(start);
         return this;
     }
 
-    public void setStart(Instant start) {
+    public void setStart(LocalDate start) {
         this.start = start;
     }
 
-    public Instant getEnd() {
+    public LocalDate getEnd() {
         return this.end;
     }
 
-    public TimesheetProjectMember end(Instant end) {
+    public TimesheetProjectMember end(LocalDate end) {
         this.setEnd(end);
         return this;
     }
 
-    public void setEnd(Instant end) {
+    public void setEnd(LocalDate end) {
         this.end = end;
     }
 

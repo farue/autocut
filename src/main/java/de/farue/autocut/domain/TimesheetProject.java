@@ -2,7 +2,7 @@ package de.farue.autocut.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
@@ -30,10 +30,10 @@ public class TimesheetProject implements Serializable {
     private String name;
 
     @Column(name = "start")
-    private Instant start;
+    private LocalDate start;
 
     @Column(name = "end")
-    private Instant end;
+    private LocalDate end;
 
     @ManyToOne(optional = false)
     @NotNull
@@ -78,29 +78,29 @@ public class TimesheetProject implements Serializable {
         this.name = name;
     }
 
-    public Instant getStart() {
+    public LocalDate getStart() {
         return this.start;
     }
 
-    public TimesheetProject start(Instant start) {
+    public TimesheetProject start(LocalDate start) {
         this.setStart(start);
         return this;
     }
 
-    public void setStart(Instant start) {
+    public void setStart(LocalDate start) {
         this.start = start;
     }
 
-    public Instant getEnd() {
+    public LocalDate getEnd() {
         return this.end;
     }
 
-    public TimesheetProject end(Instant end) {
+    public TimesheetProject end(LocalDate end) {
         this.setEnd(end);
         return this;
     }
 
-    public void setEnd(Instant end) {
+    public void setEnd(LocalDate end) {
         this.end = end;
     }
 
