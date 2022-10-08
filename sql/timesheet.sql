@@ -11,7 +11,7 @@ from timesheet_time time
          inner join tenant t2 on t.member_id = t2.id
          inner join timesheet_project tp on time.project_id = tp.id
          inner join timesheet_task task on time.task_id = task.id
-where time.end >= '2022-03-19'
+where time.start >= '2022-03-19'
 order by t.id, time.start;
 
 # Times since last assembly
@@ -51,7 +51,7 @@ set time.effective_time =
         (select time_to_sec(timediff(time.end, time.start)) * task.factor + task.constant
          from timesheet_task task
          where time.task_id = task.id)
-where time.id between 103 and 117;
+where time.id between 320 and 335 and task_id = 1;
 
 # Change from Communication to Default task
 update timesheet_time time

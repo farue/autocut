@@ -29,6 +29,6 @@ public interface TimesheetTimeRepository extends JpaRepository<TimesheetTime, Lo
     )
     List<TimesheetTime> findByTimesheetOrderByLastUsed(Timesheet timesheet, TimesheetProject project, Pageable pageable);
 
-    @Query("select t from TimesheetTime t left join fetch t.timesheet where t.start >= :earliest and t.end < :latest")
+    @Query("select t from TimesheetTime t left join fetch t.timesheet where t.start >= :earliest and t.start < :latest")
     List<TimesheetTime> findAllByEndAfterAndEndBefore(Instant earliest, Instant latest);
 }
