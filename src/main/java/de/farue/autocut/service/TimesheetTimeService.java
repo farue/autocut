@@ -169,7 +169,7 @@ public class TimesheetTimeService {
         return timesheetTimeRepository.findAllByTimesheet(timesheet, pageable);
     }
 
-    public TimesheetTime save(Long timesheetId, CreateTimesheetTimeDTO timeDTO) {
+    public TimesheetTime save(Long timesheetId, Long timeId, CreateTimesheetTimeDTO timeDTO) {
         Timesheet timesheet = timesheetService
             .findOneForCurrentUser()
             .stream()
@@ -189,6 +189,7 @@ public class TimesheetTimeService {
             .findFirst()
             .orElseThrow(() -> new RuntimeException("Task " + timeDTO.getTaskId() + " does not exist or has been disabled."));
         TimesheetTime time = new TimesheetTime()
+            .id(timeId)
             .start(DateUtil.roundDown(timeDTO.getStart(), ChronoUnit.SECONDS))
             .end(DateUtil.roundUp(timeDTO.getEnd(), ChronoUnit.SECONDS))
             .pause(timeDTO.getPause())

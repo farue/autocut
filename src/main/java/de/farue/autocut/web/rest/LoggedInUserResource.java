@@ -202,11 +202,21 @@ public class LoggedInUserResource {
     @PostMapping("/timesheets/{id}/times")
     public ResponseEntity<TimesheetTime> createTimesheetTime(@PathVariable Long id, @RequestBody @Valid CreateTimesheetTimeDTO timeDTO)
         throws URISyntaxException {
-        TimesheetTime result = timesheetTimeService.save(id, timeDTO);
+        TimesheetTime result = timesheetTimeService.save(id, null, timeDTO);
         if (timeDTO.isStopTimer()) {
             timesheetTimerService.deleteTimer();
         }
         return ResponseEntity.created(new URI("/api/timesheet-times/" + result.getId())).body(result);
+    }
+
+    @PutMapping("/timesheets/{timesheetId}/times/{timeId}")
+    public ResponseEntity<TimesheetTime> updateTimesheetTime(
+        @PathVariable Long timesheetId,
+        @PathVariable Long timeId,
+        @RequestBody @Valid CreateTimesheetTimeDTO timeDTO
+    ) throws URISyntaxException {
+        TimesheetTime result = timesheetTimeService.save(timesheetId, timeId, timeDTO);
+        return ResponseEntity.ok().body(result);
     }
 
     @DeleteMapping("/timesheets/{timesheetId}/times/{timeId}")
@@ -263,6 +273,20 @@ public class LoggedInUserResource {
             .findFirst()
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return timesheetTimeService.getDescriptions(timesheet, project);
+    }
+
+    @GetMapping("/times/{id}")
+    public TimesheetTime getTime(@PathVariable Long id) {
+        return timesheetTimeService
+            .findOne(id)
+            .map(t -> {
+                if (timesheetService.findOneForCurrentUser().map(timesheet -> t.getTimesheet().equals(timesheet)).orElse(false)) {
+                    return t;
+                } else {
+                    return null;
+                }
+            })
+            .orElse(null);
     }
 
     @GetMapping("/timesheets/timer")
