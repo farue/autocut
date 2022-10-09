@@ -4,11 +4,9 @@ import de.farue.autocut.domain.*;
 import de.farue.autocut.domain.enumeration.TransactionBookType;
 import de.farue.autocut.service.*;
 import de.farue.autocut.service.accounting.TransactionBookService;
-import de.farue.autocut.service.dto.AdminUserDTO;
-import de.farue.autocut.service.dto.CreateTimesheetTimeDTO;
-import de.farue.autocut.service.dto.NetworkStatusDTO;
-import de.farue.autocut.service.dto.TransactionBookDTO;
+import de.farue.autocut.service.dto.*;
 import de.farue.autocut.service.mapper.NetworkStatusMapper;
+import de.farue.autocut.service.mapper.TimesheetTimeMapper;
 import de.farue.autocut.service.mapper.TransactionBookMapper;
 import java.math.BigDecimal;
 import java.net.URI;
@@ -48,6 +46,7 @@ public class LoggedInUserResource {
     private final TimesheetProjectMemberService timesheetProjectMemberService;
     private final TimesheetTaskService timesheetTaskService;
     private final TimesheetTimerService timesheetTimerService;
+    private final TimesheetTimeMapper timesheetTimeMapper;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -63,7 +62,8 @@ public class LoggedInUserResource {
         TimesheetProjectService timesheetProjectService,
         TimesheetProjectMemberService timesheetProjectMemberService,
         TimesheetTaskService timesheetTaskService,
-        TimesheetTimerService timesheetTimerService
+        TimesheetTimerService timesheetTimerService,
+        TimesheetTimeMapper timesheetTimeMapper
     ) {
         this.laundryMachineService = laundryMachineService;
         this.loggedInUserService = loggedInUserService;
@@ -76,6 +76,7 @@ public class LoggedInUserResource {
         this.timesheetProjectMemberService = timesheetProjectMemberService;
         this.timesheetTaskService = timesheetTaskService;
         this.timesheetTimerService = timesheetTimerService;
+        this.timesheetTimeMapper = timesheetTimeMapper;
     }
 
     @GetMapping
@@ -187,7 +188,7 @@ public class LoggedInUserResource {
 
     // TODO: This should be in TimesheetTimeResource but is here because we have to implement access rights first
     @GetMapping("/timesheets/{id}/times")
-    public ResponseEntity<List<TimesheetTime>> getTimesheetTimes(@PathVariable Long id, Pageable pageable) {
+    public ResponseEntity<List<TimesheetTimeDTO>> getTimesheetTimes(@PathVariable Long id, Pageable pageable) {
         Timesheet timesheet = getTimesheets()
             .stream()
             .filter(t -> t.getId().equals(id))
@@ -195,8 +196,19 @@ public class LoggedInUserResource {
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         Page<TimesheetTime> page = timesheetTimeService.findAllByTimesheet(timesheet, pageable);
 
+        List<TimesheetTimeDTO> result = page
+            .getContent()
+            .stream()
+            .map(time ->
+                timesheetTimeMapper.fromTimesheetTime(
+                    time,
+                    time.getStart().isAfter(Instant.now().minus(TimesheetTimeService.BOOKING_PERIOD))
+                )
+            )
+            .toList();
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return new ResponseEntity<>(result, headers, HttpStatus.OK);
     }
 
     @PostMapping("/timesheets/{id}/times")

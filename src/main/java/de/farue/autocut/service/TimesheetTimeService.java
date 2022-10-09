@@ -12,7 +12,10 @@ import de.farue.autocut.security.SecurityUtils;
 import de.farue.autocut.service.dto.CreateTimesheetTimeDTO;
 import de.farue.autocut.service.timesheet.TimesheetTimeCalculator;
 import de.farue.autocut.utils.DateUtil;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAmount;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +38,8 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 @Transactional
 public class TimesheetTimeService {
+
+    public static final TemporalAmount BOOKING_PERIOD = Duration.ofHours(48);
 
     private final Logger log = LoggerFactory.getLogger(TimesheetTimeService.class);
 
@@ -235,6 +240,10 @@ public class TimesheetTimeService {
             if (time.getEditedFactor() != null) {
                 throw new ValidationException("not allowed to edit constant");
             }
+        }
+
+        if (time.getStart().isBefore(Instant.now().minus(BOOKING_PERIOD))) {
+            throw new ValidationException("time entry too old");
         }
     }
 }
