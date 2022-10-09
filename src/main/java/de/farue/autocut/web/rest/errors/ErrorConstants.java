@@ -21,6 +21,8 @@ public final class ErrorConstants {
     public static final URI INSUFFICIENT_FUNDS_TYPE = URI.create(PROBLEM_BASE_URL + "/insufficient-funds");
     public static final URI LAUNDRY_MACHINE_UNAVAILABLE_TYPE = URI.create(PROBLEM_BASE_URL + "/laundry-machine-unavailable");
     public static final URI LAUNDRY_MACHINE_DOES_NOT_EXIST_TYPE = URI.create(PROBLEM_BASE_URL + "/laundry-machine-does-not-exist");
+    public static final URI INVALID_PAYLOAD = URI.create(PROBLEM_BASE_URL + "/invalid-payload");
+    public static final URI TIMESHEET_TIME_ENTRY_TOO_OLD = URI.create(PROBLEM_BASE_URL + "/timesheet-time-entry-too-old");
 
     private ErrorConstants() {}
 }

@@ -243,6 +243,29 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         );
     }
 
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleValidationException(javax.validation.ValidationException ex, NativeWebRequest request) {
+        ValidationException problem = new ValidationException();
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleTimesheetTimeEntryTooOldException(
+        de.farue.autocut.service.TimesheetTimeEntryTooOldException ex,
+        NativeWebRequest request
+    ) {
+        TimesheetTimeEntryTooOldException problem = new TimesheetTimeEntryTooOldException();
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
     @Override
     public ResponseEntity<Problem> handleAuthentication(AuthenticationException e, NativeWebRequest request) {
         if (e.getCause() instanceof de.farue.autocut.security.UserNotActivatedException) {

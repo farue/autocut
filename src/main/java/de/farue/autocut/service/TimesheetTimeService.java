@@ -243,7 +243,7 @@ public class TimesheetTimeService {
         }
 
         if (time.getStart().isBefore(Instant.now().minus(BOOKING_PERIOD))) {
-            throw new ValidationException("time entry too old");
+            throw new TimesheetTimeEntryTooOldException();
         }
     }
 }
