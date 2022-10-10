@@ -3,7 +3,6 @@ package de.farue.autocut.config;
 import de.farue.autocut.batch.ItemListWriter;
 import de.farue.autocut.batch.fee.TenantFeeBatchWriter;
 import de.farue.autocut.batch.fee.TenantFeeChargingBatchProcessor;
-import de.farue.autocut.batch.fee.TenantFeeCorrectingBatchProcessor;
 import de.farue.autocut.batch.fee.TenantFeeServiceQualifierDataMapper;
 import de.farue.autocut.batch.fee.TenantFeeUnverifiedTenantSkippingProcessor;
 import de.farue.autocut.domain.Lease;
@@ -42,23 +41,8 @@ public class TenantFeeBatchConfiguration {
     private StepBuilderFactory stepBuilderFactory;
 
     @Bean
-    public Job tenantFeeJob(JobRepository jobRepository, Step correctingFeeStep, Step chargingFeeStep) {
-        return jobBuilderFactory.get("tenantFeeJob").repository(jobRepository).start(correctingFeeStep).next(chargingFeeStep).build();
-    }
-
-    @Bean
-    public Step correctingFeeStep(
-        ItemReader<Lease> tenantFeeReader,
-        ItemProcessor<Lease, List<BookingTemplate>> tenantFeeCorrectingProcessor,
-        ItemWriter<List<BookingTemplate>> writer
-    ) {
-        return stepBuilderFactory
-            .get("correctingFeeStep")
-            .<Lease, List<BookingTemplate>>chunk(10)
-            .reader(tenantFeeReader)
-            .processor(tenantFeeCorrectingProcessor)
-            .writer(writer)
-            .build();
+    public Job tenantFeeJob(JobRepository jobRepository, Step chargingFeeStep) {
+        return jobBuilderFactory.get("tenantFeeJob").repository(jobRepository).start(chargingFeeStep).build();
     }
 
     @Bean
@@ -84,17 +68,6 @@ public class TenantFeeBatchConfiguration {
         reader.setSort(Map.of(Lease_.ID, Direction.ASC));
         reader.setMethodName("findAll");
         return reader;
-    }
-
-    @Bean
-    @StepScope
-    public TenantFeeCorrectingBatchProcessor tenantFeeCorrectingProcessor(
-        InternalTransactionRepository transactionRepository,
-        LeaseService leaseService,
-        ActivityService activityService,
-        TenantFeeServiceQualifierDataMapper serviceQualifierDataMapper
-    ) {
-        return new TenantFeeCorrectingBatchProcessor(leaseService, serviceQualifierDataMapper, transactionRepository, activityService);
     }
 
     @Bean

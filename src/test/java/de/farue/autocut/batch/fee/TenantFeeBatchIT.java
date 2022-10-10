@@ -99,31 +99,27 @@ class TenantFeeBatchIT {
 
     @AfterEach
     void tearDown() {
-        transactionTemplate.execute(
-            txInfo -> {
-                TransactionBook transactionBook = transactionBookService.findOne(this.transactionBook.getId()).get();
-                Lease lease = leaseService.findOne(this.lease.getId()).get();
-                Tenant tenant = tenantService.findOne(this.tenant.getId()).get();
+        transactionTemplate.execute(txInfo -> {
+            TransactionBook transactionBook = transactionBookService.findOne(this.transactionBook.getId()).get();
+            Lease lease = leaseService.findOne(this.lease.getId()).get();
+            Tenant tenant = tenantService.findOne(this.tenant.getId()).get();
 
-                List<InternalTransaction> createdTransactions = transactionService.findAllForTransactionBookWithLinks(transactionBook);
-                Set<Transaction> linkedTransactions = new HashSet<>();
-                createdTransactions.forEach(
-                    transaction -> {
-                        Set<Transaction> linked = transaction.getLefts();
-                        linkedTransactions.addAll(linked);
+            List<InternalTransaction> createdTransactions = transactionService.findAllForTransactionBookWithLinks(transactionBook);
+            Set<Transaction> linkedTransactions = new HashSet<>();
+            createdTransactions.forEach(transaction -> {
+                Set<Transaction> linked = transaction.getLefts();
+                linkedTransactions.addAll(linked);
 
-                        transactionService.delete(transaction.getId());
-                    }
-                );
-                linkedTransactions.forEach(transaction -> transactionService.delete(transaction.getId()));
+                transactionService.delete(transaction.getId());
+            });
+            linkedTransactions.forEach(transaction -> transactionService.delete(transaction.getId()));
 
-                lease.removeTransactionBook(transactionBook);
-                transactionBookService.delete(transactionBook.getId());
-                tenantService.delete(tenant.getId());
-                leaseService.delete(lease.getId());
-                return null;
-            }
-        );
+            lease.removeTransactionBook(transactionBook);
+            transactionBookService.delete(transactionBook.getId());
+            tenantService.delete(tenant.getId());
+            leaseService.delete(lease.getId());
+            return null;
+        });
     }
 
     @Nested
@@ -318,102 +314,6 @@ class TenantFeeBatchIT {
                 assertThat(transactionAfterCharges.getValue()).isEqualByComparingTo("-7.5");
                 assertThat(transactionAfterCharges.getBalanceAfter()).isEqualByComparingTo("35");
             }
-
-            @Test
-            void testChangesInActivity() throws Exception {
-                InternalTransaction chargeApr = new InternalTransaction()
-                    .transactionBook(transactionBook)
-                    .transactionType(TransactionType.FEE)
-                    .issuer(AbstractTenantFeeBatchProcessor.ISSUER)
-                    .bookingDate(LocalDate.of(2020, 4, 10).atStartOfDay(ZoneId.systemDefault()).toInstant())
-                    .valueDate(LocalDate.of(2020, 4, 20).atStartOfDay(ZoneId.systemDefault()).toInstant())
-                    .value(new BigDecimal("-2.5"))
-                    .balanceAfter(new BigDecimal("47.5"))
-                    .description("i18n{transaction.descriptions.tenantFee} 4/2020")
-                    .serviceQulifier("2020-04-10;true");
-                transactionService.save(chargeApr);
-
-                InternalTransaction chargeMay1 = new InternalTransaction()
-                    .transactionBook(transactionBook)
-                    .transactionType(TransactionType.FEE)
-                    .issuer(AbstractTenantFeeBatchProcessor.ISSUER)
-                    .bookingDate(LocalDate.of(2020, 5, 10).atStartOfDay(ZoneId.systemDefault()).toInstant())
-                    .valueDate(LocalDate.of(2020, 5, 20).atStartOfDay(ZoneId.systemDefault()).toInstant())
-                    .value(new BigDecimal("-3"))
-                    .balanceAfter(new BigDecimal("44.5"))
-                    .description("i18n{transaction.descriptions.tenantFee} 5/2020")
-                    .serviceQulifier("2020-05-10;false");
-                transactionService.save(chargeMay1);
-
-                InternalTransaction chargeMay2 = new InternalTransaction()
-                    .transactionBook(transactionBook)
-                    .transactionType(TransactionType.FEE)
-                    .issuer(AbstractTenantFeeBatchProcessor.ISSUER)
-                    .bookingDate(LocalDate.of(2020, 5, 11).atStartOfDay(ZoneId.systemDefault()).toInstant())
-                    .valueDate(LocalDate.of(2020, 5, 21).atStartOfDay(ZoneId.systemDefault()).toInstant())
-                    .value(new BigDecimal("-5"))
-                    .balanceAfter(new BigDecimal("39.5"))
-                    .description("i18n{transaction.descriptions.tenantFee} 5/2020")
-                    .serviceQulifier("2020-05-10;false");
-                transactionService.save(chargeMay2);
-
-                Activity activity = activityService.findOne(this.activity.getId()).get();
-                activity.setDiscount(false);
-                activityService.save(activity);
-
-                batchScheduler.setChargePeriod(CHARGE_PERIOD);
-                batchScheduler.launchJob();
-
-                List<InternalTransaction> transactions = transactionService
-                    .findAllForTransactionBook(
-                        transactionBook,
-                        PageRequest.of(0, Integer.MAX_VALUE, Sort.by(Order.asc(Transaction_.VALUE_DATE), Order.asc(Transaction_.ID)))
-                    )
-                    .getContent();
-
-                InternalTransaction transactionBeforeCharges = transactions.get(0);
-                assertThat(transactionBeforeCharges.getValue()).isEqualByComparingTo("50");
-                assertThat(transactionBeforeCharges.getBalanceAfter()).isEqualByComparingTo("50");
-
-                InternalTransaction originalChargeApr = transactions.get(1);
-                assertThat(originalChargeApr.getValue()).isEqualByComparingTo("-2.5");
-                assertThat(originalChargeApr.getBalanceAfter()).isEqualByComparingTo("47.5");
-
-                InternalTransaction originalChargeMay1 = transactions.get(2);
-                assertThat(originalChargeMay1.getValue()).isEqualByComparingTo("-3");
-                assertThat(originalChargeMay1.getBalanceAfter()).isEqualByComparingTo("44.5");
-
-                InternalTransaction originalChargeMay2 = transactions.get(3);
-                assertThat(originalChargeMay2.getValue()).isEqualByComparingTo("-5");
-                assertThat(originalChargeMay2.getBalanceAfter()).isEqualByComparingTo("39.5");
-
-                InternalTransaction chargeMayCorrection = transactions.get(4);
-                assertThat(chargeMayCorrection.getTransactionType()).isEqualTo(TransactionType.CORRECTION);
-                assertThat(chargeMayCorrection.getValue()).isEqualByComparingTo("3");
-                assertThat(chargeMayCorrection.getBalanceAfter()).isEqualByComparingTo("42.5");
-                assertThat(chargeMayCorrection.getDescription()).isEqualTo("i18n{transaction.descriptions.tenantFee} 5/2020");
-                assertThat(chargeMayCorrection.getBookingDate()).isEqualTo(chargeMayCorrection.getValueDate()); // credit immediately
-                assertThat(chargeMayCorrection.getServiceQulifier()).isEqualTo("2020-05-10;false");
-
-                InternalTransaction chargeAprCorrection = transactions.get(5);
-                assertThat(chargeMayCorrection.getTransactionType()).isEqualTo(TransactionType.CORRECTION);
-                assertThat(chargeAprCorrection.getValue()).isEqualByComparingTo("-2.5");
-                assertThat(chargeAprCorrection.getBalanceAfter()).isEqualByComparingTo("40");
-                assertThat(chargeAprCorrection.getDescription()).isEqualTo("i18n{transaction.descriptions.tenantFee} 4/2020");
-                assertThat(chargeAprCorrection.getBookingDate()).isBefore(chargeAprCorrection.getValueDate()); // additional charge delayed
-                assertThat(chargeAprCorrection.getServiceQulifier()).isEqualTo("2020-04-10;false");
-
-                InternalTransaction chargeJun = transactions.get(6);
-                assertThat(chargeJun.getValue()).isEqualByComparingTo("-5");
-                assertThat(chargeJun.getBalanceAfter()).isEqualByComparingTo("35");
-                assertThat(chargeJun.getDescription()).isEqualTo("i18n{transaction.descriptions.tenantFee} 6/2020");
-                assertThat(chargeJun.getBookingDate()).isBefore(chargeJun.getValueDate());
-                assertThat(chargeJun.getServiceQulifier()).isEqualTo("2020-06-10;false");
-
-                InternalTransaction transactionAfterCharges = transactions.get(7);
-                assertThat(transactionAfterCharges.getValue()).isEqualByComparingTo("-7.5");
-                assertThat(transactionAfterCharges.getBalanceAfter()).isEqualByComparingTo("27.5");
-            }
         }
     }
 
@@ -484,26 +384,9 @@ class TenantFeeBatchIT {
             assertThat(originalChargeMay.getValue()).isEqualByComparingTo("-3");
             assertThat(originalChargeMay.getBalanceAfter()).isEqualByComparingTo("44.5");
 
-            // Corrections should still be booked even if Lease has expired
-            InternalTransaction chargeAprCorrection = transactions.get(3);
-            assertThat(chargeAprCorrection.getTransactionType()).isEqualTo(TransactionType.CORRECTION);
-            assertThat(chargeAprCorrection.getValue()).isEqualByComparingTo("-2.5");
-            assertThat(chargeAprCorrection.getBalanceAfter()).isEqualByComparingTo("42");
-            assertThat(chargeAprCorrection.getDescription()).isEqualTo("i18n{transaction.descriptions.tenantFee} 4/2020");
-            assertThat(chargeAprCorrection.getBookingDate()).isBefore(chargeAprCorrection.getValueDate());
-            assertThat(chargeAprCorrection.getServiceQulifier()).isEqualTo("2020-04-10;false");
-
-            InternalTransaction chargeMayCorrection = transactions.get(4);
-            assertThat(chargeMayCorrection.getTransactionType()).isEqualTo(TransactionType.CORRECTION);
-            assertThat(chargeMayCorrection.getValue()).isEqualByComparingTo("-2");
-            assertThat(chargeMayCorrection.getBalanceAfter()).isEqualByComparingTo("40");
-            assertThat(chargeMayCorrection.getDescription()).isEqualTo("i18n{transaction.descriptions.tenantFee} 5/2020");
-            assertThat(chargeMayCorrection.getBookingDate()).isBefore(chargeMayCorrection.getValueDate());
-            assertThat(chargeMayCorrection.getServiceQulifier()).isEqualTo("2020-05-10;false");
-
-            InternalTransaction transactionAfterCharges = transactions.get(5);
+            InternalTransaction transactionAfterCharges = transactions.get(3);
             assertThat(transactionAfterCharges.getValue()).isEqualByComparingTo("-7.5");
-            assertThat(transactionAfterCharges.getBalanceAfter()).isEqualByComparingTo("32.5");
+            assertThat(transactionAfterCharges.getBalanceAfter()).isEqualByComparingTo("37");
         }
 
         @Test
