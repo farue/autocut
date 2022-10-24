@@ -23,10 +23,16 @@ public class DateUtil {
     }
 
     public static Instant roundDown(Instant instant, TemporalUnit unit) {
+        if (instant == null) {
+            return null;
+        }
         return instant.truncatedTo(unit);
     }
 
     public static Instant roundUp(Instant instant, TemporalUnit unit) {
+        if (instant == null) {
+            return null;
+        }
         Instant roundedDown = roundDown(instant, unit);
         if (!roundedDown.equals(instant)) {
             return roundedDown.plus(1, unit);

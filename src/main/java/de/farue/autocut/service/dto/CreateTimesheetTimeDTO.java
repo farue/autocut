@@ -12,7 +12,6 @@ public class CreateTimesheetTimeDTO {
     @NotNull
     private Instant start;
 
-    @NotNull
     private Instant end;
 
     @NotNull
