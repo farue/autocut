@@ -6,6 +6,7 @@ import de.farue.autocut.service.*;
 import de.farue.autocut.service.accounting.TransactionBookService;
 import de.farue.autocut.service.dto.*;
 import de.farue.autocut.service.mapper.NetworkStatusMapper;
+import de.farue.autocut.service.mapper.TimesheetMapper;
 import de.farue.autocut.service.mapper.TimesheetTimeMapper;
 import de.farue.autocut.service.mapper.TransactionBookMapper;
 import java.math.BigDecimal;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -47,6 +49,7 @@ public class LoggedInUserResource {
     private final TimesheetTaskService timesheetTaskService;
     private final TimesheetTimerService timesheetTimerService;
     private final TimesheetTimeMapper timesheetTimeMapper;
+    private final TimesheetMapper timesheetMapper;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -63,7 +66,8 @@ public class LoggedInUserResource {
         TimesheetProjectMemberService timesheetProjectMemberService,
         TimesheetTaskService timesheetTaskService,
         TimesheetTimerService timesheetTimerService,
-        TimesheetTimeMapper timesheetTimeMapper
+        TimesheetTimeMapper timesheetTimeMapper,
+        TimesheetMapper timesheetMapper
     ) {
         this.laundryMachineService = laundryMachineService;
         this.loggedInUserService = loggedInUserService;
@@ -77,6 +81,7 @@ public class LoggedInUserResource {
         this.timesheetTaskService = timesheetTaskService;
         this.timesheetTimerService = timesheetTimerService;
         this.timesheetTimeMapper = timesheetTimeMapper;
+        this.timesheetMapper = timesheetMapper;
     }
 
     @GetMapping
@@ -171,16 +176,15 @@ public class LoggedInUserResource {
     }
 
     @GetMapping("/timesheets")
-    public List<Timesheet> getTimesheets() {
-        Tenant tenant = loggedInUserService.getTenant();
-        return timesheetService.findOneByMember(tenant).stream().toList();
+    public List<TimesheetDTO> getTimesheets() {
+        return getTimesheetsStream().map(t -> timesheetMapper.fromTimesheet(t, timesheetTimeService.getSumTime(t))).toList();
     }
 
     @GetMapping("/timesheets/{id}")
-    public Timesheet getTimesheet(@PathVariable Long id) {
-        Timesheet timesheet = getTimesheets()
+    public TimesheetDTO getTimesheet(@PathVariable Long id) {
+        TimesheetDTO timesheet = getTimesheets()
             .stream()
-            .filter(t -> t.getId().equals(id))
+            .filter(t -> Objects.equals(t.getId(), id))
             .findFirst()
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return timesheet;
@@ -189,8 +193,7 @@ public class LoggedInUserResource {
     // TODO: This should be in TimesheetTimeResource but is here because we have to implement access rights first
     @GetMapping("/timesheets/{id}/times")
     public ResponseEntity<List<TimesheetTimeDTO>> getTimesheetTimes(@PathVariable Long id, Pageable pageable) {
-        Timesheet timesheet = getTimesheets()
-            .stream()
+        Timesheet timesheet = getTimesheetsStream()
             .filter(t -> t.getId().equals(id))
             .findFirst()
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -233,8 +236,7 @@ public class LoggedInUserResource {
 
     @DeleteMapping("/timesheets/{timesheetId}/times/{timeId}")
     public ResponseEntity<Void> deleteTimesheetTime(@PathVariable Long timesheetId, @PathVariable Long timeId) {
-        getTimesheets()
-            .stream()
+        getTimesheetsStream()
             .filter(t -> t.getId().equals(timesheetId))
             .findFirst()
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -245,8 +247,7 @@ public class LoggedInUserResource {
 
     @GetMapping("/timesheets/{id}/projects")
     public List<TimesheetProject> getTimesheetProjects(@PathVariable Long id) {
-        Timesheet timesheet = getTimesheets()
-            .stream()
+        Timesheet timesheet = getTimesheetsStream()
             .filter(t -> t.getId().equals(id))
             .findFirst()
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -255,8 +256,7 @@ public class LoggedInUserResource {
 
     @GetMapping("/timesheets/{timesheetId}/projects/{projectId}/tasks")
     public List<TimesheetTask> getTimesheetProjectTasks(@PathVariable Long timesheetId, @PathVariable Long projectId) {
-        Timesheet timesheet = getTimesheets()
-            .stream()
+        Timesheet timesheet = getTimesheetsStream()
             .filter(t -> t.getId().equals(timesheetId))
             .findFirst()
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -272,8 +272,7 @@ public class LoggedInUserResource {
 
     @GetMapping("/timesheets/{timesheetId}/projects/{projectId}/descriptions")
     public List<String> getDescriptions(@PathVariable Long timesheetId, @PathVariable Long projectId) {
-        Timesheet timesheet = getTimesheets()
-            .stream()
+        Timesheet timesheet = getTimesheetsStream()
             .filter(t -> t.getId().equals(timesheetId))
             .findFirst()
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -324,5 +323,10 @@ public class LoggedInUserResource {
     @DeleteMapping("/timesheets/timer")
     public void deleteTimer() {
         timesheetTimerService.deleteTimer();
+    }
+
+    private Stream<Timesheet> getTimesheetsStream() {
+        Tenant tenant = loggedInUserService.getTenant();
+        return timesheetService.findOneByMember(tenant).stream();
     }
 }

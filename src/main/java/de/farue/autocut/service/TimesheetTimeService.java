@@ -220,6 +220,11 @@ public class TimesheetTimeService {
             .toList();
     }
 
+    public long getSumTime(Timesheet timesheet) {
+        Long sum = timesheetTimeRepository.getSumTimes(timesheet);
+        return sum != null ? sum : 0;
+    }
+
     private void validate(TimesheetTime time, TimesheetTimeCalculator calculator) {
         if (!compare(calculator.getFactor()).isZero() && time.getEnd() == null) {
             throw new ValidationException("end must not be null");

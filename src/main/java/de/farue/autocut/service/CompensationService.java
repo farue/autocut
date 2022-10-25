@@ -6,7 +6,9 @@ import de.farue.autocut.domain.TimesheetStatement;
 import de.farue.autocut.domain.TimesheetTime;
 import de.farue.autocut.repository.TimesheetTimeRepository;
 import de.farue.autocut.service.dto.CompensationDTO;
+import de.farue.autocut.service.dto.TimesheetDTO;
 import de.farue.autocut.service.mapper.CompensationMapper;
+import de.farue.autocut.service.mapper.TimesheetMapper;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Collection;
@@ -26,10 +28,16 @@ public class CompensationService {
 
     private final TimesheetTimeRepository timesheetTimeRepository;
     private final CompensationMapper compensationMapper;
+    private final TimesheetMapper timesheetMapper;
 
-    public CompensationService(TimesheetTimeRepository timesheetTimeRepository, CompensationMapper compensationMapper) {
+    public CompensationService(
+        TimesheetTimeRepository timesheetTimeRepository,
+        CompensationMapper compensationMapper,
+        TimesheetMapper timesheetMapper
+    ) {
         this.timesheetTimeRepository = timesheetTimeRepository;
         this.compensationMapper = compensationMapper;
+        this.timesheetMapper = timesheetMapper;
     }
 
     public CompensationDTO getCompensation(long timesheetId, Instant earliest, Instant latest) {
@@ -53,7 +61,14 @@ public class CompensationService {
             .keySet()
             .stream()
             .collect(Collectors.toMap(Timesheet::getId, Function.identity()));
-        return compensations.stream().map(c -> compensationMapper.fromCompensation(c, timesheetsById.get(c.getTimesheetId()))).toList();
+        return compensations
+            .stream()
+            .map(compensation -> {
+                Timesheet timesheet = timesheetsById.get(compensation.getTimesheetId());
+                TimesheetDTO timesheetDTO = timesheetMapper.fromTimesheet(timesheet, compensation.getWorkedTime());
+                return compensationMapper.fromCompensation(compensation, timesheetDTO);
+            })
+            .toList();
     }
 
     private TimesheetStatement map(List<TimesheetTime> times) {

@@ -9,5 +9,5 @@ import org.springframework.stereotype.Service;
 @Mapper(componentModel = "spring", uses = { MemberMapper.class }, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 @Service
 public interface TimesheetMapper {
-    TimesheetDTO fromTimesheet(Timesheet timesheet);
+    TimesheetDTO fromTimesheet(Timesheet timesheet, long time);
 }
