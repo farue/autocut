@@ -50,7 +50,7 @@ gradle-test:
 gradle-integration-test:
   # DinD service is required for Testcontainers
   services:
-    - docker:dind
+    - docker:20.10-dind
   variables:
     # Instruct Testcontainers to use the daemon of DinD.
     DOCKER_HOST: 'tcp://docker:2376'
