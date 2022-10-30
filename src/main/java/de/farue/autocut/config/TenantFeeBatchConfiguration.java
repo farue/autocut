@@ -73,17 +73,17 @@ public class TenantFeeBatchConfiguration {
     @Bean
     @StepScope
     public CompositeItemProcessor<Lease, List<BookingTemplate>> tenantFeeCompositeChargingProcessor(
-        ItemProcessor<Lease, Lease> tenantFeeEnverifiedTenantSkippingProcessor,
+        ItemProcessor<Lease, Lease> tenantFeeUnverifiedTenantSkippingProcessor,
         ItemProcessor<Lease, List<BookingTemplate>> tenantFeeChargingProcessor
     ) {
         CompositeItemProcessor<Lease, List<BookingTemplate>> compositeProcessor = new CompositeItemProcessor<>();
-        compositeProcessor.setDelegates(List.of(tenantFeeEnverifiedTenantSkippingProcessor, tenantFeeChargingProcessor));
+        compositeProcessor.setDelegates(List.of(tenantFeeUnverifiedTenantSkippingProcessor, tenantFeeChargingProcessor));
         return compositeProcessor;
     }
 
     @Bean
     @StepScope
-    public TenantFeeUnverifiedTenantSkippingProcessor tenantFeeEnverifiedTenantSkippingProcessor() {
+    public TenantFeeUnverifiedTenantSkippingProcessor tenantFeeUnverifiedTenantSkippingProcessor() {
         return new TenantFeeUnverifiedTenantSkippingProcessor();
     }
 
