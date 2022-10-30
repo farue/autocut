@@ -1,0 +1,36 @@
+{
+  "applications": ["autocut"],
+  "changelogDate": "20221030181637",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "reward_time_review",
+  "fields": [
+    {
+      "fieldName": "status",
+      "fieldType": "RewardTimeReviewStatus",
+      "fieldValues": "OK,NOK,PENDING"
+    },
+    {
+      "fieldName": "comment",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "4000"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "RewardTimeReview",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "timesheetTime",
+      "otherEntityRelationshipName": "rewardTimeReview",
+      "ownerSide": true,
+      "relationshipName": "timesheetTime",
+      "relationshipType": "one-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "service": "serviceClass"
+}

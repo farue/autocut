@@ -1,0 +1,36 @@
+{
+  "applications": ["autocut"],
+  "changelogDate": "20221030181638",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "reward_payout",
+  "fields": [
+    {
+      "fieldName": "timestamp",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "amount",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "time",
+      "fieldType": "Integer"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "RewardPayout",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "timesheet",
+      "otherEntityRelationshipName": "rewardPayout",
+      "relationshipName": "timesheet",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "service": "serviceClass"
+}

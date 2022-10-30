@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="table-reward_time_review" author="brunecker">
+        <createTable tableName="reward_time_review">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="status" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="comment" type="varchar(4000)">
+                <constraints nullable="true" />
+            </column>
+            <column name="timesheet_time_id" type="bigint">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_reward_time_review__timesheet_time_id" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="constraint-reward_time_review" author="brunecker">
+
+        <addForeignKeyConstraint baseColumnNames="timesheet_time_id"
+                                 baseTableName="reward_time_review"
+                                 constraintName="fk_reward_time_review__timesheet_time_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="timesheet_time"/>
+    </changeSet>
+
+    <changeSet id="table-reward_payout" author="brunecker">
+        <createTable tableName="reward_payout">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="timestamp" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="amount" type="decimal(21,2)">
+                <constraints nullable="true" />
+            </column>
+            <column name="time" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="timesheet_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <dropDefaultValue tableName="reward_payout" columnName="timestamp" columnDataType="${datetimeType}"/>
+    </changeSet>
+
+    <changeSet id="constraint-reward_payout" author="brunecker">
+
+        <addForeignKeyConstraint baseColumnNames="timesheet_id"
+                                 baseTableName="reward_payout"
+                                 constraintName="fk_reward_payout__timesheet_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="timesheet"/>
+    </changeSet>
+</databaseChangeLog>

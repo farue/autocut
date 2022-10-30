@@ -437,6 +437,37 @@ relationship ManyToMany {
 }
 
 // ****************************************************
+// * Reward
+// ****************************************************
+
+@service(serviceClass)
+entity RewardTimeReview {
+    status RewardTimeReviewStatus
+    comment String maxlength(4000)
+}
+
+@service(serviceClass)
+entity RewardPayout {
+    timestamp Instant
+    amount BigDecimal
+    time Integer
+}
+
+enum RewardTimeReviewStatus {
+    OK,
+    NOK,
+    PENDING
+}
+
+relationship OneToOne {
+    RewardTimeReview{timesheetTime required} to TimesheetTime
+}
+
+relationship ManyToOne {
+    RewardPayout{timesheet required} to Timesheet
+}
+
+// ****************************************************
 // * Global
 // ****************************************************
 
