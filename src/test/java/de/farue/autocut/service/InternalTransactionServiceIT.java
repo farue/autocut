@@ -1,7 +1,6 @@
 package de.farue.autocut.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import de.farue.autocut.IntegrationTest;
 import de.farue.autocut.domain.InternalTransaction;
@@ -529,8 +528,37 @@ public class InternalTransactionServiceIT {
                     )
                     .build();
 
-                assertThatExceptionOfType(IllegalArgumentException.class)
-                    .isThrownBy(() -> transactionService.saveWithContraTransaction(booking));
+                List<InternalTransaction> cashTransactionsBefore = transactionService
+                    .findAllForTransactionBook(transactionBookService.getOwnCashTransactionBook(), Pageable.unpaged())
+                    .getContent();
+                List<InternalTransaction> revenueTransactionsBefore = transactionService
+                    .findAllForTransactionBook(transactionBookService.getOwnRevenueTransactionBook(), Pageable.unpaged())
+                    .getContent();
+
+                transactionService.saveWithContraTransaction(booking);
+
+                List<InternalTransaction> cashTransactionsAfter = transactionService
+                    .findAllForTransactionBook(transactionBookService.getOwnCashTransactionBook(), Pageable.unpaged())
+                    .getContent();
+                Assertions.assertThat(cashTransactionsBefore).hasSameElementsAs(cashTransactionsAfter);
+
+                List<InternalTransaction> revenueTransactions = transactionService
+                    .findAllForTransactionBook(transactionBookService.getOwnRevenueTransactionBook(), Pageable.unpaged())
+                    .getContent();
+                InternalTransaction revenueTransaction = revenueTransactions.get(revenueTransactions.size() - 1);
+                assertThat(revenueTransaction.getDescription()).isNull();
+                assertThat(revenueTransaction.getIssuer()).isEqualTo("TransactionBookService");
+                assertThat(revenueTransaction.getTransactionType()).isEqualTo(TransactionType.DEBIT);
+                assertThat(revenueTransaction.getRecipient()).isNull();
+                assertThat(revenueTransaction.getValue()).isEqualByComparingTo("-10");
+
+                List<InternalTransaction> memberTransactions = transactionService
+                    .findAllForTransactionBook(transactionBook, Pageable.unpaged())
+                    .getContent();
+                Transaction transaction = memberTransactions.get(memberTransactions.size() - 1);
+                assertThat(transaction.getValue()).isEqualByComparingTo("10");
+                assertThat(revenueTransaction.getLefts()).contains(transaction);
+                assertThat(transaction.getLefts()).contains(revenueTransaction);
             }
         }
     }

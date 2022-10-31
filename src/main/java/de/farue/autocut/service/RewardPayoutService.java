@@ -1,6 +1,7 @@
 package de.farue.autocut.service;
 
 import de.farue.autocut.domain.RewardPayout;
+import de.farue.autocut.domain.Timesheet;
 import de.farue.autocut.repository.RewardPayoutRepository;
 import java.util.List;
 import java.util.Optional;
@@ -93,5 +94,10 @@ public class RewardPayoutService {
     public void delete(Long id) {
         log.debug("Request to delete RewardPayout : {}", id);
         rewardPayoutRepository.deleteById(id);
+    }
+
+    public long rewardedTime(Timesheet timesheet) {
+        Long time = rewardPayoutRepository.rewardedTime(timesheet);
+        return time != null ? time : 0;
     }
 }

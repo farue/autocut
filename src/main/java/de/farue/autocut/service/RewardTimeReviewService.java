@@ -1,7 +1,9 @@
 package de.farue.autocut.service;
 
 import de.farue.autocut.domain.RewardTimeReview;
+import de.farue.autocut.domain.Timesheet;
 import de.farue.autocut.repository.RewardTimeReviewRepository;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -90,5 +92,10 @@ public class RewardTimeReviewService {
     public void delete(Long id) {
         log.debug("Request to delete RewardTimeReview : {}", id);
         rewardTimeReviewRepository.deleteById(id);
+    }
+
+    public long timeExcludedFromReward(Timesheet timesheet, Instant earliest, Instant latest) {
+        Long time = rewardTimeReviewRepository.timeExcludedFromReward(timesheet, earliest, latest);
+        return time != null ? time : 0;
     }
 }

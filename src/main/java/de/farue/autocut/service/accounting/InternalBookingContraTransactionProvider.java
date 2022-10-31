@@ -74,9 +74,11 @@ public class InternalBookingContraTransactionProvider {
                 contraValue = value.negate();
                 targetTransactionBook = referenceRevenueTransactionBook;
             }
-            case CREDIT -> throw new IllegalArgumentException(
-                "Credit bookings for members have to originate from transactions on own cash account"
-            );
+            case CREDIT -> {
+                contraType = TransactionType.DEBIT;
+                contraValue = value.negate();
+                targetTransactionBook = referenceRevenueTransactionBook;
+            }
             case TRANSFER -> throw new IllegalArgumentException("The sum of all transfer bookings must be 0.");
             default -> throw new IllegalStateException("Unexpected value: " + type);
         }

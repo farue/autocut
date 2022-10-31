@@ -34,4 +34,7 @@ public interface TimesheetTimeRepository extends JpaRepository<TimesheetTime, Lo
 
     @Query("select sum(t.effectiveTime) from TimesheetTime t where t.timesheet = :timesheet")
     Long getSumTimes(Timesheet timesheet);
+
+    @Query("select sum(t.effectiveTime) from TimesheetTime t where t.timesheet = :timesheet and t.start >= :earliest and t.start < :latest")
+    Long getSumTimes(Timesheet timesheet, Instant earliest, Instant latest);
 }
