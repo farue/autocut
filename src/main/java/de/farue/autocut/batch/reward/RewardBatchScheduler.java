@@ -20,7 +20,7 @@ public class RewardBatchScheduler {
     }
 
     // Every day at 0:00
-    @Scheduled(cron = "0 */5 * * * ?")
+    @Scheduled(cron = "0 0 0 * * ?")
     public void launchJob() throws Exception {
         jobLauncher.run(rewardJob, jobParameters());
     }
