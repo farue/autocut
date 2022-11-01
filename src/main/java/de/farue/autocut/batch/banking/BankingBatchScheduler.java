@@ -19,8 +19,8 @@ public class BankingBatchScheduler {
         this.jobLauncher = jobLauncher;
     }
 
-    // Every 4 hours between 8 and 20 and at 1, every day
-    @Scheduled(cron = "0 0 8-20/4,1 * * ?")
+    // Every hour between 7 and 20 and at 1, every day
+    @Scheduled(cron = "0 0 7-20/1,1 * * ?")
     public void launchJob() throws Exception {
         jobLauncher.run(bankingJob, jobParameters());
     }
