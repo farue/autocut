@@ -3,6 +3,9 @@ package de.farue.autocut.web.rest;
 import de.farue.autocut.domain.Timesheet;
 import de.farue.autocut.repository.TimesheetRepository;
 import de.farue.autocut.service.TimesheetService;
+import de.farue.autocut.service.TimesheetTimeService;
+import de.farue.autocut.service.dto.TimesheetDTO;
+import de.farue.autocut.service.mapper.TimesheetMapper;
 import de.farue.autocut.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -36,10 +39,19 @@ public class TimesheetResource {
     private final TimesheetService timesheetService;
 
     private final TimesheetRepository timesheetRepository;
+    private final TimesheetMapper timesheetMapper;
+    private final TimesheetTimeService timesheetTimeService;
 
-    public TimesheetResource(TimesheetService timesheetService, TimesheetRepository timesheetRepository) {
+    public TimesheetResource(
+        TimesheetService timesheetService,
+        TimesheetRepository timesheetRepository,
+        TimesheetMapper timesheetMapper,
+        TimesheetTimeService timesheetTimeService
+    ) {
         this.timesheetService = timesheetService;
         this.timesheetRepository = timesheetRepository;
+        this.timesheetMapper = timesheetMapper;
+        this.timesheetTimeService = timesheetTimeService;
     }
 
     /**
@@ -138,9 +150,9 @@ public class TimesheetResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of timesheets in body.
      */
     @GetMapping("/timesheets")
-    public List<Timesheet> getAllTimesheets() {
+    public List<TimesheetDTO> getAllTimesheets() {
         log.debug("REST request to get all Timesheets");
-        return timesheetService.findAll();
+        return timesheetService.findAll().stream().map(t -> timesheetMapper.fromTimesheet(t, timesheetTimeService.getSumTime(t))).toList();
     }
 
     /**

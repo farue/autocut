@@ -2,6 +2,8 @@ package de.farue.autocut.web.rest;
 
 import de.farue.autocut.domain.*;
 import de.farue.autocut.domain.enumeration.TransactionBookType;
+import de.farue.autocut.security.AuthoritiesConstants;
+import de.farue.autocut.security.SecurityUtils;
 import de.farue.autocut.service.*;
 import de.farue.autocut.service.accounting.TransactionBookService;
 import de.farue.autocut.service.dto.*;
@@ -15,9 +17,9 @@ import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -177,35 +179,31 @@ public class LoggedInUserResource {
 
     @GetMapping("/timesheets")
     public List<TimesheetDTO> getTimesheets() {
-        return getTimesheetsStream().map(t -> timesheetMapper.fromTimesheet(t, timesheetTimeService.getSumTime(t))).toList();
+        return getMyTimesheets().stream().map(t -> timesheetMapper.fromTimesheet(t, timesheetTimeService.getSumTime(t))).toList();
     }
 
     @GetMapping("/timesheets/{id}")
     public TimesheetDTO getTimesheet(@PathVariable Long id) {
-        TimesheetDTO timesheet = getTimesheets()
-            .stream()
-            .filter(t -> Objects.equals(t.getId(), id))
-            .findFirst()
+        return getTimesheetById(id)
+            .map(t -> timesheetMapper.fromTimesheet(t, timesheetTimeService.getSumTime(t)))
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return timesheet;
     }
 
     // TODO: This should be in TimesheetTimeResource but is here because we have to implement access rights first
     @GetMapping("/timesheets/{id}/times")
     public ResponseEntity<List<TimesheetTimeDTO>> getTimesheetTimes(@PathVariable Long id, Pageable pageable) {
-        Timesheet timesheet = getTimesheetsStream()
-            .filter(t -> t.getId().equals(id))
-            .findFirst()
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Timesheet timesheet = getTimesheetById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         Page<TimesheetTime> page = timesheetTimeService.findAllByTimesheet(timesheet, pageable);
 
+        boolean isAdmin = SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN);
         List<TimesheetTimeDTO> result = page
             .getContent()
             .stream()
             .map(time ->
                 timesheetTimeMapper.fromTimesheetTime(
                     time,
-                    time.getStart().isAfter(Instant.now().minus(TimesheetTimeService.BOOKING_PERIOD))
+                    // Admin users are not allowed to edit at the moment
+                    !isAdmin && time.getStart().isAfter(Instant.now().minus(TimesheetTimeService.BOOKING_PERIOD))
                 )
             )
             .toList();
@@ -236,7 +234,8 @@ public class LoggedInUserResource {
 
     @DeleteMapping("/timesheets/{timesheetId}/times/{timeId}")
     public ResponseEntity<Void> deleteTimesheetTime(@PathVariable Long timesheetId, @PathVariable Long timeId) {
-        getTimesheetsStream()
+        getMyTimesheets()
+            .stream()
             .filter(t -> t.getId().equals(timesheetId))
             .findFirst()
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -247,7 +246,8 @@ public class LoggedInUserResource {
 
     @GetMapping("/timesheets/{id}/projects")
     public List<TimesheetProject> getTimesheetProjects(@PathVariable Long id) {
-        Timesheet timesheet = getTimesheetsStream()
+        Timesheet timesheet = getMyTimesheets()
+            .stream()
             .filter(t -> t.getId().equals(id))
             .findFirst()
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -256,10 +256,7 @@ public class LoggedInUserResource {
 
     @GetMapping("/timesheets/{timesheetId}/projects/{projectId}/tasks")
     public List<TimesheetTask> getTimesheetProjectTasks(@PathVariable Long timesheetId, @PathVariable Long projectId) {
-        Timesheet timesheet = getTimesheetsStream()
-            .filter(t -> t.getId().equals(timesheetId))
-            .findFirst()
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Timesheet timesheet = getTimesheetById(timesheetId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         TimesheetProject project = timesheetProjectMemberService
             .findAllByTimesheet(timesheet)
             .stream()
@@ -272,10 +269,7 @@ public class LoggedInUserResource {
 
     @GetMapping("/timesheets/{timesheetId}/projects/{projectId}/descriptions")
     public List<String> getDescriptions(@PathVariable Long timesheetId, @PathVariable Long projectId) {
-        Timesheet timesheet = getTimesheetsStream()
-            .filter(t -> t.getId().equals(timesheetId))
-            .findFirst()
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Timesheet timesheet = getTimesheetById(timesheetId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         TimesheetProject project = timesheetProjectMemberService
             .findAllByTimesheet(timesheet)
             .stream()
@@ -325,8 +319,16 @@ public class LoggedInUserResource {
         timesheetTimerService.deleteTimer();
     }
 
-    private Stream<Timesheet> getTimesheetsStream() {
+    private Optional<Timesheet> getTimesheetById(Long id) {
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)) {
+            return timesheetService.findOne(id);
+        } else {
+            return getMyTimesheets().stream().filter(t -> Objects.equals(t.getId(), id)).findFirst();
+        }
+    }
+
+    private List<Timesheet> getMyTimesheets() {
         Tenant tenant = loggedInUserService.getTenant();
-        return timesheetService.findOneByMember(tenant).stream();
+        return timesheetService.findOneByMember(tenant).stream().toList();
     }
 }
