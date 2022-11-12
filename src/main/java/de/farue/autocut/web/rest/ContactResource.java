@@ -4,6 +4,7 @@ import de.farue.autocut.domain.Team;
 import de.farue.autocut.repository.TeamRepository;
 import de.farue.autocut.service.ContactService;
 import de.farue.autocut.service.dto.ContactFormDTO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,7 +20,8 @@ public class ContactResource {
     }
 
     @PostMapping("/{team}/email")
-    public void sendEmail(@PathVariable(value = "team") final String team, @RequestBody ContactFormDTO contact) {
+    public void sendEmail(@PathVariable(value = "team") String team, @RequestBody ContactFormDTO contact) {
+        team = StringUtils.remove(team, "-team");
         final Team t = teamRepository.findByName(team).orElseThrow();
         contactService.contact(t, contact);
     }
