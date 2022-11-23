@@ -196,6 +196,7 @@ public class LoggedInUserResource {
         Page<TimesheetTime> page = timesheetTimeService.findAllByTimesheet(timesheet, pageable);
 
         boolean isAdmin = SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN);
+        boolean isOwnTimesheet = timesheet.getMember().equals(loggedInUserService.getTenantOptional().orElse(null));
         List<TimesheetTimeDTO> result = page
             .getContent()
             .stream()
@@ -203,7 +204,7 @@ public class LoggedInUserResource {
                 timesheetTimeMapper.fromTimesheetTime(
                     time,
                     // Admin users are not allowed to edit at the moment
-                    !isAdmin && time.getStart().isAfter(Instant.now().minus(TimesheetTimeService.BOOKING_PERIOD))
+                    (!isAdmin || isOwnTimesheet) && time.getStart().isAfter(Instant.now().minus(TimesheetTimeService.BOOKING_PERIOD))
                 )
             )
             .toList();
