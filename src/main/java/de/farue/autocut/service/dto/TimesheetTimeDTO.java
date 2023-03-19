@@ -22,4 +22,5 @@ public class TimesheetTimeDTO {
     private TimesheetProject project;
     private TimesheetTask task;
     private boolean editable;
+    private boolean removable;
 }

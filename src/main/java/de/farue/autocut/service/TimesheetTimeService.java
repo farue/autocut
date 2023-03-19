@@ -15,7 +15,6 @@ import de.farue.autocut.utils.DateUtil;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAmount;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -39,7 +38,8 @@ import org.springframework.web.server.ResponseStatusException;
 @Transactional
 public class TimesheetTimeService {
 
-    public static final TemporalAmount BOOKING_PERIOD = Duration.ofHours(48);
+    public static final Duration BOOKING_PERIOD = Duration.ofHours(2 * 24);
+    public static final Duration DELETION_PERIOD = Duration.ofHours(7 * 24);
 
     private final Logger log = LoggerFactory.getLogger(TimesheetTimeService.class);
 
@@ -155,17 +155,16 @@ public class TimesheetTimeService {
      */
     public void delete(Long id) {
         log.debug("Request to delete TimesheetTime : {}", id);
-        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)) {
+        Optional<TimesheetTime> timesheetTimeOptional = timesheetService
+            .findOneForCurrentUser()
+            .flatMap(timesheet -> timesheetTimeRepository.findById(id).filter(time -> time.getTimesheet().equals(timesheet)));
+        if (timesheetTimeOptional.isPresent()) {
+            if (timesheetTimeOptional.get().getStart().isBefore(Instant.now().minus(DELETION_PERIOD))) {
+                throw new TimesheetTimeEntryTooOldException(ChangeType.DELETE, DELETION_PERIOD);
+            }
             timesheetTimeRepository.deleteById(id);
         } else {
-            Optional<TimesheetTime> timesheetTimeOptional = timesheetService
-                .findOneForCurrentUser()
-                .flatMap(timesheet -> timesheetTimeRepository.findById(id).filter(time -> time.getTimesheet().equals(timesheet)));
-            if (timesheetTimeOptional.isPresent()) {
-                timesheetTimeRepository.deleteById(id);
-            } else {
-                throw new AccessDeniedException("Access is denied");
-            }
+            throw new AccessDeniedException("Access is denied");
         }
     }
 
@@ -253,7 +252,7 @@ public class TimesheetTimeService {
         }
 
         if (time.getStart().isBefore(Instant.now().minus(BOOKING_PERIOD))) {
-            throw new TimesheetTimeEntryTooOldException();
+            throw new TimesheetTimeEntryTooOldException(time.getId() == null ? ChangeType.CREATE : ChangeType.UPDATE, BOOKING_PERIOD);
         }
     }
 }

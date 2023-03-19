@@ -8,5 +8,5 @@ import org.springframework.stereotype.Service;
 @Mapper(componentModel = "spring")
 @Service
 public interface TimesheetTimeMapper {
-    TimesheetTimeDTO fromTimesheetTime(TimesheetTime time, boolean editable);
+    TimesheetTimeDTO fromTimesheetTime(TimesheetTime time, boolean editable, boolean removable);
 }

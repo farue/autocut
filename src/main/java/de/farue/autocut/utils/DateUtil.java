@@ -1,6 +1,7 @@
 package de.farue.autocut.utils;
 
 import de.farue.autocut.domain.enumeration.SemesterTerms;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -50,5 +51,9 @@ public class DateUtil {
         } else {
             return SemesterTerms.SUMMER_TERM;
         }
+    }
+
+    public static String format(Duration d) {
+        return String.format("%sd %sh %sm %ss", d.toDaysPart(), d.toHoursPart(), d.toMinutesPart(), d.toSecondsPart());
     }
 }

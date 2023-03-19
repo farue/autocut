@@ -203,8 +203,9 @@ public class LoggedInUserResource {
             .map(time ->
                 timesheetTimeMapper.fromTimesheetTime(
                     time,
-                    // Admin users are not allowed to edit at the moment
-                    (!isAdmin || isOwnTimesheet) && time.getStart().isAfter(Instant.now().minus(TimesheetTimeService.BOOKING_PERIOD))
+                    // Admin users are not allowed to edit or remove at the moment
+                    (!isAdmin || isOwnTimesheet) && time.getStart().isAfter(Instant.now().minus(TimesheetTimeService.BOOKING_PERIOD)),
+                    (!isAdmin || isOwnTimesheet) && time.getStart().isAfter(Instant.now().minus(TimesheetTimeService.DELETION_PERIOD))
                 )
             )
             .toList();
