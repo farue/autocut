@@ -33,7 +33,7 @@ public class TenantFeeBatchScheduler {
     }
 
     // Every day at 3 am. Scheduled frequently to charge new accounts quickly.
-    @Scheduled(cron = "0 0/1 * * * ?")
+    @Scheduled(cron = "0 0 3 * * ?")
     @RunWithAuthorities(role = RoleEnum.SYSTEM)
     public void launchJob() throws Exception {
         jobLauncher.run(tenantFeeJob, jobParameters());
