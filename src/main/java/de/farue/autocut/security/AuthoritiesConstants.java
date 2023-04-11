@@ -12,6 +12,7 @@ public final class AuthoritiesConstants {
     public static final String ANONYMOUS = "ROLE_ANONYMOUS";
     public static final String VIEW_TRANSACTIONS = "VIEW_TRANSACTIONS";
     public static final String EDIT_TRANSACTIONS = "EDIT_TRANSACTIONS";
+    public static final String[] SYSTEM = { ADMIN, VIEW_TRANSACTIONS, EDIT_TRANSACTIONS };
 
     private AuthoritiesConstants() {}
 }

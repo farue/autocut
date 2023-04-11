@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 
 import de.farue.autocut.IntegrationTest;
 import de.farue.autocut.domain.*;
+import de.farue.autocut.security.AuthoritiesConstants;
 import de.farue.autocut.service.LeaseService;
 import de.farue.autocut.service.TenantService;
 import java.math.BigDecimal;
@@ -17,11 +18,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings({ "FieldCanBeLocal", "unused" })
 @Transactional
 @IntegrationTest
+@WithMockUser(authorities = { AuthoritiesConstants.ADMIN, AuthoritiesConstants.VIEW_TRANSACTIONS })
 public class PurposeBankTransactionMatcherIT {
 
     private static final LocalDate ANY_START = LocalDate.now().minusMonths(1);

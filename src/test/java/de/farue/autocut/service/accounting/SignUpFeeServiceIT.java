@@ -6,6 +6,7 @@ import de.farue.autocut.IntegrationTest;
 import de.farue.autocut.domain.*;
 import de.farue.autocut.domain.enumeration.ApartmentTypes;
 import de.farue.autocut.domain.enumeration.TransactionType;
+import de.farue.autocut.security.AuthoritiesConstants;
 import de.farue.autocut.service.ApartmentService;
 import de.farue.autocut.service.LeaseService;
 import de.farue.autocut.service.TenantService;
@@ -18,10 +19,12 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @IntegrationTest
+@WithMockUser(authorities = AuthoritiesConstants.VIEW_TRANSACTIONS)
 class SignUpFeeServiceIT {
 
     @Autowired

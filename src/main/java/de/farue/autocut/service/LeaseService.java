@@ -6,6 +6,8 @@ import de.farue.autocut.domain.event.LeaseCreatedEvent;
 import de.farue.autocut.domain.event.LeaseExpiredEvent;
 import de.farue.autocut.domain.event.LeaseUpdatedEvent;
 import de.farue.autocut.repository.LeaseRepository;
+import de.farue.autocut.security.RoleEnum;
+import de.farue.autocut.security.RunWithAuthorities;
 import de.farue.autocut.service.accounting.TransactionBookService;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -264,6 +266,7 @@ public class LeaseService {
 
     // Fired every day at 00:00
     @Scheduled(cron = "0 0 0 * * ?")
+    @RunWithAuthorities(role = RoleEnum.SYSTEM)
     public void leaseExpiredSchedule() {
         long jobId = this.scheduledJobService.createNewScheduledJob(LEASE_EXPIRED_JOB_NAME);
         Instant dataStartTime =

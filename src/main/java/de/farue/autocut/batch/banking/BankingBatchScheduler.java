@@ -1,5 +1,7 @@
 package de.farue.autocut.batch.banking;
 
+import de.farue.autocut.security.RoleEnum;
+import de.farue.autocut.security.RunWithAuthorities;
 import java.time.Instant;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
@@ -21,6 +23,7 @@ public class BankingBatchScheduler {
 
     // Every hour between 7 and 20 and at 1, every day
     @Scheduled(cron = "0 0 7-20/1,1 * * ?")
+    @RunWithAuthorities(role = RoleEnum.SYSTEM)
     public void launchJob() throws Exception {
         jobLauncher.run(bankingJob, jobParameters());
     }

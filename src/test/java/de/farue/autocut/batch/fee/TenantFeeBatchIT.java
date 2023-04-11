@@ -7,6 +7,7 @@ import de.farue.autocut.domain.*;
 import de.farue.autocut.domain.enumeration.SemesterTerms;
 import de.farue.autocut.domain.enumeration.TransactionType;
 import de.farue.autocut.repository.TenantRepository;
+import de.farue.autocut.security.AuthoritiesConstants;
 import de.farue.autocut.service.ActivityService;
 import de.farue.autocut.service.LeaseService;
 import de.farue.autocut.service.TenantService;
@@ -29,9 +30,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.support.TransactionTemplate;
 
 @SpringBootTest(classes = AutocutApp.class)
+@WithMockUser(authorities = { AuthoritiesConstants.ADMIN, AuthoritiesConstants.VIEW_TRANSACTIONS })
 class TenantFeeBatchIT {
 
     private static final YearMonth CHARGE_PERIOD = YearMonth.of(2020, 6);

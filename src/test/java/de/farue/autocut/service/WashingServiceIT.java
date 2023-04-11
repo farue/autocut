@@ -10,6 +10,9 @@ import de.farue.autocut.domain.enumeration.LaundryMachineType;
 import de.farue.autocut.domain.enumeration.TransactionType;
 import de.farue.autocut.repository.LaundryMachineProgramRepository;
 import de.farue.autocut.repository.LaundryProgramRepository;
+import de.farue.autocut.security.AuthoritiesConstants;
+import de.farue.autocut.security.RoleEnum;
+import de.farue.autocut.security.SecurityUtils;
 import de.farue.autocut.service.accounting.InternalTransactionService;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -22,10 +25,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @IntegrationTest
+@WithMockUser(authorities = AuthoritiesConstants.USER)
 class WashingServiceIT {
 
     private static final String ANY_MACHINE_NAME = "Any Machine 11";
@@ -85,7 +90,7 @@ class WashingServiceIT {
     }
 
     @Test
-    void testSufficientFunds() {
+    void testSufficientFunds() throws Exception {
         TransactionBook transactionBook = leaseService.getCashTransactionBook(lease);
         InternalTransaction transaction = new InternalTransaction()
             .bookingDate(Instant.now())
@@ -99,12 +104,17 @@ class WashingServiceIT {
 
         washingService.purchaseAndUnlock(tenant, machine, program);
 
-        List<InternalTransaction> transactions = internalTransactionService
-            .findAllForTransactionBook(
-                transactionBook,
-                PageRequest.of(0, 1, Sort.by(Order.desc(Transaction_.VALUE_DATE), Order.desc(Transaction_.ID)))
-            )
-            .getContent();
+        List<InternalTransaction> transactions = SecurityUtils.runAs(
+            RoleEnum.SYSTEM,
+            () ->
+                internalTransactionService
+                    .findAllForTransactionBook(
+                        transactionBook,
+                        PageRequest.of(0, 1, Sort.by(Order.desc(Transaction_.VALUE_DATE), Order.desc(Transaction_.ID)))
+                    )
+                    .getContent()
+        );
+
         InternalTransaction washTransaction = transactions.get(0);
 
         assertThat(washTransaction.getValue()).isEqualByComparingTo("-0.80");

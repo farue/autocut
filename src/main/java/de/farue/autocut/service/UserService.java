@@ -6,6 +6,8 @@ import de.farue.autocut.domain.User;
 import de.farue.autocut.repository.AuthorityRepository;
 import de.farue.autocut.repository.UserRepository;
 import de.farue.autocut.security.AuthoritiesConstants;
+import de.farue.autocut.security.RoleEnum;
+import de.farue.autocut.security.RunWithAuthorities;
 import de.farue.autocut.security.SecurityUtils;
 import de.farue.autocut.service.dto.AdminUserDTO;
 import de.farue.autocut.service.dto.UserDTO;
@@ -279,6 +281,7 @@ public class UserService {
      * This is scheduled to get fired everyday, at 01:00 (am).
      */
     @Scheduled(cron = "0 0 1 * * ?")
+    @RunWithAuthorities(role = RoleEnum.SYSTEM)
     public void removeNotActivatedUsers() {
         userRepository
             .findAllByActivatedIsFalseAndActivationKeyIsNotNullAndCreatedDateBefore(Instant.now().minus(3, ChronoUnit.DAYS))

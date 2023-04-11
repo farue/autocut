@@ -1,5 +1,7 @@
 package de.farue.autocut.batch.fee;
 
+import de.farue.autocut.security.RoleEnum;
+import de.farue.autocut.security.RunWithAuthorities;
 import java.time.Instant;
 import java.time.YearMonth;
 import org.springframework.batch.core.Job;
@@ -31,7 +33,8 @@ public class TenantFeeBatchScheduler {
     }
 
     // Every day at 3 am. Scheduled frequently to charge new accounts quickly.
-    @Scheduled(cron = "0 0 3 * * ?")
+    @Scheduled(cron = "0 0/1 * * * ?")
+    @RunWithAuthorities(role = RoleEnum.SYSTEM)
     public void launchJob() throws Exception {
         jobLauncher.run(tenantFeeJob, jobParameters());
     }

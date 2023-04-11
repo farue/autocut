@@ -1,10 +1,14 @@
 package de.farue.autocut.security;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Callable;
 import java.util.stream.Stream;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -96,5 +100,23 @@ public final class SecurityUtils {
 
     private static Stream<String> getAuthorities(Authentication authentication) {
         return authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority);
+    }
+
+    public static <T> T runAs(RoleEnum role, Callable<T> callable) throws Exception {
+        return runAs(role.name(), role.getAuthorities(), callable);
+    }
+
+    public static <T> T runAs(String principal, String[] authorities, Callable<T> callable) throws Exception {
+        SecurityContext originalContext = SecurityContextHolder.getContext();
+        List<SimpleGrantedAuthority> auth = Arrays.stream(authorities).map(SimpleGrantedAuthority::new).toList();
+        Authentication authentication = new AnonymousAuthenticationToken("SecurityUtils", principal, auth);
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(authentication);
+        SecurityContextHolder.setContext(context);
+
+        T result = callable.call();
+
+        SecurityContextHolder.setContext(originalContext);
+        return result;
     }
 }

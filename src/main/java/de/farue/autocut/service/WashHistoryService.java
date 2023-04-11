@@ -4,6 +4,8 @@ import de.farue.autocut.domain.*;
 import de.farue.autocut.domain.enumeration.WashHistoryStatus;
 import de.farue.autocut.repository.LaundryProgramRepository;
 import de.farue.autocut.repository.WashHistoryRepository;
+import de.farue.autocut.security.RoleEnum;
+import de.farue.autocut.security.RunWithAuthorities;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -106,16 +108,14 @@ public class WashHistoryService {
         Instant timestamp = Instant.now();
         washHistoryRepository
             .findAllByMachineAndStatusAndReservationDateIsNotNull(machine, WashHistoryStatus.OPEN)
-            .forEach(
-                reservation -> {
-                    if (reservation.getReservationDate().isBefore(timestamp.minus(RESERVATION_TIMESPAN, ChronoUnit.MINUTES))) {
-                        reservation.setStatus(WashHistoryStatus.EXPIRED);
-                    } else {
-                        reservation.setStatus(WashHistoryStatus.CANCELLED_BY_SYSTEM);
-                    }
-                    washHistoryRepository.save(reservation);
+            .forEach(reservation -> {
+                if (reservation.getReservationDate().isBefore(timestamp.minus(RESERVATION_TIMESPAN, ChronoUnit.MINUTES))) {
+                    reservation.setStatus(WashHistoryStatus.EXPIRED);
+                } else {
+                    reservation.setStatus(WashHistoryStatus.CANCELLED_BY_SYSTEM);
                 }
-            );
+                washHistoryRepository.save(reservation);
+            });
         washHistoryRepository.flush();
     }
 
@@ -144,19 +144,18 @@ public class WashHistoryService {
      * This is scheduled to get fired everyday, at 01:00 (am).
      */
     @Scheduled(cron = "0 0 1 * * ?")
+    @RunWithAuthorities(role = RoleEnum.SYSTEM)
     public void markExpiredReservations() {
         washHistoryRepository
             .findAllByStatusAndReservationDateIsBefore(
                 WashHistoryStatus.OPEN,
                 Instant.now().minus(RESERVATION_TIMESPAN, ChronoUnit.MINUTES)
             )
-            .forEach(
-                reservation -> {
-                    log.debug("Marking reservation {} as expired", reservation.getId());
-                    reservation.setStatus(WashHistoryStatus.EXPIRED);
-                    washHistoryRepository.save(reservation);
-                }
-            );
+            .forEach(reservation -> {
+                log.debug("Marking reservation {} as expired", reservation.getId());
+                reservation.setStatus(WashHistoryStatus.EXPIRED);
+                washHistoryRepository.save(reservation);
+            });
         washHistoryRepository.flush();
     }
 }

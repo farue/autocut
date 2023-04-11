@@ -11,6 +11,8 @@ import de.farue.autocut.domain.event.InternalTransactionEffectiveEvent;
 import de.farue.autocut.repository.InternalTransactionRepository;
 import de.farue.autocut.repository.TransactionRepository;
 import de.farue.autocut.security.AuthoritiesConstants;
+import de.farue.autocut.security.RoleEnum;
+import de.farue.autocut.security.RunWithAuthorities;
 import de.farue.autocut.security.SecurityUtils;
 import de.farue.autocut.service.InsufficientFundsException;
 import de.farue.autocut.service.ScheduledJobService;
@@ -128,6 +130,7 @@ public class InternalTransactionService extends TransactionService<InternalTrans
 
     // Fired every 10 minutes
     @Scheduled(cron = "0 */10 * * * ?")
+    @RunWithAuthorities(role = RoleEnum.SYSTEM)
     public void transactionEffectiveSchedule() {
         long jobId = this.scheduledJobService.createNewScheduledJob(TRANSACTION_EFFECTIVE_JOB_NAME);
         Instant dataStartTime =

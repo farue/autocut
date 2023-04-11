@@ -10,6 +10,7 @@ import de.farue.autocut.domain.Transaction_;
 import de.farue.autocut.domain.enumeration.TransactionBookType;
 import de.farue.autocut.domain.enumeration.TransactionType;
 import de.farue.autocut.repository.InternalTransactionRepository;
+import de.farue.autocut.security.AuthoritiesConstants;
 import de.farue.autocut.service.accounting.BookingBuilder;
 import de.farue.autocut.service.accounting.BookingTemplate;
 import de.farue.autocut.service.accounting.InternalTransactionService;
@@ -26,10 +27,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @IntegrationTest
+@WithMockUser(authorities = { AuthoritiesConstants.ADMIN, AuthoritiesConstants.VIEW_TRANSACTIONS, AuthoritiesConstants.EDIT_TRANSACTIONS })
 public class InternalTransactionServiceIT {
 
     public static final String ANY_ISSUER = "issuer";
