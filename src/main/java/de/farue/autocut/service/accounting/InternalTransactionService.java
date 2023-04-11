@@ -81,6 +81,7 @@ public class InternalTransactionService extends TransactionService<InternalTrans
     }
 
     public void reverse(InternalTransaction transaction) {
+        log.debug("Request to reverse transaction : {}", transaction);
         if (!SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.EDIT_TRANSACTIONS)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
@@ -105,12 +106,12 @@ public class InternalTransactionService extends TransactionService<InternalTrans
                     .issuer("TransactionService")
                     .transactionType(TransactionType.CORRECTION)
                     .bookingDate(now)
-                    .valueDate(now)
+                    .valueDate(now.isAfter(t.getValueDate()) ? now : t.getValueDate())
                     .value(t.getValue().negate())
                     .description("i18n{transaction.descriptions.reverse} #" + t.getId());
                 reversedTransactions.add(reverseTransaction);
             } else if (t instanceof BankTransaction) {
-                throw new RuntimeException("Reversal of bank transactions not supported.");
+                log.debug("BankTransaction found, skipping {}", t);
             }
         }
 
