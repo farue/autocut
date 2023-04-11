@@ -96,18 +96,14 @@ public class UserService {
     public User registerUser(AdminUserDTO userDTO, String password) {
         userRepository
             .findOneByLogin(userDTO.getLogin().toLowerCase())
-            .ifPresent(
-                existingUser -> {
-                    throw new UsernameAlreadyUsedException();
-                }
-            );
+            .ifPresent(existingUser -> {
+                throw new UsernameAlreadyUsedException();
+            });
         userRepository
             .findOneByEmailIgnoreCase(userDTO.getEmail())
-            .ifPresent(
-                existingUser -> {
-                    throw new EmailAlreadyUsedException();
-                }
-            );
+            .ifPresent(existingUser -> {
+                throw new EmailAlreadyUsedException();
+            });
         User newUser = new User();
         String encryptedPassword = passwordEncoder.encode(password);
         newUser.setLogin(userDTO.getLogin().toLowerCase());
@@ -300,6 +296,10 @@ public class UserService {
     @Transactional(readOnly = true)
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
+    }
+
+    public Optional<User> getCurrentUser() {
+        return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneByLogin);
     }
 
     private void clearUserCaches(User user) {

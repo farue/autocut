@@ -192,4 +192,10 @@ public class InternalTransactionResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
+
+    @PostMapping("/internal-transactions/{id}/reverse")
+    public void reverse(@PathVariable Long id) {
+        log.debug("REST request to reverse InternalTransaction : {}", id);
+        internalTransactionService.reverse(id);
+    }
 }

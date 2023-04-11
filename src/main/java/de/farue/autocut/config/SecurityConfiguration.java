@@ -98,6 +98,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.GET, "/api/apartments/nr=*").permitAll()
             .antMatchers(HttpMethod.GET, "/api/transaction-books/overview").authenticated()
             .antMatchers(HttpMethod.GET, "/api/transaction-books/purpose").authenticated()
+            .antMatchers(HttpMethod.GET, "/api/transaction-books/*/transactions").hasAuthority(AuthoritiesConstants.VIEW_TRANSACTIONS)
+            .antMatchers(HttpMethod.GET, "/api/internal-transactions/*/reverse").hasAuthority(AuthoritiesConstants.EDIT_TRANSACTIONS)
             .antMatchers("/api/public/**").permitAll()
             .antMatchers("/api/me/**").authenticated()
             .antMatchers("/api/**").hasAuthority(AuthoritiesConstants.ADMIN)

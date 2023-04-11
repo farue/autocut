@@ -1,9 +1,6 @@
 package de.farue.autocut.service;
 
-import de.farue.autocut.domain.Apartment;
-import de.farue.autocut.domain.Lease;
-import de.farue.autocut.domain.ScheduledJob;
-import de.farue.autocut.domain.TransactionBook;
+import de.farue.autocut.domain.*;
 import de.farue.autocut.domain.enumeration.TransactionBookType;
 import de.farue.autocut.domain.event.LeaseCreatedEvent;
 import de.farue.autocut.domain.event.LeaseExpiredEvent;
@@ -21,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -41,22 +39,25 @@ public class LeaseService {
 
     private final LeaseRepository leaseRepository;
     private final ApartmentService apartmentService;
-    private final TransactionBookService transactionBookService;
+    private TransactionBookService transactionBookService;
     private final ApplicationEventPublisher publisher;
     private final ScheduledJobService scheduledJobService;
+    private TenantService tenantService;
 
     public LeaseService(
         LeaseRepository leaseRepository,
         ApartmentService apartmentService,
         TransactionBookService transactionBookService,
         ApplicationEventPublisher publisher,
-        ScheduledJobService scheduledJobService
+        ScheduledJobService scheduledJobService,
+        @Lazy TenantService tenantService
     ) {
         this.leaseRepository = leaseRepository;
         this.apartmentService = apartmentService;
         this.transactionBookService = transactionBookService;
         this.publisher = publisher;
         this.scheduledJobService = scheduledJobService;
+        this.tenantService = tenantService;
     }
 
     /**
@@ -255,6 +256,10 @@ public class LeaseService {
 
     public List<Lease> getAllUnexpiredLeasesAt(LocalDate date) {
         return leaseRepository.findAllByEndGreaterThanWithEagerRelationships(date);
+    }
+
+    public Optional<Lease> getCurrentUserLease() {
+        return tenantService.getCurrentUserTenant().map(Tenant::getLease);
     }
 
     // Fired every day at 00:00

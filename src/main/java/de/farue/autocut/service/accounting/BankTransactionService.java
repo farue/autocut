@@ -24,8 +24,10 @@ public class BankTransactionService extends TransactionService<BankTransaction> 
         BankTransactionRepository transactionRepository,
         InternalTransactionService internalTransactionService,
         BankTransactionContraTransactionProvider bankTransactionContraTransactionProvider,
-        ApplicationEventPublisher publisher
+        ApplicationEventPublisher publisher,
+        TransactionBookService transactionBookService
     ) {
+        super(transactionBookService);
         this.transactionRepository = transactionRepository;
         this.internalTransactionService = internalTransactionService;
         this.bankTransactionContraTransactionProvider = bankTransactionContraTransactionProvider;

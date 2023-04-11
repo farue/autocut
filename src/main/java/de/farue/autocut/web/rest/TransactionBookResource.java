@@ -1,9 +1,6 @@
 package de.farue.autocut.web.rest;
 
-import de.farue.autocut.domain.Apartment;
-import de.farue.autocut.domain.InternalTransaction;
-import de.farue.autocut.domain.Tenant;
-import de.farue.autocut.domain.TransactionBook;
+import de.farue.autocut.domain.*;
 import de.farue.autocut.repository.TransactionBookRepository;
 import de.farue.autocut.repository.UserRepository;
 import de.farue.autocut.security.SecurityUtils;
@@ -204,6 +201,18 @@ public class TransactionBookResource {
             .build();
     }
 
+    @GetMapping("/transaction-books/{id}/transactions")
+    public ResponseEntity<List<Transaction>> getTransactions(@PathVariable Long id, Pageable pageable) {
+        Page<Transaction> page = transactionBookService
+            .findOne(id)
+            .map(tb -> transactionService.findAllForTransactionBook(tb, pageable))
+            .map(transactions -> transactions.map(t -> (Transaction) t))
+            .orElse(Page.empty());
+        List<Transaction> transactions = page.getContent();
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return new ResponseEntity<>(transactions, headers, HttpStatus.OK);
+    }
+
     @GetMapping("/transaction-books/overview")
     @Transactional
     public ResponseEntity<TransactionsOverviewDTO> getTransactionsOverview(Pageable pageable) {
@@ -212,24 +221,19 @@ public class TransactionBookResource {
             .flatMap(userRepository::findOneByLogin)
             .flatMap(tenantService::findOneByUser)
             .map(Tenant::getLease)
-            .map(
-                lease -> {
-                    TransactionBook cashTransactionBook = leaseService.getCashTransactionBook(lease);
-                    TransactionBook depositTransactionBook = leaseService.getDepositTransactionBook(lease);
-                    Page<InternalTransaction> page = transactionService.findAllForTransactionBook(cashTransactionBook, pageable);
+            .map(lease -> {
+                TransactionBook cashTransactionBook = leaseService.getCashTransactionBook(lease);
+                TransactionBook depositTransactionBook = leaseService.getDepositTransactionBook(lease);
+                Page<InternalTransaction> page = transactionService.findAllForTransactionBook(cashTransactionBook, pageable);
 
-                    TransactionsOverviewDTO dto = new TransactionsOverviewDTO();
-                    dto.setTransactions(page.getContent());
-                    dto.setBalanceNow(transactionBookService.getCurrentBalance(cashTransactionBook));
-                    dto.setDeposit(transactionBookService.getCurrentBalance(depositTransactionBook));
+                TransactionsOverviewDTO dto = new TransactionsOverviewDTO();
+                dto.setTransactions(page.getContent());
+                dto.setBalanceNow(transactionBookService.getCurrentBalance(cashTransactionBook));
+                dto.setDeposit(transactionBookService.getCurrentBalance(depositTransactionBook));
 
-                    HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
-                        ServletUriComponentsBuilder.fromCurrentRequest(),
-                        page
-                    );
-                    return new ResponseEntity<>(dto, headers, HttpStatus.OK);
-                }
-            )
+                HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+                return new ResponseEntity<>(dto, headers, HttpStatus.OK);
+            })
             .orElse(new ResponseEntity<>(HttpStatus.OK));
     }
 
@@ -240,20 +244,18 @@ public class TransactionBookResource {
             .getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
             .flatMap(tenantService::findOneByUser)
-            .map(
-                tenant -> {
-                    Apartment apartment = tenant.getLease().getApartment();
-                    return (
-                        apartment.getAddress().getStreetNumber() +
-                        "/" +
-                        apartment.getNr() +
-                        " " +
-                        tenant.getFirstName() +
-                        " " +
-                        tenant.getLastName()
-                    );
-                }
-            )
+            .map(tenant -> {
+                Apartment apartment = tenant.getLease().getApartment();
+                return (
+                    apartment.getAddress().getStreetNumber() +
+                    "/" +
+                    apartment.getNr() +
+                    " " +
+                    tenant.getFirstName() +
+                    " " +
+                    tenant.getLastName()
+                );
+            })
             .orElse("");
     }
 }

@@ -5,12 +5,17 @@ import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.domain.enumeration.TransactionBookType;
 import de.farue.autocut.repository.TransactionBookRepository;
 import de.farue.autocut.repository.TransactionRepository;
+import de.farue.autocut.security.AuthoritiesConstants;
+import de.farue.autocut.security.SecurityUtils;
+import de.farue.autocut.service.LeaseService;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,13 +33,16 @@ public class TransactionBookService {
 
     private final TransactionBookRepository transactionBookRepository;
     private final TransactionRepository<Transaction> transactionRepository;
+    private LeaseService leaseService;
 
     public TransactionBookService(
         TransactionBookRepository transactionBookRepository,
-        TransactionRepository<Transaction> transactionRepository
+        TransactionRepository<Transaction> transactionRepository,
+        @Lazy LeaseService leaseService
     ) {
         this.transactionBookRepository = transactionBookRepository;
         this.transactionRepository = transactionRepository;
+        this.leaseService = leaseService;
     }
 
     /**
@@ -80,7 +88,10 @@ public class TransactionBookService {
     @Transactional(readOnly = true)
     public List<TransactionBook> findAll() {
         log.debug("Request to get all TransactionBooks");
-        return transactionBookRepository.findAll();
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.VIEW_TRANSACTIONS)) {
+            return transactionBookRepository.findAll();
+        }
+        return getCurrentUserTransactionBooks().orElse(new ArrayList<>());
     }
 
     /**
@@ -92,7 +103,10 @@ public class TransactionBookService {
     @Transactional(readOnly = true)
     public Optional<TransactionBook> findOne(Long id) {
         log.debug("Request to get TransactionBook : {}", id);
-        return transactionBookRepository.findById(id);
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.VIEW_TRANSACTIONS)) {
+            return transactionBookRepository.findById(id);
+        }
+        return getCurrentUserTransactionBooks().flatMap(list -> list.stream().filter(tb -> tb.getId().equals(id)).findFirst());
     }
 
     /**
@@ -114,8 +128,7 @@ public class TransactionBookService {
     public TransactionBook getOwnRevenueTransactionBook() {
         return transactionBookRepository
             .findOneByNameAndType(OWN_ACCOUNT_NAME, TransactionBookType.REVENUE)
-            .orElseGet(
-                () -> transactionBookRepository.save(new TransactionBook().name(OWN_ACCOUNT_NAME).type(TransactionBookType.REVENUE))
+            .orElseGet(() -> transactionBookRepository.save(new TransactionBook().name(OWN_ACCOUNT_NAME).type(TransactionBookType.REVENUE))
             );
     }
 
@@ -147,5 +160,16 @@ public class TransactionBookService {
         BigDecimal lastBalance = getBalanceOnWithLock(transaction.getTransactionBook(), transaction.getValueDate());
         BigDecimal newBalance = lastBalance.add(transaction.getValue());
         transaction.setBalanceAfter(newBalance);
+    }
+
+    public Optional<TransactionBook> getCurrentUserCashTransactionBook() {
+        return getCurrentUserTransactionBooks()
+            .flatMap(transactionBooks ->
+                transactionBooks.stream().filter(transactionBook -> transactionBook.getType() == TransactionBookType.CASH).findFirst()
+            );
+    }
+
+    public Optional<List<TransactionBook>> getCurrentUserTransactionBooks() {
+        return leaseService.getCurrentUserLease().map(lease -> new ArrayList<>(lease.getTransactionBooks()));
     }
 }

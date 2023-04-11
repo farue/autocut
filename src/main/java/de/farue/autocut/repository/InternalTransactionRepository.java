@@ -7,7 +7,8 @@ import java.util.Optional;
 import javax.persistence.LockModeType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -43,4 +44,6 @@ public interface InternalTransactionRepository extends TransactionRepository<Int
         String issuer,
         String serviceQualifier
     );
+
+    Optional<InternalTransaction> findOneByTransactionBookAndDescription(TransactionBook transactionBook, String description);
 }

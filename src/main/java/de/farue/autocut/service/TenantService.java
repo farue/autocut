@@ -25,13 +25,20 @@ public class TenantService {
     private final Logger log = LoggerFactory.getLogger(TenantService.class);
 
     private final TenantRepository tenantRepository;
-    private final LeaseService leaseService;
+    private LeaseService leaseService;
     private final ApplicationEventPublisher publisher;
+    private final UserService userService;
 
-    public TenantService(TenantRepository tenantRepository, LeaseService leaseService, ApplicationEventPublisher publisher) {
+    public TenantService(
+        TenantRepository tenantRepository,
+        LeaseService leaseService,
+        ApplicationEventPublisher publisher,
+        UserService userService
+    ) {
         this.tenantRepository = tenantRepository;
         this.leaseService = leaseService;
         this.publisher = publisher;
+        this.userService = userService;
     }
 
     /**
@@ -138,5 +145,9 @@ public class TenantService {
 
         log.debug("Created new tenant: {}", tenant);
         return tenant;
+    }
+
+    public Optional<Tenant> getCurrentUserTenant() {
+        return userService.getCurrentUser().flatMap(this::findOneByUser);
     }
 }

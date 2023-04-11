@@ -6,6 +6,9 @@ import de.farue.autocut.domain.Transaction;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.domain.Transaction_;
 import de.farue.autocut.repository.TransactionRepository;
+import de.farue.autocut.security.AuthoritiesConstants;
+import de.farue.autocut.security.SecurityUtils;
+import de.farue.autocut.service.accounting.TransactionBookService;
 import de.farue.autocut.utils.DateUtil;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -18,8 +21,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  * Service Implementation for managing {@link Transaction}.
@@ -29,6 +34,12 @@ import org.springframework.transaction.annotation.Transactional;
 public abstract class TransactionService<T extends Transaction> {
 
     private final Logger log = LoggerFactory.getLogger(TransactionService.class);
+
+    protected final TransactionBookService transactionBookService;
+
+    protected TransactionService(TransactionBookService transactionBookService) {
+        this.transactionBookService = transactionBookService;
+    }
 
     protected abstract TransactionRepository<T> getRepository();
 
@@ -183,7 +194,16 @@ public abstract class TransactionService<T extends Transaction> {
 
     @Transactional(readOnly = true)
     public Page<T> findAllForTransactionBook(TransactionBook transactionBook, Pageable pageable) {
-        return getRepository().findAllByTransactionBook(transactionBook, pageable);
+        if (
+            SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.VIEW_TRANSACTIONS) ||
+            transactionBookService
+                .getCurrentUserTransactionBooks()
+                .filter(transactionBooks -> transactionBooks.contains(transactionBook))
+                .isPresent()
+        ) {
+            return getRepository().findAllByTransactionBook(transactionBook, pageable);
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
     @Transactional(readOnly = true)
