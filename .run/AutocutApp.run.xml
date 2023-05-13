@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="AutocutApp" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-    <module name="Java Projects.autocut.main" />
+    <module name="autocut.main" />
     <option name="SHORTEN_COMMAND_LINE" value="ARGS_FILE" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="de.farue.autocut.AutocutApp" />
     <method v="2">
