@@ -4,39 +4,19 @@ import static org.assertj.core.api.Assertions.within;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 import de.farue.autocut.AutocutApp;
-import de.farue.autocut.domain.Address;
-import de.farue.autocut.domain.Apartment;
-import de.farue.autocut.domain.BankAccount;
-import de.farue.autocut.domain.BankTransaction;
-import de.farue.autocut.domain.InternalTransaction;
-import de.farue.autocut.domain.Lease;
-import de.farue.autocut.domain.Tenant;
-import de.farue.autocut.domain.Transaction;
-import de.farue.autocut.domain.TransactionBook;
+import de.farue.autocut.domain.*;
 import de.farue.autocut.domain.enumeration.ApartmentTypes;
 import de.farue.autocut.domain.enumeration.TransactionType;
 import de.farue.autocut.repository.BankTransactionRepository;
 import de.farue.autocut.repository.InternalTransactionRepository;
-import de.farue.autocut.service.AddressService;
-import de.farue.autocut.service.ApartmentService;
-import de.farue.autocut.service.LeaseService;
-import de.farue.autocut.service.TenantService;
-import de.farue.autocut.service.accounting.BankAccountService;
-import de.farue.autocut.service.accounting.BankTransactionService;
-import de.farue.autocut.service.accounting.BankingServiceMock;
-import de.farue.autocut.service.accounting.InternalTransactionService;
-import de.farue.autocut.service.accounting.TransactionBookService;
+import de.farue.autocut.service.*;
+import de.farue.autocut.service.accounting.*;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -91,16 +71,13 @@ class BankingBatchIT {
     private BankAccountService bankAccountService;
 
     @Autowired
-    private TransactionBook referenceCashTransactionBook;
-
-    @Autowired
     private BankTransactionRepository bankTransactionRepository;
 
     @Autowired
     private InternalTransactionRepository internalTransactionRepository;
 
     @Autowired
-    private BankAccount referenceBankAccount;
+    private AssociationService associationService;
 
     private Lease lease1;
     private Tenant tenant1;
@@ -158,7 +135,9 @@ class BankingBatchIT {
     void testNoPreviousTransactionsExist() throws Exception {
         batchScheduler.launchJob();
 
-        List<BankTransaction> transactions = bankTransactionService.findAllForTransactionBookWithLinks(referenceCashTransactionBook);
+        List<BankTransaction> transactions = bankTransactionService.findAllForTransactionBookWithLinks(
+            associationService.getCashTransactionBook()
+        );
 
         BankTransaction transaction1 = transactions.get(0);
         assertThat(transaction1.getType()).isEqualTo("ZINSEN/ENTG.");
@@ -201,58 +180,58 @@ class BankingBatchIT {
 
     @Test
     void testTransactionsAlreadyExist() throws Exception {
-        List<Long> transactionIds = transactionTemplate.execute(
-            txInfo -> {
-                BankTransaction existingTransaction1 = new BankTransaction()
-                    .customerRef("NONREF")
-                    .gvCode("805")
-                    .type("ZINSEN/ENTG.")
-                    .bankAccount(referenceBankAccount)
-                    .bookingDate(getInstant(2020, 1, 1))
-                    .valueDate(getInstant(2020, 1, 1))
-                    .value(new BigDecimal("-7.30"))
-                    .balanceAfter(new BigDecimal("22.70"))
-                    .description("")
-                    .transactionBook(referenceCashTransactionBook);
-                existingTransaction1 = bankTransactionService.save(existingTransaction1);
+        List<Long> transactionIds = transactionTemplate.execute(txInfo -> {
+            BankTransaction existingTransaction1 = new BankTransaction()
+                .customerRef("NONREF")
+                .gvCode("805")
+                .type("ZINSEN/ENTG.")
+                .bankAccount(associationService.getBankAccount())
+                .bookingDate(getInstant(2020, 1, 1))
+                .valueDate(getInstant(2020, 1, 1))
+                .value(new BigDecimal("-7.30"))
+                .balanceAfter(new BigDecimal("22.70"))
+                .description("")
+                .transactionBook(associationService.getCashTransactionBook());
+            existingTransaction1 = bankTransactionService.save(existingTransaction1);
 
-                BankAccount existingBankAccount = new BankAccount().name("Mr Chen Wu Li").iban("DE13570501204826655542").bic("MALADE51KOB");
-                existingBankAccount = bankAccountService.save(existingBankAccount);
+            BankAccount existingBankAccount = new BankAccount().name("Mr Chen Wu Li").iban("DE13570501204826655542").bic("MALADE51KOB");
+            existingBankAccount = bankAccountService.save(existingBankAccount);
 
-                BankTransaction existingTransaction2 = new BankTransaction()
-                    .customerRef("NONREF")
-                    .gvCode("166")
-                    .type("GUTSCHR.SEPA")
-                    .bankAccount(referenceBankAccount)
-                    .contraBankAccount(existingBankAccount)
-                    .bookingDate(getInstant(2020, 1, 2))
-                    .valueDate(getInstant(2020, 1, 2))
-                    .value(new BigDecimal("15"))
-                    .balanceAfter(new BigDecimal("37.70"))
-                    .description("Referenz NOTPROVIDED Verwendungszweck Chen Li test street 123-33")
-                    .transactionBook(referenceCashTransactionBook);
-                existingTransaction2 = bankTransactionService.save(existingTransaction2);
+            BankTransaction existingTransaction2 = new BankTransaction()
+                .customerRef("NONREF")
+                .gvCode("166")
+                .type("GUTSCHR.SEPA")
+                .bankAccount(associationService.getBankAccount())
+                .contraBankAccount(existingBankAccount)
+                .bookingDate(getInstant(2020, 1, 2))
+                .valueDate(getInstant(2020, 1, 2))
+                .value(new BigDecimal("15"))
+                .balanceAfter(new BigDecimal("37.70"))
+                .description("Referenz NOTPROVIDED Verwendungszweck Chen Li test street 123-33")
+                .transactionBook(associationService.getCashTransactionBook());
+            existingTransaction2 = bankTransactionService.save(existingTransaction2);
 
-                TransactionBook transactionBookChen = leaseService.getCashTransactionBook(leaseService.findOne(lease5.getId()).get());
-                InternalTransaction existingContraTransaction = new InternalTransaction()
-                    .issuer("BankTransactionService")
-                    .transactionType(TransactionType.CREDIT)
-                    .bookingDate(getInstant(2020, 2, 3))
-                    .valueDate(getInstant(2020, 2, 3))
-                    .value(new BigDecimal("15"))
-                    .description("Bank transfer 2020-01-02")
-                    .transactionBook(transactionBookChen);
-                existingContraTransaction = internalTransactionService.save(existingContraTransaction);
+            TransactionBook transactionBookChen = leaseService.getCashTransactionBook(leaseService.findOne(lease5.getId()).get());
+            InternalTransaction existingContraTransaction = new InternalTransaction()
+                .issuer("BankTransactionService")
+                .transactionType(TransactionType.CREDIT)
+                .bookingDate(getInstant(2020, 2, 3))
+                .valueDate(getInstant(2020, 2, 3))
+                .value(new BigDecimal("15"))
+                .description("Bank transfer 2020-01-02")
+                .transactionBook(transactionBookChen);
+            existingContraTransaction = internalTransactionService.save(existingContraTransaction);
 
-                existingTransaction2.link(existingContraTransaction);
+            existingTransaction2.link(existingContraTransaction);
 
-                return List.of(existingTransaction1.getId(), existingTransaction2.getId(), existingContraTransaction.getId());
-            }
-        );
+            return List.of(existingTransaction1.getId(), existingTransaction2.getId(), existingContraTransaction.getId());
+        });
 
         batchScheduler.launchJob();
 
-        List<BankTransaction> transactions = bankTransactionService.findAllForTransactionBookWithLinks(referenceCashTransactionBook);
+        List<BankTransaction> transactions = bankTransactionService.findAllForTransactionBookWithLinks(
+            associationService.getCashTransactionBook()
+        );
 
         assertThat(transactions).hasSize(3);
         BankTransaction transaction1 = transactions.get(0);
@@ -283,26 +262,24 @@ class BankingBatchIT {
 
     @AfterEach
     void tearDown() {
-        transactionTemplate.execute(
-            txInfo -> {
-                deleteTenantAndTransitiveEntities(tenant1);
-                deleteTenantAndTransitiveEntities(tenant2);
-                deleteTenantAndTransitiveEntities(tenant3);
-                deleteTenantAndTransitiveEntities(tenant4);
-                deleteTenantAndTransitiveEntities(tenant5);
-                List<BankTransaction> bankTransactions = bankTransactionService.findAllForTransactionBookWithLinks(
-                    referenceCashTransactionBook
-                );
-                deleteTransactions(bankTransactions);
-                bankAccountService
-                    .findByIban("DE13570501204826655542")
-                    .ifPresent(bankAccount -> bankAccountService.delete(bankAccount.getId()));
-                bankAccountService
-                    .findByIban("DE28258513358289433438")
-                    .ifPresent(bankAccount -> bankAccountService.delete(bankAccount.getId()));
-                return null;
-            }
-        );
+        transactionTemplate.execute(txInfo -> {
+            deleteTenantAndTransitiveEntities(tenant1);
+            deleteTenantAndTransitiveEntities(tenant2);
+            deleteTenantAndTransitiveEntities(tenant3);
+            deleteTenantAndTransitiveEntities(tenant4);
+            deleteTenantAndTransitiveEntities(tenant5);
+            List<BankTransaction> bankTransactions = bankTransactionService.findAllForTransactionBookWithLinks(
+                associationService.getCashTransactionBook()
+            );
+            deleteTransactions(bankTransactions);
+            bankAccountService
+                .findByIban("DE13570501204826655542")
+                .ifPresent(bankAccount -> bankAccountService.delete(bankAccount.getId()));
+            bankAccountService
+                .findByIban("DE28258513358289433438")
+                .ifPresent(bankAccount -> bankAccountService.delete(bankAccount.getId()));
+            return null;
+        });
     }
 
     private List<UmsLine> createTestTransactions() {
@@ -374,44 +351,38 @@ class BankingBatchIT {
     private void deleteTenantAndTransitiveEntities(Tenant tenant) {
         tenantService
             .findOne(tenant.getId())
-            .ifPresent(
-                loadedTenant -> {
-                    Lease lease = loadedTenant.getLease();
-                    leaseService
-                        .findOne(lease.getId())
-                        .ifPresent(
-                            loadedLease -> {
-                                Set<TransactionBook> transactionBooks = loadedLease.getTransactionBooks();
-                                loadedLease.setTransactionBooks(new HashSet<>());
-                                leaseService.save(loadedLease);
-                                tenantService.delete(tenant.getId());
-                                leaseService.delete(loadedLease.getId());
-                                for (TransactionBook transactionBook : transactionBooks) {
-                                    List<InternalTransaction> transactions = internalTransactionService.findAllForTransactionBookWithLinks(
-                                        transactionBook
-                                    );
-                                    transactions.forEach(internalTransactionService::delete);
-                                    transactionBookService.delete(transactionBook.getId());
-                                }
-                                Apartment apartment = loadedLease.getApartment();
-                                if (leaseService.findAll().stream().noneMatch(l -> l.getApartment().equals(apartment))) {
-                                    apartmentService.delete(apartment.getId());
-                                }
-                            }
-                        );
-                }
-            );
+            .ifPresent(loadedTenant -> {
+                Lease lease = loadedTenant.getLease();
+                leaseService
+                    .findOne(lease.getId())
+                    .ifPresent(loadedLease -> {
+                        Set<TransactionBook> transactionBooks = loadedLease.getTransactionBooks();
+                        loadedLease.setTransactionBooks(new HashSet<>());
+                        leaseService.save(loadedLease);
+                        tenantService.delete(tenant.getId());
+                        leaseService.delete(loadedLease.getId());
+                        for (TransactionBook transactionBook : transactionBooks) {
+                            List<InternalTransaction> transactions = internalTransactionService.findAllForTransactionBookWithLinks(
+                                transactionBook
+                            );
+                            transactions.forEach(internalTransactionService::delete);
+                            transactionBookService.delete(transactionBook.getId());
+                        }
+                        Apartment apartment = loadedLease.getApartment();
+                        if (leaseService.findAll().stream().noneMatch(l -> l.getApartment().equals(apartment))) {
+                            apartmentService.delete(apartment.getId());
+                        }
+                    });
+            });
     }
 
     private void deleteTransactions(Collection<? extends Transaction> transactions) {
         Set<Transaction> linkedTransactions = new HashSet<>();
-        transactions.forEach(
-            transaction -> {
-                Set<Transaction> linked = transaction.getLefts();
-                linkedTransactions.addAll(linked);
-                delete(transaction);
-            }
-        );
+        transactions.forEach(transaction -> {
+            Set<Transaction> linked = transaction.getLefts();
+            linkedTransactions.addAll(linked);
+            delete(transaction);
+        });
         linkedTransactions.forEach(this::delete);
     }
 

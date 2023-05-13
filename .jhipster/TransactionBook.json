@@ -7,10 +7,6 @@
   "entityTableName": "transaction_book",
   "fields": [
     {
-      "fieldName": "name",
-      "fieldType": "String"
-    },
-    {
       "fieldName": "type",
       "fieldType": "TransactionBookType",
       "fieldValidateRules": ["required"],

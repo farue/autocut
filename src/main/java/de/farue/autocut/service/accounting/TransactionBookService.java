@@ -29,8 +29,6 @@ public class TransactionBookService {
 
     private final Logger log = LoggerFactory.getLogger(TransactionBookService.class);
 
-    private static final String OWN_ACCOUNT_NAME = "FaRue Account";
-
     private final TransactionBookRepository transactionBookRepository;
     private final TransactionRepository<Transaction> transactionRepository;
     private LeaseService leaseService;
@@ -68,9 +66,6 @@ public class TransactionBookService {
         return transactionBookRepository
             .findById(transactionBook.getId())
             .map(existingTransactionBook -> {
-                if (transactionBook.getName() != null) {
-                    existingTransactionBook.setName(transactionBook.getName());
-                }
                 if (transactionBook.getType() != null) {
                     existingTransactionBook.setType(transactionBook.getType());
                 }
@@ -117,19 +112,6 @@ public class TransactionBookService {
     public void delete(Long id) {
         log.debug("Request to delete TransactionBook : {}", id);
         transactionBookRepository.deleteById(id);
-    }
-
-    public TransactionBook getOwnCashTransactionBook() {
-        return transactionBookRepository
-            .findOneByNameAndType(OWN_ACCOUNT_NAME, TransactionBookType.CASH)
-            .orElseGet(() -> transactionBookRepository.save(new TransactionBook().name(OWN_ACCOUNT_NAME).type(TransactionBookType.CASH)));
-    }
-
-    public TransactionBook getOwnRevenueTransactionBook() {
-        return transactionBookRepository
-            .findOneByNameAndType(OWN_ACCOUNT_NAME, TransactionBookType.REVENUE)
-            .orElseGet(() -> transactionBookRepository.save(new TransactionBook().name(OWN_ACCOUNT_NAME).type(TransactionBookType.REVENUE))
-            );
     }
 
     @Transactional(readOnly = true)

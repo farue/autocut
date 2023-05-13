@@ -8,6 +8,7 @@ import de.farue.autocut.domain.enumeration.TransactionType;
 import de.farue.autocut.repository.BankAccountRepository;
 import de.farue.autocut.repository.BankTransactionRepository;
 import de.farue.autocut.repository.InternalTransactionRepository;
+import de.farue.autocut.service.AssociationService;
 import de.farue.autocut.service.LeaseService;
 import de.farue.autocut.service.TenantService;
 import java.math.BigDecimal;
@@ -17,7 +18,6 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings({ "FieldCanBeLocal", "unused" })
@@ -53,12 +53,7 @@ class ContraAccountPreviousBookingBankTransactionMatcherIT {
     private BankAccountRepository bankAccountRepository;
 
     @Autowired
-    @Qualifier("referenceBankAccount")
-    private BankAccount referenceBankAccount;
-
-    @Autowired
-    @Qualifier("referenceCashTransactionBook")
-    private TransactionBook referenceCashTransactionBook;
+    private AssociationService associationService;
 
     @Autowired
     private ContraAccountPreviousBookingBankTransactionMatcher matcher;
@@ -84,9 +79,9 @@ class ContraAccountPreviousBookingBankTransactionMatcherIT {
             .value(ANY_VALUE)
             .balanceAfter(ANY_BALANCE_AFTER)
             .description(ANY_DESCRIPTION)
-            .bankAccount(referenceBankAccount)
+            .bankAccount(associationService.getBankAccount())
             .contraBankAccount(contraBankAccount)
-            .transactionBook(referenceCashTransactionBook);
+            .transactionBook(associationService.getCashTransactionBook());
 
         Optional<TransactionBook> transactionBookOptional = matcher.findMatch(bankTransaction);
 
@@ -105,9 +100,9 @@ class ContraAccountPreviousBookingBankTransactionMatcherIT {
             .value(ANY_VALUE)
             .balanceAfter(ANY_BALANCE_AFTER)
             .description(ANY_DESCRIPTION)
-            .bankAccount(referenceBankAccount)
+            .bankAccount(associationService.getBankAccount())
             .contraBankAccount(contraBankAccount)
-            .transactionBook(referenceCashTransactionBook);
+            .transactionBook(associationService.getCashTransactionBook());
         InternalTransaction previousContraTransaction = new InternalTransaction()
             .transactionType(TransactionType.CREDIT)
             .bookingDate(ANY_BOOKING_DATE)
@@ -130,9 +125,9 @@ class ContraAccountPreviousBookingBankTransactionMatcherIT {
             .value(ANY_VALUE)
             .balanceAfter(ANY_BALANCE_AFTER)
             .description(ANY_DESCRIPTION)
-            .bankAccount(referenceBankAccount)
+            .bankAccount(associationService.getBankAccount())
             .contraBankAccount(contraBankAccount)
-            .transactionBook(referenceCashTransactionBook);
+            .transactionBook(associationService.getCashTransactionBook());
 
         TransactionBook transactionBook = matcher.findMatch(bankTransaction).get();
 
@@ -154,9 +149,9 @@ class ContraAccountPreviousBookingBankTransactionMatcherIT {
             .value(ANY_VALUE)
             .balanceAfter(ANY_BALANCE_AFTER)
             .description(ANY_DESCRIPTION)
-            .bankAccount(referenceBankAccount)
+            .bankAccount(associationService.getBankAccount())
             .contraBankAccount(contraBankAccount)
-            .transactionBook(referenceCashTransactionBook);
+            .transactionBook(associationService.getCashTransactionBook());
         InternalTransaction previousContraTransaction1 = new InternalTransaction()
             .transactionType(TransactionType.CREDIT)
             .bookingDate(ANY_BOOKING_DATE)
@@ -179,9 +174,9 @@ class ContraAccountPreviousBookingBankTransactionMatcherIT {
             .value(ANY_VALUE)
             .balanceAfter(ANY_BALANCE_AFTER)
             .description(ANY_DESCRIPTION)
-            .bankAccount(referenceBankAccount)
+            .bankAccount(associationService.getBankAccount())
             .contraBankAccount(contraBankAccount)
-            .transactionBook(referenceCashTransactionBook);
+            .transactionBook(associationService.getCashTransactionBook());
         InternalTransaction previousContraTransaction2 = new InternalTransaction()
             .transactionType(TransactionType.CREDIT)
             .bookingDate(ANY_BOOKING_DATE)
@@ -204,9 +199,9 @@ class ContraAccountPreviousBookingBankTransactionMatcherIT {
             .value(ANY_VALUE)
             .balanceAfter(ANY_BALANCE_AFTER)
             .description(ANY_DESCRIPTION)
-            .bankAccount(referenceBankAccount)
+            .bankAccount(associationService.getBankAccount())
             .contraBankAccount(contraBankAccount)
-            .transactionBook(referenceCashTransactionBook);
+            .transactionBook(associationService.getCashTransactionBook());
 
         Optional<TransactionBook> transactionBookOptional = matcher.findMatch(bankTransaction);
 

@@ -46,6 +46,9 @@ public class InternalTransactionServiceIT {
     @Autowired
     private TransactionBookService transactionBookService;
 
+    @Autowired
+    private AssociationService associationService;
+
     @Nested
     class Save {
 
@@ -221,18 +224,18 @@ public class InternalTransactionServiceIT {
                     .build();
 
                 List<InternalTransaction> cashTransactionsBefore = transactionService
-                    .findAllForTransactionBook(transactionBookService.getOwnCashTransactionBook(), Pageable.unpaged())
+                    .findAllForTransactionBook(associationService.getCashTransactionBook(), Pageable.unpaged())
                     .getContent();
 
                 transactionService.saveWithContraTransaction(booking);
 
                 List<InternalTransaction> cashTransactionsAfter = transactionService
-                    .findAllForTransactionBook(transactionBookService.getOwnCashTransactionBook(), Pageable.unpaged())
+                    .findAllForTransactionBook(associationService.getCashTransactionBook(), Pageable.unpaged())
                     .getContent();
                 Assertions.assertThat(cashTransactionsBefore).hasSameElementsAs(cashTransactionsAfter);
 
                 List<InternalTransaction> revenueTransactions = transactionService
-                    .findAllForTransactionBook(transactionBookService.getOwnRevenueTransactionBook(), Pageable.unpaged())
+                    .findAllForTransactionBook(associationService.getRevenueTransactionBook(), Pageable.unpaged())
                     .getContent();
                 InternalTransaction revenueTransaction = revenueTransactions.get(revenueTransactions.size() - 1);
                 assertThat(revenueTransaction.getDescription()).isNull();
@@ -285,18 +288,18 @@ public class InternalTransactionServiceIT {
                     .build();
 
                 List<InternalTransaction> revenueTransactionsBefore = transactionService
-                    .findAllForTransactionBook(transactionBookService.getOwnRevenueTransactionBook(), Pageable.unpaged())
+                    .findAllForTransactionBook(associationService.getRevenueTransactionBook(), Pageable.unpaged())
                     .getContent();
 
                 transactionService.saveWithContraTransaction(booking);
 
                 List<InternalTransaction> revenueTransactionsAfter = transactionService
-                    .findAllForTransactionBook(transactionBookService.getOwnRevenueTransactionBook(), Pageable.unpaged())
+                    .findAllForTransactionBook(associationService.getRevenueTransactionBook(), Pageable.unpaged())
                     .getContent();
                 Assertions.assertThat(revenueTransactionsBefore).hasSameElementsAs(revenueTransactionsAfter);
 
                 List<InternalTransaction> cashTransactions = transactionService
-                    .findAllForTransactionBook(transactionBookService.getOwnCashTransactionBook(), Pageable.unpaged())
+                    .findAllForTransactionBook(associationService.getCashTransactionBook(), Pageable.unpaged())
                     .getContent();
                 InternalTransaction cashTransaction = cashTransactions.get(cashTransactions.size() - 1);
                 assertThat(cashTransaction.getDescription()).isNull();
@@ -349,18 +352,18 @@ public class InternalTransactionServiceIT {
                     .build();
 
                 List<InternalTransaction> cashTransactionsBefore = transactionService
-                    .findAllForTransactionBook(transactionBookService.getOwnCashTransactionBook(), Pageable.unpaged())
+                    .findAllForTransactionBook(associationService.getCashTransactionBook(), Pageable.unpaged())
                     .getContent();
 
                 transactionService.saveWithContraTransaction(booking);
 
                 List<InternalTransaction> cashTransactionsAfter = transactionService
-                    .findAllForTransactionBook(transactionBookService.getOwnCashTransactionBook(), Pageable.unpaged())
+                    .findAllForTransactionBook(associationService.getCashTransactionBook(), Pageable.unpaged())
                     .getContent();
                 Assertions.assertThat(cashTransactionsBefore).hasSameElementsAs(cashTransactionsAfter);
 
                 List<InternalTransaction> revenueTransactions = transactionService
-                    .findAllForTransactionBook(transactionBookService.getOwnRevenueTransactionBook(), Pageable.unpaged())
+                    .findAllForTransactionBook(associationService.getRevenueTransactionBook(), Pageable.unpaged())
                     .getContent();
                 InternalTransaction revenueTransaction = revenueTransactions.get(revenueTransactions.size() - 1);
                 assertThat(revenueTransaction.getDescription()).isNull();
@@ -401,18 +404,18 @@ public class InternalTransactionServiceIT {
                     .build();
 
                 List<InternalTransaction> cashTransactionsBefore = transactionService
-                    .findAllForTransactionBook(transactionBookService.getOwnCashTransactionBook(), Pageable.unpaged())
+                    .findAllForTransactionBook(associationService.getCashTransactionBook(), Pageable.unpaged())
                     .getContent();
 
                 transactionService.saveWithContraTransaction(booking);
 
                 List<InternalTransaction> cashTransactionsAfter = transactionService
-                    .findAllForTransactionBook(transactionBookService.getOwnCashTransactionBook(), Pageable.unpaged())
+                    .findAllForTransactionBook(associationService.getCashTransactionBook(), Pageable.unpaged())
                     .getContent();
                 Assertions.assertThat(cashTransactionsBefore).hasSameElementsAs(cashTransactionsAfter);
 
                 List<InternalTransaction> revenueTransactions = transactionService
-                    .findAllForTransactionBook(transactionBookService.getOwnRevenueTransactionBook(), Pageable.unpaged())
+                    .findAllForTransactionBook(associationService.getRevenueTransactionBook(), Pageable.unpaged())
                     .getContent();
                 InternalTransaction revenueTransaction = revenueTransactions.get(revenueTransactions.size() - 1);
                 assertThat(revenueTransaction.getDescription()).isNull();
@@ -479,19 +482,19 @@ public class InternalTransactionServiceIT {
                     .build();
 
                 List<InternalTransaction> cashTransactionsBefore = transactionService
-                    .findAllForTransactionBook(transactionBookService.getOwnCashTransactionBook(), Pageable.unpaged())
+                    .findAllForTransactionBook(associationService.getCashTransactionBook(), Pageable.unpaged())
                     .getContent();
                 List<InternalTransaction> revenueTransactionsBefore = transactionService
-                    .findAllForTransactionBook(transactionBookService.getOwnRevenueTransactionBook(), Pageable.unpaged())
+                    .findAllForTransactionBook(associationService.getRevenueTransactionBook(), Pageable.unpaged())
                     .getContent();
 
                 transactionService.saveWithContraTransaction(booking);
 
                 List<InternalTransaction> cashTransactionsAfter = transactionService
-                    .findAllForTransactionBook(transactionBookService.getOwnCashTransactionBook(), Pageable.unpaged())
+                    .findAllForTransactionBook(associationService.getCashTransactionBook(), Pageable.unpaged())
                     .getContent();
                 List<InternalTransaction> revenueTransactionsAfter = transactionService
-                    .findAllForTransactionBook(transactionBookService.getOwnRevenueTransactionBook(), Pageable.unpaged())
+                    .findAllForTransactionBook(associationService.getRevenueTransactionBook(), Pageable.unpaged())
                     .getContent();
                 Assertions.assertThat(cashTransactionsBefore).hasSameElementsAs(cashTransactionsAfter);
                 Assertions.assertThat(revenueTransactionsBefore).hasSameElementsAs(revenueTransactionsAfter);
@@ -532,21 +535,21 @@ public class InternalTransactionServiceIT {
                     .build();
 
                 List<InternalTransaction> cashTransactionsBefore = transactionService
-                    .findAllForTransactionBook(transactionBookService.getOwnCashTransactionBook(), Pageable.unpaged())
+                    .findAllForTransactionBook(associationService.getCashTransactionBook(), Pageable.unpaged())
                     .getContent();
                 List<InternalTransaction> revenueTransactionsBefore = transactionService
-                    .findAllForTransactionBook(transactionBookService.getOwnRevenueTransactionBook(), Pageable.unpaged())
+                    .findAllForTransactionBook(associationService.getRevenueTransactionBook(), Pageable.unpaged())
                     .getContent();
 
                 transactionService.saveWithContraTransaction(booking);
 
                 List<InternalTransaction> cashTransactionsAfter = transactionService
-                    .findAllForTransactionBook(transactionBookService.getOwnCashTransactionBook(), Pageable.unpaged())
+                    .findAllForTransactionBook(associationService.getCashTransactionBook(), Pageable.unpaged())
                     .getContent();
                 Assertions.assertThat(cashTransactionsBefore).hasSameElementsAs(cashTransactionsAfter);
 
                 List<InternalTransaction> revenueTransactions = transactionService
-                    .findAllForTransactionBook(transactionBookService.getOwnRevenueTransactionBook(), Pageable.unpaged())
+                    .findAllForTransactionBook(associationService.getRevenueTransactionBook(), Pageable.unpaged())
                     .getContent();
                 InternalTransaction revenueTransaction = revenueTransactions.get(revenueTransactions.size() - 1);
                 assertThat(revenueTransaction.getDescription()).isNull();

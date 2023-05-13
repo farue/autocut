@@ -6,6 +6,7 @@ import de.farue.autocut.domain.InternalTransaction;
 import de.farue.autocut.domain.Transaction;
 import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.domain.enumeration.TransactionType;
+import de.farue.autocut.service.AssociationService;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -16,15 +17,10 @@ import java.util.stream.Collectors;
 
 public class InternalBookingContraTransactionProvider {
 
-    private TransactionBook referenceCashTransactionBook;
-    private TransactionBook referenceRevenueTransactionBook;
+    private final AssociationService associationService;
 
-    public InternalBookingContraTransactionProvider(
-        TransactionBook referenceCashTransactionBook,
-        TransactionBook referenceRevenueTransactionBook
-    ) {
-        this.referenceCashTransactionBook = referenceCashTransactionBook;
-        this.referenceRevenueTransactionBook = referenceRevenueTransactionBook;
+    public InternalBookingContraTransactionProvider(AssociationService associationService) {
+        this.associationService = associationService;
     }
 
     public List<InternalTransaction> calculateContraTransactions(
@@ -62,22 +58,22 @@ public class InternalBookingContraTransactionProvider {
             case FEE, PURCHASE -> {
                 contraType = TransactionType.CREDIT;
                 contraValue = value.negate();
-                targetTransactionBook = referenceRevenueTransactionBook;
+                targetTransactionBook = associationService.getRevenueTransactionBook();
             }
             case DEBIT -> {
                 contraType = TransactionType.DEBIT;
                 contraValue = value;
-                targetTransactionBook = referenceCashTransactionBook;
+                targetTransactionBook = associationService.getCashTransactionBook();
             }
             case CORRECTION -> {
                 contraType = TransactionType.CORRECTION;
                 contraValue = value.negate();
-                targetTransactionBook = referenceRevenueTransactionBook;
+                targetTransactionBook = associationService.getRevenueTransactionBook();
             }
             case CREDIT -> {
                 contraType = TransactionType.DEBIT;
                 contraValue = value.negate();
-                targetTransactionBook = referenceRevenueTransactionBook;
+                targetTransactionBook = associationService.getRevenueTransactionBook();
             }
             case TRANSFER -> throw new IllegalArgumentException("The sum of all transfer bookings must be 0.");
             default -> throw new IllegalStateException("Unexpected value: " + type);

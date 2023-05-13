@@ -1,11 +1,10 @@
 package de.farue.autocut.batch.banking;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Preconditions;
 import de.farue.autocut.domain.BankAccount;
 import de.farue.autocut.domain.BankTransaction;
-import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.repository.BankAccountRepository;
+import de.farue.autocut.service.AssociationService;
 import de.farue.autocut.service.accounting.BankTransactionService;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,38 +18,22 @@ public class BankingBatchProcessor implements ItemProcessor<UmsLine, BankTransac
 
     private final BankAccountRepository bankAccountRepository;
     private final BankTransactionService bankTransactionService;
+    private final AssociationService associationService;
 
     private final Map<BankTransaction, Integer> transactionCounterMap = new HashMap<>();
 
-    private BankAccount referenceAccount;
-    private TransactionBook referenceTransactionBook;
-
-    public BankingBatchProcessor(BankAccountRepository bankAccountRepository, BankTransactionService bankTransactionService) {
+    public BankingBatchProcessor(
+        BankAccountRepository bankAccountRepository,
+        BankTransactionService bankTransactionService,
+        AssociationService associationService
+    ) {
         this.bankAccountRepository = bankAccountRepository;
         this.bankTransactionService = bankTransactionService;
-    }
-
-    public BankAccount getReferenceAccount() {
-        return referenceAccount;
-    }
-
-    public void setReferenceAccount(BankAccount referenceAccount) {
-        this.referenceAccount = referenceAccount;
-    }
-
-    public TransactionBook getReferenceTransactionBook() {
-        return referenceTransactionBook;
-    }
-
-    public void setReferenceTransactionBook(TransactionBook referenceTransactionBook) {
-        this.referenceTransactionBook = referenceTransactionBook;
+        this.associationService = associationService;
     }
 
     @Override
     public BankTransaction process(UmsLine transaction) {
-        Preconditions.checkNotNull(referenceAccount);
-        Preconditions.checkNotNull(referenceTransactionBook);
-
         BankTransaction bankTransaction = new BankTransaction()
             .bookingDate(transaction.bdate.toInstant())
             .valueDate(transaction.valuta.toInstant())
@@ -63,9 +46,9 @@ public class BankingBatchProcessor implements ItemProcessor<UmsLine, BankTransac
             .endToEnd(transaction.endToEndId)
             .primanota(transaction.primanota)
             .creditor(transaction.id)
-            .bankAccount(referenceAccount)
+            .bankAccount(associationService.getBankAccount())
             .contraBankAccount(getContraBankAccount(transaction).orElse(null))
-            .transactionBook(referenceTransactionBook);
+            .transactionBook(associationService.getCashTransactionBook());
 
         transactionCounterMap.computeIfAbsent(bankTransaction, bankTransactionService::countExisting);
         int count = transactionCounterMap.get(bankTransaction);

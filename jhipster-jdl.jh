@@ -20,7 +20,21 @@ application {
 }
 
 // ****************************************************
-// * Tenant Manaagement
+// * Association
+// ****************************************************
+
+entity Association {
+    name String required
+}
+
+relationship OneToOne {
+    Association{cashTransactionBook} to TransactionBook
+    Association{revenueTransactionBook} to TransactionBook
+    Association{bankAccount} to BankAccount
+}
+
+// ****************************************************
+// * Tenant Management
 // ****************************************************
 
 @service(serviceClass)
@@ -212,7 +226,6 @@ relationship OneToMany {
 
 @service(serviceClass)
 entity TransactionBook {
-    name String,
     type TransactionBookType required
 }
 

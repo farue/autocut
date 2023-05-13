@@ -1,0 +1,48 @@
+{
+  "applications": ["autocut"],
+  "changelogDate": "20230513183823",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "association",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "active",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["unique"]
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Association",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "transactionBook",
+      "otherEntityRelationshipName": "association",
+      "ownerSide": true,
+      "relationshipName": "cashTransactionBook",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "transactionBook",
+      "otherEntityRelationshipName": "association",
+      "ownerSide": true,
+      "relationshipName": "revenueTransactionBook",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "bankAccount",
+      "otherEntityRelationshipName": "association",
+      "ownerSide": true,
+      "relationshipName": "bankAccount",
+      "relationshipType": "one-to-one"
+    }
+  ],
+  "service": "no"
+}

@@ -31,9 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser(authorities = { AuthoritiesConstants.ADMIN, AuthoritiesConstants.VIEW_TRANSACTIONS })
 class TransactionBookResourceIT {
 
-    private static final String DEFAULT_NAME = "AAAAAAAAAA";
-    private static final String UPDATED_NAME = "BBBBBBBBBB";
-
     private static final TransactionBookType DEFAULT_TYPE = TransactionBookType.CASH;
     private static final TransactionBookType UPDATED_TYPE = TransactionBookType.REVENUE;
 
@@ -61,7 +58,7 @@ class TransactionBookResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static TransactionBook createEntity(EntityManager em) {
-        TransactionBook transactionBook = new TransactionBook().name(DEFAULT_NAME).type(DEFAULT_TYPE);
+        TransactionBook transactionBook = new TransactionBook().type(DEFAULT_TYPE);
         return transactionBook;
     }
 
@@ -72,7 +69,7 @@ class TransactionBookResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static TransactionBook createUpdatedEntity(EntityManager em) {
-        TransactionBook transactionBook = new TransactionBook().name(UPDATED_NAME).type(UPDATED_TYPE);
+        TransactionBook transactionBook = new TransactionBook().type(UPDATED_TYPE);
         return transactionBook;
     }
 
@@ -96,7 +93,6 @@ class TransactionBookResourceIT {
         List<TransactionBook> transactionBookList = transactionBookRepository.findAll();
         assertThat(transactionBookList).hasSize(databaseSizeBeforeCreate + 1);
         TransactionBook testTransactionBook = transactionBookList.get(transactionBookList.size() - 1);
-        assertThat(testTransactionBook.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testTransactionBook.getType()).isEqualTo(DEFAULT_TYPE);
     }
 
@@ -151,7 +147,6 @@ class TransactionBookResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(transactionBook.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
     }
 
@@ -167,7 +162,6 @@ class TransactionBookResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(transactionBook.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()));
     }
 
@@ -190,7 +184,7 @@ class TransactionBookResourceIT {
         TransactionBook updatedTransactionBook = transactionBookRepository.findById(transactionBook.getId()).get();
         // Disconnect from session so that the updates on updatedTransactionBook are not directly saved in db
         em.detach(updatedTransactionBook);
-        updatedTransactionBook.name(UPDATED_NAME).type(UPDATED_TYPE);
+        updatedTransactionBook.type(UPDATED_TYPE);
 
         restTransactionBookMockMvc
             .perform(
@@ -204,7 +198,6 @@ class TransactionBookResourceIT {
         List<TransactionBook> transactionBookList = transactionBookRepository.findAll();
         assertThat(transactionBookList).hasSize(databaseSizeBeforeUpdate);
         TransactionBook testTransactionBook = transactionBookList.get(transactionBookList.size() - 1);
-        assertThat(testTransactionBook.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testTransactionBook.getType()).isEqualTo(UPDATED_TYPE);
     }
 
@@ -278,7 +271,7 @@ class TransactionBookResourceIT {
         TransactionBook partialUpdatedTransactionBook = new TransactionBook();
         partialUpdatedTransactionBook.setId(transactionBook.getId());
 
-        partialUpdatedTransactionBook.name(UPDATED_NAME);
+        partialUpdatedTransactionBook.type(UPDATED_TYPE);
 
         restTransactionBookMockMvc
             .perform(
@@ -292,8 +285,7 @@ class TransactionBookResourceIT {
         List<TransactionBook> transactionBookList = transactionBookRepository.findAll();
         assertThat(transactionBookList).hasSize(databaseSizeBeforeUpdate);
         TransactionBook testTransactionBook = transactionBookList.get(transactionBookList.size() - 1);
-        assertThat(testTransactionBook.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testTransactionBook.getType()).isEqualTo(DEFAULT_TYPE);
+        assertThat(testTransactionBook.getType()).isEqualTo(UPDATED_TYPE);
     }
 
     @Test
@@ -308,7 +300,7 @@ class TransactionBookResourceIT {
         TransactionBook partialUpdatedTransactionBook = new TransactionBook();
         partialUpdatedTransactionBook.setId(transactionBook.getId());
 
-        partialUpdatedTransactionBook.name(UPDATED_NAME).type(UPDATED_TYPE);
+        partialUpdatedTransactionBook.type(UPDATED_TYPE);
 
         restTransactionBookMockMvc
             .perform(
@@ -322,7 +314,6 @@ class TransactionBookResourceIT {
         List<TransactionBook> transactionBookList = transactionBookRepository.findAll();
         assertThat(transactionBookList).hasSize(databaseSizeBeforeUpdate);
         TransactionBook testTransactionBook = transactionBookList.get(transactionBookList.size() - 1);
-        assertThat(testTransactionBook.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testTransactionBook.getType()).isEqualTo(UPDATED_TYPE);
     }
 

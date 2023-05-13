@@ -25,9 +25,6 @@ public class TransactionBook implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
-    private String name;
-
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
@@ -51,19 +48,6 @@ public class TransactionBook implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public TransactionBook name(String name) {
-        this.setName(name);
-        return this;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public TransactionBookType getType() {
@@ -134,7 +118,6 @@ public class TransactionBook implements Serializable {
     public String toString() {
         return "TransactionBook{" +
             "id=" + getId() +
-            ", name='" + getName() + "'" +
             ", type='" + getType() + "'" +
             "}";
     }

@@ -1,3 +1,3 @@
 id;type;booking_date;value_date;value;balance_after;description;transaction_book_id
-50;GUTSCHR.SEPA;2020-10-01;2020-10-01;30;1030;Referenz NOTPROVIDED Verwendungszweck 123/2 Chris Black;11
+50;GUTSCHR.SEPA;2020-10-01;2020-10-01;30;1030;Referenz NOTPROVIDED Verwendungszweck 123/2 Chris Black;32
 51;CREDIT;2020-10-03;2020-10-03;30;30;Bank transfer;2

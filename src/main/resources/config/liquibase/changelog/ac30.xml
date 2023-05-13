@@ -58,10 +58,10 @@
             insert into lease_transaction_book(lease_id, transaction_book_id) select temp_lease_id, id from transaction_book where temp_lease_id is not null;
 
             <!-- create Farue transaction books -->
-            insert into transaction_book(name, type)
+            insert into transaction_book(id, name, type)
             values
-            ('FaRue Account', 'CASH'),
-            ('FaRue Account', 'REVENUE');
+            (32, 'FaRue Account', 'CASH'),
+            (33, 'FaRue Account', 'REVENUE');
 
             <!-- create contra transactions in CASH book -->
             insert into transaction(kind, booking_date, value_date, value, balance_after, description, issuer, transaction_book_id, temp_linked_transaction_id)

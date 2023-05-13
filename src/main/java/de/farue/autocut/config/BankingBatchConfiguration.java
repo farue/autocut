@@ -3,10 +3,9 @@ package de.farue.autocut.config;
 import de.farue.autocut.batch.banking.BankingBatchProcessor;
 import de.farue.autocut.batch.banking.BankingBatchReader;
 import de.farue.autocut.batch.banking.BankingBatchWriter;
-import de.farue.autocut.domain.BankAccount;
 import de.farue.autocut.domain.BankTransaction;
-import de.farue.autocut.domain.TransactionBook;
 import de.farue.autocut.repository.BankAccountRepository;
+import de.farue.autocut.service.AssociationService;
 import de.farue.autocut.service.accounting.BankTransactionService;
 import de.farue.autocut.service.accounting.BankingService;
 import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
@@ -69,13 +68,9 @@ public class BankingBatchConfiguration {
     public BankingBatchProcessor bankingBatchProcessor(
         BankAccountRepository bankAccountRepository,
         BankTransactionService bankTransactionService,
-        BankAccount referenceBankAccount,
-        TransactionBook referenceCashTransactionBook
+        AssociationService associationService
     ) {
-        BankingBatchProcessor bankingBatchProcessor = new BankingBatchProcessor(bankAccountRepository, bankTransactionService);
-        bankingBatchProcessor.setReferenceAccount(referenceBankAccount);
-        bankingBatchProcessor.setReferenceTransactionBook(referenceCashTransactionBook);
-        return bankingBatchProcessor;
+        return new BankingBatchProcessor(bankAccountRepository, bankTransactionService, associationService);
     }
 
     @Bean

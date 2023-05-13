@@ -1,5 +1,6 @@
 package de.farue.autocut.config;
 
+import de.farue.autocut.repository.AssociationRepository;
 import java.time.Duration;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.ehcache.config.builders.ExpiryPolicyBuilder;
@@ -90,6 +91,8 @@ public class CacheConfiguration {
             createCache(cm, de.farue.autocut.domain.BroadcastMessage.class.getName());
             createCache(cm, de.farue.autocut.domain.BroadcastMessage.class.getName() + ".messageTexts");
             createCache(cm, de.farue.autocut.domain.BroadcastMessageText.class.getName());
+            createCache(cm, de.farue.autocut.domain.Association.class.getName());
+            createCache(cm, AssociationRepository.ACTIVE_ASSOCIATION_CACHE);
             // jhipster-needle-ehcache-add-entry
         };
     }

@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import de.farue.autocut.IntegrationTest;
 import de.farue.autocut.domain.*;
 import de.farue.autocut.security.AuthoritiesConstants;
+import de.farue.autocut.service.AssociationService;
 import de.farue.autocut.service.LeaseService;
 import de.farue.autocut.service.TenantService;
 import java.math.BigDecimal;
@@ -16,7 +17,6 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,15 +46,10 @@ public class PurposeBankTransactionMatcherIT {
     private BankAccountService bankAccountService;
 
     @Autowired
-    @Qualifier("referenceBankAccount")
-    private BankAccount referenceBankAccount;
-
-    @Autowired
-    @Qualifier("referenceCashTransactionBook")
-    private TransactionBook referenceCashTransactionBook;
-
-    @Autowired
     private PurposeBankTransactionMatcher matcher;
+
+    @Autowired
+    private AssociationService associationService;
 
     @MockBean(name = "tenantPurposeMatchCandidateProvider")
     private MatchCandidateProvider matchCandidateProvider;
@@ -121,9 +116,9 @@ public class PurposeBankTransactionMatcherIT {
             .value(ANY_VALUE)
             .balanceAfter(ANY_BALANCE_AFTER)
             .description("Transaction? made by-Chris & last name Black apartment 123/21")
-            .bankAccount(referenceBankAccount)
+            .bankAccount(associationService.getBankAccount())
             .contraBankAccount(contraBankAccount)
-            .transactionBook(referenceCashTransactionBook);
+            .transactionBook(associationService.getCashTransactionBook());
 
         TransactionBook transactionBook = matcher.findMatch(bankTransaction).get();
 
@@ -139,9 +134,9 @@ public class PurposeBankTransactionMatcherIT {
             .value(ANY_VALUE)
             .balanceAfter(ANY_BALANCE_AFTER)
             .description("Alan Bob 123 44")
-            .bankAccount(referenceBankAccount)
+            .bankAccount(associationService.getBankAccount())
             .contraBankAccount(contraBankAccount)
-            .transactionBook(referenceCashTransactionBook);
+            .transactionBook(associationService.getCashTransactionBook());
 
         Optional<TransactionBook> transactionBookOptional = matcher.findMatch(bankTransaction);
 
@@ -157,9 +152,9 @@ public class PurposeBankTransactionMatcherIT {
             .value(ANY_VALUE)
             .balanceAfter(ANY_BALANCE_AFTER)
             .description("Li 123 11")
-            .bankAccount(referenceBankAccount)
+            .bankAccount(associationService.getBankAccount())
             .contraBankAccount(contraBankAccount)
-            .transactionBook(referenceCashTransactionBook);
+            .transactionBook(associationService.getCashTransactionBook());
 
         Optional<TransactionBook> transactionBookOptional = matcher.findMatch(bankTransaction);
 
@@ -175,9 +170,9 @@ public class PurposeBankTransactionMatcherIT {
             .value(ANY_VALUE)
             .balanceAfter(ANY_BALANCE_AFTER)
             .description("Black 123 11")
-            .bankAccount(referenceBankAccount)
+            .bankAccount(associationService.getBankAccount())
             .contraBankAccount(contraBankAccount)
-            .transactionBook(referenceCashTransactionBook);
+            .transactionBook(associationService.getCashTransactionBook());
 
         Optional<TransactionBook> transactionBookOptional = matcher.findMatch(bankTransaction);
 

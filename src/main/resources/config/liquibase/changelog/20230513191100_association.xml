@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="create_table_association" author="brunecker">
+        <createTable tableName="association">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="active" type="boolean">
+                <constraints nullable="true" unique="true" uniqueConstraintName="ux_association__active" />
+            </column>
+            <column name="cash_transaction_book_id" type="bigint">
+                <constraints nullable="true" unique="true" uniqueConstraintName="ux_association__cash_transaction_book_id" />
+            </column>
+            <column name="revenue_transaction_book_id" type="bigint">
+                <constraints nullable="true" unique="true" uniqueConstraintName="ux_association__revenue_transaction_book_id" />
+            </column>
+            <column name="bank_account_id" type="bigint">
+                <constraints nullable="true" unique="true" uniqueConstraintName="ux_association__bank_account_id" />
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="cash_transaction_book_id"
+                                 baseTableName="association"
+                                 constraintName="fk_association__cash_transaction_book_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transaction_book"/>
+
+        <addForeignKeyConstraint baseColumnNames="revenue_transaction_book_id"
+                                 baseTableName="association"
+                                 constraintName="fk_association__revenue_transaction_book_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transaction_book"/>
+
+        <addForeignKeyConstraint baseColumnNames="bank_account_id"
+                                 baseTableName="association"
+                                 constraintName="fk_association__bank_account_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="bank_account"/>
+    </changeSet>
+
+    <changeSet id="add_association" author="brunecker">
+        <insert tableName="bank_account">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="Familienwohnheim Rütscher Str."/>
+            <column name="bic" value="PBNKDEFF"/>
+            <column name="iban" value="DE14500100600224788602"/>
+        </insert>
+
+        <insert tableName="association">
+            <column name="name" value="FaRü"/>
+            <column name="active" valueBoolean="true"/>
+            <column name="cash_transaction_book_id" valueComputed="(SELECT id FROM transaction_book WHERE name = 'FaRue Account' and type = 'CASH')"/>
+            <column name="revenue_transaction_book_id" valueComputed="(SELECT id FROM transaction_book WHERE name = 'FaRue Account' and type = 'REVENUE')"/>
+            <column name="bank_account_id" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="remove_transaction_book_name" author="brunecker">
+        <dropColumn tableName="transaction_book" columnName="name"/>
+    </changeSet>
+</databaseChangeLog>

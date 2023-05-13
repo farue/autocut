@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import de.farue.autocut.IntegrationTest;
 import de.farue.autocut.domain.*;
+import de.farue.autocut.service.AssociationService;
 import de.farue.autocut.service.LeaseService;
 import de.farue.autocut.service.TenantService;
 import java.math.BigDecimal;
@@ -13,7 +14,6 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings({ "FieldCanBeLocal", "unused" })
@@ -38,12 +38,7 @@ class ContraAccountNameBankTransactionMatcherIT {
     private TenantService tenantService;
 
     @Autowired
-    @Qualifier("referenceBankAccount")
-    private BankAccount referenceBankAccount;
-
-    @Autowired
-    @Qualifier("referenceCashTransactionBook")
-    private TransactionBook referenceCashTransactionBook;
+    private AssociationService associationService;
 
     @Autowired
     private ContraAccountNameBankTransactionMatcher matcher;
@@ -98,9 +93,9 @@ class ContraAccountNameBankTransactionMatcherIT {
             .value(ANY_VALUE)
             .balanceAfter(ANY_BALANCE_AFTER)
             .description(ANY_DESCRIPTION)
-            .bankAccount(referenceBankAccount)
+            .bankAccount(associationService.getBankAccount())
             .contraBankAccount(contraBankAccount)
-            .transactionBook(referenceCashTransactionBook);
+            .transactionBook(associationService.getCashTransactionBook());
 
         TransactionBook transactionBook = matcher.findMatch(bankTransaction).get();
 
@@ -118,9 +113,9 @@ class ContraAccountNameBankTransactionMatcherIT {
             .value(ANY_VALUE)
             .balanceAfter(ANY_BALANCE_AFTER)
             .description(ANY_DESCRIPTION)
-            .bankAccount(referenceBankAccount)
+            .bankAccount(associationService.getBankAccount())
             .contraBankAccount(contraBankAccount)
-            .transactionBook(referenceCashTransactionBook);
+            .transactionBook(associationService.getCashTransactionBook());
 
         Optional<TransactionBook> transactionBookOptional = matcher.findMatch(bankTransaction);
 

@@ -1,32 +1,15 @@
 package de.farue.autocut.config;
 
-import de.farue.autocut.domain.BankAccount;
-import de.farue.autocut.domain.TransactionBook;
-import de.farue.autocut.repository.BankAccountRepository;
 import de.farue.autocut.repository.BankTransactionRepository;
+import de.farue.autocut.service.AssociationService;
 import de.farue.autocut.service.LeaseService;
 import de.farue.autocut.service.TenantService;
-import de.farue.autocut.service.accounting.BankTransactionContraTransactionProvider;
-import de.farue.autocut.service.accounting.BankTransactionMatcher;
-import de.farue.autocut.service.accounting.BankTransactionService;
-import de.farue.autocut.service.accounting.BankingService;
-import de.farue.autocut.service.accounting.BankingServiceMock;
-import de.farue.autocut.service.accounting.CompositeBankTransactionMatcher;
-import de.farue.autocut.service.accounting.ContraAccountNameBankTransactionMatcher;
-import de.farue.autocut.service.accounting.ContraAccountPreviousBookingBankTransactionMatcher;
-import de.farue.autocut.service.accounting.DefaultNonInteractiveHbciCallback;
-import de.farue.autocut.service.accounting.InternalBookingContraTransactionProvider;
-import de.farue.autocut.service.accounting.MatchCandidateProvider;
-import de.farue.autocut.service.accounting.PurposeBankTransactionMatcher;
-import de.farue.autocut.service.accounting.TenantNameMatchCandidateProvider;
-import de.farue.autocut.service.accounting.TenantPurposeMatchCandidateProvider;
-import de.farue.autocut.service.accounting.TransactionBookService;
+import de.farue.autocut.service.accounting.*;
 import java.util.List;
 import org.kapott.hbci.callback.HBCICallback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import tech.jhipster.config.JHipsterConstants;
@@ -132,38 +115,7 @@ public class AccountingConfiguration {
     }
 
     @Bean
-    public InternalBookingContraTransactionProvider internalBookingContraTransactionProvider(
-        TransactionBook referenceCashTransactionBook,
-        TransactionBook referenceRevenueTransactionBook
-    ) {
-        return new InternalBookingContraTransactionProvider(referenceCashTransactionBook, referenceRevenueTransactionBook);
-    }
-
-    @Bean
-    @Lazy
-    public TransactionBook referenceCashTransactionBook(TransactionBookService transactionBookService) {
-        return transactionBookService.getOwnCashTransactionBook();
-    }
-
-    @Bean
-    @Lazy
-    public TransactionBook referenceRevenueTransactionBook(TransactionBookService transactionBookService) {
-        return transactionBookService.getOwnRevenueTransactionBook();
-    }
-
-    @Bean
-    @Lazy
-    public BankAccount referenceBankAccount(BankAccountRepository bankAccountRepository) {
-        return bankAccountRepository
-            .findFirstByIban(applicationProperties.getBanking().getIban())
-            .orElseGet(
-                () ->
-                    bankAccountRepository.save(
-                        new BankAccount()
-                            .name(applicationProperties.getBanking().getName())
-                            .iban(applicationProperties.getBanking().getIban())
-                            .bic(applicationProperties.getBanking().getBic())
-                    )
-            );
+    public InternalBookingContraTransactionProvider internalBookingContraTransactionProvider(AssociationService associationService) {
+        return new InternalBookingContraTransactionProvider(associationService);
     }
 }

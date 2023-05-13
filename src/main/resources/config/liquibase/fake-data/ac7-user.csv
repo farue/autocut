@@ -1,8 +1,8 @@
-id;login;password_hash;email;image_url;activated;lang_key;created_by;last_modified_by
-4;whs;$2a$10$An3R1UKC8OfAjpNS367YAemSoc028wyfYMQ9cFR0hzyF9IwVp6j5q;whs@localhost;;true;en;system;system
-5;net;$2a$10$34TykT5/sfWRWZsfB54DSu38.X6c6FdMk0R7NsKx2AJHSMTh0/v/C;net@localhost;;true;en;system;system
-6;ba;$2a$10$yx2U9bfFqL2Dk2Vx7zb8MuCr5.cw7jz0w6V09Zb0kPv7ncsrEXPf.;ba@localhost;;true;en;system;system
-7;wash;$2a$10$.eum67b/ZHnbjREULtVTN.Bwn85ZUWqMQ5fVHeQ/dt7YaiuREdeqq;wash@localhost;;true;en;system;system
-8;tools;$2a$10$1BlQ.3gVFJkN.bLBhWLQhehVBnQwLGg4/zVKUoFWzEsPo7UbEzQ7u;tools@localhost;;true;en;system;system
-9;acc;$2a$10$kU53.j4nk9lA6s7S6k24LOQOPMqYumeTrqtbjfPFQuoLSZjH9jioS;accounting@localhost;;true;en;system;system
-10;rec;$2a$10$ip7H0Fxhn8KTCwQhCAS7M.n9cYKtcw7JDmwYfbNXAjdacodpCzLoq;recorder@localhost;;true;en;system;system
+id;login;password_hash;email;image_url;activated;lang_key;created_by;last_modified_by;created_date
+4;whs;$2a$10$An3R1UKC8OfAjpNS367YAemSoc028wyfYMQ9cFR0hzyF9IwVp6j5q;whs@localhost;;true;en;system;system;2020-11-07T17:54:00
+5;net;$2a$10$34TykT5/sfWRWZsfB54DSu38.X6c6FdMk0R7NsKx2AJHSMTh0/v/C;net@localhost;;true;en;system;system;2020-11-07T17:54:00
+6;ba;$2a$10$yx2U9bfFqL2Dk2Vx7zb8MuCr5.cw7jz0w6V09Zb0kPv7ncsrEXPf.;ba@localhost;;true;en;system;system;2020-11-07T17:54:00
+7;wash;$2a$10$.eum67b/ZHnbjREULtVTN.Bwn85ZUWqMQ5fVHeQ/dt7YaiuREdeqq;wash@localhost;;true;en;system;system;2020-11-07T17:54:00
+8;tools;$2a$10$1BlQ.3gVFJkN.bLBhWLQhehVBnQwLGg4/zVKUoFWzEsPo7UbEzQ7u;tools@localhost;;true;en;system;system;2020-11-07T17:54:00
+9;acc;$2a$10$kU53.j4nk9lA6s7S6k24LOQOPMqYumeTrqtbjfPFQuoLSZjH9jioS;accounting@localhost;;true;en;system;system;2020-11-07T17:54:00
+10;rec;$2a$10$ip7H0Fxhn8KTCwQhCAS7M.n9cYKtcw7JDmwYfbNXAjdacodpCzLoq;recorder@localhost;;true;en;system;system;2020-11-07T17:54:00
