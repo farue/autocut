@@ -149,12 +149,12 @@ project.ext.diffChangelogFile = "src/main/resources/config/liquibase/changelog/"
 liquibase {
     activities {
         main {
-            driver "org.h2.Driver"
-            url "jdbc:h2:file:./build/h2db/db/autocut"
-            username "autocut"
+            driver "com.mysql.cj.jdbc.Driver"
+            url "jdbc:mysql://localhost:3306/autocut"
+            username "root"
             password ""
             changeLogFile "src/main/resources/config/liquibase/master.xml"
-            defaultSchemaName ""
+            defaultSchemaName "autocut"
             logLevel "debug"
             classpath "src/main/resources/"
 
@@ -166,13 +166,13 @@ liquibase {
             }
         }
         diffLog {
-            driver "org.h2.Driver"
-            url "jdbc:h2:file:./build/h2db/db/autocut"
-            username "autocut"
+            driver "com.mysql.cj.jdbc.Driver"
+            url "jdbc:mysql://localhost:3306/autocut"
+            username "root"
             password ""
             changeLogFile project.ext.diffChangelogFile
-            referenceUrl "hibernate:spring:de.farue.autocut.domain?dialect=org.hibernate.dialect.H2Dialect&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
-            defaultSchemaName ""
+            referenceUrl "hibernate:spring:de.farue.autocut.domain?dialect=org.hibernate.dialect.MySQL8Dialect&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
+            defaultSchemaName "autocut"
             logLevel "debug"
             classpath "$buildDir/classes/java/main"
         }
@@ -286,7 +286,6 @@ dependencies {
     testImplementation "com.tngtech.archunit:archunit-junit5-api:${archunitJunit5Version}"
     testRuntimeOnly "com.tngtech.archunit:archunit-junit5-engine:${archunitJunit5Version}"
     testImplementation "com.h2database:h2"
-    liquibaseRuntime "com.h2database:h2"
     developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
     //jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
 

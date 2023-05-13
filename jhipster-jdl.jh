@@ -7,7 +7,7 @@ application {
         cacheProvider ehcache,
         buildTool gradle,
         databaseType sql,
-        devDatabaseType h2Disk,
+        devDatabaseType mysql,
         prodDatabaseType mysql,
         enableTranslation true,
         nativeLanguage de,
