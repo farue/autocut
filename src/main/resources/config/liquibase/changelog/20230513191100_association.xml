@@ -46,12 +46,11 @@
     </changeSet>
 
     <changeSet id="add_association" author="brunecker">
-        <insert tableName="bank_account">
-            <column name="id" valueNumeric="1"/>
-            <column name="name" value="Familienwohnheim Rütscher Str."/>
-            <column name="bic" value="PBNKDEFF"/>
-            <column name="iban" value="DE14500100600224788602"/>
-        </insert>
+        <loadUpdateData
+            file="config/liquibase/data/20230513-191100_association_bankaccount.csv"
+            separator=";"
+            tableName="bank_account"
+            primaryKey="id" />
 
         <insert tableName="association">
             <column name="name" value="FaRü"/>
