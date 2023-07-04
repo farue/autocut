@@ -1,7 +1,7 @@
 application:
   # only define encrypted properties in prod, so during development we don't need the master password
   banking:
-    user: ENC(jWZRfUb4G+nG6Nm0SUEnWy6yWK80IPng6PRb5bXajpgaKXTMlM4HimqtHcI8SG7f)
+    user: ENC(0xD/oGL0eP6gwSVgZi9hL2m31HJggVVbmy2onZGMAZso4zKWmB/qCPgBNK4rf1IY)
     pin: ENC(iPpERU7C7VSUFNNa7ws7EZfnclNUTDZOKijmLsgcGVpNvDm60/tTAwNULBeyl6mNmyELtrBy2OTrPHFIDUdAdw==)
     passportPassword: ENC(Ayqfq1R96ck/br3j/xAOO9umYUDLKoD/MMBwX/kBOX0U9Q1ykWUbZWNQXly2dFLu15XkuLkcHtc3GKckAftplA==)
   switchConnections:
