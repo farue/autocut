@@ -91,11 +91,18 @@ public class BankingBatchProcessor implements ItemProcessor<UmsLine, BankTransac
             return Optional.empty();
         }
 
-        return Optional.of(
-            bankAccountRepository
-                .findFirstByIban(iban)
-                .orElseGet(() -> bankAccountRepository.save(new BankAccount().name(name).iban(iban).bic(bic)))
-        );
+        BankAccount contraBankAccount = bankAccountRepository
+            .findFirstByIban(iban)
+            .orElseGet(() -> bankAccountRepository.save(new BankAccount().name(name).iban(iban).bic(bic)));
+        if (bic != null && !bic.equals(contraBankAccount.getBic())) {
+            contraBankAccount.setBic(bic);
+            bankAccountRepository.save(contraBankAccount);
+        }
+        if (!name.equals(contraBankAccount.getName())) {
+            contraBankAccount.setName(name);
+            bankAccountRepository.save(contraBankAccount);
+        }
+        return Optional.of(contraBankAccount);
     }
 
     private String getDescription(UmsLine transaction) {
