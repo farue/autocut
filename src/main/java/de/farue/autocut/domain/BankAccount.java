@@ -26,9 +26,8 @@ public class BankAccount implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @NotNull
     @Size(max = 11)
-    @Column(name = "bic", length = 11, nullable = false)
+    @Column(name = "bic", length = 11)
     private String bic;
 
     @NotNull

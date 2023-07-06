@@ -87,7 +87,7 @@ public class BankingBatchProcessor implements ItemProcessor<UmsLine, BankTransac
         String bic = StringUtils.deleteWhitespace(contraKonto.bic);
         String name = Joiner.on(" ").skipNulls().join(contraKonto.name, contraKonto.name2);
 
-        if (StringUtils.isEmpty(name) || StringUtils.isEmpty(iban) || StringUtils.isEmpty(bic)) {
+        if (StringUtils.isEmpty(name) || StringUtils.isEmpty(iban)) {
             return Optional.empty();
         }
 

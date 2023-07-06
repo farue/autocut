@@ -138,23 +138,6 @@ class BankAccountResourceIT {
 
     @Test
     @Transactional
-    void checkBicIsRequired() throws Exception {
-        int databaseSizeBeforeTest = bankAccountRepository.findAll().size();
-        // set the field null
-        bankAccount.setBic(null);
-
-        // Create the BankAccount, which fails.
-
-        restBankAccountMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(bankAccount)))
-            .andExpect(status().isBadRequest());
-
-        List<BankAccount> bankAccountList = bankAccountRepository.findAll();
-        assertThat(bankAccountList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void checkIbanIsRequired() throws Exception {
         int databaseSizeBeforeTest = bankAccountRepository.findAll().size();
         // set the field null

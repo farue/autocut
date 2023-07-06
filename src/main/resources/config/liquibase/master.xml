@@ -72,4 +72,5 @@
     <include file="config/liquibase/changelog/20221030181001_reward.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230410142300_roles.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230513191100_association.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230706084500_bank_account_optional_bic.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>
