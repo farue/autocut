@@ -241,7 +241,7 @@ public class BankTransaction extends Transaction {
             compare(getValue()).isEqualTo(otherBankTransaction.getValue()) &&
             Objects.equals(getBankAccount(), otherBankTransaction.getBankAccount()) &&
             Objects.equals(getContraBankAccount(), otherBankTransaction.getContraBankAccount()) &&
-            Objects.equals(getType(), otherBankTransaction.getType()) &&
+            Objects.equals(getGvCode(), otherBankTransaction.getGvCode()) &&
             Objects.equals(getDescription(), otherBankTransaction.getDescription()) &&
             Objects.equals(getCustomerRef(), otherBankTransaction.getCustomerRef()) &&
             Objects.equals(getPrimanota(), otherBankTransaction.getPrimanota())

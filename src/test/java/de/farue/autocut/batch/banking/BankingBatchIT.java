@@ -207,7 +207,7 @@ class BankingBatchIT {
                 .valueDate(getInstant(2020, 1, 2))
                 .value(new BigDecimal("15"))
                 .balanceAfter(new BigDecimal("37.70"))
-                .description("Referenz NOTPROVIDED Verwendungszweck Chen Li test street 123-33")
+                .description("EREF+NOTPROVIDED SVWZ+Chen Li test street 123-33")
                 .transactionBook(associationService.getCashTransactionBook());
             existingTransaction2 = bankTransactionService.save(existingTransaction2);
 
@@ -310,7 +310,7 @@ class BankingBatchIT {
         t2.instref = "";
         t2.gvcode = "166";
         t2.text = "GUTSCHR.SEPA";
-        t2.usage = List.of("Referenz NOTPROVIDED", "Verwendungszweck", "Chen Li test street 123-33");
+        t2.usage = List.of("EREF+NOTPROVIDED", "SVWZ+Chen Li te", "st street 123-33");
         t2.other = new Konto();
         t2.other.name = "Mr Chen Wu";
         t2.other.name2 = "Li";

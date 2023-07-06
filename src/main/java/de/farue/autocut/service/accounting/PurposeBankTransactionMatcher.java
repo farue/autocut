@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class PurposeBankTransactionMatcher extends AbstractAllTenantsBankTransactionMatcher {
 
-    private static final String VERWENDUNGSZWECK = "verwendungszweck";
+    private static final String VERWENDUNGSZWECK = "svwz+";
 
     public PurposeBankTransactionMatcher(
         TenantService tenantService,
