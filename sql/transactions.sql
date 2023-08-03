@@ -115,3 +115,63 @@ select *
 from transaction t
 where t.transaction_book_id = 13 and t.value_date <= now()
 order by t.value_date desc, t.id desc;
+
+# unmatched bank transactions
+select *
+from transaction t
+         inner join bank_transaction bt on bt.id = t.id
+where bt.id not in (select left_id from transaction_link)
+  and t.value > 0
+order by t.value_date desc;
+
+# find transactions with wrong balance_after
+# the not exists clause makes the query slow
+with transactions as (
+    select it.id,
+           issuer,
+           recipient,
+           type,
+           booking_date,
+           value_date,
+           value,
+           balance_after,
+           description,
+           transaction_book_id,
+           service_qulifier
+    from internal_transaction it
+             inner join transaction t on it.id = t.id
+    where t.value_date between '2023-07-01' and '2023-08-12'
+)
+select *
+from transactions t1, transactions t2
+where t1.value_date <= t2.value_date
+  and (t1.value_date <> t2.value_date or t1.id < t2.id)
+  and t1.id <> t2.id
+  and t1.transaction_book_id = t2.transaction_book_id
+  and t1.balance_after + t2.value <> t2.balance_after
+  and t1.transaction_book_id <> 33
+  and not exists (select 1
+                  from transactions t3
+                  where t3.transaction_book_id = t1.transaction_book_id
+                    and t3.value_date >= t1.value_date
+                    and t3.value_date <= t2.value_date
+                    and t3.id <> t1.id
+                    and t3.id <> t2.id);
+
+# recalculate balance_after
+start transaction;
+
+SET @balance := 0;
+SET @value_date := '';
+
+UPDATE transaction
+SET balance_after = (@balance := @balance + value)
+WHERE transaction_book_id = 148
+    ORDER BY value_date, id;
+
+select *
+from transaction t
+where t.transaction_book_id = 148
+order by t.value_date desc, t.id desc;
+
+rollback;
