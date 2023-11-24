@@ -1,12 +1,23 @@
 # Bank transactions for accounting
-select date_format(convert_tz(t.value_date, 'UTC', 'Europe/Berlin'), '%d.%m.%Y'), t.description, t.value, t.balance_after
+select date_format(convert_tz(t.value_date, 'UTC', 'Europe/Berlin'), '%d.%m.%Y') as "Datum",
+       t.description as "Kommentar",
+       case
+           when t.description REGEXP 'ER[0-9]{4}-[0-9]{3}' then
+               regexp_substr(t.description, 'ER[0-9]{4}-[0-9]{3}')
+           when t.description REGEXP 'Eig[0-9]{4}-[0-9]{3}' then
+               regexp_substr(t.description, 'Eig[0-9]{4}-[0-9]{3}')
+           else
+               ''
+           end as "Beleg-Nr",
+       t.value as "Betrag",
+       t.balance_after as "Saldo"
 from bank_transaction bt
          inner join transaction t on bt.id = t.id
-where t.value_date > '2022-03-14'
+where t.value_date > '2022-10-06'
 order by t.value_date;
 
 # account balances for accounting
-set @date = '2022-03-15'; # actual accounting day + 1
+set @date = '2023-09-24'; # actual accounting day + 1
 # select sum(Saldo) as Summe from (
 select t.first_name                    as 'Vorname',
        t.last_name                     as 'Nachname',

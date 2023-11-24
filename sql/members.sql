@@ -155,3 +155,35 @@ where id = @leaseId;
 update team_membership
 set end = @moveOutDate
 where tenant_id = @tenantId;
+
+# Select all by apartment
+select * from lease l
+                  inner join tenant t on l.id = t.lease_id
+                  inner join apartment a on l.apartment_id = a.id
+                  inner join address adr on a.address_id = adr.id
+                  inner join internet_access ia on a.internet_access_id = ia.id
+                  inner join network_switch ns on ia.network_switch_id = ns.id
+where l.nr = '30-05';
+
+# Search by name
+select *
+from tenant t
+where t.first_name like '%khatih%'
+   or t.last_name like '%khatih%';
+
+# Select all by apartment type
+select *
+from apartment a
+         inner join lease l on a.id = l.apartment_id
+         inner join tenant t on l.id = t.lease_id
+         inner join jhi_user ju on t.user_id = ju.id
+where a.type = 'SINGLE' and l.end > now();
+
+# delete unverified member
+select * from lease_transaction_book where lease_id = 160;
+delete from tenant where id = 167;
+delete from lease_transaction_book where lease_id = 160;
+delete from lease where id = 160;
+delete from transaction_book where id = 366;
+delete from jhi_user_authority where user_id = 341;
+delete from jhi_user where id = 341;

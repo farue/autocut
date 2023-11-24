@@ -175,3 +175,40 @@ where t.transaction_book_id = 148
 order by t.value_date desc, t.id desc;
 
 rollback;
+
+# unmatched bank transactions
+select *
+from transaction t
+         inner join bank_transaction bt on bt.id = t.id
+where bt.id not in (select left_id from transaction_link)
+  and t.value > 0
+order by t.value_date desc;
+
+# Delete transactions by IDs
+select * from transaction_link where left_id = 41949;
+
+delete from transaction_link where left_id in (
+    41948
+    ) or right_id in (
+    41948
+    );
+
+delete from internal_transaction where id in (
+    41948
+    );
+
+delete from transaction where id in (
+    41948
+    );
+
+set @balance = 0;
+update transaction t
+set t.balance_after = (@balance := @balance + t.value)
+where t.transaction_book_id = 15
+order by t.value_date, t.id;
+
+set @balance = 0;
+update transaction t
+set t.balance_after = (@balance := @balance + t.value)
+where t.transaction_book_id = 33
+order by t.value_date, t.id;
