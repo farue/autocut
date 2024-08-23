@@ -90,7 +90,7 @@ docker-push:
   dependencies:
     - gradle-package
   script:
-    - gradle jib -Pprod -Djib.to.image=$CI_REGISTRY_IMAGE -Djib.to.tags=$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA,$CI_COMMIT_REF_SLUG-latest -Djib.to.auth.username=gitlab-ci-token -Djib.to.auth.password=$CI_BUILD_TOKEN -Djib.httpTimeout=120000
+    - gradle jib -Pprod -Djib.to.image=$CI_REGISTRY_IMAGE -Djib.to.tags=$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA,$CI_COMMIT_REF_SLUG-latest -Djib.to.auth.username=$CI_REGISTRY_USER -Djib.to.auth.password=$CI_BUILD_TOKEN -Djib.httpTimeout=120000
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
