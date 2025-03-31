@@ -90,7 +90,7 @@ public class BankingService {
 
         Properties props = new Properties();
         HBCIUtils.init(props, hbciCallback);
-        final File passportFile = new File(getPassportName(blz, user));
+        final File passportFile = new File(getPassportName());
 
         HBCIUtils.setParam("client.passport.default", HBCI_PASSPORT_INSTANCE);
         HBCIUtils.setParam("client.passport.PinTan.init", INIT_PASSPORT_TRUE);
@@ -139,8 +139,7 @@ public class BankingService {
         }
     }
 
-    private String getPassportName(String blz, String user) {
-        String name = "passport_" + blz + "_" + user + ".dat";
-        return StringUtils.remove(name, '/');
+    private String getPassportName() {
+        return  "passport.dat";
     }
 }

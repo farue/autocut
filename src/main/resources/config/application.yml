@@ -223,7 +223,7 @@ application:
     bic: PBNKDEFF
     blz: 50010060
     tanCode: 920 # TAN code: 911:smsTAN | 920:chipTAN optisch, BestSign | 955:photoTAN
-    tanMedium: SO:StefanGalaxyS23
+    tanMedium: FrKimmich
   switchConnections:
     - hostFingerprint: 94:52:76:3a:53:6a:ec:3b:09:1f:18:5b:df:f7:5f:69
       hostname: switch-1.farue.rwth-aachen.de

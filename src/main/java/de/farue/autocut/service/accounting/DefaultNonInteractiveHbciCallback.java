@@ -84,7 +84,7 @@ public class DefaultNonInteractiveHbciCallback extends AbstractHBCICallback {
             case NEED_PT_PIN -> retData.replace(0, retData.length(), pin);
             case NEED_BLZ -> retData.replace(0, retData.length(), blz);
             case NEED_PT_SECMECH -> retData.replace(0, retData.length(), tanCode);
-            case NEED_PT_TAN -> throw new RuntimeException("tan input required");
+            case NEED_PT_TAN -> throw new RuntimeException("tan input required. Log in with your phone once, then it should work again.");
             case NEED_PT_TANMEDIA -> retData.replace(0, retData.length(), tanMedium);
             case HAVE_ERROR -> log.error(msg);
             default -> log.info("Callback does not contain action for reason: " + reason);
